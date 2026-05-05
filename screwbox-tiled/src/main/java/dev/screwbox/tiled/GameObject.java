@@ -12,8 +12,8 @@ public class GameObject {
     private final Layer layer;
 
     public Vector position() {
-        double xCorrection = object.getWidth() / 2;
-        double yCorrection = object.getGid() == 0 ? object.getHeight() / 2 : object.getHeight() / -2;
+        final double xCorrection = object.getWidth() / 2;
+        final double yCorrection = object.getGid() == 0 ? object.getHeight() / 2 : object.getHeight() / -2;
         return Vector.of(object.getX() + xCorrection, object.getY() + yCorrection);
     }
 
