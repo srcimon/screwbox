@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class JSonLoaderTest {
+class JsonTest {
 
     record SampleEntity(String name) {
 
@@ -30,51 +30,48 @@ class JSonLoaderTest {
 
     @Test
     void load_jsonNull_throwsException() {
-        assertThatThrownBy(() -> JSonLoader.load(null, String.class))
+        assertThatThrownBy(() -> Json.load(null, String.class))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("json must not be null");
     }
 
     @Test
     void load_noAllArgsConstructor_throwsException() {
-        assertThatThrownBy(() -> JSonLoader.load("{}", NoAllArgsConstructor.class))
+        assertThatThrownBy(() -> Json.load("{}", NoAllArgsConstructor.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("NoAllArgsConstructor is missing all args constructor");
     }
 
     @Test
     void load_constructorDoesNotMatchFields_throwsException() {
-        assertThatThrownBy(() -> JSonLoader.load("{}", ConstructorDoesNotMatchFields.class))
+        assertThatThrownBy(() -> Json.load("{}", ConstructorDoesNotMatchFields.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("ConstructorDoesNotMatchFields is missing all args constructor");
     }
 
     @Test
     void load_typeNull_throwsException() {
-        assertThatThrownBy(() -> JSonLoader.load("", null))
+        assertThatThrownBy(() -> Json.load("", null))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("type must not be null");
     }
 
     @Test
     void load_emptyString_throwsException() {
-        assertThatThrownBy(() -> JSonLoader.load("", SampleEntity.class))
+        assertThatThrownBy(() -> Json.load("", SampleEntity.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("input is no json string");
     }
 
     @Test
     void load_emptyJson_leavesAttributesNull() {
-        var result = JSonLoader.load("{}", SampleEntity.class);
+        var result = Json.load("{}", SampleEntity.class);
         assertThat(result.name()).isNull();
     }
 
     @Test
     void load_matchingStringAttribute_setsValue() {
-        var result = JSonLoader.load("""
-            {
-                "name": "Max"
-            }""", SampleEntity.class);
+        var result = Json.load("{\"name\":\"Max\"}", SampleEntity.class);
 
         assertThat(result.name()).isEqualTo("Max");
     }
