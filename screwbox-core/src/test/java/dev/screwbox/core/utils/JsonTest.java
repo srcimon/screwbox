@@ -89,9 +89,14 @@ class JsonTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        "{\"name\" \"Max\" \"city\":\"Cologne\"}",
+        "{\"name\" \"Max\", \"city\":\"Cologne\"}",
         "{\"name\":\"Max\" \"city\":\"Cologne\"}",
-        "{\"name\":\"Max\" \"city\":\"Cologne}"
+        "{\"name\":\"Max\", \"city\":\"Cologne}",
+        "{\"name\":\"Max\", \"city\":Cologne\"}",
+        "{\"name\":Max\", \"city\":\"Cologne\"}",
+        "{\"name\":\"Max, \"city\":\"Cologne\"}",
+        "{\"name:\"Max\", \"city\":\"Cologne\"}",
+        "{name\":\"Max\", \"city\":\"Cologne\"}"
     })
     void load_malformattedJson_throwsException(String json) {
         assertThatThrownBy(() -> Json.load(json, SampleEntity.class))
