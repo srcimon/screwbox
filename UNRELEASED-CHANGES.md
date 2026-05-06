@@ -12,6 +12,7 @@
 - Fixed inconsistend void return value `Environment.remove(...)`
 - Fixed flickering when using lots of lights
 - Simplified light map code
+- Added validation for not equal values
 
 ### 📦 Dependency updates
 

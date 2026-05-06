@@ -9,7 +9,7 @@ import java.util.Objects;
 //TODO move inside tiled?
 public class Json {
 
-    private record Attribute(int endIndex, String name, String value) {
+    private record Attribute(int endIndex, int startIndex, String name, String value) {
 
     }
 
@@ -27,8 +27,13 @@ public class Json {
             int index = 0;
             while (index < content.length()) {
                 var attribute = fetchAttributeAtIndex(index);
+                if (!attributes.isEmpty()) {
+                    var commaPosition = content.indexOf(',', attributes.getLast().endIndex());
+                    Validate.isTrue(() -> commaPosition < attribute.startIndex() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().name, attribute.name));
+                }
                 attributes.add(attribute);
-                index = attribute.endIndex()+1;
+                index = attribute.endIndex() + 1;
+
             }
             return attributes;
         }
@@ -37,15 +42,17 @@ public class Json {
             var attributeStart = content.indexOf('\"', index);
             var attributeEnd = content.indexOf('\"', attributeStart + 1);
             var name = content.substring(attributeStart + 1, attributeEnd);
-
-            var attributeValueStart = content.indexOf('\"', attributeEnd+1);
+            var dotsPosition = content.indexOf(':', attributeEnd);
+            var attributeValueStart = content.indexOf('\"', attributeEnd + 1);
+            Validate.isTrue(() -> dotsPosition < attributeValueStart && dotsPosition != -1, "malformatted json string: missing ':' field '%s' and value".formatted(name));
             var attributeValueEnd = content.indexOf('\"', attributeValueStart + 1);
+            Validate.isNotEqual(attributeValueEnd, -1, "malformatted json string: missing '\"'");
             var value = content.substring(attributeValueStart + 1, attributeValueEnd);
-            return new Attribute(attributeValueEnd+1, name, value);
+            return new Attribute(attributeValueEnd + 1, attributeStart, name, value);
         }
 
         public <T> T getValue(final String name, final Class<T> type) {
-            return (T)getAllAttributes().stream().filter(attribute -> attribute.name().equals(name)).findFirst().map(Attribute::value).orElse(null);
+            return (T) getAllAttributes().stream().filter(attribute -> attribute.name().equals(name)).findFirst().map(Attribute::value).orElse(null);
         }
     }
 

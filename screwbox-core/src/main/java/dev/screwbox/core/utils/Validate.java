@@ -196,4 +196,16 @@ public final class Validate {
     private static <T> void validationException(final String message, final T value) {
         throw new IllegalArgumentException("%s (actual value: %s)".formatted(message, value));
     }
+
+    /**
+     * Values must not be equal.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     * @since 3.29.0
+     */
+    public static <T> void isNotEqual(final T firstValue, T secondValue, final String message) {
+        if (!firstValue.equals(secondValue)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
 }
