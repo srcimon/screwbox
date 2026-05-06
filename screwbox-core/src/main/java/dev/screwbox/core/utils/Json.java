@@ -28,7 +28,6 @@ public class Json {
                 var next = fetchAttribute(index);
                 attributes.add(next);
                 index = next.endIndex()+1;
-                System.out.println(next);
             }
             return attributes;
         }

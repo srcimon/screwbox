@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class JsonTest {
 
-    record SampleEntity(String name) {
+    record SampleEntity(String name, String city) {
 
     }
 
@@ -74,5 +74,14 @@ class JsonTest {
         var result = Json.load("{\"name\":\"Max\"}", SampleEntity.class);
 
         assertThat(result.name()).isEqualTo("Max");
+        assertThat(result.city()).isNull();
+    }
+
+    @Test
+    void load_matchingStringAttributes_setsValues() {
+        var result = Json.load("{\"name\":\"Max\", \"city\":\"Cologne\"}", SampleEntity.class);
+
+        assertThat(result.name()).isEqualTo("Max");
+        assertThat(result.city()).isEqualTo("Cologne");
     }
 }
