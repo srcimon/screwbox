@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+//TODO move inside tiled?
 public class Json {
 
     private record Attribute(int endIndex, String name, String value) {
@@ -25,14 +26,14 @@ public class Json {
             List<Attribute> attributes = new ArrayList<>();
             int index = 0;
             while (index < content.length()) {
-                var next = fetchAttribute(index);
-                attributes.add(next);
-                index = next.endIndex()+1;
+                var attribute = fetchAttributeAtIndex(index);
+                attributes.add(attribute);
+                index = attribute.endIndex()+1;
             }
             return attributes;
         }
 
-        private Attribute fetchAttribute(int index) {
+        private Attribute fetchAttributeAtIndex(int index) {
             var attributeStart = content.indexOf('\"', index);
             var attributeEnd = content.indexOf('\"', attributeStart + 1);
             var name = content.substring(attributeStart + 1, attributeEnd);
