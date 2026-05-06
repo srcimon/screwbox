@@ -69,13 +69,14 @@ class JsonTest {
     void load_emptyJson_leavesAttributesNull() {
         var result = Json.load("{}", SampleEntity.class);
         assertThat(result.name()).isNull();
+        assertThat(result.city()).isNull();
     }
 
     @Test
     void load_matchingStringAttribute_setsValue() {
-        var result = Json.load("{\"name\":\"Max\"}", SampleEntity.class);
+        var result = Json.load("{\"name\":\"Debo\"}", SampleEntity.class);
 
-        assertThat(result.name()).isEqualTo("Max");
+        assertThat(result.name()).isEqualTo("Debo");
         assertThat(result.city()).isNull();
     }
 
