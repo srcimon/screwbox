@@ -82,10 +82,10 @@ public class Json {
         private Position findIntegerValue(final int index) {
             for (int i = index; i < content.length(); i++) {
                 if (!Character.isDigit(content.charAt(i))) {
-                    return new Position(index, i - 1);
+                    return new Position(index, i);
                 }
             }
-            throw new IllegalArgumentException("no integer value found");//TODO better message
+            return new Position(index, content.length());
         }
 
         private Position findStringValue(final int index) {
