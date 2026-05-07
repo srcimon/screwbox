@@ -105,15 +105,25 @@ class JsonTest {
             .hasMessageStartingWith("malformatted json string:");
     }
 
-    record SampleTypedEntity(String name, Integer age) {
-
+    record SampleTypedEntity(
+        Integer age, int agePrimitive,
+        Boolean isNice, boolean isNicePrimitive) {
     }
 
     @Test
-    void load_entityHasIntegerProperty_fillsInteger() {
-        var result = Json.load("{\"name\":\"Max\", \"age\":22}", SampleTypedEntity.class);
+    void load_entityIsMissingIntegerProperty_defaultsToZero() {
+        var result = Json.load("{}", SampleTypedEntity.class);
 
-        assertThat(result.name()).isEqualTo("Max");
-        assertThat(result.age()).isEqualTo(22);
+        assertThat(result.age()).isZero();
+        assertThat(result.agePrimitive()).isZero();
     }
+
+    @Test
+    void load_entityIsMissingBooleanProperty_defaultsToFalse() {
+        var result = Json.load("{}", SampleTypedEntity.class);
+
+        assertThat(result.isNice()).isFalse();
+        assertThat(result.isNicePrimitive()).isFalse();
+    }
+
 }

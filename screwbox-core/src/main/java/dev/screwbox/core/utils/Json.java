@@ -14,7 +14,7 @@ public class Json {
 
     }
 
-    private record Attribute(Position namePosition, Position valuePosition, String name, String value) {
+    private record Attribute(Position namePosition, Position valuePosition, String name, Object value) {
 
     }
 
@@ -70,7 +70,19 @@ public class Json {
         }
 
         public <T> T getValue(final String name, final Class<T> type) {
-            return (T) getAllAttributes().stream().filter(attribute -> attribute.name().equals(name)).findFirst().map(Attribute::value).orElse(null);
+            return (T) getAllAttributes().stream()
+                .filter(attribute -> attribute.name().equals(name))
+                .findFirst()
+                .map(Attribute::value)
+                .orElse(defaultForType(type));
+        }
+
+        private static <T> T defaultForType(final Class<?> type) {
+            return switch (type.getSimpleName()) {
+                case "Integer", "int" -> (T) Integer.valueOf(0);
+                case "Boolean", "boolean" -> (T) Boolean.FALSE;
+                default -> null;
+            };
         }
     }
 
