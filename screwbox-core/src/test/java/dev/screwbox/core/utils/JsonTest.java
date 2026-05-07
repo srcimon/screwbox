@@ -151,4 +151,13 @@ class JsonTest {
             .hasMessage("No enum constant net.bytebuddy.description.modifier.TypeManifestation.UNKNOWN_PROPERTY");
     }
 
+    @Test
+    void load_entityHasIntegerProperty_setsValue() {
+        var entity = Json.load("{\"age\": 44, \"agePrimitive\": 22}", SampleTypedEntity.class);
+
+        assertThat(entity.age()).isEqualTo(44);
+        assertThat(entity.agePrimitive()).isEqualTo(22);
+    }
+
+    //TODO test for handling whitespace and line feeds
 }

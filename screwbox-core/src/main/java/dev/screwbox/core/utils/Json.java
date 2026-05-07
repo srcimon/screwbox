@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Json {
 
 
-    private record Position(int startIndex, int endIndex) {
+    private record Position(int start, int end) {
 
     }
 
@@ -34,11 +34,11 @@ public class Json {
             while (index < content.length()) {
                 var definition = fetchNextAttribute(index);
                 if (!attributes.isEmpty()) {
-                    var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().endIndex());
-                    Validate.isTrue(() -> commaPosition < definition.namePosition().startIndex() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().name, definition.name));
+                    var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().end());
+                    Validate.isTrue(() -> commaPosition < definition.namePosition().start() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().name, definition.name));
                 }
                 attributes.add(definition);
-                index = definition.valuePosition().endIndex() + 1;
+                index = definition.valuePosition().end() + 1;
 
             }
             return attributes;
@@ -48,12 +48,12 @@ public class Json {
         private Attribute fetchNextAttribute(int index) {
             Position attributePosition = findName(index);
 
-            var name = content.substring(attributePosition.startIndex(), attributePosition.endIndex());
-            var dotsPosition = content.indexOf(':', attributePosition.endIndex());
-            Position valuePosition = findValue(attributePosition.endIndex());
-            Validate.isTrue(() -> dotsPosition < valuePosition.startIndex() && dotsPosition != -1, "malformatted json string: missing ':' field '%s' and value".formatted(name));
-            Validate.isNotEqual(valuePosition.endIndex(), -1, "malformatted json string: missing '\"'");
-            var value = content.substring(valuePosition.startIndex(), valuePosition.endIndex());
+            var name = content.substring(attributePosition.start(), attributePosition.end());
+            var dotsPosition = content.indexOf(':', attributePosition.end());
+            Position valuePosition = findValue(attributePosition.end());
+            Validate.isTrue(() -> dotsPosition < valuePosition.start() && dotsPosition != -1, "malformatted json string: missing ':' field '%s' and value".formatted(name));
+            Validate.isNotEqual(valuePosition.end(), -1, "malformatted json string: missing '\"'");
+            var value = content.substring(valuePosition.start(), valuePosition.end());
             return new Attribute(attributePosition, valuePosition, name, value);
         }
 
@@ -84,6 +84,7 @@ public class Json {
             }
             return switch (type.getSimpleName()) {
                 case "String" -> (T)value;
+                case "Integer", "int" -> (T) Integer.valueOf(value);
                 default -> throw new IllegalArgumentException("unsupported type: " + type);
             };
         }
