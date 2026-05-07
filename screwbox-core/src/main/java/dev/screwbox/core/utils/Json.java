@@ -1,6 +1,7 @@
 package dev.screwbox.core.utils;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,12 +70,12 @@ public class Json {
             return new Position(start, end);
         }
 
-        public <T> T getValue(final String name, final Class<T> type) {
+        public <T> T getValue(final Field field) {
             return (T) getAllAttributes().stream()
-                .filter(attribute -> attribute.name().equals(name))
+                .filter(attribute -> attribute.name().equals(field.getName()))
                 .findFirst()
-                .map(attribute -> toInstance(attribute.value(), type))
-                .orElse(defaultForType(type));
+                .map(attribute -> toInstance(attribute.value(), field.getType()))
+                .orElse(defaultForType(field.getType()));
         }
 
         private <T> T toInstance(String value, Class<T> type) {
@@ -112,7 +113,7 @@ public class Json {
             final Object[] values = new Object[type.getDeclaredFields().length];
             for (int i = 0; i < values.length; i++) {
                 final var field = type.getDeclaredFields()[i];
-                values[i] = content.getValue(field.getName(), field.getType());
+                values[i] = content.getValue(field);
             }
             return (T) constructor.newInstance(values);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
