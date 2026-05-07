@@ -9,7 +9,12 @@ import java.util.Objects;
 //TODO move inside tiled?
 public class Json {
 
-    private record Attribute(int endIndex, int startIndex, String name, String value) {
+
+    private record Position(int startIndex, int endIndex) {
+
+    }
+
+    private record Attribute(Position valuePosition, Position namePosition, String name, String value) {
 
     }
 
@@ -26,29 +31,34 @@ public class Json {
             List<Attribute> attributes = new ArrayList<>();
             int index = 0;
             while (index < content.length()) {
-                var attribute = fetchAttributeAtIndex(index);
+                var definition = fetchNextDefinition(index);
                 if (!attributes.isEmpty()) {
-                    var commaPosition = content.indexOf(',', attributes.getLast().endIndex());
-                    Validate.isTrue(() -> commaPosition < attribute.startIndex() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().name, attribute.name));
+                    var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().endIndex());
+                    Validate.isTrue(() -> commaPosition < definition.namePosition().startIndex() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().name, definition.name));
                 }
-                attributes.add(attribute);
-                index = attribute.endIndex() + 1;
+                attributes.add(definition);
+                index = definition.valuePosition().endIndex() + 1;
 
             }
             return attributes;
         }
 
-        private Attribute fetchAttributeAtIndex(int index) {
+
+        private Attribute fetchNextDefinition(int index) {
             var attributeStart = content.indexOf('\"', index);
             var attributeEnd = content.indexOf('\"', attributeStart + 1);
+
+            Position attributePosition = new Position(attributeStart, attributeEnd);
+
             var name = content.substring(attributeStart + 1, attributeEnd);
             var dotsPosition = content.indexOf(':', attributeEnd);
-            var attributeValueStart = content.indexOf('\"', attributeEnd + 1);
+            var attributeValueStart = content.indexOf('\"', attributeEnd + 1)+1;
             Validate.isTrue(() -> dotsPosition < attributeValueStart && dotsPosition != -1, "malformatted json string: missing ':' field '%s' and value".formatted(name));
             var attributeValueEnd = content.indexOf('\"', attributeValueStart + 1);
             Validate.isNotEqual(attributeValueEnd, -1, "malformatted json string: missing '\"'");
-            var value = content.substring(attributeValueStart + 1, attributeValueEnd);
-            return new Attribute(attributeValueEnd + 1, attributeStart, name, value);
+            Position valuePosition = new Position(attributeValueStart, attributeValueEnd);
+            var value = content.substring(valuePosition.startIndex(), valuePosition.endIndex());
+            return new Attribute(valuePosition, attributePosition, name, value);
         }
 
         public <T> T getValue(final String name, final Class<T> type) {

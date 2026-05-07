@@ -103,7 +103,17 @@ class JsonTest {
         assertThatThrownBy(() -> Json.load(json, SampleEntity.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageStartingWith("malformatted json string:");
+    }
 
+    record SampleTypedEntity(String name, Integer age) {
 
+    }
+
+    @Test
+    void load_entityHasIntegerProperty_fillsInteger() {
+        var result = Json.load("{\"name\":\"Max\", \"age\":22}", SampleTypedEntity.class);
+
+        assertThat(result.name()).isEqualTo("Max");
+        assertThat(result.age()).isEqualTo(22);
     }
 }
