@@ -10,7 +10,6 @@ import java.util.Objects;
 //TODO move inside tiled?
 public class Json {
 
-
     private record Position(int start, int end) {
 
     }
@@ -82,7 +81,8 @@ public class Json {
                    && character != '}'
                    && character != ',';
         }
-//TODO Handle different kinds of line feeds
+
+        //TODO Handle different kinds of line feeds
 //TODO Handle tabulators
 //TODO Handle escaped quotes
         //TODO support .0 values
