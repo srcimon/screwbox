@@ -50,7 +50,7 @@ public class Json {
 
             var name = content.substring(attributePosition.start(), attributePosition.end());
             var dotsPosition = content.indexOf(':', attributePosition.end());
-            Position valuePosition = findValue(attributePosition.end());
+            Position valuePosition = findValue(attributePosition.end()+1);
             System.out.println(content.substring(valuePosition.start(), valuePosition.end()));
             Validate.isTrue(() -> dotsPosition < valuePosition.start() && dotsPosition != -1, "malformatted json string: missing ':' field '%s' and value".formatted(name));
             Validate.isNotEqual(valuePosition.end(), -1, "malformatted json string: missing '\"'");
@@ -91,8 +91,9 @@ public class Json {
             throw new IllegalArgumentException("no integer value found");//TODO better message
         }
         private Position findStringValue(final int index) {
-            final var start = content.indexOf('\"', index + 1) + 1;
+            final var start = content.indexOf('\"', index) + 1;
             final var end = content.indexOf('\"', start + 1);
+            Validate.isNotEqual(end, -1, "malformatted json string: missing '\"");
             return new Position(start, end);
         }
 
