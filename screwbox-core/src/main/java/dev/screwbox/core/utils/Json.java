@@ -33,14 +33,13 @@ public class Json {
             List<Attribute> attributes = new ArrayList<>();
             int index = 0;
             while (index < content.length()) {
-                var definition = fetchNextAttribute(index);
+                final var definition = fetchNextAttribute(index);
                 if (!attributes.isEmpty()) {
                     var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().end());
                     Validate.isTrue(() -> commaPosition < definition.namePosition().start() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().name, definition.name));
                 }
                 attributes.add(definition);
                 index = definition.valuePosition().end() + 1;
-
             }
             return attributes;
         }
@@ -68,34 +67,45 @@ public class Json {
         private Position findValue(final int index) {
             for (int i = index; i < content.length(); i++) {
                 if (content.charAt(i) == '"') {
-                    return findStringValue(index);//TODO we already know the start position -> optimize
+                    return findQuotedValue(index);//TODO we already know the start position -> optimize
                 }
-                if (Character.isDigit(content.charAt(i))) {
-                    return findIntegerValue(i);
+                if (isUnquotedChacater(content.charAt(i))) {
+                    return findUnquotedValue(i);
                 }
             }
             throw new IllegalArgumentException("malformatted json string: missing value for attribute");
         }
 
+        private static boolean isUnquotedChacater(char character) {
+            return character != ' '
+                   && character != ':'
+                   && character != '{'
+                   && character != '}'
+                   && character != ',';
+        }
+//TODO Handle different kinds of line feeds
+//TODO Handle tabulators
+//TODO Handle escaped quotes
         //TODO support .0 values
         //TODO support double values
         //TODO support float values
-        private Position findIntegerValue(final int index) {
+        private Position findUnquotedValue(final int index) {
             for (int i = index; i < content.length(); i++) {
-                if (!Character.isDigit(content.charAt(i))) {
+                if (isUnquotedChacater(content.charAt(i))) {
                     return new Position(index, i);
                 }
             }
             return new Position(index, content.length());
         }
 
-        private Position findStringValue(final int index) {
+        private Position findQuotedValue(final int index) {
             final var start = content.indexOf('\"', index) + 1;
             final var end = content.indexOf('\"', start + 1);
             Validate.isNotEqual(end, -1, "malformatted json string: missing '\"");
             return new Position(start, end);
         }
 
+        //TODO index all attributes only once
         public <T> T getValue(final Field field) {
             return (T) getAllAttributes().stream()
                 .filter(attribute -> attribute.name().equals(field.getName()))

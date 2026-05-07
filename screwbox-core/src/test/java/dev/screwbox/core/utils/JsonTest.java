@@ -159,9 +159,9 @@ class JsonTest {
         assertThat(entity.age()).isEqualTo(44);
         assertThat(entity.agePrimitive()).isEqualTo(22);
     }
-
+//TODO handle byte arrays
     @Test
-    void load_jsonContainsEmptySpaceAndLineFeeds_setsValues() {
+    void load_jsonContainsEmptySpaceAndLineFeeds_setsValues() {//TODO fix quoted enum value
         var entity = Json.load("""
             {
                    \"enumeration\":     \"FINAL\",
