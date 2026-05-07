@@ -9,6 +9,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class JsonTest {
 
+    private static final String EMPTY = "{}";
+
     @Test
     void load_typeNull_throwsException() {
         assertThatThrownBy(() -> Json.load("", null))
@@ -26,7 +28,7 @@ class JsonTest {
 
     @Test
     void load_noAllArgsConstructor_throwsException() {
-        assertThatThrownBy(() -> Json.load("{}", NoAllArgsConstructor.class))
+        assertThatThrownBy(() -> Json.load(EMPTY, NoAllArgsConstructor.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("NoAllArgsConstructor is missing all args constructor");
     }
@@ -42,7 +44,7 @@ class JsonTest {
 
     @Test
     void load_constructorDoesNotMatchFields_throwsException() {
-        assertThatThrownBy(() -> Json.load("{}", ConstructorDoesNotMatchFields.class))
+        assertThatThrownBy(() -> Json.load(EMPTY, ConstructorDoesNotMatchFields.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("ConstructorDoesNotMatchFields is missing all args constructor");
     }
@@ -67,7 +69,7 @@ class JsonTest {
 
     @Test
     void load_emptyJson_leavesAttributesNull() {
-        var result = Json.load("{}", SampleEntity.class);
+        var result = Json.load(EMPTY, SampleEntity.class);
         assertThat(result.name()).isNull();
         assertThat(result.city()).isNull();
     }
@@ -112,7 +114,7 @@ class JsonTest {
 
     @Test
     void load_entityIsMissingIntegerProperty_defaultsToZero() {
-        var result = Json.load("{}", SampleTypedEntity.class);
+        var result = Json.load(EMPTY, SampleTypedEntity.class);
 
         assertThat(result.age()).isZero();
         assertThat(result.agePrimitive()).isZero();
@@ -120,7 +122,7 @@ class JsonTest {
 
     @Test
     void load_entityIsMissingBooleanProperty_defaultsToFalse() {
-        var result = Json.load("{}", SampleTypedEntity.class);
+        var result = Json.load(EMPTY, SampleTypedEntity.class);
 
         assertThat(result.isNice()).isFalse();
         assertThat(result.isNicePrimitive()).isFalse();
