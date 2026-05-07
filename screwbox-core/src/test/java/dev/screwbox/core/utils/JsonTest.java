@@ -144,4 +144,11 @@ class JsonTest {
         assertThat(entity.enumeration()).isEqualTo(TypeManifestation.FINAL);
     }
 
+    @Test
+    void load_entityHasUnknownEnumProperty_throwsException() {
+        assertThatThrownBy(() -> Json.load("{\"enumeration\": \"UNKNOWN_PROPERTY\"}", SampleTypedEntity.class))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("No enum constant net.bytebuddy.description.modifier.TypeManifestation.UNKNOWN_PROPERTY");
+    }
+
 }
