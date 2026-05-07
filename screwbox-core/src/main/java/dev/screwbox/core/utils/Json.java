@@ -31,7 +31,7 @@ public class Json {
             List<Attribute> attributes = new ArrayList<>();
             int index = 0;
             while (index < content.length()) {
-                var definition = fetchNextDefinition(index);
+                var definition = fetchNextAttribute(index);
                 if (!attributes.isEmpty()) {
                     var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().endIndex());
                     Validate.isTrue(() -> commaPosition < definition.namePosition().startIndex() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().name, definition.name));
@@ -44,8 +44,8 @@ public class Json {
         }
 
 
-        private Attribute fetchNextDefinition(int index) {
-            Position attributePosition = findAttribute(index);
+        private Attribute fetchNextAttribute(int index) {
+            Position attributePosition = findName(index);
 
             var name = content.substring(attributePosition.startIndex(), attributePosition.endIndex());
             var dotsPosition = content.indexOf(':', attributePosition.endIndex());
@@ -56,17 +56,17 @@ public class Json {
             return new Attribute(attributePosition, valuePosition, name, value);
         }
 
-        private Position findAttribute(final int index) {
-            var attributeStart = content.indexOf('\"', index) + 1;
-            var attributeEnd = content.indexOf('\"', attributeStart);
+        private Position findName(final int index) {
+            final var start = content.indexOf('\"', index) + 1;
+            final var end = content.indexOf('\"', start);
 
-            return new Position(attributeStart, attributeEnd);
+            return new Position(start, end);
         }
 
         private Position findValue(final int index) {
-            var attributeValueStart = content.indexOf('\"', index + 1) + 1;
-            var attributeValueEnd = content.indexOf('\"', attributeValueStart + 1);
-            return new Position(attributeValueStart, attributeValueEnd);
+            final var start = content.indexOf('\"', index + 1) + 1;
+            final var end = content.indexOf('\"', start + 1);
+            return new Position(start, end);
         }
 
         public <T> T getValue(final String name, final Class<T> type) {
