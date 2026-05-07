@@ -47,7 +47,6 @@ public class Json {
 
         private Attribute fetchNextAttribute(int index) {
             Position attributePosition = findName(index);
-
             var name = content.substring(attributePosition.start(), attributePosition.end());
             var dotsPosition = content.indexOf(':', attributePosition.end());
             Position valuePosition = findValue(attributePosition.end() + 1);
@@ -91,7 +90,7 @@ public class Json {
         //TODO support float values
         private Position findUnquotedValue(final int index) {
             for (int i = index; i < content.length(); i++) {
-                if (isUnquotedChacater(content.charAt(i))) {
+                if (!isUnquotedChacater(content.charAt(i))) {
                     return new Position(index, i);
                 }
             }
