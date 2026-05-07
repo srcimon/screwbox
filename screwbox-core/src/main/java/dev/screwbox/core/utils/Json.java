@@ -22,9 +22,10 @@ public class Json {
     private record JsonObject(String content) {
 
         private JsonObject(final String content) {
-            Validate.isTrue(() -> content.startsWith("{"), "input is no json string");
-            Validate.isTrue(() -> content.endsWith("}"), "input is no json string");
-            this.content = content.substring(1, content.length() - 1).trim();
+            var trimmedContent = content.trim();
+            Validate.isTrue(() -> trimmedContent.startsWith("{"), "input is no json string");
+            Validate.isTrue(() -> trimmedContent.endsWith("}"), "input is no json string");
+            this.content = trimmedContent.substring(1, trimmedContent.length() - 1).trim();
 
         }
 
