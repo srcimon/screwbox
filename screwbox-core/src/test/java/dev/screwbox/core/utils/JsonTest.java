@@ -1,5 +1,6 @@
 package dev.screwbox.core.utils;
 
+import net.bytebuddy.description.modifier.TypeManifestation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -69,25 +70,25 @@ class JsonTest {
 
     @Test
     void load_emptyJson_leavesAttributesNull() {
-        var result = Json.load(EMPTY, SampleEntity.class);
-        assertThat(result.name()).isNull();
-        assertThat(result.city()).isNull();
+        var entity = Json.load(EMPTY, SampleEntity.class);
+        assertThat(entity.name()).isNull();
+        assertThat(entity.city()).isNull();
     }
 
     @Test
     void load_matchingStringAttribute_setsValue() {
-        var result = Json.load("{\"name\":\"Debo\"}", SampleEntity.class);
+        var entity = Json.load("{\"name\":\"Debo\"}", SampleEntity.class);
 
-        assertThat(result.name()).isEqualTo("Debo");
-        assertThat(result.city()).isNull();
+        assertThat(entity.name()).isEqualTo("Debo");
+        assertThat(entity.city()).isNull();
     }
 
     @Test
     void load_matchingStringAttributes_setsValues() {
-        var result = Json.load("{\"name\":\"Max\", \"city\":\"Cologne\"}", SampleEntity.class);
+        var entity = Json.load("{\"name\":\"Max\", \"city\":\"Cologne\"}", SampleEntity.class);
 
-        assertThat(result.name()).isEqualTo("Max");
-        assertThat(result.city()).isEqualTo("Cologne");
+        assertThat(entity.name()).isEqualTo("Max");
+        assertThat(entity.city()).isEqualTo("Cologne");
     }
 
     @ParameterizedTest
@@ -109,23 +110,38 @@ class JsonTest {
 
     record SampleTypedEntity(
         Integer age, int agePrimitive,
-        Boolean isNice, boolean isNicePrimitive) {
+        Boolean isNice, boolean isNicePrimitive,
+        TypeManifestation enumeration) {
     }
 
     @Test
     void load_entityIsMissingIntegerProperty_defaultsToZero() {
-        var result = Json.load(EMPTY, SampleTypedEntity.class);
+        var entity = Json.load(EMPTY, SampleTypedEntity.class);
 
-        assertThat(result.age()).isZero();
-        assertThat(result.agePrimitive()).isZero();
+        assertThat(entity.age()).isZero();
+        assertThat(entity.agePrimitive()).isZero();
     }
 
     @Test
     void load_entityIsMissingBooleanProperty_defaultsToFalse() {
-        var result = Json.load(EMPTY, SampleTypedEntity.class);
+        var entity = Json.load(EMPTY, SampleTypedEntity.class);
 
-        assertThat(result.isNice()).isFalse();
-        assertThat(result.isNicePrimitive()).isFalse();
+        assertThat(entity.isNice()).isFalse();
+        assertThat(entity.isNicePrimitive()).isFalse();
+    }
+
+    @Test
+    void load_entityIsMissingEnumProperty_defaultsToFalse() {
+        var entity = Json.load(EMPTY, SampleTypedEntity.class);
+
+        assertThat(entity.enumeration()).isNull();
+    }
+
+    @Test
+    void load_entityHasEnumProperty_setsValue() {
+        var entity = Json.load("{\"enumeration\": \"FINAL\"}", SampleTypedEntity.class);
+
+        assertThat(entity.enumeration()).isEqualTo(TypeManifestation.FINAL);
     }
 
 }

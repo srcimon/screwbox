@@ -14,7 +14,7 @@ public class Json {
 
     }
 
-    private record Attribute(Position namePosition, Position valuePosition, String name, Object value) {
+    private record Attribute(Position namePosition, Position valuePosition, String name, String value) {
 
     }
 
@@ -73,10 +73,19 @@ public class Json {
             return (T) getAllAttributes().stream()
                 .filter(attribute -> attribute.name().equals(name))
                 .findFirst()
-                .map(Attribute::value)
+                .map(attribute -> toInstance(attribute.value(), type))
                 .orElse(defaultForType(type));
         }
 
+        private <T> T toInstance(String value, Class<T> type) {
+            if(type.isEnum()) {
+                return (T) Enum.valueOf((Class<Enum>) type, value);
+            }
+            return switch (type.getSimpleName()) {
+                case "String" -> (T)value;
+                default -> throw new IllegalArgumentException("unsupported type: " + type);
+            };
+        }
         private static <T> T defaultForType(final Class<?> type) {
             return switch (type.getSimpleName()) {
                 case "Integer", "int" -> (T) Integer.valueOf(0);
