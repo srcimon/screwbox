@@ -51,6 +51,7 @@ public class Json {
             var name = content.substring(attributePosition.start(), attributePosition.end());
             var dotsPosition = content.indexOf(':', attributePosition.end());
             Position valuePosition = findValue(attributePosition.end());
+            System.out.println(content.substring(valuePosition.start(), valuePosition.end()));
             Validate.isTrue(() -> dotsPosition < valuePosition.start() && dotsPosition != -1, "malformatted json string: missing ':' field '%s' and value".formatted(name));
             Validate.isNotEqual(valuePosition.end(), -1, "malformatted json string: missing '\"'");
             var value = content.substring(valuePosition.start(), valuePosition.end());
@@ -67,15 +68,20 @@ public class Json {
         private Position findValue(final int index) {
             for (int i = index; i < content.length(); i++) {
                 if (content.charAt(i) == '"') {
+                    System.out.println("FOUND STRING");
                     return findStringValue(index);//TODO we already know the start position -> optimize
                 }
-                if(content.charAt(i) != ' ') {
+                if(Character.isDigit(content.charAt(i))) {
+                    System.out.println("FOUND INTEGER");
                    return findIntegerValue(i);
                 }
             }
            throw new IllegalArgumentException("no value found");//TODO better message
         }
 
+        //TODO support .0 values
+        //TODO support double values
+        //TODO support float values
         private Position findIntegerValue(final int index) {
             for (int i = index; i < content.length(); i++) {
                 if (!Character.isDigit(content.charAt(i))) {
