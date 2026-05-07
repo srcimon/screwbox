@@ -50,8 +50,7 @@ public class Json {
 
             var name = content.substring(attributePosition.start(), attributePosition.end());
             var dotsPosition = content.indexOf(':', attributePosition.end());
-            Position valuePosition = findValue(attributePosition.end()+1);
-            System.out.println(content.substring(valuePosition.start(), valuePosition.end()));
+            Position valuePosition = findValue(attributePosition.end() + 1);
             Validate.isTrue(() -> dotsPosition < valuePosition.start() && dotsPosition != -1, "malformatted json string: missing ':' field '%s' and value".formatted(name));
             Validate.isNotEqual(valuePosition.end(), -1, "malformatted json string: missing '\"'");
             var value = content.substring(valuePosition.start(), valuePosition.end());
@@ -68,15 +67,13 @@ public class Json {
         private Position findValue(final int index) {
             for (int i = index; i < content.length(); i++) {
                 if (content.charAt(i) == '"') {
-                    System.out.println("FOUND STRING");
                     return findStringValue(index);//TODO we already know the start position -> optimize
                 }
-                if(Character.isDigit(content.charAt(i))) {
-                    System.out.println("FOUND INTEGER");
-                   return findIntegerValue(i);
+                if (Character.isDigit(content.charAt(i))) {
+                    return findIntegerValue(i);
                 }
             }
-           throw new IllegalArgumentException("no value found");//TODO better message
+            throw new IllegalArgumentException("malformatted json string: missing value for attribute");
         }
 
         //TODO support .0 values
@@ -85,11 +82,12 @@ public class Json {
         private Position findIntegerValue(final int index) {
             for (int i = index; i < content.length(); i++) {
                 if (!Character.isDigit(content.charAt(i))) {
-                    return new Position(index, i-1);
+                    return new Position(index, i - 1);
                 }
             }
             throw new IllegalArgumentException("no integer value found");//TODO better message
         }
+
         private Position findStringValue(final int index) {
             final var start = content.indexOf('\"', index) + 1;
             final var end = content.indexOf('\"', start + 1);
@@ -106,15 +104,16 @@ public class Json {
         }
 
         private <T> T toInstance(String value, Class<T> type) {
-            if(type.isEnum()) {
+            if (type.isEnum()) {
                 return (T) Enum.valueOf((Class<Enum>) type, value);
             }
             return switch (type.getSimpleName()) {
-                case "String" -> (T)value;
+                case "String" -> (T) value;
                 case "Integer", "int" -> (T) Integer.valueOf(value);
                 default -> throw new IllegalArgumentException("unsupported type: " + type);
             };
         }
+
         private static <T> T defaultForType(final Class<?> type) {
             return switch (type.getSimpleName()) {
                 case "Integer", "int" -> (T) Integer.valueOf(0);

@@ -100,7 +100,8 @@ class JsonTest {
         "{\"name\":Max\", \"city\":\"Cologne\"}",
         "{\"name\":\"Max, \"city\":\"Cologne\"}",
         "{\"name:\"Max\", \"city\":\"Cologne\"}",
-        "{name\":\"Max\", \"city\":\"Cologne\"}"
+        "{name\":\"Max\", \"city\":\"Cologne\"}",
+        "{\"name\":}"
     })
     void load_malformattedJson_throwsException(String json) {
         assertThatThrownBy(() -> Json.load(json, SampleEntity.class))
