@@ -14,7 +14,7 @@ public class Json {
 
     }
 
-    private record Attribute(Position valuePosition, Position namePosition, String name, String value) {
+    private record Attribute(Position namePosition, Position valuePosition, String name, String value) {
 
     }
 
@@ -53,7 +53,7 @@ public class Json {
             Validate.isTrue(() -> dotsPosition < valuePosition.startIndex() && dotsPosition != -1, "malformatted json string: missing ':' field '%s' and value".formatted(name));
             Validate.isNotEqual(valuePosition.endIndex(), -1, "malformatted json string: missing '\"'");
             var value = content.substring(valuePosition.startIndex(), valuePosition.endIndex());
-            return new Attribute(valuePosition, attributePosition, name, value);
+            return new Attribute(attributePosition, valuePosition, name, value);
         }
 
         private Position findAttribute(final int index) {
