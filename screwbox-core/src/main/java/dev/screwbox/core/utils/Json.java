@@ -65,6 +65,26 @@ public class Json {
         }
 
         private Position findValue(final int index) {
+            for (int i = index; i < content.length(); i++) {
+                if (content.charAt(i) == '"') {
+                    return findStringValue(index);//TODO we already know the start position -> optimize
+                }
+                if(content.charAt(i) != ' ') {
+                   return findIntegerValue(i);
+                }
+            }
+           throw new IllegalArgumentException("no value found");//TODO better message
+        }
+
+        private Position findIntegerValue(final int index) {
+            for (int i = index; i < content.length(); i++) {
+                if (!Character.isDigit(content.charAt(i))) {
+                    return new Position(index, i-1);
+                }
+            }
+            throw new IllegalArgumentException("no integer value found");//TODO better message
+        }
+        private Position findStringValue(final int index) {
             final var start = content.indexOf('\"', index + 1) + 1;
             final var end = content.indexOf('\"', start + 1);
             return new Position(start, end);
