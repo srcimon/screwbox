@@ -140,15 +140,14 @@ class JsonTest {
 
     @Test
     void load_entityHasEnumProperty_setsValue() {
-        var entity = Json.load("{\"enumeration\": \"FINAL\"}", SampleTypedEntity.class);
+        var entity = Json.load("{\"enumeration\": FINAL}", SampleTypedEntity.class);
 
         assertThat(entity.enumeration()).isEqualTo(TypeManifestation.FINAL);
     }
 
-    //TODO FIX ENUM IS NOT IN QUOTATIONMARKES EIGHTER
     @Test
     void load_entityHasUnknownEnumProperty_throwsException() {
-        assertThatThrownBy(() -> Json.load("{\"enumeration\": \"UNKNOWN_PROPERTY\"}", SampleTypedEntity.class))
+        assertThatThrownBy(() -> Json.load("{\"enumeration\": UNKNOWN_PROPERTY}", SampleTypedEntity.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("No enum constant net.bytebuddy.description.modifier.TypeManifestation.UNKNOWN_PROPERTY");
     }

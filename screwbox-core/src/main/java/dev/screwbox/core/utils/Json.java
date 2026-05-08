@@ -28,20 +28,19 @@ public class Json {
             Validate.isTrue(() -> trimmedContent.startsWith("{"), "input is no json string");
             Validate.isTrue(() -> trimmedContent.endsWith("}"), "input is no json string");
             this.content = trimmedContent.substring(1, trimmedContent.length() - 1).trim();
-
         }
 
         private List<Attribute> getAllAttributes() {
             List<Attribute> attributes = new ArrayList<>();
             int index = 0;
             while (index < content.length()) {
-                final var definition = fetchNextAttribute(index);
+                final var attribute = fetchNextAttribute(index);
                 if (!attributes.isEmpty()) {
-                    var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().end());
-                    Validate.isTrue(() -> commaPosition < definition.keyPosition().start() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().key, definition.key));
+                    final var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().end());
+                    Validate.isTrue(() -> commaPosition < attribute.keyPosition().start() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().key, attribute.key));
                 }
-                attributes.add(definition);
-                index = definition.valuePosition().behind();
+                attributes.add(attribute);
+                index = attribute.valuePosition().behind();
             }
             return attributes;
         }
@@ -74,7 +73,7 @@ public class Json {
             throw new IllegalArgumentException("malformatted json string: attribute without value");
         }
 
-        private boolean isWhiteSpace(char character) {
+        private static boolean isWhiteSpace(char character) {
             return character == ' ';
         }
 
@@ -98,7 +97,7 @@ public class Json {
         }
 
         private static boolean isUnquotedChacater(char character) {
-            return character != ' '
+            return !isWhiteSpace(character)
                    && character != ':'
                    && character != '{'
                    && character != '}'
