@@ -54,9 +54,13 @@ public class Json {
 
             Validate.isNotEqual(valuePosition.end(), -1, "malformatted json string: missing '\"'");
 
-            var name = content.substring(namePosition.start(), namePosition.end());
-            var value = content.substring(valuePosition.start(), valuePosition.end());
+            var name = readTextAt(namePosition);
+            var value = readTextAt(valuePosition);
             return new Attribute(namePosition, valuePosition, name, value);
+        }
+
+        private String readTextAt(final Position position) {
+            return content.substring(position.start(), position.end());
         }
 
         private Position findColon(final int index) {
