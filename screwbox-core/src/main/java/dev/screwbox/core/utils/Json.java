@@ -12,7 +12,7 @@ import java.util.Set;
 public class Json {
 
     private static final Set<Character> WHITESPACE_CHARS = Set.of(' ', '\t', '\n', '\r');
-    private static final Set<Character> FLOW_CHARACTERS = Set.of(':', '{', '}', ',');
+    private static final Set<Character> FLOW_CHARACTERS = Set.of(':', '{', '}', ',', '"');
 
     private record Position(int start, int end) {
 

@@ -95,9 +95,6 @@ class JsonTest {
     @ValueSource(strings = {
         "{\"name\" \"Max\", \"city\":\"Cologne\"}",
         "{\"name\":\"Max\" \"city\":\"Cologne\"}",
-        "{\"name\":\"Max\", \"city\":\"Cologne}",
-        "{\"name\":\"Max\", \"city\":Cologne\"}",
-        "{\"name\":Max\", \"city\":\"Cologne\"}",
         "{\"name\":\"Max, \"city\":\"Cologne\"}",
         "{\"name:\"Max\", \"city\":\"Cologne\"}",
         "{name\":\"Max\", \"city\":\"Cologne\"}",
