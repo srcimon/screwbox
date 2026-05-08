@@ -6,9 +6,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 //TODO move inside tiled?
 public class Json {
+
+    private static final Set<Character> WHITESPACE_CHARS = Set.of(' ', '\t', '\n', '\r');
+    private static final Set<Character> FLOW_CHARACTERS = Set.of(':', '{', '}', ',');
 
     private record Position(int start, int end) {
 
@@ -63,7 +67,7 @@ public class Json {
         private Position findColon(final int index) {
             for (int i = index; i < content.length(); i++) {
                 char c = content.charAt(i);
-                if (!isWhiteSpace(c)) {
+                if (isNonWhitespaceChacter(c)) {
                     if (c == ':') {
                         return new Position(index, index);
                     }
@@ -73,8 +77,8 @@ public class Json {
             throw new IllegalArgumentException("malformatted json string: attribute without value");
         }
 
-        private static boolean isWhiteSpace(final char character) {
-            return character == ' ' || character == '\t' || character == '\n' || character == '\r';
+        private static boolean isNonWhitespaceChacter(char character) {
+            return !WHITESPACE_CHARS.contains(character);
         }
 
         private Position findKey(final int index) {
@@ -96,12 +100,8 @@ public class Json {
             throw new IllegalArgumentException("malformatted json string: missing value for attribute");
         }
 
-        private static boolean isUnquotedChacater(char character) {
-            return !isWhiteSpace(character)
-                   && character != ':'
-                   && character != '{'
-                   && character != '}'
-                   && character != ',';
+        private static boolean isUnquotedChacater(final char character) {
+            return isNonWhitespaceChacter(character) && !FLOW_CHARACTERS.contains(character);
         }
 
         //TODO Handle different kinds of line feeds
