@@ -104,8 +104,6 @@ public class Json {
             return isNonWhitespaceChacter(character) && !FLOW_CHARACTERS.contains(character);
         }
 
-        //TODO Handle different kinds of line feeds
-//TODO Handle tabulators
 //TODO Handle escaped quotes
         //TODO support .0 values
         //TODO support double values
