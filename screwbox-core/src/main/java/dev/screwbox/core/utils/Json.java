@@ -52,8 +52,6 @@ public class Json {
             Position colonPosition = findColon(namePosition.behind());
             Position valuePosition = findValue(colonPosition.behind());
 
-            Validate.isNotEqual(valuePosition.end(), -1, "malformatted json string: missing '\"'");
-
             var name = readTextAt(namePosition);
             var value = readTextAt(valuePosition);
             return new Attribute(namePosition, valuePosition, name, value);
