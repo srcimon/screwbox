@@ -17,7 +17,7 @@ public class Json {
         }
     }
 
-    private record Attribute(Position namePosition, Position valuePosition, String name, String value) {
+    private record Attribute(Position keyPosition, Position valuePosition, String key, String value) {
 
     }
 
@@ -38,7 +38,7 @@ public class Json {
                 final var definition = fetchNextAttribute(index);
                 if (!attributes.isEmpty()) {
                     var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().end());
-                    Validate.isTrue(() -> commaPosition < definition.namePosition().start() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().name, definition.name));
+                    Validate.isTrue(() -> commaPosition < definition.keyPosition().start() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().key, definition.key));
                 }
                 attributes.add(definition);
                 index = definition.valuePosition().behind();
@@ -48,13 +48,13 @@ public class Json {
 
 
         private Attribute fetchNextAttribute(final int index) {
-            Position namePosition = findName(index);
-            Position colonPosition = findColon(namePosition.behind());
+            Position keyPosition = findKey(index);
+            Position colonPosition = findColon(keyPosition.behind());
             Position valuePosition = findValue(colonPosition.behind());
 
-            var name = readTextAt(namePosition);
+            var key = readTextAt(keyPosition);
             var value = readTextAt(valuePosition);
-            return new Attribute(namePosition, valuePosition, name, value);
+            return new Attribute(keyPosition, valuePosition, key, value);
         }
 
         private String readTextAt(final Position position) {
@@ -78,7 +78,7 @@ public class Json {
             return character == ' ';
         }
 
-        private Position findName(final int index) {
+        private Position findKey(final int index) {
             final var start = content.indexOf('\"', index) + 1;
             final var end = content.indexOf('\"', start);
 
@@ -130,7 +130,7 @@ public class Json {
         //TODO index all attributes only once
         public <T> T getValue(final Field field) {
             return (T) getAllAttributes().stream()
-                .filter(attribute -> attribute.name().equals(field.getName()))
+                .filter(attribute -> attribute.key().equals(field.getName()))
                 .findFirst()
                 .map(attribute -> toInstance(attribute.value(), field.getType()))
                 .orElse(defaultForType(field.getType()));
