@@ -144,7 +144,8 @@ class JsonTest {
 
         assertThat(entity.enumeration()).isEqualTo(TypeManifestation.FINAL);
     }
-//TODO FIX ENUM IS NOT IN QUOTATIONMARKES EIGHTER
+
+    //TODO FIX ENUM IS NOT IN QUOTATIONMARKES EIGHTER
     @Test
     void load_entityHasUnknownEnumProperty_throwsException() {
         assertThatThrownBy(() -> Json.load("{\"enumeration\": \"UNKNOWN_PROPERTY\"}", SampleTypedEntity.class))
@@ -159,16 +160,17 @@ class JsonTest {
         assertThat(entity.age()).isEqualTo(44);
         assertThat(entity.agePrimitive()).isEqualTo(22);
     }
-//TODO handle byte arrays
+
+    //TODO handle byte arrays
     @Test
     void load_jsonContainsEmptySpaceAndLineFeeds_setsValues() {//TODO fix quoted enum value
         var entity = Json.load("""
             {
                    \"enumeration\":     \"FINAL\",
-              
+            
             
                 \"age\"   :   44
-                
+            
             }
             """, SampleTypedEntity.class);
 

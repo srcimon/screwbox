@@ -49,8 +49,8 @@ public class Json {
 
         private Attribute fetchNextAttribute(final int index) {
             Position namePosition = findName(index);
-            Position dotsPosition = findDots(namePosition.behind());
-            Position valuePosition = findValue(dotsPosition.behind());
+            Position colonPosition = findColon(namePosition.behind());
+            Position valuePosition = findValue(colonPosition.behind());
 
             Validate.isNotEqual(valuePosition.end(), -1, "malformatted json string: missing '\"'");
 
@@ -59,7 +59,7 @@ public class Json {
             return new Attribute(namePosition, valuePosition, name, value);
         }
 
-        private Position findDots(final int index) {
+        private Position findColon(final int index) {
             for (int i = index; i < content.length(); i++) {
                 char c = content.charAt(i);
                 if (!isWhiteSpace(c)) {
