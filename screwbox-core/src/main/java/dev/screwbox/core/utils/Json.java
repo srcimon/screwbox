@@ -73,13 +73,13 @@ public class Json {
             throw new IllegalArgumentException("malformatted json string: attribute without value");
         }
 
-        private static boolean isWhiteSpace(char character) {
-            return character == ' ';
+        private static boolean isWhiteSpace(final char character) {
+            return character == ' ' || character == '\t' || character == '\n' || character == '\r';
         }
 
         private Position findKey(final int index) {
-            final var start = content.indexOf('\"', index) + 1;
-            final var end = content.indexOf('\"', start);
+            final var start = content.indexOf('"', index) + 1;
+            final var end = content.indexOf('"', start);
 
             return new Position(start, end);
         }
@@ -87,7 +87,7 @@ public class Json {
         private Position findValue(final int index) {
             for (int i = index; i < content.length(); i++) {
                 if (content.charAt(i) == '"') {
-                    return findQuotedValue(index);//TODO we already know the start position -> optimize
+                    return findQuotedValue(i);
                 }
                 if (isUnquotedChacater(content.charAt(i))) {
                     return findUnquotedValue(i);
@@ -135,7 +135,7 @@ public class Json {
                 .orElse(defaultForType(field.getType()));
         }
 
-        private <T> T toInstance(String value, Class<T> type) {
+        private <T> T toInstance(final String value, final Class<T> type) {
             if (type.isEnum()) {
                 return (T) Enum.valueOf((Class<Enum>) type, value);
             }
