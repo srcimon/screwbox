@@ -12,6 +12,9 @@ public class Json {
 
     private record Position(int start, int end) {
 
+        int behind() {
+            return end + 1;
+        }
     }
 
     private record Attribute(Position namePosition, Position valuePosition, String name, String value) {
@@ -38,21 +41,39 @@ public class Json {
                     Validate.isTrue(() -> commaPosition < definition.namePosition().start() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().name, definition.name));
                 }
                 attributes.add(definition);
-                index = definition.valuePosition().end() + 1;
+                index = definition.valuePosition().behind();
             }
             return attributes;
         }
 
 
-        private Attribute fetchNextAttribute(int index) {
-            Position attributePosition = findName(index);
-            var name = content.substring(attributePosition.start(), attributePosition.end());
-            var dotsPosition = content.indexOf(':', attributePosition.end());
-            Position valuePosition = findValue(attributePosition.end() + 1);
-            Validate.isTrue(() -> dotsPosition < valuePosition.start() && dotsPosition != -1, "malformatted json string: missing ':' field '%s' and value".formatted(name));
+        private Attribute fetchNextAttribute(final int index) {
+            Position namePosition = findName(index);
+            Position dotsPosition = findDots(namePosition.behind());
+            Position valuePosition = findValue(dotsPosition.behind());
+
             Validate.isNotEqual(valuePosition.end(), -1, "malformatted json string: missing '\"'");
+
+            var name = content.substring(namePosition.start(), namePosition.end());
             var value = content.substring(valuePosition.start(), valuePosition.end());
-            return new Attribute(attributePosition, valuePosition, name, value);
+            return new Attribute(namePosition, valuePosition, name, value);
+        }
+
+        private Position findDots(final int index) {
+            for (int i = index; i < content.length(); i++) {
+                char c = content.charAt(i);
+                if (!isWhiteSpace(c)) {
+                    if (c == ':') {
+                        return new Position(index, index);
+                    }
+                    throw new IllegalArgumentException("malformatted json string: missing ':'");
+                }
+            }
+            throw new IllegalArgumentException("malformatted json string: attribute without value");
+        }
+
+        private boolean isWhiteSpace(char character) {
+            return character == ' ';
         }
 
         private Position findName(final int index) {
