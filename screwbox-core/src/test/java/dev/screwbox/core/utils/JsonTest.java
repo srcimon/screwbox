@@ -132,6 +132,14 @@ class JsonTest {
     }
 
     @Test
+    void load_entityHasBooleanProperty_setsBoolean() {
+        var entity = Json.load("{\"isNice\": TRUE, \"isNicePrimitive\": true }", SampleTypedEntity.class);
+
+        assertThat(entity.isNice()).isTrue();
+        assertThat(entity.isNicePrimitive()).isTrue();
+    }
+
+    @Test
     void load_entityIsMissingEnumProperty_defaultsToFalse() {
         var entity = Json.load(EMPTY, SampleTypedEntity.class);
 

@@ -142,6 +142,7 @@ public class Json {
             return switch (type.getSimpleName()) {
                 case "String" -> (T) value;
                 case "Integer", "int" -> (T) Integer.valueOf(value);
+                case "Boolean", "boolean" -> (T) Boolean.valueOf(value);
                 default -> throw new IllegalArgumentException("unsupported type: " + type);
             };
         }
