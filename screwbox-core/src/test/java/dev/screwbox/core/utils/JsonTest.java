@@ -208,4 +208,11 @@ class JsonTest {
 
         assertThat(entity.numbers()).isEmpty();
     }
+
+    @Test
+    void load_jsonContainsEmptyList_isEmpty() {
+        var entity = Json.load("{ \"numbers\" : [] }", EntityWithList.class);
+
+        assertThat(entity.numbers()).isEmpty();
+    }
 }

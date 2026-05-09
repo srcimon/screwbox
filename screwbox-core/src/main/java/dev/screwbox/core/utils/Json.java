@@ -86,17 +86,31 @@ public class Json {
 
         private Position findValue(final int index) {
             for (int i = index; i < content.length(); i++) {
-                if (content.charAt(i) == '"') {
+                char character = content.charAt(i);
+                if (character == '"') {
                     return findQuotedValue(i);
                 }
-                if (content.charAt(i) == '{') {
+                if (character == '{') {
                     return findChildValue(i);
                 }
-                if (isUnquotedChacater(content.charAt(i))) {
+                if (character == '[') {
+                    return findArrayValue(i);
+                }
+
+                if (isUnquotedChacater(character)) {
                     return findUnquotedValue(i);
                 }
             }
             throw new IllegalArgumentException("malformatted json string: missing value for attribute");
+        }
+
+        private Position findArrayValue(final int index) {
+            for (int i = index; i < content.length(); i++) {
+                if (content.charAt(i) == ']') {
+                    return new Position(index + 1, i);
+                }
+            }
+            throw new IllegalArgumentException("malformatted json string: missing ']'");
         }
 
         private static boolean isUnquotedChacater(final char character) {
@@ -152,10 +166,12 @@ public class Json {
             if (type.isEnum()) {
                 return (T) Enum.valueOf((Class<Enum>) type, value);
             }
+            System.out.println("value: " + value);
             return switch (type.getName()) {
                 case "java.lang.String" -> (T) value;
                 case "java.lang.Integer", "int" -> (T) Integer.valueOf(value);
                 case "java.lang.Boolean", "boolean" -> (T) Boolean.valueOf(value);
+                case "java.util.List" -> (T) new ArrayList<>();
                 default -> load(value, type);
             };
         }
