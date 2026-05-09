@@ -215,4 +215,11 @@ class JsonTest {
 
         assertThat(entity.numbers()).isEmpty();
     }
+
+    @Test
+    void load_jsonContainsList_isDeserialized() {
+        var entity = Json.load("{ \"numbers\" : [1, 4, 3] }", EntityWithList.class);
+
+        assertThat(entity.numbers()).containsExactly(1, 4, 3);
+    }
 }

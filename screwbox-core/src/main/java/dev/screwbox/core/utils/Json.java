@@ -3,6 +3,8 @@ package dev.screwbox.core.utils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -158,22 +160,29 @@ public class Json {
             return (T) getAllAttributes().stream()
                 .filter(attribute -> attribute.key().equals(field.getName()))
                 .findFirst()
-                .map(attribute -> toInstance(attribute.value(), field.getType()))
+                .map(attribute -> toInstance(attribute.value(), field))
                 .orElse(defaultForType(field.getType()));
         }
 
-        private <T> T toInstance(final String value, final Class<T> type) {
+        private Object toInstance(final String value, final Field field) {
+            final Class<?> type = field.getType();
             if (type.isEnum()) {
-                return (T) Enum.valueOf((Class<Enum>) type, value);
+                return Enum.valueOf((Class<Enum>) type, value);
             }
-            System.out.println("value: " + value);
             return switch (type.getName()) {
-                case "java.lang.String" -> (T) value;
-                case "java.lang.Integer", "int" -> (T) Integer.valueOf(value);
-                case "java.lang.Boolean", "boolean" -> (T) Boolean.valueOf(value);
-                case "java.util.List" -> (T) new ArrayList<>();
+                case "java.lang.String" -> value;
+                case "java.lang.Integer", "int" -> Integer.valueOf(value);
+                case "java.lang.Boolean", "boolean" -> Boolean.valueOf(value);
+                case "java.util.List" -> deserializeList(value, field);
                 default -> load(value, type);
             };
+        }
+
+        private Object deserializeList(final String value, final Field field) {
+            ParameterizedType pt = (ParameterizedType) field.getGenericType();
+            Type elementType = pt.getActualTypeArguments()[0];
+
+            return new ArrayList<>();
         }
 
         private static <T> T defaultForType(final Class<?> type) {
