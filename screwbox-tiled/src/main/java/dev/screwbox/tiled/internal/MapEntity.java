@@ -82,12 +82,11 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
     private void embedExternalTilesets(final String directory) {
         final List<TilesetEntity> fullTilesets = new ArrayList<>();
         for (final TilesetEntity tileset : getTilesets()) {
-            if (tileset.getSource() == null) {
+            if (tileset.source() == null) {
                 fullTilesets.add(tileset);
             } else {
-                final TilesetEntity externalTileset = TilesetEntity.load(directory + tileset.getSource());
-                externalTileset.setFirstgid(tileset.getFirstgid());
-                fullTilesets.add(externalTileset);
+                final TilesetEntity externalTileset = TilesetEntity.load(directory + tileset.source());
+                fullTilesets.add(externalTileset.replaceFirstGid(tileset.firstgid()));
             }
         }
         setTilesets(fullTilesets);

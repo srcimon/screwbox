@@ -56,9 +56,9 @@ class TileCollection {
     private HashMap<Integer, Properties> loadTileProperties(final MapEntity map) {
         var propertiesHolder = new HashMap<Integer, Properties>();
         for (final TilesetEntity tileset : map.getTilesets()) {
-            for (final TileEntity tileEntity : tileset.getTiles()) {
+            for (final TileEntity tileEntity : tileset.tiles()) {
                 final Properties properties = new Properties(tileEntity.properties());
-                propertiesHolder.put(tileset.getFirstgid() + tileEntity.id(), properties);
+                propertiesHolder.put(tileset.firstgid() + tileEntity.id(), properties);
             }
         }
         return propertiesHolder;
