@@ -3,6 +3,7 @@ package dev.screwbox.tiled.internal;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO make record
 public class TilesetEntity {// cannot be replaced by record: not all properties are final
 
     private String backgroundcolor;

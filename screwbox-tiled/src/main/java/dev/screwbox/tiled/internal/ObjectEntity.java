@@ -7,7 +7,6 @@ import static dev.screwbox.core.utils.ListUtil.emptyWhenNull;
 
 //TODO Changelog made all Tiled Entity Objects immutable
 public record ObjectEntity(
-
     boolean ellipse,
     int gid,
     double height,
