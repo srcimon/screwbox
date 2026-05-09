@@ -5,6 +5,7 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 
+//TODO make record
 public class MapEntity { // cannot be replaced by record: tilesets are not final
 
     private String backgroundColor;
