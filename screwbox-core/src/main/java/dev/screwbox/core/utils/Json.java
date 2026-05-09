@@ -55,13 +55,9 @@ public class Json {
             Position colonPosition = findColon(keyPosition.behind());
             Position valuePosition = findValue(colonPosition.behind());
 
-            var key = readTextAt(keyPosition);
-            var value = readTextAt(valuePosition);
+            var key = content.substring(keyPosition.start(), keyPosition.end());
+            var value = content.substring(valuePosition.start(), valuePosition.end());
             return new Attribute(keyPosition, valuePosition, key, value);
-        }
-
-        private String readTextAt(final Position position) {
-            return content.substring(position.start(), position.end());
         }
 
         private Position findColon(final int index) {
