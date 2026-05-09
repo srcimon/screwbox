@@ -188,10 +188,11 @@ class JsonTest {
 
     @Test
     void load_jsonContainsAnotherEntity_deserializesEntity() {
-        var entity  = Json.load("{ \"name\": \"root\", \"child\": { \"name\": \"child\" } }", EntityWithChild.class);
+        var entity = Json.load("{ \"name\": \"root\", \"child\": { \"name\": \"child\", \"child\": { \"name\": \"l2_child\" }} }", EntityWithChild.class);
 
         assertThat(entity.name()).isEqualTo("root");
         assertThat(entity.child().name()).isEqualTo("child");
-        assertThat(entity.child().child()).isNull();
+        assertThat(entity.child().child().name()).isEqualTo("l2_child");
+        assertThat(entity.child().child().child()).isNull();
     }
 }

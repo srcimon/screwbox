@@ -121,9 +121,16 @@ public class Json {
         }
 
         private Position findChildValue(int index) {
+            int stackLevel = 0;
             for (int i = index; i < content.length(); i++) {
+                if (content.charAt(i) == '{') {
+                    stackLevel++;
+                }
                 if (content.charAt(i) == '}') {
-                    return new Position(index, i+1);
+                    stackLevel--;
+                    if(stackLevel == 0) {
+                        return new Position(index, i+1);
+                    }
                 }
             }
             throw new IllegalArgumentException("malformatted json string: missing '}'");
