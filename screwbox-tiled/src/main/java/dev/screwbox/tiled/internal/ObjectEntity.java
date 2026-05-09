@@ -5,7 +5,7 @@ import java.util.List;
 
 import static dev.screwbox.core.utils.ListUtil.emptyWhenNull;
 
-//TODO Changelog refactored all Tiled Entity Objects into records
+//TODO Changelog made all Tiled Entity Objects immutable
 public record ObjectEntity(
 
     boolean ellipse,
