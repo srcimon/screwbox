@@ -107,7 +107,7 @@ public class Json {
             return isNonWhitespaceChacter(character) && !FLOW_CHARACTERS.contains(character);
         }
 
-//TODO Handle escaped quotes
+        //TODO Handle escaped quotes
         //TODO support .0 values
         //TODO support double values
         //TODO support float values
@@ -128,8 +128,8 @@ public class Json {
                 }
                 if (content.charAt(i) == '}') {
                     stackLevel--;
-                    if(stackLevel == 0) {
-                        return new Position(index, i+1);
+                    if (stackLevel == 0) {
+                        return new Position(index, i + 1);
                     }
                 }
             }
@@ -165,9 +165,10 @@ public class Json {
         }
 
         private static <T> T defaultForType(final Class<?> type) {
-            return switch (type.getSimpleName()) {
-                case "Integer", "int" -> (T) Integer.valueOf(0);
-                case "Boolean", "boolean" -> (T) Boolean.FALSE;
+            return switch (type.getName()) {
+                case "java.lang.Integer", "int" -> (T) Integer.valueOf(0);
+                case "java.lang.Boolean", "boolean" -> (T) Boolean.FALSE;
+                case "java.util.List" -> (T) new ArrayList<>();
                 default -> null;
             };
         }
