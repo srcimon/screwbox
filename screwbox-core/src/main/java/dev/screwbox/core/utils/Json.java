@@ -29,8 +29,8 @@ public class Json {
 
         private JsonObject(final String content) {
             var trimmedContent = content.trim();
-            Validate.isTrue(() -> trimmedContent.startsWith("{"), "input is no json string");
-            Validate.isTrue(() -> trimmedContent.endsWith("}"), "input is no json string");
+            Validate.isTrue(() -> trimmedContent.startsWith("{"), "input is no json string: " + trimmedContent);
+            Validate.isTrue(() -> trimmedContent.endsWith("}"), "input is no json string: " + trimmedContent);
             this.content = trimmedContent.substring(1, trimmedContent.length() - 1).trim();
         }
 
@@ -93,6 +93,9 @@ public class Json {
                 if (content.charAt(i) == '"') {
                     return findQuotedValue(i);
                 }
+                if (content.charAt(i) == '{') {
+                    return findChildValue(i);
+                }
                 if (isUnquotedChacater(content.charAt(i))) {
                     return findUnquotedValue(i);
                 }
@@ -115,6 +118,15 @@ public class Json {
                 }
             }
             return new Position(index, content.length());
+        }
+
+        private Position findChildValue(int index) {
+            for (int i = index; i < content.length(); i++) {
+                if (content.charAt(i) == '}') {
+                    return new Position(index, i+1);
+                }
+            }
+            throw new IllegalArgumentException("malformatted json string: missing '}'");
         }
 
         private Position findQuotedValue(final int index) {
@@ -141,7 +153,7 @@ public class Json {
                 case "String" -> (T) value;
                 case "Integer", "int" -> (T) Integer.valueOf(value);
                 case "Boolean", "boolean" -> (T) Boolean.valueOf(value);
-                default -> throw new IllegalArgumentException("unsupported type: " + type);
+                default -> load(value, type);
             };
         }
 

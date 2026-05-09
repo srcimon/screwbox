@@ -65,7 +65,7 @@ class JsonTest {
     void load_emptyString_throwsException() {
         assertThatThrownBy(() -> Json.load("", SampleEntity.class))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("input is no json string");
+            .hasMessage("input is no json string: ");
     }
 
     @Test
@@ -182,5 +182,16 @@ class JsonTest {
         assertThat(entity.enumeration()).isEqualTo(TypeManifestation.FINAL);
     }
 
-    //TODO test for handling whitespace and line feeds
+    record EntityWithChild(String name, EntityWithChild child) {
+
+    }
+
+    @Test
+    void load_jsonContainsAnotherEntity_deserializesEntity() {
+        var entity  = Json.load("{ \"name\": \"root\", \"child\": { \"name\": \"child\" } }", EntityWithChild.class);
+
+        assertThat(entity.name()).isEqualTo("root");
+        assertThat(entity.child().name()).isEqualTo("child");
+        assertThat(entity.child().child()).isNull();
+    }
 }
