@@ -156,10 +156,10 @@ public class Json {
             if (type.isEnum()) {
                 return (T) Enum.valueOf((Class<Enum>) type, value);
             }
-            return switch (type.getSimpleName()) {
-                case "String" -> (T) value;
-                case "Integer", "int" -> (T) Integer.valueOf(value);
-                case "Boolean", "boolean" -> (T) Boolean.valueOf(value);
+            return switch (type.getName()) {
+                case "java.lang.String" -> (T) value;
+                case "java.lang.Integer", "int" -> (T) Integer.valueOf(value);
+                case "java.lang.Boolean", "boolean" -> (T) Boolean.valueOf(value);
                 default -> load(value, type);
             };
         }
