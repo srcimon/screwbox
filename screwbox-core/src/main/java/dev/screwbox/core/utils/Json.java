@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -166,6 +165,13 @@ public class Json {
 
         private Object toInstance(final String value, final Field field) {
             final Class<?> type = field.getType();
+            if ("java.util.List".equals(type.getName())) {
+                return deserializeList(value, field);
+            }
+            return toInstance(value, type);
+        }
+
+        private Object toInstance(final String value, final Class<?> type) {
             if (type.isEnum()) {
                 return Enum.valueOf((Class<Enum>) type, value);
             }
@@ -173,16 +179,27 @@ public class Json {
                 case "java.lang.String" -> value;
                 case "java.lang.Integer", "int" -> Integer.valueOf(value);
                 case "java.lang.Boolean", "boolean" -> Boolean.valueOf(value);
-                case "java.util.List" -> deserializeList(value, field);
                 default -> load(value, type);
             };
         }
 
         private Object deserializeList(final String value, final Field field) {
-            ParameterizedType pt = (ParameterizedType) field.getGenericType();
-            Type elementType = pt.getActualTypeArguments()[0];
+            final ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+            final var elementType = parameterizedType.getActualTypeArguments()[0];
+            try {
+                final var list = new ArrayList<>();
+                if (value.contains(", ")) {
+                    String[] split = value.split(", ");
+                    for (var element : split) {
+                        list.add(toInstance(element, Class.forName(elementType.getTypeName())));
 
-            return new ArrayList<>();
+                    }
+                }
+                return list;
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("FIXM E", e);
+            }
+
         }
 
         private static <T> T defaultForType(final Class<?> type) {
