@@ -46,21 +46,34 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         for (final LayerEntity layer : getLayers()) {
             for (int i = 0; i < layer.objects().size(); i++) {
                 final ObjectEntity object = layer.objects().get(i);
-                if (nonNull(object.getTemplate())) {
+                if (nonNull(object.template())) {
                     final var replacement = JsonLoader.loadJson(
-                            directory + object.getTemplate(),
+                            directory + object.template(),
                             ObjectTemplateEntity.class)
-                            .object();
-                    replacement.setId(object.getId());
-                    replacement.setX(object.getX());
-                    replacement.setY(object.getY());
-                    if (object.getWidth() != 0 && object.getHeight() != 0) {
-                        replacement.setWidth(object.getWidth());
-                        replacement.setHeight(object.getHeight());
-                    }
+                        .object();
 
-                    replacement.setProperties(object.getProperties());
-                    layer.objects().set(i, replacement);
+                    final boolean hasSize = object.width() != 0 && object.height() != 0;
+                    ObjectEntity replacementEntity = new ObjectEntity(
+                        replacement.ellipse(),
+                        replacement.gid(),
+                        hasSize ? object.height() : replacement.height(),
+                        object.id(),
+                        replacement.name(),
+                        replacement.point(),
+                        replacement.polygon(),
+                        replacement.polyline(),
+                        object.properties(),
+                        replacement.rotation(),
+                        replacement.template(),
+                        replacement.text(),
+                        replacement.type(),
+                        replacement.visible(),
+                        hasSize ? object.width() : replacement.width(),
+                        object.x(),
+                        object.y()
+                    );
+
+                    layer.objects().set(i, replacementEntity);
                 }
             }
         }
