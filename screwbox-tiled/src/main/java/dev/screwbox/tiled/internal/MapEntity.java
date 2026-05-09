@@ -54,7 +54,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
                         .object();
 
                     final boolean hasSize = object.width() != 0 && object.height() != 0;
-                    ObjectEntity replacementEntity = new ObjectEntity(
+                    final var replacementEntity = new ObjectEntity(
                         replacement.ellipse(),
                         replacement.gid(),
                         hasSize ? object.height() : replacement.height(),
@@ -90,7 +90,8 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
                 fullTilesets.add(externalTileset.replaceFirstGid(tileset.firstgid()));
             }
         }
-        setTilesets(fullTilesets);
+        tilesets.clear();
+        tilesets.addAll(fullTilesets);
     }
 
     public String getBackgroundColor() {
