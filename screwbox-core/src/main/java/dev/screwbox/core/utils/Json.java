@@ -179,7 +179,6 @@ public class Json {
             if (type.isEnum()) {
                 return Enum.valueOf((Class<Enum>) type, value);
             }
-            //TODO combine switch cases?
             return switch (type.getName()) {
                 case "java.lang.String" -> value;
                 case "java.lang.Integer", "int" -> Integer.valueOf(value);
@@ -213,7 +212,7 @@ public class Json {
                 }
                 return list;
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException("FIXM E", e);
+                throw new IllegalArgumentException(e);
             }
 
         }
