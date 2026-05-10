@@ -86,6 +86,13 @@ class JsonTest {
     }
 
     @Test
+    void load_emptyStringAttribute_setsEmptyString() {
+        var entity = Json.load("{\"name\":\"\"}", SampleEntity.class);
+
+        assertThat(entity.name()).isEmpty();
+    }
+
+    @Test
     void load_matchingStringAttributes_setsValues() {
         var entity = Json.load("{\"name\":\"Max\", \"city\":\"Cologne\"}", SampleEntity.class);
 

@@ -58,6 +58,8 @@ public class Json {
 
             var key = content.substring(keyPosition.start(), keyPosition.end());
             var value = content.substring(valuePosition.start(), valuePosition.end());
+            System.out.println("--> " + value);
+
             return new Attribute(keyPosition, valuePosition, key, value);
         }
 
@@ -149,7 +151,7 @@ public class Json {
 
         private Position findQuotedValue(final int index) {
             final var start = content.indexOf('\"', index) + 1;
-            final var end = content.indexOf('\"', start + 1);
+            final var end = content.indexOf('\"', start);
             Validate.isNotEqual(end, -1, "malformatted json string: missing '\"");
             return new Position(start, end);
         }
