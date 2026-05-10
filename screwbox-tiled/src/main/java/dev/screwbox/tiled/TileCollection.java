@@ -18,17 +18,17 @@ class TileCollection {
     private final List<Tile> tiles = new ArrayList<>();
 
     TileCollection(final MapEntity map) {
-        final Tileset tileset = new Tileset(map.getTilesets());
+        final Tileset tileset = new Tileset(map.tilesets());
         var propertiesHolder = loadTileProperties(map);
 
         int order = 0;
-        for (final LayerEntity layerEntity : map.getLayers()) {
+        for (final LayerEntity layerEntity : map.layers()) {
             for (int y = 0; y < layerEntity.height(); y++) {
                 for (int x = 0; x < layerEntity.width(); x++) {
                     final Integer tileId = layerEntity.data().get(y * layerEntity.width() + x);
                     if (tileId != 0) {
-                        final double width = map.getTilewidth();
-                        final double height = map.getTileheight();
+                        final double width = map.tilewidth();
+                        final double height = map.tileheight();
                         final double offsetX = x * width + layerEntity.offsetx();
                         final double offsetY = y * height + layerEntity.offsety();
                         final Bounds bounds = Bounds.atOrigin(offsetX, offsetY, width, height);
@@ -36,7 +36,7 @@ class TileCollection {
                         final Layer layer = new Layer(layerEntity, order);
                         final Properties properties = propertiesHolder.get(tileId);
                         final var tile = new Tile(sprite, bounds, layer,
-                                properties == null ? new Properties(emptyList()) : properties);
+                            properties == null ? new Properties(emptyList()) : properties);
                         add(tile);
                     }
                 }
@@ -55,7 +55,7 @@ class TileCollection {
 
     private HashMap<Integer, Properties> loadTileProperties(final MapEntity map) {
         var propertiesHolder = new HashMap<Integer, Properties>();
-        for (final TilesetEntity tileset : map.getTilesets()) {
+        for (final TilesetEntity tileset : map.tilesets()) {
             for (final TileEntity tileEntity : tileset.tiles()) {
                 final Properties properties = new Properties(tileEntity.properties());
                 propertiesHolder.put(tileset.firstgid() + tileEntity.id(), properties);
