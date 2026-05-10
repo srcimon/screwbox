@@ -192,12 +192,29 @@ class JsonTest {
         assertThat(entity.agePrimitive()).isEqualTo(2.3f);
     }
 
-    //TODO handle byte arrays
+    record DoubleEntity(Double age, double agePrimitive) {
+
+    }
+
     @Test
-    void load_jsonContainsEmptySpaceAndLineFeeds_setsValues() {//TODO fix quoted enum value
+    void load_entityIsMissingDoubleProperty_defaultsToZero() {
+        var entity = Json.load(EMPTY, DoubleEntity.class);
+        assertThat(entity.age()).isZero();
+        assertThat(entity.agePrimitive()).isZero();
+    }
+
+    @Test
+    void load_entityhasDoubleProperty_deserializesDouble() {
+        var entity = Json.load("{\"age\":2.1,\"agePrimitive\":\"2.3\"}", DoubleEntity.class);
+        assertThat(entity.age()).isEqualTo(2.1);
+        assertThat(entity.agePrimitive()).isEqualTo(2.3);
+    }
+
+    @Test
+    void load_jsonContainsEmptySpaceAndLineFeeds_setsValues() {
         var entity = Json.load("""
             {
-                   \"enumeration\":     \"FINAL\",
+                   \"enumeration\":     FINAL,
             
             
                 \"age\"   :   44

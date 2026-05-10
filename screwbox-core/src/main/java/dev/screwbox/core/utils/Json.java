@@ -131,7 +131,6 @@ public class Json {
 
         //TODO Handle escaped quotes
         //TODO support .0 values
-        //TODO support double values
         private Position findUnquotedValue(final int index) {
             for (int i = index; i < content.length(); i++) {
                 if (!isUnquotedChacater(content.charAt(i))) {
@@ -187,6 +186,7 @@ public class Json {
             return switch (type.getName()) {
                 case "java.lang.String" -> value;
                 case "java.lang.Integer", "int" -> Integer.valueOf(value);
+                case "java.lang.Double", "double" -> Double.valueOf(value);
                 case "java.lang.Float", "float" -> Float.valueOf(value);
                 case "java.lang.Boolean", "boolean" -> Boolean.valueOf(value);
                 default -> load(value, type);
@@ -197,6 +197,7 @@ public class Json {
             return switch (type.getName()) {
                 case "java.lang.Integer", "int" -> (T) Integer.valueOf(0);
                 case "java.lang.Float", "float" -> (T) Float.valueOf(0.0f);
+                case "java.lang.Double", "double" -> (T) Double.valueOf(0.0);
                 case "java.lang.Boolean", "boolean" -> (T) Boolean.FALSE;
                 case "java.util.List" -> (T) new ArrayList<>();
                 default -> null;
