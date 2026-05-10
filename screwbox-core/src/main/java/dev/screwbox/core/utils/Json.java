@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-//TODO move inside tiled?
+/**
+ * An ultra simple Json object converter.
+ *
+ * @since 3.29.0
+ */
 public class Json {
 
     private static final Set<Character> WHITESPACE_CHARS = Set.of(' ', '\t', '\n', '\r');
