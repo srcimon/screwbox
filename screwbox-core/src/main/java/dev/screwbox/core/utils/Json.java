@@ -58,7 +58,6 @@ public class Json {
 
             var key = content.substring(keyPosition.start(), keyPosition.end());
             var value = content.substring(valuePosition.start(), valuePosition.end());
-            System.out.println("--> " + value);
 
             return new Attribute(keyPosition, valuePosition, key, value);
         }
@@ -123,7 +122,6 @@ public class Json {
         //TODO Handle escaped quotes
         //TODO support .0 values
         //TODO support double values
-        //TODO support float values
         private Position findUnquotedValue(final int index) {
             for (int i = index; i < content.length(); i++) {
                 if (!isUnquotedChacater(content.charAt(i))) {
@@ -177,9 +175,11 @@ public class Json {
             if (type.isEnum()) {
                 return Enum.valueOf((Class<Enum>) type, value);
             }
+            //TODO combine switch cases?
             return switch (type.getName()) {
                 case "java.lang.String" -> value;
                 case "java.lang.Integer", "int" -> Integer.valueOf(value);
+                case "java.lang.Float", "float" -> Float.valueOf(value);
                 case "java.lang.Boolean", "boolean" -> Boolean.valueOf(value);
                 default -> load(value, type);
             };
@@ -207,6 +207,7 @@ public class Json {
         private static <T> T defaultForType(final Class<?> type) {
             return switch (type.getName()) {
                 case "java.lang.Integer", "int" -> (T) Integer.valueOf(0);
+                case "java.lang.Float", "float" -> (T) Float.valueOf(0.0f);
                 case "java.lang.Boolean", "boolean" -> (T) Boolean.FALSE;
                 case "java.util.List" -> (T) new ArrayList<>();
                 default -> null;

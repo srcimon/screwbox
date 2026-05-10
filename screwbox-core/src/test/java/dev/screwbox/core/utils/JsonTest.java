@@ -174,6 +174,24 @@ class JsonTest {
         assertThat(entity.agePrimitive()).isEqualTo(22);
     }
 
+    record FloatEntity(Float age, float agePrimitive) {
+
+    }
+
+    @Test
+    void load_entityIsMissingFloatProperty_defaultsToZero() {
+        var entity = Json.load(EMPTY, FloatEntity.class);
+        assertThat(entity.age()).isZero();
+        assertThat(entity.agePrimitive()).isZero();
+    }
+
+    @Test
+    void load_entityhasFloatProperty_deserializesFloat() {
+        var entity = Json.load("{\"age\":2.1,\"agePrimitive\":\"2.3\"}", FloatEntity.class);
+        assertThat(entity.age()).isEqualTo(2.1f);
+        assertThat(entity.agePrimitive()).isEqualTo(2.3f);
+    }
+
     //TODO handle byte arrays
     @Test
     void load_jsonContainsEmptySpaceAndLineFeeds_setsValues() {//TODO fix quoted enum value
