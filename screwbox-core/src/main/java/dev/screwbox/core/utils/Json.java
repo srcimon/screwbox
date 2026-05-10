@@ -1,5 +1,7 @@
 package dev.screwbox.core.utils;
 
+import dev.screwbox.core.assets.Asset;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -30,13 +32,17 @@ public class Json {
 
     }
 
-    private record JsonObject(String content) {
+    private static class JsonObject {
+
+        private final String content;
+        private final Asset<List<Attribute>> attributes;
 
         private JsonObject(final String content) {
             var trimmedContent = content.trim();
             Validate.isTrue(() -> trimmedContent.startsWith("{"), "input is no json string: " + trimmedContent);
             Validate.isTrue(() -> trimmedContent.endsWith("}"), "input is no json string: " + trimmedContent);
             this.content = trimmedContent.substring(1, trimmedContent.length() - 1).trim();
+            this.attributes = Asset.asset(this::getAllAttributes);
         }
 
         private List<Attribute> getAllAttributes() {
@@ -158,9 +164,8 @@ public class Json {
             return new Position(start, end);
         }
 
-        //TODO index all attributes only once
         public <T> T getValue(final Field field) {
-            return (T) getAllAttributes().stream()
+            return (T) attributes.get().stream()
                 .filter(attribute -> attribute.key().equals(field.getName()))
                 .findFirst()
                 .map(attribute -> toInstance(attribute.value(), field))
