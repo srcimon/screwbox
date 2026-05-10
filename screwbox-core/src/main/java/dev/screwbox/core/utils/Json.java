@@ -185,6 +185,16 @@ public class Json {
             };
         }
 
+        private static <T> T defaultForType(final Class<?> type) {
+            return switch (type.getName()) {
+                case "java.lang.Integer", "int" -> (T) Integer.valueOf(0);
+                case "java.lang.Float", "float" -> (T) Float.valueOf(0.0f);
+                case "java.lang.Boolean", "boolean" -> (T) Boolean.FALSE;
+                case "java.util.List" -> (T) new ArrayList<>();
+                default -> null;
+            };
+        }
+
         private Object deserializeList(final String value, final Field field) {
             final ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
             final var elementType = parameterizedType.getActualTypeArguments()[0];
@@ -202,16 +212,6 @@ public class Json {
                 throw new RuntimeException("FIXM E", e);
             }
 
-        }
-
-        private static <T> T defaultForType(final Class<?> type) {
-            return switch (type.getName()) {
-                case "java.lang.Integer", "int" -> (T) Integer.valueOf(0);
-                case "java.lang.Float", "float" -> (T) Float.valueOf(0.0f);
-                case "java.lang.Boolean", "boolean" -> (T) Boolean.FALSE;
-                case "java.util.List" -> (T) new ArrayList<>();
-                default -> null;
-            };
         }
     }
 
