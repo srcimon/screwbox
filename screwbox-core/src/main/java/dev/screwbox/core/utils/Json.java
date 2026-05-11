@@ -99,24 +99,24 @@ public class Json {
             for (int i = index; i < content.length(); i++) {
                 char character = content.charAt(i);
                 if (character == '"') {
-                    return findQuotedValue(i);
+                    return findQuotedValue(content, i);
                 }
                 if (character == '{') {
-                    return findChildValue(i);
+                    return findChildValue(content, i);
                 }
                 if (character == '[') {
-                    return findArrayValue(i);
+                    return findArrayValue(content, i);
                 }
                 if (isUnquotedChacater(character)) {
-                    return findUnquotedValue(i);
+                    return findUnquotedValue(content, i);
                 }
             }
             throw new IllegalArgumentException("malformatted json string: missing value for attribute");
         }
 
-        private Position findArrayValue(final int index) {
-            for (int i = index; i < content.length(); i++) {
-                if (content.charAt(i) == ']') {
+        private static Position findArrayValue(final String value, final int index) {
+            for (int i = index; i < value.length(); i++) {
+                if (value.charAt(i) == ']') {
                     return new Position(index + 1, i);
                 }
             }
@@ -129,22 +129,22 @@ public class Json {
 
         //TODO Handle escaped quotes
         //TODO support .0 values
-        private Position findUnquotedValue(final int index) {
-            for (int i = index; i < content.length(); i++) {
-                if (!isUnquotedChacater(content.charAt(i))) {
+        private static Position findUnquotedValue(final String value, final int index) {
+            for (int i = index; i < value.length(); i++) {
+                if (!isUnquotedChacater(value.charAt(i))) {
                     return new Position(index, i);
                 }
             }
-            return new Position(index, content.length());
+            return new Position(index, value.length());
         }
 
-        private Position findChildValue(int index) {
+        private static Position findChildValue(String value, int index) {
             int stackLevel = 0;
-            for (int i = index; i < content.length(); i++) {
-                if (content.charAt(i) == '{') {
+            for (int i = index; i < value.length(); i++) {
+                if (value.charAt(i) == '{') {
                     stackLevel++;
                 }
-                if (content.charAt(i) == '}') {
+                if (value.charAt(i) == '}') {
                     stackLevel--;
                     if (stackLevel == 0) {
                         return new Position(index, i + 1);
@@ -154,9 +154,9 @@ public class Json {
             throw new IllegalArgumentException("malformatted json string: missing '}'");
         }
 
-        private Position findQuotedValue(final int index) {
-            final var start = content.indexOf('\"', index) + 1;
-            final var end = content.indexOf('\"', start);
+        private static Position findQuotedValue(final String value, final int index) {
+            final var start = value.indexOf('\"', index) + 1;
+            final var end = value.indexOf('\"', start);
             Validate.isNotEqual(end, -1, "malformatted json string: missing '\"");
             return new Position(start, end);
         }
@@ -219,10 +219,10 @@ public class Json {
             int startIndex = 0;
             while (startIndex < value.length()) {//TODO refactor to position?
                 var start = value.indexOf("{", startIndex);
-                if(start == -1) {
+                if (start == -1) {
                     return list;
                 }
-                var end = value.indexOf("}", start)+1;
+                var end = value.indexOf("}", start) + 1;
                 list.add(toInstance(value.substring(start, end), type));
                 startIndex = end + 1;
             }
