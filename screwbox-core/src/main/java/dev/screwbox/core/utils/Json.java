@@ -206,14 +206,26 @@ public class Json {
             final var type = findGenericTypeOfListField(field);
 
             return switch (type.getName()) {
-                case "java.lang.Integer", "int", "java.lang.Float", "float", "java.lang.Double", "double","java.lang.Boolean", "boolean" -> splitPrimitiveList(value, type);
+                case "java.lang.Integer", "int", "java.lang.Float", "float", "java.lang.Double", "double",
+                     "java.lang.Boolean", "boolean" -> splitPrimitiveList(value, type);
                 //TODO handle strings
                 default -> splitObjectList(value, type);
             };
         }
 
+        // TODO handle stacked values
         private Object splitObjectList(String value, Class<?> type) {
             final var list = new ArrayList<>();
+            int startIndex = 0;
+            while (startIndex < value.length()) {//TODO refactor to position?
+                var start = value.indexOf("{", startIndex);
+                if(start == -1) {
+                    return list;
+                }
+                var end = value.indexOf("}", start)+1;
+                list.add(toInstance(value.substring(start, end), type));
+                startIndex = end + 1;
+            }
             return list;
         }
 
