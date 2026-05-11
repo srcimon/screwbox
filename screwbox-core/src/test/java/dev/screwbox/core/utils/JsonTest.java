@@ -264,4 +264,31 @@ class JsonTest {
 
         assertThat(entity.numbers()).containsExactly(1, 4, 3);
     }
+
+    record EntityWithListEntity(List<SampleEntity> entries) {
+
+    }
+
+    //FIXME
+    @Test
+    void load_entityWithinList_deserializesEntityList() {
+        var entity = Json.load("""
+            {
+                "entries": [
+                {
+                    "name": "Bas",
+                    "city": "Cologne"
+                },
+                {
+                    "name": "Debo",
+                    "city": "Cologne"
+                },
+                ]
+            }
+            """, EntityWithListEntity.class);
+
+        assertThat(entity.entries()).containsExactly(
+            new SampleEntity("Bas", "Cologne"),
+            new SampleEntity("Debo", "Cologne"));
+    }
 }
