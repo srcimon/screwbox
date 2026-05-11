@@ -68,7 +68,6 @@ public class Json {
 
             var key = content.substring(keyPosition.start(), keyPosition.end());
             var value = content.substring(valuePosition.start(), valuePosition.end());
-
             return new Attribute(keyPosition, valuePosition, key, value);
         }
 
@@ -108,7 +107,6 @@ public class Json {
                 if (character == '[') {
                     return findArrayValue(i);
                 }
-
                 if (isUnquotedChacater(character)) {
                     return findUnquotedValue(i);
                 }
@@ -185,10 +183,10 @@ public class Json {
             }
             return switch (type.getName()) {
                 case "java.lang.String" -> value;
-                case "java.lang.Integer", "int" -> Integer.valueOf(value);
-                case "java.lang.Double", "double" -> Double.valueOf(value);
-                case "java.lang.Float", "float" -> Float.valueOf(value);
-                case "java.lang.Boolean", "boolean" -> Boolean.valueOf(value);
+                case "java.lang.Integer", "int" -> Integer.valueOf(value.trim());
+                case "java.lang.Double", "double" -> Double.valueOf(value.trim());
+                case "java.lang.Float", "float" -> Float.valueOf(value.trim());
+                case "java.lang.Boolean", "boolean" -> Boolean.valueOf(value.trim());
                 default -> load(value, type);
             };
         }
@@ -205,22 +203,26 @@ public class Json {
         }
 
         private Object deserializeList(final String value, final Field field) {
-            final ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-            final var elementType = parameterizedType.getActualTypeArguments()[0];
-            try {
-                final var list = new ArrayList<>();
-                if (value.contains(", ")) {
-                    String[] split = value.split(", ");
-                    for (var element : split) {
-                        list.add(toInstance(element, Class.forName(elementType.getTypeName())));
-
-                    }
+            var type = findGenericTypeOfListField(field);
+            final var list = new ArrayList<>();
+            if (value.contains(",")) {
+                String[] split = value.split(",");
+                for (var element : split) {
+                    Object arrayValue = toInstance(element, type);
+                    list.add(arrayValue);
                 }
-                return list;
-            } catch (ClassNotFoundException e) {
-                throw new IllegalArgumentException(e);
             }
+            return list;
+        }
 
+        private static Class<?> findGenericTypeOfListField(final Field field) {
+            try {
+                final ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+                final var elementType = parameterizedType.getActualTypeArguments()[0];
+                return Class.forName(elementType.getTypeName());
+            } catch (final ClassNotFoundException e) {
+                throw new IllegalArgumentException("could not find generic type of list", e);
+            }
         }
     }
 
