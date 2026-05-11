@@ -269,6 +269,7 @@ class JsonTest {
 
     }
 
+    //TODO FIX stacked arrays
     // TODO add test for stacked values
     @Test
     void load_entityWithinList_deserializesEntityList() {
