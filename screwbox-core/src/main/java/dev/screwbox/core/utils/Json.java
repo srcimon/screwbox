@@ -203,13 +203,25 @@ public class Json {
         }
 
         private Object deserializeList(final String value, final Field field) {
-            var type = findGenericTypeOfListField(field);
+            final var type = findGenericTypeOfListField(field);
+
+            return switch (type.getName()) {
+                case "java.lang.Integer", "int", "java.lang.Float", "float", "java.lang.Double", "double","java.lang.Boolean", "boolean" -> splitPrimitiveList(value, type);
+                //TODO handle strings
+                default -> splitObjectList(value, type);
+            };
+        }
+
+        private Object splitObjectList(String value, Class<?> type) {
+            final var list = new ArrayList<>();
+            return list;
+        }
+
+        private ArrayList<Object> splitPrimitiveList(String value, Class<?> type) {
             final var list = new ArrayList<>();
             if (value.contains(",")) {
-                String[] split = value.split(",");
-                for (var element : split) {
-                    Object arrayValue = toInstance(element, type);
-                    list.add(arrayValue);
+                for (var element : value.split(",")) {
+                    list.add(toInstance(element, type));
                 }
             }
             return list;
