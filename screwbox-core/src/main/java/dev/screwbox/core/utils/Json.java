@@ -138,7 +138,7 @@ public class Json {
             return new Position(index, value.length());
         }
 
-        private static Position findChildValue(String value, int index) {
+        private static Position findChildValue(final String value, final int index) {
             int stackLevel = 0;
             for (int i = index; i < value.length(); i++) {
                 if (value.charAt(i) == '{') {
@@ -213,18 +213,14 @@ public class Json {
             };
         }
 
-        // TODO handle stacked values
+
         private Object splitObjectList(String value, Class<?> type) {
             final var list = new ArrayList<>();
             int startIndex = 0;
-            while (startIndex < value.length()) {//TODO refactor to position?
-                var start = value.indexOf("{", startIndex);
-                if (start == -1) {
-                    return list;
-                }
-                var end = value.indexOf("}", start) + 1;
-                list.add(toInstance(value.substring(start, end), type));
-                startIndex = end + 1;
+            while (startIndex < value.length() && value.indexOf('{', startIndex) != -1) {
+                var position = findChildValue(value, startIndex);
+                list.add(toInstance(value.substring(position.start, position.end), type));
+                startIndex = position.behind();
             }
             return list;
         }
