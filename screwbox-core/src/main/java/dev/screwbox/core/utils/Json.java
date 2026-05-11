@@ -115,9 +115,16 @@ public class Json {
         }
 
         private static Position findArrayValue(final String value, final int index) {
+            int stackLevel = 0;
             for (int i = index; i < value.length(); i++) {
+                if (value.charAt(i) == '[') {
+                    stackLevel++;
+                }
                 if (value.charAt(i) == ']') {
-                    return new Position(index + 1, i);
+                    stackLevel--;
+                    if (stackLevel == 0) {
+                        return new Position(index+1, i );
+                    }
                 }
             }
             throw new IllegalArgumentException("malformatted json string: missing ']'");
