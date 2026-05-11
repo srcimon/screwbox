@@ -123,7 +123,7 @@ public class Json {
                 if (value.charAt(i) == ']') {
                     stackLevel--;
                     if (stackLevel == 0) {
-                        return new Position(index+1, i );
+                        return new Position(index + 1, i);
                     }
                 }
             }
@@ -134,6 +134,9 @@ public class Json {
             return isNonWhitespaceChacter(character) && !FLOW_CHARACTERS.contains(character);
         }
 
+        //TODO changelog
+        //TODO blog on zero dependencies
+        //TODO include zero dependencies within documentation (580kb less dependencies)
         //TODO Handle escaped quotes
         //TODO support .0 values
         private static Position findUnquotedValue(final String value, final int index) {
@@ -169,8 +172,9 @@ public class Json {
         }
 
         public <T> T getValue(final Field field) {
+            String cleanedFieldName = field.getName().endsWith("_") ? field.getName().substring(0, field.getName().length() - 1) : field.getName();
             return (T) attributes.get().stream()
-                .filter(attribute -> attribute.key().equals(field.getName()))
+                .filter(attribute -> attribute.key().equals(cleanedFieldName))
                 .findFirst()
                 .map(attribute -> toInstance(attribute.value(), field))
                 .orElse(defaultForType(field.getType()));

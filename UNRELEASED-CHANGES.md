@@ -2,6 +2,7 @@
 
 - Create non GPU enhanced frames
 - Added `Reflections.findAllArgsConstructor(Class)`
+- Replaced Jackson with custom Json loading (#828)
 
 ### 🪛 Bug Fixes
 

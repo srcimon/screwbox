@@ -48,7 +48,7 @@ public final class Resources {
      * Returns the binary content from resource file.
      */
     public static byte[] loadBinary(final String fileName) {
-        try (var inputStream = inputStream(fileName)) {
+        try (final var inputStream = inputStream(fileName)) {
             Validate.isFalse(() -> isNull(inputStream), "file not found: " + fileName);
             return inputStream.readAllBytes();
         } catch (final IOException e) {

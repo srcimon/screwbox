@@ -1,17 +1,14 @@
 package dev.screwbox.tiled.internal;
 
+import dev.screwbox.core.utils.Json;
 import dev.screwbox.core.utils.Resources;
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.DeserializationFeature;
-import tools.jackson.databind.json.JsonMapper;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
+@Deprecated
+//TODO Json.loadFromFile()
 public class JsonLoader {
-
-    private static final JsonMapper JSON_MAPPER = JsonMapper.builder()
-        .configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false)
-        .build();
 
     private JsonLoader() {
 
@@ -24,11 +21,8 @@ public class JsonLoader {
         if (!fileName.toLowerCase().endsWith(".json")) {
             throw new IllegalArgumentException(fileName + " is not a JSON-File");
         }
-        final var fileContent = Resources.loadBinary(fileName);
-        try {
-            return JSON_MAPPER.readValue(fileContent, type);
-        } catch (final JacksonException e) {
-            throw new IllegalArgumentException("file could not be deserialized: " + fileName, e);
-        }
+        final var binaryContent = Resources.loadBinary(fileName);
+        final var textContent = new String(binaryContent, UTF_8);
+        return Json.load(textContent, type);
     }
 }

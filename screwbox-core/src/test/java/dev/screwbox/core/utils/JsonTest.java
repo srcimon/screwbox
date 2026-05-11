@@ -292,4 +292,16 @@ class JsonTest {
             new SampleEntity("Bas", "Cologne"),
             new SampleEntity("Debo", "Cologne"));
     }
+
+    record ReservedKeywordsEntity(String class_, String interface_) {
+
+    }
+    //TODO add to javadoc of Json.load
+    @Test
+    void load_entityNameEndsWithUnderscore_deserializesInto() {
+        var entity = Json.load("{\"class\":\"reserved1\", \"interface\":\"reserved2\"}", ReservedKeywordsEntity.class);
+
+        assertThat(entity.class_()).isEqualTo("reserved1");
+        assertThat(entity.interface_()).isEqualTo("reserved2");
+    }
 }
