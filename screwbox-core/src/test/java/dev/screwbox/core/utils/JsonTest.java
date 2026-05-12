@@ -86,6 +86,13 @@ class JsonTest {
     }
 
     @Test
+    void load_escapedStringAttribute_setsUnescapedValue() {
+        var entity = Json.load("{\"name\":\"Debo\\/forward\"}", SampleEntity.class);
+
+        assertThat(entity.name()).isEqualTo("Debo/forward");
+    }
+
+    @Test
     void load_emptyStringAttribute_setsEmptyString() {
         var entity = Json.load("{\"name\":\"\"}", SampleEntity.class);
 

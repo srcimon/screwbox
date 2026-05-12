@@ -193,7 +193,7 @@ public class Json {
                 return Enum.valueOf((Class<Enum>) type, value);
             }
             return switch (type.getName()) {
-                case "java.lang.String" -> value;
+                case "java.lang.String" -> value.replace("\\/", "/");
                 case "java.lang.Integer", "int" -> Integer.valueOf(value.trim());
                 case "java.lang.Double", "double" -> Double.valueOf(value.trim());
                 case "java.lang.Float", "float" -> Float.valueOf(value.trim());
