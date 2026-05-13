@@ -39,6 +39,7 @@ class JsonTest {
 
     static class ConstructorDoesNotMatchFields {
 
+        @SuppressWarnings("unused")
         private final String name;
 
         public ConstructorDoesNotMatchFields(int age) {

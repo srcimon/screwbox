@@ -35,7 +35,7 @@ public class Json {
 
     private static class JsonObject {
 
-        private final List<Attribute> attributes= new ArrayList<>();
+        private final List<Attribute> attributes = new ArrayList<>();
 
         private JsonObject(final String content) {
             var trimmedContent = content.trim();
@@ -116,8 +116,7 @@ public class Json {
             for (int i = index; i < value.length(); i++) {
                 if (value.charAt(i) == '[') {
                     stackLevel++;
-                }
-                if (value.charAt(i) == ']') {
+                } else if (value.charAt(i) == ']') {
                     stackLevel--;
                     if (stackLevel == 0) {
                         return new Position(index + 1, i);
@@ -150,8 +149,7 @@ public class Json {
             for (int i = index; i < value.length(); i++) {
                 if (value.charAt(i) == '{') {
                     stackLevel++;
-                }
-                if (value.charAt(i) == '}') {
+                } else if (value.charAt(i) == '}') {
                     stackLevel--;
                     if (stackLevel == 0) {
                         return new Position(index, i + 1);
