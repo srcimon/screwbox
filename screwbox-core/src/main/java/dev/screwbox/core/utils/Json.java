@@ -183,6 +183,7 @@ public class Json {
                 : toInstance(value, type);
         }
 
+        @SuppressWarnings("unchecked")
         private Object toInstance(final String value, final Class<?> type) {
             if (type.isEnum()) {
                 return Enum.valueOf((Class<Enum>) type, value);
