@@ -223,10 +223,10 @@ class JsonTest {
     void load_jsonContainsEmptySpaceAndLineFeeds_setsValues() {
         var entity = Json.load("""
             {
-                   \"enumeration\":     FINAL,
+                   "enumeration":     FINAL,
             
             
-                \"age\"   :   44
+                "age"   :   44
             
             }
             """, SampleTypedEntity.class);
