@@ -182,7 +182,8 @@ public class Json {
                 .map(attribute -> toInstance(attribute.value(), field))
                 .orElse(defaultForType(field.getType()));
         }
-//TODO fix starting vacuum outlaw:  "main" java.lang.IllegalArgumentException: file not found: maps/..\/tilesets\/maps\/StationOne_floors.json
+
+        //TODO fix starting vacuum outlaw:  "main" java.lang.IllegalArgumentException: file not found: maps/..\/tilesets\/maps\/StationOne_floors.json
         private Object toInstance(final String value, final Field field) {
             final Class<?> type = field.getType();
             if ("java.util.List".equals(type.getName())) {
@@ -264,9 +265,7 @@ public class Json {
         requireNonNull(fileName, "file name must not be null");
         requireNonNull(type, "type must not be null");
 
-        if (!fileName.toLowerCase().endsWith(".json")) {
-            throw new IllegalArgumentException(fileName + " is not a JSON-File");
-        }
+        Validate.isTrue(() -> fileName.toLowerCase().endsWith(".json"), fileName + " is not a JSON-File");
         final var binaryContent = Resources.loadBinary(fileName);
         final var textContent = new String(binaryContent, UTF_8);
         return load(textContent, type);
@@ -291,7 +290,7 @@ public class Json {
                 final var field = type.getDeclaredFields()[i];
                 values[i] = content.getValue(field);
             }
-            return (T) constructor.newInstance(values);
+            return constructor.newInstance(values);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new IllegalArgumentException("could not instantiate type " + type.getSimpleName(), e);
         }

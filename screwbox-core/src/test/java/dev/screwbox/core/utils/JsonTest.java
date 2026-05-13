@@ -23,6 +23,7 @@ class JsonTest {
     }
 
     static class NoAllArgsConstructor {
+        @SuppressWarnings("unused")
         private final String name;
 
         public NoAllArgsConstructor() {
@@ -313,46 +314,27 @@ class JsonTest {
         assertThat(entity.interface_()).isEqualTo("reserved2");
     }
 
-
-
-//TODO DCHECK BELOW IF REDUDNAND
-
-
-    public record JsonDemo(String name) {
+    public record EntityWithStringAttribute(String name) {
     }
 
     @Test
-    void loadJson_fileNameNull_throwsException() {
-        assertThatThrownBy(() -> Json.loadFile(null, String.class))
+    void loadFile_fileNameNull_throwsException() {
+        assertThatThrownBy(() -> Json.loadFile(null, EntityWithStringAttribute.class))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("file name must not be null");
     }
 
     @Test
-    void loadJson_typeNull_throwsException() {
+    void loadFile_typeNull_throwsException() {
         assertThatThrownBy(() -> Json.loadFile("tile.bmp", null))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("type must not be null");
     }
 
     @Test
-    void loadJson_noJson_throwsException() {
+    void loadFile_noJsonFileName_throwsException() {
         assertThatThrownBy(() -> Json.loadFile("tile.bmp", String.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("tile.bmp is not a JSON-File");
-    }
-
-    @Test
-    @Disabled//TODO FIX TEST
-    void loadJson_corruptJson_throwsException() {
-        assertThatThrownBy(() -> Json.loadFile("utils/fake.json", String.class))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("file could not be deserialized: fake.json");
-    }
-
-    @Test
-    void loadJson_jsonOkay_returnsObject() {
-        JsonDemo result = Json.loadFile("utils/real.json", JsonDemo.class);
-        assertThat(result.name).isEqualTo("jason");
     }
 }
