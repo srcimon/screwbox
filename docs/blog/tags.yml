@@ -12,3 +12,8 @@ lessons-learned:
   label: lessons learned
   permalink: /lessons-learned
   description: Things I've learned about programming the hard way.
+
+cleanup:
+  label: cleanup
+  permalink: /cleanup
+  description: Improvements to the engine's internals.

@@ -1,23 +1,15 @@
 ### 🚀 Features & improvements
 
-- Create non GPU enhanced frames
-- Added `Reflections.findAllArgsConstructor(Class)`
-- Replaced Jackson with custom Json loading (#828)
-- Removed Jackson dependency in `screwbox-tiled`
+- ...
 
 ### 🪛 Bug Fixes
 
-- Fixed `Environment.addOrReplaceSystem` causing exception when called within game loop
+- ...
 
 ### 🧽 Cleanup & refactoring
 
-- Fixed inconsistend void return value `Environment.remove(...)`
-- Removed unused `ListUtil.emptyWhenNull(List)`
-- Converted all internal Tiled entities to records
-- Fixed flickering when using lots of lights
-- Simplified light map code
-- Added validation for not equal values
+- ...
 
 ### 📦 Dependency updates
 
-- Bump Node dependencies
+- ...
