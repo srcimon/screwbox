@@ -195,8 +195,6 @@ public class Json {
         return isNonWhitespaceChacter(character) && !JSON_CHARS.contains(character);
     }
 
-    //TODO blog on zero dependencies
-    //TODO include zero dependencies within documentation (580kb less dependencies)
     private static Position findUnquotedValue(final String value, final int index) {
         for (int i = index; i < value.length(); i++) {
             if (!isUnquotedChacater(value.charAt(i))) {
