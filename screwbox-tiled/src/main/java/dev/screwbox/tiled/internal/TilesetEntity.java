@@ -1,5 +1,7 @@
 package dev.screwbox.tiled.internal;
 
+import dev.screwbox.core.utils.Json;
+
 import java.util.List;
 
 import static dev.screwbox.core.utils.ListUtil.emptyWhenNull;
@@ -45,7 +47,7 @@ public record TilesetEntity(
     }
 
     public static TilesetEntity load(final String fileName) {
-        final TilesetEntity tilesetEntity = JsonLoader.loadJson(fileName, TilesetEntity.class);
+        final TilesetEntity tilesetEntity = Json.loadFile(fileName, TilesetEntity.class);
         final String fileNameWithoudDirectories = fileName.split("/")[fileName.split("/").length - 1];
         final String correctPath = fileName.replace(fileNameWithoudDirectories, tilesetEntity.image());
         return tilesetEntity.replaceImage(correctPath);

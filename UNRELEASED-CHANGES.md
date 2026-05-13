@@ -3,6 +3,7 @@
 - Create non GPU enhanced frames
 - Added `Reflections.findAllArgsConstructor(Class)`
 - Replaced Jackson with custom Json loading (#828)
+- Removed Jackson dependency in `screwbox-tiled`
 
 ### 🪛 Bug Fixes
 

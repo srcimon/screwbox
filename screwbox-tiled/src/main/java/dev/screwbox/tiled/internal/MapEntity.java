@@ -1,5 +1,7 @@
 package dev.screwbox.tiled.internal;
 
+import dev.screwbox.core.utils.Json;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public record MapEntity(
     }
 
     public static MapEntity load(final String fileName) {
-        final MapEntity map = JsonLoader.loadJson(fileName, MapEntity.class);
+        final MapEntity map = Json.loadFile(fileName, MapEntity.class);
         final String directory = getDirectory(fileName);
         map.embedExternalTilesets(directory);
         map.embedObjectTemplates(directory);
@@ -60,9 +62,7 @@ public record MapEntity(
             for (int i = 0; i < layer.objects().size(); i++) {
                 final ObjectEntity object = layer.objects().get(i);
                 if (nonNull(object.template())) {
-                    final var replacement = JsonLoader.loadJson(
-                            directory + object.template(),
-                            ObjectTemplateEntity.class)
+                    final var replacement = Json.loadFile(directory + object.template(), ObjectTemplateEntity.class)
                         .object();
 
                     final boolean hasSize = object.width() != 0 && object.height() != 0;

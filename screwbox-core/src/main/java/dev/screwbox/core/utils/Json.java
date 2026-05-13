@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.requireNonNull;
+
 /**
  * An ultra simple Json object converter.
  *
@@ -255,6 +258,18 @@ public class Json {
                 throw new IllegalArgumentException("could not find generic type of list", e);
             }
         }
+    }
+
+    public static <T> T loadFile(final String fileName, final Class<T> type) {
+        requireNonNull(fileName, "file name must not be null");
+        requireNonNull(type, "type must not be null");
+
+        if (!fileName.toLowerCase().endsWith(".json")) {
+            throw new IllegalArgumentException(fileName + " is not a JSON-File");
+        }
+        final var binaryContent = Resources.loadBinary(fileName);
+        final var textContent = new String(binaryContent, UTF_8);
+        return load(textContent, type);
     }
 
     public static <T> T load(final String json, final Class<T> type) {
