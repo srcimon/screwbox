@@ -82,6 +82,197 @@ public class Json {
                 .map(attribute -> toInstance(attribute.value(), field))
                 .orElse(defaultForType(field.getType()));
         }
+
+
+        private static Attribute fetchNextAttribute(final String content, final int index) {
+            final Position keyPosition = findKey(content, index);
+            final Position colonPosition = findColon(content, keyPosition.after());
+            final Position valuePosition = findValue(content, colonPosition.after());
+
+            var key = content.substring(keyPosition.start(), keyPosition.end());
+            var value = content.substring(valuePosition.start(), valuePosition.end());
+            return new Attribute(keyPosition, valuePosition, key, value);
+        }
+
+        private static Position findColon(final String content, final int index) {
+            for (int i = index; i < content.length(); i++) {
+                final char character = content.charAt(i);
+                if (isNonWhitespaceChacter(character)) {
+                    if (character == ':') {
+                        return new Position(index, index);
+                    }
+                    throw new IllegalArgumentException("malformatted json string: missing ':'");
+                }
+            }
+            throw new IllegalArgumentException("malformatted json string: attribute without value");
+        }
+
+        private static boolean isNonWhitespaceChacter(char character) {
+            return !WHITESPACE_CHARS.contains(character);
+        }
+
+        private static Position findKey(final String content, final int index) {
+            final var start = content.indexOf('"', index) + 1;
+            final var end = content.indexOf('"', start);
+
+            return new Position(start, end);
+        }
+
+        private static Position findValue(final String content, final int index) {
+            for (int i = index; i < content.length(); i++) {
+                char character = content.charAt(i);
+                if (character == '"') {
+                    return findQuotedValue(content, i);
+                }
+                if (character == '{') {
+                    return findChildValue(content, i);
+                }
+                if (character == '[') {
+                    return findArrayValue(content, i);
+                }
+                if (isUnquotedChacater(character)) {
+                    return findUnquotedValue(content, i);
+                }
+            }
+            throw new IllegalArgumentException("malformatted json string: missing value for attribute");
+        }
+
+        private static Position findArrayValue(final String value, final int index) {
+            int stackLevel = 0;
+            for (int i = index; i < value.length(); i++) {
+                if (value.charAt(i) == '[') {
+                    stackLevel++;
+                } else if (value.charAt(i) == ']') {
+                    stackLevel--;
+                    if (stackLevel == 0) {
+                        return new Position(index + 1, i);
+                    }
+                }
+            }
+            throw new IllegalArgumentException("malformatted json string: missing ']'");
+        }
+
+        private static boolean isUnquotedChacater(final char character) {
+            return isNonWhitespaceChacter(character) && !JSON_CHARS.contains(character);
+        }
+
+        private static Position findUnquotedValue(final String value, final int index) {
+            for (int i = index; i < value.length(); i++) {
+                if (!isUnquotedChacater(value.charAt(i))) {
+                    return new Position(index, i);
+                }
+            }
+            return new Position(index, value.length());
+        }
+
+        private static Position findChildValue(final String value, final int index) {
+            int stackLevel = 0;
+            for (int i = index; i < value.length(); i++) {
+                if (value.charAt(i) == '{') {
+                    stackLevel++;
+                } else if (value.charAt(i) == '}') {
+                    stackLevel--;
+                    if (stackLevel == 0) {
+                        return new Position(index, i + 1);
+                    }
+                }
+            }
+            throw new IllegalArgumentException("malformatted json string: missing '}'");
+        }
+
+        private static Position findQuotedValue(final String value, final int index) {
+            final var start = value.indexOf('\"', index) + 1;
+            final var end = value.indexOf('\"', start);
+            Validate.isNotEqual(end, NOT_FOUND, "malformatted json string: missing '\"");
+            return new Position(start, end);
+        }
+
+        private static Object toInstance(final String value, final Field field) {
+            final Class<?> type = field.getType();
+            return LIST.equals(type.getName())
+                ? deserializeList(value, field)
+                : toInstance(value, type);
+        }
+
+        @SuppressWarnings("unchecked")
+        private static Object toInstance(final String value, final Class<?> type) {
+            Validate.isFalse(type::isArray, "arrays are not supported at the moment");
+
+            if (type.isEnum()) {
+                return Enum.valueOf((Class<Enum>) type, value);
+            }
+            return switch (type.getName()) {
+                case STRING -> value.replace("\\/", "/");
+                case INTEGER, INT -> Integer.valueOf(value.trim());
+                case DOUBLE, DOUBLE_PRIMITIVE -> Double.valueOf(value.trim());
+                case FLOAT, FLOAT_PRIMITVE -> Float.valueOf(value.trim());
+                case BOOLEAN, BOOLEAN_PRIMITIVE -> Boolean.valueOf(value.trim());
+                default -> load(value, type);
+            };
+        }
+
+        private static <T> T defaultForType(final Class<?> type) {
+            return switch (type.getName()) {
+                case INTEGER, INT -> (T) Integer.valueOf(0);
+                case FLOAT, FLOAT_PRIMITVE -> (T) Float.valueOf(0.0f);
+                case DOUBLE, DOUBLE_PRIMITIVE -> (T) Double.valueOf(0.0);
+                case BOOLEAN, BOOLEAN_PRIMITIVE -> (T) Boolean.FALSE;
+                case LIST -> (T) new ArrayList<>();
+                default -> null;
+            };
+        }
+
+        private static Object deserializeList(final String value, final Field field) {
+            final var type = findGenericTypeOfListField(field);
+
+            return switch (type.getName()) {
+                case INTEGER, INT, FLOAT, FLOAT_PRIMITVE, DOUBLE, DOUBLE_PRIMITIVE,
+                     BOOLEAN, BOOLEAN_PRIMITIVE -> splitPrimitiveList(value, type);
+                case STRING -> splitStringList(value, type);
+                default -> splitObjectList(value, type);
+            };
+        }
+
+        private static Object splitObjectList(final String value, final Class<?> type) {
+            final var list = new ArrayList<>();
+            int startIndex = 0;
+            while (startIndex < value.length() && value.indexOf('{', startIndex) != NOT_FOUND) {
+                final var position = findChildValue(value, startIndex);
+                list.add(toInstance(value.substring(position.start, position.end), type));
+                startIndex = position.after();
+            }
+            return list;
+        }
+
+        private static List<Object> splitPrimitiveList(final String value, final Class<?> type) {
+            final var list = new ArrayList<>();
+            if (value.contains(",")) {
+                for (final var element : value.split(",")) {
+                    list.add(toInstance(element, type));
+                }
+            }
+            return list;
+        }
+
+        private static List<Object> splitStringList(final String value, final Class<?> type) {
+            final var list = new ArrayList<>();
+            if (value.contains(",")) {
+                for (final var element : value.split(",")) {
+                    list.add(toInstance(element.trim().substring(1, element.trim().length() - 1), type));
+                }
+            }
+            return list;
+        }
+
+        private static Class<?> findGenericTypeOfListField(final Field field) {
+            try {
+                final ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+                final var elementType = parameterizedType.getActualTypeArguments()[0];
+                return Class.forName(elementType.getTypeName());
+            } catch (final ClassNotFoundException e) {
+                throw new IllegalArgumentException("could not find generic type of list", e);
+            }
+        }
     }
 
     /**
@@ -122,196 +313,6 @@ public class Json {
             return constructor.newInstance(values);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new IllegalArgumentException("could not instantiate type " + type.getSimpleName(), e);
-        }
-    }
-
-    private static Attribute fetchNextAttribute(final String content, final int index) {
-        final Position keyPosition = findKey(content, index);
-        final Position colonPosition = findColon(content, keyPosition.after());
-        final Position valuePosition = findValue(content, colonPosition.after());
-
-        var key = content.substring(keyPosition.start(), keyPosition.end());
-        var value = content.substring(valuePosition.start(), valuePosition.end());
-        return new Attribute(keyPosition, valuePosition, key, value);
-    }
-
-    private static Position findColon(final String content, final int index) {
-        for (int i = index; i < content.length(); i++) {
-            final char character = content.charAt(i);
-            if (isNonWhitespaceChacter(character)) {
-                if (character == ':') {
-                    return new Position(index, index);
-                }
-                throw new IllegalArgumentException("malformatted json string: missing ':'");
-            }
-        }
-        throw new IllegalArgumentException("malformatted json string: attribute without value");
-    }
-
-    private static boolean isNonWhitespaceChacter(char character) {
-        return !WHITESPACE_CHARS.contains(character);
-    }
-
-    private static Position findKey(final String content, final int index) {
-        final var start = content.indexOf('"', index) + 1;
-        final var end = content.indexOf('"', start);
-
-        return new Position(start, end);
-    }
-
-    private static Position findValue(final String content, final int index) {
-        for (int i = index; i < content.length(); i++) {
-            char character = content.charAt(i);
-            if (character == '"') {
-                return findQuotedValue(content, i);
-            }
-            if (character == '{') {
-                return findChildValue(content, i);
-            }
-            if (character == '[') {
-                return findArrayValue(content, i);
-            }
-            if (isUnquotedChacater(character)) {
-                return findUnquotedValue(content, i);
-            }
-        }
-        throw new IllegalArgumentException("malformatted json string: missing value for attribute");
-    }
-
-    private static Position findArrayValue(final String value, final int index) {
-        int stackLevel = 0;
-        for (int i = index; i < value.length(); i++) {
-            if (value.charAt(i) == '[') {
-                stackLevel++;
-            } else if (value.charAt(i) == ']') {
-                stackLevel--;
-                if (stackLevel == 0) {
-                    return new Position(index + 1, i);
-                }
-            }
-        }
-        throw new IllegalArgumentException("malformatted json string: missing ']'");
-    }
-
-    private static boolean isUnquotedChacater(final char character) {
-        return isNonWhitespaceChacter(character) && !JSON_CHARS.contains(character);
-    }
-
-    private static Position findUnquotedValue(final String value, final int index) {
-        for (int i = index; i < value.length(); i++) {
-            if (!isUnquotedChacater(value.charAt(i))) {
-                return new Position(index, i);
-            }
-        }
-        return new Position(index, value.length());
-    }
-
-    private static Position findChildValue(final String value, final int index) {
-        int stackLevel = 0;
-        for (int i = index; i < value.length(); i++) {
-            if (value.charAt(i) == '{') {
-                stackLevel++;
-            } else if (value.charAt(i) == '}') {
-                stackLevel--;
-                if (stackLevel == 0) {
-                    return new Position(index, i + 1);
-                }
-            }
-        }
-        throw new IllegalArgumentException("malformatted json string: missing '}'");
-    }
-
-    private static Position findQuotedValue(final String value, final int index) {
-        final var start = value.indexOf('\"', index) + 1;
-        final var end = value.indexOf('\"', start);
-        Validate.isNotEqual(end, NOT_FOUND, "malformatted json string: missing '\"");
-        return new Position(start, end);
-    }
-
-    private static Object toInstance(final String value, final Field field) {
-        final Class<?> type = field.getType();
-        return LIST.equals(type.getName())
-            ? deserializeList(value, field)
-            : toInstance(value, type);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Object toInstance(final String value, final Class<?> type) {
-        Validate.isFalse(type::isArray, "arrays are not supported at the moment");
-
-        if (type.isEnum()) {
-            return Enum.valueOf((Class<Enum>) type, value);
-        }
-        return switch (type.getName()) {
-            case STRING -> value.replace("\\/", "/");
-            case INTEGER, INT -> Integer.valueOf(value.trim());
-            case DOUBLE, DOUBLE_PRIMITIVE -> Double.valueOf(value.trim());
-            case FLOAT, FLOAT_PRIMITVE -> Float.valueOf(value.trim());
-            case BOOLEAN, BOOLEAN_PRIMITIVE -> Boolean.valueOf(value.trim());
-            default -> load(value, type);
-        };
-    }
-
-    private static <T> T defaultForType(final Class<?> type) {
-        return switch (type.getName()) {
-            case INTEGER, INT -> (T) Integer.valueOf(0);
-            case FLOAT, FLOAT_PRIMITVE -> (T) Float.valueOf(0.0f);
-            case DOUBLE, DOUBLE_PRIMITIVE -> (T) Double.valueOf(0.0);
-            case BOOLEAN, BOOLEAN_PRIMITIVE -> (T) Boolean.FALSE;
-            case LIST -> (T) new ArrayList<>();
-            default -> null;
-        };
-    }
-
-    private static Object deserializeList(final String value, final Field field) {
-        final var type = findGenericTypeOfListField(field);
-
-        return switch (type.getName()) {
-            case INTEGER, INT, FLOAT, FLOAT_PRIMITVE, DOUBLE, DOUBLE_PRIMITIVE,
-                 BOOLEAN, BOOLEAN_PRIMITIVE -> splitPrimitiveList(value, type);
-            case STRING -> splitStringList(value, type);
-            default -> splitObjectList(value, type);
-        };
-    }
-
-    private static Object splitObjectList(final String value, final Class<?> type) {
-        final var list = new ArrayList<>();
-        int startIndex = 0;
-        while (startIndex < value.length() && value.indexOf('{', startIndex) != NOT_FOUND) {
-            final var position = findChildValue(value, startIndex);
-            list.add(toInstance(value.substring(position.start, position.end), type));
-            startIndex = position.after();
-        }
-        return list;
-    }
-
-    private static List<Object> splitPrimitiveList(final String value, final Class<?> type) {
-        final var list = new ArrayList<>();
-        if (value.contains(",")) {
-            for (final var element : value.split(",")) {
-                list.add(toInstance(element, type));
-            }
-        }
-        return list;
-    }
-
-    private static List<Object> splitStringList(final String value, final Class<?> type) {
-        final var list = new ArrayList<>();
-        if (value.contains(",")) {
-            for (final var element : value.split(",")) {
-                list.add(toInstance(element.trim().substring(1, element.trim().length() - 1), type));
-            }
-        }
-        return list;
-    }
-
-    private static Class<?> findGenericTypeOfListField(final Field field) {
-        try {
-            final ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-            final var elementType = parameterizedType.getActualTypeArguments()[0];
-            return Class.forName(elementType.getTypeName());
-        } catch (final ClassNotFoundException e) {
-            throw new IllegalArgumentException("could not find generic type of list", e);
         }
     }
 }
