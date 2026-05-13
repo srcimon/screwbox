@@ -1,7 +1,6 @@
 package dev.screwbox.core.utils;
 
 import net.bytebuddy.description.modifier.TypeManifestation;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -305,6 +304,7 @@ class JsonTest {
     record ReservedKeywordsEntity(String class_, String interface_) {
 
     }
+
     //TODO add to javadoc of Json.load
     @Test
     void load_entityNameEndsWithUnderscore_deserializesInto() {

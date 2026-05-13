@@ -1,7 +1,5 @@
 package dev.screwbox.core.utils;
 
-import dev.screwbox.core.assets.Asset;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -26,7 +24,7 @@ public class Json {
 
     private record Position(int start, int end) {
 
-        int behind() {
+        int after() {
             return end + 1;
         }
     }
@@ -37,44 +35,40 @@ public class Json {
 
     private static class JsonObject {
 
-        private final String content;
-        private final Asset<List<Attribute>> attributesCache;
+        private final List<Attribute> attributes= new ArrayList<>();
 
         private JsonObject(final String content) {
             var trimmedContent = content.trim();
             Validate.isTrue(() -> trimmedContent.startsWith("{"), "input is no json string: " + trimmedContent);
             Validate.isTrue(() -> trimmedContent.endsWith("}"), "input is no json string: " + trimmedContent);
-            this.content = trimmedContent.substring(1, trimmedContent.length() - 1).trim();
-            this.attributesCache = Asset.asset(this::extractAttributes);
+            final var pureContent = trimmedContent.substring(1, trimmedContent.length() - 1).trim();
+            initializeAttributes(pureContent);
         }
 
-        private List<Attribute> extractAttributes() {
-            final List<Attribute> attributes = new ArrayList<>();
+        private void initializeAttributes(final String content) {
             int index = 0;
             while (index < content.length()) {
-                final var attribute = fetchNextAttribute(index);
+                final var attribute = fetchNextAttribute(content, index);
                 if (!attributes.isEmpty()) {
                     final var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().end());
                     Validate.isTrue(() -> commaPosition < attribute.keyPosition().start() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().key, attribute.key));
                 }
                 attributes.add(attribute);
-                index = attribute.valuePosition().behind();
+                index = attribute.valuePosition().after();
             }
-            return attributes;
         }
 
-
-        private Attribute fetchNextAttribute(final int index) {
-            Position keyPosition = findKey(index);
-            Position colonPosition = findColon(keyPosition.behind());
-            Position valuePosition = findValue(colonPosition.behind());
+        private static Attribute fetchNextAttribute(final String content, final int index) {
+            final Position keyPosition = findKey(content, index);
+            final Position colonPosition = findColon(content, keyPosition.after());
+            final Position valuePosition = findValue(content, colonPosition.after());
 
             var key = content.substring(keyPosition.start(), keyPosition.end());
             var value = content.substring(valuePosition.start(), valuePosition.end());
             return new Attribute(keyPosition, valuePosition, key, value);
         }
 
-        private Position findColon(final int index) {
+        private static Position findColon(final String content, final int index) {
             for (int i = index; i < content.length(); i++) {
                 char c = content.charAt(i);
                 if (isNonWhitespaceChacter(c)) {
@@ -91,14 +85,14 @@ public class Json {
             return !WHITESPACE_CHARS.contains(character);
         }
 
-        private Position findKey(final int index) {
+        private static Position findKey(final String content, final int index) {
             final var start = content.indexOf('"', index) + 1;
             final var end = content.indexOf('"', start);
 
             return new Position(start, end);
         }
 
-        private Position findValue(final int index) {
+        private static Position findValue(final String content, final int index) {
             for (int i = index; i < content.length(); i++) {
                 char character = content.charAt(i);
                 if (character == '"') {
@@ -176,7 +170,7 @@ public class Json {
 
         public <T> T getValue(final Field field) {
             String cleanedFieldName = field.getName().endsWith("_") ? field.getName().substring(0, field.getName().length() - 1) : field.getName();
-            return (T) attributesCache.get().stream()
+            return (T) attributes.stream()
                 .filter(attribute -> attribute.key().equals(cleanedFieldName))
                 .findFirst()
                 .map(attribute -> toInstance(attribute.value(), field))
@@ -235,7 +229,7 @@ public class Json {
             while (startIndex < value.length() && value.indexOf('{', startIndex) != -1) {
                 var position = findChildValue(value, startIndex);
                 list.add(toInstance(value.substring(position.start, position.end), type));
-                startIndex = position.behind();
+                startIndex = position.after();
             }
             return list;
         }
