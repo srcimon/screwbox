@@ -18,8 +18,8 @@ class ListUtilTest {
         var merged = ListUtil.merge(male, female);
 
         assertThat(merged)
-                .contains("Andreas", "Andrea", "Kathrin")
-                .hasSize(3);
+            .contains("Andreas", "Andrea", "Kathrin")
+            .hasSize(3);
     }
 
     @Test
@@ -63,20 +63,6 @@ class ListUtilTest {
         var result = ListUtil.randomFrom("one", "two", "three");
 
         assertThat(result).isIn("one", "two", "three");
-    }
-
-    @Test
-    void emptyWhenNull_nonNull_returnsOriginal() {
-        var result = ListUtil.emptyWhenNull(List.of("A", "B"));
-
-        assertThat(result).isEqualTo(List.of("A", "B"));
-    }
-
-    @Test
-    void emptyWhenNull_null_empty() {
-        var result = ListUtil.emptyWhenNull((List<String>) null);
-
-        assertThat(result).isEmpty();
     }
 
     @Test

@@ -6,17 +6,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import static java.util.Objects.isNull;
-
 public class ListUtil {
 
     private static final Random RANDOM = new Random();
 
     private ListUtil() {
-    }
-
-    public static <T> List<T> emptyWhenNull(final List<T> list) {
-        return isNull(list) ? new ArrayList<>() : list;
     }
 
     /**

@@ -4,8 +4,6 @@ import dev.screwbox.core.utils.Json;
 
 import java.util.List;
 
-import static dev.screwbox.core.utils.ListUtil.emptyWhenNull;
-
 //TODO make record
 public record TilesetEntity(
 
@@ -33,18 +31,6 @@ public record TilesetEntity(
     String transparentcolor,
     String type,
     double version) {
-
-    public List<PropertyEntity> properties() {
-        return emptyWhenNull(properties);
-    }
-
-    public List<TerrainEntity> terrains() {
-        return emptyWhenNull(terrains);
-    }
-
-    public List<TileEntity> tiles() {
-        return emptyWhenNull(tiles);
-    }
 
     public static TilesetEntity load(final String fileName) {
         final TilesetEntity tilesetEntity = Json.loadFile(fileName, TilesetEntity.class);

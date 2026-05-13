@@ -5,7 +5,6 @@ import dev.screwbox.core.utils.Json;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.screwbox.core.utils.ListUtil.emptyWhenNull;
 import static java.util.Objects.nonNull;
 
 public record MapEntity(
@@ -30,18 +29,6 @@ public record MapEntity(
     List<LayerEntity> layers,
     List<TilesetEntity> tilesets
 ) {
-
-    public List<LayerEntity> layers() {
-        return emptyWhenNull(layers);
-    }
-
-    public List<TilesetEntity> tilesets() {
-        return emptyWhenNull(tilesets);
-    }
-
-    public List<PropertyEntity> properties() {
-        return emptyWhenNull(properties);
-    }
 
     public static MapEntity load(final String fileName) {
         final MapEntity map = Json.loadFile(fileName, MapEntity.class);
