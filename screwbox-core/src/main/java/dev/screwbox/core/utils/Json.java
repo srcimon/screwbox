@@ -17,6 +17,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @since 3.29.0
  */
+//TODO document all restrictions
 public class Json {
 
     private static final String STRING = "java.lang.String";
