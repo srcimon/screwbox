@@ -13,6 +13,7 @@
 
 - Fixed inconsistend void return value `Environment.remove(...)`
 - Removed unused `ListUtil.emptyWhenNull(List)`
+- Converted all internal Tiled entities to records
 - Fixed flickering when using lots of lights
 - Simplified light map code
 - Added validation for not equal values
