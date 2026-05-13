@@ -227,7 +227,7 @@ public class Json {
             return switch (type.getName()) {
                 case INTEGER, INT, FLOAT, FLOAT_PRIMITVE, DOUBLE, DOUBLE_PRIMITIVE,
                      BOOLEAN, BOOLEAN_PRIMITIVE -> splitPrimitiveList(value, type);
-                //TODO handle strings
+                case STRING -> splitStringList(value, type);
                 default -> splitObjectList(value, type);
             };
         }
@@ -247,8 +247,18 @@ public class Json {
         private List<Object> splitPrimitiveList(final String value, final Class<?> type) {
             final var list = new ArrayList<>();
             if (value.contains(",")) {
-                for (var element : value.split(",")) {
+                for (final var element : value.split(",")) {
                     list.add(toInstance(element, type));
+                }
+            }
+            return list;
+        }
+
+        private List<Object> splitStringList(final String value, final Class<?> type) {
+            final var list = new ArrayList<>();
+            if (value.contains(",")) {
+                for (final var element : value.split(",")) {
+                    list.add(toInstance(element.trim().substring(1, element.trim().length() - 1), type));
                 }
             }
             return list;
