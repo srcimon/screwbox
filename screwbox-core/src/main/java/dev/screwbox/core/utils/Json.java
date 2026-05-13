@@ -20,6 +20,7 @@ import static java.util.Objects.requireNonNull;
 //TODO document all restrictions
 public class Json {
 
+    private static final int NOT_FOUND = -1;
     private static final String LIST = "java.util.List";
     private static final String STRING = "java.lang.String";
     private static final String INTEGER = "java.lang.Integer";
@@ -63,7 +64,7 @@ public class Json {
                 final var attribute = fetchNextAttribute(content, index);
                 if (!attributes.isEmpty()) {
                     final var commaPosition = content.indexOf(',', attributes.getLast().valuePosition().end());
-                    Validate.isTrue(() -> commaPosition < attribute.keyPosition().start() && commaPosition != -1, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().key, attribute.key));
+                    Validate.isTrue(() -> commaPosition < attribute.keyPosition().start() && commaPosition != NOT_FOUND, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().key, attribute.key));
                 }
                 attributes.add(attribute);
                 index = attribute.valuePosition().after();
@@ -174,7 +175,7 @@ public class Json {
         private static Position findQuotedValue(final String value, final int index) {
             final var start = value.indexOf('\"', index) + 1;
             final var end = value.indexOf('\"', start);
-            Validate.isNotEqual(end, -1, "malformatted json string: missing '\"");
+            Validate.isNotEqual(end, NOT_FOUND, "malformatted json string: missing '\"");
             return new Position(start, end);
         }
 
@@ -234,18 +235,18 @@ public class Json {
         }
 
 
-        private Object splitObjectList(String value, Class<?> type) {
+        private Object splitObjectList(final String value, final Class<?> type) {
             final var list = new ArrayList<>();
             int startIndex = 0;
-            while (startIndex < value.length() && value.indexOf('{', startIndex) != -1) {
-                var position = findChildValue(value, startIndex);
+            while (startIndex < value.length() && value.indexOf('{', startIndex) != NOT_FOUND) {
+                final var position = findChildValue(value, startIndex);
                 list.add(toInstance(value.substring(position.start, position.end), type));
                 startIndex = position.after();
             }
             return list;
         }
 
-        private List<Object> splitPrimitiveList(String value, Class<?> type) {
+        private List<Object> splitPrimitiveList(final String value, final Class<?> type) {
             final var list = new ArrayList<>();
             if (value.contains(",")) {
                 for (var element : value.split(",")) {
