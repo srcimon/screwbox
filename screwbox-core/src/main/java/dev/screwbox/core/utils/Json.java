@@ -178,7 +178,8 @@ public class Json {
             return new Position(start, end);
         }
 
-        public <T> T getValue(final Field field) {
+        @SuppressWarnings("unchecked")
+        private <T> T getValue(final Field field) {
             String cleanedFieldName = field.getName().endsWith("_") ? field.getName().substring(0, field.getName().length() - 1) : field.getName();
             return (T) attributes.stream()
                 .filter(attribute -> attribute.key().equals(cleanedFieldName))
@@ -187,7 +188,7 @@ public class Json {
                 .orElse(defaultForType(field.getType()));
         }
 
-        private Object toInstance(final String value, final Field field) {
+        private static Object toInstance(final String value, final Field field) {
             final Class<?> type = field.getType();
             return LIST.equals(type.getName())
                 ? deserializeList(value, field)
@@ -196,7 +197,7 @@ public class Json {
 
         //TODO support arrays
         @SuppressWarnings("unchecked")
-        private Object toInstance(final String value, final Class<?> type) {
+        private static Object toInstance(final String value, final Class<?> type) {
             if (type.isEnum()) {
                 return Enum.valueOf((Class<Enum>) type, value);
             }
@@ -221,7 +222,7 @@ public class Json {
             };
         }
 
-        private Object deserializeList(final String value, final Field field) {
+        private static Object deserializeList(final String value, final Field field) {
             final var type = findGenericTypeOfListField(field);
 
             return switch (type.getName()) {
@@ -232,8 +233,7 @@ public class Json {
             };
         }
 
-
-        private Object splitObjectList(final String value, final Class<?> type) {
+        private static Object splitObjectList(final String value, final Class<?> type) {
             final var list = new ArrayList<>();
             int startIndex = 0;
             while (startIndex < value.length() && value.indexOf('{', startIndex) != NOT_FOUND) {
@@ -244,7 +244,7 @@ public class Json {
             return list;
         }
 
-        private List<Object> splitPrimitiveList(final String value, final Class<?> type) {
+        private static List<Object> splitPrimitiveList(final String value, final Class<?> type) {
             final var list = new ArrayList<>();
             if (value.contains(",")) {
                 for (final var element : value.split(",")) {
@@ -254,7 +254,7 @@ public class Json {
             return list;
         }
 
-        private List<Object> splitStringList(final String value, final Class<?> type) {
+        private static List<Object> splitStringList(final String value, final Class<?> type) {
             final var list = new ArrayList<>();
             if (value.contains(",")) {
                 for (final var element : value.split(",")) {
