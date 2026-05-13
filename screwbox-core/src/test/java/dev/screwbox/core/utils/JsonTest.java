@@ -352,4 +352,18 @@ class JsonTest {
 
         assertThat(entity.texts()).containsExactly("text_a", "text_b", "text_c");
     }
+
+    record StringArrayEntity(String[] texts) {
+    }
+
+    @Test
+    void load_entityHasStringArray_throwsException() {
+        assertThatThrownBy(() -> Json.load("""
+            {
+                "texts": ["text_a", "text_b", "text_c"]
+            }
+            """, StringArrayEntity.class))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("arrays are not supported at the moment");
+    }
 }

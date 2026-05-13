@@ -14,10 +14,12 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * An super simple Json converter that is able to create an instance of a specific type based on the provided Json content.
- * Always uses default values for lists (empty), enums (null), Numbers (0) and Strings null.
+ * Always uses default values for lists (empty), enums (null), Numbers (0) and Strings null. There are some known restrictions:
+ * <li>Arrays are not supported</li>
  *
  * @since 3.29.0
  */
+//TODO Finish up all restrictions
 public class Json {
 
     private static final int NOT_FOUND = -1;
@@ -236,6 +238,8 @@ public class Json {
     //TODO support arrays
     @SuppressWarnings("unchecked")
     private static Object toInstance(final String value, final Class<?> type) {
+        Validate.isFalse(type::isArray, "arrays are not supported at the moment");
+
         if (type.isEnum()) {
             return Enum.valueOf((Class<Enum>) type, value);
         }
