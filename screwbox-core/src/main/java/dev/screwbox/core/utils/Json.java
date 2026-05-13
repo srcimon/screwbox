@@ -19,8 +19,18 @@ import static java.util.Objects.requireNonNull;
  */
 public class Json {
 
+    private static final String STRING = "java.lang.String";
+    private static final String INTEGER = "java.lang.Integer";
+    private static final String INT = "int";
+    private static final String DOUBLE = "java.lang.Double";
+    private static final String DOUBLE_PRIMITIVE = "double";
+    private static final String FLOAT = "java.lang.Float";
+    private static final String FLOAT_PRIMITVE = "float";
+    private static final String BOOLEAN = "java.lang.Boolean";
+    private static final String BOOLEAN_PRIMITIVE = "boolean";
+
     private static final Set<Character> WHITESPACE_CHARS = Set.of(' ', '\t', '\n', '\r');
-    private static final Set<Character> FLOW_CHARACTERS = Set.of(':', '{', '}', ',', '"');
+    private static final Set<Character> JSON_CHARS = Set.of(':', '{', '}', ',', '"');
 
     private record Position(int start, int end) {
 
@@ -127,7 +137,7 @@ public class Json {
         }
 
         private static boolean isUnquotedChacater(final char character) {
-            return isNonWhitespaceChacter(character) && !FLOW_CHARACTERS.contains(character);
+            return isNonWhitespaceChacter(character) && !JSON_CHARS.contains(character);
         }
 
         //TODO changelog
@@ -189,21 +199,21 @@ public class Json {
                 return Enum.valueOf((Class<Enum>) type, value);
             }
             return switch (type.getName()) {
-                case "java.lang.String" -> value.replace("\\/", "/");
-                case "java.lang.Integer", "int" -> Integer.valueOf(value.trim());
-                case "java.lang.Double", "double" -> Double.valueOf(value.trim());
-                case "java.lang.Float", "float" -> Float.valueOf(value.trim());
-                case "java.lang.Boolean", "boolean" -> Boolean.valueOf(value.trim());
+                case STRING -> value.replace("\\/", "/");
+                case INTEGER, INT -> Integer.valueOf(value.trim());
+                case DOUBLE, DOUBLE_PRIMITIVE -> Double.valueOf(value.trim());
+                case FLOAT, FLOAT_PRIMITVE -> Float.valueOf(value.trim());
+                case BOOLEAN, BOOLEAN_PRIMITIVE -> Boolean.valueOf(value.trim());
                 default -> load(value, type);
             };
         }
 
         private static <T> T defaultForType(final Class<?> type) {
             return switch (type.getName()) {
-                case "java.lang.Integer", "int" -> (T) Integer.valueOf(0);
-                case "java.lang.Float", "float" -> (T) Float.valueOf(0.0f);
-                case "java.lang.Double", "double" -> (T) Double.valueOf(0.0);
-                case "java.lang.Boolean", "boolean" -> (T) Boolean.FALSE;
+                case INTEGER, INT -> (T) Integer.valueOf(0);
+                case FLOAT, FLOAT_PRIMITVE -> (T) Float.valueOf(0.0f);
+                case DOUBLE, DOUBLE_PRIMITIVE -> (T) Double.valueOf(0.0);
+                case BOOLEAN, BOOLEAN_PRIMITIVE -> (T) Boolean.FALSE;
                 case "java.util.List" -> (T) new ArrayList<>();
                 default -> null;
             };
@@ -213,8 +223,8 @@ public class Json {
             final var type = findGenericTypeOfListField(field);
 
             return switch (type.getName()) {
-                case "java.lang.Integer", "int", "java.lang.Float", "float", "java.lang.Double", "double",
-                     "java.lang.Boolean", "boolean" -> splitPrimitiveList(value, type);
+                case INTEGER, INT, FLOAT, FLOAT_PRIMITVE, DOUBLE, DOUBLE_PRIMITIVE,
+                     BOOLEAN, BOOLEAN_PRIMITIVE -> splitPrimitiveList(value, type);
                 //TODO handle strings
                 default -> splitObjectList(value, type);
             };
@@ -232,7 +242,7 @@ public class Json {
             return list;
         }
 
-        private ArrayList<Object> splitPrimitiveList(String value, Class<?> type) {
+        private List<Object> splitPrimitiveList(String value, Class<?> type) {
             final var list = new ArrayList<>();
             if (value.contains(",")) {
                 for (var element : value.split(",")) {
