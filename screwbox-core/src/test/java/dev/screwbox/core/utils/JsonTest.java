@@ -338,4 +338,18 @@ class JsonTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("tile.bmp is not a JSON-File");
     }
+
+    record StringListEntity(List<String> texts) {
+    }
+
+    @Test
+    void load_entityHasStringList_deserializesList() {
+        var entity = Json.load("""
+            {
+                "texts": ["text_a", "text_b", "text_c"]
+            }
+            """, StringListEntity.class);
+
+        assertThat(entity.texts()).containsExactly("text_a", "text_b", "text_c");
+    }
 }

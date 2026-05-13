@@ -83,9 +83,9 @@ public class Json {
 
         private static Position findColon(final String content, final int index) {
             for (int i = index; i < content.length(); i++) {
-                char c = content.charAt(i);
-                if (isNonWhitespaceChacter(c)) {
-                    if (c == ':') {
+                final char character = content.charAt(i);
+                if (isNonWhitespaceChacter(character)) {
+                    if (character == ':') {
                         return new Position(index, index);
                     }
                     throw new IllegalArgumentException("malformatted json string: missing ':'");
@@ -143,7 +143,6 @@ public class Json {
             return isNonWhitespaceChacter(character) && !JSON_CHARS.contains(character);
         }
 
-        //TODO changelog
         //TODO blog on zero dependencies
         //TODO include zero dependencies within documentation (580kb less dependencies)
         //TODO Handle escaped quotes
@@ -188,7 +187,6 @@ public class Json {
                 .orElse(defaultForType(field.getType()));
         }
 
-        //TODO fix starting vacuum outlaw:  "main" java.lang.IllegalArgumentException: file not found: maps/..\/tilesets\/maps\/StationOne_floors.json
         private Object toInstance(final String value, final Field field) {
             final Class<?> type = field.getType();
             return LIST.equals(type.getName())
