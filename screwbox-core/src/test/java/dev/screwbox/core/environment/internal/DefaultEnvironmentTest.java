@@ -293,7 +293,7 @@ class DefaultEnvironmentTest {
 
     @Test
     void addOrReplaceSystem_calledWithinLoop_doesNotCauseException() {
-        EntitySystem doNothingSystem = engine -> {
+        EntitySystem doNothingSystem = e -> {
         };
         when(engine.environment()).thenReturn(environment);
         environment.addSystem(e -> e.environment().addOrReplaceSystem(doNothingSystem));
