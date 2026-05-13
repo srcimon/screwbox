@@ -304,7 +304,6 @@ class JsonTest {
 
     }
 
-    //TODO add to javadoc of Json.load
     @Test
     void load_entityNameEndsWithUnderscore_deserializesInto() {
         var entity = Json.load("{\"class\":\"reserved1\", \"interface\":\"reserved2\"}", ReservedKeywordsEntity.class);

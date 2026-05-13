@@ -14,12 +14,13 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * An super simple Json converter that is able to create an instance of a specific type based on the provided Json content.
- * Always uses default values for lists (empty), enums (null), Numbers (0) and Strings null. There are some known restrictions:
- * <li>Arrays are not supported</li>
+ * Always uses default values for lists (empty), enums (null), Numbers (0) and Strings null. There are some known restrictions
+ * and limitations:
+ * <li>Arrays are currently not supported and will throw {@link IllegalArgumentException}</li>
+ * <li>To deserialize values with reserved names add a underscore to the end of the entity property. The trailing underscore will be ignored when deserializing from Json.</li>
  *
  * @since 3.29.0
  */
-//TODO Finish up all restrictions
 public class Json {
 
     private static final int NOT_FOUND = -1;
