@@ -38,18 +38,18 @@ public class Json {
     private static class JsonObject {
 
         private final String content;
-        private final Asset<List<Attribute>> attributes;
+        private final Asset<List<Attribute>> attributesCache;
 
         private JsonObject(final String content) {
             var trimmedContent = content.trim();
             Validate.isTrue(() -> trimmedContent.startsWith("{"), "input is no json string: " + trimmedContent);
             Validate.isTrue(() -> trimmedContent.endsWith("}"), "input is no json string: " + trimmedContent);
             this.content = trimmedContent.substring(1, trimmedContent.length() - 1).trim();
-            this.attributes = Asset.asset(this::getAllAttributes);
+            this.attributesCache = Asset.asset(this::extractAttributes);
         }
 
-        private List<Attribute> getAllAttributes() {
-            List<Attribute> attributes = new ArrayList<>();
+        private List<Attribute> extractAttributes() {
+            final List<Attribute> attributes = new ArrayList<>();
             int index = 0;
             while (index < content.length()) {
                 final var attribute = fetchNextAttribute(index);
@@ -176,7 +176,7 @@ public class Json {
 
         public <T> T getValue(final Field field) {
             String cleanedFieldName = field.getName().endsWith("_") ? field.getName().substring(0, field.getName().length() - 1) : field.getName();
-            return (T) attributes.get().stream()
+            return (T) attributesCache.get().stream()
                 .filter(attribute -> attribute.key().equals(cleanedFieldName))
                 .findFirst()
                 .map(attribute -> toInstance(attribute.value(), field))
