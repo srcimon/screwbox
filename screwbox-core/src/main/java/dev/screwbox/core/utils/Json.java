@@ -20,6 +20,7 @@ import static java.util.Objects.requireNonNull;
 //TODO document all restrictions
 public class Json {
 
+    private static final String LIST = "java.util.List";
     private static final String STRING = "java.lang.String";
     private static final String INTEGER = "java.lang.Integer";
     private static final String INT = "int";
@@ -189,7 +190,7 @@ public class Json {
         //TODO fix starting vacuum outlaw:  "main" java.lang.IllegalArgumentException: file not found: maps/..\/tilesets\/maps\/StationOne_floors.json
         private Object toInstance(final String value, final Field field) {
             final Class<?> type = field.getType();
-            return List.class.getName().equals(type.getName())
+            return LIST.equals(type.getName())
                 ? deserializeList(value, field)
                 : toInstance(value, type);
         }
@@ -215,7 +216,7 @@ public class Json {
                 case FLOAT, FLOAT_PRIMITVE -> (T) Float.valueOf(0.0f);
                 case DOUBLE, DOUBLE_PRIMITIVE -> (T) Double.valueOf(0.0);
                 case BOOLEAN, BOOLEAN_PRIMITIVE -> (T) Boolean.FALSE;
-                case "java.util.List" -> (T) new ArrayList<>();
+                case LIST -> (T) new ArrayList<>();
                 default -> null;
             };
         }
