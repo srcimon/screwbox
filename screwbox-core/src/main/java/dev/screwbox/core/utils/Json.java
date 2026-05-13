@@ -17,6 +17,7 @@ import static java.util.Objects.requireNonNull;
  * Always uses default values for lists (empty), enums (null), Numbers (0) and Strings null. There are some known restrictions
  * and limitations:
  * <li>Arrays are currently not supported and will throw {@link IllegalArgumentException}</li>
+ * <li>Escaped quotes are currently not supported within string values and are very likely to cause {@link IllegalArgumentException}.</li>
  * <li>To deserialize values with reserved names add a underscore to the end of the entity property. The trailing underscore will be ignored when deserializing from Json.</li>
  *
  * @since 3.29.0
@@ -196,7 +197,6 @@ public class Json {
 
     //TODO blog on zero dependencies
     //TODO include zero dependencies within documentation (580kb less dependencies)
-    //TODO Handle escaped quotes
     private static Position findUnquotedValue(final String value, final int index) {
         for (int i = index; i < value.length(); i++) {
             if (!isUnquotedChacater(value.charAt(i))) {
