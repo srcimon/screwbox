@@ -178,10 +178,9 @@ public class Json {
         //TODO fix starting vacuum outlaw:  "main" java.lang.IllegalArgumentException: file not found: maps/..\/tilesets\/maps\/StationOne_floors.json
         private Object toInstance(final String value, final Field field) {
             final Class<?> type = field.getType();
-            if ("java.util.List".equals(type.getName())) {
-                return deserializeList(value, field);
-            }
-            return toInstance(value, type);
+            return List.class.getName().equals(type.getName())
+                ? deserializeList(value, field)
+                : toInstance(value, type);
         }
 
         private Object toInstance(final String value, final Class<?> type) {
