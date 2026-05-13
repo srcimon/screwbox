@@ -195,6 +195,7 @@ public class Json {
                 : toInstance(value, type);
         }
 
+        //TODO support arrays
         @SuppressWarnings("unchecked")
         private Object toInstance(final String value, final Class<?> type) {
             if (type.isEnum()) {
