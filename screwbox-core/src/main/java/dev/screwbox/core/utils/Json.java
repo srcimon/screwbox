@@ -196,7 +196,6 @@ public class Json {
     //TODO blog on zero dependencies
     //TODO include zero dependencies within documentation (580kb less dependencies)
     //TODO Handle escaped quotes
-    //TODO support .0 values
     private static Position findUnquotedValue(final String value, final int index) {
         for (int i = index; i < value.length(); i++) {
             if (!isUnquotedChacater(value.charAt(i))) {
@@ -235,7 +234,6 @@ public class Json {
             : toInstance(value, type);
     }
 
-    //TODO support arrays
     @SuppressWarnings("unchecked")
     private static Object toInstance(final String value, final Class<?> type) {
         Validate.isFalse(type::isArray, "arrays are not supported at the moment");
