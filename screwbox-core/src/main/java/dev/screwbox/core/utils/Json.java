@@ -13,11 +13,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 /**
- * An ultra simple Json object converter.
+ * An super simple Json converter that is able to create an instance of a specific type based on the provided Json content.
+ * Always uses default values for lists (empty), enums (null), Numbers (0) and Strings null.
  *
  * @since 3.29.0
  */
-//TODO document all restrictions
 public class Json {
 
     private static final int NOT_FOUND = -1;
@@ -275,6 +275,9 @@ public class Json {
         }
     }
 
+    /**
+     * Creates an instance of the specified type based on the provided UTF-8 Json file.
+     */
     public static <T> T loadFile(final String fileName, final Class<T> type) {
         requireNonNull(fileName, "file name must not be null");
         requireNonNull(type, "type must not be null");
@@ -285,6 +288,9 @@ public class Json {
         return load(textContent, type);
     }
 
+    /**
+     * Creates an instance of the specified type based on the provided Json content.
+     */
     public static <T> T load(final String json, final Class<T> type) {
         Objects.requireNonNull(json, "json must not be null");
         Objects.requireNonNull(type, "type must not be null");
