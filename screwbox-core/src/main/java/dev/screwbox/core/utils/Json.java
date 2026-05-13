@@ -13,12 +13,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 /**
- * An super simple Json converter that is able to create an instance of a specific type based on the provided Json content.
+ * A super simple Json converter that is able to create an instance of a specific type based on the provided Json content.
  * Always uses default values for lists (empty), enums (null), Numbers (0) and Strings null. There are some known restrictions
  * and limitations:
- * <li>Arrays are currently not supported and will throw {@link IllegalArgumentException}</li>
- * <li>Escaped quotes are currently not supported within string values and are very likely to cause {@link IllegalArgumentException}.</li>
- * <li>To deserialize values with reserved names add a underscore to the end of the entity property. The trailing underscore will be ignored when deserializing from Json.</li>
+ * <ul>
+ *  <li>Arrays are currently not supported and will throw {@link IllegalArgumentException}</li>
+ *  <li>Escaped quotes are currently not supported within string values and are very likely to cause {@link IllegalArgumentException}.</li>
+ *  <li>To deserialize values with reserved names add a underscore to the end of the entity property. The trailing underscore will be ignored when deserializing from Json.</li>
+ * </ul>
  *
  * @since 3.29.0
  */
