@@ -50,8 +50,10 @@ ScrewBox dependencies can be downloaded from [Maven Central](https://central.son
 
 ## Libraries used
 
+The following libraries are used for testing and creating the documentation site.
+ScrewBox is entirely dependency-free, relying solely on the Java Standard Library.
+
 - JUnit [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
-- Jackson [Apache License 2.0](https://github.com/FasterXML/jackson-core/blob/2.14/LICENSE)
 - AssertJ [Apache License 2.0](https://github.com/assertj/assertj-core/blob/main/LICENSE.txt)
 - Mockito [MIT License](https://github.com/mockito/mockito/blob/main/LICENSE)
 - Docusaurus [MIT License](https://github.com/facebook/docusaurus/blob/main/LICENSE)

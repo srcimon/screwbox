@@ -13,7 +13,7 @@ class GameObjectCollection {
 
     GameObjectCollection(final MapEntity map) {
         int order = 0;
-        for (final LayerEntity layerEntity : map.getLayers()) {
+        for (final LayerEntity layerEntity : map.layers()) {
             final Layer layer = new Layer(layerEntity, order);
             layerEntity.objects().stream()
                     .map(objectEntity -> new GameObject(objectEntity, layer))

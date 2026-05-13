@@ -28,6 +28,7 @@ public class Tileset {
 
     /**
      * Creates a {@link Tileset} from the specified resource file.
+     *
      * @param fileName name of the resource file.
      * @return created {@link Tileset}
      */
@@ -47,37 +48,37 @@ public class Tileset {
     }
 
     public void addTilesToTileset(final TilesetEntity tilesetEntity) {
-        final String imageFileName = tilesetEntity.getImage();
+        final String imageFileName = tilesetEntity.image();
         final Frame frame = Frame.fromFile(imageFileName);
         int localId = 0;
 
         // Read static images
-        for (int y = 0; y < tilesetEntity.getImageheight(); y += tilesetEntity.getTileheight()) {
-            for (int x = 0; x < tilesetEntity.getImagewidth(); x += tilesetEntity.getTilewidth()) {
+        for (int y = 0; y < tilesetEntity.imageheight(); y += tilesetEntity.tileheight()) {
+            for (int x = 0; x < tilesetEntity.imagewidth(); x += tilesetEntity.tilewidth()) {
                 final Offset imageOffset = Offset.at(x, y);
-                final Size imageSize = Size.of(tilesetEntity.getTilewidth(), tilesetEntity.getTileheight());
+                final Size imageSize = Size.of(tilesetEntity.tilewidth(), tilesetEntity.tileheight());
                 final Frame subFrame = frame.extractArea(imageOffset, imageSize);
                 final Sprite sprite = new Sprite(subFrame);
-                addSprite(tilesetEntity.getFirstgid() + localId, sprite);
+                addSprite(tilesetEntity.firstgid() + localId, sprite);
                 localId++;
             }
         }
 
-        for (final TileEntity tileEntity : tilesetEntity.getTiles()) {
+        for (final TileEntity tileEntity : tilesetEntity.tiles()) {
             // read animated images and properties
             final List<Frame> frames = new ArrayList<>();
             for (final FrameEntity frameEntity : tileEntity.animation()) {
-                final Image currentImage = findById(tilesetEntity.getFirstgid() + frameEntity.tileid()).singleFrame()
-                        .image();
+                final Image currentImage = findById(tilesetEntity.firstgid() + frameEntity.tileid()).singleFrame()
+                    .image();
                 frames.add(new Frame(currentImage, Duration.ofMillis(frameEntity.duration())));
             }
             if (!frames.isEmpty()) {
                 final Sprite animatedSprite = new Sprite(frames);
 
-                addSprite(tilesetEntity.getFirstgid() + tileEntity.id(), animatedSprite);
+                addSprite(tilesetEntity.firstgid() + tileEntity.id(), animatedSprite);
             }
             if (nonNull(tileEntity.type())) {
-                addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), tileEntity.type());
+                addNameToSprite(tilesetEntity.firstgid() + tileEntity.id(), tileEntity.type());
             }
         }
     }

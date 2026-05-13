@@ -32,7 +32,7 @@ public class Layer {
     }
 
     public String clazz() {
-        return layerEntity.clazz();
+        return layerEntity.class_();
     }
 
     public Properties properties() {

@@ -13,7 +13,7 @@ class LayerCollection {
 
     LayerCollection(final MapEntity mapEntity) {
         int order = 0;
-        for (final LayerEntity layerEntity : mapEntity.getLayers()) {
+        for (final LayerEntity layerEntity : mapEntity.layers()) {
             layers.add(new Layer(layerEntity, order));
             order++;
         }
