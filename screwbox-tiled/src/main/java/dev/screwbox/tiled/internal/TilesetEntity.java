@@ -4,7 +4,6 @@ import dev.screwbox.core.utils.Json;
 
 import java.util.List;
 
-//TODO make record
 public record TilesetEntity(
 
     String backgroundcolor,
