@@ -117,7 +117,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public boolean hasActivePlaybacksMatching(Predicate<Playback> condition) {
+    public boolean hasActivePlaybacksMatching(final Predicate<Playback> condition) {
         for (var activePlayback : new ArrayList<>(activePlaybacks.values())) {
             final var playback = activePlayback.toPlayback();
             if (condition.test(playback)) {
