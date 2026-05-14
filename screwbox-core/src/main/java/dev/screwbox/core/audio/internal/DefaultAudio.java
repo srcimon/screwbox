@@ -183,9 +183,7 @@ public class DefaultAudio implements Audio, Updatable {
     private static AudioFormat getFormatMatching(final ActivePlayback playback) {
         final var format = AudioAdapter.getAudioFormat(playback.sound().content());
         final double speed = playback.options().playbackSpeed();
-        return speed == 1
-            ? format
-            : new AudioFormat(
+        return speed == 1 ? format : new AudioFormat(
             format.getEncoding(),
             (float) (format.getSampleRate() * speed),
             format.getSampleSizeInBits(),
@@ -202,7 +200,7 @@ public class DefaultAudio implements Audio, Updatable {
             while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(playback.id())) {
                 playback.line().write(bufferBytes, 0, readBytes);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException("could not close audio stream", e);
         }
     }
