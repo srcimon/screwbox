@@ -194,7 +194,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     private void writePlaybackDataToAudioLine(final ActivePlayback playback) {
-        try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
+        try (final var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
             final byte[] bufferBytes = new byte[BUFFER_SIZE];
             int readBytes;
             while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(playback.id())) {
