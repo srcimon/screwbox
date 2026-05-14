@@ -26,6 +26,8 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, Updatable {
 
+    private static final int BUFFER_SIZE = 4096;
+
     private final ExecutorService executor;
     private final AudioConfiguration configuration;
     private final MicrophoneMonitor microphoneMonitor;
@@ -68,7 +70,7 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public Audio stopPlayback(final Playback playback) {
-        var activePlayback = fetchActivePlayback(playback);
+        final var activePlayback = fetchActivePlayback(playback);
         if (nonNull(activePlayback)) {
             if (nonNull(activePlayback.line())) {
                 activePlayback.line().flush();
@@ -115,7 +117,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public boolean hasActivePlaybacksMatching(Predicate<Playback> condition) {
+    public boolean hasActivePlaybacksMatching(final Predicate<Playback> condition) {
         for (var activePlayback : new ArrayList<>(activePlaybacks.values())) {
             final var playback = activePlayback.toPlayback();
             if (condition.test(playback)) {
@@ -156,7 +158,7 @@ public class DefaultAudio implements Audio, Updatable {
         return true;
     }
 
-    private ActivePlayback fetchActivePlayback(Playback playback) {
+    private ActivePlayback fetchActivePlayback(final Playback playback) {
         requireNonNull(playback, "playback must not be null");
         return activePlaybacks.get(playback.id());
     }
@@ -169,7 +171,7 @@ public class DefaultAudio implements Audio, Updatable {
         refreshLineSettingsOfPlayback(playback);
 
         do {
-            writePlaybackDateToAudioLine(playback);
+            writePlaybackDataToAudioLine(playback);
             soundsPlayedCount.incrementAndGet();
         } while (loop++ < playback.options().times() && activePlaybacks.containsKey(playback.id()));
         playback.line().drain();
@@ -181,9 +183,7 @@ public class DefaultAudio implements Audio, Updatable {
     private static AudioFormat getFormatMatching(final ActivePlayback playback) {
         final var format = AudioAdapter.getAudioFormat(playback.sound().content());
         final double speed = playback.options().playbackSpeed();
-        return speed == 1
-            ? format
-            : new AudioFormat(
+        return speed == 1 ? format : new AudioFormat(
             format.getEncoding(),
             (float) (format.getSampleRate() * speed),
             format.getSampleSizeInBits(),
@@ -193,14 +193,14 @@ public class DefaultAudio implements Audio, Updatable {
             format.isBigEndian());
     }
 
-    private void writePlaybackDateToAudioLine(final ActivePlayback playback) {
-        try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
-            final byte[] bufferBytes = new byte[4096];
+    private void writePlaybackDataToAudioLine(final ActivePlayback playback) {
+        try (final var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
+            final byte[] bufferBytes = new byte[BUFFER_SIZE];
             int readBytes;
             while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(playback.id())) {
                 playback.line().write(bufferBytes, 0, readBytes);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException("could not close audio stream", e);
         }
     }
