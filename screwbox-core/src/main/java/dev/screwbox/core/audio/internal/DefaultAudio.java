@@ -26,6 +26,8 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, Updatable {
 
+    private static final int BUFFER_SIZE = 4096;
+
     private final ExecutorService executor;
     private final AudioConfiguration configuration;
     private final MicrophoneMonitor microphoneMonitor;
@@ -169,7 +171,7 @@ public class DefaultAudio implements Audio, Updatable {
         refreshLineSettingsOfPlayback(playback);
 
         do {
-            writePlaybackDateToAudioLine(playback);
+            writePlaybackDataToAudioLine(playback);
             soundsPlayedCount.incrementAndGet();
         } while (loop++ < playback.options().times() && activePlaybacks.containsKey(playback.id()));
         playback.line().drain();
@@ -193,9 +195,9 @@ public class DefaultAudio implements Audio, Updatable {
             format.isBigEndian());
     }
 
-    private void writePlaybackDateToAudioLine(final ActivePlayback playback) {
+    private void writePlaybackDataToAudioLine(final ActivePlayback playback) {
         try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
-            final byte[] bufferBytes = new byte[4096];
+            final byte[] bufferBytes = new byte[BUFFER_SIZE];
             int readBytes;
             while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(playback.id())) {
                 playback.line().write(bufferBytes, 0, readBytes);
