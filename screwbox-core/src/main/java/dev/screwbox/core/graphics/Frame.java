@@ -105,18 +105,7 @@ public final class Frame implements Serializable, Sizeable {
         Objects.requireNonNull(size, "size must not be null");
         return new Frame(ImageOperations.createImage(size));
     }
-
-    /**
-     * Create a frame which is not speed up by GPU. Only used in edge cases where GPU must be avoided due to threading issues.
-     *
-     * @since 3.29.0
-     */
-    public static Frame nonGpuEnhancedFrame(final BufferedImage image, final Duration duration) {
-        var clone = new  BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-        clone.getGraphics().drawImage(image, 0, 0, null);
-        return new Frame(new ImageStore(clone), duration);
-    }
-
+    
     /**
      * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
      */

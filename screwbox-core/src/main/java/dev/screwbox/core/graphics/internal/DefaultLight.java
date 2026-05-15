@@ -226,14 +226,18 @@ public class DefaultLight implements Light, Updatable {
                 lightRenderer.renderGlows();
             }
         }
+        reinitializeRenderers();
+        renderInProgress = false;
+        return this;
+    }
+
+    private void reinitializeRenderers() {
         renderers.clear();
         if (configuration.isLightEnabled()) {
             for (final var viewport : viewportManager.viewports()) {
                 renderers.add(createLightRender(viewport));
             }
         }
-        renderInProgress = false;
-        return this;
     }
 
     @Override
