@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.Light;
+import dev.screwbox.core.keyboard.Key;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_LIGHT;
 
@@ -64,6 +65,9 @@ public class LightRenderSystem implements EntitySystem {
         // point lights
         for (final Entity entity : environment.fetchAll(POINT_LIGHTS)) {
             final var pointLight = entity.get(PointLightComponent.class);
+            if(!engine.keyboard().isDown(Key.V)) {
+                light.addIllumination(entity.position(), pointLight.radius, pointLight.color);
+            }
             light.addPointLight(entity.position(), pointLight.radius, pointLight.color);
         }
 

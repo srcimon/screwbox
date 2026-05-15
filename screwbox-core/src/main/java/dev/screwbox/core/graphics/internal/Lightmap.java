@@ -226,6 +226,7 @@ final class Lightmap {
     private void renderIlluminationRay(IlluminationRay illuminationRay) {
         applyOpacityConfig(illuminationRay.color());
         graphics.setColor(AwtMapper.toAwtColor(illuminationRay.color()));
+        graphics.setStroke(new BasicStroke(4));
         graphics.drawLine(
             (int)(illuminationRay.start.x()/  (double)scale),
             (int)(illuminationRay.start.y()/  (double)scale),

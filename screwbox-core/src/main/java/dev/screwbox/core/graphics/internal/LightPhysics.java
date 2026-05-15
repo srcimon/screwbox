@@ -33,7 +33,7 @@ public class LightPhysics {
     public List<IlluminationRay> calculateIlluminationRays(Vector position, double radius) {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
-        for (double angle = 0; angle < 360; angle += 3) {
+        for (double angle = 0; angle < 360; angle += 1) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
             addCascadingRays(0, radius, raycast, rays, radius, 0);
 
@@ -47,8 +47,8 @@ public class LightPhysics {
         }
         var relevant = allIntersecting(Bounds.atPosition(raycast.start(), radius*2, radius*2));
         var rayInfo = findRay(raycast, relevant);
-        var remainingLength = (radius - rayInfo.ray.length()) / 2.0;// <- workaround marker
-        rays.add(new IlluminationRay(depth, rayInfo.ray, rayInfo.collided, Percent.of(totalRadius / totalDistance*2)));// <- workaround marker
+        var remainingLength = (radius - rayInfo.ray.length());// <- workaround marker
+        rays.add(new IlluminationRay(depth, rayInfo.ray, rayInfo.collided, Percent.of(totalRadius / totalDistance*0.1)));// <- workaround marker
         if (remainingLength > 1 && rayInfo.ray.length() > 1) {
             Line innerRaycast = rayInfo.ray.bounce(rayInfo.collided).length(remainingLength);
             addCascadingRays(depth+1, remainingLength, innerRaycast, rays, totalRadius, totalDistance+rayInfo.ray.length());
