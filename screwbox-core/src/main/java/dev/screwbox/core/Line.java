@@ -312,9 +312,8 @@ public final class Line implements Serializable, Comparable<Line> {
 
         // 1. Calculate the incoming vector (I) and keep its original length
         Vector incoming = Vector.of(end.x() - start.x(), end.y() - start.y());
-        double incomingLength = Math.sqrt(incoming.x() * incoming.x() + incoming.y() * incoming.y());
+        double incomingLength = incoming.length();
         Vector iNormalized = incoming.normalize();
-
         // 2. Calculate the wall vector (W)
         Vector wall = Vector.of(other.end.x() - other.start.x(), other.end.y() - other.start.y());
 
