@@ -278,40 +278,6 @@ final class Lightmap {
         }
     }
 
-    public class MaxAlphaCompositeContext implements CompositeContext {
-        @Override
-        public void dispose() {
-            // No resources to release
-        }
-
-        @Override
-        public void compose(Raster src, Raster dstIn, WritableRaster dstOut) {
-            int width = Math.min(src.getWidth(), dstIn.getWidth());
-            int height = Math.min(src.getHeight(), dstIn.getHeight());
-
-            int[] srcPix = new int[4];
-            int[] dstPix = new int[4];
-
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    // Get ARGB components (assumes default Type INT_ARGB layout)
-                    src.getPixel(x + src.getMinX(), y + src.getMinY(), srcPix);
-                    dstIn.getPixel(x + dstIn.getMinX(), y + dstIn.getMinY(), dstPix);
-
-                    int srcA = srcPix[3];
-                    int dstA = dstPix[3];
-
-                    // Check which pixel has the maximum alpha
-                    if (srcA >= dstA) {
-                        dstOut.setPixel(x + dstOut.getMinX(), y + dstOut.getMinY(), srcPix);
-                    } else {
-                        dstOut.setPixel(x + dstOut.getMinX(), y + dstOut.getMinY(), dstPix);
-                    }
-                }
-            }
-        }
-    }
-
     private void renderIlluminationRay(IlluminationRay illuminationRay) {
         var oldPaint = graphics.getPaint();
         int xs = (int) (illuminationRay.start.x() / (double) scale);
