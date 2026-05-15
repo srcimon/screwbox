@@ -4,6 +4,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 
 import java.util.ArrayList;
@@ -24,6 +25,20 @@ public class LightPhysics {
     private static final int INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT = 30;
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
+
+    public record IlluminationRay(Line ray, Percent strength) {
+
+    }
+    public List<IlluminationRay> calculateIlluminationRays(Vector position, int radius) {
+        final List<IlluminationRay> rays = new ArrayList<>();
+        var normal = Line.normal(position, radius);
+        for(int angle : List.of(10, 40, 100)) {
+            var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
+           var nearest =  findNearest(raycast, occluders);
+           rays.add(new IlluminationRay(nearest, Percent.max()));
+        }
+        return rays;
+    }
 
     private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
         @Override
