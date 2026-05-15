@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
@@ -20,25 +19,59 @@ public class LightPhysics {
     public static LightPhysics DEBUG = new LightPhysics();
 
     public LightPhysics() {
-        DEBUG=this;
+        DEBUG = this;
     }
+
     private static final int INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT = 30;
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
-    public record IlluminationRay(Line ray, Percent strength) {
+    public record IlluminationRay(Line ray, Line collided, Percent strength) {
 
     }
+
     public List<IlluminationRay> calculateIlluminationRays(Vector position, int radius) {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
-        for(int angle : List.of(10, 40, 100)) {
+        for (int angle : List.of(10, 40, 100)) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
-           var nearest =  findNearest(raycast, occluders);
-           rays.add(new IlluminationRay(nearest, Percent.max()));
+            var rayInfo = findRay(raycast, occluders);
+            var remainingLength = radius - rayInfo.ray.length();
+            rays.add(new IlluminationRay(rayInfo.ray, rayInfo.collided, Percent.max()));
+            if (remainingLength > 1) {
+
+            }
+
         }
         return rays;
     }
+
+    record RayInfo(Line ray, Line collided) {
+
+    }
+    private static RayInfo findRay(final Line raycast, final List<Occluder> rayOccluders) {
+        double minDist = Double.MAX_VALUE;
+        Line collidedLine =null;
+        Vector nearest = null;
+        for (final var occluder : rayOccluders) {
+            for (final var other : occluder.lines(raycast.start())) {
+                final var intersection = raycast.intersectionPoint(other);
+                if (nonNull(intersection)) {
+                    var distance = raycast.start().distanceTo(intersection);
+                    if (distance < minDist) {
+                        collidedLine= other;
+                        minDist = distance;
+                        nearest = intersection;
+                    }
+                }
+            }
+        }
+        Line line = nearest == null
+            ? raycast
+            : Line.between(raycast.start(), nearest);
+        return new RayInfo(line, collidedLine);
+    }
+
 
     private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
         @Override

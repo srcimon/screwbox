@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -301,5 +302,42 @@ public final class Line implements Serializable, Comparable<Line> {
     private double calculateShoelaceOf(final Vector position) {
         return (end.x() - start.x()) * (position.y() - start.y()) -
                (end.y() - start.y()) * (position.x() - start.x());
+    }
+
+    //TODO document
+    //TODO changelog
+    //TODO test
+    public Line bounce(final Line other) {
+        Objects.requireNonNull(other, "other must not be null");
+
+        // 1. Calculate the incoming vector (I) and keep its original length
+        Vector incoming = Vector.of(end.x() - start.x(), end.y() - start.y());
+        double incomingLength = Math.sqrt(incoming.x() * incoming.x() + incoming.y() * incoming.y());
+        Vector iNormalized = incoming.normalize();
+
+        // 2. Calculate the wall vector (W)
+        Vector wall = Vector.of(other.end.x() - other.start.x(), other.end.y() - other.start.y());
+
+        // 3. Find the normal vector (N) perpendicular to the wall: (-y, x)
+        Vector normal = Vector.of(-wall.y(), wall.x());
+        Vector nNormalized = normal.normalize();
+
+        // 4. Ensure the normal vector faces the incoming vector (Dot product must be negative)
+        if (iNormalized.dotProduct(nNormalized) > 0) {
+            nNormalized = nNormalized.invert();
+        }
+
+        // 5. Apply reflection formula: R = I - 2 * (I dot N) * N
+        double dotProduct = iNormalized.dotProduct(nNormalized);
+
+        double rx = iNormalized.x() - 2 * dotProduct * nNormalized.x();
+        double ry = iNormalized.y() - 2 * dotProduct * nNormalized.y();
+
+        // 6. Scale the reflection direction by the original length to maintain speed/distance
+        double destX = end.x() + (rx * incomingLength);
+        double destY = end.y() + (ry * incomingLength);
+
+        // 7. Construct the new line starting at the bounce point going to the destination point
+        return Line.between(end, Vector.$(destX, destY));
     }
 }
