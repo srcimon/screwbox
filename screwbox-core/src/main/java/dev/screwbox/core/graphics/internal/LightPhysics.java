@@ -33,24 +33,24 @@ public class LightPhysics {
     public List<IlluminationRay> calculateIlluminationRays(Vector position, double radius) {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
-        for (int angle = 0; angle < 360; angle += 50) {
+        for (int angle = 0; angle < 360; angle += 1) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
-            addCascadingRays(0, radius, raycast, rays);
+            addCascadingRays(0, radius, raycast, rays, radius, 0);
 
         }
         return rays;
     }
 
-    private void addCascadingRays(int depth, double radius, Line raycast, List<IlluminationRay> rays) {
+    private void addCascadingRays(int depth, double radius, Line raycast, List<IlluminationRay> rays, double totalRadius, double totalDistance) {
         if(depth > 4) {
             return;
         }
         var rayInfo = findRay(raycast, occluders);
         var remainingLength = (radius - rayInfo.ray.length());
-        rays.add(new IlluminationRay(depth, rayInfo.ray, rayInfo.collided, Percent.max()));
+        rays.add(new IlluminationRay(depth, rayInfo.ray.length(0), rayInfo.collided, Percent.of(totalRadius / totalDistance*2)));// <- workaround marker
         if (remainingLength > 1 && rayInfo.ray.length() > 1) {
             Line innerRaycast = rayInfo.ray.bounce(rayInfo.collided).length(remainingLength);
-            addCascadingRays(depth+1, remainingLength, innerRaycast, rays);
+            addCascadingRays(depth+1, remainingLength, innerRaycast, rays, totalRadius, totalDistance+rayInfo.ray.length());
         }
     }
 
