@@ -39,6 +39,7 @@ public class PlaygroundApp {
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
             .enableAllFeatures()
+            .addSystem(new IlluminationDebugSystem())
             .addSystem(new LogFpsSystem())
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("wall")
@@ -49,9 +50,10 @@ public class PlaygroundApp {
                 )
                 .assign('C', tile -> new Entity().name("camera")
                     .bounds(tile.bounds())
-                    .add(new CameraTargetComponent())
+                    .add(new CameraTargetComponent(), c -> c.followSpeed=10000)
                 ));
 
+        screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
         screwBox.start();
     }
 

@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 
@@ -15,6 +16,11 @@ import static java.util.Objects.requireNonNull;
 
 public class LightPhysics {
 
+    public static LightPhysics DEBUG = new LightPhysics();
+
+    public LightPhysics() {
+        DEBUG=this;
+    }
     private static final int INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT = 30;
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
@@ -117,6 +123,7 @@ public class LightPhysics {
         if (minAngle != 0 || maxAngle != 360) {
             result.add(lightBox.position());
         }
+        result.add(result.getFirst());
         return result;
     }
 
