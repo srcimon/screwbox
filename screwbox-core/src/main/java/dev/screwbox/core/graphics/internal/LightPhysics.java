@@ -45,7 +45,8 @@ public class LightPhysics {
         if(depth > 4) {
             return;
         }
-        var rayInfo = findRay(raycast, occluders);
+        var relevant = allIntersecting(Bounds.atPosition(raycast.start(), radius*2, radius*2));
+        var rayInfo = findRay(raycast, relevant);
         var remainingLength = (radius - rayInfo.ray.length());
         rays.add(new IlluminationRay(depth, rayInfo.ray.length(0), rayInfo.collided, Percent.of(totalRadius / totalDistance*2)));// <- workaround marker
         if (remainingLength > 1 && rayInfo.ray.length() > 1) {
