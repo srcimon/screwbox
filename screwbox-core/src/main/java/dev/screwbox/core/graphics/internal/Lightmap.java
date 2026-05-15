@@ -224,14 +224,25 @@ final class Lightmap {
     }
 
     private void renderIlluminationRay(IlluminationRay illuminationRay) {
-        applyOpacityConfig(illuminationRay.color());
+        var oldPaint = graphics.getPaint();
+        int xs = (int) (illuminationRay.start.x() / (double) scale);
+        int ys = (int) (illuminationRay.start.y() / (double) scale);
+        int xe = (int) (illuminationRay.end.x() / (double) scale);
+        int ye = (int) (illuminationRay.end.y() / (double) scale);
+
         graphics.setColor(AwtMapper.toAwtColor(illuminationRay.color()));
+        GradientPaint gradient = new GradientPaint(xs, ys, AwtMapper.toAwtColor(illuminationRay.color), xe, ye, AwtMapper.toAwtColor(Color.TRANSPARENT));
+
+        // Apply paint and thickness
+        graphics.setPaint(gradient);
         graphics.setStroke(new BasicStroke(4));
+
         graphics.drawLine(
-            (int)(illuminationRay.start.x()/  (double)scale),
-            (int)(illuminationRay.start.y()/  (double)scale),
-            (int)(illuminationRay.end.x()/  (double)scale),
-            (int)(illuminationRay.end.y()/  (double)scale));
+            xs,
+            ys,
+            xe,
+            ye);
+        graphics.setPaint(oldPaint);
     }
 
     private void renderAreaLight(final AreaLight light) {

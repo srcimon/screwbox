@@ -19,8 +19,8 @@ public class IlluminationDebugSystem implements EntitySystem {
         if(!engine.keyboard().isDown(Key.SPACE)) {
             engine.graphics().light().addIllumination(engine.mouse().position(), 80, Color.BLACK);
         }
-        engine.graphics().light().addGlow(engine.mouse().position(), 80, Color.WHITE.opacity(0.1));
-        engine.graphics().light().addPointLight(engine.mouse().position(), 120, Color.BLACK);
+//        engine.graphics().light().addGlow(engine.mouse().position(), 80, Color.WHITE.opacity(0.1));
+//        engine.graphics().light().addPointLight(engine.mouse().position(), 120, Color.BLACK);
 //        var rays = LightPhysics.DEBUG.calculateIlluminationRays(bounds.position(), 120);
 //        for (var ray : rays) {
 //            if(ray.reflections()>1) {
