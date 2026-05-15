@@ -4,11 +4,11 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed flickering lights when adding lights after starting light rendering
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Removed old workaround for flickering lights `Frame.nonGpuEnhancedFrame(...)`
 
 ### 📦 Dependency updates
 
