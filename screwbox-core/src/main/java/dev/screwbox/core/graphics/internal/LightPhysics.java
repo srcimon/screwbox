@@ -28,7 +28,7 @@ public class LightPhysics {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
         var relevant = allIntersecting(Bounds.atPosition(position, radius * 2, radius * 2));
-        for (double angle = 0; angle < 360; angle += 2) {
+        for (double angle = 0; angle < 360; angle += 1) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
             addCascadingRays(0, radius, raycast, rays, radius, 0, relevant);
 
@@ -37,7 +37,7 @@ public class LightPhysics {
     }
 
     private void addCascadingRays(int depth, double radius, Line raycast, List<IlluminationRay> rays, double totalRadius, double totalDistance, List<Occluder> occluders111) {
-        if (depth > 3) {
+        if (depth > 2) {
             return;
         }
         var rayInfo = findRay(raycast, occluders111);

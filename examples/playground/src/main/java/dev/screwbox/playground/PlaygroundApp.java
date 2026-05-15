@@ -47,7 +47,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new IlluminationDebugSystem())
             .addSystem(new LogFpsSystem())
-            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(80)).add(new IlluminationComponent(60)))
+            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(100)).add(new IlluminationComponent(100)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("wall")
                     .bounds(tile.bounds())
