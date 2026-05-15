@@ -16,11 +16,11 @@ public class IlluminationDebugSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         var bounds = Bounds.atPosition(engine.mouse().position(), 48, 48);
-        if(!engine.keyboard().isDown(Key.SPACE)) {
-            engine.graphics().light().addIllumination(engine.mouse().position(), 80, Color.BLACK);
+        for(var entity :  engine.environment().fetchAllHaving(IlluminationComponent.class)) {
+            if (!engine.keyboard().isDown(Key.SPACE)) {
+                engine.graphics().light().addIllumination(entity.position(), 80, Color.BLACK);
+            }
         }
-        engine.graphics().light().addGlow(engine.mouse().position(), 80, Color.WHITE.opacity(0.1));
-        engine.graphics().light().addPointLight(engine.mouse().position(), 120, Color.BLACK);
 //        var rays = LightPhysics.DEBUG.calculateIlluminationRays(bounds.position(), 120);
 //        for (var ray : rays) {
 //            if(ray.reflections()>1) {
