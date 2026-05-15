@@ -33,20 +33,25 @@ public class LightPhysics {
     public List<IlluminationRay> calculateIlluminationRays(Vector position, double radius) {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
-        for (int angle = 0; angle < 360; angle += 1) {
+        for (int angle = 0; angle < 360; angle += 50) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
-            var rayInfo = findRay(raycast, occluders);
-            var remainingLength = (radius - rayInfo.ray.length());
-            rays.add(new IlluminationRay(0, rayInfo.ray, rayInfo.collided, Percent.max()));
-            if (remainingLength > 1) {
-                var strength = Percent.of(remainingLength / radius*2);// <- WORKAROUND MAKER
-                Line innerRaycast = rayInfo.ray.bounce(rayInfo.collided).length(remainingLength);
-                var deepthRay = findRay(innerRaycast, occluders);
-                rays.add(new IlluminationRay(1, deepthRay.ray, deepthRay.collided, strength));
-            }
+            addCascadingRays(0, radius, raycast, rays);
 
         }
         return rays;
+    }
+
+    private void addCascadingRays(int depth, double radius, Line raycast, List<IlluminationRay> rays) {
+        if(depth > 4) {
+            return;
+        }
+        var rayInfo = findRay(raycast, occluders);
+        var remainingLength = (radius - rayInfo.ray.length());
+        rays.add(new IlluminationRay(depth, rayInfo.ray, rayInfo.collided, Percent.max()));
+        if (remainingLength > 1 && rayInfo.ray.length() > 1) {
+            Line innerRaycast = rayInfo.ray.bounce(rayInfo.collided).length(remainingLength);
+            addCascadingRays(depth+1, remainingLength, innerRaycast, rays);
+        }
     }
 
     record RayInfo(Line ray, Line collided) {
