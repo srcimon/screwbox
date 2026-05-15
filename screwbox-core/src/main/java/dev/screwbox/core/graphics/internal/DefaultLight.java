@@ -226,6 +226,12 @@ public class DefaultLight implements Light, Updatable {
                 lightRenderer.renderGlows();
             }
         }
+        renderers.clear();
+        if (configuration.isLightEnabled()) {
+            for (final var viewport : viewportManager.viewports()) {
+                renderers.add(createLightRender(viewport));
+            }
+        }
         renderInProgress = false;
         return this;
     }
@@ -238,12 +244,6 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public void update() {
         lightPhysics = new LightPhysics();
-        renderers.clear();
-        if (configuration.isLightEnabled()) {
-            for (final var viewport : viewportManager.viewports()) {
-                renderers.add(createLightRender(viewport));
-            }
-        }
     }
 
     private LightRenderer createLightRender(final Viewport viewport) {

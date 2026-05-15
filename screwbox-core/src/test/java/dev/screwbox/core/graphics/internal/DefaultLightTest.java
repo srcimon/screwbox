@@ -135,7 +135,7 @@ class DefaultLightTest {
         when(viewport.canvas()).thenReturn(canvas);
         when(viewport.visibleArea()).thenReturn(Bounds.$$(0, 0, 1000, 1000));
 
-        light.update();
+        light.render();
         light.addConeGlow($(32, 32), Angle.degrees(30), Angle.degrees(20), 40, Color.WHITE);
 
         light.render();
@@ -148,7 +148,7 @@ class DefaultLightTest {
         DefaultCanvas canvas = mock(DefaultCanvas.class);
         when(canvas.size()).thenReturn(Size.of(400, 300));
         when(viewport.canvas()).thenReturn(canvas);
-        light.update();
+        light.render();
         light.addOccluder($$(30, 30, 10, 500), true);
         light.addPointLight($(32, 32), 40, Color.BLACK);
 
