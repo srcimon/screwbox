@@ -13,13 +13,9 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.TileMap;
 
-import java.util.Random;
-
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 
 public class PlaygroundApp {
-
-    private static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
@@ -50,7 +46,7 @@ public class PlaygroundApp {
                 )
                 .assign('C', tile -> new Entity().name("camera")
                     .bounds(tile.bounds())
-                    .add(new CameraTargetComponent(), c -> c.followSpeed=10000)
+                    .add(new CameraTargetComponent(), c -> c.followSpeed = 10000)
                 ));
 
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);

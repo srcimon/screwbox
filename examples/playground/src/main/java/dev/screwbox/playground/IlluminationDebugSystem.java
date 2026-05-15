@@ -19,9 +19,7 @@ public class IlluminationDebugSystem implements EntitySystem {
         for (var ray : rays) {
             engine.graphics().world().drawLine(ray.ray(), LineDrawOptions.color(Color.WHITE.opacity(ray.strength())));
             if (ray.collided() != null) {
-                var bounce = ray.ray().bounce(ray.collided());
                 engine.graphics().world().drawLine(ray.collided(), LineDrawOptions.color(Color.RED.opacity(ray.strength())));
-                engine.graphics().world().drawLine(bounce, LineDrawOptions.color(Color.ORANGE.opacity(ray.strength())));
             }
         }
     }

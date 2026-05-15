@@ -26,20 +26,20 @@ public class LightPhysics {
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
-    public record IlluminationRay(Line ray, Line collided, Percent strength) {
+    public record IlluminationRay(int reflections, Line ray, Line collided, Percent strength) {
 
     }
 
     public List<IlluminationRay> calculateIlluminationRays(Vector position, int radius) {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
-        for (int angle : List.of(10, 40, 100)) {
+        for (int angle = 0; angle < 360; angle += 5) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
             var rayInfo = findRay(raycast, occluders);
             var remainingLength = radius - rayInfo.ray.length();
-            rays.add(new IlluminationRay(rayInfo.ray, rayInfo.collided, Percent.max()));
+            rays.add(new IlluminationRay(0, rayInfo.ray, rayInfo.collided, Percent.max()));
             if (remainingLength > 1) {
-
+                rays.add(new IlluminationRay(1, rayInfo.ray.bounce(rayInfo.collided).length(remainingLength), null, Percent.half()));
             }
 
         }
@@ -49,9 +49,10 @@ public class LightPhysics {
     record RayInfo(Line ray, Line collided) {
 
     }
+
     private static RayInfo findRay(final Line raycast, final List<Occluder> rayOccluders) {
         double minDist = Double.MAX_VALUE;
-        Line collidedLine =null;
+        Line collidedLine = null;
         Vector nearest = null;
         for (final var occluder : rayOccluders) {
             for (final var other : occluder.lines(raycast.start())) {
@@ -59,7 +60,7 @@ public class LightPhysics {
                 if (nonNull(intersection)) {
                     var distance = raycast.start().distanceTo(intersection);
                     if (distance < minDist) {
-                        collidedLine= other;
+                        collidedLine = other;
                         minDist = distance;
                         nearest = intersection;
                     }
