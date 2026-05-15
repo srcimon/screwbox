@@ -16,24 +16,18 @@ import static java.util.Objects.requireNonNull;
 
 public class LightPhysics {
 
-    public static LightPhysics DEBUG = new LightPhysics();
-
-    public LightPhysics() {
-        DEBUG = this;
-    }
-
     private static final int INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT = 30;
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
-    public record IlluminationRay(int reflections, Line ray, Line collided, Percent strength) {
+    public record IlluminationRay(int reflections, Line ray, Percent strength) {
 
     }
 
     public List<IlluminationRay> calculateIlluminationRays(Vector position, double radius) {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
-        var relevant = allIntersecting(Bounds.atPosition(position, radius*2, radius*2));
+        var relevant = allIntersecting(Bounds.atPosition(position, radius * 2, radius * 2));
         for (double angle = 0; angle < 360; angle += 1) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
             addCascadingRays(0, radius, raycast, rays, radius, 0, relevant);
@@ -43,15 +37,16 @@ public class LightPhysics {
     }
 
     private void addCascadingRays(int depth, double radius, Line raycast, List<IlluminationRay> rays, double totalRadius, double totalDistance, List<Occluder> occluders111) {
-        if(depth > 3) {
+        if (depth > 3) {
             return;
         }
         var rayInfo = findRay(raycast, occluders111);
         var remainingLength = (radius - rayInfo.ray.length());// <- workaround marker
-        rays.add(new IlluminationRay(depth, rayInfo.ray, rayInfo.collided, Percent.of(totalRadius / totalDistance*0.1)));// <- workaround marker
+        rays.add(new IlluminationRay(depth, rayInfo.ray, Percent.of(totalRadius / totalDistance * 0.1)));// <- workaround marker
         if (remainingLength > 1 && rayInfo.ray.length() > 1) {
-            Line innerRaycast = rayInfo.ray.bounce(rayInfo.collided).length(remainingLength);
-            addCascadingRays(depth+1, remainingLength, innerRaycast, rays, totalRadius, totalDistance+rayInfo.ray.length(), occluders111);
+            Line bounce = rayInfo.ray.bounce(rayInfo.collided);
+            Line innerRaycast = bounce.length(remainingLength);
+            addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, totalDistance + rayInfo.ray.length(), occluders111);
         }
     }
 
