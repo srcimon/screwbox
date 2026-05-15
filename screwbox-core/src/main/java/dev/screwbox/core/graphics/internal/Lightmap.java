@@ -288,7 +288,7 @@ final class Lightmap {
         var oldComp = graphics.getComposite();
         graphics.setComposite(MaxAlphaComposite.INSTANCE);
         graphics.setColor(AwtMapper.toAwtColor(illuminationRay.color()));
-        GradientPaint gradient = new GradientPaint(xs, ys, AwtMapper.toAwtColor(Color.BLACK.opacity(0.5)), xe, ye, AwtMapper.toAwtColor(Color.TRANSPARENT));
+        GradientPaint gradient = new GradientPaint(xs, ys, AwtMapper.toAwtColor(illuminationRay.color.opacity(0.5)), xe, ye, AwtMapper.toAwtColor(Color.TRANSPARENT));
 
         // Apply paint and thickness
         graphics.setPaint(gradient);
