@@ -14,12 +14,15 @@ public class IlluminationDebugSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var bounds = Bounds.atPosition(engine.mouse().position(), 128, 128);
+        var bounds = Bounds.atPosition(engine.mouse().position(), 64, 64);
         var rays = LightPhysics.DEBUG.calculateIlluminationRays(bounds.position(), 64);
         for (var ray : rays) {
-            engine.graphics().world().drawLine(ray.ray(), LineDrawOptions.color(Color.WHITE.opacity(ray.strength())));
-            if (ray.collided() != null) {
-                engine.graphics().world().drawLine(ray.collided(), LineDrawOptions.color(Color.RED.opacity(ray.strength())));
+            if (ray.reflections() > 0) {
+                engine.graphics().world().drawLine(ray.ray(), LineDrawOptions.color(Color.WHITE.opacity(ray.strength())));
+                if (ray.collided() != null) {
+
+                    engine.graphics().world().drawLine(ray.collided(), LineDrawOptions.color(Color.RED.opacity(ray.strength())));
+                }
             }
         }
     }

@@ -39,7 +39,9 @@ public class LightPhysics {
             var remainingLength = radius - rayInfo.ray.length();
             rays.add(new IlluminationRay(0, rayInfo.ray, rayInfo.collided, Percent.max()));
             if (remainingLength > 1) {
-                rays.add(new IlluminationRay(1, rayInfo.ray.bounce(rayInfo.collided).length(remainingLength), null, Percent.half()));
+                Line innerRaycast = rayInfo.ray.bounce(rayInfo.collided).length(remainingLength);
+                var deepthRay = findRay(innerRaycast, occluders);
+                rays.add(new IlluminationRay(1, deepthRay.ray, deepthRay.collided, Percent.half()));
             }
 
         }
