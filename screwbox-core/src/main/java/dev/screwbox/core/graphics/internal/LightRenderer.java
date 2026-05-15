@@ -76,7 +76,9 @@ class LightRenderer {
                 for(final var ray : rays) {
                     final Offset start = viewport.toCanvas(ray.ray().start());
                     final Offset end = viewport.toCanvas(ray.ray().end());
-                    lightmap.addIlluminationRay(new Lightmap.IlluminationRay(start, end, color.opacity(color.opacity().multiply(ray.strength().value()) )));
+                    if(ray.reflections()>0) {
+                        lightmap.addIlluminationRay(new Lightmap.IlluminationRay(start, end, color.opacity(color.opacity().multiply(ray.strength().value()))));
+                    }
                 }
             }
         });

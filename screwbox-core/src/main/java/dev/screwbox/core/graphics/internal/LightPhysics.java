@@ -33,15 +33,16 @@ public class LightPhysics {
     public List<IlluminationRay> calculateIlluminationRays(Vector position, double radius) {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
-        for (int angle = 0; angle < 360; angle += 5) {
+        for (int angle = 0; angle < 360; angle += 15) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
             var rayInfo = findRay(raycast, occluders);
-            var remainingLength = radius - rayInfo.ray.length();
+            var remainingLength = (radius - rayInfo.ray.length());
             rays.add(new IlluminationRay(0, rayInfo.ray, rayInfo.collided, Percent.max()));
             if (remainingLength > 1) {
+                var strength = Percent.of(remainingLength / radius);
                 Line innerRaycast = rayInfo.ray.bounce(rayInfo.collided).length(remainingLength);
                 var deepthRay = findRay(innerRaycast, occluders);
-                rays.add(new IlluminationRay(1, deepthRay.ray, deepthRay.collided, Percent.half()));
+                rays.add(new IlluminationRay(1, deepthRay.ray, deepthRay.collided, strength));
             }
 
         }

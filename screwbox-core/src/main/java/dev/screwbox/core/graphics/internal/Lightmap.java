@@ -226,7 +226,11 @@ final class Lightmap {
     private void renderIlluminationRay(IlluminationRay illuminationRay) {
         applyOpacityConfig(illuminationRay.color());
         graphics.setColor(AwtMapper.toAwtColor(illuminationRay.color()));
-        graphics.drawLine(illuminationRay.start.x(), illuminationRay.start.y(), illuminationRay.end.x(), illuminationRay.end.y());
+        graphics.drawLine(
+            (int)(illuminationRay.start.x()/  (double)scale),
+            (int)(illuminationRay.start.y()/  (double)scale),
+            (int)(illuminationRay.end.x()/  (double)scale),
+            (int)(illuminationRay.end.y()/  (double)scale));
     }
 
     private void renderAreaLight(final AreaLight light) {
