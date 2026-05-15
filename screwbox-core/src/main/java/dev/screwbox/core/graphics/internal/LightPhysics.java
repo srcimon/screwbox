@@ -42,7 +42,7 @@ public class LightPhysics {
     }
 
     private void addCascadingRays(int depth, double radius, Line raycast, List<IlluminationRay> rays, double totalRadius, double totalDistance) {
-        if(depth > 4) {
+        if(depth > 3) {
             return;
         }
         var relevant = allIntersecting(Bounds.atPosition(raycast.start(), radius*2, radius*2));

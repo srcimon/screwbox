@@ -18,7 +18,7 @@ public class IlluminationDebugSystem implements EntitySystem {
         var bounds = Bounds.atPosition(engine.mouse().position(), 48, 48);
         for(var entity :  engine.environment().fetchAllHaving(IlluminationComponent.class)) {
             if (!engine.keyboard().isDown(Key.SPACE)) {
-                engine.graphics().light().addIllumination(entity.position(), 80, Color.BLACK);
+                engine.graphics().light().addIllumination(entity.position(), entity.get(IlluminationComponent.class).radius, Color.BLACK);
             }
         }
 //        var rays = LightPhysics.DEBUG.calculateIlluminationRays(bounds.position(), 120);
