@@ -43,7 +43,9 @@ public class LightPhysics {
         var rayInfo = findRay(raycast, occluders111);
         var remainingLength = radius - rayInfo.ray.length();
         Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
-        rays.add(new IlluminationRay(depth, rayInfo.ray, strength));
+        if(depth>0) {
+            rays.add(new IlluminationRay(depth, rayInfo.ray, strength));
+        }
         if (remainingLength > 1 && rayInfo.ray.length() > 1) {
             Line bounce = rayInfo.ray.bounce(rayInfo.collided);
             Line innerRaycast = bounce.length(remainingLength);
