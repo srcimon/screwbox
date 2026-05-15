@@ -21,14 +21,14 @@ public class IlluminationDebugSystem implements EntitySystem {
                 engine.graphics().light().addIllumination(entity.position(), entity.get(IlluminationComponent.class).radius, Color.BLACK);
             }
         }
-        var rays = LightPhysics.DEBUG.calculateIlluminationRays(bounds.position(), 120);
-        for (var ray : rays) {
-            if(ray.reflections()>1) {
-                engine.graphics().world().drawLine(ray.ray(), LineDrawOptions.color(Color.WHITE.opacity(ray.strength())));
-                if (ray.collided() != null) {
-                    //         engine.graphics().world().drawLine(ray.collided(), LineDrawOptions.color(Color.RED.opacity(ray.strength())));
-                }
-            }
-        }
+//        var rays = LightPhysics.DEBUG.calculateIlluminationRays(bounds.position(), 120);
+//        for (var ray : rays) {
+//            if(ray.reflections()>1) {
+//                engine.graphics().world().drawLine(ray.ray(), LineDrawOptions.color(Color.WHITE.opacity(ray.strength())));
+//                if (ray.collided() != null) {
+//                    //         engine.graphics().world().drawLine(ray.collided(), LineDrawOptions.color(Color.RED.opacity(ray.strength())));
+//                }
+//            }
+//        }
     }
 }
