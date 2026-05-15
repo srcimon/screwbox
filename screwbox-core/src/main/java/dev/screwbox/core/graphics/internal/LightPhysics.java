@@ -30,7 +30,7 @@ public class LightPhysics {
 
     }
 
-    public List<IlluminationRay> calculateIlluminationRays(Vector position, int radius) {
+    public List<IlluminationRay> calculateIlluminationRays(Vector position, double radius) {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
         for (int angle = 0; angle < 360; angle += 5) {

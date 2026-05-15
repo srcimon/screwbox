@@ -22,7 +22,9 @@ import java.util.function.Supplier;
  */
 public interface Light {
 
-    Light addDirectionalLight(final Line source, final double distance, final Color color);
+    Light addIllumination(Vector position, double radius, Color color);
+    
+    Light addDirectionalLight(Line source, double distance, Color color);
 
     /**
      * Adds a directed cone light to the {@link World}, that is affected by light occluders.

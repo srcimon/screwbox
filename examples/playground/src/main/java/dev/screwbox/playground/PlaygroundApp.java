@@ -31,7 +31,7 @@ public class PlaygroundApp {
              #############
             """);
 
-        screwBox.graphics().light().setAmbientLight(Percent.of(0.9));
+        screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
             .enableAllFeatures()

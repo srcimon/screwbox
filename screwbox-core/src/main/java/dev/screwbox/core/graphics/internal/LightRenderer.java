@@ -70,6 +70,20 @@ class LightRenderer {
         }
     }
 
+    public void addIllumination(final Vector position, final double radius, final Color color) {
+        tasks.add(() -> {
+            final Bounds lightBox = createLightbox(position, radius);
+            if (isVisible(lightBox) && !lightPhysics.isOccluded(position)) {
+                final List<LightPhysics.IlluminationRay> rays = lightPhysics.calculateIlluminationRays(position, radius);
+                for(final var ray : rays) {
+                    final Offset start = viewport.toCanvas(ray.ray().start());
+                    final Offset end = viewport.toCanvas(ray.ray().end());
+                    lightmap.addIlluminationRay(new Lightmap.IlluminationRay(start, end, color.opacity(color.opacity().multiply(ray.strength().value()) )));
+                }
+            }
+        });
+    }
+
     public void addConeLight(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
         final double minRotation = direction.degrees() - cone.degrees() / 2.0;
         final double maxRotation = direction.degrees() + cone.degrees() / 2.0;

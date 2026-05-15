@@ -38,6 +38,10 @@ final class Lightmap {
 
     }
 
+    public record IlluminationRay(Offset start, Offset end, Color color) {
+
+    }
+
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
     private final BufferedImage image;
     private final Graphics2D graphics;
@@ -49,6 +53,11 @@ final class Lightmap {
     private final List<DirectionalLight> directionalLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
     private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
+    private final List<IlluminationRay> illuminationRays = new ArrayList<>();
+
+    public void addIlluminationRay(IlluminationRay ray) {
+        illuminationRays.add(ray);
+    }
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
         this.image = ImageOperations.createImage(
@@ -106,6 +115,9 @@ final class Lightmap {
         }
         for (final var areaLight : areaLights) {
             renderAreaLight(areaLight);
+        }
+        for (final var illuminationRay : illuminationRays) {
+            renderIlluminationRay(illuminationRay);
         }
         graphics.dispose();
         ImageOperations.invertOpacity(image);
@@ -209,6 +221,12 @@ final class Lightmap {
             spotLight.position().y() / scale - spotLight.radius() / scale,
             spotLight.radius() / scale * 2,
             spotLight.radius() / scale * 2);
+    }
+
+    private void renderIlluminationRay(IlluminationRay illuminationRay) {
+        applyOpacityConfig(illuminationRay.color());
+        graphics.setColor(AwtMapper.toAwtColor(illuminationRay.color()));
+        graphics.drawLine(illuminationRay.start.x(), illuminationRay.start.y(), illuminationRay.end.x(), illuminationRay.end.y());
     }
 
     private void renderAreaLight(final AreaLight light) {
