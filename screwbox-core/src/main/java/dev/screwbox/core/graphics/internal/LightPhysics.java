@@ -24,11 +24,11 @@ public class LightPhysics {
 
     }
 
-    public List<IlluminationRay> calculateIlluminationRays(Vector position, double radius) {
+    public List<IlluminationRay> calculateIlluminationRays(final Vector position, final double radius) {
         final List<IlluminationRay> rays = new ArrayList<>();
         var normal = Line.normal(position, radius);
         var relevant = allIntersecting(Bounds.atPosition(position, radius * 2, radius * 2));
-        for (double angle = 0; angle < 360; angle += 1) {
+        for (double angle = 0; angle < 360; angle += 2) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
             addCascadingRays(0, radius, raycast, rays, radius, 0, relevant);
 
