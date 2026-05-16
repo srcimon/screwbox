@@ -37,30 +37,26 @@ public class LightPhysics {
     }
 
     private void addCascadingRays(int depth, double radius, Line raycast, List<LightReflection> rays, double totalRadius, double totalDistance, List<Occluder> relevantOccluders) {
-        var rayInfo = findBoundce(raycast, relevantOccluders);
+        var bounce = findBoundce(raycast, relevantOccluders);
         Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
 
         if (depth > 0) {
-            rays.add(new LightReflection(rayInfo.bounce==null?raycast:Line.between(raycast.start(), rayInfo.bounce.start()), strength));
+            rays.add(new LightReflection(bounce==null?raycast:Line.between(raycast.start(), bounce.start()), strength));
         }
-        if (rayInfo.bounce == null) {
+        if (bounce == null) {
             return;
         }
-        double incommingRayLength = raycast.start().distanceTo(rayInfo.bounce.start());
+        double incommingRayLength = raycast.start().distanceTo(bounce.start());
         var remainingLength = radius - incommingRayLength;
 
 
         if (remainingLength > 1 && incommingRayLength > 1 && depth <= 2) {
-            Line innerRaycast = rayInfo.bounce().length(remainingLength);
+            Line innerRaycast = bounce.length(remainingLength);
             addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, totalDistance + incommingRayLength, relevantOccluders);
         }
     }
 
-    record RayInfo(Line bounce) {
-
-    }
-
-    private static RayInfo findBoundce(final Line raycast, final List<Occluder> rayOccluders) {
+    private static Line findBoundce(final Line raycast, final List<Occluder> rayOccluders) {
         double minDist = Double.MAX_VALUE;
         Line collidedLine = null;
         Vector nearest = null;
@@ -77,10 +73,9 @@ public class LightPhysics {
                 }
             }
         }
-        Line line = nearest == null
-            ? raycast
-            : Line.between(raycast.start(), nearest);
-        return new RayInfo(collidedLine == null ? null : line.bounce(collidedLine));
+        return isNull(nearest)
+            ? null
+            : Line.between(raycast.start(), nearest).bounce(collidedLine);
     }
 
 
