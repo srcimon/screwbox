@@ -26,11 +26,12 @@ public class LightPhysics {
 
     public List<LightReflection> calculateLightReflections(final Vector position, final double radius) {
         final List<LightReflection> reflections = new ArrayList<>();
-        var normal = Line.normal(position, radius);
-        var relevant = allIntersecting(Bounds.atPosition(position, radius * 2, radius * 2));
-        for (double angle = Angle.MIN_DEGREES; angle < Angle.MAX_DEGREES; angle += 1) {
-            var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
-            addCascadingRays(0, radius, raycast, reflections, radius, 0, relevant);
+        final var normal = Line.normal(position, radius);
+        final var lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+        final var relevantOccluders = allIntersecting(lightBox);
+        for (double degrees = Angle.MIN_DEGREES; degrees < Angle.MAX_DEGREES; degrees += 1) {
+            var raycast = Line.between(position, Angle.degrees(degrees).rotateAroundCenter(position, normal.end()));
+            addCascadingRays(0, radius, raycast, reflections, radius, 0, relevantOccluders);
 
         }
         return reflections;
