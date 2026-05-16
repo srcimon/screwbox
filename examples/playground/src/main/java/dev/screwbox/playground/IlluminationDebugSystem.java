@@ -12,7 +12,7 @@ public class IlluminationDebugSystem implements EntitySystem {
         engine.graphics().camera().changeZoomBy(engine.mouse().unitsScrolled() / 20.0);
         for (var entity : engine.environment().fetchAllHaving(IlluminationComponent.class)) {
             if (!engine.keyboard().isDown(Key.SPACE)) {
-                engine.graphics().light().addIllumination(entity.position(), entity.get(IlluminationComponent.class).radius, Color.BLACK);
+                engine.graphics().light().addIndirectLight(entity.position(), entity.get(IlluminationComponent.class).radius, Color.BLACK);
             }
         }
     }
