@@ -38,9 +38,6 @@ public class LightPhysics {
     }
 
     private void addCascadingRays(int depth, double radius, Line raycast, List<LightReflection> rays, double totalRadius, double totalDistance, List<Occluder> occluders111) {
-        if (depth > 2) {
-            return;
-        }
         var rayInfo = findRay(raycast, occluders111);
         double incommingRayLength = rayInfo.ray.length();
 
@@ -49,7 +46,7 @@ public class LightPhysics {
         if(depth>0) {
             rays.add(new LightReflection(rayInfo.ray, strength));
         }
-        if (remainingLength > 1 && incommingRayLength > 1) {
+        if (remainingLength > 1 && incommingRayLength > 1 && depth <= 2) {
             Line bounce = rayInfo.ray.bounce(rayInfo.collided);
             Line innerRaycast = bounce.length(remainingLength);
             addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, totalDistance + incommingRayLength, occluders111);
