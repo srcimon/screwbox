@@ -58,7 +58,7 @@ final class Lightmap {
     private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
     private final List<IlluminationRay> illuminationRays = new ArrayList<>();
 
-    public void addIlluminationRay(IlluminationRay ray) {
+    public void addIlluminationRay(final IlluminationRay ray) {
         illuminationRays.add(ray);
     }
 

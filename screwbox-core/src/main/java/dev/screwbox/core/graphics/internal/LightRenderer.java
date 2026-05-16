@@ -73,10 +73,10 @@ class LightRenderer {
             final Bounds lightBox = createLightbox(position, radius);
             if (isVisible(lightBox) && !lightPhysics.isOccluded(position)) {
                 final List<LightPhysics.IlluminationRay> rays = lightPhysics.calculateIlluminationRays(position, radius);
-                for(final var ray : rays) {
+                for (final var ray : rays) {
                     final Offset start = viewport.toCanvas(ray.ray().start());
                     final Offset end = viewport.toCanvas(ray.ray().end());
-                        lightmap.addIlluminationRay(new Lightmap.IlluminationRay(start, end, color.opacity(color.opacity().multiply(ray.strength().value()))));
+                    lightmap.addIlluminationRay(new Lightmap.IlluminationRay(start, end, color.opacity(color.opacity().multiply(ray.strength().value()))));
                 }
             }
         });

@@ -72,7 +72,7 @@ public class DefaultLight implements Light, Updatable {
     }
 
     @Override
-    public Light addIllumination(Vector position, double radius, Color color) {
+    public Light addIllumination(final Vector position, final double radius, final Color color) {
         autoTurnOnLight();
         for (final var renderer : renderers) {
             renderer.addIllumination(position, radius, color);
