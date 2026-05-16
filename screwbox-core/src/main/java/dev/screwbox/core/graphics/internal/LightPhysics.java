@@ -56,7 +56,7 @@ public class LightPhysics {
         }
     }
 
-    record RayInfo(Line ray, Line bounce) {
+    record RayInfo(Line bounce) {
 
     }
 
@@ -80,7 +80,7 @@ public class LightPhysics {
         Line line = nearest == null
             ? raycast
             : Line.between(raycast.start(), nearest);
-        return new RayInfo(line, collidedLine == null ? null : line.bounce(collidedLine));
+        return new RayInfo(collidedLine == null ? null : line.bounce(collidedLine));
     }
 
 
