@@ -20,23 +20,23 @@ public class LightPhysics {
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
-    public record IlluminationRay(Line ray, Percent strength) {
+    public record LightReflection(Line ray, Percent strength) {
 
     }
 
-    public List<IlluminationRay> calculateIlluminationRays(final Vector position, final double radius) {
-        final List<IlluminationRay> rays = new ArrayList<>();
+    public List<LightReflection> calculateLightReflections(final Vector position, final double radius) {
+        final List<LightReflection> reflections = new ArrayList<>();
         var normal = Line.normal(position, radius);
         var relevant = allIntersecting(Bounds.atPosition(position, radius * 2, radius * 2));
         for (double angle = 0; angle < 360; angle += 1) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
-            addCascadingRays(0, radius, raycast, rays, radius, 0, relevant);
+            addCascadingRays(0, radius, raycast, reflections, radius, 0, relevant);
 
         }
-        return rays;
+        return reflections;
     }
 
-    private void addCascadingRays(int depth, double radius, Line raycast, List<IlluminationRay> rays, double totalRadius, double totalDistance, List<Occluder> occluders111) {
+    private void addCascadingRays(int depth, double radius, Line raycast, List<LightReflection> rays, double totalRadius, double totalDistance, List<Occluder> occluders111) {
         if (depth > 2) {
             return;
         }
@@ -44,7 +44,7 @@ public class LightPhysics {
         var remainingLength = radius - rayInfo.ray.length();
         Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
         if(depth>0) {
-            rays.add(new IlluminationRay(rayInfo.ray, strength));
+            rays.add(new LightReflection(rayInfo.ray, strength));
         }
         if (remainingLength > 1 && rayInfo.ray.length() > 1) {
             Line bounce = rayInfo.ray.bounce(rayInfo.collided);

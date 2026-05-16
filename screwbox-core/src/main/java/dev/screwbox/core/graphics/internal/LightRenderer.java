@@ -72,7 +72,7 @@ class LightRenderer {
         tasks.add(() -> {
             final Bounds lightBox = createLightbox(position, radius);
             if (isVisible(lightBox) && !lightPhysics.isOccluded(position)) {
-                final List<LightPhysics.IlluminationRay> rays = lightPhysics.calculateIlluminationRays(position, radius);
+                final List<LightPhysics.LightReflection> rays = lightPhysics.calculateLightReflections(position, radius);
                 for (final var ray : rays) {
                     final Offset start = viewport.toCanvas(ray.ray().start());
                     final Offset end = viewport.toCanvas(ray.ray().end());
