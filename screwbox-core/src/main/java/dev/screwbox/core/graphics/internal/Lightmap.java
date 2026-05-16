@@ -279,16 +279,15 @@ final class Lightmap {
     }
 
     private void renderIlluminationRay(IlluminationRay illuminationRay) {
-        var oldPaint = graphics.getPaint();
-        int xs = (int) (illuminationRay.start.x() / (double) scale);
-        int ys = (int) (illuminationRay.start.y() / (double) scale);
-        int xe = (int) (illuminationRay.end.x() / (double) scale);
-        int ye = (int) (illuminationRay.end.y() / (double) scale);
+        final var oldPaint = graphics.getPaint();
+        final int startX = (int) (illuminationRay.start.x() / (double) scale);
+        final int startY = (int) (illuminationRay.start.y() / (double) scale);
+        final int endX = (int) (illuminationRay.end.x() / (double) scale);
+        final int endY = (int) (illuminationRay.end.y() / (double) scale);
 
-        var oldComp = graphics.getComposite();
         graphics.setComposite(MaxAlphaComposite.INSTANCE);
         graphics.setColor(AwtMapper.toAwtColor(illuminationRay.color()));
-        GradientPaint gradient = new GradientPaint(xs, ys, AwtMapper.toAwtColor(illuminationRay.color.opacity(1)), xe, ye, AwtMapper.toAwtColor(Color.TRANSPARENT));
+        GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(illuminationRay.color.opacity(1)), endX, endY, AwtMapper.toAwtColor(Color.TRANSPARENT));
 
         // Apply paint and thickness
         graphics.setPaint(gradient);
@@ -296,12 +295,11 @@ final class Lightmap {
         float config = 16.0f;
         graphics.setStroke(new BasicStroke(config / scale));
         graphics.drawLine(
-            xs,
-            ys,
-            xe,
-            ye);
+            startX,
+            startY,
+            endX,
+            endY);
         graphics.setPaint(oldPaint);
-        graphics.setComposite(oldComp);
     }
 
     private void renderAreaLight(final AreaLight light) {
