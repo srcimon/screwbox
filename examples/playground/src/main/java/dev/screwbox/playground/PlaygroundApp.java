@@ -45,9 +45,9 @@ public class PlaygroundApp {
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
             .enableAllFeatures()
-            .addSystem(new IlluminationDebugSystem())
+            .addSystem(new IndirectLightSystem())
             .addSystem(new LogFpsSystem())
-            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(100)).add(new IlluminationComponent(100)))
+            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(100)).add(new IndirectLightComponent(100)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("wall")
                     .bounds(tile.bounds())
@@ -72,7 +72,7 @@ public class PlaygroundApp {
                     .add(new PhysicsComponent())
                     .add(new RenderComponent(Sprite.pixel(Color.RED)))
                     .add(new GlowComponent(20, Color.RED.opacity(0.6)))
-                    .add(new IlluminationComponent(30))
+                    .add(new IndirectLightComponent(30))
                     .add(new PointLightComponent(40, Color.BLACK))
                 ));
 
