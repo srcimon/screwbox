@@ -41,7 +41,8 @@ public class LightPhysics {
         Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
 
         if (depth > 0) {
-            rays.add(new LightReflection(bounce==null?raycast:Line.between(raycast.start(), bounce.start()), strength));
+            Line ray = bounce == null ? raycast : Line.between(raycast.start(), bounce.start());
+            rays.add(new LightReflection(ray, strength));
         }
         if (bounce == null) {
             return;
