@@ -42,15 +42,17 @@ public class LightPhysics {
             return;
         }
         var rayInfo = findRay(raycast, occluders111);
-        var remainingLength = radius - rayInfo.ray.length();
+        double incommingRayLength = rayInfo.ray.length();
+
+        var remainingLength = radius - incommingRayLength;
         Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
         if(depth>0) {
             rays.add(new LightReflection(rayInfo.ray, strength));
         }
-        if (remainingLength > 1 && rayInfo.ray.length() > 1) {
+        if (remainingLength > 1 && incommingRayLength > 1) {
             Line bounce = rayInfo.ray.bounce(rayInfo.collided);
             Line innerRaycast = bounce.length(remainingLength);
-            addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, totalDistance + rayInfo.ray.length(), occluders111);
+            addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, totalDistance + incommingRayLength, occluders111);
         }
     }
 
