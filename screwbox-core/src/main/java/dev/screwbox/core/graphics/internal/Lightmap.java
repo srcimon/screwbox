@@ -14,9 +14,6 @@ import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -224,58 +221,6 @@ final class Lightmap {
             spotLight.position().y() / scale - spotLight.radius() / scale,
             spotLight.radius() / scale * 2,
             spotLight.radius() / scale * 2);
-    }
-
-    public static class MaxAlphaComposite implements Composite, CompositeContext {
-
-        public static final MaxAlphaComposite INSTANCE = new MaxAlphaComposite();
-
-        private MaxAlphaComposite() {}
-
-        @Override
-        public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
-            return this; // Reuses this class instance as the context
-        }
-
-        @Override
-        public void dispose() {
-            // No resources to release
-        }
-
-        @Override
-        public void compose(Raster src, Raster dstIn, WritableRaster dstOut) {
-            int width = Math.min(src.getWidth(), dstIn.getWidth());
-            int height = Math.min(src.getHeight(), dstIn.getHeight());
-
-            int srcBands = src.getNumBands();
-            int dstBands = dstIn.getNumBands();
-
-            // Safe dynamic array allocation based on image color bands
-            int[] srcPix = new int[srcBands];
-            int[] dstPix = new int[dstBands];
-
-            // Identify the index of the alpha channel (usually the last channel)
-            int srcAlphaIdx = srcBands - 1;
-            int dstAlphaIdx = dstBands - 1;
-
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    src.getPixel(x + src.getMinX(), y + src.getMinY(), srcPix);
-                    dstIn.getPixel(x + dstIn.getMinX(), y + dstIn.getMinY(), dstPix);
-
-                    // Read alpha values safely
-                    int srcA = (srcBands > 3) ? srcPix[srcAlphaIdx] : 255;
-                    int dstA = (dstBands > 3) ? dstPix[dstAlphaIdx] : 255;
-
-                    // Output pixel data from the source with maximum alpha
-                    if (srcA >= dstA) {
-                        dstOut.setPixel(x + dstOut.getMinX(), y + dstOut.getMinY(), srcPix);
-                    } else {
-                        dstOut.setPixel(x + dstOut.getMinX(), y + dstOut.getMinY(), dstPix);
-                    }
-                }
-            }
-        }
     }
 
     private void renderIlluminationRay(IlluminationRay illuminationRay) {
