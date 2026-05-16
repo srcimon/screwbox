@@ -28,7 +28,7 @@ public class LightPhysics {
         final List<LightReflection> reflections = new ArrayList<>();
         var normal = Line.normal(position, radius);
         var relevant = allIntersecting(Bounds.atPosition(position, radius * 2, radius * 2));
-        for (double angle = 0; angle < 360; angle += 1) {
+        for (double angle = Angle.MIN_DEGREES; angle < Angle.MAX_DEGREES; angle += 1) {
             var raycast = Line.between(position, Angle.degrees(angle).rotateAroundCenter(position, normal.end()));
             addCascadingRays(0, radius, raycast, reflections, radius, 0, relevant);
 
@@ -169,14 +169,14 @@ public class LightPhysics {
             final double degrees = Angle.of(nearest).degrees();
             area.add(new FastSortingLine(nearest, degrees));
         }
-        if (minAngle == 0 && maxAngle == 360) {
+        if (minAngle == Angle.MIN_DEGREES && maxAngle == Angle.MAX_DEGREES) {
             area.sort(null);
         }
         final List<Vector> result = new ArrayList<>();
         for (var point : area) {
             result.add(point.line.end());
         }
-        if (minAngle != 0 || maxAngle != 360) {
+        if (minAngle != Angle.MIN_DEGREES || maxAngle != Angle.MAX_DEGREES) {
             result.add(lightBox.position());
         }
         result.add(result.getFirst());
@@ -238,7 +238,7 @@ public class LightPhysics {
 
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double minAngle, double maxAngle) {
         final List<Line> lightProbes = new ArrayList<>();
-        if (minAngle != 0 || maxAngle != 360 || lightOccluders.size() > INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT) {
+        if (minAngle != Angle.MIN_DEGREES || maxAngle != Angle.MAX_DEGREES || lightOccluders.size() > INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT) {
             final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
             for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
                 final Line raycast = Angle.degrees(angle).rotate(normal);

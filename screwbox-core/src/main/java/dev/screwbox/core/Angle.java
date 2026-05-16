@@ -24,9 +24,21 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static final double MIN_VALUE = 0;
-    private static final double MAX_VALUE = 360;
-    private static final Angle NONE = degrees(MIN_VALUE);
+    /**
+     * Returns the minimum degrees value for an {@link Angle}.
+     *
+     * @since 3.30.0
+     */
+    public static final double MIN_DEGREES = 0;
+
+    /**
+     * Returns the maximum degrees value for an {@link Angle}.
+     *
+     * @since 3.30.0
+     */
+    public static final double MAX_DEGREES = 360;
+
+    private static final Angle NONE = degrees(MIN_DEGREES);
 
     /**
      * Creates a new {@link Angle} by the specified {@link #degrees()}.
@@ -34,7 +46,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      * @see #degrees(double)
      */
     public Angle(final double degrees) {
-        this.degrees = degrees % MAX_VALUE;
+        this.degrees = degrees % MAX_DEGREES;
     }
 
     /**
@@ -59,7 +71,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      * @since 3.9.0
      */
     public static Angle circle(final Percent percent) {
-        return degrees(percent.value() * MAX_VALUE);
+        return degrees(percent.value() * MAX_DEGREES);
     }
 
     /**
@@ -71,7 +83,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      */
     public static Angle ofVector(final double x, final double y) {
         final double degrees = Math.toDegrees(atan2(x, -1 * y));
-        final double inRangeDegrees = degrees + Math.ceil(-degrees / MAX_VALUE) * MAX_VALUE;
+        final double inRangeDegrees = degrees + Math.ceil(-degrees / MAX_DEGREES) * MAX_DEGREES;
 
         return Angle.degrees(inRangeDegrees);
     }
@@ -125,14 +137,14 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      * Returns the inverted {@link Angle} ( 360° - current rotation).
      */
     public Angle invert() {
-        return Angle.degrees(MAX_VALUE - degrees);
+        return Angle.degrees(MAX_DEGREES - degrees);
     }
 
     /**
      * Returns {@code true}, if degrees of angle is zero.
      */
     public boolean isZero() {
-        return degrees == MIN_VALUE;
+        return degrees == MIN_DEGREES;
     }
 
     /**
@@ -269,10 +281,10 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     public Angle delta(final Angle other) {
         requireNonNull(other, "other must not be null");
         final double delta = other.degrees - degrees;
-        if (delta < -(MAX_VALUE / 2.0)) {
-            return Angle.degrees(delta + MAX_VALUE);
+        if (delta < -(MAX_DEGREES / 2.0)) {
+            return Angle.degrees(delta + MAX_DEGREES);
         }
-        return Angle.degrees(delta > (MAX_VALUE / 2.0) ? delta - MAX_VALUE : delta);
+        return Angle.degrees(delta > (MAX_DEGREES / 2.0) ? delta - MAX_DEGREES : delta);
     }
 
     @Override
