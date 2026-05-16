@@ -312,7 +312,7 @@ public final class Line implements Serializable, Comparable<Line> {
 
         // 1. Calculate the incoming vector (I) and keep its original length
         Vector incoming = Vector.of(end.x() - start.x(), end.y() - start.y());
-        double incomingLength = incoming.length();
+
         Vector iNormalized = incoming.normalize();
         // 2. Calculate the wall vector (W)
         Vector wall = Vector.of(other.end.x() - other.start.x(), other.end.y() - other.start.y());
@@ -333,10 +333,7 @@ public final class Line implements Serializable, Comparable<Line> {
         double ry = iNormalized.y() - 2 * dotProduct * nNormalized.y();
 
         // 6. Scale the reflection direction by the original length to maintain speed/distance
-        double destX = end.x() + (rx * incomingLength);
-        double destY = end.y() + (ry * incomingLength);
-
-        // 7. Construct the new line starting at the bounce point going to the destination point
-        return Line.between(end, Vector.$(destX, destY));
+        double length = length();
+        return Line.between(end, end.add(rx * length, ry * length));
     }
 }
