@@ -37,11 +37,11 @@ public class LightPhysics {
     }
 
     private void addCascadingRays(int depth, double radius, Line raycast, List<LightReflection> rays, double totalRadius, double totalDistance, List<Occluder> relevantOccluders) {
-        var rayInfo = findRay(raycast, relevantOccluders);
+        var rayInfo = findBoundce(raycast, relevantOccluders);
         Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
 
         if (depth > 0) {
-            rays.add(new LightReflection(rayInfo.ray, strength));
+            rays.add(new LightReflection(rayInfo.bounce==null?raycast:Line.between(raycast.start(), rayInfo.bounce.start()), strength));
         }
         if (rayInfo.bounce == null) {
             return;
@@ -60,7 +60,7 @@ public class LightPhysics {
 
     }
 
-    private static RayInfo findRay(final Line raycast, final List<Occluder> rayOccluders) {
+    private static RayInfo findBoundce(final Line raycast, final List<Occluder> rayOccluders) {
         double minDist = Double.MAX_VALUE;
         Line collidedLine = null;
         Vector nearest = null;
