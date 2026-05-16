@@ -178,7 +178,6 @@ public class LightPhysics {
         if (minAngle != Angle.MIN_DEGREES || maxAngle != Angle.MAX_DEGREES) {
             result.add(lightBox.position());
         }
-        result.add(result.getFirst());
         return result;
     }
 
