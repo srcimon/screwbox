@@ -20,7 +20,7 @@ public class LightPhysics {
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
-    public record IlluminationRay(int reflections, Line ray, Percent strength) {
+    public record IlluminationRay(Line ray, Percent strength) {
 
     }
 
@@ -44,7 +44,7 @@ public class LightPhysics {
         var remainingLength = radius - rayInfo.ray.length();
         Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
         if(depth>0) {
-            rays.add(new IlluminationRay(depth, rayInfo.ray, strength));
+            rays.add(new IlluminationRay(rayInfo.ray, strength));
         }
         if (remainingLength > 1 && rayInfo.ray.length() > 1) {
             Line bounce = rayInfo.ray.bounce(rayInfo.collided);
