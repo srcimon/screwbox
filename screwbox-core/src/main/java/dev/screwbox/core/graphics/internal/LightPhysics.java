@@ -2,8 +2,10 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class LightPhysics {
         final var normal = Line.normal(position, -radius);
         final var lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
         final var relevantOccluders = allIntersecting(lightBox);
-        for (double degrees = minAngle; degrees < maxAngle; degrees += 1) {
+        for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
             var raycast = Angle.degrees(degrees).rotate(normal);
             addCascadingRays(0, radius, raycast, reflections, radius, 0, relevantOccluders);
         }
@@ -51,7 +53,7 @@ public class LightPhysics {
         var remainingLength = radius - incommingRayLength;
 
 
-        if (remainingLength > 1 && incommingRayLength > 1 && depth <= 2) {
+        if (remainingLength > 1 && incommingRayLength > 1 && depth <= 2) {//TODO config
             Line innerRaycast = bounce.length(remainingLength);
             addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, totalDistance + incommingRayLength, relevantOccluders);
         }
