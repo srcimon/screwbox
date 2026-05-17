@@ -46,7 +46,7 @@ public class PlaygroundApp {
              #       B   #
              #############
             """);
-
+//TODO reduce brightness after first hit!!!
         screwBox.window().setCursor(MouseCursor.HIDDEN);
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
         screwBox.graphics().camera().setZoom(3);

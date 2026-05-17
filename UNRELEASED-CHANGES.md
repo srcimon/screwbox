@@ -1,10 +1,11 @@
 ### 🚀 Features & improvements
 
-- ...
+- Prevent colors from getting lost when inverting opacity of image
 
 ### 🪛 Bug Fixes
 
 - Fixed flickering lights when adding lights after starting light rendering
+- Fixed graphics issue when using colored lights
 
 ### 🧽 Cleanup & refactoring
 

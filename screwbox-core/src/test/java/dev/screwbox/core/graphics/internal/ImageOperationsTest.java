@@ -4,7 +4,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -14,6 +13,7 @@ import java.awt.image.BufferedImage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 class ImageOperationsTest {
 
@@ -31,25 +31,23 @@ class ImageOperationsTest {
     @Test
     void invertOpacity_supportedType_invertsOpacity() {
         var image = Frame.fromFile("transparent.png").image();
-        assertThat(Frame.fromImage(image).colorAt(0,0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(Frame.fromImage(image).colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
 
         var supportedImage = ImageOperations.cloneImage(image);
 
         ImageOperations.invertOpacity(supportedImage, false);
 
-        assertThat(Frame.fromImage(supportedImage).colorAt(0,0)).isEqualTo(Color.BLACK);
+        assertThat(Frame.fromImage(supportedImage).colorAt(0, 0)).isEqualTo(Color.BLACK);
     }
 
     @Test
     void invertOpacity_preventTransparentColoredPixels_preventsTransparentPixelsWhenColored() {
-        var image = Sprite.pixel(Color.RED).singleImage();
+        var image = Sprite.pixel(Color.BLUE).singleImage();
         var supportedImage = ImageOperations.cloneImage(image);
 
-        System.out.println(Frame.fromImage(supportedImage).colorAt(0,0));
         ImageOperations.invertOpacity(supportedImage, true);
-        System.out.println(Frame.fromImage(supportedImage).colorAt(0,0));
 
-        assertThat(Frame.fromImage(supportedImage).colorAt(0,0)).isEqualTo(Color.BLACK);
+        assertThat(Frame.fromImage(supportedImage).colorAt(0, 0).opacity().value()).isEqualTo(0.004, offset(0.001));
     }
 
     @Test
