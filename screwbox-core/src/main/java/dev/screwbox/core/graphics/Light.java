@@ -23,9 +23,6 @@ import java.util.function.Supplier;
 public interface Light {
 
     //TODO document
-    Light addIndirectLight(Vector position, double radius, Color color);
-
-    //TODO document
     Light addDirectionalLight(Line source, double distance, Color color);
 
     /**

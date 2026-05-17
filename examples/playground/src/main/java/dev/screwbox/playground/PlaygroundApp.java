@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
@@ -8,6 +9,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.ai.BoidComponent;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
@@ -31,7 +33,7 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
         var map = TileMap.fromString("""
-            ###########
+            ############
             #         #
             ###   B  ##
             ###  B #######
@@ -47,7 +49,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new IndirectLightSystem())
             .addSystem(new LogFpsSystem())
-            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(100)).add(new IndirectLightComponent(100)))
+            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new ConeLightComponent(Angle.degrees(49), Angle.degrees(45), 120)).add(new IndirectLightComponent(100)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("wall")
                     .bounds(tile.bounds())
@@ -60,8 +62,7 @@ public class PlaygroundApp {
                 )
                 .assign('C', tile -> new Entity().name("camera")
                     .bounds(tile.bounds())
-                    .add(new CameraTargetComponent(), c -> c.followSpeed = 10000)
-                )
+                    .add(new CameraTargetComponent(), c -> c.followSpeed = 10000))
                 .assign('B', tile -> new Entity().name("boid")
                     .bounds(tile.bounds())
                     .add(new BoidComponent(), b -> {

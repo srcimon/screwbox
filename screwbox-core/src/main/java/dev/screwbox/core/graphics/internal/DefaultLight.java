@@ -72,15 +72,6 @@ public class DefaultLight implements Light, Updatable {
     }
 
     @Override
-    public Light addIndirectLight(final Vector position, final double radius, final Color color) {
-        autoTurnOnLight();
-        for (final var renderer : renderers) {
-            renderer.addIllumination(position, radius, color);
-        }
-        return this;
-    }
-
-    @Override
     public Light addDirectionalLight(final Line source, final double distance, final Color color) {
         autoTurnOnLight();
         for (final var renderer : renderers) {

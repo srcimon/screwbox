@@ -68,20 +68,6 @@ class LightRenderer {
         }
     }
 
-    public void addIllumination(final Vector position, final double radius, final Color color) {
-        tasks.add(() -> {
-            final Bounds lightBox = createLightbox(position, radius);
-            if (isVisible(lightBox) && !lightPhysics.isOccluded(position)) {
-                final List<LightPhysics.LightReflection> rays = lightPhysics.calculateLightReflections(position, radius);
-                for (final var ray : rays) {
-                    final Offset start = viewport.toCanvas(ray.ray().start());
-                    final Offset end = viewport.toCanvas(ray.ray().end());
-                    lightmap.addIlluminationRay(new Lightmap.IlluminationRay(start, end, color.opacity(color.opacity().multiply(ray.strength().value()))));
-                }
-            }
-        });
-    }
-
     public void addConeLight(final Vector position, final Angle direction, final Angle cone, final double radius, final Color color) {
         final double minRotation = direction.degrees() - cone.degrees() / 2.0;
         final double maxRotation = direction.degrees() + cone.degrees() / 2.0;
@@ -101,8 +87,19 @@ class LightRenderer {
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);
                 lightmap.addPointLight(new Lightmap.PointLight(offset, screenRadius, area, color));
+                addIndirectLight(position, radius, color, minAngle, maxAngle);
             }
         });
+    }
+
+    private void addIndirectLight(final Vector position, final double radius, final Color color, final double minAngle, final double maxAngle) {
+        //TODO if config indirect light is enabled
+        var reflections = lightPhysics.calculateLightReflections(position, radius, minAngle-180, maxAngle-180);
+        for (var ray : reflections) {
+            final Offset start = viewport.toCanvas(ray.ray().start());
+            final Offset end = viewport.toCanvas(ray.ray().end());
+            lightmap.addIlluminationRay(new Lightmap.IlluminationRay(start, end, color.opacity(color.opacity().multiply(ray.strength().value()))));
+        }
     }
 
     public void addDirectionalLight(final Line source, final double distance, final Color color) {
