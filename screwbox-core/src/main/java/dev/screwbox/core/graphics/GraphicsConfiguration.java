@@ -51,6 +51,11 @@ public class GraphicsConfiguration {
         return isIndirectLightEnabled;
     }
 
+    //TODO document
+    public GraphicsConfiguration toggleIndirectLightEnabled() {
+        return setIndirectLightEnabled(!isIndirectLightEnabled());
+    }
+
     /**
      * Returns the configured limit of cells used for rendering shockwaves. Default Value is 10,000.
      *
