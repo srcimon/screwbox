@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Ease;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
@@ -48,8 +49,8 @@ public class LightPhysics {
         final double actualDistanceAtEnd = totalDistance + currentRayLength;
 
         // 3. Korrekte Stärkenberechnung ohne Workaround
-        double remainingPercent = Math.max(0.0, 1.0 - (actualDistanceAtEnd / totalRadius));
-        Percent strength = Percent.of(remainingPercent);
+        double remainingPercent = Math.max(0.0, 1.0 - actualDistanceAtEnd / totalRadius);
+        Percent strength = Ease.SQUARE_OUT.applyOn(Percent.of(remainingPercent));
 
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
@@ -62,7 +63,7 @@ public class LightPhysics {
 
         final double remainingLength = radius - currentRayLength;
 
-        if (remainingLength > 1 && currentRayLength > 1 && depth <= 2) {
+        if (remainingLength > 0 && currentRayLength > 1 && depth <= 2) {
             Line innerRaycast = bounce.length(remainingLength);
             // Reiche die aktualisierte Gesamtdistanz weiter
             addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, actualDistanceAtEnd, relevantOccluders);
