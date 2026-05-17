@@ -36,6 +36,20 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
+    private boolean isIndirectLightEnabled = true;
+
+    //TODO document
+    //TODO add to reference
+    public GraphicsConfiguration setIndirectLightEnabled(final boolean isIndirectLightEnabled) {
+        this.isIndirectLightEnabled = isIndirectLightEnabled;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_ENABLED);
+        return this;
+    }
+
+    //TODO document
+    public boolean isIndirectLightEnabled() {
+        return isIndirectLightEnabled;
+    }
 
     /**
      * Returns the configured limit of cells used for rendering shockwaves. Default Value is 10,000.

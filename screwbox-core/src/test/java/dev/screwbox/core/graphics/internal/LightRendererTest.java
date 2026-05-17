@@ -7,6 +7,7 @@ import dev.screwbox.core.Polygon;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
@@ -54,7 +55,7 @@ class LightRendererTest {
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         executor = Executors.newSingleThreadExecutor();
         final var lightmap = new Lightmap(viewport.canvas().size(), 4, Percent.max());
-        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, true, lightmap, postFilter -> postFilter);
+        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, new GraphicsConfiguration(), lightmap, postFilter -> postFilter);
     }
 
     @Test
