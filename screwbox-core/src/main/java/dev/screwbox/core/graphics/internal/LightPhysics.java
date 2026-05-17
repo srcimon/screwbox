@@ -24,6 +24,7 @@ public class LightPhysics {
 
     }
 
+    //TODO add github task for indirect light in directional light
     //TODO reduce light amount based on reflections
     //TODO configure depth of light reflections or simply one?
     public List<IndirectLightRay> calculateIndirectLight(final Bounds lightBox, final double minAngle, final double maxAngle) {
@@ -43,15 +44,14 @@ public class LightPhysics {
         Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
 
         if (depth > 0) {
-            Line ray = bounce == null ? raycast : Line.between(raycast.start(), bounce.start());
+            Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
             rays.add(new IndirectLightRay(ray, strength));
         }
-        if (bounce == null) {
+        if (isNull(bounce)) {
             return;
         }
-        double incommingRayLength = raycast.start().distanceTo(bounce.start());
-        var remainingLength = radius - incommingRayLength;
-
+        final double incommingRayLength = raycast.start().distanceTo(bounce.start());
+        final var remainingLength = radius - incommingRayLength;
 
         if (remainingLength > 1 && incommingRayLength > 1 && depth <= 2) {//TODO config
             Line innerRaycast = bounce.length(remainingLength);
