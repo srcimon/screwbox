@@ -117,8 +117,8 @@ final class Lightmap {
         for (final var areaLight : areaLights) {
             renderAreaLight(areaLight);
         }
-        for (final var illuminationRay : lightRays) {
-            renderIlluminationRay(illuminationRay);
+        for (final var lightRay : lightRays) {
+            renderLightRay(lightRay);
         }
         graphics.dispose();
         ImageOperations.invertOpacity(image);
@@ -224,7 +224,7 @@ final class Lightmap {
             spotLight.radius() / scale * 2);
     }
 
-    private void renderIlluminationRay(LightRay lightRay) {
+    private void renderLightRay(LightRay lightRay) {
         final int startX = (int) (lightRay.start.x() / (double) scale);
         final int startY = (int) (lightRay.start.y() / (double) scale);
         final int endX = (int) (lightRay.end.x() / (double) scale);
@@ -232,7 +232,7 @@ final class Lightmap {
 
         graphics.setComposite(MAX_ALPHA_COMPOSITE);
         graphics.setColor(AwtMapper.toAwtColor(lightRay.color()));
-        GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(lightRay.color.opacity(1)), endX, endY, FADE_TO_COLOR);//TODO workaround makrer
+        GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(lightRay.color), endX, endY, FADE_TO_COLOR);//TODO workaround makrer
 
         graphics.setPaint(gradient);
 

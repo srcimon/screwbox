@@ -41,21 +41,31 @@ public class LightPhysics {
 
     private void addCascadingRays(int depth, double radius, Line raycast, List<IndirectLight> rays, double totalRadius, double totalDistance, List<Occluder> relevantOccluders) {
         var bounce = findBounce(raycast, relevantOccluders);
-        Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
+
+        // 1. Berechne die Länge des aktuellen Segments
+        final double currentRayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
+        // 2. Addiere sie zur Gesamtdistanz für die exakte Position dieses Strahls
+        final double actualDistanceAtEnd = totalDistance + currentRayLength;
+
+        // 3. Korrekte Stärkenberechnung ohne Workaround
+        double remainingPercent = Math.max(0.0, 1.0 - (actualDistanceAtEnd / totalRadius));
+        Percent strength = Percent.of(remainingPercent);
 
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
             rays.add(new IndirectLight(ray, strength));
         }
+
         if (isNull(bounce)) {
             return;
         }
-        final double incommingRayLength = raycast.start().distanceTo(bounce.start());
-        final var remainingLength = radius - incommingRayLength;
 
-        if (remainingLength > 1 && incommingRayLength > 1 && depth <= 2) {//TODO config
+        final double remainingLength = radius - currentRayLength;
+
+        if (remainingLength > 1 && currentRayLength > 1 && depth <= 2) {
             Line innerRaycast = bounce.length(remainingLength);
-            addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, totalDistance + incommingRayLength, relevantOccluders);
+            // Reiche die aktualisierte Gesamtdistanz weiter
+            addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, actualDistanceAtEnd, relevantOccluders);
         }
     }
 
