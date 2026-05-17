@@ -121,7 +121,7 @@ final class Lightmap {
             renderLightRay(lightRay);
         }
         graphics.dispose();
-        ImageOperations.invertOpacity(image);
+        ImageOperations.invertOpacity(image, true);
         return image;
     }
 

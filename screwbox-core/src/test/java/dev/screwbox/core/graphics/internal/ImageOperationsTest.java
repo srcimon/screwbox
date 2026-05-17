@@ -3,6 +3,8 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -21,7 +23,7 @@ class ImageOperationsTest {
     void invertOpacity_wrongType_throwsException() {
         var image = Frame.fromFile("transparent.png").image();
 
-        assertThatThrownBy(() -> ImageOperations.invertOpacity(image))
+        assertThatThrownBy(() -> ImageOperations.invertOpacity(image, false))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("image type not supported: 6");
     }
@@ -33,7 +35,19 @@ class ImageOperationsTest {
 
         var supportedImage = ImageOperations.cloneImage(image);
 
-        ImageOperations.invertOpacity(supportedImage);
+        ImageOperations.invertOpacity(supportedImage, false);
+
+        assertThat(Frame.fromImage(supportedImage).colorAt(0,0)).isEqualTo(Color.BLACK);
+    }
+
+    @Test
+    void invertOpacity_preventTransparentColoredPixels_preventsTransparentPixelsWhenColored() {
+        var image = Sprite.pixel(Color.RED).singleImage();
+        var supportedImage = ImageOperations.cloneImage(image);
+
+        System.out.println(Frame.fromImage(supportedImage).colorAt(0,0));
+        ImageOperations.invertOpacity(supportedImage, true);
+        System.out.println(Frame.fromImage(supportedImage).colorAt(0,0));
 
         assertThat(Frame.fromImage(supportedImage).colorAt(0,0)).isEqualTo(Color.BLACK);
     }

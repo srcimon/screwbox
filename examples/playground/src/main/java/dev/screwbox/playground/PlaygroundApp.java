@@ -23,8 +23,11 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.LensFlare;
+import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.core.window.MouseCursor;
 
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 
@@ -44,13 +47,14 @@ public class PlaygroundApp {
              #############
             """);
 
+        screwBox.window().setCursor(MouseCursor.HIDDEN);
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new DebugSystem())
             .addSystem(new LogFpsSystem())
-            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new ConeLightComponent(Angle.degrees(49), Angle.degrees(45), 120)))
+            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(120, Color.hex("#700000"))))
             .addEntity(new Entity().bounds(map.bounds().scale(4)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(10)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("wall")
@@ -65,7 +69,7 @@ public class PlaygroundApp {
                 .assign('C', tile -> new Entity().name("camera")
                     .bounds(tile.bounds())
                     .add(new CameraTargetComponent(), c -> c.followSpeed = 10000))
-                .assign('B', tile -> new Entity().name("boid")
+                .assign('x', tile -> new Entity().name("boid")
                     .bounds(tile.bounds())
                     .add(new BoidComponent(), b -> {
                         b.velocity = 20;

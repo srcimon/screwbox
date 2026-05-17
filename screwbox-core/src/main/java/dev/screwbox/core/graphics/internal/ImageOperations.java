@@ -1,7 +1,10 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -62,7 +65,7 @@ public final class ImageOperations {
         graphics.dispose();
         return newImage;
     }
-    
+
     public static BufferedImage createImage(final int width, final int height) {
         return isNull(GRAPHICS_CONFIGURATION)
             ? new BufferedImage(width, height, TYPE_INT_ARGB)
@@ -110,15 +113,18 @@ public final class ImageOperations {
 
     /**
      * Inverts opacity of {@link BufferedImage}. Supports only {@link BufferedImage#TYPE_INT_ARGB} and {@link BufferedImage#TYPE_INT_ARGB_PRE} at the moment.
+     *
+     * @param preserveColor specify if colored pixels should be prevented from getting totally transparent
      */
-    public static void invertOpacity(final BufferedImage image) {
+    public static void invertOpacity(final BufferedImage image, final boolean preserveColor) {
         Validate.isTrue(() -> image.getType() == TYPE_INT_ARGB_PRE || image.getType() == TYPE_INT_ARGB, "image type not supported: " + image.getType());
         final int[] pixels = getPixelValues(image);
         final int numPixels = pixels.length;
         for (int i = 0; i < numPixels; i++) {
             final int currentPixel = pixels[i];
-            final int invertedAlpha = 255 - ((currentPixel >> 24) & 0xFF);
             final int rgbChannels = currentPixel & 0x00FFFFFF;
+            final int minOpacity = rgbChannels != 0 && preserveColor ? 1 : 0;
+            int invertedAlpha = Math.max(minOpacity, 255 - ((currentPixel >> 24) & 0xFF));
             pixels[i] = (invertedAlpha << 24) | rgbChannels;
         }
     }
