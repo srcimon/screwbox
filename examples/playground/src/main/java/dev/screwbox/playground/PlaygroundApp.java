@@ -46,7 +46,7 @@ public class PlaygroundApp {
              #       B   #
              #############
             """);
-//TODO reduce brightness after first hit!!!
+
         screwBox.window().setCursor(MouseCursor.HIDDEN);
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
         screwBox.graphics().camera().setZoom(3);
@@ -54,7 +54,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new DebugSystem())
             .addSystem(new LogFpsSystem())
-            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(120, Color.hex("#700000"))))
+            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(120, Color.BLACK)))
             .addEntity(new Entity().bounds(map.bounds().scale(4)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(10)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("wall")

@@ -49,7 +49,7 @@ public class LightPhysics {
         final double actualDistanceAtEnd = totalDistance + currentRayLength;
 
         // 3. Korrekte Stärkenberechnung ohne Workaround
-        double remainingPercent = Math.max(0.0, 1.0 - actualDistanceAtEnd / totalRadius);
+        double remainingPercent = Math.max(0.0, 1.0 - actualDistanceAtEnd / totalRadius );//TODO- depth * 0.5
         Percent strength = Ease.SQUARE_OUT.applyOn(Percent.of(remainingPercent));
 
         if (depth > 0) {
