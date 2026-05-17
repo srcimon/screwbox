@@ -38,7 +38,7 @@ final class Lightmap {
 
     }
 
-    public record IlluminationRay(Offset start, Offset end, Color color) {
+    public record LightRay(Offset start, Offset end, Color color) {
 
     }
 
@@ -54,10 +54,10 @@ final class Lightmap {
     private final List<DirectionalLight> directionalLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
     private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
-    private final List<IlluminationRay> illuminationRays = new ArrayList<>();
+    private final List<LightRay> lightRays = new ArrayList<>();
 
-    public void addIlluminationRay(final IlluminationRay ray) {
-        illuminationRays.add(ray);
+    public void addLightRay(final LightRay ray) {
+        lightRays.add(ray);
     }
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
@@ -117,7 +117,7 @@ final class Lightmap {
         for (final var areaLight : areaLights) {
             renderAreaLight(areaLight);
         }
-        for (final var illuminationRay : illuminationRays) {
+        for (final var illuminationRay : lightRays) {
             renderIlluminationRay(illuminationRay);
         }
         graphics.dispose();
@@ -224,15 +224,15 @@ final class Lightmap {
             spotLight.radius() / scale * 2);
     }
 
-    private void renderIlluminationRay(IlluminationRay illuminationRay) {
-        final int startX = (int) (illuminationRay.start.x() / (double) scale);
-        final int startY = (int) (illuminationRay.start.y() / (double) scale);
-        final int endX = (int) (illuminationRay.end.x() / (double) scale);
-        final int endY = (int) (illuminationRay.end.y() / (double) scale);
+    private void renderIlluminationRay(LightRay lightRay) {
+        final int startX = (int) (lightRay.start.x() / (double) scale);
+        final int startY = (int) (lightRay.start.y() / (double) scale);
+        final int endX = (int) (lightRay.end.x() / (double) scale);
+        final int endY = (int) (lightRay.end.y() / (double) scale);
 
         graphics.setComposite(MAX_ALPHA_COMPOSITE);
-        graphics.setColor(AwtMapper.toAwtColor(illuminationRay.color()));
-        GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(illuminationRay.color.opacity(1)), endX, endY, FADE_TO_COLOR);//TODO workaround makrer
+        graphics.setColor(AwtMapper.toAwtColor(lightRay.color()));
+        GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(lightRay.color.opacity(1)), endX, endY, FADE_TO_COLOR);//TODO workaround makrer
 
         graphics.setPaint(gradient);
 
