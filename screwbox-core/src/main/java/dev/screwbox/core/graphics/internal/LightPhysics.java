@@ -2,10 +2,8 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 
 import java.util.ArrayList;
@@ -26,11 +24,11 @@ public class LightPhysics {
 
     }
 
-    public List<LightReflection> calculateLightReflections(final Vector position, final double radius, final double minAngle, final double maxAngle) {
+    public List<LightReflection> calculateLightReflections(final Bounds lightBox, final double minAngle, final double maxAngle) {
         final List<LightReflection> reflections = new ArrayList<>();
-        final var normal = Line.normal(position, -radius);
-        final var lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+        final var normal = createNormalOfLightBox(lightBox);
         final var relevantOccluders = allIntersecting(lightBox);
+        final double radius = lightBox.height() / 2.0;
         for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
             var raycast = Angle.degrees(degrees).rotate(normal);
             addCascadingRays(0, radius, raycast, reflections, radius, 0, relevantOccluders);
@@ -239,7 +237,7 @@ public class LightPhysics {
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double minAngle, double maxAngle) {
         final List<Line> lightProbes = new ArrayList<>();
         if (minAngle != Angle.MIN_DEGREES || maxAngle != Angle.MAX_DEGREES || lightOccluders.size() > INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT) {
-            final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
+            final Line normal = createNormalOfLightBox(lightBox);
             for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
                 final Line raycast = Angle.degrees(angle).rotate(normal);
                 lightProbes.add(findNearest(raycast, lightOccluders));
@@ -259,6 +257,10 @@ public class LightPhysics {
         lightProbes.add(Line.between(lightBox.position(), lightBox.topRight()));
 
         return lightProbes;
+    }
+
+    private static Line createNormalOfLightBox(final Bounds lightBox) {
+        return Line.normal(lightBox.position(), -lightBox.height() / 2.0);
     }
 
     private static List<Line> calculateLightProbes(final DirectionalLightBox lightBox, final List<Occluder> lightOccluders) {

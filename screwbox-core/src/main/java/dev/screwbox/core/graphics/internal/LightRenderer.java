@@ -87,14 +87,14 @@ class LightRenderer {
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);
                 lightmap.addPointLight(new Lightmap.PointLight(offset, screenRadius, area, color));
-                addIndirectLight(position, radius, color, minAngle, maxAngle);
+                addIndirectLight(lightBox, color, minAngle, maxAngle);
             }
         });
     }
 
-    private void addIndirectLight(final Vector position, final double radius, final Color color, final double minAngle, final double maxAngle) {
+    private void addIndirectLight(final Bounds lightBox, final Color color, final double minAngle, final double maxAngle) {
         //TODO if config indirect light is enabled
-        final var indirectLights = lightPhysics.calculateLightReflections(position, radius, minAngle, maxAngle);
+        final var indirectLights = lightPhysics.calculateLightReflections(lightBox, minAngle, maxAngle);
         for (var indirectLight : indirectLights) {
             final Offset start = viewport.toCanvas(indirectLight.ray().start());
             final Offset end = viewport.toCanvas(indirectLight.ray().end());
