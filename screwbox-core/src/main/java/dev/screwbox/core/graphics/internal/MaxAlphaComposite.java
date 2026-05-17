@@ -7,12 +7,6 @@ import java.awt.image.WritableRaster;
 
 public class MaxAlphaComposite implements Composite, CompositeContext {
 
-    public static final MaxAlphaComposite INSTANCE = new MaxAlphaComposite();
-
-    private MaxAlphaComposite() {
-        // hide constructor
-    }
-
     @Override
     public CompositeContext createContext(final ColorModel srcColorModel, final ColorModel dstColorModel, final RenderingHints hints) {
         return this;

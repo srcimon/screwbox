@@ -10,7 +10,7 @@ class MaxAlphaCompositeTest {
     void testCompositeContext() {
         var image = ImageOperations.toBufferedImage(SpriteBundle.SMOKE.get().singleImage());
         var graphics = image.createGraphics();
-        graphics.setComposite(MaxAlphaComposite.INSTANCE);
+        graphics.setComposite(new MaxAlphaComposite());
 
         graphics.drawImage(SpriteBundle.DOT_WHITE.get().singleImage(), 0, 0, null);
 

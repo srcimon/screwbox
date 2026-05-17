@@ -42,6 +42,7 @@ final class Lightmap {
 
     }
 
+    private static final MaxAlphaComposite MAX_ALPHA_COMPOSITE = new MaxAlphaComposite();
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
     private final BufferedImage image;
     private final Graphics2D graphics;
@@ -224,27 +225,20 @@ final class Lightmap {
     }
 
     private void renderIlluminationRay(IlluminationRay illuminationRay) {
-        final var oldPaint = graphics.getPaint();
         final int startX = (int) (illuminationRay.start.x() / (double) scale);
         final int startY = (int) (illuminationRay.start.y() / (double) scale);
         final int endX = (int) (illuminationRay.end.x() / (double) scale);
         final int endY = (int) (illuminationRay.end.y() / (double) scale);
 
-        graphics.setComposite(MaxAlphaComposite.INSTANCE);
+        graphics.setComposite(MAX_ALPHA_COMPOSITE);
         graphics.setColor(AwtMapper.toAwtColor(illuminationRay.color()));
-        GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(illuminationRay.color.opacity(1)), endX, endY, AwtMapper.toAwtColor(Color.TRANSPARENT));
+        GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(illuminationRay.color.opacity(1)), endX, endY, FADE_TO_COLOR);//TODO workaround makrer
 
-        // Apply paint and thickness
         graphics.setPaint(gradient);
 
-        float config = 16.0f;
+        float config = 16.0f;//TODO push to config
         graphics.setStroke(new BasicStroke(config / scale));
-        graphics.drawLine(
-            startX,
-            startY,
-            endX,
-            endY);
-        graphics.setPaint(oldPaint);
+        graphics.drawLine(startX, startY, endX, endY);
     }
 
     private void renderAreaLight(final AreaLight light) {
