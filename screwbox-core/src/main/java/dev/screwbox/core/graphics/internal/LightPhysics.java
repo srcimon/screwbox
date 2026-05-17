@@ -24,6 +24,8 @@ public class LightPhysics {
 
     }
 
+    //TODO reduce light amount based on reflections
+    //TODO configure depth of light reflections or simply one?
     public List<IndirectLightRay> calculateIndirectLight(final Bounds lightBox, final double minAngle, final double maxAngle) {
         final List<IndirectLightRay> reflections = new ArrayList<>();
         final var normal = createNormalOfLightBox(lightBox);

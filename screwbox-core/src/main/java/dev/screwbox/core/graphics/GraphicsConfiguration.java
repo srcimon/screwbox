@@ -38,21 +38,36 @@ public class GraphicsConfiguration {
     private Percent lightQuality = Percent.quarter();
     private boolean isIndirectLightEnabled = true;
 
-    //TODO document
-    //TODO add to reference
+    //TODO changelog indirect light
+    //TODO add indirect light to graphics documentation
+
+    /**
+     * Specify, if indirect light will be cast when light hits occluders (expensive).
+     *
+     * @since 3.30.0
+     */
     public GraphicsConfiguration setIndirectLightEnabled(final boolean isIndirectLightEnabled) {
         this.isIndirectLightEnabled = isIndirectLightEnabled;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_ENABLED);
         return this;
     }
 
-    //TODO document
+    /**
+     * Returns {@code true} if indirect light is enabled.
+     *
+     * @since 3.30.0
+     */
     public boolean isIndirectLightEnabled() {
         return isIndirectLightEnabled;
     }
 
-    //TODO document
-    public GraphicsConfiguration toggleIndirectLightEnabled() {
+    /**
+     * Toggles indirect light on and off.
+     *
+     * @see #setIndirectLightEnabled(boolean)
+     * @since 3.30.0
+     */
+    public GraphicsConfiguration toggleIndirectLight() {
         return setIndirectLightEnabled(!isIndirectLightEnabled());
     }
 

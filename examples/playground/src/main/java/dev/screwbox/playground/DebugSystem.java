@@ -13,7 +13,7 @@ public class DebugSystem implements EntitySystem {
             cone.get(ConeLightComponent.class).direction = Angle.degrees(cone.get(ConeLightComponent.class).direction.degrees() + engine.mouse().unitsScrolled());
         }
         if(engine.mouse().isPressedLeft()) {
-            engine.graphics().configuration().toggleIndirectLightEnabled();
+            engine.graphics().configuration().toggleIndirectLight();
         }
     }
 }
