@@ -26,7 +26,7 @@ public class LightPhysics {
 
     public List<LightReflection> calculateLightReflections(final Vector position, final double radius, final double minAngle, final double maxAngle) {
         final List<LightReflection> reflections = new ArrayList<>();
-        final var normal = Angle.degrees(180).rotate(Line.normal(position, radius));//TODO why?
+        final var normal = Line.normal(position, -radius);
         final var lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
         final var relevantOccluders = allIntersecting(lightBox);
         for (double degrees = minAngle; degrees < maxAngle; degrees += 1) {
