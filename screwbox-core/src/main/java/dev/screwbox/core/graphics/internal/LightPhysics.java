@@ -20,12 +20,12 @@ public class LightPhysics {
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
-    public record LightReflection(Line ray, Percent strength) {
+    public record IndirectLightRay(Line ray, Percent strength) {
 
     }
 
-    public List<LightReflection> calculateLightReflections(final Bounds lightBox, final double minAngle, final double maxAngle) {
-        final List<LightReflection> reflections = new ArrayList<>();
+    public List<IndirectLightRay> calculateIndirectLight(final Bounds lightBox, final double minAngle, final double maxAngle) {
+        final List<IndirectLightRay> reflections = new ArrayList<>();
         final var normal = createNormalOfLightBox(lightBox);
         final var relevantOccluders = allIntersecting(lightBox);
         final double radius = lightBox.height() / 2.0;
@@ -36,13 +36,13 @@ public class LightPhysics {
         return reflections;
     }
 
-    private void addCascadingRays(int depth, double radius, Line raycast, List<LightReflection> rays, double totalRadius, double totalDistance, List<Occluder> relevantOccluders) {
+    private void addCascadingRays(int depth, double radius, Line raycast, List<IndirectLightRay> rays, double totalRadius, double totalDistance, List<Occluder> relevantOccluders) {
         var bounce = findBounce(raycast, relevantOccluders);
         Percent strength = Percent.of(totalRadius / totalDistance * 0.1);// <- workaround marker
 
         if (depth > 0) {
             Line ray = bounce == null ? raycast : Line.between(raycast.start(), bounce.start());
-            rays.add(new LightReflection(ray, strength));
+            rays.add(new IndirectLightRay(ray, strength));
         }
         if (bounce == null) {
             return;
