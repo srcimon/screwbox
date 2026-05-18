@@ -1,5 +1,7 @@
 ### 🚀 Features & improvements
 
+- Light from radial light sources creates indirect light when hitting an occluder (#1007)
+- Configure indirect light using `GraphicsConfiguration`
 - Prevent colors from getting lost when inverting opacity of image
 
 ### 🪛 Bug Fixes

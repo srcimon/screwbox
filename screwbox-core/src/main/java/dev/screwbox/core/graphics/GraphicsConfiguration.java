@@ -38,9 +38,7 @@ public class GraphicsConfiguration {
     private Percent lightQuality = Percent.quarter();
     private boolean isIndirectLightEnabled = true;
 
-    //TODO changelog indirect light
     //TODO add indirect light to graphics documentation
-
     /**
      * Specify, if indirect light will be cast when light hits occluders (expensive).
      *

@@ -10,9 +10,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.ai.BoidComponent;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.importing.ComplexBlueprint;
-import dev.screwbox.core.environment.importing.IdPool;
-import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
@@ -30,16 +27,10 @@ import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.LensFlare;
-import dev.screwbox.core.graphics.LensFlareBundle;
-import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.core.window.MouseCursor;
-
-import java.util.List;
 
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 
