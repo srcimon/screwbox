@@ -99,7 +99,7 @@ public class PlaygroundApp {
                     .add(new PhysicsComponent())
                     .add(new RenderComponent(Sprite.pixel(Color.RED)))
                     .add(new GlowComponent(20, Color.RED.opacity(0.6)))
-                    .add(new PointLightComponent(40, Color.RED))
+                    .add(new PointLightComponent(40, Color.BLACK))
                 ));
 
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);

@@ -11,6 +11,29 @@ import java.util.List;
 public class OptionsMenu extends UiMenu {
 
     public OptionsMenu() {
+        addGraphicsOptions();
+        addAudioOptions();
+
+        addItem("delete savegame")
+            .activeCondition(engine -> engine.environment().savegameFileExists("savegame.sav"))
+            .onActivate(engine -> engine.environment().deleteSavegameFile("savegame.sav"));
+
+        addItem("back").onActivate(this::onExit);
+    }
+
+    private void addAudioOptions() {
+        addItem(engine -> "Music Volume %.0f".formatted(engine.audio().configuration().musicVolume().value() / 0.25 * 25))
+            .onActivate(engine -> engine.audio().configuration().setMusicVolume(engine.audio().configuration().musicVolume().value() + 0.25 > 1
+                ? Percent.zero()
+                : Percent.of(engine.audio().configuration().musicVolume().value() + 0.25)));
+
+        addItem(engine -> "Effects Volume %.0f".formatted(engine.audio().configuration().effectVolume().value() / 0.25 * 25))
+            .onActivate(engine -> engine.audio().configuration().setEffectVolume(engine.audio().configuration().effectVolume().value() + 0.25 > 1
+                ? Percent.zero()
+                : Percent.of(engine.audio().configuration().effectVolume().value() + 0.25)));
+    }
+
+    private void addGraphicsOptions() {
         addItem(engine -> engine.graphics().configuration().isFullscreen()
             ? "switch to window"
             : "switch to fullscreen")
@@ -44,22 +67,6 @@ public class OptionsMenu extends UiMenu {
             engine.ui().setLayout(new ScrollingUiLayout());
             engine.ui().openMenu(new ResolutionOptionMenu(resolutions, resolution));
         });
-
-        addItem(engine -> "Music Volume %.0f".formatted(engine.audio().configuration().musicVolume().value() / 0.25 * 25))
-            .onActivate(engine -> engine.audio().configuration().setMusicVolume(engine.audio().configuration().musicVolume().value() + 0.25 > 1
-                ? Percent.zero()
-                : Percent.of(engine.audio().configuration().musicVolume().value() + 0.25)));
-
-        addItem(engine -> "Effects Volume %.0f".formatted(engine.audio().configuration().effectVolume().value() / 0.25 * 25))
-            .onActivate(engine -> engine.audio().configuration().setEffectVolume(engine.audio().configuration().effectVolume().value() + 0.25 > 1
-                ? Percent.zero()
-                : Percent.of(engine.audio().configuration().effectVolume().value() + 0.25)));
-
-        addItem("delete savegame")
-            .activeCondition(engine -> engine.environment().savegameFileExists("savegame.sav"))
-            .onActivate(engine -> engine.environment().deleteSavegameFile("savegame.sav"));
-
-        addItem("back").onActivate(this::onExit);
     }
 
     @Override
