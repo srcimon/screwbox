@@ -243,9 +243,6 @@ final class Lightmap {
             final int endX = (int) (ray.end.x() / (double) scale);
             final int endY = (int) (ray.end.y() / (double) scale);
 
-
-       //     graphics.setColor(AwtMapper.toAwtColor(ray.color()));
-
             graphics.setPaint(new GradientPaint(startX, startY, AwtMapper.toAwtColor(ray.color), endX, endY, FADE_TO_COLOR));
             graphics.drawLine(startX, startY, endX, endY);
         }
