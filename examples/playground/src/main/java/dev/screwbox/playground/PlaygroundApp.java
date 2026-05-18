@@ -82,15 +82,12 @@ public class PlaygroundApp {
                 .assign('C', tile -> new Entity().name("camera")
                     .bounds(tile.bounds())
                     .add(new CameraTargetComponent(), c -> c.followSpeed = 10000))
-                .assignComplex('R', new ComplexBlueprint<TileMap.Tile<Character>>() {
-                    @Override
-                    public List<Entity> assembleFrom(TileMap.Tile<Character> source, IdPool idPool) {
-                        var rope = SoftPhysicsSupport.createRope(source.position().addY(-source.bounds().height() / 2.0), source.position().addY(10), 3, idPool);
-                        rope.root().remove(PhysicsComponent.class);
-                        rope.root().add(new RopeRenderComponent(Color.ORANGE, 2));
-                        rope.root().add(new RopeOccluderComponent(ShadowOptions.rounded()));
-                        return rope;
-                    }
+                .assignComplex('R', (source, idPool) -> {
+                    var rope = SoftPhysicsSupport.createRope(source.position().addY(-source.bounds().height() / 2.0), source.position().addY(10), 3, idPool);
+                    rope.root().remove(PhysicsComponent.class);
+                    rope.root().add(new RopeRenderComponent(Color.ORANGE, 2));
+                    rope.root().add(new RopeOccluderComponent(ShadowOptions.rounded()));
+                    return rope;
                 })
                 .assign('B', tile -> new Entity().name("boid")
                     .bounds(tile.bounds())
