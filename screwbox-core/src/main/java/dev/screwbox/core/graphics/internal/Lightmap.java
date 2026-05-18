@@ -38,9 +38,15 @@ final class Lightmap {
 
     }
 
+    public record IndirectLightSource(ScreenBounds box, List<LightRay> rays) {
+
+
+    }
+
     public record LightRay(Offset start, Offset end, Color color) {
 
     }
+
 
     private static final MaxAlphaComposite MAX_ALPHA_COMPOSITE = new MaxAlphaComposite();
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
@@ -54,10 +60,10 @@ final class Lightmap {
     private final List<DirectionalLight> directionalLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
     private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
-    private final List<LightRay> lightRays = new ArrayList<>();
+    private final List<IndirectLightSource> indirectLightSources = new ArrayList<>();
 
-    public void addLightRay(final LightRay ray) {
-        lightRays.add(ray);
+    public void addIndirectLightSource(final IndirectLightSource indirectLightSource) {
+        this.indirectLightSources.add(indirectLightSource);
     }
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
@@ -73,7 +79,7 @@ final class Lightmap {
         this.fractions = new float[]{falloffValue, 1f};
     }
 
-    public void addBackdropOccluder(BackdropOccluder backdropOccluder) {
+    public void addBackdropOccluder(final BackdropOccluder backdropOccluder) {
         backdropOccluders.add(backdropOccluder);
     }
 
@@ -117,8 +123,8 @@ final class Lightmap {
         for (final var areaLight : areaLights) {
             renderAreaLight(areaLight);
         }
-        for (final var lightRay : lightRays) {
-            renderLightRay(lightRay);
+        for (final var indirectLightSource : indirectLightSources) {
+            renderIndirectLightSource(indirectLightSource);
         }
         graphics.dispose();
         ImageOperations.invertOpacity(image, true);
@@ -225,21 +231,24 @@ final class Lightmap {
     }
 
     //TODO support backdrop occluders
-    private void renderLightRay(final LightRay lightRay) {
-        final int startX = (int) (lightRay.start.x() / (double) scale);
-        final int startY = (int) (lightRay.start.y() / (double) scale);
-        final int endX = (int) (lightRay.end.x() / (double) scale);
-        final int endY = (int) (lightRay.end.y() / (double) scale);
-
+    private void renderIndirectLightSource(final IndirectLightSource indirectLightSource) {
         graphics.setComposite(MAX_ALPHA_COMPOSITE);
-        graphics.setColor(AwtMapper.toAwtColor(lightRay.color()));
-        GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(lightRay.color), endX, endY, FADE_TO_COLOR);//TODO workaround makrer
-
-        graphics.setPaint(gradient);
-
         float config = 16.0f;//TODO push to config
         graphics.setStroke(new BasicStroke(config / scale));
-        graphics.drawLine(startX, startY, endX, endY);
+
+        for (final var ray : indirectLightSource.rays) {
+            final int startX = (int) (ray.start.x() / (double) scale);
+            final int startY = (int) (ray.start.y() / (double) scale);
+            final int endX = (int) (ray.end.x() / (double) scale);
+            final int endY = (int) (ray.end.y() / (double) scale);
+
+
+            graphics.setColor(AwtMapper.toAwtColor(ray.color()));
+            GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(ray.color), endX, endY, FADE_TO_COLOR);//TODO workaround makrer
+
+            graphics.setPaint(gradient);
+            graphics.drawLine(startX, startY, endX, endY);
+        }
     }
 
     private void renderAreaLight(final AreaLight light) {
