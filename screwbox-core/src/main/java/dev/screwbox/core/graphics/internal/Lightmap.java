@@ -224,7 +224,8 @@ final class Lightmap {
             spotLight.radius() / scale * 2);
     }
 
-    private void renderLightRay(LightRay lightRay) {
+    //TODO support backdrop occluders
+    private void renderLightRay(final LightRay lightRay) {
         final int startX = (int) (lightRay.start.x() / (double) scale);
         final int startY = (int) (lightRay.start.y() / (double) scale);
         final int endX = (int) (lightRay.end.x() / (double) scale);
