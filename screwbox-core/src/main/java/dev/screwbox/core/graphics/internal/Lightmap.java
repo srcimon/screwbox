@@ -235,6 +235,7 @@ final class Lightmap {
         graphics.setComposite(MAX_ALPHA_COMPOSITE);
         float config = 16.0f;//TODO push to config
         graphics.setStroke(new BasicStroke(config / scale));
+        applyBackdropOccludersClip(indirectLightSource.box.center(), boundsToRectangle(indirectLightSource.box()), null);
 
         for (final var ray : indirectLightSource.rays) {
             final int startX = (int) (ray.start.x() / (double) scale);
@@ -243,12 +244,19 @@ final class Lightmap {
             final int endY = (int) (ray.end.y() / (double) scale);
 
 
-            graphics.setColor(AwtMapper.toAwtColor(ray.color()));
-            GradientPaint gradient = new GradientPaint(startX, startY, AwtMapper.toAwtColor(ray.color), endX, endY, FADE_TO_COLOR);//TODO workaround makrer
+       //     graphics.setColor(AwtMapper.toAwtColor(ray.color()));
 
-            graphics.setPaint(gradient);
+            graphics.setPaint(new GradientPaint(startX, startY, AwtMapper.toAwtColor(ray.color), endX, endY, FADE_TO_COLOR));
             graphics.drawLine(startX, startY, endX, endY);
         }
+    }
+
+    private Rectangle2D.Double boundsToRectangle(final ScreenBounds bounds) {
+        return new Rectangle2D.Double(
+            (double) bounds.x() / scale,
+            (double) bounds.y() / scale,
+            (double) bounds.width() / scale,
+            (double) bounds.height() / scale);
     }
 
     private void renderAreaLight(final AreaLight light) {
@@ -285,11 +293,7 @@ final class Lightmap {
             orthographicWall.width() / scale,
             orthographicWall.height() / scale);
 
-        final var clip = new Area(new Rectangle2D.Double(
-            (double) orthographicWall.x() / scale,
-            (double) orthographicWall.y() / scale,
-            (double) orthographicWall.width() / scale,
-            (double) orthographicWall.height() / scale));
+        final var clip = new Area(boundsToRectangle(orthographicWall));
 
         final int maxY = orthographicWall.offset().y() / scale + orthographicWall.height() / scale;
         for (final var pointLight : pointLights) {
