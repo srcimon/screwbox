@@ -25,7 +25,6 @@ public class LightPhysics {
 
     }
 
-    //TODO reduce light amount based on reflections
     //TODO configure depth of light reflections or simply one?
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
         final List<IndirectLight> reflections = new ArrayList<>();
@@ -40,29 +39,17 @@ public class LightPhysics {
     }
 
     private void addCascadingRays(int depth, double radius, Line raycast, List<IndirectLight> rays, double totalRadius, double totalDistance, List<Occluder> relevantOccluders) {
-        var bounce = findBounce(raycast, relevantOccluders);
-
-        // 1. Berechne die Länge des aktuellen Segments
+        final var bounce = findBounce(raycast, relevantOccluders);
         final double currentRayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
-        // 2. Addiere sie zur Gesamtdistanz für die exakte Position dieses Strahls
         final double actualDistanceAtEnd = totalDistance + currentRayLength;
-
-        // 3. Korrekte Stärkenberechnung ohne Workaround
-        double remainingPercent = Math.max(0.0, 1.0 - actualDistanceAtEnd / totalRadius );//TODO- depth * 0.5
-        Percent strength = Ease.SQUARE_OUT.applyOn(Percent.of(remainingPercent));
+        final var remainingStrength = Percent.of(Math.max(0.0, 1.0 - actualDistanceAtEnd / totalRadius));//TODO- depth * 0.5
 
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
-            rays.add(new IndirectLight(ray, strength));
+            rays.add(new IndirectLight(ray, Ease.SQUARE_OUT.applyOn(remainingStrength)));
         }
-
-        if (isNull(bounce)) {
-            return;
-        }
-
         final double remainingLength = radius - currentRayLength;
-
-        if (remainingLength > 0 && currentRayLength > 1 && depth <= 2) {
+        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 1 && depth <= 2) {
             Line innerRaycast = bounce.length(remainingLength);
             // Reiche die aktualisierte Gesamtdistanz weiter
             addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, actualDistanceAtEnd, relevantOccluders);
