@@ -5,10 +5,13 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.ai.BoidComponent;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.importing.ComplexBlueprint;
+import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
@@ -17,17 +20,26 @@ import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
+import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.softphysics.RopeOccluderComponent;
+import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.LensFlareBundle;
+import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.core.window.MouseCursor;
+
+import java.util.List;
 
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 
@@ -38,7 +50,7 @@ public class PlaygroundApp {
 
         var map = TileMap.fromString("""
             ############
-            #         #
+            #   R     #
             ###   B  ##
             ###  B #######
             ##           #
@@ -54,6 +66,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new DebugSystem())
             .addSystem(new LogFpsSystem())
+            .addEntity(new Entity().add(new GravityComponent(Vector.y(200))))
             .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(120, Color.BLACK)))
             .addEntity(new Entity().bounds(map.bounds().scale(4)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(10)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
@@ -69,7 +82,17 @@ public class PlaygroundApp {
                 .assign('C', tile -> new Entity().name("camera")
                     .bounds(tile.bounds())
                     .add(new CameraTargetComponent(), c -> c.followSpeed = 10000))
-                .assign('x', tile -> new Entity().name("boid")
+                .assignComplex('R', new ComplexBlueprint<TileMap.Tile<Character>>() {
+                    @Override
+                    public List<Entity> assembleFrom(TileMap.Tile<Character> source, IdPool idPool) {
+                        var rope = SoftPhysicsSupport.createRope(source.position().addY(-source.bounds().height() / 2.0), source.position().addY(10), 3, idPool);
+                        rope.root().remove(PhysicsComponent.class);
+                        rope.root().add(new RopeRenderComponent(Color.ORANGE, 2));
+                        rope.root().add(new RopeOccluderComponent(ShadowOptions.rounded()));
+                        return rope;
+                    }
+                })
+                .assign('B', tile -> new Entity().name("boid")
                     .bounds(tile.bounds())
                     .add(new BoidComponent(), b -> {
                         b.velocity = 20;
