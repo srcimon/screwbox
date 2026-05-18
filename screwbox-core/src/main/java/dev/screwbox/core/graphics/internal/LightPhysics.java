@@ -25,7 +25,6 @@ public class LightPhysics {
 
     }
 
-    //TODO add github task for indirect light in directional light
     //TODO reduce light amount based on reflections
     //TODO configure depth of light reflections or simply one?
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
