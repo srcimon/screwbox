@@ -64,7 +64,7 @@ public class LightPhysics {
             for (final var other : occluder.lines(raycast.start())) {
                 final var intersection = raycast.intersectionPoint(other);
                 if (nonNull(intersection)) {
-                    var distance = raycast.start().distanceTo(intersection);
+                    final var distance = raycast.start().distanceTo(intersection);
                     if (distance < minDist) {
                         collidedLine = other;
                         minDist = distance;
