@@ -22,7 +22,9 @@ import java.util.function.Supplier;
  */
 public interface Light {
 
-    //TODO document
+    /**
+     * Adds a directional light source emitted from the specified source within the specified distance and {@link Color}.
+     */
     Light addDirectionalLight(Line source, double distance, Color color);
 
     /**
