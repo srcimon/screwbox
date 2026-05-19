@@ -49,12 +49,19 @@ public class LightPhysics {
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
 
-            // Fading basierend auf der globalen Gesamtdistanz im Verhältnis zum totalRadius
-            final var rawStart = Percent.of( (distanceAtStart / totalRadius) * 0.1);//TODO use config
-            final var rawEnd = Percent.of( distanceAtEnd / totalRadius);
+            final var rawStart = Percent.of((distanceAtStart / totalRadius) * 0.1); //TODO use config
+            final var rawEnd = Percent.of(distanceAtEnd / totalRadius);
 
             Percent startStrength = Ease.SQUARE_OUT.applyOn(rawStart);
-            Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd);//TODO remove ease
+            Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd); //TODO remove ease
+
+            // --- Dämpfung basierend auf Reflexionstiefe ---
+            Percent dampening = Percent.of(0.2);
+            double reflectionDampening = Math.pow(dampening.invert().value(), depth );
+            startStrength = startStrength.multiply(reflectionDampening);
+            endStrength = endStrength.multiply(reflectionDampening);
+            // ----------------------------------------------
+
             rays.add(new IndirectLight(ray, startStrength, endStrength));
         }
 
@@ -62,7 +69,7 @@ public class LightPhysics {
         final double remainingLength = totalRadius - distanceAtEnd;
 
         // Wenn ein Aufprall stattgefunden hat und noch globales Budget übrig ist
-        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth <= 1) {
+        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth <= 2) {
             // Der reflektierte Strahl wird auf die exakte verbleibende Restlänge gestreckt
             Line innerRaycast = bounce.length(remainingLength);
 
