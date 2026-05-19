@@ -212,7 +212,10 @@ public final class Bounds implements Serializable {
      * @see #intersects(Bounds)
      */
     public boolean touches(final Bounds other) {
-        return expand(0.001).intersects(other);
+        return (maxX() + 0.0005) > (other.minX() - 0.0005) &&
+               (minX() - 0.0005) < (other.maxX() + 0.0005) &&
+               (maxY() + 0.0005) > (other.minY() - 0.0005) &&
+               (minY() - 0.0005) < (other.maxY() + 0.0005);
     }
 
     /**
