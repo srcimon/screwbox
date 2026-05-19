@@ -48,15 +48,15 @@ public class LightPhysics {
         // Nur indirekte Strahlen (ab dem ersten Aufprall) werden der Liste hinzugefügt
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
-
-            Percent intensityConfig = Percent.of(1);
+//TODO !!!! MISSING VIBRANT BRIGHT LIGHT
+            Percent intensityConfig = Percent.of(1);//TODO configure
             final var rawStart = Percent.of((distanceAtStart / totalRadius) * intensityConfig.rangeValue(0.05, 2)); //TODO use config
             final var rawEnd = Percent.of(distanceAtEnd / totalRadius);
             Percent startStrength = Ease.SQUARE_OUT.applyOn(rawStart);
             Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd); //TODO remove ease
 
             // --- Dämpfung basierend auf Reflexionstiefe ---
-            Percent dampening = Percent.of(0.2);
+            Percent dampening = Percent.of(0.2);//TODO configure
             double reflectionDampening = Math.pow(dampening.invert().value(), depth );
             startStrength = startStrength.multiply(reflectionDampening);
             endStrength = endStrength.multiply(reflectionDampening);
