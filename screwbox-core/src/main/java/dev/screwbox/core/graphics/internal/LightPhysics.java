@@ -55,7 +55,7 @@ public class LightPhysics {
             final var rawEnd = Percent.of(Math.max(0.0, 1.0 - (distanceAtEnd / totalRadius))).invert();
 
             Percent startStrength = Ease.SQUARE_OUT.applyOn(rawStart);
-            Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd);
+            Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd);//TODO remove ease
 
             rays.add(new IndirectLight(ray, startStrength, endStrength));
         }
