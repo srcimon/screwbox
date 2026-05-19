@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import static java.util.Objects.isNull;
-
 /**
  * The {@link Vector} represents a position or a distance in the 2d world. The
  * coordinates cannot be changed once the {@link Vector} is created.
@@ -25,7 +23,7 @@ public final class Vector implements Serializable {
 
     private final double x;
     private final double y;
-    private Double length;
+    private double length = -1;
 
     /**
      * Creates a new Instance of {@link Vector} at coordinates 0:0.
@@ -197,7 +195,7 @@ public final class Vector implements Serializable {
     public double distanceTo(final Vector other) {
         final double deltaX = x() - other.x;
         final double deltaY = y() - other.y;
-        return calculateLength(deltaX, deltaY);
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
     /**
@@ -241,14 +239,10 @@ public final class Vector implements Serializable {
      * Returns the length of the {@link Vector}.
      */
     public double length() {
-        if (isNull(length)) {
-            length = calculateLength(x, y);
+        if (length < 0) {
+            length = Math.sqrt(x * x + y * y);
         }
         return length;
-    }
-
-    private double calculateLength(final double x, final double y) {
-        return Math.sqrt(x * x + y * y);
     }
 
     /**
@@ -336,7 +330,7 @@ public final class Vector implements Serializable {
         return Vector.of(x / divisor, y / divisor);
     }
 
-    /**a
+    /**
      * Calculates the dot product of the two vectors.
      *
      * @see <a href="https://en.wikipedia.org/wiki/Dot_product">Wikipedia on Dot product</a>

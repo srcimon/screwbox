@@ -177,6 +177,9 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      * @see #rotateAroundCenter(Line)
      */
     public Line rotate(final Line line) {
+        if (isZero()) {
+            return line;
+        }
         requireNonNull(line, LINE_MUST_NOT_BE_NULL);
         final var newEnd = rotateAroundCenter(line.start(), line.end());
         return Line.between(line.start(), newEnd);
@@ -210,6 +213,9 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      */
     public Line rotateAroundCenter(final Line line) {
         requireNonNull(line, LINE_MUST_NOT_BE_NULL);
+        if(isZero()) {
+            return line;
+        }
         final var newEnd = rotateAroundCenter(line.center(), line.end());
         final var newStart = newEnd.substract(line.end()).invert().add(line.start());
         return Line.between(newStart, newEnd);
@@ -243,7 +249,6 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
         if (isZero()) {
             return point;
         }
-
         final double radians = radians();
         final double sinus = fastSin(radians);
         final double cosinus = fastCos(radians);
