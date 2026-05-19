@@ -232,7 +232,8 @@ final class Lightmap {
 
     //TODO support backdrop occluders
     private void renderIndirectLightSource(final IndirectLightSource indirectLightSource) {
-        graphics.setComposite(MAX_ALPHA_COMPOSITE);
+        graphics.setComposite(MAX_ALPHA_COMPOSITE);//TODO necessary?
+        //TODO missing shining glow from non experimental branch
         float config = 16.0f;//TODO push to config
         graphics.setStroke(new BasicStroke(config / scale,    BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         applyBackdropOccludersClip(indirectLightSource.box.center(), boundsToRectangle(indirectLightSource.box()), null);
