@@ -40,13 +40,13 @@ public class PlaygroundApp {
 
         var map = TileMap.fromString("""
             ############
-            #   R     #
+            #         #
             ###   B  ##
             ###  B ########
             ##         #  #
             ######  C  #  #
              #       B    #
-             #############
+             ##############
             """);
 
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
@@ -56,7 +56,7 @@ public class PlaygroundApp {
             .addSystem(new DebugSystem())
             .addSystem(new LogFpsSystem())
             .addEntity(new Entity().add(new GravityComponent(Vector.y(200))))
-            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(120, Color.BLACK)))
+            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(100, Color.BLACK)))
             .addEntity(new Entity().bounds(map.bounds().scale(4)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(10)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("wall")
@@ -78,7 +78,7 @@ public class PlaygroundApp {
                     rope.root().add(new RopeOccluderComponent(ShadowOptions.rounded()));
                     return rope;
                 })
-                .assign('_', tile -> new Entity().name("boid")
+                .assign('.', tile -> new Entity().name("boid")
                     .bounds(tile.bounds())
                     .add(new BoidComponent(), b -> {
                         b.velocity = 20;
