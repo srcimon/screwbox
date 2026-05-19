@@ -96,9 +96,8 @@ class LightRenderer {
 
     private void addIndirectLight(final Bounds lightBox, final Color color, final double minAngle, final double maxAngle) {
         if (configuration.isIndirectLightEnabled()) {
-            final Bounds configuredLightBox = lightBox.scale(0.9);    //TODO configure strength
-            final var indirectLights = lightPhysics.calculateIndirectLights(configuredLightBox, minAngle, maxAngle);
-            final var screenBox = viewport.toCanvas(configuredLightBox);
+            final var indirectLights = lightPhysics.calculateIndirectLights(lightBox, minAngle, maxAngle);
+            final var screenBox = viewport.toCanvas(lightBox);
             final List<Lightmap.LightRay> rays = new ArrayList<>();
             for (final var indirectLight : indirectLights) {
                 final Offset start = viewport.toCanvas(indirectLight.ray().start());

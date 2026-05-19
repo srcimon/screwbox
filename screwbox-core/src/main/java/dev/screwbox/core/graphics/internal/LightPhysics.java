@@ -62,7 +62,7 @@ public class LightPhysics {
         final double remainingLength = totalRadius - distanceAtEnd;
 
         // Wenn ein Aufprall stattgefunden hat und noch globales Budget übrig ist
-        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth <= 2) {
+        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth <= 1) {
             // Der reflektierte Strahl wird auf die exakte verbleibende Restlänge gestreckt
             Line innerRaycast = bounce.length(remainingLength);
 
