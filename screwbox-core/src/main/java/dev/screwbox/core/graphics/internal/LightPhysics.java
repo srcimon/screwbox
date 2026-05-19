@@ -50,7 +50,7 @@ public class LightPhysics {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
 
             Percent intensityConfig = Percent.of(1);
-            final var rawStart = Percent.of((distanceAtStart / totalRadius) * intensityConfig.rangeValue(0.0005, 2)); //TODO use config
+            final var rawStart = Percent.of((distanceAtStart / totalRadius) * intensityConfig.rangeValue(0.05, 2)); //TODO use config
             final var rawEnd = Percent.of(distanceAtEnd / totalRadius);
             Percent startStrength = Ease.SQUARE_OUT.applyOn(rawStart);
             Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd); //TODO remove ease
