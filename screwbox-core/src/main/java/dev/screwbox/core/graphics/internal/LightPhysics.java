@@ -49,14 +49,21 @@ public class LightPhysics {
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
 //TODO !!!! MISSING VIBRANT BRIGHT LIGHT
-            Percent intensityConfig = Percent.of(1);//TODO configure
-            final var rawStart = Percent.of((distanceAtStart / totalRadius) * intensityConfig.rangeValue(0.05, 2)); //TODO use config
+            Percent intensityConfig = Percent.of(1);
+
+            // Basis-Lichtabfall über die Distanz
+            final var rawStart = Percent.of(distanceAtStart / totalRadius);
             final var rawEnd = Percent.of(distanceAtEnd / totalRadius);
+
             Percent startStrength = Ease.SQUARE_OUT.applyOn(rawStart);
             Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd); //TODO remove ease
 
+            // --- 1. Intensität hochdrehen (Vibrant Bright Light) ---
+            startStrength = startStrength.multiply(intensityConfig.rangeValue(1, 8));
+            endStrength = endStrength.multiply(intensityConfig.rangeValue(1, 2));
+
             // --- Dämpfung basierend auf Reflexionstiefe ---
-            Percent dampening = Percent.of(0.2);//TODO configure
+            Percent dampening = Percent.of(0.3);//TODO configure
             double reflectionDampening = Math.pow(dampening.invert().value(), depth );
             startStrength = startStrength.multiply(reflectionDampening);
             endStrength = endStrength.multiply(reflectionDampening);
