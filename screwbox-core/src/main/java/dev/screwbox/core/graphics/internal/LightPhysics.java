@@ -50,11 +50,11 @@ public class LightPhysics {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
 
             // Fading basierend auf der globalen Gesamtdistanz im Verhältnis zum totalRadius
-            final var rawStart = Percent.of( 1.0 - (distanceAtStart / totalRadius)).invert();
-            final var rawEnd = Percent.of( 1.0 - (distanceAtEnd / totalRadius)).invert();
+            final var rawStart = Percent.of( 1.0 - (distanceAtStart / totalRadius));
+            final var rawEnd = Percent.of( 1.0 - (distanceAtEnd / totalRadius));
 
-            Percent startStrength = Ease.SQUARE_OUT.applyOn(rawStart);
-            Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd);//TODO remove ease
+            Percent startStrength = Ease.SQUARE_IN.applyOn(rawStart);
+            Percent endStrength = Ease.SQUARE_IN.applyOn(rawEnd);;//TODO remove ease
             rays.add(new IndirectLight(ray, startStrength, endStrength));
         }
 

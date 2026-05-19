@@ -234,7 +234,7 @@ final class Lightmap {
     private void renderIndirectLightSource(final IndirectLightSource indirectLightSource) {
         graphics.setComposite(MAX_ALPHA_COMPOSITE);
         float config = 16.0f;//TODO push to config
-        graphics.setStroke(new BasicStroke(config / scale));
+        graphics.setStroke(new BasicStroke(config / scale,    BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         applyBackdropOccludersClip(indirectLightSource.box.center(), boundsToRectangle(indirectLightSource.box()), null);
 
         for (final var ray : indirectLightSource.rays) {
