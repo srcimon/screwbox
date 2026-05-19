@@ -96,8 +96,7 @@ public final class Bounds implements Serializable {
         double maxX = minX;
         double minY = first.y();
         double maxY = minY;
-        for (int i = 1; i < positions.size(); i++) {
-            final var position = positions.get(i);
+        for (final Vector position : positions) {
             minX = Math.min(minX, position.x());
             maxX = Math.max(maxX, position.x());
             minY = Math.min(minY, position.y());
