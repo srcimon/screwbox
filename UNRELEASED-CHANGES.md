@@ -9,7 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Removed old workaround for flickering lights `Frame.nonGpuEnhancedFrame(...)`
-- Slightly optimized `Vector`, `Angle`, and `Bounds` for performance
+- Slightly optimized `Vector`, `Angle`, `Line` and `Bounds` for performance
 
 ### 📦 Dependency updates
 
