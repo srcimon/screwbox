@@ -30,7 +30,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
-import dev.screwbox.core.window.MouseCursor;
 
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 
@@ -50,7 +49,6 @@ public class PlaygroundApp {
              #############
             """);
 
-        screwBox.window().setCursor(MouseCursor.HIDDEN);
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
@@ -80,7 +78,7 @@ public class PlaygroundApp {
                     rope.root().add(new RopeOccluderComponent(ShadowOptions.rounded()));
                     return rope;
                 })
-                .assign('B', tile -> new Entity().name("boid")
+                .assign('_', tile -> new Entity().name("boid")
                     .bounds(tile.bounds())
                     .add(new BoidComponent(), b -> {
                         b.velocity = 20;
