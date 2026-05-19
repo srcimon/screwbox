@@ -38,25 +38,23 @@ public class LightPhysics {
         return reflections;
     }
 
-    private void addCascadingRays(int depth, Line raycast, List<IndirectLight> rays, double totalRadius, double totalDistance, List<Occluder> relevantOccluders) {
+    private void addCascadingRays(int depth, Line raycast, List<IndirectLight> rays, double totalRadius, double distanceAtStart, List<Occluder> relevantOccluders) {
         final var bounce = findBounce(raycast, relevantOccluders);
         final double currentRayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
 
         // Absolute Distanzen von der Lichtquelle aus gemessen
-        final double distanceAtStart = totalDistance;
-        final double distanceAtEnd = totalDistance + currentRayLength;
+        final double distanceAtEnd = distanceAtStart + currentRayLength;
 
         // Nur indirekte Strahlen (ab dem ersten Aufprall) werden der Liste hinzugefügt
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
 
             // Fading basierend auf der globalen Gesamtdistanz im Verhältnis zum totalRadius
-            final var rawStart = Percent.of(Math.max(0.0, 1.0 - (distanceAtStart / totalRadius))).invert();
-            final var rawEnd = Percent.of(Math.max(0.0, 1.0 - (distanceAtEnd / totalRadius))).invert();
+            final var rawStart = Percent.of( 1.0 - (distanceAtStart / totalRadius)).invert();
+            final var rawEnd = Percent.of( 1.0 - (distanceAtEnd / totalRadius)).invert();
 
             Percent startStrength = Ease.SQUARE_OUT.applyOn(rawStart);
             Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd);//TODO remove ease
-
             rays.add(new IndirectLight(ray, startStrength, endStrength));
         }
 
@@ -64,7 +62,7 @@ public class LightPhysics {
         final double remainingLength = totalRadius - distanceAtEnd;
 
         // Wenn ein Aufprall stattgefunden hat und noch globales Budget übrig ist
-        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 1 && depth <= 2) {
+        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth <= 2) {
             // Der reflektierte Strahl wird auf die exakte verbleibende Restlänge gestreckt
             Line innerRaycast = bounce.length(remainingLength);
 
