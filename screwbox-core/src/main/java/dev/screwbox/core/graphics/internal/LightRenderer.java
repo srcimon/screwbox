@@ -103,8 +103,9 @@ class LightRenderer {
             for (final var indirectLight : indirectLights) {
                 final Offset start = viewport.toCanvas(indirectLight.ray().start());
                 final Offset end = viewport.toCanvas(indirectLight.ray().end());
-                final Color rayColor = color.opacity(color.opacity().multiply(indirectLight.strength().value()));
-                rays.add(new Lightmap.LightRay(start, end, rayColor));
+                final Color startColor = color.opacity(color.opacity().multiply(indirectLight.startStrength().value()));
+                final Color endColor = color.opacity(color.opacity().multiply(indirectLight.endStrength().value()));
+                rays.add(new Lightmap.LightRay(start, end, startColor, endColor));
             }
             lightmap.addIndirectLightSource(new Lightmap.IndirectLightSource(screenBox, rays));
         }

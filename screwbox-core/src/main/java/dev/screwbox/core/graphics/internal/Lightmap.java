@@ -43,7 +43,7 @@ final class Lightmap {
 
     }
 
-    public record LightRay(Offset start, Offset end, Color color) {
+    public record LightRay(Offset start, Offset end, Color startColor, Color endColor) {
 
     }
 
@@ -243,7 +243,7 @@ final class Lightmap {
             final int endX = (int) (ray.end.x() / (double) scale);
             final int endY = (int) (ray.end.y() / (double) scale);
 
-            graphics.setPaint(new GradientPaint(startX, startY, AwtMapper.toAwtColor(ray.color), endX, endY, FADE_TO_COLOR));
+            graphics.setPaint(new GradientPaint(startX, startY, AwtMapper.toAwtColor(ray.startColor), endX, endY, AwtMapper.toAwtColor(ray.endColor)));
             graphics.drawLine(startX, startY, endX, endY);
         }
     }

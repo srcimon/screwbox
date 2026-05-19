@@ -21,9 +21,7 @@ public class LightPhysics {
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
-    public record IndirectLight(Line ray, Percent strength) {
-
-    }
+    public record IndirectLight(Line ray, Percent startStrength, Percent endStrength) { }
 
     //TODO configure depth of light reflections or simply one?
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
@@ -31,31 +29,49 @@ public class LightPhysics {
         final var normal = createNormalOfLightBox(lightBox);
         final var relevantOccluders = allIntersecting(lightBox);
         final double radius = lightBox.height() / 2.0;
+
         for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
-            var raycast = Angle.degrees(degrees).rotate(normal);
-            addCascadingRays(0, radius, raycast, reflections, radius, 0, relevantOccluders);
+            // Der initiale Strahl startet mit der vollen Länge des globalen Radius
+            var raycast = Angle.degrees(degrees).rotate(normal).length(radius);
+            addCascadingRays(0, raycast, reflections, radius, 0.0, relevantOccluders);
         }
         return reflections;
     }
 
-    private void addCascadingRays(int depth, double radius, Line raycast, List<IndirectLight> rays, double totalRadius, double totalDistance, List<Occluder> relevantOccluders) {
+    private void addCascadingRays(int depth, Line raycast, List<IndirectLight> rays, double totalRadius, double totalDistance, List<Occluder> relevantOccluders) {
         final var bounce = findBounce(raycast, relevantOccluders);
         final double currentRayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
-        final double actualDistanceAtEnd = totalDistance + currentRayLength;
-        final var remainingStrength = Percent.of(Math.max(0.0, 1.0 - actualDistanceAtEnd / totalRadius));//TODO- depth * 0.5
 
+        // Absolute Distanzen von der Lichtquelle aus gemessen
+        final double distanceAtStart = totalDistance;
+        final double distanceAtEnd = totalDistance + currentRayLength;
+
+        // Nur indirekte Strahlen (ab dem ersten Aufprall) werden der Liste hinzugefügt
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
-            rays.add(new IndirectLight(ray, Ease.SQUARE_OUT.applyOn(remainingStrength)));
+
+            // Fading basierend auf der globalen Gesamtdistanz im Verhältnis zum totalRadius
+            final var rawStart = Percent.of(Math.max(0.0, 1.0 - (distanceAtStart / totalRadius))).invert();
+            final var rawEnd = Percent.of(Math.max(0.0, 1.0 - (distanceAtEnd / totalRadius))).invert();
+
+            Percent startStrength = Ease.SQUARE_OUT.applyOn(rawStart);
+            Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd);
+
+            rays.add(new IndirectLight(ray, startStrength, endStrength));
         }
-        final double remainingLength = radius - currentRayLength;
+
+        // Berechne das verbleibende globale Lichtbudget
+        final double remainingLength = totalRadius - distanceAtEnd;
+
+        // Wenn ein Aufprall stattgefunden hat und noch globales Budget übrig ist
         if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 1 && depth <= 2) {
+            // Der reflektierte Strahl wird auf die exakte verbleibende Restlänge gestreckt
             Line innerRaycast = bounce.length(remainingLength);
-            // Reiche die aktualisierte Gesamtdistanz weiter
-            addCascadingRays(depth + 1, remainingLength, innerRaycast, rays, totalRadius, actualDistanceAtEnd, relevantOccluders);
+
+            // Rekursion: distanceAtEnd wird als akkumulierte Gesamtdistanz weitergegeben
+            addCascadingRays(depth + 1, innerRaycast, rays, totalRadius, distanceAtEnd, relevantOccluders);
         }
     }
-
     private static Line findBounce(final Line raycast, final List<Occluder> rayOccluders) {
         double minDist = Double.MAX_VALUE;
         Line collidedLine = null;
