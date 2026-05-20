@@ -63,7 +63,7 @@ public class LightPhysics {
             endStrength = endStrength.multiply(intensityConfig.rangeValue(1, 5));
 
             // --- Dämpfung basierend auf Reflexionstiefe ---
-            Percent dampening = Percent.of(0.2);//TODO configure
+            Percent dampening = Percent.of(0.0);//TODO configure
             double reflectionDampening = Math.pow(dampening.invert().value(), depth );
             startStrength = startStrength.multiply(reflectionDampening);
             endStrength = endStrength.multiply(reflectionDampening);
