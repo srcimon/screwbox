@@ -230,7 +230,6 @@ final class Lightmap {
             spotLight.radius() / scale * 2);
     }
 
-    //TODO support backdrop occluders
     private void renderIndirectLightSource(final IndirectLightSource indirectLightSource) {
         graphics.setComposite(MAX_ALPHA_COMPOSITE);
         float config = 16.0f;//TODO push to config
