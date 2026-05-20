@@ -48,7 +48,6 @@ public class PlaygroundApp {
              #       B   #    #   #
              #######################
             """);
-
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment()
