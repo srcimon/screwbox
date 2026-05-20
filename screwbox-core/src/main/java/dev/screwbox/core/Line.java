@@ -315,43 +315,37 @@ public final class Line implements Serializable, Comparable<Line> {
                (end.y() - start.y()) * (position.x() - start.x());
     }
 
-    //TODO document
-    //TODO changelog
-    //TODO refactor
+    /**
+     * Bounces the {@link Line} of an obstacle and returns the resulting {@link Line} with the same length.
+     * Does not require the {@link Line lines} to touch.
+     *
+     * @since 3.30.0
+     */
     public Line bounce(final Line obstacle) {
         Objects.requireNonNull(obstacle, "other must not be null");
 
-        Vector asVector = asVector();
-        Vector otherAsVector = asVector.normalize();
-        Vector obstacleVector = obstacle.asVector();
+        final Vector otherAsVector = asVector().normalize();
+        final Vector obstacleVector = obstacle.asVector();
 
-        // 3. Find the normal vector (N) perpendicular to the wall: (-y, x)
-        Vector normal = Vector.of(-obstacleVector.y(), obstacleVector.x());
-        Vector nNormalized = normal.normalize();
+        Vector perpendicularNormal = Vector.of(-obstacleVector.y(), obstacleVector.x()).normalize();
 
-        // 4. Ensure the normal vector faces the incoming vector (Dot product must be negative)
-        if (otherAsVector.dotProduct(nNormalized) > 0) {
-            nNormalized = nNormalized.invert();
+        if (otherAsVector.dotProduct(perpendicularNormal) > 0) {
+            perpendicularNormal = perpendicularNormal.invert();
         }
 
-        // 5. Apply reflection formula: R = I - 2 * (I dot N) * N
-        double dotProduct = otherAsVector.dotProduct(nNormalized);
+        final double dotProduct = otherAsVector.dotProduct(perpendicularNormal);
+        final double rx = otherAsVector.x() - 2 * dotProduct * perpendicularNormal.x();
+        final double ry = otherAsVector.y() - 2 * dotProduct * perpendicularNormal.y();
 
-        double rx = otherAsVector.x() - 2 * dotProduct * nNormalized.x();
-        double ry = otherAsVector.y() - 2 * dotProduct * nNormalized.y();
-
-        // 6. Scale the reflection direction by the original length to maintain speed/distance
-        double length = length();
+        final double length = length();
         return Line.between(end, end.add(rx * length, ry * length));
     }
 
-    //TODO changelog
     //TODO javadoc
     public Line reverse() {
         return Line.between(end, start);
     }
 
-    //TODO changelog
     //TODO javadoc
     //TODO test
     public Vector asVector() {
