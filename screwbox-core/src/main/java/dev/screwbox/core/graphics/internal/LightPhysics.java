@@ -21,7 +21,8 @@ public class LightPhysics {
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
-    public record IndirectLight(Line ray, Percent startStrength, Percent endStrength) { }
+    public record IndirectLight(Line ray, Percent startStrength, Percent endStrength) {
+    }
 
     //TODO configure depth of light reflections or simply one?
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
@@ -63,7 +64,7 @@ public class LightPhysics {
 
             // --- Dämpfung basierend auf Reflexionstiefe ---
             Percent dampening = Percent.of(0.1);//TODO configure
-            double reflectionDampening = Math.pow(dampening.invert().value(), depth );
+            double reflectionDampening = Math.pow(dampening.invert().value(), depth);
             startStrength = startStrength.multiply(reflectionDampening);
             endStrength = endStrength.multiply(reflectionDampening);
             // ----------------------------------------------
@@ -83,28 +84,6 @@ public class LightPhysics {
             addCascadingRays(depth + 1, innerRaycast, rays, totalRadius, distanceAtEnd, relevantOccluders);
         }
     }
-    private static Line findBounce(final Line raycast, final List<Occluder> rayOccluders) {
-        double minDist = Double.MAX_VALUE;
-        Line collidedLine = null;
-        Vector nearest = null;
-        for (final var occluder : rayOccluders) {
-            for (final var other : occluder.lines(raycast.start())) {
-                final var intersection = raycast.intersectionPoint(other);
-                if (nonNull(intersection)) {
-                    final var distance = raycast.start().distanceTo(intersection);
-                    if (distance < minDist) {
-                        collidedLine = other;
-                        minDist = distance;
-                        nearest = intersection;
-                    }
-                }
-            }
-        }
-        return isNull(nearest)
-            ? null
-            : Line.between(raycast.start(), nearest).bounce(collidedLine);
-    }
-
 
     private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
         @Override
@@ -258,6 +237,28 @@ public class LightPhysics {
             }
         }
         return nearest == null ? raycast : Line.between(raycast.start(), nearest);
+    }
+
+    private static Line findBounce(final Line raycast, final List<Occluder> rayOccluders) {
+        double minDist = Double.MAX_VALUE;
+        Line collidedLine = null;
+        Vector nearest = null;
+        for (final var occluder : rayOccluders) {
+            for (final var other : occluder.lines(raycast.start())) {
+                final var intersection = raycast.intersectionPoint(other);
+                if (nonNull(intersection)) {
+                    final var distance = raycast.start().distanceTo(intersection);
+                    if (distance < minDist) {
+                        collidedLine = other;
+                        minDist = distance;
+                        nearest = intersection;
+                    }
+                }
+            }
+        }
+        return isNull(nearest)
+            ? null
+            : Line.between(raycast.start(), nearest).bounce(collidedLine);
     }
 
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double minAngle, double maxAngle) {
