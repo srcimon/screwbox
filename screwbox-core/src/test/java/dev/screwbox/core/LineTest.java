@@ -9,6 +9,7 @@ import java.util.List;
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
 
 class LineTest {
@@ -275,6 +276,13 @@ class LineTest {
         assertThat(result.end().y()).isEqualTo(-221.77, offset(0.01));
     }
 
+    @Test
+    void bounce_otherIsNull_throwsException() {
+        var line = Line.between($(250, -130.94), $(-19.19, 41.39));
+        assertThatThrownBy(() -> line.bounce(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("other must not be null");
+    }
     @Test
     void reverse_reversesStartAndEnd() {
         var line = Line.between($(250, -130.94), $(-19.19, 41.39));
