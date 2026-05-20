@@ -16,6 +16,7 @@
 - Removed old workaround for flickering lights `Frame.nonGpuEnhancedFrame(...)`
 - Slightly optimized `Vector`, `Angle`, `Line` and `Bounds` for performance
 - Opened `Angle` constants for min/max values
+- Fixed substract typo in method names
 
 ### 📦 Dependency updates
 

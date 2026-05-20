@@ -106,7 +106,7 @@ public final class Line implements Serializable, Comparable<Line> {
         }
 
         final var deltaLine = asVector();
-        final var deltaStart = point.substract(start);
+        final var deltaStart = point.subtract(start);
 
         final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
 
@@ -129,7 +129,7 @@ public final class Line implements Serializable, Comparable<Line> {
      */
     public Optional<Line> perpendicular(final Vector point) {
         final var deltaLine = asVector();
-        final var deltaStart = point.substract(start);
+        final var deltaStart = point.subtract(start);
 
         final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
 
@@ -268,7 +268,7 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.22.0
      */
     public Line length(final double distance) {
-        return Line.between(start, start.add(end.substract(start).length(distance)));
+        return Line.between(start, start.add(end.subtract(start).length(distance)));
     }
 
     /**
@@ -357,6 +357,6 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.30.0
      */
     public Vector asVector() {
-        return end.substract(start);
+        return end.subtract(start);
     }
 }

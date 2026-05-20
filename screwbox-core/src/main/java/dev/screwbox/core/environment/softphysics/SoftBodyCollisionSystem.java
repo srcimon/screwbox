@@ -79,7 +79,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
                 if (nonNull(intersection)) {
                     final Entity entity = check.firstSoftBody.nodes.get(nodeNr);
                     check.secondCollision.collidedSegments.add(segmentNr);
-                    entity.moveBy(intersection.substract(entity.position()).multiply(RESPONSE_FACTOR));
+                    entity.moveBy(intersection.subtract(entity.position()).multiply(RESPONSE_FACTOR));
                     final var physicsComponent = entity.get(PhysicsComponent.class);
                     if (nonNull(physicsComponent)) {
                         physicsComponent.velocity = physicsComponent.velocity.multiply(ON_COLLISION_DAMPING).reduce(resolveSpeed);
@@ -114,7 +114,7 @@ public class SoftBodyCollisionSystem implements EntitySystem {
             }
         }
 
-        final Vector intrusionMotion = closest.closestPoint(node).substract(node).multiply(0.5);
+        final Vector intrusionMotion = closest.closestPoint(node).subtract(node).multiply(0.5);
         final Entity intruder = check.firstSoftBody.nodes.get(nodeNr);
         check.firstCollision.collidedNodes.add(nodeNr);
         intruder.moveBy(intrusionMotion);

@@ -276,8 +276,8 @@ public class LightPhysics {
 
     private static List<Line> calculateLightProbes(final DirectionalLightBox lightBox, final List<Occluder> lightOccluders) {
         final List<Line> lightProbes = new ArrayList<>();
-        final var left = lightBox.source().end().substract(lightBox.source().start()).length(0.0000000001);
-        final var right = lightBox.source().start().substract(lightBox.source().end()).length(0.0000000001);
+        final var left = lightBox.source().end().subtract(lightBox.source().start()).length(0.0000000001);
+        final var right = lightBox.source().start().subtract(lightBox.source().end()).length(0.0000000001);
 
         for (final var occluder : lightOccluders) {
             addProbes(lightBox, occluder.bounds.origin(), lightProbes, left, right);

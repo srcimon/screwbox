@@ -44,7 +44,7 @@ public class ToggleSplitscreenSystem implements EntitySystem {
         final var exitingEntities = engine.environment().fetchAll(Archetype.ofSpacial());
         for (var viewport : engine.graphics().viewports()) {
             if (!viewport.equals(engine.graphics().primaryViewport())) {
-                Vector cameraMovement = ListUtil.randomFrom(exitingEntities).position().substract(viewport.camera().position());
+                Vector cameraMovement = ListUtil.randomFrom(exitingEntities).position().subtract(viewport.camera().position());
                 viewport.camera().moveWithinVisualBounds(cameraMovement, configuration.bounds());
             }
         }

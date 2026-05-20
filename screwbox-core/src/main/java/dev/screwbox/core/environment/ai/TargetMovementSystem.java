@@ -18,7 +18,7 @@ public class TargetMovementSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(TARGETS)) {
             final var physics = entity.get(PhysicsComponent.class);
             final var target = entity.get(TargetMovementComponent.class);
-            var destinationVector = target.position.substract(entity.position());
+            var destinationVector = target.position.subtract(entity.position());
             double deltaAcceleration = engine.loop().delta() * target.acceleration;
             Vector speedChange = destinationVector.length(deltaAcceleration);
 

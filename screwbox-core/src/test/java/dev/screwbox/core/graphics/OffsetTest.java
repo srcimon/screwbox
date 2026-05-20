@@ -27,10 +27,10 @@ class OffsetTest {
     }
 
     @Test
-    void substract_returnsNewOffset() {
+    void subtract_returnsNewOffset() {
         Offset offset = Offset.at(5, 30);
 
-        Offset result = offset.substract(Offset.at(4, 3));
+        Offset result = offset.subtract(Offset.at(4, 3));
 
         assertThat(result).isEqualTo(Offset.at(1, 27));
     }

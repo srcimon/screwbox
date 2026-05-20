@@ -150,7 +150,7 @@ public class Percent implements Serializable {
      * Returns a new instance with the current value minus the given value. Returns
      * {@link Percent#zero()} when the sum is below 0 percent.
      */
-    public Percent substract(final double value) {
+    public Percent subtract(final double value) {
         return new Percent(this.value - value);
     }
 

@@ -53,17 +53,17 @@ class PercentTest {
     }
 
     @Test
-    void substract_valueIsLessThanPercentage_reducesValue() {
+    void subtract_valueIsLessThanPercentage_reducesValue() {
         Percent percentage = Percent.of(0.8);
-        Percent result = percentage.substract(0.4);
+        Percent result = percentage.subtract(0.4);
 
         assertThat(result).isEqualTo(Percent.of(0.4));
     }
 
     @Test
-    void substract_valueIsReducedBelowMinValue_setsValueToMinValue() {
+    void subtract_valueIsReducedBelowMinValue_setsValueToMinValue() {
         Percent percentage = Percent.of(0.2);
-        Percent result = percentage.substract(0.7);
+        Percent result = percentage.subtract(0.7);
 
         assertThat(result).isEqualTo(Percent.zero());
     }

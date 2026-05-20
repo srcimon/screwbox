@@ -95,7 +95,7 @@ public final class SoftPhysicsSupport {
 
         final var rope = new RopeEntities();
         for (int nodeNr = nodeCount - 1; nodeNr >= 0; nodeNr--) {
-            final Vector nodePosition = end.add(start.substract(end).multiply((double) nodeNr / (nodeCount - 1)));
+            final Vector nodePosition = end.add(start.subtract(end).multiply((double) nodeNr / (nodeCount - 1)));
             rope.add(new Entity(idPool.allocateId())
                 .bounds(Bounds.atPosition(nodePosition, 1, 1))
                 .add(new PhysicsComponent())

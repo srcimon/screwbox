@@ -160,10 +160,10 @@ class VectorTest {
     }
 
     @Test
-    void substract_substractsOtherVector() {
+    void subtract_substractsOtherVector() {
         Vector original = $(20, 12);
 
-        Vector result = original.substract($(4, 2));
+        Vector result = original.subtract($(4, 2));
 
         assertThat(result).isEqualTo($(16, 10));
     }

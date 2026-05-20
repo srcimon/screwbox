@@ -129,7 +129,7 @@ public final class Vector implements Serializable {
      * Returns a new {@link Vector} representing the subtraction of the current and
      * the given and the other {@link Vector}.
      */
-    public Vector substract(final Vector other) {
+    public Vector subtract(final Vector other) {
         return of(x - other.x, y - other.y);
     }
 

@@ -155,7 +155,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      */
     public static Angle of(final Line line) {
         requireNonNull(line, LINE_MUST_NOT_BE_NULL);
-        return ofVector(line.end().substract(line.start()));
+        return ofVector(line.end().subtract(line.start()));
     }
 
     /**
@@ -165,7 +165,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      * @since 3.18.0
      */
     public static Angle ofLineBetweenPoints(final Vector start, final Vector end) {
-        return ofVector(end.substract(start));
+        return ofVector(end.subtract(start));
     }
 
     /**
@@ -217,7 +217,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
             return line;
         }
         final var newEnd = rotateAroundCenter(line.center(), line.end());
-        final var newStart = newEnd.substract(line.end()).invert().add(line.start());
+        final var newStart = newEnd.subtract(line.end()).invert().add(line.start());
         return Line.between(newStart, newEnd);
     }
 

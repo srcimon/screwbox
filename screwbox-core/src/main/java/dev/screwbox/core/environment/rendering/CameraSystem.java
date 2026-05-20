@@ -32,8 +32,8 @@ public class CameraSystem implements EntitySystem {
                 }
 
                 final Vector distance = cameraPosition
-                        .substract(targetBounds.position())
-                        .substract(target.shift);
+                        .subtract(targetBounds.position())
+                        .subtract(target.shift);
 
                 final double value = engine.loop().delta(-1 * target.followSpeed);
                 final Vector cameraMovement = distance.multiply(Math.clamp(value, -1, 1));
