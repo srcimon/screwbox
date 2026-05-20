@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Ease;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
@@ -26,12 +25,12 @@ public class LightPhysics {
 
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
         final List<IndirectLight> lights = new ArrayList<>();
-        final var normal = createNormalOfLightBox(lightBox);
         final var relevantOccluders = allIntersecting(lightBox);
         final double radius = lightBox.height() / 2.0;
+        final var normal = createNormalOfLightBox(lightBox);
 
         for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
-            final var raycast = Angle.degrees(degrees).rotate(normal).length(radius);
+            final var raycast = Angle.degrees(degrees).rotate(normal);
             addCascadingRays(0, raycast, lights, radius, 0.0, relevantOccluders);
         }
         return lights;
@@ -48,8 +47,8 @@ public class LightPhysics {
             Percent intensityConfig = Percent.of(0.9);
 
             // Basis-Lichtabfall über die Distanz
-            final var rawStart = Percent.of(1-distanceAtStart / totalRadius);
-            final var rawEnd = Percent.of(1-distanceAtEnd / totalRadius);
+            final var rawStart = Percent.of(1 - distanceAtStart / totalRadius);
+            final var rawEnd = Percent.of(1 - distanceAtEnd / totalRadius);
 
             Percent startStrength = rawStart;
             Percent endStrength = rawEnd; //TODO remove ease
