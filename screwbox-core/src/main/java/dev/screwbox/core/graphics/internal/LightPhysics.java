@@ -25,30 +25,26 @@ public class LightPhysics {
     }
 
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
-        final List<IndirectLight> reflections = new ArrayList<>();
+        final List<IndirectLight> lights = new ArrayList<>();
         final var normal = createNormalOfLightBox(lightBox);
         final var relevantOccluders = allIntersecting(lightBox);
         final double radius = lightBox.height() / 2.0;
 
         for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
-            // Der initiale Strahl startet mit der vollen Länge des globalen Radius
-            var raycast = Angle.degrees(degrees).rotate(normal).length(radius);
-            addCascadingRays(0, raycast, reflections, radius, 0.0, relevantOccluders);
+            final var raycast = Angle.degrees(degrees).rotate(normal).length(radius);
+            addCascadingRays(0, raycast, lights, radius, 0.0, relevantOccluders);
         }
-        return reflections;
+        return lights;
     }
 
-    private void addCascadingRays(int depth, Line raycast, List<IndirectLight> rays, double totalRadius, double distanceAtStart, List<Occluder> relevantOccluders) {
+    private void addCascadingRays(final int depth, final Line raycast, final List<IndirectLight> lights, final double totalRadius, final double distanceAtStart, final List<Occluder> relevantOccluders) {
         final var bounce = findBounce(raycast, relevantOccluders);
         final double currentRayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
 
-        // Absolute Distanzen von der Lichtquelle aus gemessen
         final double distanceAtEnd = distanceAtStart + currentRayLength;
 
-        // Nur indirekte Strahlen (ab dem ersten Aufprall) werden der Liste hinzugefügt
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
-//TODO !!!! MISSING VIBRANT BRIGHT LIGHT
             Percent intensityConfig = Percent.of(0.9);
 
             // Basis-Lichtabfall über die Distanz
@@ -68,7 +64,7 @@ public class LightPhysics {
             endStrength = endStrength.multiply(reflectionDampening);
             // ----------------------------------------------
 
-            rays.add(new IndirectLight(ray, startStrength, endStrength));
+            lights.add(new IndirectLight(ray, startStrength, endStrength));
         }
 
         // Berechne das verbleibende globale Lichtbudget
@@ -80,7 +76,7 @@ public class LightPhysics {
             Line innerRaycast = bounce.length(remainingLength);
 
             // Rekursion: distanceAtEnd wird als akkumulierte Gesamtdistanz weitergegeben
-            addCascadingRays(depth + 1, innerRaycast, rays, totalRadius, distanceAtEnd, relevantOccluders);
+            addCascadingRays(depth + 1, innerRaycast, lights, totalRadius, distanceAtEnd, relevantOccluders);
         }
     }
 
