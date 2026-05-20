@@ -59,8 +59,8 @@ public class LightPhysics {
             Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd); //TODO remove ease
 
             // --- 1. Intensität hochdrehen (Vibrant Bright Light) ---
-            startStrength = startStrength.multiply(intensityConfig.rangeValue(1, 10));
-            endStrength = endStrength.multiply(intensityConfig.rangeValue(1, 5));
+            startStrength = startStrength.multiply(intensityConfig.rangeValue(1, 20));
+            endStrength = endStrength.multiply(intensityConfig.rangeValue(1, 10));
 
             // --- Dämpfung basierend auf Reflexionstiefe ---
             Percent dampening = Percent.of(0.0);//TODO configure
