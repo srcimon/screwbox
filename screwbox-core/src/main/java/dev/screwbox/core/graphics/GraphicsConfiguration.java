@@ -36,6 +36,38 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
+    private boolean isIndirectLightEnabled = true;
+
+    //TODO add indirect light to graphics documentation
+    /**
+     * Specify, if indirect light will be cast when light hits occluders (expensive).
+     *
+     * @since 3.30.0
+     */
+    public GraphicsConfiguration setIndirectLightEnabled(final boolean isIndirectLightEnabled) {
+        this.isIndirectLightEnabled = isIndirectLightEnabled;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_ENABLED);
+        return this;
+    }
+
+    /**
+     * Returns {@code true} if indirect light is enabled.
+     *
+     * @since 3.30.0
+     */
+    public boolean isIndirectLightEnabled() {
+        return isIndirectLightEnabled;
+    }
+
+    /**
+     * Toggles indirect light on and off.
+     *
+     * @see #setIndirectLightEnabled(boolean)
+     * @since 3.30.0
+     */
+    public GraphicsConfiguration toggleIndirectLight() {
+        return setIndirectLightEnabled(!isIndirectLightEnabled());
+    }
 
     /**
      * Returns the configured limit of cells used for rendering shockwaves. Default Value is 10,000.

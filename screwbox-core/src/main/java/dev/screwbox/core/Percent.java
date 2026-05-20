@@ -26,10 +26,19 @@ public class Percent implements Serializable {
     }
 
     /**
-     * Returns a new instance with the given values. Values below 0 returns {@link Percent#zero()}. Values above 1 returns {@link Percent#max()}.
+     * Returns a new instance with the specified values. Values below 0 returns {@link Percent#zero()}. Values above 1 returns {@link Percent#max()}.
      */
     public static Percent of(final double value) {
         return new Percent(value);
+    }
+
+    /**
+     * Returns the complement percentage (100% minus the specified fraction).
+     *
+     * @since 3.30.0
+     */
+    public static Percent complement(final double value) {
+        return new Percent(MAX_VALUE - value);
     }
 
     /**
@@ -141,7 +150,7 @@ public class Percent implements Serializable {
      * Returns a new instance with the current value minus the given value. Returns
      * {@link Percent#zero()} when the sum is below 0 percent.
      */
-    public Percent substract(final double value) {
+    public Percent subtract(final double value) {
         return new Percent(this.value - value);
     }
 

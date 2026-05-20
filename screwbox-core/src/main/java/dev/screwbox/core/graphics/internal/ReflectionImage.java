@@ -59,7 +59,7 @@ public final class ReflectionImage {
         final ScreenBounds screenBounds = viewport.toCanvas(entityRenderArea, render.parallaxX, render.parallaxY);
 
         if (screenBounds.intersects(screenArea)) {
-            final var localDistance = screenBounds.center().substract(screenArea.offset());
+            final var localDistance = screenBounds.center().subtract(screenArea.offset());
             final var localOffset = Offset.at(
                 localDistance.x() / viewport.camera().zoom() - render.sprite.width() * render.options.scale() / 2,
                 imageSize.height() - localDistance.y() / viewport.camera().zoom() - render.sprite.height() * render.options.scale() / 2

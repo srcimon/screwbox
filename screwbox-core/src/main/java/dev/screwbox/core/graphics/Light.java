@@ -22,7 +22,10 @@ import java.util.function.Supplier;
  */
 public interface Light {
 
-    Light addDirectionalLight(final Line source, final double distance, final Color color);
+    /**
+     * Adds a directional light source emitted from the specified source within the specified distance and {@link Color}.
+     */
+    Light addDirectionalLight(Line source, double distance, Color color);
 
     /**
      * Adds a directed cone light to the {@link World}, that is affected by light occluders.

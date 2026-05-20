@@ -87,7 +87,7 @@ public final class Offset implements Serializable {
         return y == other.y;
     }
 
-    public Offset substract(final Offset other) {
+    public Offset subtract(final Offset other) {
         return Offset.at(x - other.x, y - other.y);
     }
 

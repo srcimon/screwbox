@@ -39,13 +39,13 @@ public class SoftBodyShapeSystem implements EntitySystem {
             final var targetPhysics = linkTarget.get(PhysicsComponent.class);
             if (nonNull(targetPhysics)) {
                 final Vector targetPos = fittedTemplate.definitionNotes().get(nodeNr);
-                final Vector distance = targetPos.substract(linkTarget.position());
+                final Vector distance = targetPos.subtract(linkTarget.position());
                 final double distLength = distance.length();
 
                 if (distLength > config.deadZone) {
                     final Vector springForce = distance.limit(config.flexibility).multiply(config.strength);
                     final Vector dampingForce = targetPhysics.velocity.multiply(config.dampening);
-                    final Vector acceleration = springForce.substract(dampingForce);
+                    final Vector acceleration = springForce.subtract(dampingForce);
                     targetPhysics.velocity = targetPhysics.velocity.add(acceleration.multiply(delta));
                 } else {
                     // slightly reduce speed in dead zone

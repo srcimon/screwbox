@@ -37,7 +37,7 @@ public class PlayerAttackControlSystem implements EntitySystem {
                         new ShotComponent(),
                         new CollisionSensorComponent(),
                         new StateComponent(new ShotUnderwayState()),
-                        new PhysicsComponent(engine.mouse().position().substract(player.position()).length(120)),
+                        new PhysicsComponent(engine.mouse().position().subtract(player.position()).length(120)),
                         new RenderComponent(SHOOT, player.get(RenderComponent.class).options.drawOrder()));
             }
         });

@@ -32,7 +32,7 @@ public class TailwindSystem implements EntitySystem {
             effect.lastPosition = effector.position();
         }
         final var velocity = effector.position()
-                .substract(effect.lastPosition)
+                .subtract(effect.lastPosition)
                 .multiply(1 / delta * effect.modifier.value());
 
         effect.lastPosition = effector.position();

@@ -252,7 +252,7 @@ public class DefaultLight implements Light, Updatable {
 
     private LightRenderer createLightRender(final Viewport viewport) {
         final var lightmap = new Lightmap(viewport.canvas().size(), scale, configuration.lightFalloff());
-        return new LightRenderer(lightPhysics, executor, viewport, configuration.isLensFlareEnabled(), lightmap, postFilter);
+        return new LightRenderer(lightPhysics, executor, viewport, configuration, lightmap, postFilter);
     }
 
     private void autoTurnOnLight() {

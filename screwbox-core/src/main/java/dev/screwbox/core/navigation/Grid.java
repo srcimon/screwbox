@@ -84,7 +84,7 @@ public class Grid implements Serializable {
     }
 
     public Offset toGrid(final Vector position) {
-        final var translated = position.substract(bounds.origin());
+        final var translated = position.subtract(bounds.origin());
         return Grid.findCell(translated, cellSize);
     }
 

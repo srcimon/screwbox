@@ -19,7 +19,7 @@ public class TweenPositionSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var tweenEntity : engine.environment().fetchAll(POSITION_TWEENS)) {
             final var positionComponent = tweenEntity.get(TweenPositionComponent.class);
-            final var advance = positionComponent.to.substract(positionComponent.from).multiply(tweenEntity.get(TweenComponent.class).value.value());
+            final var advance = positionComponent.to.subtract(positionComponent.from).multiply(tweenEntity.get(TweenComponent.class).value.value());
             tweenEntity.moveTo(positionComponent.from.add(advance));
         }
 

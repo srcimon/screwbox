@@ -400,7 +400,7 @@ public final class Polygon implements Serializable {
             return template;
         }
         final var polygonRotation = useRotation ? averageRotationDifferenceTo(template) : Angle.none();
-        final var polygonShift = useMotion ? center().substract(template.center()) : Vector.zero();
+        final var polygonShift = useMotion ? center().subtract(template.center()) : Vector.zero();
 
         final List<Vector> matchNodes = new ArrayList<>();
         for (final var node : template.definitionNotes()) {
@@ -446,12 +446,12 @@ public final class Polygon implements Serializable {
 
     private Vector getDirectionVector(final int nodeNr, final Vector node) {
         if (nodeNr == 0) { // is first
-            return definitionNodes.get(nodeNr + 1).substract(node);
+            return definitionNodes.get(nodeNr + 1).subtract(node);
         } else if (nodeNr == definitionNodes.size() - 1) { // is last
-            return node.substract(definitionNodes.get(nodeNr - 1));
+            return node.subtract(definitionNodes.get(nodeNr - 1));
         }
-        final Vector toPreviousNode = node.substract(definitionNodes.get(nodeNr - 1)).normalize();
-        final Vector toNextNode = definitionNodes.get(nodeNr + 1).substract(node).normalize();
+        final Vector toPreviousNode = node.subtract(definitionNodes.get(nodeNr - 1)).normalize();
+        final Vector toNextNode = definitionNodes.get(nodeNr + 1).subtract(node).normalize();
         return toPreviousNode.add(toNextNode);
     }
 
@@ -507,7 +507,7 @@ public final class Polygon implements Serializable {
      * @since 3.23.0
      */
     public Polygon moveTo(final Vector position) {
-        final var motion = position.substract(center());
+        final var motion = position.subtract(center());
         final List<Vector> targetNodes = new ArrayList<>();
         for (var node : definitionNotes()) {
             targetNodes.add(node.add(motion));

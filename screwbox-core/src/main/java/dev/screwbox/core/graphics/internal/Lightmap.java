@@ -38,6 +38,17 @@ final class Lightmap {
 
     }
 
+    public record IndirectLightSource(ScreenBounds box, List<LightRay> rays) {
+
+
+    }
+
+    public record LightRay(Offset start, Offset end, Color startColor, Color endColor) {
+
+    }
+
+
+    private static final MaxAlphaComposite MAX_ALPHA_COMPOSITE = new MaxAlphaComposite();
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
     private final BufferedImage image;
     private final Graphics2D graphics;
@@ -49,6 +60,11 @@ final class Lightmap {
     private final List<DirectionalLight> directionalLights = new ArrayList<>();
     private final List<ScreenBounds> orthographicWalls = new ArrayList<>();
     private final List<BackdropOccluder> backdropOccluders = new ArrayList<>();
+    private final List<IndirectLightSource> indirectLightSources = new ArrayList<>();
+
+    public void addIndirectLightSource(final IndirectLightSource indirectLightSource) {
+        this.indirectLightSources.add(indirectLightSource);
+    }
 
     public Lightmap(final Size size, final int scale, final Percent lightFalloff) {
         this.image = ImageOperations.createImage(
@@ -63,7 +79,7 @@ final class Lightmap {
         this.fractions = new float[]{falloffValue, 1f};
     }
 
-    public void addBackdropOccluder(BackdropOccluder backdropOccluder) {
+    public void addBackdropOccluder(final BackdropOccluder backdropOccluder) {
         backdropOccluders.add(backdropOccluder);
     }
 
@@ -107,8 +123,11 @@ final class Lightmap {
         for (final var areaLight : areaLights) {
             renderAreaLight(areaLight);
         }
+        for (final var indirectLightSource : indirectLightSources) {
+            renderIndirectLightSource(indirectLightSource);
+        }
         graphics.dispose();
-        ImageOperations.invertOpacity(image);
+        ImageOperations.invertOpacity(image, true);
         return image;
     }
 
@@ -211,6 +230,31 @@ final class Lightmap {
             spotLight.radius() / scale * 2);
     }
 
+    private void renderIndirectLightSource(final IndirectLightSource indirectLightSource) {
+        graphics.setComposite(MAX_ALPHA_COMPOSITE);
+        float config = 16.0f;//TODO push to config
+        graphics.setStroke(new BasicStroke(config / scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        applyBackdropOccludersClip(indirectLightSource.box.center(), boundsToRectangle(indirectLightSource.box()), null);
+
+        for (final var ray : indirectLightSource.rays) {
+            final int startX = (int) (ray.start.x() / (double) scale);
+            final int startY = (int) (ray.start.y() / (double) scale);
+            final int endX = (int) (ray.end.x() / (double) scale);
+            final int endY = (int) (ray.end.y() / (double) scale);
+
+            graphics.setPaint(new GradientPaint(startX, startY, AwtMapper.toAwtColor(ray.startColor), endX, endY, AwtMapper.toAwtColor(ray.endColor)));
+            graphics.drawLine(startX, startY, endX, endY);
+        }
+    }
+
+    private Rectangle2D.Double boundsToRectangle(final ScreenBounds bounds) {
+        return new Rectangle2D.Double(
+            (double) bounds.x() / scale,
+            (double) bounds.y() / scale,
+            (double) bounds.width() / scale,
+            (double) bounds.height() / scale);
+    }
+
     private void renderAreaLight(final AreaLight light) {
         final int curveRadius = (int) (light.curveRadius / scale);
         final var screenBounds = light.isFadeout
@@ -245,11 +289,7 @@ final class Lightmap {
             orthographicWall.width() / scale,
             orthographicWall.height() / scale);
 
-        final var clip = new Area(new Rectangle2D.Double(
-            (double) orthographicWall.x() / scale,
-            (double) orthographicWall.y() / scale,
-            (double) orthographicWall.width() / scale,
-            (double) orthographicWall.height() / scale));
+        final var clip = new Area(boundsToRectangle(orthographicWall));
 
         final int maxY = orthographicWall.offset().y() / scale + orthographicWall.height() / scale;
         for (final var pointLight : pointLights) {

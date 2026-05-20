@@ -49,7 +49,7 @@ public class SoftPhysicsSystem implements EntitySystem {
             if (linkEntity.equals(linkTarget)) {
                 throw new IllegalArgumentException("soft link of entity with id %s is linked to self".formatted(link.targetId));
             }
-            final Vector delta = linkTarget.position().substract(linkEntity.position());
+            final Vector delta = linkTarget.position().subtract(linkEntity.position());
             if (link.length == 0) {
                 link.length = delta.length();
             }

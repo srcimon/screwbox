@@ -50,7 +50,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     public Vector drag() {
         final Vector current = position();
         final Vector last = screenToWorld(lastPosition);
-        return last.substract(current);
+        return last.subtract(current);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private Vector screenToWorld(final Offset offset) {
         final Canvas hoverCanvas = hoverViewport.canvas();
-        final Offset fixedOffset = offset.substract(hoverCanvas.offset());
+        final Offset fixedOffset = offset.subtract(hoverCanvas.offset());
         final var camera = hoverViewport.camera();
         final double x = (fixedOffset.x() - (hoverCanvas.width() / 2.0)) / camera.zoom() + camera.focus().x();
         final double y = (fixedOffset.y() - (hoverCanvas.height() / 2.0)) / camera.zoom() + camera.focus().y();

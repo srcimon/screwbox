@@ -59,8 +59,8 @@ public class SoftBodyBoundarySystem implements EntitySystem {
                 final Vector intersection = bodyEdge.intersectionPoint(landscapeEdge);
 
                 if (nonNull(intersection)) {
-                    Vector normal = landscapeEdge.end().substract(landscapeEdge.start()).normalize();
-                    if (dotProduct(intersection.substract(collider.position()), normal) < 0) {
+                    Vector normal = landscapeEdge.end().subtract(landscapeEdge.start()).normalize();
+                    if (dotProduct(intersection.subtract(collider.position()), normal) < 0) {
                         normal = normal.invert();
                     }
 
@@ -106,9 +106,9 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         }
 
         if (nonNull(closestEdge)) {
-            Vector normal = closestEdge.start().substract(closestEdge.end()).normalize();
+            Vector normal = closestEdge.start().subtract(closestEdge.end()).normalize();
 
-            if (dotProduct(normal, closestEdge.center().substract(softBody.shape.center())) < 0) {
+            if (dotProduct(normal, closestEdge.center().subtract(softBody.shape.center())) < 0) {
                 normal = normal.invert();
             }
 
@@ -131,7 +131,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
             double dot = dotProduct(physics.velocity, normal);
             if (dot < 0) {
                 Vector delta = normal.multiply(dot * IMPULSE_RESPONSE * weight);
-                physics.velocity = physics.velocity.substract(delta);
+                physics.velocity = physics.velocity.subtract(delta);
             }
         }
     }

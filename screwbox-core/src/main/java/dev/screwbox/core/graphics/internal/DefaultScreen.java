@@ -213,7 +213,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     @Override
     public Offset translateMonitorToScreen(final Offset point) {
-        final var pointOnWindow = point.substract(position());
+        final var pointOnWindow = point.subtract(position());
 
         final var flippedX = isFlipHorizontally
             ? pointOnWindow.replaceX(width() - pointOnWindow.x())

@@ -36,7 +36,7 @@ public class MovingPlatformSystem implements EntitySystem {
             platformComponent.targetPosition = tartetEntity.position();
         }
 
-        Vector distance = platform.position().substract(platformComponent.targetPosition);
+        Vector distance = platform.position().subtract(platformComponent.targetPosition);
 
         if (distance.isZero()) {
             Entity currentTarget = engine.environment().fetchById(platformComponent.waypoint);
