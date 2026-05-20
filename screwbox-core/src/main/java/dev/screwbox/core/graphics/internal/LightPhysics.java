@@ -34,35 +34,33 @@ public class LightPhysics {
         final var normal = createNormalOfLightBox(lightBox);
 
         for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
-            var currentRaycast = Angle.degrees(degrees).rotate(normal);
-
+            Line raycast = Angle.degrees(degrees).rotate(normal);
             int depth = 0;
             double distanceAtStart = 0.0;
-            boolean continueLoop = true;
+            boolean active = true;
 
-            while (continueLoop) {
-                final var bounce = findBounce(currentRaycast, relevantOccluders);
-                final double currentRayLength = isNull(bounce) ? currentRaycast.length() : currentRaycast.start().distanceTo(bounce.start());
-                final double distanceAtEnd = distanceAtStart + currentRayLength;
+            while (active) {
+                final var bounce = findBounce(raycast, relevantOccluders);
+                final double rayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
+                final double distanceAtEnd = distanceAtStart + rayLength;
 
                 if (depth > 0) {
-                    Line ray = isNull(bounce) ? currentRaycast : Line.between(currentRaycast.start(), bounce.start());
+                    final Line indirectLightRay = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
                     final var rawStart = Percent.complement(distanceAtStart / radius);
                     final var rawEnd = Percent.complement(distanceAtEnd / radius);
                     final var reflectionDampening = Math.pow(dampening.invert().value(), depth);
                     final var startStrength = rawStart.multiply(intensityConfig.rangeValue(1, 40) * reflectionDampening);
-                    lights.add(new IndirectLight(ray, startStrength, rawEnd.multiply(reflectionDampening)));
+                    lights.add(new IndirectLight(indirectLightRay, startStrength, rawEnd.multiply(reflectionDampening)));
                 }
 
                 final double remainingLength = radius - distanceAtEnd;
 
-                // Prüft exakt die Bedingungen für die nächste Iteration
-                if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth < maxReflections) {
-                    currentRaycast = bounce.length(remainingLength);
+                if (nonNull(bounce) && remainingLength > 0 && rayLength > 0 && depth < maxReflections) {
+                    raycast = bounce.length(remainingLength);
                     distanceAtStart = distanceAtEnd;
                     depth++;
                 } else {
-                    continueLoop = false;
+                    active = false;
                 }
             }
         }
