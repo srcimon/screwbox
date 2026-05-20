@@ -22,22 +22,22 @@ public class MaxAlphaComposite implements Composite, CompositeContext {
         final int width = Math.min(src.getWidth(), dstIn.getWidth());
         final int height = Math.min(src.getHeight(), dstIn.getHeight());
 
-        final int[] srcPix = new int[src.getNumBands()];
-        final int[] dstPix = new int[dstIn.getNumBands()];
-
-        final int srcAlphaIdx = src.getNumBands() - 1;
-        final int dstAlphaIdx = dstIn.getNumBands() - 1;
+        final ColorModel cm = ColorModel.getRGBdefault();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                src.getPixel(x + src.getMinX(), y + src.getMinY(), srcPix);
-                dstIn.getPixel(x + dstIn.getMinX(), y + dstIn.getMinY(), dstPix);
+                final int srcX = x + src.getMinX();
+                final int srcY = y + src.getMinY();
+                final int dstX = x + dstIn.getMinX();
+                final int dstY = y + dstIn.getMinY();
 
-                final int srcA = (src.getNumBands() > 3) ? srcPix[srcAlphaIdx] : 255;
-                final int dstA = (dstIn.getNumBands() > 3) ? dstPix[dstAlphaIdx] : 255;
+                final Object srcData = src.getDataElements(srcX, srcY, null);
+                final Object dstData = dstIn.getDataElements(dstX, dstY, null);
 
-                var target = srcA > dstA ? srcPix : dstPix;
-                dstOut.setPixel(x + dstOut.getMinX(), y + dstOut.getMinY(), target);
+                final int srcA = cm.getAlpha(srcData);
+                final int dstA = cm.getAlpha(dstData);
+
+                dstOut.setDataElements(dstX, dstY, srcA > dstA ? srcData : dstData);
             }
         }
     }
