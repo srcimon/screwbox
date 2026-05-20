@@ -36,6 +36,10 @@ public class LightPhysics {
         return lights;
     }
 
+    Percent dampening = Percent.of(0.1);//TODO configure
+    Percent intensityConfig = Percent.of(0.9);//TODO configure
+    int maxReflections = 2;//TODO configure
+
     private void addCascadingRays(final int depth, final Line raycast, final List<IndirectLight> lights, final double totalRadius, final double distanceAtStart, final List<Occluder> relevantOccluders) {
         final var bounce = findBounce(raycast, relevantOccluders);
         final double currentRayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
@@ -44,22 +48,17 @@ public class LightPhysics {
 
         if (depth > 0) {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
-            Percent intensityConfig = Percent.of(0.9);
-
-            final var rawStart = Percent.of(1 - distanceAtStart / totalRadius);
-            final var rawEnd = Percent.of(1 - distanceAtEnd / totalRadius);
-
-            Percent startStrength = rawStart.multiply(intensityConfig.rangeValue(1, 40));
-
-            Percent dampening = Percent.of(0.1);//TODO configure
-            double reflectionDampening = Math.pow(dampening.invert().value(), depth);
-            startStrength = startStrength.multiply(reflectionDampening);
+            final var rawStart = Percent.complement(distanceAtStart / totalRadius);
+            final var rawEnd = Percent.complement(distanceAtEnd / totalRadius);
+            final var reflectionDampening = Math.pow(dampening.invert().value(), depth);
+            final var startStrength = rawStart.multiply(intensityConfig.rangeValue(1, 40) * reflectionDampening);
             lights.add(new IndirectLight(ray, startStrength, rawEnd.multiply(reflectionDampening)));
         }
 
         final double remainingLength = totalRadius - distanceAtEnd;
 
-        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth <= 2) {
+
+        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth < maxReflections) {
             Line innerRaycast = bounce.length(remainingLength);
             addCascadingRays(depth + 1, innerRaycast, lights, totalRadius, distanceAtEnd, relevantOccluders);
         }

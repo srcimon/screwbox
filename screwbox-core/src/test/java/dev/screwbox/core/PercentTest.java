@@ -143,5 +143,11 @@ class PercentTest {
         var result = Percent.of(value).rangeValue(from, to);
         assertThat(result).isEqualTo(expectation);
     }
+
+    @Test
+    void complement_valueInRange_returnsComplement() {
+        var result = Percent.complement(0.3);
+        assertThat(result).isEqualTo(Percent.of(0.7));
+    }
 }
 
