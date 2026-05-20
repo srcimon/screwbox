@@ -47,10 +47,10 @@ public class LightPhysics {
                 if (depth > 0) {
                     final Line indirectLightRay = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
                     final var rawStart = Percent.complement(distanceAtStart / radius);
-                    final var rawEnd = Percent.complement(distanceAtEnd / radius);
                     final var reflectionDampening = Math.pow(dampening.invert().value(), depth);
                     final var startStrength = rawStart.multiply(intensityConfig.rangeValue(1, 40) * reflectionDampening);
-                    lights.add(new IndirectLight(indirectLightRay, startStrength, rawEnd.multiply(reflectionDampening)));
+                    final var endStrength = Percent.complement(distanceAtEnd / radius).multiply(reflectionDampening);
+                    lights.add(new IndirectLight(indirectLightRay, startStrength, endStrength));
                 }
 
                 final double remainingLength = radius - distanceAtEnd;
