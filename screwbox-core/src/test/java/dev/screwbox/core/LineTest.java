@@ -265,11 +265,11 @@ class LineTest {
     }
 
     @Test
-    void bounce_lineBouncesOther_resultHasSameLengthAndStartsAtEndOfOriginal() {
+    void bounce_lineBouncesObstacle_resultHasSameLengthAndStartsAtEndOfOriginal() {
         var line = Line.between($(250, -130.94), $(-19.19, 41.39));
-        var other = Line.between($(40.10, -10.29), $(140.11, 93.19));
+        var obstacle = Line.between($(40.10, -10.29), $(140.11, 93.19));
 
-        Line result = line.bounce(other);
+        Line result = line.bounce(obstacle);
         assertThat(result.start()).isEqualTo(line.end());
         assertThat(result.length()).isEqualTo(line.length(), offset(0.01));
         assertThat(result.end().x()).isEqualTo(162.22, offset(0.01));
@@ -277,15 +277,23 @@ class LineTest {
     }
 
     @Test
-    void bounce_otherIsNull_throwsException() {
+    void bounce_obstacleIsNull_throwsException() {
         var line = Line.between($(250, -130.94), $(-19.19, 41.39));
         assertThatThrownBy(() -> line.bounce(null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("other must not be null");
+            .hasMessage("obstacle must not be null");
     }
+
     @Test
     void reverse_reversesStartAndEnd() {
         var line = Line.between($(250, -130.94), $(-19.19, 41.39));
         assertThat(line.reverse()).isEqualTo(Line.between($(-19.19, 41.39), $(250, -130.94)));
+    }
+
+    @Test
+    void asVector_returnsVectorRepresentation() {
+        var line = Line.between($(250, 100), $(300, 0));
+
+        assertThat(line.asVector()).isEqualTo($(50, -100));
     }
 }

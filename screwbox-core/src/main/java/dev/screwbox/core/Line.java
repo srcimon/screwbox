@@ -322,7 +322,7 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.30.0
      */
     public Line bounce(final Line obstacle) {
-        Objects.requireNonNull(obstacle, "other must not be null");
+        Objects.requireNonNull(obstacle, "obstacle must not be null");
 
         final Vector otherAsVector = asVector().normalize();
         final Vector obstacleVector = obstacle.asVector();
