@@ -53,10 +53,10 @@ public class LightPhysics {
                     lights.add(new IndirectLight(indirectLightRay, startStrength, endStrength));
                 }
 
-                final double remainingLength = radius - distanceAtEnd;
+                final double lengthBudget = radius - distanceAtEnd;
 
-                if (nonNull(bounce) && remainingLength > 0 && rayLength > 0 && depth < maxReflections) {
-                    raycast = bounce.length(remainingLength);
+                if (nonNull(bounce) && lengthBudget > 0 && rayLength > 0 && depth < maxReflections) {
+                    raycast = bounce.length(lengthBudget);
                     distanceAtStart = distanceAtEnd;
                     depth++;
                 } else {
