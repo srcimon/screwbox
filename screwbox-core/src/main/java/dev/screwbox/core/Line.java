@@ -105,7 +105,7 @@ public final class Line implements Serializable, Comparable<Line> {
             return start;
         }
 
-        final var deltaLine = end.substract(start);
+        final var deltaLine = asVector();
         final var deltaStart = point.substract(start);
 
         final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
@@ -120,6 +120,7 @@ public final class Line implements Serializable, Comparable<Line> {
             start.y() + normalizedDistance * deltaLine.y());
     }
 
+
     /**
      * Returns the perpendicular {@link Line} from a specified point. Will be empty if there is no perpendicular from
      * the specified point.
@@ -127,7 +128,7 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.22.0
      */
     public Optional<Line> perpendicular(final Vector point) {
-        final var deltaLine = end.substract(start);
+        final var deltaLine = asVector();
         final var deltaStart = point.substract(start);
 
         final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
@@ -276,7 +277,7 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.23.0
      */
     public Line expand(final double length) {
-        final var delta = end.substract(start);
+        final var delta = asVector();
         final var x = delta.x() / delta.length() * length * 0.5;
         final var y = delta.y() / delta.length() * length * 0.5;
         return Line.between(start.add(-x, -y), end.add(x, y));
@@ -320,27 +321,24 @@ public final class Line implements Serializable, Comparable<Line> {
     public Line bounce(final Line other) {
         Objects.requireNonNull(other, "other must not be null");
 
-        // 1. Calculate the incoming vector (I) and keep its original length
-        Vector incoming = Vector.of(end.x() - start.x(), end.y() - start.y());
-
-        Vector iNormalized = incoming.normalize();
-        // 2. Calculate the wall vector (W)
-        Vector wall = Vector.of(other.end.x() - other.start.x(), other.end.y() - other.start.y());
+        Vector asVector = asVector();
+        Vector otherAsVector = asVector.normalize();
+        Vector wall = other.asVector();
 
         // 3. Find the normal vector (N) perpendicular to the wall: (-y, x)
         Vector normal = Vector.of(-wall.y(), wall.x());
         Vector nNormalized = normal.normalize();
 
         // 4. Ensure the normal vector faces the incoming vector (Dot product must be negative)
-        if (iNormalized.dotProduct(nNormalized) > 0) {
+        if (otherAsVector.dotProduct(nNormalized) > 0) {
             nNormalized = nNormalized.invert();
         }
 
         // 5. Apply reflection formula: R = I - 2 * (I dot N) * N
-        double dotProduct = iNormalized.dotProduct(nNormalized);
+        double dotProduct = otherAsVector.dotProduct(nNormalized);
 
-        double rx = iNormalized.x() - 2 * dotProduct * nNormalized.x();
-        double ry = iNormalized.y() - 2 * dotProduct * nNormalized.y();
+        double rx = otherAsVector.x() - 2 * dotProduct * nNormalized.x();
+        double ry = otherAsVector.y() - 2 * dotProduct * nNormalized.y();
 
         // 6. Scale the reflection direction by the original length to maintain speed/distance
         double length = length();
@@ -351,5 +349,12 @@ public final class Line implements Serializable, Comparable<Line> {
     //TODO javadoc
     public Line reverse() {
         return Line.between(end, start);
+    }
+
+    //TODO changelog
+    //TODO javadoc
+    //TODO test
+    public Vector asVector() {
+        return end.substract(start);
     }
 }
