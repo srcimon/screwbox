@@ -24,7 +24,6 @@ public class LightPhysics {
     public record IndirectLight(Line ray, Percent startStrength, Percent endStrength) {
     }
 
-    //TODO configure depth of light reflections or simply one?
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
         final List<IndirectLight> reflections = new ArrayList<>();
         final var normal = createNormalOfLightBox(lightBox);
@@ -236,7 +235,9 @@ public class LightPhysics {
                 }
             }
         }
-        return nearest == null ? raycast : Line.between(raycast.start(), nearest);
+        return nearest == null
+            ? raycast
+            : Line.between(raycast.start(), nearest);
     }
 
     private static Line findBounce(final Line raycast, final List<Occluder> rayOccluders) {
