@@ -318,15 +318,15 @@ public final class Line implements Serializable, Comparable<Line> {
     //TODO document
     //TODO changelog
     //TODO refactor
-    public Line bounce(final Line other) {
-        Objects.requireNonNull(other, "other must not be null");
+    public Line bounce(final Line obstacle) {
+        Objects.requireNonNull(obstacle, "other must not be null");
 
         Vector asVector = asVector();
         Vector otherAsVector = asVector.normalize();
-        Vector wall = other.asVector();
+        Vector obstacleVector = obstacle.asVector();
 
         // 3. Find the normal vector (N) perpendicular to the wall: (-y, x)
-        Vector normal = Vector.of(-wall.y(), wall.x());
+        Vector normal = Vector.of(-obstacleVector.y(), obstacleVector.x());
         Vector nNormalized = normal.normalize();
 
         // 4. Ensure the normal vector faces the incoming vector (Dot product must be negative)
