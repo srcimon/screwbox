@@ -23,6 +23,10 @@ public class LightPhysics {
     public record IndirectLight(Line ray, Percent startStrength, Percent endStrength) {
     }
 
+    Percent dampening = Percent.of(0.1);//TODO configure
+    Percent intensityConfig = Percent.of(0.9);//TODO configure
+    int maxReflections = 2;//TODO configure
+
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
         final List<IndirectLight> lights = new ArrayList<>();
         final var relevantOccluders = allIntersecting(lightBox);
@@ -30,38 +34,39 @@ public class LightPhysics {
         final var normal = createNormalOfLightBox(lightBox);
 
         for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
-            final var raycast = Angle.degrees(degrees).rotate(normal);
-            addCascadingRays(0, raycast, lights, radius, 0.0, relevantOccluders);
+            var currentRaycast = Angle.degrees(degrees).rotate(normal);
+
+            int depth = 0;
+            double distanceAtStart = 0.0;
+            boolean continueLoop = true;
+
+            while (continueLoop) {
+                final var bounce = findBounce(currentRaycast, relevantOccluders);
+                final double currentRayLength = isNull(bounce) ? currentRaycast.length() : currentRaycast.start().distanceTo(bounce.start());
+                final double distanceAtEnd = distanceAtStart + currentRayLength;
+
+                if (depth > 0) {
+                    Line ray = isNull(bounce) ? currentRaycast : Line.between(currentRaycast.start(), bounce.start());
+                    final var rawStart = Percent.complement(distanceAtStart / radius);
+                    final var rawEnd = Percent.complement(distanceAtEnd / radius);
+                    final var reflectionDampening = Math.pow(dampening.invert().value(), depth);
+                    final var startStrength = rawStart.multiply(intensityConfig.rangeValue(1, 40) * reflectionDampening);
+                    lights.add(new IndirectLight(ray, startStrength, rawEnd.multiply(reflectionDampening)));
+                }
+
+                final double remainingLength = radius - distanceAtEnd;
+
+                // Prüft exakt die Bedingungen für die nächste Iteration
+                if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth < maxReflections) {
+                    currentRaycast = bounce.length(remainingLength);
+                    distanceAtStart = distanceAtEnd;
+                    depth++;
+                } else {
+                    continueLoop = false;
+                }
+            }
         }
         return lights;
-    }
-
-    Percent dampening = Percent.of(0.1);//TODO configure
-    Percent intensityConfig = Percent.of(0.9);//TODO configure
-    int maxReflections = 2;//TODO configure
-
-    private void addCascadingRays(final int depth, final Line raycast, final List<IndirectLight> lights, final double totalRadius, final double distanceAtStart, final List<Occluder> relevantOccluders) {
-        final var bounce = findBounce(raycast, relevantOccluders);
-        final double currentRayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
-
-        final double distanceAtEnd = distanceAtStart + currentRayLength;
-
-        if (depth > 0) {
-            Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
-            final var rawStart = Percent.complement(distanceAtStart / totalRadius);
-            final var rawEnd = Percent.complement(distanceAtEnd / totalRadius);
-            final var reflectionDampening = Math.pow(dampening.invert().value(), depth);
-            final var startStrength = rawStart.multiply(intensityConfig.rangeValue(1, 40) * reflectionDampening);
-            lights.add(new IndirectLight(ray, startStrength, rawEnd.multiply(reflectionDampening)));
-        }
-
-        final double remainingLength = totalRadius - distanceAtEnd;
-
-
-        if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth < maxReflections) {
-            Line innerRaycast = bounce.length(remainingLength);
-            addCascadingRays(depth + 1, innerRaycast, lights, totalRadius, distanceAtEnd, relevantOccluders);
-        }
     }
 
     private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
