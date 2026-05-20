@@ -319,35 +319,43 @@ public final class Line implements Serializable, Comparable<Line> {
      * Bounces the {@link Line} of an obstacle and returns the resulting {@link Line} with the same length.
      * Does not require the {@link Line lines} to touch.
      *
+     * @see <a href="https://www.sunshine2k.de/articles/coding/vectorreflection/vectorreflection.html">about vector reflection</a>
      * @since 3.30.0
      */
     public Line bounce(final Line obstacle) {
         Objects.requireNonNull(obstacle, "obstacle must not be null");
 
-        final Vector otherAsVector = asVector().normalize();
-        final Vector obstacleVector = obstacle.asVector();
+        final Vector incommingDirection = asVector().normalize();
+        final Vector obstacleDirection = obstacle.asVector();
 
-        Vector perpendicularNormal = Vector.of(-obstacleVector.y(), obstacleVector.x()).normalize();
+        Vector normalInIncommingDirection = Vector.of(-obstacleDirection.y(), obstacleDirection.x()).normalize();
 
-        if (otherAsVector.dotProduct(perpendicularNormal) > 0) {
-            perpendicularNormal = perpendicularNormal.invert();
+        if (incommingDirection.dotProduct(normalInIncommingDirection) > 0) {
+            normalInIncommingDirection = normalInIncommingDirection.invert();
         }
 
-        final double dotProduct = otherAsVector.dotProduct(perpendicularNormal);
-        final double rx = otherAsVector.x() - 2 * dotProduct * perpendicularNormal.x();
-        final double ry = otherAsVector.y() - 2 * dotProduct * perpendicularNormal.y();
+        final double dotProduct = incommingDirection.dotProduct(normalInIncommingDirection);
+        final double rx = incommingDirection.x() - 2 * dotProduct * normalInIncommingDirection.x();
+        final double ry = incommingDirection.y() - 2 * dotProduct * normalInIncommingDirection.y();
 
         final double length = length();
         return Line.between(end, end.add(rx * length, ry * length));
     }
 
-    //TODO javadoc
+    /**
+     * Reverses the {@link Line} (switches {@link #start()} and {@link #end()}.
+     *
+     * @since 3.30.0
+     */
     public Line reverse() {
         return Line.between(end, start);
     }
 
-    //TODO javadoc
-    //TODO test
+    /**
+     * Returns the {@link Vector} representation of the {@link Line}.
+     *
+     * @since 3.30.0
+     */
     public Vector asVector() {
         return end.substract(start);
     }
