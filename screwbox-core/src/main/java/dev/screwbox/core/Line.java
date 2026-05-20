@@ -316,7 +316,7 @@ public final class Line implements Serializable, Comparable<Line> {
 
     //TODO document
     //TODO changelog
-    //TODO test
+    //TODO refactor
     public Line bounce(final Line other) {
         Objects.requireNonNull(other, "other must not be null");
 
@@ -345,5 +345,11 @@ public final class Line implements Serializable, Comparable<Line> {
         // 6. Scale the reflection direction by the original length to maintain speed/distance
         double length = length();
         return Line.between(end, end.add(rx * length, ry * length));
+    }
+
+    //TODO changelog
+    //TODO javadoc
+    public Line reverse() {
+        return Line.between(end, start);
     }
 }
