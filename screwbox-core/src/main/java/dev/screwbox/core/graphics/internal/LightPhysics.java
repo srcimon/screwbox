@@ -46,35 +46,21 @@ public class LightPhysics {
             Line ray = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
             Percent intensityConfig = Percent.of(0.9);
 
-            // Basis-Lichtabfall über die Distanz
             final var rawStart = Percent.of(1 - distanceAtStart / totalRadius);
             final var rawEnd = Percent.of(1 - distanceAtEnd / totalRadius);
 
-            Percent startStrength = rawStart;
-            Percent endStrength = rawEnd; //TODO remove ease
+            Percent startStrength = rawStart.multiply(intensityConfig.rangeValue(1, 40));
 
-            // --- 1. Intensität hochdrehen (Vibrant Bright Light) ---
-            startStrength = startStrength.multiply(intensityConfig.rangeValue(1, 40));
-
-            // --- Dämpfung basierend auf Reflexionstiefe ---
             Percent dampening = Percent.of(0.1);//TODO configure
             double reflectionDampening = Math.pow(dampening.invert().value(), depth);
             startStrength = startStrength.multiply(reflectionDampening);
-            endStrength = endStrength.multiply(reflectionDampening);
-            // ----------------------------------------------
-
-            lights.add(new IndirectLight(ray, startStrength, endStrength));
+            lights.add(new IndirectLight(ray, startStrength, rawEnd.multiply(reflectionDampening)));
         }
 
-        // Berechne das verbleibende globale Lichtbudget
         final double remainingLength = totalRadius - distanceAtEnd;
 
-        // Wenn ein Aufprall stattgefunden hat und noch globales Budget übrig ist
         if (nonNull(bounce) && remainingLength > 0 && currentRayLength > 0 && depth <= 2) {
-            // Der reflektierte Strahl wird auf die exakte verbleibende Restlänge gestreckt
             Line innerRaycast = bounce.length(remainingLength);
-
-            // Rekursion: distanceAtEnd wird als akkumulierte Gesamtdistanz weitergegeben
             addCascadingRays(depth + 1, innerRaycast, lights, totalRadius, distanceAtEnd, relevantOccluders);
         }
     }
