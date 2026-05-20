@@ -48,11 +48,11 @@ public class LightPhysics {
             Percent intensityConfig = Percent.of(0.9);
 
             // Basis-Lichtabfall über die Distanz
-            final var rawStart = Percent.of(distanceAtStart / totalRadius);
-            final var rawEnd = Percent.of(distanceAtEnd / totalRadius);
+            final var rawStart = Percent.of(1-distanceAtStart / totalRadius);
+            final var rawEnd = Percent.of(1-distanceAtEnd / totalRadius);
 
-            Percent startStrength = Ease.SQUARE_OUT.applyOn(rawStart);
-            Percent endStrength = Ease.SQUARE_OUT.applyOn(rawEnd); //TODO remove ease
+            Percent startStrength = rawStart;
+            Percent endStrength = rawEnd; //TODO remove ease
 
             // --- 1. Intensität hochdrehen (Vibrant Bright Light) ---
             startStrength = startStrength.multiply(intensityConfig.rangeValue(1, 40));
