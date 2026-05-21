@@ -198,6 +198,21 @@ class GraphicsConfigurationTest {
         assertThat(graphicsConfiguration.resolutionScale()).isEqualTo(3.0);
     }
 
+    @Test
+    void setIndirectLightIntensity_null_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setIndirectLightIntensity(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("intensity must not be null");
+    }
+
+    @Test
+    void setIndirectLightIntensity_percentMax_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setIndirectLightIntensity(Percent.max());
+
+        assertThat(graphicsConfiguration.indirectLightIntensity()).isEqualTo(Percent.max());
+        verifyEventPosted(INDIRECT_LIGHT_INTENSITY, times(1));
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

@@ -44,7 +44,9 @@ public class GraphicsConfiguration {
     //TODO add indirect light to graphics documentation
 
     /**
-     * Specify, if indirect light will be cast when light hits occluders (expensive).
+     * Specify the intensity of indirect light that is cast when light hits occluders. Indirect light will be disabled
+     * if intensity is set to is {@link Percent#zero()}. Default is 90%. Indirect light is very expensive,
+     * turning it off increases fps significantly.
      *
      * @since 3.30.0
      */
@@ -54,7 +56,12 @@ public class GraphicsConfiguration {
         return this;
     }
 
-    //TODO Percent.step()
+    /**
+     * Returns the intensity of indirect light that is cast when light hits occluders. Indirect light will be disabled
+     * if intensity is set to is {@link Percent#zero()}.
+     *
+     * @since 3.30.0
+     */
     public Percent indirectLightIntensity() {
         return indirectLightIntensity;
     }
