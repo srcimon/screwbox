@@ -222,7 +222,8 @@ class GraphicsConfigurationTest {
 
     @Test
     void setLightBounceLossFactor_max_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceLossFactor(Percent.max()))
+        var max = Percent.max();
+        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceLossFactor(max))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("loss factor must below maximum value");
     }
