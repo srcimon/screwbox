@@ -151,6 +151,10 @@ Options that can be specified:
 | backgroundColor        | `BLACK`    | specify the background color of the screen                                                                      |
 | overlayShader          | `-`        | specify a shader that is used on every sprite drawn                                                             |
 | shockwaveCellLimit     | `10,000`   | cell count limit used for rendering shockwaves. Higher values result in better graphics but reduced performance |
+| lightBounceLossFactor  | `0.1`      | sets the loss of light intensity when it bounces of an occluder                                                 |
+| indirectLightIntensity | `0.9`      | specify the intensity of indirect light that is cast when light hits occluders                                  |
+| indirectLightDiameter  | `16`       | sets the diameter of indirect light rays.                                                                       |
+| maxLightBounces        | `2`        | specify the maximum number of consecutive bounces that light will make when hitting occluders                   |
 
 :::info
 Currently there is no way to preserve the configuration when quitting the game.

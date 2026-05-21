@@ -85,8 +85,8 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Specify the maximum number of bounces that light will make when hitting occluders. Indirect light will be disabled
-     * if value is set to 0. Default value is 2. Indirect light is very expensive, turning it off increases fps
+     * Specify the maximum number of consecutive bounces that light will make when hitting occluders. Indirect light
+     * will be disabled if value is set to 0. Default value is 2. Indirect light is very expensive, turning it off increases fps
      * significantly. Can also be turned off by setting {@link #setIndirectLightIntensity(Percent)} to {@link Percent#zero()}
      * to zero.
      *
