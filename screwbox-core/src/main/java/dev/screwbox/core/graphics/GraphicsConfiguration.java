@@ -49,6 +49,7 @@ public class GraphicsConfiguration {
      * @since 3.30.0
      */
     public GraphicsConfiguration setIndirectLightBounceLossFactor(final Percent lossFactor) {
+        Objects.requireNonNull(lossFactor, "loss factor must not be null");
         Validate.isFalse(lossFactor::isMax, "loss factor must below maximum value");
         this.indirectLightBounceLossFactor = lossFactor;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_BOUNCE_LOSS_FACTOR);
