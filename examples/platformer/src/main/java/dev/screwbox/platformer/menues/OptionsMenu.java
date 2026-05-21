@@ -52,7 +52,10 @@ public class OptionsMenu extends UiMenu {
         addItem(engine -> engine.graphics().configuration().isIndirectLightEnabled()
             ? "indirect light on"
             : "indirect light off")
-            .onActivate(engine -> engine.graphics().configuration().toggleIndirectLight());
+            .onActivate(engine -> {
+                boolean isActive = engine.graphics().configuration().indirectLightIntensity().isZero();
+                engine.graphics().configuration().setIndirectLightIntensity(isActive ? Percent.of(0.9) : Percent.zero());
+            });
 
         addItem(engine -> engine.graphics().configuration().lightQuality().equals(Percent.quarter())
             ? "light quality low"
