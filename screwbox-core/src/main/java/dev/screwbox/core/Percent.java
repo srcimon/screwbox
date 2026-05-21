@@ -191,9 +191,21 @@ public class Percent implements Serializable {
         return value > MIN_VALUE;
     }
 
-    //TODO document
-    //TODO use where possible
+    /**
+     * Adds the specified value.
+     * If the step goes below zero, it wraps around from the maximum value.
+     * If the step reaches or exceeds the maximum value, it is capped at the maximum value.
+     *
+     * @since 3.30.0
+     */
     public Percent step(final double value) {
-        return Percent.of((this.value + value) % MAX_VALUE);//TODO BUGGY
+        double newValue = (this.value + value) % MAX_VALUE;
+        if (newValue < 0) {
+            newValue += MAX_VALUE;
+        }
+
+        return newValue == MIN_VALUE && value > 0 && this.value + value >= MAX_VALUE
+            ? Percent.of(MAX_VALUE)
+            : Percent.of(newValue);
     }
 }

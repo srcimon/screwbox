@@ -159,5 +159,17 @@ class PercentTest {
     void hasValue_valueAboveZero_returnsTrue() {
         assertThat(Percent.of(0.1).hasValue()).isTrue();
     }
-}
 
+    @ParameterizedTest
+    @CsvSource({
+        "0.5, 0.1, 0.6",
+        "0.5, -0.1, 0.4",
+        "0.0, -0.1, 0.9",
+        "0.9, 0.1, 1.0",
+        "0.9, 1.6, 0.5",
+        "0.2, -2.2, 0.0"
+    })
+    void step_changesValue(double start, double step, double result) {
+        assertThat(Percent.of(start).step(step)).isEqualTo(Percent.of(result));
+    }
+}
