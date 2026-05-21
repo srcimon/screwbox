@@ -46,23 +46,42 @@ public class GraphicsConfiguration {
 
     //TODO TEST
 
+    //TODO blogpost on indirect light
+
+    /**
+     * Returns {@code true} if indirect light is enabled. Is controlled by {@link #maxLightBounces()}
+     * (disabled when zero) and {@link #indirectLightIntensity()} (disabled when zero).
+     *
+     * @since 3.30.0
+     */
     public boolean isIndirectLightEnabled() {
         return indirectLightIntensity.hasValue() && maxLightBounces() > 0;
     }
 
-    //TODO document
     //TODO test
+
+    /**
+     * Sets the diameter of indirect light rays. Illumination will increase significantly with larger diameters.
+     * Must be in range 4 to 64. Default value is 16.
+     *
+     * @since 3.30.0
+     */
     public GraphicsConfiguration setIndirectLightDiameter(final float diameter) {
-        Validate.range(diameter, 8f, 64f, "diameter must be in range 8 to 64");
+        Validate.range(diameter, 4f, 64f, "diameter must be in range 4 to 64");
         this.indirectLightDiameter = diameter;
         return this;
     }
 
 
-    //TODO document
     //TODO test
+
+    /**
+     * Returns the diameter of indirect light rays.
+     *
+     * @since 3.30.0
+     */
     public float indirectLightDiameter() {
-        return indirectLightDiameter ;
+        return indirectLightDiameter;
     }
 
     /**
