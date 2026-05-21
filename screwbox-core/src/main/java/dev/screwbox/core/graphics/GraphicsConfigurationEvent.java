@@ -69,9 +69,9 @@ public class GraphicsConfigurationEvent extends EventObject {
         SHOCKWAVE_CELL_LIMIT,
 
         /**
-         * {@link GraphicsConfiguration#isIndirectLightEnabled()} was changed.
+         * {@link GraphicsConfiguration#indirectLightIntensity()} was changed.
          */
-        INDIRECT_LIGHT_ENABLED,
+        INDIRECT_LIGHT_INTENSITY,
 
         /**
          * {@link GraphicsConfiguration#isLensFlareEnabled()} was changed.

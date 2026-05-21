@@ -2,6 +2,7 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.light.ConeLightComponent;
 
@@ -12,8 +13,13 @@ public class DebugSystem implements EntitySystem {
         for (var cone : engine.environment().fetchAllHaving(ConeLightComponent.class)) {
             cone.get(ConeLightComponent.class).direction = Angle.degrees(cone.get(ConeLightComponent.class).direction.degrees() + engine.mouse().unitsScrolled());
         }
-        if(engine.mouse().isPressedLeft()) {
-            engine.graphics().configuration().toggleIndirectLight();
+        if (engine.mouse().isPressedLeft()) {
+            engine.graphics().configuration().setIndirectLightIntensity(engine.graphics().configuration().indirectLightIntensity().step(0.05));
+            System.out.println(engine.graphics().configuration().indirectLightIntensity().value());
+        }
+        if (engine.mouse().isPressedRight()) {
+            engine.graphics().configuration().setIndirectLightIntensity(Percent.zero());
+            System.out.println(engine.graphics().configuration().indirectLightIntensity().value());
         }
     }
 }

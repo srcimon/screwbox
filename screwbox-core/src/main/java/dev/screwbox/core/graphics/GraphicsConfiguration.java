@@ -6,6 +6,7 @@ import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
@@ -36,37 +37,26 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
-    private boolean isIndirectLightEnabled = true;
+    private Percent indirectLightBounceDimming = Percent.of(0.1);//TODO configure
+    private Percent indirectLightIntensity = Percent.of(0.9);//TODO configure
+    private int maxIndirectLightBounces = 2;//TODO configure#
 
     //TODO add indirect light to graphics documentation
+
     /**
      * Specify, if indirect light will be cast when light hits occluders (expensive).
      *
      * @since 3.30.0
      */
-    public GraphicsConfiguration setIndirectLightEnabled(final boolean isIndirectLightEnabled) {
-        this.isIndirectLightEnabled = isIndirectLightEnabled;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_ENABLED);
+    public GraphicsConfiguration setIndirectLightIntensity(final Percent intensity) {
+        this.indirectLightIntensity = Objects.requireNonNull(intensity, "intensity must not be null");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_INTENSITY);
         return this;
     }
 
-    /**
-     * Returns {@code true} if indirect light is enabled.
-     *
-     * @since 3.30.0
-     */
-    public boolean isIndirectLightEnabled() {
-        return isIndirectLightEnabled;
-    }
-
-    /**
-     * Toggles indirect light on and off.
-     *
-     * @see #setIndirectLightEnabled(boolean)
-     * @since 3.30.0
-     */
-    public GraphicsConfiguration toggleIndirectLight() {
-        return setIndirectLightEnabled(!isIndirectLightEnabled());
+    //TODO Percent.step()
+    public Percent indirectLightIntensity() {
+        return indirectLightIntensity;
     }
 
     /**

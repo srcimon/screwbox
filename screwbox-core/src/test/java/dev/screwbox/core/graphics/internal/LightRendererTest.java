@@ -97,7 +97,7 @@ class LightRendererTest {
 
     @Test
     void renderLight_occluderWithoutIndirectLight_lightStopsAtOccluder() {
-        configuration.setIndirectLightEnabled(false);
+        configuration.setIndirectLightIntensity(Percent.zero());
         lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
         lightPhysics.addAffectedByShadowOccluder($$(10, 10, 400, 400));
 
@@ -120,7 +120,7 @@ class LightRendererTest {
 
     @Test
     void renderLight_lightBlockedByNoSelfOccluder_isVisible() {
-        configuration.setIndirectLightEnabled(false);
+        configuration.setIndirectLightIntensity(Percent.zero());
         lightRenderer.addPointLight($(60, 40), 80, Color.BLACK);
         lightPhysics.addOccluder($$(20, 10, 20, 20));
 

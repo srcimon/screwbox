@@ -178,4 +178,18 @@ public class Percent implements Serializable {
     public double rangeValue(final double from, final double to) {
         return from + value * (to - from);
     }
+
+    //TODO document
+    //TODO changelog
+    //TODO use where possible
+    public boolean hasValue() {
+        return MIN_VALUE != value;
+    }
+
+    //TODO document
+    //TODO changelog
+    //TODO use where possible
+    public Percent step(final double value) {
+        return Percent.of((this.value + value) % MAX_VALUE);//TODO BUGGY
+    }
 }
