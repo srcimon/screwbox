@@ -347,8 +347,9 @@ public final class Line implements Serializable, Comparable<Line> {
      *
      * @since 3.30.0
      */
+    @SuppressWarnings("java:S2234") // parameters switched intentionally
     public Line reverse() {
-        return Line.between(end, start);
+        return new Line(end, start);
     }
 
     /**
