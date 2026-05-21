@@ -69,6 +69,7 @@ public class GraphicsConfiguration {
     public GraphicsConfiguration setIndirectLightDiameter(final float diameter) {
         Validate.range(diameter, 4f, 64f, "diameter must be in range 4 to 64");
         this.indirectLightDiameter = diameter;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_DIAMETER);
         return this;
     }
 

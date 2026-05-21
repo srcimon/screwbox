@@ -84,6 +84,11 @@ public class GraphicsConfigurationEvent extends EventObject {
         MAX_LIGHT_BOUNCES,
 
         /**
+         * {@link GraphicsConfiguration#indirectLightDiameter()} was changed.
+         */
+        INDIRECT_LIGHT_DIAMETER,
+
+        /**
          * {@link GraphicsConfiguration#isLensFlareEnabled()} was changed.
          */
         LENS_FLARE_ENABLED

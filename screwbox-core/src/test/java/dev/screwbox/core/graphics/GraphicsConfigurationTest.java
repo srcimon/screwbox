@@ -243,11 +243,26 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void setMaxLightBounces_four_setBouncesFourAndNotifiesListeners() {
+    void setMaxLightBounces_four_updatesOptionAndNotifiesListeners() {
         graphicsConfiguration.setMaxLightBounces(4);
 
         assertThat(graphicsConfiguration.maxLightBounces()).isEqualTo(4);
         verifyEventPosted(MAX_LIGHT_BOUNCES, times(1));
+    }
+
+    @Test
+    void setIndirectLightDiameter_outOfRange_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setIndirectLightDiameter(3))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("diameter must be in range 4 to 64 (actual value: 3.0)");
+    }
+
+    @Test
+    void setIndirectLightDiameter_twenty_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setIndirectLightDiameter(20);
+        assertThat(graphicsConfiguration.indirectLightDiameter()).isEqualTo(20f);
+
+        verifyEventPosted(INDIRECT_LIGHT_DIAMETER, times(1));
     }
 
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
