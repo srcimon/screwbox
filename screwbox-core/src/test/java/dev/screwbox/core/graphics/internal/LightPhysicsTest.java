@@ -2,8 +2,11 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import static dev.screwbox.core.Bounds.$$;
@@ -16,6 +19,9 @@ class LightPhysicsTest {
 
     @InjectMocks
     LightPhysics lightPhysics;
+
+    @Spy
+    GraphicsConfiguration configuration = new GraphicsConfiguration();
 
     @Test
     void addOccluder_affectedByShadowOccluderNull_throwsException() {
@@ -118,5 +124,28 @@ class LightPhysicsTest {
         lightPhysics.addOccluder($$(50, -40, 200, 200));
 
         assertThat(lightPhysics.isOccluded(Line.between($(0, 10), $(990, 40)))).isTrue();
+    }
+
+    @Test
+    void calculateIndirectLights_noOccluders_isEmpty() {
+        var indirectLights = lightPhysics.calculateIndirectLights($$(0, 0, 200, 200), 0, 360);
+        assertThat(indirectLights).isEmpty();
+    }
+
+    @Test
+    void calculateIndirectLights_occludersNotHit_isEmpty() {
+        lightPhysics.addOccluder($$(-1000, 0, 80, 80));
+        var indirectLights = lightPhysics.calculateIndirectLights($$(0, 0, 200, 200), 0, 360);
+        assertThat(indirectLights).isEmpty();
+    }
+
+    @Test
+    void calculateIndirectLights_occludersHit_hasHits() {
+        lightPhysics.addOccluder($$(50, 40, 80, 80));
+        var indirectLights = lightPhysics.calculateIndirectLights($$(0, 0, 200, 200), 0, 360);
+        assertThat(indirectLights).hasSize(87);
+        assertThat(indirectLights.getFirst().ray()).isEqualTo(Line.between($(100, 40), $(100, 80)));
+        assertThat(indirectLights.getFirst().startStrength()).isEqualTo(Percent.max());
+        assertThat(indirectLights.getFirst().endStrength()).isEqualTo(Percent.zero());
     }
 }
