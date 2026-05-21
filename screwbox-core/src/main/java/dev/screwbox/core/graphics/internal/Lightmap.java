@@ -40,13 +40,11 @@ final class Lightmap {
 
     public record IndirectLightSource(ScreenBounds box, List<LightRay> rays) {
 
-
     }
 
     public record LightRay(Offset start, Offset end, Color startColor, Color endColor) {
 
     }
-
 
     private static final MaxAlphaComposite MAX_ALPHA_COMPOSITE = new MaxAlphaComposite();
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);

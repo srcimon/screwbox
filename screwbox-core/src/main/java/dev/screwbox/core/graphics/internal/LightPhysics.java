@@ -5,6 +5,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,51 +22,6 @@ public class LightPhysics {
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
 
     public record IndirectLight(Line ray, Percent startStrength, Percent endStrength) {
-    }
-
-    Percent dampening = Percent.of(0.1);//TODO configure
-    Percent intensityConfig = Percent.of(0.9);//TODO configure
-    int maxReflections = 2;//TODO configure
-
-    public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
-        final List<IndirectLight> lights = new ArrayList<>();
-        final var relevantOccluders = allIntersecting(lightBox);
-        final double radius = lightBox.height() / 2.0;
-        final var normal = createNormalOfLightBox(lightBox);
-
-        for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
-            addRayReflections(degrees, normal, relevantOccluders, radius, lights);
-        }
-        return lights;
-    }
-
-    private void addRayReflections(final double degrees, final Line normal, final List<Occluder> relevantOccluders, final double radius, final List<IndirectLight> lights) {
-        Line raycast = Angle.degrees(degrees).rotate(normal);
-        int depth = 0;
-        double distanceAtStart = 0.0;
-
-        while (true) {
-            final var bounce = findBounce(raycast, relevantOccluders);
-            final double rayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
-            final double distanceAtEnd = distanceAtStart + rayLength;
-
-            if (depth > 0) {
-                final Line indirectLightRay = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
-                final var rawStart = Percent.complement(distanceAtStart / radius);
-                final var reflectionDampening = Math.pow(dampening.invert().value(), depth);
-                final var startStrength = rawStart.multiply(intensityConfig.rangeValue(1, 40) * reflectionDampening);
-                final var endStrength = Percent.complement(distanceAtEnd / radius).multiply(reflectionDampening);
-                lights.add(new IndirectLight(indirectLightRay, startStrength, endStrength));
-            }
-
-            final double lengthBudget = radius - distanceAtEnd;
-            if (isNull(bounce) || lengthBudget <= 0 || rayLength <= 0 || depth >= maxReflections) {
-                break;
-            }
-            raycast = bounce.length(lengthBudget);
-            distanceAtStart = distanceAtEnd;
-            depth++;
-        }
     }
 
     private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
@@ -119,6 +75,56 @@ public class LightPhysics {
     }
 
     private final List<Occluder> occluders = new ArrayList<>();
+    private final GraphicsConfiguration configuration;
+
+    public LightPhysics(final GraphicsConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
+    Percent dampening = Percent.of(0.1);//TODO configure
+    Percent intensityConfig = Percent.of(0.9);//TODO configure
+    int maxReflections = 2;//TODO configure
+
+    public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
+        final List<IndirectLight> lights = new ArrayList<>();
+        final var relevantOccluders = allIntersecting(lightBox);
+        final double radius = lightBox.height() / 2.0;
+        final var normal = createNormalOfLightBox(lightBox);
+
+        for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
+            addRayReflections(degrees, normal, relevantOccluders, radius, lights);
+        }
+        return lights;
+    }
+
+    private void addRayReflections(final double degrees, final Line normal, final List<Occluder> relevantOccluders, final double radius, final List<IndirectLight> lights) {
+        Line raycast = Angle.degrees(degrees).rotate(normal);
+        int depth = 0;
+        double distanceAtStart = 0.0;
+
+        while (true) {
+            final var bounce = findBounce(raycast, relevantOccluders);
+            final double rayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
+            final double distanceAtEnd = distanceAtStart + rayLength;
+
+            if (depth > 0) {
+                final Line indirectLightRay = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
+                final var rawStart = Percent.complement(distanceAtStart / radius);
+                final var reflectionDampening = Math.pow(dampening.invert().value(), depth);
+                final var startStrength = rawStart.multiply(intensityConfig.rangeValue(1, 40) * reflectionDampening);
+                final var endStrength = Percent.complement(distanceAtEnd / radius).multiply(reflectionDampening);
+                lights.add(new IndirectLight(indirectLightRay, startStrength, endStrength));
+            }
+
+            final double lengthBudget = radius - distanceAtEnd;
+            if (isNull(bounce) || lengthBudget <= 0 || rayLength <= 0 || depth >= maxReflections) {
+                break;
+            }
+            raycast = bounce.length(lengthBudget);
+            distanceAtStart = distanceAtEnd;
+            depth++;
+        }
+    }
 
     public void addAffectedByShadowOccluder(final Bounds occluder) {
         occluders.add(new AffectedByShadwowOccluder(occluder));

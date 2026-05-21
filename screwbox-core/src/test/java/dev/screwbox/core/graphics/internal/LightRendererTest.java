@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.concurrent.ExecutorService;
@@ -42,11 +41,8 @@ class LightRendererTest {
     @Mock
     Renderer renderer;
 
-    @Spy
-    LightPhysics lightPhysics = new LightPhysics();
-
+    LightPhysics lightPhysics;
     GraphicsConfiguration configuration;
-
     ExecutorService executor;
     DefaultCanvas canvas;
     Viewport viewport;
@@ -54,6 +50,7 @@ class LightRendererTest {
 
     @BeforeEach
     void setUp() {
+        lightPhysics = new LightPhysics(configuration);
         canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 160, 80));
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         executor = Executors.newSingleThreadExecutor();
@@ -110,7 +107,8 @@ class LightRendererTest {
     }
 
     @Test
-    @Disabled//TODO reenable when lights are final
+    @Disabled
+//TODO reenable when lights are final
     void renderLight_occluderWithIndirectLight_lightStopsAtOccluder() {
         lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
         lightPhysics.addAffectedByShadowOccluder($$(10, 10, 400, 400));

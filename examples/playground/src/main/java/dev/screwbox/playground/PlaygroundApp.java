@@ -28,7 +28,6 @@ import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.core.window.MouseCursor;

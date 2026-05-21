@@ -38,7 +38,7 @@ public class DefaultLight implements Light, Updatable {
     private final ExecutorService executor;
     private final List<LightRenderer> renderers = new ArrayList<>();
     private final GraphicsConfiguration configuration;
-    private LightPhysics lightPhysics = new LightPhysics();
+    private LightPhysics lightPhysics;
     private UnaryOperator<BufferedImage> postFilter;
     private Percent ambientLight = Percent.zero();
     private boolean renderInProgress = false;
@@ -47,6 +47,7 @@ public class DefaultLight implements Light, Updatable {
 
     public DefaultLight(final GraphicsConfiguration configuration, final ViewportManager viewportManager, final ExecutorService executor) {
         this.configuration = configuration;
+        lightPhysics = new LightPhysics(configuration);
         this.viewportManager = viewportManager;
         this.executor = executor;
         updatePostFilter();
@@ -247,7 +248,7 @@ public class DefaultLight implements Light, Updatable {
 
     @Override
     public void update() {
-        lightPhysics = new LightPhysics();
+        lightPhysics = new LightPhysics(configuration);
     }
 
     private LightRenderer createLightRender(final Viewport viewport) {
