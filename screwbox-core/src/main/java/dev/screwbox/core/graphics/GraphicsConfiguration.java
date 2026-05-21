@@ -37,7 +37,7 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
-    private Percent indirectLightBounceLossFactor = Percent.of(0.1);//TODO configure
+    private Percent lightBounceLossFactor = Percent.of(0.1);//TODO configure
     private Percent indirectLightIntensity = Percent.of(0.9);//TODO configure
     private int maxLightBounces = 2;//TODO configure#
 
@@ -48,11 +48,11 @@ public class GraphicsConfiguration {
      *
      * @since 3.30.0
      */
-    public GraphicsConfiguration setIndirectLightBounceLossFactor(final Percent lossFactor) {
+    public GraphicsConfiguration setLightBounceLossFactor(final Percent lossFactor) {
         Objects.requireNonNull(lossFactor, "loss factor must not be null");
         Validate.isFalse(lossFactor::isMax, "loss factor must below maximum value");
-        this.indirectLightBounceLossFactor = lossFactor;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_BOUNCE_LOSS_FACTOR);
+        this.lightBounceLossFactor = lossFactor;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BOUNCE_LOSS_FACTOR);
         return this;
     }
 
@@ -62,7 +62,7 @@ public class GraphicsConfiguration {
      * @since 3.30.0
      */
     public Percent indirectLightBounceLossFactor() {
-        return indirectLightBounceLossFactor;
+        return lightBounceLossFactor;
     }
 
     /**
