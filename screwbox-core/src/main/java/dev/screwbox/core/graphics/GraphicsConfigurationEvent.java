@@ -79,6 +79,11 @@ public class GraphicsConfigurationEvent extends EventObject {
         LIGHT_BOUNCE_LOSS_FACTOR,
 
         /**
+         * {@link GraphicsConfiguration#maxLightBounces()} was changed.
+         */
+        MAX_LIGHT_BOUNCES,
+
+        /**
          * {@link GraphicsConfiguration#isLensFlareEnabled()} was changed.
          */
         LENS_FLARE_ENABLED

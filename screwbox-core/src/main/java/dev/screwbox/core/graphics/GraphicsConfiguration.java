@@ -43,6 +43,39 @@ public class GraphicsConfiguration {
 
     //TODO add indirect light to graphics documentation
 
+    //TODO TEST
+
+    public boolean isIndirectLightEnabled() {
+        return indirectLightIntensity.hasValue() && maxLightBounces() > 0;
+    }
+
+    /**
+     * Specify the maximum number of bounces that light will make when hitting occluders. Indirect light will be disabled
+     * if value is set to 0. Default value is 2. Indirect light is very expensive, turning it off increases fps
+     * significantly. Can also be turned off by setting {@link #setIndirectLightIntensity(Percent)} to {@link Percent#zero()}
+     * to zero.
+     *
+     * @see #maxLightBounces()
+     * @since 3.30.0
+     */
+    //TODO Test
+    public GraphicsConfiguration setMaxLightBounces(final int maxLightBounces) {
+        Validate.zeroOrPositive(maxLightBounces, "max light bounces must be positive");
+        this.maxLightBounces = maxLightBounces;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.MAX_LIGHT_BOUNCES);
+        return this;
+    }
+
+    /**
+     * Returns the maximum number of light bounces.
+     *
+     * @since 3.30.0
+     */
+    //TODO Test
+    public int maxLightBounces() {
+        return maxLightBounces;
+    }
+
     /**
      * Sets the loss of light intensity when it bounces of an occluder. Must be below max value. Default is 10%.
      *
@@ -68,8 +101,10 @@ public class GraphicsConfiguration {
     /**
      * Specify the intensity of indirect light that is cast when light hits occluders. Indirect light will be disabled
      * if intensity is set to is {@link Percent#zero()}. Default is 90%. Indirect light is very expensive,
-     * turning it off increases fps significantly.
+     * turning it off increases fps significantly. Can also be turned off by setting {@link #setMaxLightBounces(int)}
+     * to zero.
      *
+     * @see #isIndirectLightEnabled()
      * @since 3.30.0
      */
     public GraphicsConfiguration setIndirectLightIntensity(final Percent intensity) {
