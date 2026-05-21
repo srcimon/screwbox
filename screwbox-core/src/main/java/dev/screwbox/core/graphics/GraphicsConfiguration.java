@@ -37,11 +37,32 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
-    private Percent indirectLightBounceDimming = Percent.of(0.1);//TODO configure
+    private Percent indirectLightBounceLossFactor = Percent.of(0.1);//TODO configure
     private Percent indirectLightIntensity = Percent.of(0.9);//TODO configure
-    private int maxIndirectLightBounces = 2;//TODO configure#
+    private int maxLightBounces = 2;//TODO configure#
 
     //TODO add indirect light to graphics documentation
+
+    /**
+     * Sets the loss of light intensity when it bounces of an occluder. Must be below max value. Default is 10%.
+     *
+     * @since 3.30.0
+     */
+    public GraphicsConfiguration setIndirectLightBounceLossFactor(final Percent lossFactor) {
+        Validate.isFalse(lossFactor::isMax, "loss factor must below maximum value");
+        this.indirectLightBounceLossFactor = lossFactor;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_BOUNCE_LOSS_FACTOR);
+        return this;
+    }
+
+    /**
+     * Returns the loss of light intensity when it bounces of an occluder.
+     *
+     * @since 3.30.0
+     */
+    public Percent indirectLightBounceLossFactor() {
+        return indirectLightBounceLossFactor;
+    }
 
     /**
      * Specify the intensity of indirect light that is cast when light hits occluders. Indirect light will be disabled

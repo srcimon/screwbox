@@ -81,7 +81,6 @@ public class LightPhysics {
         this.configuration = configuration;
     }
 
-    Percent dampening = Percent.of(0.1);//TODO configure
     int maxReflections = 2;//TODO configure
 
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
@@ -98,6 +97,7 @@ public class LightPhysics {
 
     private void addRayReflections(final double degrees, final Line normal, final List<Occluder> relevantOccluders, final double radius, final List<IndirectLight> lights) {
         final double intensityConfig = configuration.indirectLightIntensity().rangeValue(1, 40);
+        final double lossConfig = configuration.indirectLightBounceLossFactor().invert().value();
         Line raycast = Angle.degrees(degrees).rotate(normal);
         int depth = 0;
         double distanceAtStart = 0.0;
@@ -110,7 +110,7 @@ public class LightPhysics {
             if (depth > 0) {
                 final Line indirectLightRay = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
                 final var rawStart = Percent.complement(distanceAtStart / radius);
-                final var reflectionDampening = Math.pow(dampening.invert().value(), depth);
+                final var reflectionDampening = Math.pow(lossConfig, depth);
                 final var startStrength = rawStart.multiply(intensityConfig * reflectionDampening);
                 final var endStrength = Percent.complement(distanceAtEnd / radius).multiply(reflectionDampening);
                 lights.add(new IndirectLight(indirectLightRay, startStrength, endStrength));

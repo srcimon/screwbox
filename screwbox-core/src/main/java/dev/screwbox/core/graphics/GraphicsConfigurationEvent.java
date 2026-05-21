@@ -74,6 +74,11 @@ public class GraphicsConfigurationEvent extends EventObject {
         INDIRECT_LIGHT_INTENSITY,
 
         /**
+         * {@link GraphicsConfiguration#indirectLightBounceLossFactor()}  was changed.
+         */
+        INDIRECT_LIGHT_BOUNCE_LOSS_FACTOR,
+
+        /**
          * {@link GraphicsConfiguration#isLensFlareEnabled()} was changed.
          */
         LENS_FLARE_ENABLED
