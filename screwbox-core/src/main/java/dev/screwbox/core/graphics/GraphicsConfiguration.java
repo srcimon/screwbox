@@ -39,6 +39,7 @@ public class GraphicsConfiguration {
     private Percent lightQuality = Percent.quarter();
     private Percent lightBounceLossFactor = Percent.of(0.1);
     private Percent indirectLightIntensity = Percent.of(0.9);
+    private float indirectLightDiameter = 16f;
     private int maxLightBounces = 2;
 
     //TODO add indirect light to graphics documentation
@@ -47,6 +48,21 @@ public class GraphicsConfiguration {
 
     public boolean isIndirectLightEnabled() {
         return indirectLightIntensity.hasValue() && maxLightBounces() > 0;
+    }
+
+    //TODO document
+    //TODO test
+    public GraphicsConfiguration setIndirectLightDiameter(final float diameter) {
+        Validate.range(diameter, 8f, 64f, "diameter must be in range 8 to 64");
+        this.indirectLightDiameter = diameter;
+        return this;
+    }
+
+
+    //TODO document
+    //TODO test
+    public float indirectLightDiameter() {
+        return indirectLightDiameter ;
     }
 
     /**
@@ -444,5 +460,4 @@ public class GraphicsConfiguration {
             listener.configurationChanged(event);
         }
     }
-
 }

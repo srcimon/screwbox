@@ -106,7 +106,7 @@ class LightRenderer {
                 final Color endColor = color.opacity(color.opacity().multiply(indirectLight.endStrength().value()));
                 rays.add(new Lightmap.LightRay(start, end, startColor, endColor));
             }
-            lightmap.addIndirectLightSource(new Lightmap.IndirectLightSource(screenBox, rays));
+            lightmap.addIndirectLightSource(new Lightmap.IndirectLightSource(screenBox, rays, configuration.indirectLightDiameter()));
         }
     }
 
