@@ -46,7 +46,7 @@ public class PlaygroundApp {
             ###  B ########
             ##         #  #########
             ######  C #    #    #
-             #       B   #    #   #
+             #       BBB #    #   #
              #######################
             """);
         screwBox.loop().unlockFps();
@@ -80,12 +80,14 @@ public class PlaygroundApp {
                     rope.root().add(new RopeOccluderComponent(ShadowOptions.rounded()));
                     return rope;
                 })
-                .assign('_', tile -> new Entity().name("boid")
+                .assign('B', tile -> new Entity().name("boid")
                     .bounds(tile.bounds())
                     .add(new BoidComponent(), b -> {
                         b.velocity = 20;
-                        b.obstaclePerceptionRadius = 30;
-                        b.obstacleAvoidanceStrength = 10;
+                        b.alignmentStrenth=8;
+                        b.cohesionStrength=6;
+                        b.obstaclePerceptionRadius = 10;
+                        b.obstacleAvoidanceStrength = 4;
                     })
                     .add(new PhysicsComponent())
                     .add(new RenderComponent(Sprite.pixel(Color.RED)))
