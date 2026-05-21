@@ -50,11 +50,11 @@ class LightRendererTest {
 
     @BeforeEach
     void setUp() {
+        configuration = new GraphicsConfiguration();
         lightPhysics = new LightPhysics(configuration);
         canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 160, 80));
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         executor = Executors.newSingleThreadExecutor();
-        configuration = new GraphicsConfiguration();
         final var lightmap = new Lightmap(viewport.canvas().size(), 4, Percent.max());
         lightRenderer = new LightRenderer(lightPhysics, executor, viewport, configuration, lightmap, postFilter -> postFilter);
     }

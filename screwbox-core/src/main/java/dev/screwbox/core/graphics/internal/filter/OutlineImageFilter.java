@@ -14,7 +14,7 @@ public class OutlineImageFilter extends RGBImageFilter {
         blocked = new boolean[source.width()][source.height()];
         for (int x = 0; x < source.width(); x++) {
             for (int y = 0; y < source.height(); y++) {
-                if (!source.colorAt(x, y).opacity().isZero()) {
+                if (source.colorAt(x, y).opacity().hasValue()) {
                     blockNeighbours(x, y, source);
                 }
             }

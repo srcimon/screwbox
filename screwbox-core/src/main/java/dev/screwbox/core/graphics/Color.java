@@ -382,7 +382,7 @@ public final class Color implements Serializable {
      * @since 3.18.0
      */
     public boolean isVisible() {
-        return !opacity.isZero();
+        return opacity.hasValue();
     }
 
     /**

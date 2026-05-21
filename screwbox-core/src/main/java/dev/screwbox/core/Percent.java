@@ -181,7 +181,6 @@ public class Percent implements Serializable {
 
     //TODO document
     //TODO changelog
-    //TODO use where possible
     public boolean hasValue() {
         return MIN_VALUE != value;
     }
