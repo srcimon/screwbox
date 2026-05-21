@@ -5,6 +5,7 @@
 - Prevent colors from getting lost when inverting opacity of image
 - Added `Percent.complement(value)`
 - Added `Line.reverse()`, `.asVector` and `.bounce(Line)`
+- Added `Percent.hasValue()` and `.step(double)`
 
 ### 🪛 Bug Fixes
 

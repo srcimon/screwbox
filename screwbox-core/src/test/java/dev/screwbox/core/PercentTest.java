@@ -149,5 +149,15 @@ class PercentTest {
         var result = Percent.complement(0.3);
         assertThat(result).isEqualTo(Percent.of(0.7));
     }
+
+    @Test
+    void hasValue_isZero_isFalse() {
+        assertThat(Percent.zero().hasValue()).isFalse();
+    }
+
+    @Test
+    void hasValue_valueAboveZero_returnsTrue() {
+        assertThat(Percent.of(0.1).hasValue()).isTrue();
+    }
 }
 

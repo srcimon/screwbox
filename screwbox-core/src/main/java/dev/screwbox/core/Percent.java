@@ -85,6 +85,8 @@ public class Percent implements Serializable {
 
     /**
      * Returns {@code true} if value is 0.
+     *
+     * @see #hasValue()
      */
     public boolean isZero() {
         return MIN_VALUE == value;
@@ -179,14 +181,17 @@ public class Percent implements Serializable {
         return from + value * (to - from);
     }
 
-    //TODO document
-    //TODO changelog
+    /**
+     * Returns {@code true} if {@link #value()} is above zero.
+     *
+     * @see #isZero()
+     * @since 3.30.0
+     */
     public boolean hasValue() {
-        return MIN_VALUE != value;
+        return value > MIN_VALUE;
     }
 
     //TODO document
-    //TODO changelog
     //TODO use where possible
     public Percent step(final double value) {
         return Percent.of((this.value + value) % MAX_VALUE);//TODO BUGGY
