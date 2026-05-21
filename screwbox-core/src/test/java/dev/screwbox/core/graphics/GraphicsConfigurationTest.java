@@ -265,6 +265,25 @@ class GraphicsConfigurationTest {
         verifyEventPosted(INDIRECT_LIGHT_DIAMETER, times(1));
     }
 
+    @Test
+    void isIndirectLightEnabled_zeroBounces_isFalse() {
+        graphicsConfiguration.setMaxLightBounces(0);
+
+        assertThat(graphicsConfiguration.isIndirectLightEnabled()).isFalse();
+    }
+
+    @Test
+    void isIndirectLightEnabled_zeroIntensity_isFalse() {
+        graphicsConfiguration.setIndirectLightIntensity(Percent.zero());
+
+        assertThat(graphicsConfiguration.isIndirectLightEnabled()).isFalse();
+    }
+
+    @Test
+    void isIndirectLightEnabled_twoBouncesAndSomeIntensity_isTrue() {
+        assertThat(graphicsConfiguration.isIndirectLightEnabled()).isTrue();
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

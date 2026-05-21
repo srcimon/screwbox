@@ -43,9 +43,6 @@ public class GraphicsConfiguration {
     private int maxLightBounces = 2;
 
     //TODO add indirect light to graphics documentation
-
-    //TODO TEST
-
     //TODO blogpost on indirect light
 
     /**
@@ -57,8 +54,6 @@ public class GraphicsConfiguration {
     public boolean isIndirectLightEnabled() {
         return indirectLightIntensity.hasValue() && maxLightBounces() > 0;
     }
-
-    //TODO test
 
     /**
      * Sets the diameter of indirect light rays. Illumination will increase significantly with larger diameters.
@@ -72,9 +67,6 @@ public class GraphicsConfiguration {
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_DIAMETER);
         return this;
     }
-
-
-    //TODO test
 
     /**
      * Returns the diameter of indirect light rays.
