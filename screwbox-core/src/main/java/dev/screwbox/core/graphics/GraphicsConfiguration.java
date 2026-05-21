@@ -37,9 +37,9 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
-    private Percent lightBounceLossFactor = Percent.of(0.1);//TODO configure
-    private Percent indirectLightIntensity = Percent.of(0.9);//TODO configure
-    private int maxLightBounces = 2;//TODO configure#
+    private Percent lightBounceLossFactor = Percent.of(0.1);
+    private Percent indirectLightIntensity = Percent.of(0.9);
+    private int maxLightBounces = 2;
 
     //TODO add indirect light to graphics documentation
 

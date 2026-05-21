@@ -81,8 +81,6 @@ public class LightPhysics {
         this.configuration = configuration;
     }
 
-    int maxReflections = 2;//TODO configure
-
     public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
         final List<IndirectLight> lights = new ArrayList<>();
         final var relevantOccluders = allIntersecting(lightBox);
@@ -117,7 +115,7 @@ public class LightPhysics {
             }
 
             final double lengthBudget = radius - distanceAtEnd;
-            if (isNull(bounce) || lengthBudget <= 0 || rayLength <= 0 || depth >= maxReflections) {
+            if (isNull(bounce) || lengthBudget <= 0 || rayLength <= 0 || depth >= configuration.maxLightBounces()) {
                 break;
             }
             raycast = bounce.length(lengthBudget);
