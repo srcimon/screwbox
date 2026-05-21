@@ -235,6 +235,21 @@ class GraphicsConfigurationTest {
         verifyEventPosted(LIGHT_BOUNCE_LOSS_FACTOR, times(1));
     }
 
+    @Test
+    void setMaxLightBounces_negativeValue_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setMaxLightBounces(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("max light bounces must be positive (actual value: -1)");
+    }
+
+    @Test
+    void setMaxLightBounces_four_setBouncesFourAndNotifiesListeners() {
+        graphicsConfiguration.setMaxLightBounces(4);
+
+        assertThat(graphicsConfiguration.maxLightBounces()).isEqualTo(4);
+        verifyEventPosted(MAX_LIGHT_BOUNCES, times(1));
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

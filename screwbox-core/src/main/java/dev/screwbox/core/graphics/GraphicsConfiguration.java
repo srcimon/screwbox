@@ -93,7 +93,6 @@ public class GraphicsConfiguration {
      * @see #maxLightBounces()
      * @since 3.30.0
      */
-    //TODO Test
     public GraphicsConfiguration setMaxLightBounces(final int maxLightBounces) {
         Validate.zeroOrPositive(maxLightBounces, "max light bounces must be positive");
         this.maxLightBounces = maxLightBounces;
@@ -106,7 +105,6 @@ public class GraphicsConfiguration {
      *
      * @since 3.30.0
      */
-    //TODO Test
     public int maxLightBounces() {
         return maxLightBounces;
     }
