@@ -58,7 +58,7 @@ public class PlaygroundApp {
             .addSystem(new DebugSystem())
             .addSystem(new LogFpsSystem())
             .addEntity(new Entity().add(new GravityComponent(Vector.y(200))))
-            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new PointLightComponent(80, Color.BLACK)))
+            .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new GlowComponent(60, Color.WHITE.opacity(0.3))).add(new PointLightComponent(80, Color.BLACK)))
             .addEntity(new Entity().bounds(map.bounds().scale(4)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(10)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("wall")

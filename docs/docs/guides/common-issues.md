@@ -34,6 +34,16 @@ There can be a lot of reasons for bad performance:
   Rendering transparent sprites has a much higher impact on performance.
   Try to reduce count of drawing tasks to improve rendering performance.
 
+- **Many lights with indirect light enabled**
+  Rendering light is expensive.
+  Reduce number of visible lights to increase performance.
+  Turn off indirect light to improve performance significantly.
+  Use `StaticOccluderComponent` to automatically reduce number of occluders.
+
+- **Many colliders**
+  Collision detection with many physics objects can be speed up by reducing the number of colliders.
+  To automate add the `StaticColliderComponent` to all colliders that cannot move.
+
 ## Error messages in console
 
 Some users might experience similar error messages like the ones below.
