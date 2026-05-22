@@ -6,6 +6,7 @@ import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
@@ -36,6 +37,114 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
+    private Percent lightBounceLossFactor = Percent.of(0.1);
+    private Percent indirectLightIntensity = Percent.of(0.9);
+    private float indirectLightDiameter = 16f;
+    private int maxLightBounces = 2;
+
+    /**
+     * Returns {@code true} if indirect light is enabled. Is controlled by {@link #maxLightBounces()}
+     * (disabled when zero) and {@link #indirectLightIntensity()} (disabled when zero).
+     *
+     * @since 3.30.0
+     */
+    public boolean isIndirectLightEnabled() {
+        return indirectLightIntensity.hasValue() && maxLightBounces() > 0;
+    }
+
+    /**
+     * Sets the diameter of indirect light rays. Illumination will increase significantly with larger diameters.
+     * Must be in range 4 to 64. Default value is 16.
+     *
+     * @since 3.30.0
+     */
+    public GraphicsConfiguration setIndirectLightDiameter(final float diameter) {
+        Validate.range(diameter, 4f, 64f, "diameter must be in range 4 to 64");
+        this.indirectLightDiameter = diameter;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_DIAMETER);
+        return this;
+    }
+
+    /**
+     * Returns the diameter of indirect light rays.
+     *
+     * @since 3.30.0
+     */
+    public float indirectLightDiameter() {
+        return indirectLightDiameter;
+    }
+
+    /**
+     * Specify the maximum number of consecutive bounces that light will make when hitting occluders. Indirect light
+     * will be disabled if value is set to 0. Default value is 2. Indirect light is very expensive, turning it off increases fps
+     * significantly. Can also be turned off by setting {@link #setIndirectLightIntensity(Percent)} to {@link Percent#zero()}
+     * to zero.
+     *
+     * @see #maxLightBounces()
+     * @since 3.30.0
+     */
+    public GraphicsConfiguration setMaxLightBounces(final int maxLightBounces) {
+        Validate.zeroOrPositive(maxLightBounces, "max light bounces must be positive");
+        this.maxLightBounces = maxLightBounces;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.MAX_LIGHT_BOUNCES);
+        return this;
+    }
+
+    /**
+     * Returns the maximum number of light bounces.
+     *
+     * @since 3.30.0
+     */
+    public int maxLightBounces() {
+        return maxLightBounces;
+    }
+
+    /**
+     * Sets the loss of light intensity when it bounces of an occluder. Must be below max value. Default is 10%.
+     *
+     * @since 3.30.0
+     */
+    public GraphicsConfiguration setLightBounceLossFactor(final Percent lossFactor) {
+        Objects.requireNonNull(lossFactor, "loss factor must not be null");
+        Validate.isFalse(lossFactor::isMax, "loss factor must below maximum value");
+        this.lightBounceLossFactor = lossFactor;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BOUNCE_LOSS_FACTOR);
+        return this;
+    }
+
+    /**
+     * Returns the loss of light intensity when it bounces of an occluder.
+     *
+     * @since 3.30.0
+     */
+    public Percent indirectLightBounceLossFactor() {
+        return lightBounceLossFactor;
+    }
+
+    /**
+     * Specify the intensity of indirect light that is cast when light hits occluders. Indirect light will be disabled
+     * if intensity is set to is {@link Percent#zero()}. Default is 90%. Indirect light is very expensive,
+     * turning it off increases fps significantly. Can also be turned off by setting {@link #setMaxLightBounces(int)}
+     * to zero.
+     *
+     * @see #isIndirectLightEnabled()
+     * @since 3.30.0
+     */
+    public GraphicsConfiguration setIndirectLightIntensity(final Percent intensity) {
+        this.indirectLightIntensity = Objects.requireNonNull(intensity, "intensity must not be null");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_INTENSITY);
+        return this;
+    }
+
+    /**
+     * Returns the intensity of indirect light that is cast when light hits occluders. Indirect light will be disabled
+     * if intensity is set to is {@link Percent#zero()}.
+     *
+     * @since 3.30.0
+     */
+    public Percent indirectLightIntensity() {
+        return indirectLightIntensity;
+    }
 
     /**
      * Returns the configured limit of cells used for rendering shockwaves. Default Value is 10,000.
@@ -358,5 +467,4 @@ public class GraphicsConfiguration {
             listener.configurationChanged(event);
         }
     }
-
 }

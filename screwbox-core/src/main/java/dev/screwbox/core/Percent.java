@@ -26,10 +26,19 @@ public class Percent implements Serializable {
     }
 
     /**
-     * Returns a new instance with the given values. Values below 0 returns {@link Percent#zero()}. Values above 1 returns {@link Percent#max()}.
+     * Returns a new instance with the specified values. Values below 0 returns {@link Percent#zero()}. Values above 1 returns {@link Percent#max()}.
      */
     public static Percent of(final double value) {
         return new Percent(value);
+    }
+
+    /**
+     * Returns the complement percentage (100% minus the specified fraction).
+     *
+     * @since 3.30.0
+     */
+    public static Percent complement(final double value) {
+        return new Percent(MAX_VALUE - value);
     }
 
     /**
@@ -76,6 +85,8 @@ public class Percent implements Serializable {
 
     /**
      * Returns {@code true} if value is 0.
+     *
+     * @see #hasValue()
      */
     public boolean isZero() {
         return MIN_VALUE == value;
@@ -141,7 +152,7 @@ public class Percent implements Serializable {
      * Returns a new instance with the current value minus the given value. Returns
      * {@link Percent#zero()} when the sum is below 0 percent.
      */
-    public Percent substract(final double value) {
+    public Percent subtract(final double value) {
         return new Percent(this.value - value);
     }
 
@@ -168,5 +179,33 @@ public class Percent implements Serializable {
      */
     public double rangeValue(final double from, final double to) {
         return from + value * (to - from);
+    }
+
+    /**
+     * Returns {@code true} if {@link #value()} is above zero.
+     *
+     * @see #isZero()
+     * @since 3.30.0
+     */
+    public boolean hasValue() {
+        return value > MIN_VALUE;
+    }
+
+    /**
+     * Adds the specified value.
+     * If the step goes below zero, it wraps around from the maximum value.
+     * If the step reaches or exceeds the maximum value, it is capped at the maximum value.
+     *
+     * @since 3.30.0
+     */
+    public Percent step(final double value) {
+        double newValue = (this.value + value) % MAX_VALUE;
+        if (newValue < 0) {
+            newValue += MAX_VALUE;
+        }
+
+        return newValue == MIN_VALUE && value > 0 && this.value + value >= MAX_VALUE
+            ? Percent.of(MAX_VALUE)
+            : Percent.of(newValue);
     }
 }

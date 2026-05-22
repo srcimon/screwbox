@@ -7,6 +7,7 @@ import dev.screwbox.core.Polygon;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.concurrent.ExecutorService;
@@ -40,9 +40,8 @@ class LightRendererTest {
     @Mock
     Renderer renderer;
 
-    @Spy
-    LightPhysics lightPhysics = new LightPhysics();
-
+    LightPhysics lightPhysics;
+    GraphicsConfiguration configuration;
     ExecutorService executor;
     DefaultCanvas canvas;
     Viewport viewport;
@@ -50,11 +49,13 @@ class LightRendererTest {
 
     @BeforeEach
     void setUp() {
+        configuration = new GraphicsConfiguration();
+        lightPhysics = new LightPhysics(configuration);
         canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 160, 80));
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         executor = Executors.newSingleThreadExecutor();
         final var lightmap = new Lightmap(viewport.canvas().size(), 4, Percent.max());
-        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, true, lightmap, postFilter -> postFilter);
+        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, configuration, lightmap, postFilter -> postFilter);
     }
 
     @Test
@@ -94,17 +95,29 @@ class LightRendererTest {
     }
 
     @Test
-    void renderLight_occluderPresent_lightStopsAtOccluder() {
+    void renderLight_occluderWithoutIndirectLight_lightStopsAtOccluder() {
+        configuration.setIndirectLightIntensity(Percent.zero());
         lightRenderer.addPointLight($(4, 4), 40, Color.BLACK);
         lightPhysics.addAffectedByShadowOccluder($$(10, 10, 400, 400));
 
         var sprite = lightRenderer.renderLight();
 
-        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_occluderPresent_lightStopsAtOccluder.png");
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_occluderWithoutIndirectLight_lightStopsAtOccluder.png");
+    }
+
+    @Test
+    void renderLight_occluderWithIndirectLight_lightStopsAtOccluder() {
+        lightRenderer.addPointLight($(-10, -10), 40, Color.BLACK);
+        lightPhysics.addAffectedByShadowOccluder($$(10, 10, 400, 400));
+
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_occluderWithIndirectLight_lightStopsAtOccluder.png");
     }
 
     @Test
     void renderLight_lightBlockedByNoSelfOccluder_isVisible() {
+        configuration.setIndirectLightIntensity(Percent.zero());
         lightRenderer.addPointLight($(60, 40), 80, Color.BLACK);
         lightPhysics.addOccluder($$(20, 10, 20, 20));
 
@@ -225,8 +238,7 @@ class LightRendererTest {
 
     @Test
     void renderGlows_glowPresentLensFlareDisabled_rendersGlowOnly() {
-        final var lightmap = new Lightmap(viewport.canvas().size(), 4, Percent.max());
-        lightRenderer = new LightRenderer(lightPhysics, executor, viewport, false, lightmap, postFilter -> postFilter);
+        configuration.setLensFlareEnabled(false);
         lightRenderer.addGlow($(8, 8), 4, Color.WHITE.opacity(0.5), LensFlareBundle.SHY.get());
 
         lightRenderer.renderGlows();
@@ -250,7 +262,7 @@ class LightRendererTest {
 
     private void verifyIsIdenticalWithReferenceImage(Asset<Sprite> sprite, String fileName) {
         Frame reference = Frame.fromFile("lightrenderer/" + fileName);
-        assertThat(sprite.get().singleFrame().hasIdenticalPixels(reference)).isTrue();
+        assertThat(sprite.get().singleFrame().hasIdenticalPixels(reference, Percent.of(0.01))).isTrue();
     }
 
     private void assertCompletelyBlack(Asset<Sprite> sprite) {

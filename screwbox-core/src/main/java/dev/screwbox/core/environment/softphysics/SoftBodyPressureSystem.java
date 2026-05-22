@@ -28,7 +28,7 @@ public class SoftBodyPressureSystem implements EntitySystem {
                 // calculate pressure according to position relative to center
                 for (int i = 0; i < softBody.shape.nodes().size(); i++) {
                     final Entity entity = softBody.nodes.get(i);
-                    final var appliedPressure = softBody.shape.center().substract(entity.position()).length(1)
+                    final var appliedPressure = softBody.shape.center().subtract(entity.position()).length(1)
                             .multiply(-engine.loop().delta() * config.pressure);
                     appliedPressures[i] = Pixelperfect.vector(appliedPressure); // to avoid rounding errors
                 }

@@ -3,7 +3,9 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,9 @@ public class LightPhysics {
     private static final int INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT = 30;
     private static final Angle LEFT_ROTATION = Angle.degrees(0.01);
     private static final Angle RIGHT_ROTATION = Angle.degrees(-0.01);
+
+    public record IndirectLight(Line ray, Percent startStrength, Percent endStrength) {
+    }
 
     private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
         @Override
@@ -70,6 +75,54 @@ public class LightPhysics {
     }
 
     private final List<Occluder> occluders = new ArrayList<>();
+    private final GraphicsConfiguration configuration;
+
+    public LightPhysics(final GraphicsConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
+    public List<IndirectLight> calculateIndirectLights(final Bounds lightBox, final double minAngle, final double maxAngle) {
+        final List<IndirectLight> lights = new ArrayList<>();
+        final var relevantOccluders = allIntersecting(lightBox);
+        final double radius = lightBox.height() / 2.0;
+        final var normal = createNormalOfLightBox(lightBox);
+
+        for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
+            addRayReflections(degrees, normal, relevantOccluders, radius, lights);
+        }
+        return lights;
+    }
+
+    private void addRayReflections(final double degrees, final Line normal, final List<Occluder> relevantOccluders, final double radius, final List<IndirectLight> lights) {
+        final double intensityConfig = configuration.indirectLightIntensity().rangeValue(1, 40);
+        final double lossConfig = configuration.indirectLightBounceLossFactor().invert().value();
+        Line raycast = Angle.degrees(degrees).rotate(normal);
+        int depth = 0;
+        double distanceAtStart = 0.0;
+
+        while (true) {
+            final var bounce = findBounce(raycast, relevantOccluders);
+            final double rayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
+            final double distanceAtEnd = distanceAtStart + rayLength;
+
+            if (depth > 0) {
+                final Line indirectLightRay = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
+                final var rawStart = Percent.complement(distanceAtStart / radius);
+                final var reflectionDampening = Math.pow(lossConfig, depth);
+                final var startStrength = rawStart.multiply(intensityConfig * reflectionDampening);
+                final var endStrength = Percent.complement(distanceAtEnd / radius).multiply(reflectionDampening);
+                lights.add(new IndirectLight(indirectLightRay, startStrength, endStrength));
+            }
+
+            final double lengthBudget = radius - distanceAtEnd;
+            if (isNull(bounce) || lengthBudget <= 1 || rayLength <= 1 || depth >= configuration.maxLightBounces()) {
+                break;
+            }
+            raycast = bounce.length(lengthBudget);
+            distanceAtStart = distanceAtEnd;
+            depth++;
+        }
+    }
 
     public void addAffectedByShadowOccluder(final Bounds occluder) {
         occluders.add(new AffectedByShadwowOccluder(occluder));
@@ -107,14 +160,14 @@ public class LightPhysics {
             final double degrees = Angle.of(nearest).degrees();
             area.add(new FastSortingLine(nearest, degrees));
         }
-        if (minAngle == 0 && maxAngle == 360) {
+        if (minAngle == Angle.MIN_DEGREES && maxAngle == Angle.MAX_DEGREES) {
             area.sort(null);
         }
         final List<Vector> result = new ArrayList<>();
         for (var point : area) {
             result.add(point.line.end());
         }
-        if (minAngle != 0 || maxAngle != 360) {
+        if (minAngle != Angle.MIN_DEGREES || maxAngle != Angle.MAX_DEGREES) {
             result.add(lightBox.position());
         }
         return result;
@@ -170,13 +223,37 @@ public class LightPhysics {
                 }
             }
         }
-        return nearest == null ? raycast : Line.between(raycast.start(), nearest);
+        return nearest == null
+            ? raycast
+            : Line.between(raycast.start(), nearest);
+    }
+
+    private static Line findBounce(final Line raycast, final List<Occluder> rayOccluders) {
+        double minDist = Double.MAX_VALUE;
+        Line collidedLine = null;
+        Vector nearest = null;
+        for (final var occluder : rayOccluders) {
+            for (final var other : occluder.lines(raycast.start())) {
+                final var intersection = raycast.intersectionPoint(other);
+                if (nonNull(intersection)) {
+                    final var distance = raycast.start().distanceTo(intersection);
+                    if (distance < minDist) {
+                        collidedLine = other;
+                        minDist = distance;
+                        nearest = intersection;
+                    }
+                }
+            }
+        }
+        return isNull(nearest)
+            ? null
+            : Line.between(raycast.start(), nearest).bounce(collidedLine);
     }
 
     private static List<Line> calculateLightProbes(final Bounds lightBox, final List<Occluder> lightOccluders, double minAngle, double maxAngle) {
         final List<Line> lightProbes = new ArrayList<>();
-        if (minAngle != 0 || maxAngle != 360 || lightOccluders.size() > INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT) {
-            final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
+        if (minAngle != Angle.MIN_DEGREES || maxAngle != Angle.MAX_DEGREES || lightOccluders.size() > INTELLIGENT_RAY_CALC_OCCLUDER_LIMIT) {
+            final Line normal = createNormalOfLightBox(lightBox);
             for (long angle = Math.round(minAngle); angle < maxAngle; angle++) {
                 final Line raycast = Angle.degrees(angle).rotate(normal);
                 lightProbes.add(findNearest(raycast, lightOccluders));
@@ -198,10 +275,14 @@ public class LightPhysics {
         return lightProbes;
     }
 
+    private static Line createNormalOfLightBox(final Bounds lightBox) {
+        return Line.normal(lightBox.position(), -lightBox.height() / 2.0);
+    }
+
     private static List<Line> calculateLightProbes(final DirectionalLightBox lightBox, final List<Occluder> lightOccluders) {
         final List<Line> lightProbes = new ArrayList<>();
-        final var left = lightBox.source().end().substract(lightBox.source().start()).length(0.0000000001);
-        final var right = lightBox.source().start().substract(lightBox.source().end()).length(0.0000000001);
+        final var left = lightBox.source().end().subtract(lightBox.source().start()).length(0.0000000001);
+        final var right = lightBox.source().start().subtract(lightBox.source().end()).length(0.0000000001);
 
         for (final var occluder : lightOccluders) {
             addProbes(lightBox, occluder.bounds.origin(), lightProbes, left, right);

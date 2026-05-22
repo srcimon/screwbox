@@ -8,6 +8,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -32,22 +33,23 @@ class LightRenderer {
     private final Viewport viewport;
     private final LightPhysics lightPhysics;
     private final UnaryOperator<BufferedImage> postFilter;
-    private final boolean isLensFlareEnabled;
+    private final GraphicsConfiguration configuration;
     private final Lightmap lightmap;
 
     private final List<Runnable> tasks = new ArrayList<>();
 
+
     LightRenderer(final LightPhysics lightPhysics,
                   final ExecutorService executor,
                   final Viewport viewport,
-                  final boolean isLensFlareEnabled,
+                  final GraphicsConfiguration configuration,
                   final Lightmap lightmap,
                   final UnaryOperator<BufferedImage> postFilter) {
         this.executor = executor;
         this.lightPhysics = lightPhysics;
         this.viewport = viewport;
         this.postFilter = postFilter;
-        this.isLensFlareEnabled = isLensFlareEnabled;
+        this.configuration = configuration;
         this.lightmap = lightmap;
     }
 
@@ -87,8 +89,25 @@ class LightRenderer {
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);
                 lightmap.addPointLight(new Lightmap.PointLight(offset, screenRadius, area, color));
+                addIndirectLight(lightBox, color, minAngle, maxAngle);
             }
         });
+    }
+
+    private void addIndirectLight(final Bounds lightBox, final Color color, final double minAngle, final double maxAngle) {
+        if (configuration.isIndirectLightEnabled()) {
+            final var indirectLights = lightPhysics.calculateIndirectLights(lightBox, minAngle, maxAngle);
+            final var screenBox = viewport.toCanvas(lightBox);
+            final List<Lightmap.LightRay> rays = new ArrayList<>();
+            for (final var indirectLight : indirectLights) {
+                final Offset start = viewport.toCanvas(indirectLight.ray().start());
+                final Offset end = viewport.toCanvas(indirectLight.ray().end());
+                final Color startColor = color.opacity(color.opacity().multiply(indirectLight.startStrength().value()));
+                final Color endColor = color.opacity(color.opacity().multiply(indirectLight.endStrength().value()));
+                rays.add(new Lightmap.LightRay(start, end, startColor, endColor));
+            }
+            lightmap.addIndirectLightSource(new Lightmap.IndirectLightSource(screenBox, rays, configuration.indirectLightDiameter()));
+        }
     }
 
     public void addDirectionalLight(final Line source, final double distance, final Color color) {
@@ -129,7 +148,7 @@ class LightRenderer {
                 }
             });
 
-            if (isLensFlareEnabled && nonNull(lensFlare) && viewport.visibleArea().contains(position)) {
+            if (configuration.isLensFlareEnabled() && nonNull(lensFlare) && viewport.visibleArea().contains(position)) {
                 postDrawingTasks.add(() -> {
                     if (!lightPhysics.isOccluded(position)) {
                         lensFlare.render(position, radius, color, viewport);
@@ -146,7 +165,7 @@ class LightRenderer {
             postDrawingTasks.add(() -> canvas().drawRectangle(viewport.toCanvas(lightBox), options));
 
             viewport.visibleArea().intersection(bounds).ifPresent(intersection -> {
-                if (isLensFlareEnabled && nonNull(lensFlare)) {
+                if (configuration.isLensFlareEnabled() && nonNull(lensFlare)) {
                     postDrawingTasks.add(() -> lensFlare.render(intersection, radius, color, viewport));
                 }
             });

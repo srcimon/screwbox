@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -12,6 +13,7 @@ import java.awt.image.BufferedImage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 class ImageOperationsTest {
 
@@ -21,7 +23,7 @@ class ImageOperationsTest {
     void invertOpacity_wrongType_throwsException() {
         var image = Frame.fromFile("transparent.png").image();
 
-        assertThatThrownBy(() -> ImageOperations.invertOpacity(image))
+        assertThatThrownBy(() -> ImageOperations.invertOpacity(image, false))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("image type not supported: 6");
     }
@@ -29,13 +31,23 @@ class ImageOperationsTest {
     @Test
     void invertOpacity_supportedType_invertsOpacity() {
         var image = Frame.fromFile("transparent.png").image();
-        assertThat(Frame.fromImage(image).colorAt(0,0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(Frame.fromImage(image).colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
 
         var supportedImage = ImageOperations.cloneImage(image);
 
-        ImageOperations.invertOpacity(supportedImage);
+        ImageOperations.invertOpacity(supportedImage, false);
 
-        assertThat(Frame.fromImage(supportedImage).colorAt(0,0)).isEqualTo(Color.BLACK);
+        assertThat(Frame.fromImage(supportedImage).colorAt(0, 0)).isEqualTo(Color.BLACK);
+    }
+
+    @Test
+    void invertOpacity_preventTransparentColoredPixels_preventsTransparentPixelsWhenColored() {
+        var image = Sprite.pixel(Color.BLUE).singleImage();
+        var supportedImage = ImageOperations.cloneImage(image);
+
+        ImageOperations.invertOpacity(supportedImage, true);
+
+        assertThat(Frame.fromImage(supportedImage).colorAt(0, 0).opacity().value()).isEqualTo(0.004, offset(0.001));
     }
 
     @Test

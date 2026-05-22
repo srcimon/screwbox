@@ -23,21 +23,21 @@ public class SidebarDesign implements UiDesign {
 
     @Override
     public void renderSelectableItem(String label, ScreenBounds bounds, Canvas canvas) {
-        if (!opacity.isZero()) {
+        if (opacity.hasValue()) {
             canvas.drawText(at(bounds.x(), bounds.center().y()), label, OPTIONS.color(WHITE.opacity(opacity)));
         }
     }
 
     @Override
     public void renderSelectedItem(String label, ScreenBounds bounds, Canvas canvas) {
-        if (!opacity.isZero()) {
+        if (opacity.hasValue()) {
             canvas.drawText(at(bounds.x(), bounds.center().y()), label, OPTIONS.color(RED.opacity(opacity)));
         }
     }
 
     @Override
     public void renderInactiveItem(String label, ScreenBounds bounds, Canvas canvas) {
-        if (!opacity.isZero()) {
+        if (opacity.hasValue()) {
             canvas.drawText(at(bounds.x(), bounds.center().y()), label, OPTIONS.color(GREY.opacity(opacity)));
         }
     }

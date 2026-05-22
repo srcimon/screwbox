@@ -136,20 +136,25 @@ engine.graphics().enableSplitScreenMode(options);
 `Graphics.configuration()` will allow customizing system load and quality.
 Options that can be specified:
 
-| Option             | Default    | Description                                                                                                     |
-|--------------------|------------|-----------------------------------------------------------------------------------------------------------------|
-| resolution         | `1280:720` | window resolution, also screen resolution when using fullscreen                                                 |
-| isFullscreen       | `false`    | enable or disable fullscreen mode                                                                               |
-| useAntialiasing    | `false`    | enable or disable antialiasing (performance heavy when drawing shapes)                                          |
-| isAutoEnableLight  | `true`     | auto enable light when interacting with light                                                                   |
-| lightQuality       | `0.25`     | specify the quality and performance impact for lights and shadows                                               |
-| isLightEnabled     | `false`    | use light (will make screen black when no light source is present)                                              |
-| isLensFlareEnabled | `true`     | specify, if light glow effects can cause lens flares on the camera                                              |
-| lightBlur          | `3`        | specify the blurring of the light map                                                                           |
-| lightFalloff       | `1.0`      | specify how lights will blur to darkness                                                                        |
-| backgroundColor    | `BLACK`    | specify the background color of the screen                                                                      |
-| overlayShader      | `-`        | specify a shader that is used on every sprite drawn                                                             |
-| shockwaveCellLimit | `10,000`   | cell count limit used for rendering shockwaves. Higher values result in better graphics but reduced performance |
+| Option                 | Default    | Description                                                                                                     |
+|------------------------|------------|-----------------------------------------------------------------------------------------------------------------|
+| resolution             | `1280:720` | window resolution, also screen resolution when using fullscreen                                                 |
+| isFullscreen           | `false`    | enable or disable fullscreen mode                                                                               |
+| useAntialiasing        | `false`    | enable or disable antialiasing (performance heavy when drawing shapes)                                          |
+| isAutoEnableLight      | `true`     | auto enable light when interacting with light                                                                   |
+| lightQuality           | `0.25`     | specify the quality and performance impact for lights and shadows                                               |
+| isLightEnabled         | `false`    | use light (will make screen black when no light source is present)                                              |
+| isLensFlareEnabled     | `true`     | specify, if light glow effects can cause lens flares on the camera                                              |
+| isIndirectLightEnabled | `true`     | specify, if indirect light will be cast when light hits occluders (expensive)                                   |
+| lightBlur              | `3`        | specify the blurring of the light map                                                                           |
+| lightFalloff           | `1.0`      | specify how lights will blur to darkness                                                                        |
+| backgroundColor        | `BLACK`    | specify the background color of the screen                                                                      |
+| overlayShader          | `-`        | specify a shader that is used on every sprite drawn                                                             |
+| shockwaveCellLimit     | `10,000`   | cell count limit used for rendering shockwaves. Higher values result in better graphics but reduced performance |
+| lightBounceLossFactor  | `0.1`      | sets the loss of light intensity when it bounces of an occluder                                                 |
+| indirectLightIntensity | `0.9`      | specify the intensity of indirect light that is cast when light hits occluders                                  |
+| indirectLightDiameter  | `16`       | sets the diameter of indirect light rays.                                                                       |
+| maxLightBounces        | `2`        | specify the maximum number of consecutive bounces that light will make when hitting occluders                   |
 
 :::info
 Currently there is no way to preserve the configuration when quitting the game.
@@ -285,6 +290,16 @@ improve rendering performance.
 The recommended way to add light to your scenes is by using the corresponding components of the ecs.
 See [Components Overview](../../reference/components-overview.md).
 
+
+### Indirect lighting
+
+Spot lights and cone lights will cast indirect light when bouncing off occluders.
+Indirect light is active by default, but it can be heavily customized or disabled using the corresponding `GraphicsConfiguration` options.
+Using indirect light helps illuminating occluders and to set the mood of the game scene but it's also quite heavy on the fps.
+You can see how indirect light plays a role in this image comparison:
+
+![indirect-light.png](indirect-lighting.png)
+
 ### On light colors
 
 Creating light in a 2D Java game engine was not an easy task.
@@ -297,11 +312,6 @@ So to avoid graphic glitches it is recommended to draw only black light sources.
 Any other color might work but may result in some quite ugly graphics.
 This is kind of strange and will likely change in the future.
 
-### Drawing on top of light
-
-In some cases it might be necessary to draw sprites on top of the light map.
-To do so, simply set the `renderInForeground` property of your `RenderComponent`.
-
 ### Creating immersive light sources
 
 To create really immersive light sources, the combination of distinct light components might be very useful.
@@ -311,6 +321,7 @@ For example:
 - Add a `SpotLightComponent` to also lighten areas that would otherwise be not visible at all.
 - Add a `GlowComponent` to highlight the light source.
 - Add a `LensFlare` to the `GlowComponent` to create some basic reflections on the screen.
+- Leave indirect light enabled and tune it using the correspondig `GraphicsConfiguration` options.
 
 ## Post processing
 

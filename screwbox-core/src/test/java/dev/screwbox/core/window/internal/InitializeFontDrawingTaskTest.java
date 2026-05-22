@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 class InitializeFontDrawingTaskTest {
 
     @Test
-    @DisabledOnOs(OS.LINUX)
+    @DisabledOnOs(OS.LINUX) // fonts missing in docker
     void run_doesntCrash() {
         assertThatNoException().isThrownBy(() -> new InitializeFontDrawingTask().run());
     }

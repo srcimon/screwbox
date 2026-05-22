@@ -117,14 +117,14 @@ public final class Bounds implements Serializable {
         Validate.zeroOrPositive(height, "height must no be negative");
         this.position = Vector.of(x, y);
         this.extents = Vector.of(width / 2.0, height / 2.0);
-        this.origin = position.substract(extents);
+        this.origin = position.subtract(extents);
         this.bottomRight = position.add(extents);
     }
 
     private Bounds(final Vector position, final Vector extents) {
         this.position = position;
         this.extents = extents;
-        this.origin = position.substract(extents);
+        this.origin = position.subtract(extents);
         this.bottomRight = position.add(extents);
     }
 

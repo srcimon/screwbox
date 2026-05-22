@@ -25,7 +25,7 @@ public class AttentionFocus {
     public Vector direction(final Vector position) {
         Vector sumOfWeightedDirections = Vector.zero();
         for (var viewport : viewportManager.viewports()) {
-            final Vector direction = position.substract(viewport.camera().position());
+            final Vector direction = position.subtract(viewport.camera().position());
             final Vector weightedDirection = direction.length(1.0 / direction.length());
             sumOfWeightedDirections = sumOfWeightedDirections.add(weightedDirection);
         }

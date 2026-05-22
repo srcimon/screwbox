@@ -198,6 +198,93 @@ class GraphicsConfigurationTest {
         assertThat(graphicsConfiguration.resolutionScale()).isEqualTo(3.0);
     }
 
+    @Test
+    void setIndirectLightIntensity_null_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setIndirectLightIntensity(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("intensity must not be null");
+    }
+
+    @Test
+    void setIndirectLightIntensity_percentMax_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setIndirectLightIntensity(Percent.max());
+
+        assertThat(graphicsConfiguration.indirectLightIntensity()).isEqualTo(Percent.max());
+        verifyEventPosted(INDIRECT_LIGHT_INTENSITY, times(1));
+    }
+
+    @Test
+    void setLightBounceLossFactor_null_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceLossFactor(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("loss factor must not be null");
+    }
+
+    @Test
+    void setLightBounceLossFactor_max_throwsException() {
+        var max = Percent.max();
+        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceLossFactor(max))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("loss factor must below maximum value");
+    }
+
+    @Test
+    void setLightBounceLossFactor_twentyPercent_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setLightBounceLossFactor(Percent.of(0.2));
+
+        assertThat(graphicsConfiguration.indirectLightBounceLossFactor()).isEqualTo(Percent.of(0.2));
+        verifyEventPosted(LIGHT_BOUNCE_LOSS_FACTOR, times(1));
+    }
+
+    @Test
+    void setMaxLightBounces_negativeValue_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setMaxLightBounces(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("max light bounces must be positive (actual value: -1)");
+    }
+
+    @Test
+    void setMaxLightBounces_four_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setMaxLightBounces(4);
+
+        assertThat(graphicsConfiguration.maxLightBounces()).isEqualTo(4);
+        verifyEventPosted(MAX_LIGHT_BOUNCES, times(1));
+    }
+
+    @Test
+    void setIndirectLightDiameter_outOfRange_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setIndirectLightDiameter(3))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("diameter must be in range 4 to 64 (actual value: 3.0)");
+    }
+
+    @Test
+    void setIndirectLightDiameter_twenty_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setIndirectLightDiameter(20);
+        assertThat(graphicsConfiguration.indirectLightDiameter()).isEqualTo(20f);
+
+        verifyEventPosted(INDIRECT_LIGHT_DIAMETER, times(1));
+    }
+
+    @Test
+    void isIndirectLightEnabled_zeroBounces_isFalse() {
+        graphicsConfiguration.setMaxLightBounces(0);
+
+        assertThat(graphicsConfiguration.isIndirectLightEnabled()).isFalse();
+    }
+
+    @Test
+    void isIndirectLightEnabled_zeroIntensity_isFalse() {
+        graphicsConfiguration.setIndirectLightIntensity(Percent.zero());
+
+        assertThat(graphicsConfiguration.isIndirectLightEnabled()).isFalse();
+    }
+
+    @Test
+    void isIndirectLightEnabled_twoBouncesAndSomeIntensity_isTrue() {
+        assertThat(graphicsConfiguration.isIndirectLightEnabled()).isTrue();
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

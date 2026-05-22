@@ -9,6 +9,7 @@ import java.util.List;
 import static dev.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
 
 class LineTest {
@@ -245,5 +246,54 @@ class LineTest {
         var line = Line.between($(0, 0), $(50, 0));
 
         assertThat(line.contains($(12, 1))).isFalse();
+    }
+
+    @Test
+    void bounce_horizontalHitsVertical_isReversed() {
+        var horizontal = Line.between($(0, 0), $(50, 0));
+        var vertical = Line.between($(0, 0), $(0, 50));
+
+        assertThat(horizontal.bounce(vertical)).isEqualTo(horizontal.reverse());
+    }
+
+    @Test
+    void bounce_verticalHitsHorizontal_isReversed() {
+        var vertical = Line.between($(0, 0), $(0, 50));
+        var horizontal = Line.between($(0, 0), $(50, 0));
+
+        assertThat(vertical.bounce(horizontal)).isEqualTo(vertical.reverse());
+    }
+
+    @Test
+    void bounce_lineBouncesObstacle_resultHasSameLengthAndStartsAtEndOfOriginal() {
+        var line = Line.between($(250, -130.94), $(-19.19, 41.39));
+        var obstacle = Line.between($(40.10, -10.29), $(140.11, 93.19));
+
+        Line result = line.bounce(obstacle);
+        assertThat(result.start()).isEqualTo(line.end());
+        assertThat(result.length()).isEqualTo(line.length(), offset(0.01));
+        assertThat(result.end().x()).isEqualTo(162.22, offset(0.01));
+        assertThat(result.end().y()).isEqualTo(-221.77, offset(0.01));
+    }
+
+    @Test
+    void bounce_obstacleIsNull_throwsException() {
+        var line = Line.between($(250, -130.94), $(-19.19, 41.39));
+        assertThatThrownBy(() -> line.bounce(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("obstacle must not be null");
+    }
+
+    @Test
+    void reverse_reversesStartAndEnd() {
+        var line = Line.between($(250, -130.94), $(-19.19, 41.39));
+        assertThat(line.reverse()).isEqualTo(Line.between($(-19.19, 41.39), $(250, -130.94)));
+    }
+
+    @Test
+    void asVector_returnsVectorRepresentation() {
+        var line = Line.between($(250, 100), $(300, 0));
+
+        assertThat(line.asVector()).isEqualTo($(50, -100));
     }
 }

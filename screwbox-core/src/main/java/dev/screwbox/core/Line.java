@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -104,8 +105,8 @@ public final class Line implements Serializable, Comparable<Line> {
             return start;
         }
 
-        final var deltaLine = end.substract(start);
-        final var deltaStart = point.substract(start);
+        final var deltaLine = asVector();
+        final var deltaStart = point.subtract(start);
 
         final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
 
@@ -119,6 +120,7 @@ public final class Line implements Serializable, Comparable<Line> {
             start.y() + normalizedDistance * deltaLine.y());
     }
 
+
     /**
      * Returns the perpendicular {@link Line} from a specified point. Will be empty if there is no perpendicular from
      * the specified point.
@@ -126,8 +128,8 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.22.0
      */
     public Optional<Line> perpendicular(final Vector point) {
-        final var deltaLine = end.substract(start);
-        final var deltaStart = point.substract(start);
+        final var deltaLine = asVector();
+        final var deltaStart = point.subtract(start);
 
         final double normalizedDistance = (deltaStart.x() * deltaLine.x() + deltaStart.y() * deltaLine.y()) / (deltaLine.length() * deltaLine.length());
 
@@ -266,7 +268,7 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.22.0
      */
     public Line length(final double distance) {
-        return Line.between(start, start.add(end.substract(start).length(distance)));
+        return Line.between(start, start.add(end.subtract(start).length(distance)));
     }
 
     /**
@@ -275,7 +277,7 @@ public final class Line implements Serializable, Comparable<Line> {
      * @since 3.23.0
      */
     public Line expand(final double length) {
-        final var delta = end.substract(start);
+        final var delta = asVector();
         final var x = delta.x() / delta.length() * length * 0.5;
         final var y = delta.y() / delta.length() * length * 0.5;
         return Line.between(start.add(-x, -y), end.add(x, y));
@@ -311,5 +313,51 @@ public final class Line implements Serializable, Comparable<Line> {
     private double calculateShoelaceOf(final Vector position) {
         return (end.x() - start.x()) * (position.y() - start.y()) -
                (end.y() - start.y()) * (position.x() - start.x());
+    }
+
+    /**
+     * Bounces the {@link Line} of an obstacle and returns the resulting {@link Line} with the same length.
+     * Does not require the {@link Line lines} to touch.
+     *
+     * @see <a href="https://www.sunshine2k.de/articles/coding/vectorreflection/vectorreflection.html">about vector reflection</a>
+     * @since 3.30.0
+     */
+    public Line bounce(final Line obstacle) {
+        Objects.requireNonNull(obstacle, "obstacle must not be null");
+
+        final Vector incommingDirection = asVector().normalize();
+        final Vector obstacleDirection = obstacle.asVector();
+
+        Vector normalInIncommingDirection = Vector.of(-obstacleDirection.y(), obstacleDirection.x()).normalize();
+
+        if (incommingDirection.dotProduct(normalInIncommingDirection) > 0) {
+            normalInIncommingDirection = normalInIncommingDirection.invert();
+        }
+
+        final double dotProduct = incommingDirection.dotProduct(normalInIncommingDirection);
+        final double rx = incommingDirection.x() - 2 * dotProduct * normalInIncommingDirection.x();
+        final double ry = incommingDirection.y() - 2 * dotProduct * normalInIncommingDirection.y();
+
+        final double length = length();
+        return Line.between(end, end.add(rx * length, ry * length));
+    }
+
+    /**
+     * Reverses the {@link Line} (switches {@link #start()} and {@link #end()}.
+     *
+     * @since 3.30.0
+     */
+    @SuppressWarnings("java:S2234") // parameters switched intentionally
+    public Line reverse() {
+        return new Line(end, start);
+    }
+
+    /**
+     * Returns the {@link Vector} representation of the {@link Line}.
+     *
+     * @since 3.30.0
+     */
+    public Vector asVector() {
+        return end.subtract(start);
     }
 }

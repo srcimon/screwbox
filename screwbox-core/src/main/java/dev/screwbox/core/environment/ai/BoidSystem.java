@@ -60,16 +60,16 @@ public class BoidSystem implements EntitySystem {
 
     private static void applyCohesion(final Entity boid, final List<Entity> nearbyBoids, final BoidComponent config, final PhysicsComponent physics, final double delta) {
         final var centerOfMass = calclulateCenterOfMass(nearbyBoids);
-        final var desiredCohesionDirection = centerOfMass.divide(nearbyBoids.size()).substract(boid.position());
+        final var desiredCohesionDirection = centerOfMass.divide(nearbyBoids.size()).subtract(boid.position());
         final var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
-        final var cohesionSteer = desiredCohesionVelocity.substract(physics.velocity);
+        final var cohesionSteer = desiredCohesionVelocity.subtract(physics.velocity);
         physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
     }
 
     private static void applyAlignment(final List<Entity> nearbyBoids, final BoidComponent config, final PhysicsComponent physics, double delta) {
         final var averageVelocity = calculateAverageVelocity(nearbyBoids);
         final var desiredAlignementVelocity = averageVelocity.divide(nearbyBoids.size()).length(config.velocity);
-        final var alignmentSteer = desiredAlignementVelocity.substract(physics.velocity);
+        final var alignmentSteer = desiredAlignementVelocity.subtract(physics.velocity);
         physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
     }
 
@@ -78,13 +78,13 @@ public class BoidSystem implements EntitySystem {
         var diffSum = Vector.zero();
         for (final var nearbyBoid : nearbyBoids) {
             final double distance = boid.position().distanceTo(nearbyBoid.position());
-            final var diff = boid.position().substract(nearbyBoid.position());
+            final var diff = boid.position().subtract(nearbyBoid.position());
             diffSum = diffSum.add(diff.divide(Math.max(0.1, distance * distance)));
         }
         final var averageDiff = diffSum.divide(nearbyBoids.size());
         if (averageDiff.length() > 0) {
             var desiredVelocity = averageDiff.length(config.velocity);
-            separationSteer = desiredVelocity.substract(physics.velocity);
+            separationSteer = desiredVelocity.subtract(physics.velocity);
         }
 
         physics.velocity = physics.velocity.add(separationSteer.multiply(config.separationStrength * delta));
@@ -97,7 +97,7 @@ public class BoidSystem implements EntitySystem {
         int hits = 0;
         for (var obstacle : inTheWayObstacles) {
             final Vector closestPoint = obstacle.closestPoint(boid.position());
-            Vector avoidanceDirection = boid.position().substract(closestPoint);
+            Vector avoidanceDirection = boid.position().subtract(closestPoint);
             if (avoidanceDirection.length() < 0.1) {
                 avoidanceDirection = Vector.of(-physics.velocity.y(), physics.velocity.x());
             }
@@ -108,7 +108,7 @@ public class BoidSystem implements EntitySystem {
 
         if (hits > 0) {
             final Vector desiredVelocity = totalSteer.divide(hits).length(config.velocity);
-            final Vector steer = desiredVelocity.substract(physics.velocity);
+            final Vector steer = desiredVelocity.subtract(physics.velocity);
             physics.velocity = physics.velocity.add(steer.multiply(delta * config.obstacleAvoidanceStrength));
         }
     }
@@ -139,7 +139,7 @@ public class BoidSystem implements EntitySystem {
 
 
     private static boolean isFrontal(final Entity boid, final Entity perceptedEntity) {
-        final var directionVector = perceptedEntity.position().substract(boid.position());
+        final var directionVector = perceptedEntity.position().subtract(boid.position());
         final var velocity = perceptedEntity.get(PhysicsComponent.class).velocity;
         return directionVector.normalizedDotProduct(velocity) > 0;
     }

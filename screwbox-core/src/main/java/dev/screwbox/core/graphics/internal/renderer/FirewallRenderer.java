@@ -47,7 +47,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
-        if (!options.opacity().isZero()) {
+        if (options.opacity().hasValue()) {
             next.fillWith(sprite, options, clip);
         }
     }
@@ -93,21 +93,21 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        if (!options.opacity().isZero()) {
+        if (options.opacity().hasValue()) {
             next.drawSprite(sprite, origin, options, clip);
         }
     }
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        if (!options.opacity().isZero()) {
+        if (options.opacity().hasValue()) {
             next.drawSprite(sprite, origin, options, clip);
         }
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
-        if (!options.opacity().isZero() && !text.isEmpty() && options.scale() > 0) {
+        if (options.opacity().hasValue() && !text.isEmpty() && options.scale() > 0) {
             next.drawText(offset, text, options, clip);
         }
     }
