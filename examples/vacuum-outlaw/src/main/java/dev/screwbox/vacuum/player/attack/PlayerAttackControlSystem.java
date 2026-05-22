@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
-import dev.screwbox.core.environment.light.SpotLightComponent;
 import dev.screwbox.core.environment.logic.StateComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
