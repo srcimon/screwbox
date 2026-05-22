@@ -1,5 +1,5 @@
 ---
-title: Introducing indirect lighting
+title: Indirect lighting
 authors: [ srcimon ]
 tags: [ new-features ]
 ---

@@ -120,7 +120,7 @@ public final class ImageOperations {
         for (int i = 0; i < numPixels; i++) {
             final int currentPixel = pixels[i];
             final int rgbChannels = currentPixel & 0x00FFFFFF;
-            final int minOpacity = rgbChannels != 0 && preserveColor ? 1 : 0;
+            final int minOpacity = preserveColor ? 1 : 0;
             int invertedAlpha = Math.max(minOpacity, 255 - ((currentPixel >> 24) & 0xFF));
             pixels[i] = (invertedAlpha << 24) | rgbChannels;
         }

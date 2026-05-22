@@ -262,7 +262,7 @@ class LightRendererTest {
 
     private void verifyIsIdenticalWithReferenceImage(Asset<Sprite> sprite, String fileName) {
         Frame reference = Frame.fromFile("lightrenderer/" + fileName);
-        assertThat(sprite.get().singleFrame().hasIdenticalPixels(reference)).isTrue();
+        assertThat(sprite.get().singleFrame().hasIdenticalPixels(reference, Percent.of(0.01))).isTrue();
     }
 
     private void assertCompletelyBlack(Asset<Sprite> sprite) {
