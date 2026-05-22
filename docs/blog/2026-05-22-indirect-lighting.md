@@ -7,8 +7,10 @@ tags: [ new-features ]
 Lighting defines the atmosphere of a game.
 While ScrewBox is still struggling with colored lights, it is now possible to use indirect light.
 This new feature is enabled by default.
-Under the hood, the engine casts 180 rays around each visible light source to calculate the bounces (and child bounces).
+Under the hood, the engine casts 180 rays around each visible spot light to calculate the bounces (and child bounces).
 Consequently, all spotlights and cone lights create realistic indirect light when hitting occluders, illuminating adjacent walls.
+This adds some visual depth to the environment.
+
 Because all light sources in ScrewBox are dynamic, these raycasts and light bounces update constantly as the sources move.
 There are new configuration options to turn off indirect light or customize it further.
 For instance, the maximum number of bounces can be adjusted via the graphics configuration.

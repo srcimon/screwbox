@@ -1,6 +1,5 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
@@ -10,7 +9,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.ai.BoidComponent;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
@@ -27,7 +25,6 @@ import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
@@ -53,8 +50,6 @@ public class PlaygroundApp {
         screwBox.loop().unlockFps();
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
         screwBox.graphics().camera().setZoom(3);
-//        screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4));
-        //TODO FIX ISSUE FROM ABOVE?
         screwBox.window().setCursor(MouseCursor.HIDDEN);
         screwBox.environment()
             .enableAllFeatures()
@@ -86,8 +81,8 @@ public class PlaygroundApp {
                     .bounds(tile.bounds())
                     .add(new BoidComponent(), b -> {
                         b.velocity = 20;
-                        b.alignmentStrenth=8;
-                        b.cohesionStrength=6;
+                        b.alignmentStrenth = 8;
+                        b.cohesionStrength = 6;
                         b.obstaclePerceptionRadius = 10;
                         b.obstacleAvoidanceStrength = 4;
                     })

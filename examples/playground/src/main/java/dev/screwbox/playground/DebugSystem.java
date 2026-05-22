@@ -12,11 +12,5 @@ public class DebugSystem implements EntitySystem {
         for (var cone : engine.environment().fetchAllHaving(ConeLightComponent.class)) {
             cone.get(ConeLightComponent.class).direction = Angle.degrees(cone.get(ConeLightComponent.class).direction.degrees() + engine.mouse().unitsScrolled());
         }
-        if (engine.mouse().isPressedLeft()) {
-            engine.graphics().configuration().setMaxLightBounces(0);
-        }
-        if (engine.mouse().isPressedRight()) {
-            engine.graphics().configuration().setMaxLightBounces(64);
-        }
     }
 }
