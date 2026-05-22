@@ -42,10 +42,10 @@ public class PlaygroundApp {
             #         #
             ###   B  ##
             ###  B ########
-            ##         #  #########
-            ######  C #    #    #
-             #           #    #   #
-             #######################
+            ##        ##  ########
+            ######    #C    #    #
+             #           #    #  #
+             #####################
             """);
         screwBox.loop().unlockFps();
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
