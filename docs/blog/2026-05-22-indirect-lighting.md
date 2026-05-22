@@ -21,6 +21,6 @@ However, adding indirect light can be costly.
 In my playground scene, this heavy raycasting reduced the framerate by at least 20 percent when running uncapped.
 Despite the performance hit, I think it is absolutely worth it.
 
-For more details please consider the [graphics documentation](docs/core-modules/graphics/#indirect-lighting).
+For more details please consider the [graphics documentation](/docs/core-modules/graphics#indirect-lighting).
 
 <!-- truncate -->
