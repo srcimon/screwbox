@@ -80,7 +80,7 @@ public class PlaygroundApp {
                     var rope = SoftPhysicsSupport.createRope(source.position().addY(-source.bounds().height() / 2.0), source.position().addY(10), 6, idPool);
                     rope.end().remove(PhysicsComponent.class);
                     rope.end().moveTo(rope.root().position());
-                    rope.root().add(new RopeRenderComponent(Color.BLACK, 1));
+                    rope.root().add(new RopeRenderComponent(Color.hex("#3c0f0f"), 1));
                     rope.end().add(new RopeOccluderComponent(ShadowOptions.rounded()));
                     rope.connectors().forEach(r -> r.get(PhysicsComponent.class).friction = 1);
                     rope.connectors().forEach(r -> r.add(new TailwindPropelledComponent()));
