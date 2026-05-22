@@ -15,6 +15,6 @@ public class Light implements Blueprint<GameObject> {
         return new Entity(object.id()).name("light")
                 .add(new TransformComponent(object.position()))
                 .add(new GlowComponent(18, Color.hex("#feffe9")))
-                .add(new PointLightComponent(120, Color.BLACK));
+                .add(new PointLightComponent(64, Color.BLACK));
     }
 }

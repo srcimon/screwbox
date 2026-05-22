@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
+import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.light.SpotLightComponent;
 import dev.screwbox.core.environment.logic.StateComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
@@ -33,7 +34,7 @@ public class PlayerAttackControlSystem implements EntitySystem {
                 engine.environment().addEntity("shoot",
                         new TransformComponent(player.position(), 8, 8),
                         new GlowComponent(8, Color.WHITE.opacity(0.75)),
-                        new SpotLightComponent(16, Color.BLACK),
+                        new PointLightComponent(64, Color.BLACK),
                         new ShotComponent(),
                         new CollisionSensorComponent(),
                         new StateComponent(new ShotUnderwayState()),
