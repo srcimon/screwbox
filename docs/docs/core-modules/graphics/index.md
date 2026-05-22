@@ -291,14 +291,14 @@ The recommended way to add light to your scenes is by using the corresponding co
 See [Components Overview](../../reference/components-overview.md).
 
 
-### Indirect light
+### Indirect lighting
 
 Spot lights and cone lights will cast indirect light when bouncing off occluders.
 Indirect light is active by default, but it can be heavily customized or disabled using the corresponding `GraphicsConfiguration` options.
 Using indirect light helps illuminating occluders and to set the mood of the game scene but it's also quite heavy on the fps.
 You can see how indirect light plays a role in this image comparison:
 
-![indirect-light.png](indirect-light.png)
+![indirect-light.png](indirect-lighting.png)
 
 ### On light colors
 

@@ -27,6 +27,7 @@ import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
@@ -52,6 +53,8 @@ public class PlaygroundApp {
         screwBox.loop().unlockFps();
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
         screwBox.graphics().camera().setZoom(3);
+//        screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(4));
+        //TODO FIX ISSUE FROM ABOVE?
         screwBox.window().setCursor(MouseCursor.HIDDEN);
         screwBox.environment()
             .enableAllFeatures()
@@ -59,7 +62,6 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addEntity(new Entity().add(new GravityComponent(Vector.y(200))))
             .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new GlowComponent(60, Color.WHITE.opacity(0.3))).add(new PointLightComponent(80, Color.BLACK)))
-            .addEntity(new Entity().bounds(map.bounds().scale(4)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(10)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', tile -> new Entity().name("wall")
                     .bounds(tile.bounds())

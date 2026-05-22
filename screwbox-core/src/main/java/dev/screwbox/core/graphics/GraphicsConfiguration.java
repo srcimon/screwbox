@@ -42,9 +42,6 @@ public class GraphicsConfiguration {
     private float indirectLightDiameter = 16f;
     private int maxLightBounces = 2;
 
-    //TODO add indirect light to graphics documentation
-    //TODO blogpost on indirect light
-
     /**
      * Returns {@code true} if indirect light is enabled. Is controlled by {@link #maxLightBounces()}
      * (disabled when zero) and {@link #indirectLightIntensity()} (disabled when zero).

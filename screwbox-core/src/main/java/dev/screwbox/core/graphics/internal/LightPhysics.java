@@ -87,7 +87,7 @@ public class LightPhysics {
         final double radius = lightBox.height() / 2.0;
         final var normal = createNormalOfLightBox(lightBox);
 
-        for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
+        for (double degrees = minAngle; degrees < maxAngle; degrees += 1) {
             addRayReflections(degrees, normal, relevantOccluders, radius, lights);
         }
         return lights;
