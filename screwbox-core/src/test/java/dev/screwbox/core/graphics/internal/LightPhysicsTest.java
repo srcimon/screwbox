@@ -143,7 +143,7 @@ class LightPhysicsTest {
     void calculateIndirectLights_occludersHit_hasHits() {
         lightPhysics.addOccluder($$(50, 40, 80, 80));
         var indirectLights = lightPhysics.calculateIndirectLights($$(0, 0, 200, 200), 0, 360);
-        assertThat(indirectLights).hasSize(87);
+        assertThat(indirectLights).hasSize(85);
         assertThat(indirectLights.getFirst().ray()).isEqualTo(Line.between($(100, 40), $(100, 80)));
         assertThat(indirectLights.getFirst().startStrength()).isEqualTo(Percent.max());
         assertThat(indirectLights.getFirst().endStrength()).isEqualTo(Percent.zero());

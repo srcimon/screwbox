@@ -87,7 +87,7 @@ public class LightPhysics {
         final double radius = lightBox.height() / 2.0;
         final var normal = createNormalOfLightBox(lightBox);
 
-        for (double degrees = minAngle; degrees < maxAngle; degrees += 1) {
+        for (double degrees = minAngle; degrees < maxAngle; degrees += 2) {
             addRayReflections(degrees, normal, relevantOccluders, radius, lights);
         }
         return lights;
@@ -115,7 +115,7 @@ public class LightPhysics {
             }
 
             final double lengthBudget = radius - distanceAtEnd;
-            if (isNull(bounce) || lengthBudget <= 0 || rayLength <= 0 || depth >= configuration.maxLightBounces()) {
+            if (isNull(bounce) || lengthBudget <= 1 || rayLength <= 1 || depth >= configuration.maxLightBounces()) {
                 break;
             }
             raycast = bounce.length(lengthBudget);
