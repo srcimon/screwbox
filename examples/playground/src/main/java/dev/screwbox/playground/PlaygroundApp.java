@@ -1,14 +1,15 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.ai.BoidComponent;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.light.DirectionalLightComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
@@ -25,7 +26,6 @@ import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.core.window.MouseCursor;
@@ -44,7 +44,7 @@ public class PlaygroundApp {
             ###  B ########
             ##         #  #########
             ######  C #    #    #
-             #       BBB #    #   #
+             #           #    #   #
              #######################
             """);
         screwBox.loop().unlockFps();
@@ -55,6 +55,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new DebugSystem())
             .addSystem(new LogFpsSystem())
+            .addEntity(new Entity().bounds(map.bounds().scale(3)).add(new DirectionalLightComponent(), d -> d.angle = Angle.degrees(-10)))
             .addEntity(new Entity().add(new GravityComponent(Vector.y(200))))
             .addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.$$(0, 0, 1, 1)).add(new GlowComponent(60, Color.WHITE.opacity(0.3))).add(new PointLightComponent(80, Color.BLACK)))
             .importSource(indexedSources(map.tiles(), TileMap.Tile::value)
@@ -77,20 +78,7 @@ public class PlaygroundApp {
                     rope.root().add(new RopeOccluderComponent(ShadowOptions.rounded()));
                     return rope;
                 })
-                .assign('B', tile -> new Entity().name("boid")
-                    .bounds(tile.bounds())
-                    .add(new BoidComponent(), b -> {
-                        b.velocity = 20;
-                        b.alignmentStrenth = 8;
-                        b.cohesionStrength = 6;
-                        b.obstaclePerceptionRadius = 10;
-                        b.obstacleAvoidanceStrength = 4;
-                    })
-                    .add(new PhysicsComponent())
-                    .add(new RenderComponent(Sprite.pixel(Color.RED)))
-                    .add(new GlowComponent(20, Color.RED.opacity(0.6)))
-                    .add(new PointLightComponent(40, Color.RED))
-                ));
+            );
 
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
         screwBox.start();
