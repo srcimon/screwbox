@@ -290,6 +290,16 @@ improve rendering performance.
 The recommended way to add light to your scenes is by using the corresponding components of the ecs.
 See [Components Overview](../../reference/components-overview.md).
 
+
+### Indirect light
+
+Spot lights and cone lights will cast indirect light when bouncing off occluders.
+Indirect light is active by default, but it can be heavily customized or disabled using the corresponding `GraphicsConfiguration` options.
+Using indirect light helps illuminating occluders and to set the mood of the game scene but it's also quite heavy on the fps.
+You can see how indirect light plays a role in this image comparison:
+
+![indirect-light.png](indirect-light.png)
+
 ### On light colors
 
 Creating light in a 2D Java game engine was not an easy task.
@@ -311,6 +321,7 @@ For example:
 - Add a `SpotLightComponent` to also lighten areas that would otherwise be not visible at all.
 - Add a `GlowComponent` to highlight the light source.
 - Add a `LensFlare` to the `GlowComponent` to create some basic reflections on the screen.
+- Leave indirect light enabled and tune it using the correspondig `GraphicsConfiguration` options.
 
 ## Post processing
 
