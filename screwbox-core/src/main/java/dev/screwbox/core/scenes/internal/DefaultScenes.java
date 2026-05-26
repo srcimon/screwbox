@@ -110,7 +110,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public boolean exists(Class<? extends Scene> sceneClass) {
+    public boolean exists(final Class<? extends Scene> sceneClass) {
         return sceneData.containsKey(sceneClass);
     }
 
