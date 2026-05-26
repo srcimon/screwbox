@@ -32,7 +32,6 @@ public class DefaultScenes implements Scenes, Updatable {
     private ActiveTransition activeTransition;
     private boolean hasChangedToTargetScene = true;
     private SceneTransition defaultTransition = SceneTransition.custom();
-    private boolean canRenderTransition = false;
     private Time switchTime = Time.now();
 
     public DefaultScenes(final Engine engine, final Executor executor, final DefaultPostProcessing postProcessing) {
@@ -157,12 +156,16 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
-        final Time time = Time.now();
         final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
         sceneToUpdate.environment().update();
 
         if (isTransitioning()) {
-            canRenderTransition = true;
+            final Time time = Time.now();
+            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
+                postProcessing.setTransitionFilter(activeTransition.introFilter(time));
+            } else {
+                postProcessing.setTransitionFilter(activeTransition.outroFilter(time));
+            }
             final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
                 activeScene.scene().onExit(engine);
@@ -173,20 +176,9 @@ public class DefaultScenes implements Scenes, Updatable {
             }
             if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
                 activeTransition = null;
-                canRenderTransition = false;
+                postProcessing.setTransitionFilter(null);
             }
         }
-
-        if (canRenderTransition) {
-            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                postProcessing.setTransitionFilter(activeTransition.introFilter(time));
-            } else {
-                postProcessing.setTransitionFilter(activeTransition.outroFilter(time));
-            }
-        } else {
-            postProcessing.setTransitionFilter(null);
-        }
-
     }
 
     private void add(final Scene scene) {
