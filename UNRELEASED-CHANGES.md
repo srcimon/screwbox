@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added separate length loss to indirect light configuration.
 
 ### 🪛 Bug Fixes
 

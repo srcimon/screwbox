@@ -214,26 +214,26 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void setLightBounceLossFactor_null_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceLossFactor(null))
+    void setLightBounceIntensityLoss_null_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceIntensityLoss(null))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("loss factor must not be null");
     }
 
     @Test
-    void setLightBounceLossFactor_max_throwsException() {
+    void setLightBounceIntensityLoss_max_throwsException() {
         var max = Percent.max();
-        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceLossFactor(max))
+        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceIntensityLoss(max))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("loss factor must below maximum value");
     }
 
     @Test
-    void setLightBounceLossFactor_twentyPercent_updatesOptionAndNotifiesListeners() {
-        graphicsConfiguration.setLightBounceLossFactor(Percent.of(0.2));
+    void setLightBounceIntensityLoss_twentyPercent_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setLightBounceIntensityLoss(Percent.of(0.2));
 
-        assertThat(graphicsConfiguration.indirectLightBounceLossFactor()).isEqualTo(Percent.of(0.2));
-        verifyEventPosted(LIGHT_BOUNCE_LOSS_FACTOR, times(1));
+        assertThat(graphicsConfiguration.lightBounceIntensityLoss()).isEqualTo(Percent.of(0.2));
+        verifyEventPosted(LIGHT_BOUNCE_INTENSITY_LOSS, times(1));
     }
 
     @Test

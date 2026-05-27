@@ -37,7 +37,8 @@ public class GraphicsConfiguration {
     private Color backgroundColor = Color.BLACK;
     private ShaderSetup overlayShader = null;
     private Percent lightQuality = Percent.quarter();
-    private Percent lightBounceLossFactor = Percent.of(0.1);
+    private Percent lightBounceIntensityLoss = Percent.of(0.1);
+    private Percent lightBounceLengthLoss = Percent.of(0.4);
     private Percent indirectLightIntensity = Percent.of(0.9);
     private float indirectLightDiameter = 16f;
     private int maxLightBounces = 2;
@@ -104,11 +105,11 @@ public class GraphicsConfiguration {
      *
      * @since 3.30.0
      */
-    public GraphicsConfiguration setLightBounceLossFactor(final Percent lossFactor) {
-        Objects.requireNonNull(lossFactor, "loss factor must not be null");
-        Validate.isFalse(lossFactor::isMax, "loss factor must below maximum value");
-        this.lightBounceLossFactor = lossFactor;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BOUNCE_LOSS_FACTOR);
+    public GraphicsConfiguration setLightBounceIntensityLoss(final Percent loss) {
+        Objects.requireNonNull(loss, "loss must not be null");
+        Validate.isFalse(loss::isMax, "loss must below maximum value");
+        this.lightBounceIntensityLoss = loss;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BOUNCE_INTENSITY_LOSS);
         return this;
     }
 
@@ -117,8 +118,25 @@ public class GraphicsConfiguration {
      *
      * @since 3.30.0
      */
-    public Percent indirectLightBounceLossFactor() {
-        return lightBounceLossFactor;
+    public Percent lightBounceIntensityLoss() {
+        return lightBounceIntensityLoss;
+    }
+
+    public GraphicsConfiguration setLightBounceLengthLoss(final Percent lossFactor) {
+//        Objects.requireNonNull(lossFactor, "loss factor must not be null");
+//        Validate.isFalse(lossFactor::isMax, "loss factor must below maximum value");
+        this.lightBounceLengthLoss = lossFactor;
+//        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BOUNCE_LOSS_FACTOR);
+        return this;
+    }
+
+    /**
+     * Returns the loss of light intensity when it bounces of an occluder.
+     *
+     * @since 3.30.0
+     */
+    public Percent lightBounceLengthLoss() {
+        return lightBounceLengthLoss;
     }
 
     /**
