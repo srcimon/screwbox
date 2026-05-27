@@ -217,7 +217,7 @@ class GraphicsConfigurationTest {
     void setLightBounceIntensityLoss_null_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setLightBounceIntensityLoss(null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("loss factor must not be null");
+            .hasMessage("loss must not be null");
     }
 
     @Test
@@ -225,7 +225,7 @@ class GraphicsConfigurationTest {
         var max = Percent.max();
         assertThatThrownBy(() -> graphicsConfiguration.setLightBounceIntensityLoss(max))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("loss factor must below maximum value");
+            .hasMessage("loss must below maximum value");
     }
 
     @Test
@@ -234,6 +234,29 @@ class GraphicsConfigurationTest {
 
         assertThat(graphicsConfiguration.lightBounceIntensityLoss()).isEqualTo(Percent.of(0.2));
         verifyEventPosted(LIGHT_BOUNCE_INTENSITY_LOSS, times(1));
+    }
+
+    @Test
+    void setLightBounceLengthLoss_null_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceLengthLoss(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("loss must not be null");
+    }
+
+    @Test
+    void setLightBounceLengthLoss_max_throwsException() {
+        var max = Percent.max();
+        assertThatThrownBy(() -> graphicsConfiguration.setLightBounceLengthLoss(max))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("loss must below maximum value");
+    }
+
+    @Test
+    void setLightBounceLengthLoss_thirtyPercent_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setLightBounceLengthLoss(Percent.of(0.3));
+
+        assertThat(graphicsConfiguration.lightBounceLengthLoss()).isEqualTo(Percent.of(0.3));
+        verifyEventPosted(LIGHT_BOUNCE_LENGTH_LOSS, times(1));
     }
 
     @Test

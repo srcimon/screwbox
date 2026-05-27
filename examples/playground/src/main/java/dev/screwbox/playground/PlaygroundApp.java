@@ -55,8 +55,6 @@ public class PlaygroundApp {
         screwBox.loop().unlockFps();
         screwBox.graphics().light().setAmbientLight(Percent.of(0.4));
         screwBox.graphics().camera().setZoom(3);
-        screwBox.graphics().configuration().setLightBounceLengthLoss(Percent.of(0.7));
-        screwBox.graphics().configuration().setLightBounceIntensityLoss(Percent.of(0.1));
         screwBox.window().setCursor(MouseCursor.HIDDEN);
         screwBox.environment()
             .enableAllFeatures()

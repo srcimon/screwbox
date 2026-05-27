@@ -79,6 +79,11 @@ public class GraphicsConfigurationEvent extends EventObject {
         LIGHT_BOUNCE_INTENSITY_LOSS,
 
         /**
+         * {@link GraphicsConfiguration#lightBounceLengthLoss()}  was changed.
+         */
+        LIGHT_BOUNCE_LENGTH_LOSS,
+
+        /**
          * {@link GraphicsConfiguration#maxLightBounces()} was changed.
          */
         MAX_LIGHT_BOUNCES,
