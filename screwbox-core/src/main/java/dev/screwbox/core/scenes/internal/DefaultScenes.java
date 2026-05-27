@@ -190,9 +190,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
-        if (!exists(sceneClass)) {
-            throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
-        }
+        Validate.isTrue(() -> exists(sceneClass), "scene doesn't exist: " + sceneClass);
     }
 
     private SceneData createSceneData(final Scene scene) {
