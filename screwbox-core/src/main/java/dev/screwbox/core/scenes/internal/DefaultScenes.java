@@ -32,16 +32,13 @@ public class DefaultScenes implements Scenes, Updatable {
     private ActiveTransition activeTransition;
     private boolean hasChangedToTargetScene = true;
     private SceneTransition defaultTransition = SceneTransition.custom();
-    private boolean canRenderTransition = false;
     private Time switchTime = Time.now();
 
     public DefaultScenes(final Engine engine, final Executor executor, final DefaultPostProcessing postProcessing) {
         this.engine = engine;
         this.executor = executor;
-        final SceneData defaultSceneData = createSceneData(new DefaultScene());
-        defaultSceneData.setInitialized();
-        sceneData.put(DefaultScene.class, defaultSceneData);
-        this.activeScene = defaultSceneData;
+        add(new DefaultScene());
+        this.activeScene = sceneData.get(DefaultScene.class);
         setLoadingScene(new DefaultLoadingScene());
         this.postProcessing = postProcessing;
     }
@@ -111,7 +108,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public boolean exists(Class<? extends Scene> sceneClass) {
+    public boolean exists(final Class<? extends Scene> sceneClass) {
         return sceneData.containsKey(sceneClass);
     }
 
@@ -157,36 +154,29 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
-        final Time time = Time.now();
         final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
         sceneToUpdate.environment().update();
 
         if (isTransitioning()) {
-            canRenderTransition = true;
-            final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
+            final Time now = Time.now();
+            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
+                postProcessing.setTransitionFilter(activeTransition.introFilter(now));
+            } else {
+                postProcessing.setTransitionFilter(activeTransition.outroFilter(now));
+            }
+            final boolean mustSwitchScenes = !hasChangedToTargetScene && now.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
                 activeScene.scene().onExit(engine);
                 activeScene = sceneData.get(activeTransition.targetScene());
                 activeScene.scene().onEnter(engine);
                 hasChangedToTargetScene = true;
-                switchTime = time;
+                switchTime = now;
             }
-            if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
+            if (hasChangedToTargetScene && activeTransition.introProgress(now).isMax()) {
                 activeTransition = null;
-                canRenderTransition = false;
+                postProcessing.setTransitionFilter(null);
             }
         }
-
-        if (canRenderTransition) {
-            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                postProcessing.setTransitionFilter(activeTransition.introFilter(time));
-            } else {
-                postProcessing.setTransitionFilter(activeTransition.outroFilter(time));
-            }
-        } else {
-            postProcessing.setTransitionFilter(null);
-        }
-
     }
 
     private void add(final Scene scene) {
@@ -198,9 +188,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
-        if (!exists(sceneClass)) {
-            throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
-        }
+        Validate.isTrue(() -> exists(sceneClass), "scene doesn't exist: " + sceneClass);
     }
 
     private SceneData createSceneData(final Scene scene) {

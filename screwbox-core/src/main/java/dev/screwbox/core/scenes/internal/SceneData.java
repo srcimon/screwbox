@@ -15,26 +15,22 @@ class SceneData {
 
     void initialize() {
         scene.populate(environment);
-        setInitialized();
-    }
-
-    public DefaultEnvironment environment() {
-        return environment;
-    }
-
-    public boolean isSameAs(Class<? extends Scene> sceneClass) {
-        return scene.getClass().equals(sceneClass);
-    }
-
-    public Scene scene() {
-        return scene;
-    }
-
-    public void setInitialized() {
         isInitialized = true;
     }
 
-    public boolean isInitialized() {
+    DefaultEnvironment environment() {
+        return environment;
+    }
+
+    boolean isSameAs(final Class<? extends Scene> sceneClass) {
+        return scene.getClass().equals(sceneClass);
+    }
+
+    Scene scene() {
+        return scene;
+    }
+
+    boolean isInitialized() {
         return isInitialized;
     }
 }

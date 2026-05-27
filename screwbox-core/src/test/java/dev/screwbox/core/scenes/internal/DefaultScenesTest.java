@@ -2,6 +2,7 @@ package dev.screwbox.core.scenes.internal;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
 import dev.screwbox.core.scenes.DefaultScene;
 import dev.screwbox.core.scenes.Scene;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static dev.screwbox.core.test.TestUtil.await;
 import static dev.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -183,6 +185,29 @@ class DefaultScenesTest {
     @Test
     void switchTime_sceneJustStartet_isNearlyNow() {
         assertThat(Duration.since(scenes.switchTime()).milliseconds()).isLessThan(300);
+    }
+
+    @Test
+    void environmentOf_existingEnvironment_returnsEnvironmentOfSpecifiedScene() {
+        Scene mockScene = environment -> environment.addEntity(new Entity(4711));
+
+        scenes.add(mockScene);
+
+        var environment = scenes.environmentOf(mockScene.getClass());
+
+        await(() -> environment.entityCount() == 1, Duration.oneSecond());
+        assertThat(environment.tryFetchById(4711)).isNotEmpty();
+    }
+
+    @Test
+    void environmentOf_absentScene_throwsException() {
+        Scene mockScene = environment -> environment.addEntity(new Entity(4711));
+        var clazz = mockScene.getClass();
+
+        assertThatThrownBy(() -> scenes.environmentOf(clazz))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageStartingWith("scene doesn't exist: class dev.screwbox.core.scenes.internal.DefaultScenesTest$$Lambda");
+
     }
 
     @AfterEach
