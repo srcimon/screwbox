@@ -23,7 +23,7 @@ public class SavegameManager {
 
     private final TimeoutCache<String, Boolean> savegameCache = new TimeoutCache<>(oneSecond());
 
-    public void createSavegame(List<Entity> entities, final String name) {
+    public void createSavegame(final List<Entity> entities, final String name) {
         requireNonNull(name, "name must not be null");
         try (final var outputStream = new FileOutputStream(name)) {
             try (final var zippedOutputStream = new GZIPOutputStream(outputStream)) {
@@ -44,7 +44,7 @@ public class SavegameManager {
                     return (List<Entity>) objectInputStream.readObject();
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (final IOException | ClassNotFoundException e) {
             throw new IllegalStateException("could not load savegame: " + name, e);
         }
     }

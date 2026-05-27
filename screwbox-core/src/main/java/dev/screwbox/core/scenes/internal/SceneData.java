@@ -18,19 +18,19 @@ class SceneData {
         isInitialized = true;
     }
 
-    public DefaultEnvironment environment() {
+    DefaultEnvironment environment() {
         return environment;
     }
 
-    public boolean isSameAs(final Class<? extends Scene> sceneClass) {
+    boolean isSameAs(final Class<? extends Scene> sceneClass) {
         return scene.getClass().equals(sceneClass);
     }
 
-    public Scene scene() {
+    Scene scene() {
         return scene;
     }
 
-    public boolean isInitialized() {
+    boolean isInitialized() {
         return isInitialized;
     }
 }
