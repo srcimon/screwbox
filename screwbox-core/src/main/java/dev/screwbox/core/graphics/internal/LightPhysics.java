@@ -95,31 +95,38 @@ public class LightPhysics {
 
     private void addRayReflections(final double degrees, final Line normal, final List<Occluder> relevantOccluders, final double radius, final List<IndirectLight> lights) {
         final double intensityConfig = configuration.indirectLightIntensity().rangeValue(1, 40);
-        final double lossConfig = configuration.indirectLightBounceLossFactor().invert().value();
+        final double lossConfig = configuration.lightBounceIntensityLoss().invert().value();
+        final double lengthLossConfig = configuration.lightBounceLengthLoss().invert().value();
         Line raycast = Angle.degrees(degrees).rotate(normal);
         int depth = 0;
-        double distanceAtStart = 0.0;
+
+        double remainingRadius = radius;
 
         while (true) {
             final var bounce = findBounce(raycast, relevantOccluders);
             final double rayLength = isNull(bounce) ? raycast.length() : raycast.start().distanceTo(bounce.start());
-            final double distanceAtEnd = distanceAtStart + rayLength;
 
             if (depth > 0) {
                 final Line indirectLightRay = isNull(bounce) ? raycast : Line.between(raycast.start(), bounce.start());
-                final var rawStart = Percent.complement(distanceAtStart / radius);
+
+                final var rawStart = Percent.complement(0.0 / remainingRadius);
+                final var rawEnd = Percent.complement(rayLength / remainingRadius);
+
                 final var reflectionDampening = Math.pow(lossConfig, depth);
                 final var startStrength = rawStart.multiply(intensityConfig * reflectionDampening);
-                final var endStrength = Percent.complement(distanceAtEnd / radius).multiply(reflectionDampening);
+                final var endStrength = rawEnd.multiply(reflectionDampening);
+
                 lights.add(new IndirectLight(indirectLightRay, startStrength, endStrength));
             }
 
-            final double lengthBudget = radius - distanceAtEnd;
+            final double lengthBudget = (remainingRadius - rayLength) * lengthLossConfig;
+
             if (isNull(bounce) || lengthBudget <= 1 || rayLength <= 1 || depth >= configuration.maxLightBounces()) {
                 break;
             }
+
             raycast = bounce.length(lengthBudget);
-            distanceAtStart = distanceAtEnd;
+            remainingRadius = lengthBudget;
             depth++;
         }
     }

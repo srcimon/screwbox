@@ -77,7 +77,7 @@ public class PlaygroundApp {
                     .bounds(tile.bounds())
                     .add(new CameraTargetComponent(), c -> c.followSpeed = 10000))
                 .assignComplex('R', (source, idPool) -> {
-                    var rope = SoftPhysicsSupport.createRope(source.position().addY(-source.bounds().height() / 2.0), source.position().addY(10), 6, idPool);
+                    var rope = SoftPhysicsSupport.createRope(source.position().addY(-source.bounds().height() / 2.0), source.position().addY(4), 3, idPool);
                     rope.end().remove(PhysicsComponent.class);
                     rope.end().moveTo(rope.root().position());
                     rope.root().add(new RopeRenderComponent(Color.hex("#3c0f0f"), 1));

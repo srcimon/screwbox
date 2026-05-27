@@ -136,25 +136,26 @@ engine.graphics().enableSplitScreenMode(options);
 `Graphics.configuration()` will allow customizing system load and quality.
 Options that can be specified:
 
-| Option                 | Default    | Description                                                                                                     |
-|------------------------|------------|-----------------------------------------------------------------------------------------------------------------|
-| resolution             | `1280:720` | window resolution, also screen resolution when using fullscreen                                                 |
-| isFullscreen           | `false`    | enable or disable fullscreen mode                                                                               |
-| useAntialiasing        | `false`    | enable or disable antialiasing (performance heavy when drawing shapes)                                          |
-| isAutoEnableLight      | `true`     | auto enable light when interacting with light                                                                   |
-| lightQuality           | `0.25`     | specify the quality and performance impact for lights and shadows                                               |
-| isLightEnabled         | `false`    | use light (will make screen black when no light source is present)                                              |
-| isLensFlareEnabled     | `true`     | specify, if light glow effects can cause lens flares on the camera                                              |
-| isIndirectLightEnabled | `true`     | specify, if indirect light will be cast when light hits occluders (expensive)                                   |
-| lightBlur              | `3`        | specify the blurring of the light map                                                                           |
-| lightFalloff           | `1.0`      | specify how lights will blur to darkness                                                                        |
-| backgroundColor        | `BLACK`    | specify the background color of the screen                                                                      |
-| overlayShader          | `-`        | specify a shader that is used on every sprite drawn                                                             |
-| shockwaveCellLimit     | `10,000`   | cell count limit used for rendering shockwaves. Higher values result in better graphics but reduced performance |
-| lightBounceLossFactor  | `0.1`      | sets the loss of light intensity when it bounces of an occluder                                                 |
-| indirectLightIntensity | `0.9`      | specify the intensity of indirect light that is cast when light hits occluders                                  |
-| indirectLightDiameter  | `16`       | sets the diameter of indirect light rays.                                                                       |
-| maxLightBounces        | `2`        | specify the maximum number of consecutive bounces that light will make when hitting occluders                   |
+| Option                   | Default    | Description                                                                                                     |
+|--------------------------|------------|-----------------------------------------------------------------------------------------------------------------|
+| resolution               | `1280:720` | window resolution, also screen resolution when using fullscreen                                                 |
+| isFullscreen             | `false`    | enable or disable fullscreen mode                                                                               |
+| useAntialiasing          | `false`    | enable or disable antialiasing (performance heavy when drawing shapes)                                          |
+| isAutoEnableLight        | `true`     | auto enable light when interacting with light                                                                   |
+| lightQuality             | `0.25`     | specify the quality and performance impact for lights and shadows                                               |
+| isLightEnabled           | `false`    | use light (will make screen black when no light source is present)                                              |
+| isLensFlareEnabled       | `true`     | specify, if light glow effects can cause lens flares on the camera                                              |
+| isIndirectLightEnabled   | `true`     | specify, if indirect light will be cast when light hits occluders (expensive)                                   |
+| lightBlur                | `3`        | specify the blurring of the light map                                                                           |
+| lightFalloff             | `1.0`      | specify how lights will blur to darkness                                                                        |
+| backgroundColor          | `BLACK`    | specify the background color of the screen                                                                      |
+| overlayShader            | `-`        | specify a shader that is used on every sprite drawn                                                             |
+| shockwaveCellLimit       | `10,000`   | cell count limit used for rendering shockwaves. Higher values result in better graphics but reduced performance |
+| lightBounceIntensityLoss | `0.1`      | sets the loss of light intensity when it bounces of an occluder                                                 |
+| lightBounceLengthLoss    | `0.2`      | sets the loss of light length when it bounces of an occluder                                                    |
+| indirectLightIntensity   | `0.9`      | specify the intensity of indirect light that is cast when light hits occluders                                  |
+| indirectLightDiameter    | `16`       | sets the diameter of indirect light rays.                                                                       |
+| maxLightBounces          | `2`        | specify the maximum number of consecutive bounces that light will make when hitting occluders                   |
 
 :::info
 Currently there is no way to preserve the configuration when quitting the game.
