@@ -37,10 +37,8 @@ public class DefaultScenes implements Scenes, Updatable {
     public DefaultScenes(final Engine engine, final Executor executor, final DefaultPostProcessing postProcessing) {
         this.engine = engine;
         this.executor = executor;
-        final SceneData defaultSceneData = createSceneData(new DefaultScene());
-        defaultSceneData.setInitialized();
-        sceneData.put(DefaultScene.class, defaultSceneData);
-        this.activeScene = defaultSceneData;
+        add(new DefaultScene());
+        this.activeScene = sceneData.get(DefaultScene.class);
         setLoadingScene(new DefaultLoadingScene());
         this.postProcessing = postProcessing;
     }
@@ -160,21 +158,21 @@ public class DefaultScenes implements Scenes, Updatable {
         sceneToUpdate.environment().update();
 
         if (isTransitioning()) {
-            final Time time = Time.now();
+            final Time now = Time.now();
             if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                postProcessing.setTransitionFilter(activeTransition.introFilter(time));
+                postProcessing.setTransitionFilter(activeTransition.introFilter(now));
             } else {
-                postProcessing.setTransitionFilter(activeTransition.outroFilter(time));
+                postProcessing.setTransitionFilter(activeTransition.outroFilter(now));
             }
-            final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
+            final boolean mustSwitchScenes = !hasChangedToTargetScene && now.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
                 activeScene.scene().onExit(engine);
                 activeScene = sceneData.get(activeTransition.targetScene());
                 activeScene.scene().onEnter(engine);
                 hasChangedToTargetScene = true;
-                switchTime = time;
+                switchTime = now;
             }
-            if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
+            if (hasChangedToTargetScene && activeTransition.introProgress(now).isMax()) {
                 activeTransition = null;
                 postProcessing.setTransitionFilter(null);
             }
