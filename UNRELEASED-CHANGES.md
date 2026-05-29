@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed indirect light intensity config not working properly
 
 ### 🧽 Cleanup & refactoring
 

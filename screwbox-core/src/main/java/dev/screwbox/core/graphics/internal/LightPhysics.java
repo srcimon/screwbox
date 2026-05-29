@@ -94,7 +94,7 @@ public class LightPhysics {
     }
 
     private void addRayReflections(final double degrees, final Line normal, final List<Occluder> relevantOccluders, final double radius, final List<IndirectLight> lights) {
-        final double intensityConfig = configuration.indirectLightIntensity().rangeValue(1, 40);
+        final double intensityConfig = configuration.indirectLightIntensity().rangeValue(0, 4);
         final double lossConfig = configuration.lightBounceIntensityLoss().invert().value();
         final double lengthLossConfig = configuration.lightBounceLengthLoss().invert().value();
         Line raycast = Angle.degrees(degrees).rotate(normal);
