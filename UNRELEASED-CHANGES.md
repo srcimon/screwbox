@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
-- Added separate length loss property to indirect light configuration.
+- Added separate length loss property to indirect light configuration
+- Added characters to Boldzilla font `|` and `=`
 
 ### 🪛 Bug Fixes
 
@@ -12,4 +13,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Node dependencies
