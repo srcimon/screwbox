@@ -316,7 +316,7 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
         final var textBlock = new RichTextBlock(text, options);
-        for(final var part : textBlock.characters()) {
+        for(final var part : textBlock.glyphs()) {
             transform.setTransform(options.scale(), 0, 0, options.scale(), offset.add(part.offset()).x(), offset.add(part.offset()).y());
             final var shaderSetup = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
             final var shiftedShaderSetup = nonNull(shaderSetup)

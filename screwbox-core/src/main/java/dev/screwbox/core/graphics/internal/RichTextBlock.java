@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RichTextBlock {
 
-    public record Character(Offset offset, Sprite sprite, int characterNr) {
+    public record Glyph(Offset offset, Sprite sprite, int characterNr) {
 
     }
 
@@ -23,8 +23,8 @@ public class RichTextBlock {
 
     }
 
-    public List<Character> characters() {
-        List<Character> characters = new ArrayList<>();
+    public List<Glyph> glyphs() {
+        List<Glyph> glyphs = new ArrayList<>();
         var lines = TextUtil.lineWrap(text, options.charactersPerLine());
         int y = 0;
         int characterNr = 0;
@@ -36,12 +36,12 @@ public class RichTextBlock {
             };
             final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
             for (final var sprite : allSprites) {
-                characters.add(new Character(Offset.at(x, y), sprite, characterNr));
+                glyphs.add(new Glyph(Offset.at(x, y), sprite, characterNr));
                 x += (sprite.width() + options.padding()) * options.scale();
                 characterNr++;
             }
             y += (int) (1.0 * options.font().height() * options.scale() + options.lineSpacing());
         }
-        return characters;
+        return glyphs;
     }
 }
