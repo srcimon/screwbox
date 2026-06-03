@@ -20,7 +20,6 @@ public class RichTextBlock {
     public RichTextBlock(final String text, final TextDrawOptions options) {
         this.text = text;
         this.options = options;
-
     }
 
     public List<Glyph> glyphs() {
