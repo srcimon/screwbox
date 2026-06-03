@@ -45,7 +45,11 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
         screwBox.environment().addSystem(e -> {
-            e.graphics().world().drawText(e.mouse().position(), "This is a test text that is needed to debug text drawing.", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(1.5).lineSpacing(2).charactersPerLine(10));
+            e.graphics().world().drawText(e.mouse().position(), "This is a test text that is needed to debug text drawing. Either you supplied the wrong credentials", TextDrawOptions
+                .font(FontBundle.BOLDZILLA)
+                .scale(1.5)
+                .lineSpacing(10)
+                .charactersPerLine(20));
         });
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
         screwBox.start();
