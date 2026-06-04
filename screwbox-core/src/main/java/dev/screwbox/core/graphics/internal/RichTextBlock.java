@@ -29,7 +29,8 @@ public class RichTextBlock {
         var baseShader = options.shader();
         var alternate = options.alternativeFont();
         var alternateShader = options.alternativeShader();
-        var secondary = baseFont.replaceColor(Color.WHITE, Color.BLUE);
+        var secondary = options.secondaryAlternativeFont();
+        var secondaryShader = options.secondaryAlternativeShader();
 
         // Zeilenumbrüche basierend auf reinem Text ohne Klammern berechnen
         var cleanText = text.replace("{", "").replace("}", "");
