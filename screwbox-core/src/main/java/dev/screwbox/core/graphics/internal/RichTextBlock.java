@@ -17,7 +17,6 @@ public record RichTextBlock(String text, TextDrawOptions options) {
 
     public List<Glyph> glyphs() {
         final var strippedText = text.replace("{", "").replace("}", "").replace("\n", "").replace("\r", "");
-
         int y = 0;
         int characterNr = 0;
 
