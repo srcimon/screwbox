@@ -27,6 +27,8 @@ import static java.util.Objects.requireNonNull;
  * @param alignment               the direction to draw from given offset
  * @param shader                  the {@link ShaderSetup} used for drawing
  * @param drawOrder               order of this drawing task in comparison to others
+ * @param highlightFonts          map of fonts used to render highlights, index is depth of hightlight
+ * @param highlightShaders        map of shaders used to render highlights, index is depth of hightlight
  * @param shaderCharacterModifier updates offset of {@link ShaderSetup} by character nr
  */
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
@@ -111,7 +113,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     /**
-     * Creates a new instance with given opacity.
+     * Creates a new instance with specified opacity.
      */
     public TextDrawOptions opacity(final Percent opacity) {
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
@@ -182,11 +184,21 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         return Size.of(widthOfLines(lines), heightOf(lines.size()));
     }
 
+    /**
+     * Sets the specified font to render hightlights of the specified depth.
+     *
+     * @since 3.31.0
+     */
     //TODO document and changelog new properties
     public TextDrawOptions highlightFont(int depth, Supplier<Pixelfont> font) {
         return highlightFont(depth, font.get());
     }
 
+    /**
+     * Sets the specified font to render hightlights of the specified depth.
+     *
+     * @since 3.31.0
+     */
     //TODO document and changelog new properties
     public TextDrawOptions highlightFont(int depth, Pixelfont font) {
         Validate.positive(depth, "depth must be positive");

@@ -56,7 +56,9 @@ public interface World {
 
     /**
      * Draws a sprite based text ({@link Pixelfont}) on the {@link World} using the given {@link TextDrawOptions}.
-     * Text size changes with {@link Camera#zoom()}.
+     * Text size changes with {@link Camera#zoom()}. Supoorts rich text rendering using escape characters '{' and '}'.
+     * Also supports multiple rendering styles by adding another bracket use '{{' as secondary style and '{{{' as tertiary.
+     * Must define hightlight font and or shader within {@link TextDrawOptions} to configure the alternative styles.
      */
     World drawText(Vector position, String text, TextDrawOptions options);
 
