@@ -10,6 +10,7 @@ import dev.screwbox.core.utils.TextUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class RichTextBlock {
 
@@ -20,6 +21,7 @@ public class RichTextBlock {
     private final TextDrawOptions options;
 
     public RichTextBlock(final String text, final TextDrawOptions options) {
+        //TODO validate brackets
         this.text = text;
         this.options = options;
     }
@@ -39,7 +41,7 @@ public class RichTextBlock {
         List<Glyph> glyphs = new ArrayList<>();
         int y = 0, characterNr = 0, textIdx = 0;
         Pixelfont currentFont = baseFont;
-        var currentShader = baseShader; // Tracker für den aktiven Shader
+        var currentShader = baseShader;
 
         for (String line : lines) {
             double x = switch (options.alignment()) {
@@ -48,28 +50,41 @@ public class RichTextBlock {
                 case RIGHT -> -options.widthOf(line);
             };
 
-            // Jede Zeile Zeichen für Zeichen durchgehen
             for (int i = 0; i < line.length(); i++) {
                 char targetChar = line.charAt(i);
 
-                // Im Originaltext vorspulen und Formatierungsklammern live verarbeiten
+                // 1. ANKER: Klammern verarbeiten, BEVOR wir irgendetwas anderes prüfen
                 while (textIdx < text.length() && (text.charAt(textIdx) == '{' || text.charAt(textIdx) == '}')) {
                     char brace = text.charAt(textIdx);
                     boolean isDouble = (textIdx + 1 < text.length() && text.charAt(textIdx + 1) == brace);
 
                     if (brace == '{') {
                         currentFont = isDouble ? secondary : alternate;
-                        currentShader = isDouble ? baseShader : alternateShader; // Shader anpassen
+                        currentShader = isDouble ? secondaryShader : alternateShader;
                     } else {
                         currentFont = baseFont;
-                        currentShader = baseShader; // Zurücksetzen bei '}' oder '}}'
+                        currentShader = baseShader;
                     }
                     textIdx += isDouble ? 2 : 1;
                 }
 
-                // Zeichen im Originaltext überspringen (z. B. von TextUtil entfernte Whitespaces)
-                if (textIdx < text.length() && text.charAt(textIdx) != targetChar) {
-                    textIdx++;
+                // 2. ANKER: Falls TextUtil Zeichen verändert/entfernt hat, spulen wir vor.
+                // WICHTIG: Auch hierbei müssen wir versteckte Klammern live auswerten!
+                while (textIdx < text.length() && text.charAt(textIdx) != targetChar) {
+                    if (text.charAt(textIdx) == '{' || text.charAt(textIdx) == '}') {
+                        char brace = text.charAt(textIdx);
+                        boolean isDouble = (textIdx + 1 < text.length() && text.charAt(textIdx + 1) == brace);
+                        if (brace == '{') {
+                            currentFont = isDouble ? secondary : alternate;
+                            currentShader = isDouble ? secondaryShader : alternateShader;
+                        } else {
+                            currentFont = baseFont;
+                            currentShader = baseShader;
+                        }
+                        textIdx += isDouble ? 2 : 1;
+                    } else {
+                        textIdx++;
+                    }
                 }
 
                 // Glyphe für das sichtbare Zeichen erzeugen
@@ -78,7 +93,6 @@ public class RichTextBlock {
 
                 if (sprite.isPresent()) {
                     if (!Character.isWhitespace(targetChar)) {
-                        // Der ermittelte Shader wird hier direkt an den Glyph-Record übergeben
                         glyphs.add(new Glyph(Offset.at(x, y), sprite.get(), currentShader, characterNr++));
                     }
                     x += (sprite.get().width() + options.padding()) * options.scale();
