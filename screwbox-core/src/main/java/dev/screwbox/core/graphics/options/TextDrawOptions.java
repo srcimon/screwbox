@@ -41,7 +41,12 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
 
     //TODO non supplier method
     public TextDrawOptions alternativeShader(Supplier<ShaderSetup> alternativeShader) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader.get());
+        return alternativeShader(alternativeShader.get());
+    }
+
+    //TODO non supplier method
+    public TextDrawOptions alternativeShader(ShaderSetup alternativeShader) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
     }
 
     /**

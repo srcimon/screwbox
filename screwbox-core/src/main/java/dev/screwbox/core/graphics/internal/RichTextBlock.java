@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Pixelfont;
+import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.utils.TextUtil;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class RichTextBlock {
 
-    public record Glyph(Offset offset, Sprite sprite, int characterNr) {
+    public record Glyph(Offset offset, Sprite sprite, ShaderSetup shader, int characterNr) {
     }
 
     private final String text;
@@ -25,7 +26,9 @@ public class RichTextBlock {
 
     public List<Glyph> glyphs() {
         var baseFont = options.font();
+        var baseShader = options.shader();
         var alternate = options.alternativeFont();
+        var alternateShader = options.alternativeShader();
         var secondary = baseFont.replaceColor(Color.WHITE, Color.BLUE);
 
         // Zeilenumbrüche basierend auf reinem Text ohne Klammern berechnen
@@ -35,6 +38,7 @@ public class RichTextBlock {
         List<Glyph> glyphs = new ArrayList<>();
         int y = 0, characterNr = 0, textIdx = 0;
         Pixelfont currentFont = baseFont;
+        var currentShader = baseShader; // Tracker für den aktiven Shader
 
         for (String line : lines) {
             double x = switch (options.alignment()) {
@@ -54,8 +58,10 @@ public class RichTextBlock {
 
                     if (brace == '{') {
                         currentFont = isDouble ? secondary : alternate;
+                        currentShader = isDouble ? baseShader : alternateShader; // Shader anpassen
                     } else {
-                        currentFont = baseFont; // Zurücksetzen bei '}' oder '}}'
+                        currentFont = baseFont;
+                        currentShader = baseShader; // Zurücksetzen bei '}' oder '}}'
                     }
                     textIdx += isDouble ? 2 : 1;
                 }
@@ -71,7 +77,8 @@ public class RichTextBlock {
 
                 if (sprite.isPresent()) {
                     if (!Character.isWhitespace(targetChar)) {
-                        glyphs.add(new Glyph(Offset.at(x, y), sprite.get(), characterNr++));
+                        // Der ermittelte Shader wird hier direkt an den Glyph-Record übergeben
+                        glyphs.add(new Glyph(Offset.at(x, y), sprite.get(), currentShader, characterNr++));
                     }
                     x += (sprite.get().width() + options.padding()) * options.scale();
                 }
