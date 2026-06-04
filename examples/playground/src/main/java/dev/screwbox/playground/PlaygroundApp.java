@@ -17,11 +17,11 @@ public class PlaygroundApp {
             .font(FontBundle.BOLDZILLA)
             .scale(1.5)
 
-            .alternativeFont(FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
-            .alternativeShader(ShaderBundle.DISSOLVE)
+            .highlightFont(FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
+            .highlightShader(ShaderBundle.DISSOLVE)
 
-            .alternativeFont(FontBundle.SKINNY_SANS.getCustomColor(Color.RED))
-            .alternativeShader(ShaderBundle.UNDERWATER)
+            .highlightFont(FontBundle.SKINNY_SANS.getCustomColor(Color.RED))
+            .highlightShader(ShaderBundle.UNDERWATER)
 
             .lineSpacing(10)
             .charactersPerLine(20);
