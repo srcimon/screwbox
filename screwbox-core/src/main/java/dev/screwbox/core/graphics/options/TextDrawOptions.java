@@ -3,7 +3,6 @@ package dev.screwbox.core.graphics.options;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Pixelfont;
-import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -146,8 +145,8 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      *
      * @since 2.15.0
      */
-    public TextDrawOptions shader(final ShaderSetup shaderSetup) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+    public TextDrawOptions shader(final ShaderSetup shader) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
     }
 
     /**
@@ -184,6 +183,11 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     //TODO document and changelog new properties
+    public TextDrawOptions highlightFont(int depth, Supplier<Pixelfont> font) {
+        return highlightFont(depth, font.get());
+    }
+
+    //TODO document and changelog new properties
     public TextDrawOptions highlightFont(int depth, Pixelfont font) {
         Validate.positive(depth, "depth must be positive");
         highlightFonts.put(depth, font);
@@ -200,6 +204,16 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         Validate.positive(depth, "depth must be positive");
         highlightShaders.put(depth, shader);
         return this;
+    }
+
+    //TODO document and changelog new properties
+    public TextDrawOptions highlight(int depth, Supplier<Pixelfont> font, ShaderSetup shader) {
+        return highlight(depth, font.get(), shader);
+    }
+
+    //TODO document and changelog new properties
+    public TextDrawOptions highlight(int depth, Supplier<Pixelfont> font, Supplier<ShaderSetup> shader) {
+        return highlight(depth, font.get(), shader.get());
     }
 
     //TODO document and changelog new properties
