@@ -19,7 +19,7 @@ public class ShowLabelSystem implements EntitySystem {
 
     private static final Archetype LABELED = Archetype.of(TriggerAreaComponent.class, LabelComponent.class);
     private static final TextDrawOptions OPTIONS = font(FontBundle.BOLDZILLA).alignCenter()
-        .highlightFont(1, FontBundle.BOLDZILLA.customColor(Color.YELLOW));
+        .highlightFont(1, FontBundle.BOLDZILLA.customColorAsset(Color.YELLOW));
 
     @Override
     public void update(Engine engine) {

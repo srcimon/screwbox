@@ -12,6 +12,7 @@
 
 - Simplified scene transition code
 - Renamed `TextOptions.shader(ShaderSetup)`
+- Renamed `PixelFont` methods for consistency
 
 ### 📦 Dependency updates
 

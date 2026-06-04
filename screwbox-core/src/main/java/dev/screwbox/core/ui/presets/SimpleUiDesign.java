@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.ui.UiDesign;
 
 import static dev.screwbox.core.assets.FontBundle.BOLDZILLA;
-import static dev.screwbox.core.graphics.Color.GREEN;
 import static dev.screwbox.core.graphics.Color.GREY;
 import static dev.screwbox.core.graphics.Color.WHITE;
 import static dev.screwbox.core.graphics.Color.YELLOW;
@@ -18,17 +17,17 @@ public class SimpleUiDesign implements UiDesign {
     private static final TextDrawOptions SELECTABLE = font(BOLDZILLA)
         .scale(2)
         .alignCenter()
-        .highlightFont(1 , BOLDZILLA.customColor(GREY));
+        .highlightFont(1 , BOLDZILLA.customColorAsset(GREY));
 
-    private static final TextDrawOptions SELECTED = font(BOLDZILLA.customColor(YELLOW))
+    private static final TextDrawOptions SELECTED = font(BOLDZILLA.customColorAsset(YELLOW))
         .scale(2.5)
         .alignCenter()
-        .highlightFont(1 , BOLDZILLA.customColor(Color.hex("#fff77a")));
+        .highlightFont(1 , BOLDZILLA.customColorAsset(Color.hex("#fff77a")));
 
-    private static final TextDrawOptions INACTIVE = font(BOLDZILLA.customColor(WHITE.opacity(0.2)))
+    private static final TextDrawOptions INACTIVE = font(BOLDZILLA.customColorAsset(WHITE.opacity(0.2)))
         .scale(2)
         .alignCenter()
-        .highlightFont(1 , BOLDZILLA.customColor(GREY));
+        .highlightFont(1 , BOLDZILLA.customColorAsset(GREY));
 
     @Override
     public void renderSelectableItem(String label, ScreenBounds bounds, Canvas canvas) {
