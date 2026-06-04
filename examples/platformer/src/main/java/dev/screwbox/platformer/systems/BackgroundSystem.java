@@ -2,7 +2,6 @@ package dev.screwbox.platformer.systems;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -11,32 +10,28 @@ import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.platformer.components.BackgroundComponent;
 
-import java.util.Comparator;
-import java.util.List;
-
 import static dev.screwbox.core.environment.Order.PRESENTATION_BACKGROUND;
 
 @ExecutionOrder(PRESENTATION_BACKGROUND)
 public class BackgroundSystem implements EntitySystem {
 
     private static final Archetype BACKGROUNDS = Archetype.of(BackgroundComponent.class, RenderComponent.class);
-    private static final Comparator<Entity> BACKGROUND_COMPARATOR = Comparator.comparingDouble(o -> o.get(RenderComponent.class).options.drawOrder());
 
     @Override
     public void update(final Engine engine) {
-        final List<Entity> backgroundEntities = engine.environment().fetchAll(BACKGROUNDS);
-        backgroundEntities.sort(BACKGROUND_COMPARATOR);
         final var resolutionScale = engine.graphics().configuration().resolutionScale();
-        for (final var entity : backgroundEntities) {
+        for (final var entity : engine.environment().fetchAll(BACKGROUNDS)) {
             final var background = entity.get(BackgroundComponent.class);
-            final var sprite = entity.get(RenderComponent.class);
-            final SpriteFillOptions options = SpriteFillOptions.scale(background.zoom * resolutionScale).opacity(sprite.options.opacity());
+            final var config = entity.get(RenderComponent.class);
+            final var options = SpriteFillOptions.scale(background.zoom * resolutionScale)
+                .opacity(config.options.opacity())
+                .drawOrder(config.options.drawOrder());
             for (final var viewport : engine.graphics().viewports()) {
                 final var cameraPosition = viewport.camera().position();
                 final Offset offset = Offset.at(
                     cameraPosition.x() * -1 * (background.parallaxX - 1),
                     cameraPosition.y() * -1 * (background.parallaxY - 1));
-                viewport.canvas().fillWith(sprite.sprite, options.offset(offset).shaderSetup(ShaderBundle.BREEZE));
+                viewport.canvas().fillWith(config.sprite, options.offset(offset).shaderSetup(ShaderBundle.BREEZE));
             }
         }
     }
