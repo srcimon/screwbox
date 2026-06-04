@@ -119,4 +119,14 @@ class TextDrawOptionsTest {
         assertThat(options.fontStyles()).hasSize(1).containsKey(2);
         assertThat(options.shaderStyles()).hasSize(2).containsKeys(1, 2);
     }
+
+    @Test
+    void newInstance_oneStylesConfigured_setsStyleMaps() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS)
+            .style(1, FontBundle.BOLDZILLA, ShaderBundle.ALARMED);
+
+
+        assertThat(options.fontStyles()).hasSize(1).containsKey(1);
+        assertThat(options.shaderStyles()).hasSize(1).containsKey(1);
+    }
 }
