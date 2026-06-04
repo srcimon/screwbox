@@ -14,15 +14,15 @@ public class PlaygroundApp {
 
         screwBox.environment().addSystem(e -> {
             e.graphics().world().drawText(e.mouse().position(), """
-                {Debo} is the best {{{girlfriend}}} in the {world! That} is nice""", TextDrawOptions
+                {Debo} is the best {{girlfriend}} in the {world! That} is nice""", TextDrawOptions
                 .font(FontBundle.BOLDZILLA)
                 .scale(1.5)
 
-                .alternativeFont(1, FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
-                .alternativeShader(1, ShaderBundle.DISSOLVE)
+                .alternativeFont(FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
+                .alternativeShader(ShaderBundle.DISSOLVE)
 
-                .alternativeFont(3, FontBundle.SKINNY_SANS.getCustomColor(Color.RED))
-                .alternativeShader(3, ShaderBundle.UNDERWATER)
+                .alternativeFont(FontBundle.SKINNY_SANS.getCustomColor(Color.RED))
+                .alternativeShader( ShaderBundle.UNDERWATER)
 
                 .lineSpacing(10)
                 .charactersPerLine(20));

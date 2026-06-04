@@ -9,9 +9,8 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.TextUtil;
 import dev.screwbox.core.utils.Validate;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
@@ -32,23 +31,23 @@ import static java.util.Objects.requireNonNull;
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
                               Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shader,
                               int drawOrder, Duration shaderCharacterModifier,
-                              Map<Integer, Pixelfont> alternateFonts,
-                              Map<Integer, ShaderSetup> alternateShaders) {
-
+                              List<Pixelfont> alternateFonts,
+                              List<ShaderSetup> alternateShaders) {
+//TODO rename alternate to highlight
     //TODO document and changelog new properties
-    public TextDrawOptions alternativeFont(int depth, Pixelfont alternativeFont) {
-        alternateFonts.put(depth, alternativeFont);
+    public TextDrawOptions alternativeFont(Pixelfont alternativeFont) {
+        alternateFonts.add(alternativeFont);
         return this;
     }
 
     //TODO non supplier method
-    public TextDrawOptions alternativeShader(int depth, Supplier<ShaderSetup> alternativeShader) {
-        return alternativeShader(depth, alternativeShader.get());
+    public TextDrawOptions alternativeShader(Supplier<ShaderSetup> alternativeShader) {
+        return alternativeShader(alternativeShader.get());
     }
 
     //TODO non supplier method
-    public TextDrawOptions alternativeShader(int depth, ShaderSetup alternativeShader) {
-        alternateShaders.put(depth, alternativeShader);
+    public TextDrawOptions alternativeShader(ShaderSetup alternativeShader) {
+        alternateShaders.add(alternativeShader);
         return this;
     }
 
@@ -70,7 +69,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     private TextDrawOptions(final Pixelfont font) {
-        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null, 0, Duration.none(), new HashMap<>(), new HashMap<>());
+        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null, 0, Duration.none(), new ArrayList<>(), new ArrayList<>());
     }
 
 
