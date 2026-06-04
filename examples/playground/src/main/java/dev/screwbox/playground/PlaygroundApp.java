@@ -8,12 +8,13 @@ import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
 public class PlaygroundApp {
-//TODO use alternate colors to enhance uis in example apps
+    //TODO use alternate colors to enhance uis in example apps
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
         screwBox.environment().addSystem(e -> {
-            e.graphics().world().drawText(e.mouse().position(), "{Debo} is the best {{{girlfriend}}} in the world! ", TextDrawOptions
+            e.graphics().world().drawText(e.mouse().position(), """
+                {Debo} is the best {{{girlfriend}}} in the {world! That} is nice""", TextDrawOptions
                 .font(FontBundle.BOLDZILLA)
                 .scale(1.5)
 
