@@ -10,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Simplified scene transition code
+- Renamed `TextOptions.shader(ShaderSetup)`
 
 ### 📦 Dependency updates
 

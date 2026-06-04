@@ -5,7 +5,6 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.ShaderBundle;
-import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
 public class PlaygroundApp {
@@ -18,8 +17,8 @@ public class PlaygroundApp {
                 .font(FontBundle.BOLDZILLA)
                 .scale(1.5)
 
-                .altColor(Color.RED)
-                .altShaderSetup(ShaderBundle.OUTLINE)
+                .alternativeFont(FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
+                .alternativeShader(ShaderBundle.OUTLINE)
 //
 //                .secondaryAltColor(Color.YELLOW)
 //                .secondaryAltShaderSetup(ShaderBundle.SEAWATER)
