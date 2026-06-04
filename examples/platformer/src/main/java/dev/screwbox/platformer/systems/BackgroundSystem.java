@@ -23,9 +23,11 @@ public class BackgroundSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(BACKGROUNDS)) {
             final var background = entity.get(BackgroundComponent.class);
             final var config = entity.get(RenderComponent.class);
+
             final var options = SpriteFillOptions.scale(background.zoom * resolutionScale)
                 .opacity(config.options.opacity())
                 .drawOrder(config.options.drawOrder());
+
             for (final var viewport : engine.graphics().viewports()) {
                 final var cameraPosition = viewport.camera().position();
                 final Offset offset = Offset.at(
