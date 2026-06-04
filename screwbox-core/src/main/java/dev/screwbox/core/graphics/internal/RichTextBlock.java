@@ -16,9 +16,6 @@ public record RichTextBlock(String text, TextDrawOptions options) {
     }
 
     public List<Glyph> glyphs() {
-        // Line-wrap direkt auf dem Originaltext ausführen, um Whitespace-Verschiebungen synchron zu halten
-        // Falls TextUtil geschweifte Klammern in die Breitenberechnung einbezieht,
-        // ist strippedText für das Wrapping sauberer:
         final var strippedText = text.replace("{", "").replace("}", "");
         final List<Glyph> glyphs = new ArrayList<>(strippedText.length());
 
@@ -62,13 +59,10 @@ public record RichTextBlock(String text, TextDrawOptions options) {
 
                 if (sprite.isPresent()) {
                     var spriteGet = sprite.get();
-                    if (!Character.isWhitespace(targetChar)) {
-                        glyphs.add(new Glyph(Offset.at(x, y), spriteGet, fetchShader(depth), characterNr++));
-                    }
+                    glyphs.add(new Glyph(Offset.at(x, y), spriteGet, fetchShader(depth), characterNr++));
                     x += (spriteGet.width() + (double) options.padding()) * options.scale();
                 }
 
-                // Nach erfolgreicher Verarbeitung des Zeichens rücken wir im Originaltext vor
                 globalTextIdx++;
             }
             y += fontHeightIncrement;
