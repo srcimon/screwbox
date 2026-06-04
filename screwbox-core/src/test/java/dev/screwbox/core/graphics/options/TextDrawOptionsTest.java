@@ -107,4 +107,16 @@ class TextDrawOptionsTest {
 
         assertThat(options.sizeOf("Some kind of lame text")).isEqualTo(Size.of(50, 96));
     }
+
+    @Test
+    void newInstance_twoStylesConfigured_setsStyleMaps() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS)
+            .styleShader(1, ShaderBundle.CHROMATIC_ABERRATION)
+            .styleFont(2, FontBundle.BOLDZILLA)
+            .styleShader(2, ShaderBundle.ALARMED);
+
+
+        assertThat(options.fontStyles()).hasSize(1).containsKey(2);
+        assertThat(options.shaderStyles()).hasSize(2).containsKeys(1, 2);
+    }
 }

@@ -27,15 +27,15 @@ import static java.util.Objects.requireNonNull;
  * @param alignment               the direction to draw from given offset
  * @param shader                  the {@link ShaderSetup} used for drawing
  * @param drawOrder               order of this drawing task in comparison to others
- * @param highlightFonts          map of fonts used to render highlights, index is depth of hightlight
- * @param highlightShaders        map of shaders used to render highlights, index is depth of hightlight
+ * @param fontStyles              map of fonts used for alternative style, index is number of style
+ * @param shaderStyles            map of shaders used for alternative style, index is number of style
  * @param shaderCharacterModifier updates offset of {@link ShaderSetup} by character nr
  */
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
                               Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shader,
                               int drawOrder, Duration shaderCharacterModifier,
-                              Map<Integer, Pixelfont> highlightFonts,
-                              Map<Integer, ShaderSetup> highlightShaders) {
+                              Map<Integer, Pixelfont> fontStyles,
+                              Map<Integer, ShaderSetup> shaderStyles) {
 
     /**
      * Alignment of the text.
@@ -81,56 +81,56 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public TextDrawOptions alignRight() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
      * Creates a new instance with given padding.
      */
     public TextDrawOptions padding(final int padding) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
      * Creates a new instance with given scale.
      */
     public TextDrawOptions scale(final double scale) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
      * Creates a new instance with all uppercase characters.
      */
     public TextDrawOptions uppercase() {
-        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
      * Creates a new instance with specified opacity.
      */
     public TextDrawOptions opacity(final Percent opacity) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
      * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
      */
     public TextDrawOptions charactersPerLine(final int charactersPerLine) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
      * Sets the count of pixels between lines.
      */
     public TextDrawOptions lineSpacing(final int lineSpacing) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
@@ -139,7 +139,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 3.21.0
      */
     public TextDrawOptions shaderCharacterModifier(final Duration shaderCharacterModifier) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
@@ -148,7 +148,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 2.15.0
      */
     public TextDrawOptions shader(final ShaderSetup shader) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
@@ -157,7 +157,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 3.14.0
      */
     public TextDrawOptions drawOrder(final int drawOrder) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, highlightFonts, highlightShaders);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, fontStyles, shaderStyles);
     }
 
     /**
@@ -200,7 +200,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      */
     public TextDrawOptions styleFont(final int styleNr, final Pixelfont font) {
         Validate.positive(styleNr, "style number must be positive");
-        highlightFonts.put(styleNr, font);
+        fontStyles.put(styleNr, font);
         return this;
     }
 
@@ -209,8 +209,8 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      *
      * @since 3.31.0
      */
-    public TextDrawOptions style(final int styleNr, final Supplier<ShaderSetup> shader) {
-        return style(styleNr, shader.get());
+    public TextDrawOptions styleShader(final int styleNr, final Supplier<ShaderSetup> shader) {
+        return styleShader(styleNr, shader.get());
     }
 
     /**
@@ -218,9 +218,9 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      *
      * @since 3.31.0
      */
-    public TextDrawOptions style(final int styleNr, final ShaderSetup shader) {
+    public TextDrawOptions styleShader(final int styleNr, final ShaderSetup shader) {
         Validate.positive(styleNr, "style number must be positive");
-        highlightShaders.put(styleNr, shader);
+        shaderStyles.put(styleNr, shader);
         return this;
     }
 
@@ -257,7 +257,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 3.31.0
      */
     public TextDrawOptions style(final int styleNr, final Pixelfont font, final ShaderSetup shader) {
-        style(styleNr, shader);
+        styleShader(styleNr, shader);
         styleFont(styleNr, font);
         return this;
     }
