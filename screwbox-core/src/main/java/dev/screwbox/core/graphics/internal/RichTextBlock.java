@@ -17,17 +17,17 @@ public record RichTextBlock(String text, TextDrawOptions options) {
 
     //TODO validate brackates
     public List<Glyph> glyphs() {
-        var cleaned = text.replace("{", "").replace("}", "");
+        final var strippedText = text.replace("{", "").replace("}", "");
+        final List<Glyph> glyphs = new ArrayList<>(strippedText.length());
 
-        List<Glyph> glyphs = new ArrayList<>(cleaned.length());
-
-        int y = 0, characterNr = 0, textIdx = 0;
+        int y = 0;
+        int characterNr = 0;
+        int textIdx = 0;
         int depth = 0;
 
-        final Pixelfont baseFont = options.font(0);
-        final int fontHeightIncrement = (int) (baseFont.height() * options.scale() + options.lineSpacing());
+        final int fontHeightIncrement = (int) (options.font().height() * options.scale() + options.lineSpacing());
 
-        for (final String line : TextUtil.lineWrap(cleaned, options.charactersPerLine())) {
+        for (final String line : TextUtil.lineWrap(strippedText, options.charactersPerLine())) {
             double x = initialHorizontalOffset(line);
 
             int lineLength = line.length();
