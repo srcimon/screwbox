@@ -16,16 +16,13 @@ public record RichTextBlock(String text, TextDrawOptions options) {
     }
 
     public List<Glyph> glyphs() {
-        final var strippedText = text.replace("{", "").replace("}", "");
+        final var strippedText = text.replace("{", "").replace("}", "").replace("\n", "").replace("\r", "");
         final List<Glyph> glyphs = new ArrayList<>(strippedText.length());
 
         int y = 0;
         int characterNr = 0;
 
-        // Wir nutzen einen globalen Tracker für den originalen String, um die Tiefe exakt zu verfolgen
-        int globalTextIdx = 0;
-        int depth = 0;
-
+        final var depthTracker = new DepthTracker();
         final int fontHeightIncrement = (int) (options.font().height() * options.scale() + options.lineSpacing());
 
         for (final String line : TextUtil.lineWrap(strippedText, options.charactersPerLine())) {
@@ -34,26 +31,10 @@ public record RichTextBlock(String text, TextDrawOptions options) {
             for (int i = 0; i < line.length(); i++) {
                 final char targetChar = line.charAt(i);
 
-                // Überspringe alle Klammern im Originaltext und aktualisiere die Tiefe,
-                // bis wir wieder auf das aktuelle Zeichen der gewrappten Zeile stoßen.
-                while (globalTextIdx < text.length()) {
-                    char origChar = text.charAt(globalTextIdx);
-                    if (origChar == '{') {
-                        depth++;
-                        globalTextIdx++;
-                    } else if (origChar == '}') {
-                        depth = Math.max(0, depth - 1);
-                        globalTextIdx++;
-                    } else if (origChar == targetChar) {
-                        // Zeichen matcht! Schleife abbrechen, um das Zeichen zu verarbeiten.
-                        break;
-                    } else {
-                        // Fallback für ignorierte/modifizierte Whitespaces durch das Wrapping
-                        globalTextIdx++;
-                    }
-                }
+                // Die gesamte komplexe Suchlogik ist jetzt in einer einzigen Zeile gekapselt
+                final int depth = depthTracker.advanceToCharacter(text, targetChar);
 
-                char renderChar = options.isUppercase() ? Character.toUpperCase(targetChar) : targetChar;
+                final char renderChar = options.isUppercase() ? Character.toUpperCase(targetChar) : targetChar;
                 var sprite = fetchFont(depth).spriteFor(renderChar);
 
                 if (sprite.isPresent()) {
@@ -61,12 +42,36 @@ public record RichTextBlock(String text, TextDrawOptions options) {
                     glyphs.add(new Glyph(Offset.at(x, y), spriteGet, fetchShader(depth), characterNr++));
                     x += (spriteGet.width() + (double) options.padding()) * options.scale();
                 }
-
-                globalTextIdx++;
             }
             y += fontHeightIncrement;
         }
         return glyphs;
+    }
+
+    private static final class DepthTracker {
+        private int index = 0;
+        private int depth = 0;
+
+        public int advanceToCharacter(final String text, final char targetChar) {
+            while (index < text.length()) {
+                char origChar = text.charAt(index);
+                if (origChar == '{') {
+                    depth++;
+                    index++;
+                } else if (origChar == '}') {
+                    depth = Math.max(0, depth - 1);
+                    index++;
+                } else if (origChar == '\n' || origChar == '\r') {
+                    index++;
+                } else if (origChar == targetChar) {
+                    index++;
+                    return depth;
+                } else {
+                    index++;
+                }
+            }
+            return depth;
+        }
     }
 
     private Pixelfont fetchFont(final int depth) {
