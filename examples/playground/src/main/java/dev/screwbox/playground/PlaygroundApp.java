@@ -18,10 +18,10 @@ public class PlaygroundApp {
                 .scale(1.5)
 
                 .alternativeFont(1, FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
-                .alternativeShader(1, ShaderBundle.CHROMATIC_ABERRATION)
+                .alternativeShader(1, ShaderBundle.DISSOLVE)
 
-                .alternativeFont(3, FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
-                .alternativeShader(3, ShaderBundle.BREEZE)
+                .alternativeFont(3, FontBundle.SKINNY_SANS.getCustomColor(Color.RED))
+                .alternativeShader(3, ShaderBundle.UNDERWATER)
 
                 .lineSpacing(10)
                 .charactersPerLine(20));
