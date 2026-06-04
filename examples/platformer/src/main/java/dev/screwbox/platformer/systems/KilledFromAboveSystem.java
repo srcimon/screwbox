@@ -32,7 +32,7 @@ public class KilledFromAboveSystem implements EntitySystem {
             .checkingBorders(Borders.TOP)
             .castingVertical(4)
             .selectAllEntities()
-            .forEach(entity -> entity.add(new DeathEventComponent()));
+            .forEach(entity -> entity.addIfNotPresent(new DeathEventComponent()));
 
         engine.navigation()
             .raycastFrom(playerBounds.bottomRight().addX(-1))
@@ -40,6 +40,6 @@ public class KilledFromAboveSystem implements EntitySystem {
             .checkingBorders(Borders.TOP)
             .castingVertical(4)
             .selectAllEntities()
-            .forEach(entity -> entity.add(new DeathEventComponent()));
+            .forEach(entity -> entity.addIfNotPresent(new DeathEventComponent()));
     }
 }
