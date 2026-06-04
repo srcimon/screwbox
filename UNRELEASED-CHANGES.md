@@ -17,3 +17,10 @@
 ### 📦 Dependency updates
 
 - Bump Node dependencies
+- Bump maven-dependency-plugin to 3.11.0
+- Bump maven-enforcer-plugin to 3.6.3
+- Bump maven-gpg-plugin to 3.2.8
+- Bump maven-jar-plugin to 3.5.0
+- Bump maven-release-plugin to 3.3.1
+- Bump maven-surefire-plugin to 3.5.6
+- Bump sonar-maven-plugin to 5.7.0.6970
