@@ -13,12 +13,12 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
         screwBox.environment().addSystem(e -> {
-            e.graphics().world().drawText(e.mouse().position(), "This is a test {text} that is {needed} to debug text drawing. Either you {{supp}}lied the wrong credentials", TextDrawOptions
+            e.graphics().world().drawText(e.mouse().position(), "{Debo} is the best {{girlfriend}} in the world!", TextDrawOptions
                 .font(FontBundle.BOLDZILLA)
                 .scale(1.5)
 
                 .alternativeFont(FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
-                .alternativeShader(ShaderBundle.OUTLINE)
+                .alternativeShader(ShaderBundle.CHROMATIC_ABERRATION)
 //
 //                .secondaryAltColor(Color.YELLOW)
 //                .secondaryAltShaderSetup(ShaderBundle.SEAWATER)

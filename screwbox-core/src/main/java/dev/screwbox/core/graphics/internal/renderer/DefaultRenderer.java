@@ -316,13 +316,13 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
         final var textBlock = new RichTextBlock(text, options);
-        for(final var part : textBlock.glyphs()) {
-            transform.setTransform(options.scale(), 0, 0, options.scale(), offset.add(part.offset()).x(), offset.add(part.offset()).y());
-            final var shaderSetup = ShaderResolver.resolveShader(defaultShader, options.shader());
+        for(final var glyph : textBlock.glyphs()) {
+            transform.setTransform(options.scale(), 0, 0, options.scale(), offset.add(glyph.offset()).x(), offset.add(glyph.offset()).y());
+            final var shaderSetup = ShaderResolver.resolveShader(defaultShader, glyph.shader());
             final var shiftedShaderSetup = nonNull(shaderSetup)
-                ? shaderSetup.offset(shaderSetup.offset().add(part.characterNr() * options.shaderCharacterModifier().nanos(), Time.Unit.NANOSECONDS))
+                ? shaderSetup.offset(shaderSetup.offset().add(glyph.characterNr() * options.shaderCharacterModifier().nanos(), Time.Unit.NANOSECONDS))
                 : null;
-            drawSprite(part.sprite(), shiftedShaderSetup, transform);
+            drawSprite(glyph.sprite(), shiftedShaderSetup, transform);
         }
         resetOpacityConfig(options.opacity());
     }
