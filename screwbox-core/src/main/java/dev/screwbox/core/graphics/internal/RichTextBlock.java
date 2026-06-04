@@ -17,7 +17,6 @@ public record RichTextBlock(String text, TextDrawOptions options) {
 
     public List<Glyph> glyphs() {
         final var strippedText = text.replace("{", "").replace("}", "").replace("\n", "").replace("\r", "");
-        final List<Glyph> glyphs = new ArrayList<>(strippedText.length());
 
         int y = 0;
         int characterNr = 0;
@@ -25,13 +24,13 @@ public record RichTextBlock(String text, TextDrawOptions options) {
         final var depthTracker = new DepthTracker();
         final int fontHeightIncrement = (int) (options.font().height() * options.scale() + options.lineSpacing());
 
+        final List<Glyph> glyphs = new ArrayList<>(strippedText.length());
         for (final String line : TextUtil.lineWrap(strippedText, options.charactersPerLine())) {
             double x = initialHorizontalOffset(line);
 
             for (int i = 0; i < line.length(); i++) {
                 final char targetChar = line.charAt(i);
 
-                // Die gesamte komplexe Suchlogik ist jetzt in einer einzigen Zeile gekapselt
                 final int depth = depthTracker.advanceToCharacter(text, targetChar);
 
                 final char renderChar = options.isUppercase() ? Character.toUpperCase(targetChar) : targetChar;
@@ -54,20 +53,13 @@ public record RichTextBlock(String text, TextDrawOptions options) {
 
         public int advanceToCharacter(final String text, final char targetChar) {
             while (index < text.length()) {
-                char origChar = text.charAt(index);
+                final char origChar = text.charAt(index++);
                 if (origChar == '{') {
                     depth++;
-                    index++;
                 } else if (origChar == '}') {
                     depth = Math.max(0, depth - 1);
-                    index++;
-                } else if (origChar == '\n' || origChar == '\r') {
-                    index++;
                 } else if (origChar == targetChar) {
-                    index++;
                     return depth;
-                } else {
-                    index++;
                 }
             }
             return depth;
