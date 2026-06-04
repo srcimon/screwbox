@@ -30,9 +30,8 @@ public record RichTextBlock(String text, TextDrawOptions options) {
 
         for (final String line : TextUtil.lineWrap(strippedText, options.charactersPerLine())) {
             double x = initialHorizontalOffset(line);
-            int lineLength = line.length();
 
-            for (int i = 0; i < lineLength; i++) {
+            for (int i = 0; i < line.length(); i++) {
                 final char targetChar = line.charAt(i);
 
                 // Überspringe alle Klammern im Originaltext und aktualisiere die Tiefe,
