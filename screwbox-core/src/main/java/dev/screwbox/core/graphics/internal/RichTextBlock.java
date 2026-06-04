@@ -1,7 +1,5 @@
 package dev.screwbox.core.graphics.internal;
 
-import dev.screwbox.core.Duration;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Pixelfont;
 import dev.screwbox.core.graphics.ShaderSetup;
@@ -19,7 +17,7 @@ public record RichTextBlock(String text, TextDrawOptions options) {
 
     //TODO validate brackates
     public List<Glyph> glyphs() {
-        var cleaned = text.replace("{","").replace("}", "");
+        var cleaned = text.replace("{", "").replace("}", "");
 
         List<Glyph> glyphs = new ArrayList<>(cleaned.length());
 
@@ -30,11 +28,7 @@ public record RichTextBlock(String text, TextDrawOptions options) {
         final int fontHeightIncrement = (int) (baseFont.height() * options.scale() + options.lineSpacing());
 
         for (final String line : TextUtil.lineWrap(cleaned, options.charactersPerLine())) {
-            double x = switch (options.alignment()) {
-                case LEFT -> 0;
-                case CENTER -> -options.widthOf(line) / 2.0;
-                case RIGHT -> -options.widthOf(line);
-            };
+            double x = initialHorizontalOffset(line);
 
             int lineLength = line.length();
             for (int i = 0; i < lineLength; i++) {
@@ -94,5 +88,13 @@ public record RichTextBlock(String text, TextDrawOptions options) {
             y += fontHeightIncrement;
         }
         return glyphs;
+    }
+
+    private double initialHorizontalOffset(final String line) {
+        return switch (options.alignment()) {
+            case LEFT -> 0;
+            case CENTER -> -options.widthOf(line) / 2.0;
+            case RIGHT -> -options.widthOf(line);
+        };
     }
 }
