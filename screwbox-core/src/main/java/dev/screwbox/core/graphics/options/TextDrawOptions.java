@@ -31,19 +31,20 @@ import static java.util.Objects.requireNonNull;
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
                               Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shaderSetup,
                               int drawOrder, Duration shaderCharacterModifier,
-Color altColor,
+                              Color altColor,
                               ShaderSetup altShaderSetup
 
 ) {
-//TODO document and changelog new properties
-public TextDrawOptions altColor(Color altColor) {
-    return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier, altColor, altShaderSetup);
-}
+    //TODO document and changelog new properties
+    public TextDrawOptions altColor(Color altColor) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier, altColor, altShaderSetup);
+    }
 
-//TODO non supplier method
+    //TODO non supplier method
     public TextDrawOptions altShaderSetup(Supplier<ShaderSetup> altShaderSetup) {
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier, altColor, altShaderSetup.get());
     }
+
     /**
      * Alignment of the text.
      */

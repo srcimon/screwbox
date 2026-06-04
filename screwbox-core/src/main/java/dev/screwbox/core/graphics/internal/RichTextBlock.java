@@ -12,7 +12,8 @@ import java.util.List;
 
 public class RichTextBlock {
 
-    public record Glyph(Offset offset, Sprite sprite, int characterNr) {}
+    public record Glyph(Offset offset, Sprite sprite, int characterNr) {
+    }
 
     private final String text;
     private final TextDrawOptions options;
