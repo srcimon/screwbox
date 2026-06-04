@@ -19,9 +19,8 @@ public class PlaygroundApp {
 
                 .alternativeFont(FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
                 .alternativeShader(ShaderBundle.CHROMATIC_ABERRATION)
-//
-//                .secondaryAltColor(Color.YELLOW)
-//                .secondaryAltShaderSetup(ShaderBundle.SEAWATER)
+                .secondaryAlternativeFont(FontBundle.BOLDZILLA.getCustomColor(Color.BLUE))
+                .secondaryAlternativeShader(ShaderBundle.IRIS_SHOT)
 
                 .lineSpacing(10)
                 .charactersPerLine(20));

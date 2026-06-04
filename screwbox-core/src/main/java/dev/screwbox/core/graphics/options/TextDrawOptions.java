@@ -31,12 +31,14 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
                               Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shader,
                               int drawOrder, Duration shaderCharacterModifier,
                               Pixelfont alternativeFont,
-                              ShaderSetup alternativeShader
+                              ShaderSetup alternativeShader,
+                              Pixelfont secondaryAlternativeFont,
+                              ShaderSetup secondaryAlternativeShader
 
 ) {
     //TODO document and changelog new properties
     public TextDrawOptions alternativeFont(Pixelfont alternativeFont) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     //TODO non supplier method
@@ -46,7 +48,22 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
 
     //TODO non supplier method
     public TextDrawOptions alternativeShader(ShaderSetup alternativeShader) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
+    }
+
+    //TODO document and changelog new properties
+    public TextDrawOptions secondaryAlternativeFont(Pixelfont secondaryAlternativeFont) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
+    }
+
+    //TODO non supplier method
+    public TextDrawOptions secondaryAlternativeShader(Supplier<ShaderSetup> secondaryAlternativeShader) {
+        return secondaryAlternativeShader(secondaryAlternativeShader.get());
+    }
+
+    //TODO non supplier method
+    public TextDrawOptions secondaryAlternativeShader(ShaderSetup secondaryAlternativeShader) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
@@ -67,7 +84,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     private TextDrawOptions(final Pixelfont font) {
-        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null, 0, Duration.none(), font, null);
+        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null, 0, Duration.none(), font, null, font, null);
     }
 
 
@@ -93,56 +110,56 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public TextDrawOptions alignRight() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
      * Creates a new instance with given padding.
      */
     public TextDrawOptions padding(final int padding) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
      * Creates a new instance with given scale.
      */
     public TextDrawOptions scale(final double scale) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
      * Creates a new instance with all uppercase characters.
      */
     public TextDrawOptions uppercase() {
-        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
      * Creates a new instance with given opacity.
      */
     public TextDrawOptions opacity(final Percent opacity) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
      * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
      */
     public TextDrawOptions charactersPerLine(final int charactersPerLine) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
      * Sets the count of pixels between lines.
      */
     public TextDrawOptions lineSpacing(final int lineSpacing) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
@@ -151,7 +168,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 3.21.0
      */
     public TextDrawOptions shaderCharacterModifier(final Duration shaderCharacterModifier) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
@@ -160,7 +177,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 2.15.0
      */
     public TextDrawOptions shader(final ShaderSetup shaderSetup) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shaderSetup, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
@@ -169,7 +186,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * @since 3.14.0
      */
     public TextDrawOptions drawOrder(final int drawOrder) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
     }
 
     /**
