@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.options;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Pixelfont;
+import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -36,6 +37,24 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
                               ShaderSetup secondaryAlternativeShader
 
 ) {
+
+    public Pixelfont font(int depth) {
+        switch (depth) {
+            case 0: return font;
+            case 1: return alternativeFont;
+            case 2: return secondaryAlternativeFont;
+        };
+        return null;
+    }
+
+    public ShaderSetup shader(int depth) {
+        switch (depth) {
+            case 0: return shader;
+            case 1: return alternativeShader;
+            case 2: return secondaryAlternativeShader;
+        };
+        return null;
+    }
     //TODO document and changelog new properties
     public TextDrawOptions alternativeFont(Pixelfont alternativeFont) {
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing, shader, drawOrder, shaderCharacterModifier, alternativeFont, alternativeShader, secondaryAlternativeFont, secondaryAlternativeShader);
