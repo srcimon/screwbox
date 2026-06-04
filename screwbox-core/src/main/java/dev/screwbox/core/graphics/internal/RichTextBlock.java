@@ -27,18 +27,14 @@ public class RichTextBlock {
     }
 
     public List<Glyph> glyphs() {
-        Time t = Time.now();
-        int length = text.length();
         var cleaned = text.replace("{","").replace("}", "");
         var lines = TextUtil.lineWrap(cleaned, options.charactersPerLine());
 
-        // Performance-Optimierung 2: Vorab-Dimensionierung der Liste schützt vor teurem Re-Allokieren (Resize)
         List<Glyph> glyphs = new ArrayList<>(cleaned.length());
 
         int y = 0, characterNr = 0, textIdx = 0;
         int depth = 0; // Performance-Optimierung 3: Primitives int statt Heap-Objekt (ParseState)
 
-        // Caching häufig genutzter Optionen
         final boolean isUppercase = options.isUppercase();
         final double scale = options.scale();
         final double padding = options.padding();
@@ -57,10 +53,10 @@ public class RichTextBlock {
                 char targetChar = line.charAt(i);
 
                 // 1. ANKER: Klammern verarbeiten
-                while (textIdx < length && ((text.charAt(textIdx) == '{') || (text.charAt(textIdx) == '}'))) {
+                while (textIdx < text.length() && ((text.charAt(textIdx) == '{') || (text.charAt(textIdx) == '}'))) {
                     char brace = text.charAt(textIdx);
                     int count = 0;
-                    while (textIdx < length && text.charAt(textIdx) == brace) {
+                    while (textIdx < text.length() && text.charAt(textIdx) == brace) {
                         count++;
                         textIdx++;
                     }
@@ -73,11 +69,11 @@ public class RichTextBlock {
                 }
 
                 // 2. ANKER: Vorspulen bei Zeichen-Diskrepanz
-                while (textIdx < length && text.charAt(textIdx) != targetChar) {
+                while (textIdx < text.length() && text.charAt(textIdx) != targetChar) {
                     char c = text.charAt(textIdx);
                     if (c == '{' || c == '}') {
                         int count = 0;
-                        while (textIdx < length && text.charAt(textIdx) == c) {
+                        while (textIdx < text.length() && text.charAt(textIdx) == c) {
                             count++;
                             textIdx++;
                         }
@@ -92,7 +88,6 @@ public class RichTextBlock {
                     }
                 }
 
-                // Fonts und Shader über die primitive Tiefe auflösen
                 Pixelfont currentFont = options.font(depth);
                 ShaderSetup currentShader = options.shader(depth);
 
@@ -110,7 +105,6 @@ public class RichTextBlock {
             }
             y += fontHeightIncrement;
         }
-        System.out.println(Duration.since(t).nanos());
         return glyphs;
     }
 }
