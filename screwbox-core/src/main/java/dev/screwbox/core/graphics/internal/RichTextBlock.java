@@ -25,7 +25,7 @@ public class RichTextBlock {
 
     public List<Glyph> glyphs() {
         var baseFont = options.font();
-        var alternate = baseFont.replaceColor(Color.WHITE, Color.RED);
+        var alternate = options.alternativeFont();
         var secondary = baseFont.replaceColor(Color.WHITE, Color.BLUE);
 
         // Zeilenumbrüche basierend auf reinem Text ohne Klammern berechnen
