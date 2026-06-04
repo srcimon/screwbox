@@ -16,13 +16,8 @@ public class PlaygroundApp {
         TextDrawOptions options = TextDrawOptions
             .font(FontBundle.BOLDZILLA)
             .scale(1.5)
-
-            .highlightFont(FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
-            .highlightShader(ShaderBundle.DISSOLVE)
-
-            .highlightFont(FontBundle.SKINNY_SANS.getCustomColor(Color.RED))
-            .highlightShader(ShaderBundle.UNDERWATER)
-
+            .highlightFont(1, FontBundle.BOLDZILLA.getCustomColor(Color.YELLOW))
+            .highlight(2, FontBundle.BOLDZILLA.getCustomColor(Color.RED), ShaderBundle.UNDERWATER)
             .lineSpacing(10)
             .charactersPerLine(20);
 

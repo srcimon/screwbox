@@ -66,15 +66,15 @@ public record RichTextBlock(String text, TextDrawOptions options) {
     }
 
     private Pixelfont fetchFont(final int depth) {
-        return depth == 0 || options.highlightFonts().size() < depth
+        return depth == 0
             ? options.font()
-            : options.highlightFonts().get(depth - 1);
+            : options.highlightFonts().getOrDefault(depth, options.font());
     }
 
     private ShaderSetup fetchShader(final int depth) {
-        return depth == 0 || options.highlightShaders().size() < depth
+        return depth == 0
             ? options.shader()
-            : options.highlightShaders().get(depth - 1);
+            : options.highlightShaders().getOrDefault(depth, options.shader());
     }
 
     private double initialHorizontalOffset(final String line) {

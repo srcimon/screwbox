@@ -3,14 +3,16 @@ package dev.screwbox.core.graphics.options;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Pixelfont;
+import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.TextUtil;
 import dev.screwbox.core.utils.Validate;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
@@ -31,25 +33,8 @@ import static java.util.Objects.requireNonNull;
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
                               Alignment alignment, int charactersPerLine, int lineSpacing, ShaderSetup shader,
                               int drawOrder, Duration shaderCharacterModifier,
-                              List<Pixelfont> highlightFonts,
-                              List<ShaderSetup> highlightShaders) {
-//TODO rename alternate to highlight
-    //TODO document and changelog new properties
-    public TextDrawOptions highlightFont(Pixelfont font) {
-        highlightFonts.add(font);
-        return this;
-    }
-
-    //TODO non supplier method
-    public TextDrawOptions highlightShader(Supplier<ShaderSetup> shader) {
-        return highlightShader(shader.get());
-    }
-
-    //TODO non supplier method
-    public TextDrawOptions highlightShader(ShaderSetup shader) {
-        highlightShaders.add(shader);
-        return this;
-    }
+                              Map<Integer, Pixelfont> highlightFonts,
+                              Map<Integer, ShaderSetup> highlightShaders) {
 
     /**
      * Alignment of the text.
@@ -69,7 +54,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     private TextDrawOptions(final Pixelfont font) {
-        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null, 0, Duration.none(), new ArrayList<>(), new ArrayList<>());
+        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4, null, 0, Duration.none(), new HashMap<>(), new HashMap<>());
     }
 
 
@@ -196,6 +181,37 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     public Size sizeOf(final String text) {
         var lines = TextUtil.lineWrap(text, charactersPerLine);
         return Size.of(widthOfLines(lines), heightOf(lines.size()));
+    }
+
+    //TODO document and changelog new properties
+    public TextDrawOptions highlightFont(int depth, Pixelfont font) {
+        Validate.positive(depth, "depth must be positive");
+        highlightFonts.put(depth, font);
+        return this;
+    }
+
+    //TODO document and changelog new properties
+    public TextDrawOptions highlightShader(int depth, Supplier<ShaderSetup> shader) {
+        return highlightShader(depth, shader.get());
+    }
+
+    //TODO document and changelog new properties
+    public TextDrawOptions highlightShader(int depth, ShaderSetup shader) {
+        Validate.positive(depth, "depth must be positive");
+        highlightShaders.put(depth, shader);
+        return this;
+    }
+
+    //TODO document and changelog new properties
+    public TextDrawOptions highlight(int depth, Pixelfont font, Supplier<ShaderSetup> shader) {
+        return highlight(depth, font, shader.get());
+    }
+
+    //TODO document and changelog new properties
+    public TextDrawOptions highlight(int depth, Pixelfont font, ShaderSetup shader) {
+        highlightShader(depth, shader);
+        highlightFont(depth, font);
+        return this;
     }
 
     private double widthOfLine(final String text) {
