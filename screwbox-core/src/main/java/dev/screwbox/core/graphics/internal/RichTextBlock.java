@@ -15,58 +15,45 @@ public record RichTextBlock(String text, TextDrawOptions options) {
     public record Glyph(Offset offset, Sprite sprite, ShaderSetup shader, int characterNr) {
     }
 
-    //TODO validate brackates
     public List<Glyph> glyphs() {
+        // Line-wrap direkt auf dem Originaltext ausführen, um Whitespace-Verschiebungen synchron zu halten
+        // Falls TextUtil geschweifte Klammern in die Breitenberechnung einbezieht,
+        // ist strippedText für das Wrapping sauberer:
         final var strippedText = text.replace("{", "").replace("}", "");
         final List<Glyph> glyphs = new ArrayList<>(strippedText.length());
 
         int y = 0;
         int characterNr = 0;
-        int textIdx = 0;
+
+        // Wir nutzen einen globalen Tracker für den originalen String, um die Tiefe exakt zu verfolgen
+        int globalTextIdx = 0;
         int depth = 0;
 
         final int fontHeightIncrement = (int) (options.font().height() * options.scale() + options.lineSpacing());
 
         for (final String line : TextUtil.lineWrap(strippedText, options.charactersPerLine())) {
             double x = initialHorizontalOffset(line);
-
             int lineLength = line.length();
+
             for (int i = 0; i < lineLength; i++) {
                 char targetChar = line.charAt(i);
 
-                // 1. ANKER: Klammern verarbeiten
-                while (textIdx < text.length() && ((text.charAt(textIdx) == '{') || (text.charAt(textIdx) == '}'))) {
-                    char brace = text.charAt(textIdx);
-                    int count = 0;
-                    while (textIdx < text.length() && text.charAt(textIdx) == brace) {
-                        count++;
-                        textIdx++;
-                    }
-                    if (brace == '{') {
-                        depth += count;
+                // Überspringe alle Klammern im Originaltext und aktualisiere die Tiefe,
+                // bis wir wieder auf das aktuelle Zeichen der gewrappten Zeile stoßen.
+                while (globalTextIdx < text.length()) {
+                    char origChar = text.charAt(globalTextIdx);
+                    if (origChar == '{') {
+                        depth++;
+                        globalTextIdx++;
+                    } else if (origChar == '}') {
+                        depth = Math.max(0, depth - 1);
+                        globalTextIdx++;
+                    } else if (origChar == targetChar) {
+                        // Zeichen matcht! Schleife abbrechen, um das Zeichen zu verarbeiten.
+                        break;
                     } else {
-                        depth = depth - count;
-                        if (depth < 0) depth = 0;
-                    }
-                }
-
-                // 2. ANKER: Vorspulen bei Zeichen-Diskrepanz
-                while (textIdx < text.length() && text.charAt(textIdx) != targetChar) {
-                    char c = text.charAt(textIdx);
-                    if (c == '{' || c == '}') {
-                        int count = 0;
-                        while (textIdx < text.length() && text.charAt(textIdx) == c) {
-                            count++;
-                            textIdx++;
-                        }
-                        if (c == '{') {
-                            depth += count;
-                        } else {
-                            depth = depth - count;
-                            if (depth < 0) depth = 0;
-                        }
-                    } else {
-                        textIdx++;
+                        // Fallback für ignorierte/modifizierte Whitespaces durch das Wrapping
+                        globalTextIdx++;
                     }
                 }
 
@@ -83,7 +70,9 @@ public record RichTextBlock(String text, TextDrawOptions options) {
                     }
                     x += (spriteGet.width() + (double) options.padding()) * options.scale();
                 }
-                textIdx++;
+
+                // Nach erfolgreicher Verarbeitung des Zeichens rücken wir im Originaltext vor
+                globalTextIdx++;
             }
             y += fontHeightIncrement;
         }
