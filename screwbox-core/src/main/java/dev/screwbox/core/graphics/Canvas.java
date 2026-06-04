@@ -97,9 +97,9 @@ public interface Canvas extends Sizeable {
 
     /**
      * Draws a sprite based text ({@link Pixelfont}) on the {@link Canvas} using the specified {@link TextDrawOptions}.
-     * Text size changes with {@link Camera#zoom()}. Supoorts rich text rendering using escape characters '{' and '}'.
-     * Also supports multiple rendering styles by adding another bracket use '{{' as secondary style and '{{{' as tertiary.
-     * Must define hightlight font and or shader within {@link TextDrawOptions} to configure the alternative styles.
+     * Supports rich text rendering using escape characters '{' and '}' to
+     * define styled areas. Alternative styles can be added using multiple brackets. '{' for style 1, '{{' for style 2 and
+     * so on. Add customizing for these styles using the {@link TextDrawOptions}.
      */
     Canvas drawText(Offset offset, String text, TextDrawOptions options);
 
