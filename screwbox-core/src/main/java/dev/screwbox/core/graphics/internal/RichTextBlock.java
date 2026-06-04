@@ -1,5 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Pixelfont;
 import dev.screwbox.core.graphics.ShaderSetup;
@@ -25,19 +27,13 @@ public class RichTextBlock {
     }
 
     public List<Glyph> glyphs() {
-        // Performance-Optimierung 1: Schnelles Entfernen von Klammern ohne String.replace()
+        Time t = Time.now();
         int length = text.length();
-        StringBuilder cleanBuilder = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            char c = text.charAt(i);
-            if (c != '{' && c != '}') {
-                cleanBuilder.append(c);
-            }
-        }
-        var lines = TextUtil.lineWrap(cleanBuilder.toString(), options.charactersPerLine());
+        var cleaned = text.replace("{","").replace("}", "");
+        var lines = TextUtil.lineWrap(cleaned, options.charactersPerLine());
 
         // Performance-Optimierung 2: Vorab-Dimensionierung der Liste schützt vor teurem Re-Allokieren (Resize)
-        List<Glyph> glyphs = new ArrayList<>(cleanBuilder.length());
+        List<Glyph> glyphs = new ArrayList<>(cleaned.length());
 
         int y = 0, characterNr = 0, textIdx = 0;
         int depth = 0; // Performance-Optimierung 3: Primitives int statt Heap-Objekt (ParseState)
@@ -114,6 +110,7 @@ public class RichTextBlock {
             }
             y += fontHeightIncrement;
         }
+        System.out.println(Duration.since(t).nanos());
         return glyphs;
     }
 }
