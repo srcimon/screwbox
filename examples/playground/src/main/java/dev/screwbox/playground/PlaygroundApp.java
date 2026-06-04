@@ -8,7 +8,7 @@ import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
 public class PlaygroundApp {
-
+//TODO use alternate colors to enhance uis in example apps
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
