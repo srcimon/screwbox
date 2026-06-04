@@ -1,5 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Pixelfont;
 import dev.screwbox.core.graphics.ShaderSetup;
@@ -16,44 +18,26 @@ public record RichTextBlock(String text, TextDrawOptions options) {
     }
 
     public List<Glyph> glyphs() {
-        final var strippedText = text.replace("{", "").replace("}", "");
-        final List<Glyph> glyphs = new ArrayList<>(strippedText.length());
+        // 1. Berechne die Tiefe für jedes Zeichen im Originaltext (ohne Klammern)
+        final var depthMap = PrecomputedDepth.from(text);
+        final List<Glyph> glyphs = new ArrayList<>(depthMap.strippedText().length());
 
         int y = 0;
         int characterNr = 0;
-
-        // Wir nutzen einen globalen Tracker für den originalen String, um die Tiefe exakt zu verfolgen
-        int globalTextIdx = 0;
-        int depth = 0;
+        int processedCharsCount = 0; // Trackt den globalen Index im bereinigten Text
 
         final int fontHeightIncrement = (int) (options.font().height() * options.scale() + options.lineSpacing());
 
-        for (final String line : TextUtil.lineWrap(strippedText, options.charactersPerLine())) {
+        // 2. Line-Wrapping und Layout (Völlig befreit von Klammer-Logik)
+        for (final String line : TextUtil.lineWrap(depthMap.strippedText(), options.charactersPerLine())) {
             double x = initialHorizontalOffset(line);
 
             for (int i = 0; i < line.length(); i++) {
                 final char targetChar = line.charAt(i);
+                final int depth = depthMap.getDepthAt(processedCharsCount++);
 
-                // Überspringe alle Klammern im Originaltext und aktualisiere die Tiefe,
-                // bis wir wieder auf das aktuelle Zeichen der gewrappten Zeile stoßen.
-                while (globalTextIdx < text.length()) {
-                    char origChar = text.charAt(globalTextIdx);
-                    if (origChar == '{') {
-                        depth++;
-                        globalTextIdx++;
-                    } else if (origChar == '}') {
-                        depth = Math.max(0, depth - 1);
-                        globalTextIdx++;
-                    } else if (origChar == targetChar) {
-                        // Zeichen matcht! Schleife abbrechen, um das Zeichen zu verarbeiten.
-                        break;
-                    } else {
-                        // Fallback für ignorierte/modifizierte Whitespaces durch das Wrapping
-                        globalTextIdx++;
-                    }
-                }
-
-                char renderChar = options.isUppercase() ? Character.toUpperCase(targetChar) : targetChar;
+                // Zeichen transformieren und Sprite laden
+                final char renderChar = options.isUppercase() ? Character.toUpperCase(targetChar) : targetChar;
                 var sprite = fetchFont(depth).spriteFor(renderChar);
 
                 if (sprite.isPresent()) {
@@ -61,12 +45,40 @@ public record RichTextBlock(String text, TextDrawOptions options) {
                     glyphs.add(new Glyph(Offset.at(x, y), spriteGet, fetchShader(depth), characterNr++));
                     x += (spriteGet.width() + (double) options.padding()) * options.scale();
                 }
-
-                globalTextIdx++;
             }
             y += fontHeightIncrement;
         }
         return glyphs;
+    }
+
+    private record PrecomputedDepth(String strippedText, int[] depths) {
+
+        public static PrecomputedDepth from(String originalText) {
+            final var sb = new StringBuilder(originalText.length());
+            final int[] depthArray = new int[originalText.length()];
+
+            int currentDepth = 0;
+            int strippedIdx = 0;
+
+            for (int i = 0; i < originalText.length(); i++) {
+                char c = originalText.charAt(i);
+                if (c == '{') {
+                    currentDepth++;
+                } else if (c == '}') {
+                    currentDepth = Math.max(0, currentDepth - 1);
+                } else {
+                    sb.append(c);
+                    depthArray[strippedIdx++] = currentDepth;
+                }
+            }
+            return new PrecomputedDepth(sb.toString(), depthArray);
+        }
+
+        public int getDepthAt(int index) {
+            // Schutz gegen Indexverschiebungen durch Whitespace-Änderungen im Line-Wrapper
+            if (index >= depths.length) return 0;
+            return depths[index];
+        }
     }
 
     private Pixelfont fetchFont(final int depth) {
