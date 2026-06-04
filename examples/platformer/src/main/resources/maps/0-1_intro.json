@@ -220,7 +220,7 @@
                         {
                          "name":"label",
                          "type":"string",
-                         "value":"press SPACE to jump"
+                         "value":"press {SPACE} to jump"
                         }, 
                         {
                          "name":"size",
@@ -239,7 +239,7 @@
                         {
                          "name":"label",
                          "type":"string",
-                         "value":"hold SPACE to jump higher"
+                         "value":"hold {SPACE} to jump higher"
                         }, 
                         {
                          "name":"size",
@@ -307,6 +307,7 @@
                  "height":0,
                  "id":19,
                  "name":"smoke-emitter",
+                 "opacity":1,
                  "point":true,
                  "rotation":0,
                  "type":"",
@@ -319,6 +320,7 @@
                  "height":0,
                  "id":20,
                  "name":"smoke-emitter",
+                 "opacity":1,
                  "point":true,
                  "rotation":0,
                  "type":"",
@@ -452,7 +454,7 @@
          "value":false
         }],
  "renderorder":"right-down",
- "tiledversion":"1.10.1",
+ "tiledversion":"1.12.1",
  "tileheight":16,
  "tilesets":[
         {
@@ -473,6 +475,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":"1.10",
+ "version":"1.11",
  "width":104
 }

@@ -22,10 +22,10 @@ public class OptionsMenu extends UiMenu {
     }
 
     private void addAudioOptions() {
-        addItem(engine -> "Music Volume %s".formatted("|".repeat(engine.audio().configuration().musicVolume().rangeValue(0, 10))))
+        addItem(engine -> "Music Volume {%s}".formatted("|".repeat(engine.audio().configuration().musicVolume().rangeValue(0, 10))))
             .onActivate(engine -> engine.audio().configuration().setMusicVolume(engine.audio().configuration().musicVolume().step(0.25)));
 
-        addItem(engine -> "Effects Volume %s".formatted("|".repeat(engine.audio().configuration().effectVolume().rangeValue(0, 10))))
+        addItem(engine -> "Effects Volume {%s}".formatted("|".repeat(engine.audio().configuration().effectVolume().rangeValue(0, 10))))
             .onActivate(engine -> engine.audio().configuration().setEffectVolume(engine.audio().configuration().effectVolume().step(0.25)));
     }
 

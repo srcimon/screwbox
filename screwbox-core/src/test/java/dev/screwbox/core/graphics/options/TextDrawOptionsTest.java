@@ -49,7 +49,7 @@ class TextDrawOptionsTest {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).uppercase()
             .charactersPerLine(30)
             .lineSpacing(4)
-            .shaderSetup(ShaderBundle.OUTLINE)
+            .shader(ShaderBundle.OUTLINE)
             .scale(2.5)
             .alignCenter()
             .drawOrder(9)
@@ -62,7 +62,7 @@ class TextDrawOptionsTest {
         assertThat(options.scale()).isEqualTo(2.5);
         assertThat(options.alignment()).isEqualTo(TextDrawOptions.Alignment.CENTER);
         assertThat(options.padding()).isEqualTo(3);
-        assertThat(options.shaderSetup()).isEqualTo(ShaderBundle.OUTLINE.get());
+        assertThat(options.shader()).isEqualTo(ShaderBundle.OUTLINE.get());
         assertThat(options.shaderCharacterModifier()).isEqualTo(Duration.ofMillis(500));
     }
 
@@ -106,5 +106,27 @@ class TextDrawOptionsTest {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).charactersPerLine(6);
 
         assertThat(options.sizeOf("Some kind of lame text")).isEqualTo(Size.of(50, 96));
+    }
+
+    @Test
+    void newInstance_twoStylesConfigured_setsStyleMaps() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS)
+            .styleShader(1, ShaderBundle.CHROMATIC_ABERRATION)
+            .styleFont(2, FontBundle.BOLDZILLA)
+            .styleShader(2, ShaderBundle.ALARMED);
+
+
+        assertThat(options.fontStyles()).hasSize(1).containsKey(2);
+        assertThat(options.shaderStyles()).hasSize(2).containsKeys(1, 2);
+    }
+
+    @Test
+    void newInstance_oneStylesConfigured_setsStyleMaps() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS)
+            .style(1, FontBundle.BOLDZILLA, ShaderBundle.ALARMED);
+
+
+        assertThat(options.fontStyles()).hasSize(1).containsKey(1);
+        assertThat(options.shaderStyles()).hasSize(1).containsKey(1);
     }
 }

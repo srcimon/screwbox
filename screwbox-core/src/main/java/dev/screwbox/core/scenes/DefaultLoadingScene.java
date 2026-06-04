@@ -31,7 +31,7 @@ public class DefaultLoadingScene implements Scene {
             x += distance;
             final int size = (int) (Math.abs(MathUtil.fastSin(x * 2 + timeSeed)) * 10);
             final Offset position = canvas.center().add((int) (-size / 2.0) + x, (int) (-size / 2.0) + yOffset);
-            canvas.drawText(position, character, font(BOLDZILLA.getCustomColor(color)).scale(size / 4.0));
+            canvas.drawText(position, character, font(BOLDZILLA.customColor(color)).scale(size / 4.0));
         }
     }
 }

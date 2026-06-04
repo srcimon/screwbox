@@ -35,15 +35,15 @@ public enum FontBundle implements AssetBundle<Pixelfont> {
     /**
      * Returns a colored {@link Asset} version of the {@link Pixelfont}.
      */
-    public Asset<Pixelfont> customColor(final Color color) {
+    public Asset<Pixelfont> customColorAsset(final Color color) {
         return cache.getOrElse(color, () -> Asset.asset(() -> asset.get().replaceColor(WHITE, color)));
     }
 
     /**
      * Returns a colored version of the {@link Pixelfont}.
      */
-    public Pixelfont getCustomColor(final Color color) {
-        return customColor(color).get();
+    public Pixelfont customColor(final Color color) {
+        return customColorAsset(color).get();
     }
 
     @Override

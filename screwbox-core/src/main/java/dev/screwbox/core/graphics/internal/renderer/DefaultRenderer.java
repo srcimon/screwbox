@@ -11,6 +11,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.Renderer;
+import dev.screwbox.core.graphics.internal.RichTextBlock;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
@@ -20,7 +21,6 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
-import dev.screwbox.core.utils.TextUtil;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -315,26 +315,14 @@ public class DefaultRenderer implements Renderer {
     public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
-        int y = 0;
-        int characterNr = 0;
-        for (final String line : TextUtil.lineWrap(text, options.charactersPerLine())) {
-            double x = offset.x() + switch (options.alignment()) {
-                case LEFT -> 0;
-                case CENTER -> -options.widthOf(line) / 2.0;
-                case RIGHT -> -options.widthOf(line);
-            };
-            final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
-            for (final var sprite : allSprites) {
-                transform.setTransform(options.scale(), 0, 0, options.scale(), x, (double) offset.y() + y);
-                final var shaderSetup = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
-                final var shiftedShaderSetup = nonNull(shaderSetup)
-                    ? shaderSetup.offset(shaderSetup.offset().add(characterNr * options.shaderCharacterModifier().nanos(), Time.Unit.NANOSECONDS))
-                    : null;
-                drawSprite(sprite, shiftedShaderSetup, transform);
-                x += (sprite.width() + options.padding()) * options.scale();
-                characterNr++;
-            }
-            y += (int) (1.0 * options.font().height() * options.scale() + options.lineSpacing());
+        final var textBlock = new RichTextBlock(text, options);
+        for(final var glyph : textBlock.glyphs()) {
+            transform.setTransform(options.scale(), 0, 0, options.scale(), offset.add(glyph.offset()).x(), offset.add(glyph.offset()).y());
+            final var shaderSetup = ShaderResolver.resolveShader(defaultShader, glyph.shader());
+            final var shiftedShaderSetup = nonNull(shaderSetup)
+                ? shaderSetup.offset(shaderSetup.offset().add(glyph.characterNr() * options.shaderCharacterModifier().nanos(), Time.Unit.NANOSECONDS))
+                : null;
+            drawSprite(glyph.sprite(), shiftedShaderSetup, transform);
         }
         resetOpacityConfig(options.opacity());
     }

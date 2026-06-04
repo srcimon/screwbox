@@ -1,15 +1,15 @@
 package dev.screwbox.platformer.systems;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.logic.TriggerAreaComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.platformer.components.LabelComponent;
 
 import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
@@ -18,16 +18,16 @@ import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
 public class ShowLabelSystem implements EntitySystem {
 
     private static final Archetype LABELED = Archetype.of(TriggerAreaComponent.class, LabelComponent.class);
+    private static final TextDrawOptions OPTIONS = font(FontBundle.BOLDZILLA).alignCenter()
+        .styleFont(1, FontBundle.BOLDZILLA.customColorAsset(Color.YELLOW));
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.environment().fetchAll(LABELED)) {
+        for (final var entity : engine.environment().fetchAll(LABELED)) {
             if (entity.get(TriggerAreaComponent.class).isTriggered) {
                 LabelComponent labelComponent = entity.get(LabelComponent.class);
-                Bounds bounds = entity.bounds();
-
-                Vector position = Vector.of(bounds.position().x(), bounds.minY());
-                engine.graphics().world().drawText(position, labelComponent.label, font(FontBundle.BOLDZILLA).alignCenter().scale(labelComponent.size / 15.0));
+                Vector position = Vector.of(entity.position().x(), entity.bounds().minY());
+                engine.graphics().world().drawText(position, labelComponent.label, OPTIONS.scale(labelComponent.size / 15.0));
             }
         }
 
