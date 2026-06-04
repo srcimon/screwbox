@@ -185,58 +185,80 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     /**
-     * Sets the specified font to render hightlights of the specified depth.
+     * Sets the font for rendering the specified style.
      *
      * @since 3.31.0
      */
-    //TODO document and changelog new properties
-    public TextDrawOptions highlightFont(int depth, Supplier<Pixelfont> font) {
-        return highlightFont(depth, font.get());
+    public TextDrawOptions styleFont(final int styleNr, final Supplier<Pixelfont> font) {
+        return styleFont(styleNr, font.get());
     }
 
     /**
-     * Sets the specified font to render hightlights of the specified depth.
+     * Sets the font for rendering the specified style.
      *
      * @since 3.31.0
      */
-    //TODO document and changelog new properties
-    public TextDrawOptions highlightFont(int depth, Pixelfont font) {
-        Validate.positive(depth, "depth must be positive");
-        highlightFonts.put(depth, font);
+    public TextDrawOptions styleFont(final int styleNr, final Pixelfont font) {
+        Validate.positive(styleNr, "style number must be positive");
+        highlightFonts.put(styleNr, font);
         return this;
     }
 
-    //TODO document and changelog new properties
-    public TextDrawOptions highlightShader(int depth, Supplier<ShaderSetup> shader) {
-        return highlightShader(depth, shader.get());
+    /**
+     * Sets the shader for rendering the specified style.
+     *
+     * @since 3.31.0
+     */
+    public TextDrawOptions style(final int styleNr, final Supplier<ShaderSetup> shader) {
+        return style(styleNr, shader.get());
     }
 
-    //TODO document and changelog new properties
-    public TextDrawOptions highlightShader(int depth, ShaderSetup shader) {
-        Validate.positive(depth, "depth must be positive");
-        highlightShaders.put(depth, shader);
+    /**
+     * Sets the shader for rendering the specified style.
+     *
+     * @since 3.31.0
+     */
+    public TextDrawOptions style(final int styleNr, final ShaderSetup shader) {
+        Validate.positive(styleNr, "style number must be positive");
+        highlightShaders.put(styleNr, shader);
         return this;
     }
 
-    //TODO document and changelog new properties
-    public TextDrawOptions highlight(int depth, Supplier<Pixelfont> font, ShaderSetup shader) {
-        return highlight(depth, font.get(), shader);
+    /**
+     * Sets the font and shader for rendering the specified style.
+     *
+     * @since 3.31.0
+     */
+    public TextDrawOptions style(final int styleNr, final Supplier<Pixelfont> font, final ShaderSetup shader) {
+        return style(styleNr, font.get(), shader);
     }
 
-    //TODO document and changelog new properties
-    public TextDrawOptions highlight(int depth, Supplier<Pixelfont> font, Supplier<ShaderSetup> shader) {
-        return highlight(depth, font.get(), shader.get());
+    /**
+     * Sets the font and shader for rendering the specified style.
+     *
+     * @since 3.31.0
+     */
+    public TextDrawOptions style(final int styleNr, final Supplier<Pixelfont> font, final Supplier<ShaderSetup> shader) {
+        return style(styleNr, font.get(), shader.get());
     }
 
-    //TODO document and changelog new properties
-    public TextDrawOptions highlight(int depth, Pixelfont font, Supplier<ShaderSetup> shader) {
-        return highlight(depth, font, shader.get());
+    /**
+     * Sets the font and shader for rendering the specified style.
+     *
+     * @since 3.31.0
+     */
+    public TextDrawOptions style(final int styleNr, final Pixelfont font, final Supplier<ShaderSetup> shader) {
+        return style(styleNr, font, shader.get());
     }
 
-    //TODO document and changelog new properties
-    public TextDrawOptions highlight(int depth, Pixelfont font, ShaderSetup shader) {
-        highlightShader(depth, shader);
-        highlightFont(depth, font);
+    /**
+     * Sets the font and shader for rendering the specified style.
+     *
+     * @since 3.31.0
+     */
+    public TextDrawOptions style(final int styleNr, final Pixelfont font, final ShaderSetup shader) {
+        style(styleNr, shader);
+        styleFont(styleNr, font);
         return this;
     }
 

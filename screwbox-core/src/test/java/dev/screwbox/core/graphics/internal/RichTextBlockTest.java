@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RichTextBlockTest {
 
     @Test
-    void glyphs_noHighlights_isSameAsTextLength() {
+    void glyphs_noStyles_isSameAsTextLength() {
         var block = new RichTextBlock("This is a Test", TextDrawOptions.font(FontBundle.BOLDZILLA));
 
         assertThat(block.glyphs()).hasSize(14)
@@ -17,7 +17,7 @@ class RichTextBlockTest {
     }
 
     @Test
-    void glyphs_twoHighlights_isSameAsTextLengthWithoutMarkers() {
+    void glyphs_twoStyles_isSameAsTextLengthWithoutMarkers() {
         var block = new RichTextBlock("This {is} a {{Test}}", TextDrawOptions.font(FontBundle.BOLDZILLA));
 
         assertThat(block.glyphs()).hasSize(14)
