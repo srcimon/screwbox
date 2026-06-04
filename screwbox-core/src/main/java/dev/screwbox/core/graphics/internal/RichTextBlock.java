@@ -49,7 +49,8 @@ public class RichTextBlock {
                 case CENTER -> -options.widthOf(line) / 2.0;
                 case RIGHT -> -options.widthOf(line);
             };
-            for (Character character : line.toCharArray()) {
+            for(int i = 0; i < line.length(); i++) {
+                var character = line.charAt(i);
                 var sprite = font.spriteFor(options.isUppercase() ? Character.toUpperCase(character) : character);
                 if (sprite.isPresent()) {
                     glyphs.add(new Glyph(Offset.at(x, y), sprite.get(), characterNr));
