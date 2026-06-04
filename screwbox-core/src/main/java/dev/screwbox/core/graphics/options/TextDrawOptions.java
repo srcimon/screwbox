@@ -35,16 +35,6 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
                               Map<Integer, Pixelfont> alternateFonts,
                               Map<Integer, ShaderSetup> alternateShaders) {
 
-    //TODO move into richtextblock
-    public Pixelfont font(int depth) {
-        return depth == 0 ? font :alternateFonts.getOrDefault(depth, font);
-    }
-
-    //TODO move into richtextblock
-    public ShaderSetup shader(int depth) {
-        return depth == 0 ? shader :alternateShaders.getOrDefault(depth, shader);
-    }
-
     //TODO document and changelog new properties
     public TextDrawOptions alternativeFont(int depth, Pixelfont alternativeFont) {
         alternateFonts.put(depth, alternativeFont);

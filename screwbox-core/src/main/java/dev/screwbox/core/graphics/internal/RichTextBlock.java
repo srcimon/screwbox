@@ -36,7 +36,7 @@ public record RichTextBlock(String text, TextDrawOptions options) {
             int lineLength = line.length();
 
             for (int i = 0; i < lineLength; i++) {
-                char targetChar = line.charAt(i);
+                final char targetChar = line.charAt(i);
 
                 // Überspringe alle Klammern im Originaltext und aktualisiere die Tiefe,
                 // bis wir wieder auf das aktuelle Zeichen der gewrappten Zeile stoßen.
@@ -57,16 +57,13 @@ public record RichTextBlock(String text, TextDrawOptions options) {
                     }
                 }
 
-                Pixelfont currentFont = options.font(depth);
-                ShaderSetup currentShader = options.shader(depth);
-
                 char renderChar = options.isUppercase() ? Character.toUpperCase(targetChar) : targetChar;
-                var sprite = currentFont.spriteFor(renderChar);
+                var sprite = fetchFont(depth).spriteFor(renderChar);
 
                 if (sprite.isPresent()) {
                     var spriteGet = sprite.get();
                     if (!Character.isWhitespace(targetChar)) {
-                        glyphs.add(new Glyph(Offset.at(x, y), spriteGet, currentShader, characterNr++));
+                        glyphs.add(new Glyph(Offset.at(x, y), spriteGet, fetchShader(depth), characterNr++));
                     }
                     x += (spriteGet.width() + (double) options.padding()) * options.scale();
                 }
@@ -77,6 +74,14 @@ public record RichTextBlock(String text, TextDrawOptions options) {
             y += fontHeightIncrement;
         }
         return glyphs;
+    }
+
+    private Pixelfont fetchFont(final int depth) {
+        return depth == 0 ? options.font() : options.alternateFonts().getOrDefault(depth, options.font());
+    }
+
+    private ShaderSetup fetchShader(final int depth) {
+        return depth == 0 ? options.shader() : options.alternateShaders().getOrDefault(depth, options.shader());
     }
 
     private double initialHorizontalOffset(final String line) {
