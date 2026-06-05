@@ -62,18 +62,13 @@ public final class Line implements Serializable, Comparable<Line> {
         if (other.start.isSameAs(end) || other.end.isSameAs(end) || other.start.isSameAs(start) || other.end.isSameAs(start)) {
             return true;
         }
-        final double startX = start.x();
-        final double startY = start.y();
-        final double endX = end.x();
-        final double endY = end.y();
-
         final double otherStartX = other.start.x();
         final double otherStartY = other.start.y();
         final double otherEndX = other.end.x();
         final double otherEndY = other.end.y();
 
-        final double xDelta = endX - startX;
-        final double yDelta = endY - startY;
+        final double xDelta = end.x() - start.x();
+        final double yDelta = end.y() - start.y();
         final double fromToXDelta = otherEndX - otherStartX;
         final double fromToYDelta = otherEndY - otherStartY;
         final double nominator = xDelta * fromToYDelta - fromToXDelta * yDelta;
@@ -83,8 +78,8 @@ public final class Line implements Serializable, Comparable<Line> {
         }
 
         final boolean nominatorIsPositive = nominator > 0.0;
-        final double thisOtherXDelta = startX - otherStartX;
-        final double thisOtherYDelta = startY - otherStartY;
+        final double thisOtherXDelta = start.x() - otherStartX;
+        final double thisOtherYDelta = start.y() - otherStartY;
 
         final double nominatorB = xDelta * thisOtherYDelta - yDelta * thisOtherXDelta;
         if (((nominatorB <= 0.0) == nominatorIsPositive || (nominatorB >= nominator) == nominatorIsPositive)) {
