@@ -11,10 +11,6 @@ import dev.screwbox.platformer.components.DeathEventComponent;
 import dev.screwbox.platformer.components.KilledFromAboveComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
-import java.util.List;
-
-import static dev.screwbox.core.utils.ListUtil.merge;
-
 @ExecutionOrder(Order.PREPARATION)
 public class KilledFromAboveSystem implements EntitySystem {
 
@@ -26,22 +22,20 @@ public class KilledFromAboveSystem implements EntitySystem {
         final Entity player = engine.environment().fetchSingleton(PLAYER);
         final var playerBounds = player.bounds();
 
-        final List<Entity> enemiesBelow = merge(
-                engine.navigation()
-                        .raycastFrom(playerBounds.bottomLeft().addX(1))
-                        .checkingFor(KILLED_FROM_ABOVE)
-                        .checkingBorders(Borders.TOP)
-                        .castingVertical(4)
-                        .selectAllEntities(),
-                engine.navigation()
-                        .raycastFrom(playerBounds.bottomRight().addX(-1))
-                        .checkingFor(KILLED_FROM_ABOVE)
-                        .checkingBorders(Borders.TOP)
-                        .castingVertical(4)
-                        .selectAllEntities());
+        engine.navigation()
+            .raycastFrom(playerBounds.bottomLeft().addX(1))
+            .checkingFor(KILLED_FROM_ABOVE)
+            .checkingBorders(Borders.TOP)
+            .castingVertical(4)
+            .selectAllEntities()
+            .forEach(entity -> entity.addIfNotPresent(new DeathEventComponent()));
 
-        for (final var entity : enemiesBelow) {
-            entity.add(new DeathEventComponent());
-        }
+        engine.navigation()
+            .raycastFrom(playerBounds.bottomRight().addX(-1))
+            .checkingFor(KILLED_FROM_ABOVE)
+            .checkingBorders(Borders.TOP)
+            .castingVertical(4)
+            .selectAllEntities()
+            .forEach(entity -> entity.addIfNotPresent(new DeathEventComponent()));
     }
 }

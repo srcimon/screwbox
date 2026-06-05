@@ -36,26 +36,26 @@ public class OptionsMenu extends UiMenu {
             .onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
 
         addItem(engine -> engine.graphics().configuration().isUseAntialiasing()
-            ? "antialising on"
-            : "antialising off")
+            ? "antialising {on}"
+            : "antialising {off}")
             .onActivate(engine -> engine.graphics().configuration().toggleAntialiasing());
 
         addItem(engine -> engine.graphics().configuration().isLensFlareEnabled()
-            ? "lens flare on"
-            : "lens flare off")
+            ? "lens flare {on}"
+            : "lens flare {off}")
             .onActivate(engine -> engine.graphics().configuration().toggleLensFlare());
 
         addItem(engine -> engine.graphics().configuration().isIndirectLightEnabled()
-            ? "indirect light on"
-            : "indirect light off")
+            ? "indirect light {on}"
+            : "indirect light {off}")
             .onActivate(engine -> {
                 boolean isActive = engine.graphics().configuration().indirectLightIntensity().isZero();
                 engine.graphics().configuration().setIndirectLightIntensity(isActive ? Percent.of(0.9) : Percent.zero());
             });
 
         addItem(engine -> engine.graphics().configuration().lightQuality().equals(Percent.quarter())
-            ? "light quality low"
-            : "light quality high").onActivate(engine -> engine.graphics().configuration().setLightQuality(
+            ? "light quality {low}"
+            : "light quality {high}").onActivate(engine -> engine.graphics().configuration().setLightQuality(
             engine.graphics().configuration().lightQuality().equals(Percent.quarter()) ? Percent.half() : Percent.quarter()));
 
         addItem("shader settings").onActivate(engine -> engine.ui().openMenu(new ShaderMenu()));
