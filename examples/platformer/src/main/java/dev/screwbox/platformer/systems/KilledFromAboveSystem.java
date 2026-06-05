@@ -11,10 +11,6 @@ import dev.screwbox.platformer.components.DeathEventComponent;
 import dev.screwbox.platformer.components.KilledFromAboveComponent;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
-import java.util.List;
-
-import static dev.screwbox.core.utils.ListUtil.merge;
-
 @ExecutionOrder(Order.PREPARATION)
 public class KilledFromAboveSystem implements EntitySystem {
 
