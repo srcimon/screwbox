@@ -1,12 +1,13 @@
 package dev.screwbox.core.log;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class ConsoleLoggingAdapter implements LoggingAdapter {
 
     @Override
     public void log(final LogLevel level, final String message) {
-        final String formattedMessage = String.format("%tT [%-7s] %s", LocalDateTime.now(), level.name(), message);
+        final String formattedMessage = String.format("%tT [%-7s] %s", LocalDateTime.now(ZoneId.systemDefault()), level.name(), message);
         if (LogLevel.ERROR.equals(level)) {
             logError(formattedMessage);
         } else {

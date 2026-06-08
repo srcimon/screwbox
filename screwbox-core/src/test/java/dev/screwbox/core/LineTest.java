@@ -309,7 +309,9 @@ class LineTest {
         var line = Line.between($(250, -130.94), $(-19.19, 41.39));
         var otherStart = Line.between($(250, -130), $(-19.19, 41.39));
         var otherEnd = Line.between($(250, -130.94), $(-1.19, 41.39));
-        assertThat(line).isNotEqualTo(otherStart);
-        assertThat(line).isNotEqualTo(otherEnd);
+
+        assertThat(line)
+            .isNotEqualTo(otherStart)
+            .isNotEqualTo(otherEnd);
     }
 }
