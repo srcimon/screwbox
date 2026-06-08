@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added separate length loss property to indirect light configuration
-- Added glyphs to Boldzilla font `|` and `=`
+- Added glyphs to Boldzilla font `(`, `)`, `[`, `]`, `%`, `|` and `=`
 - Rich text rendering using multiple fonts and shaders (#445)
 
 ### 🪛 Bug Fixes
@@ -13,6 +13,7 @@
 - Simplified scene transition code
 - Renamed `TextOptions.shader(ShaderSetup)`
 - Renamed `PixelFont` methods for consistency
+- Added missing JavaDoc to `Entity`
 
 ### 📦 Dependency updates
 

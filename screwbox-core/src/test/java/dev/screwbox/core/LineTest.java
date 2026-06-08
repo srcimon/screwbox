@@ -296,4 +296,22 @@ class LineTest {
 
         assertThat(line.asVector()).isEqualTo($(50, -100));
     }
+
+    @Test
+    void equals_isSame_isTrue() {
+        var line = Line.between($(250, -130.94), $(-19.19, 41.39));
+        var other = Line.between($(250, -130.94), $(-19.19, 41.39));
+        assertThat(line).isEqualTo(other);
+    }
+
+    @Test
+    void equals_differentPoints_isFalse() {
+        var line = Line.between($(250, -130.94), $(-19.19, 41.39));
+        var otherStart = Line.between($(250, -130), $(-19.19, 41.39));
+        var otherEnd = Line.between($(250, -130.94), $(-1.19, 41.39));
+
+        assertThat(line)
+            .isNotEqualTo(otherStart)
+            .isNotEqualTo(otherEnd);
+    }
 }

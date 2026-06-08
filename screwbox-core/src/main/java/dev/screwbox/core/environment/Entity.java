@@ -35,23 +35,38 @@ public class Entity implements Serializable {
     private TransformComponent transform;
     private Set<String> tags = null;
 
+    /**
+     * Creates a new instance without {@link #id()} and {@link #name()}.
+     */
     public Entity() {
         this.id = null;
     }
 
+    /**
+     * Create a new instance with {@link #id()} and {@link #name()}.
+     */
     public Entity(final Integer id, final String name) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * Create a new instance with {@link #name()}.
+     */
     public Entity(final String name) {
         this(null, name);
     }
 
+    /**
+     * Create a new instance with {@link #id()}.
+     */
     public Entity(final Integer id) {
         this.id = id;
     }
 
+    /**
+     * Create a new instance with {@link #name()}.
+     */
     public Entity name(final String name) {
         this.name = name;
         return this;
@@ -125,6 +140,10 @@ public class Entity implements Serializable {
         return this;
     }
 
+    /**
+     * Adds the specified {@link Component} to the {@link Entity}. Will throw {@link IllegalArgumentException} when
+     * {@link Component} is already present.
+     */
     public Entity add(final Component component) {
         final var componentClass = component.getClass();
         if (components.containsKey(componentClass)) {
