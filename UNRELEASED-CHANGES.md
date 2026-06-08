@@ -13,6 +13,7 @@
 - Simplified scene transition code
 - Renamed `TextOptions.shader(ShaderSetup)`
 - Renamed `PixelFont` methods for consistency
+- Added missing JavaDoc to `Entity`
 
 ### 📦 Dependency updates
 
