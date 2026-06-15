@@ -3,25 +3,41 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.assets.FontBundle;
+import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.importing.Blueprint;
+import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.ShaderBundle;
-import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
 
     public static void main(String[] args) {
+
         Engine screwBox = ScrewBox.createEngine("Playground");
+        screwBox.graphics().camera().setZoom(3);
 
-        TextDrawOptions options = TextDrawOptions
-            .font(FontBundle.BOLDZILLA)
-            .scale(1.5)
-            .styleFont(1, FontBundle.BOLDZILLA.customColor(Color.YELLOW))
-            .style(2, FontBundle.BOLDZILLA.customColor(Color.RED), ShaderBundle.UNDERWATER)
-            .lineSpacing(10)
-            .charactersPerLine(20);
+        var map = TileMap.fromString("""
+            #####
+            #          #
+            #          #
+            #          #
+            #    T     #
+            #          #
+            #          #
+            ####   #####
+            """);
 
-        screwBox.environment().addSystem(e -> e.graphics().canvas().drawText(e.mouse().offset(), "{Debo} is the best {{girlfriend}} in {the {{world!}} That} is nice", options));
-        screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
+        screwBox.environment().enableAllFeatures()
+            .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
+                .assign('#', source -> new Entity().bounds(source.bounds()).add(new RenderComponent(Sprite.placeholder(Color.RED, source.size()))))
+                .assign('T', source -> new Entity().bounds(source.bounds())
+                    .add(new CameraTargetComponent())
+                    .add(new RenderComponent(FontBundle.BOLDZILLA.get().spriteFor('T').get())))
+            );
+
         screwBox.start();
     }
 
