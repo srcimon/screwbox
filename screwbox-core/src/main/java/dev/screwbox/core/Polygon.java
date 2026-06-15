@@ -514,4 +514,13 @@ public final class Polygon implements Serializable {
         }
         return Polygon.ofNodes(targetNodes);
     }
+
+    //TODO implement,changelog, test
+    public double length() {
+        double sum = 0;
+        for(var line : segments()) {
+            sum += line.length();
+        }
+        return sum;
+    }
 }
