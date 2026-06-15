@@ -397,4 +397,14 @@ public final class Color implements Serializable {
         double opacityOffset = Math.abs(opacity().value() - other.opacity().value()) / Percent.max().value();
         return Percent.of(rOffset + gOffset + bOffset + opacityOffset);
     }
+
+    //TODO implement changelog, test, document
+    public Color mix(Color other, Percent percentageOfMixColor) {
+        return Color.rgb(
+            (int)(r() * percentageOfMixColor.invert().value() + other.r() * percentageOfMixColor.value()),
+            (int)(g() * percentageOfMixColor.invert().value() + other.g() * percentageOfMixColor.value()),
+            (int)(b() * percentageOfMixColor.invert().value() + other.b() * percentageOfMixColor.value()),
+            Percent.of(opacity().value() * percentageOfMixColor.invert().value() + other.opacity().value() * percentageOfMixColor.value())
+        );
+    }
 }

@@ -24,10 +24,11 @@ public class RaytraceAudio {
         if (colliding.isEmpty()) {
             hits.add(new RayHit("direct", Polygon.ofNodes(source, target), direct.length(), 0));
         }
-        if (colliding.size() == 1) {
-            var expanded = colliding.getFirst().expand(0.5);
+        if (colliding.size() == 1 && !colliding.getFirst().contains(source)) {
+            var expanded = colliding.getFirst().expand(1);
             for (var corner : expanded.corners()) {
                 var collidingInner = fetchCollidingBounds(Line.between(corner, target), walls);
+                System.out.println("!!");
                 if (collidingInner.isEmpty()) {
                     Polygon polygon = Polygon.ofNodes(source, corner, target);
                     hits.add(new RayHit("reflection", polygon, polygon.length(), 0));
@@ -43,6 +44,7 @@ public class RaytraceAudio {
             for (var border : wall.borders()) {
                 if (border.intersects(line)) {
                     colliding.add(wall);
+                    break;
                 }
             }
         }
