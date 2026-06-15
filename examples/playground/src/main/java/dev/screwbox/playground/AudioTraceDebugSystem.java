@@ -3,6 +3,8 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -21,6 +23,17 @@ public class AudioTraceDebugSystem implements EntitySystem {
         for(var trace : traces) {
             engine.graphics().world().drawPolygon(trace.polygon(), PolygonDrawOptions.outline(Color.GREEN.mix(Color.RED, Percent.of(trace.length() / maxLength))));
             engine.graphics().world().drawText(trace.polygon().center(), trace.name(), SystemTextDrawOptions.systemFont("Arial"));
+        }
+        if(engine.mouse().isPressedLeft()) {
+            var panDegrees = 0;
+            for(var trace : traces) {
+                panDegrees+=trace.targetAngle().degrees();
+            }
+if(traces.size()>0) {
+    double pan = getPan(panDegrees / traces.size());
+    System.out.println(pan);
+    engine.audio().playSound(SoundBundle.JUMP, SoundOptions.playOnce().pan(pan));
+            }
         }
     }
 }

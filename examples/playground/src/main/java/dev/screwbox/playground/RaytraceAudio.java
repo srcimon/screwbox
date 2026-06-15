@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class RaytraceAudio {
 
-    record RayHit(String name, Polygon polygon, double length, double wallCount) {
+    record RayHit(String name, Polygon polygon, double length, double wallCount, Angle targetAngle) {
 
     }
 
@@ -22,16 +23,15 @@ public class RaytraceAudio {
         }
         var colliding = fetchCollidingBounds(direct, walls);
         if (colliding.isEmpty()) {
-            hits.add(new RayHit("direct", Polygon.ofNodes(source, target), direct.length(), 0));
+            hits.add(new RayHit("direct", Polygon.ofNodes(source, target), direct.length(), 0, Angle.ofLineBetweenPoints(source, target)));
         }
         if (colliding.size() == 1 && !colliding.getFirst().contains(source)) {
             var expanded = colliding.getFirst().expand(1);
             for (var corner : expanded.corners()) {
                 var collidingInner = fetchCollidingBounds(Line.between(corner, target), walls);
-                System.out.println("!!");
                 if (collidingInner.isEmpty()) {
                     Polygon polygon = Polygon.ofNodes(source, corner, target);
-                    hits.add(new RayHit("reflection", polygon, polygon.length(), 0));
+                    hits.add(new RayHit("reflection", polygon, polygon.length(), 0, Angle.ofLineBetweenPoints(corner, target)));
                 }
             }
         }
