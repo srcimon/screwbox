@@ -6,6 +6,7 @@ import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
@@ -30,9 +31,13 @@ public class PlaygroundApp {
             ####   #####
             """);
 
-        screwBox.environment().enableAllFeatures()
+        screwBox.environment()
+            .enableAllFeatures()
+            .addSystem(new AudioTraceDebugSystem())
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-                .assign('#', source -> new Entity().bounds(source.bounds()).add(new RenderComponent(Sprite.placeholder(Color.RED, source.size()))))
+                .assign('#', source -> new Entity().bounds(source.bounds())
+                    .add(new ColliderComponent())
+                    .add(new RenderComponent(Sprite.placeholder(Color.RED, source.size()))))
                 .assign('T', source -> new Entity().bounds(source.bounds())
                     .add(new CameraTargetComponent())
                     .add(new RenderComponent(FontBundle.BOLDZILLA.get().spriteFor('T').get())))
