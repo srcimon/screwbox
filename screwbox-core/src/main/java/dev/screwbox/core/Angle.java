@@ -296,4 +296,9 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
     public int compareTo(final Angle other) {
         return Double.compare(degrees, other.degrees);
     }
+
+    //TODO test changelog, doc
+    public Percent asCircle() {
+        return Percent.of(degrees / MAX_DEGREES);
+    }
 }

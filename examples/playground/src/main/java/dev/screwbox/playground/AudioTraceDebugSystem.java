@@ -1,10 +1,8 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Polygon;
-import dev.screwbox.core.audio.SoundBundle;
-import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -20,20 +18,23 @@ public class AudioTraceDebugSystem implements EntitySystem {
         var targetPos = engine.environment().fetchSingleton(CameraTargetComponent.class).position();
         double maxLength = 160;
         var traces = new RaytraceAudio().findAllRayHits(engine.mouse().position(), targetPos, engine.environment().fetchAll(Archetype.ofSpacial(ColliderComponent.class)).stream().map(Entity::bounds).toList(), maxLength);
-        for(var trace : traces) {
+        for (var trace : traces) {
             engine.graphics().world().drawPolygon(trace.polygon(), PolygonDrawOptions.outline(Color.GREEN.mix(Color.RED, Percent.of(trace.length() / maxLength))));
             engine.graphics().world().drawText(trace.polygon().center(), trace.name(), SystemTextDrawOptions.systemFont("Arial"));
         }
-        if(engine.mouse().isPressedLeft()) {
-            var panDegrees = 0;
-            for(var trace : traces) {
-                panDegrees+=trace.targetAngle().degrees();
+
+        if (!traces.isEmpty()) {
+            double degrees = 0;
+            for (var trace : traces) {
+                degrees += trace.targetAngle().degrees();
             }
-if(traces.size()>0) {
-    double pan = getPan(panDegrees / traces.size());
-    System.out.println(pan);
-    engine.audio().playSound(SoundBundle.JUMP, SoundOptions.playOnce().pan(pan));
-            }
+
+            degrees = degrees / traces.size();
+            double degrees1 = Angle.degrees(degrees).degrees();
+            System.out.println(Math.sin((degrees1 * (Math.PI / 180.0))));
+        }
+        if (engine.mouse().isPressedLeft()) {
+
         }
     }
 }
