@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.audio.internal.DynamicSoundSupport;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -26,17 +27,18 @@ public class AudioTraceDebugSystem implements EntitySystem {
         }
 
         if (engine.mouse().isPressedLeft()) {
-            if (!traces.isEmpty()) {
-                double degrees = 0;
-                for (var trace : traces) {
-                    degrees += trace.targetAngle().degrees();
-                }
+            for (var trace : traces) {
+                double pan = Math.sin((trace.targetAngle().degrees() * (Math.PI / 180.0)));
+                engine.async().run("x", () -> {
+                    try {
+                        Thread.sleep((long)(trace.length() / 2.0 ));//TODO consider using sound range
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                degrees = degrees / traces.size();
-                double pan = Math.sin((Angle.degrees(degrees).degrees() * (Math.PI / 180.0)));
-                engine.audio().playSound(SoundBundle.SPLASH, SoundOptions.playOnce().pan(pan));
+                    engine.audio().playSound(SoundBundle.JUMP, SoundOptions.playOnce().pan(pan).volume(Percent.of(trace.length() /maxLength).invert().add(trace.wallCount() * -0.4)));
+                });
             }
-
         }
     }
 }
