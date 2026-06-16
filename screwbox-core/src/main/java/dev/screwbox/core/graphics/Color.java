@@ -399,12 +399,17 @@ public final class Color implements Serializable {
     }
 
     //TODO implement changelog, test, document
-    public Color mix(Color other, Percent percentageOfMixColor) {
+    public Color mix(final Color other) {
+        return mix(other, Percent.half());
+    }
+
+    //TODO implement changelog, test, document
+    public Color mix(final Color other, final Percent strength) {
         return Color.rgb(
-            (int)(r() * percentageOfMixColor.invert().value() + other.r() * percentageOfMixColor.value()),
-            (int)(g() * percentageOfMixColor.invert().value() + other.g() * percentageOfMixColor.value()),
-            (int)(b() * percentageOfMixColor.invert().value() + other.b() * percentageOfMixColor.value()),
-            Percent.of(opacity().value() * percentageOfMixColor.invert().value() + other.opacity().value() * percentageOfMixColor.value())
+            (int)(r() * strength.invert().value() + other.r() * strength.value()),
+            (int)(g() * strength.invert().value() + other.g() * strength.value()),
+            (int)(b() * strength.invert().value() + other.b() * strength.value()),
+            Percent.of(opacity().value() * strength.invert().value() + other.opacity().value() * strength.value())
         );
     }
 }
