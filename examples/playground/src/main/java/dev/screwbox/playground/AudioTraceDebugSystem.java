@@ -3,6 +3,8 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -23,17 +25,17 @@ public class AudioTraceDebugSystem implements EntitySystem {
             engine.graphics().world().drawText(trace.polygon().center(), trace.name(), SystemTextDrawOptions.systemFont("Arial"));
         }
 
-        if (!traces.isEmpty()) {
-            double degrees = 0;
-            for (var trace : traces) {
-                degrees += trace.targetAngle().degrees();
-            }
-
-            degrees = degrees / traces.size();
-            double degrees1 = Angle.degrees(degrees).degrees();
-            System.out.println(Math.sin((degrees1 * (Math.PI / 180.0))));
-        }
         if (engine.mouse().isPressedLeft()) {
+            if (!traces.isEmpty()) {
+                double degrees = 0;
+                for (var trace : traces) {
+                    degrees += trace.targetAngle().degrees();
+                }
+
+                degrees = degrees / traces.size();
+                double pan = Math.sin((Angle.degrees(degrees).degrees() * (Math.PI / 180.0)));
+                engine.audio().playSound(SoundBundle.SPLASH, SoundOptions.playOnce().pan(pan));
+            }
 
         }
     }
