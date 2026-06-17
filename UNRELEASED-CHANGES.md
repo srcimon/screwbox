@@ -13,4 +13,5 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Npm to 11.17.0
+- Bump Node dependencies
