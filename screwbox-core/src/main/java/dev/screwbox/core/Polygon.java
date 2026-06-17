@@ -514,4 +514,17 @@ public final class Polygon implements Serializable {
         }
         return Polygon.ofNodes(targetNodes);
     }
+
+    /**
+     * Returns the length of all {@link #segments()} combined.
+     *
+     * @since 3.32.0
+     */
+    public double length() {
+        double sum = 0;
+        for (final var line : segments()) {
+            sum += line.length();
+        }
+        return sum;
+    }
 }

@@ -508,6 +508,13 @@ class PolygonTest {
         assertThat(moved.nodeCount()).isEqualTo(polygon.nodeCount());
     }
 
+    @Test
+    void length_threeNodes_returnsLength() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+
+        assertThat(polygon.length()).isEqualTo(4.24, offset(0.01));
+    }
+
     private static Polygon createClosedPolygon() {
         return createClosedPolygon(10);
     }

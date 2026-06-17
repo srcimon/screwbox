@@ -213,7 +213,7 @@ public record Angle(double degrees) implements Serializable, Comparable<Angle> {
      */
     public Line rotateAroundCenter(final Line line) {
         requireNonNull(line, LINE_MUST_NOT_BE_NULL);
-        if(isZero()) {
+        if (isZero()) {
             return line;
         }
         final var newEnd = rotateAroundCenter(line.center(), line.end());
