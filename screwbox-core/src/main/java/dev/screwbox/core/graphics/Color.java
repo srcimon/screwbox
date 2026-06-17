@@ -398,17 +398,30 @@ public final class Color implements Serializable {
         return Percent.of(rOffset + gOffset + bOffset + opacityOffset);
     }
 
-    //TODO implement changelog, test, document
+    /**
+     * Returns a new mixed {@link Color} using current and the specified {@link Color} in equal parts.
+     *
+     * @see #mix(Color, Percent)
+     * @since 3.32.0
+     */
     public Color mix(final Color other) {
         return mix(other, Percent.half());
     }
 
-    //TODO implement changelog, test, document
+    /**
+     * Returns a new mixed {@link Color} using current and the specified {@link Color} using the specified strength.
+     *
+     * @see #mix(Color)
+     * @since 3.32.0
+     */
     public Color mix(final Color other, final Percent strength) {
+        Objects.requireNonNull(other, "color must not be null");
+        Objects.requireNonNull(strength, "strength must not be null");
+        //TODO refactor
         return Color.rgb(
-            (int)(r() * strength.invert().value() + other.r() * strength.value()),
-            (int)(g() * strength.invert().value() + other.g() * strength.value()),
-            (int)(b() * strength.invert().value() + other.b() * strength.value()),
+            (int) (r() * strength.invert().value() + other.r() * strength.value()),
+            (int) (g() * strength.invert().value() + other.g() * strength.value()),
+            (int) (b() * strength.invert().value() + other.b() * strength.value()),
             Percent.of(opacity().value() * strength.invert().value() + other.opacity().value() * strength.value())
         );
     }

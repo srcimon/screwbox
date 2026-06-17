@@ -274,4 +274,48 @@ class ColorTest {
 
         assertThat(offset.value()).isEqualTo(0.155, offset(0.01));
     }
+
+    @Test
+    void mix_colorNull_throwsException() {
+        assertThatThrownBy(() -> Color.RED.mix(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("color must not be null");
+    }
+
+    @Test
+    void mix_strengthNull_throwsException() {
+        assertThatThrownBy(() -> Color.RED.mix(Color.YELLOW, null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("strength must not be null");
+    }
+
+    @Test
+    void mix_blackAndWhite_isGrey() {
+        var grey = Color.WHITE.mix(Color.BLACK);
+
+        assertThat(grey.r()).isEqualTo(127);
+        assertThat(grey.g()).isEqualTo(127);
+        assertThat(grey.b()).isEqualTo(127);
+        assertThat(grey.opacity()).isEqualTo(Percent.max());
+    }
+
+    @Test
+    void mix_colorWithOpacity_mixesOpacity() {
+        var result = Color.rgb(10, 40, 30).mix(Color.rgb(20, 60, 110, Percent.of(0.4)));
+
+        assertThat(result.r()).isEqualTo(15);
+        assertThat(result.g()).isEqualTo(50);
+        assertThat(result.b()).isEqualTo(70);
+        assertThat(result.opacity()).isEqualTo(Percent.of(0.7));
+    }
+
+    @Test
+    void mix_mixOnlyALittle_originalColorDominates() {
+        var result = Color.rgb(10, 40, 30).mix(Color.rgb(20, 60, 110, Percent.of(0.4)), Percent.of(0.1));
+
+        assertThat(result.r()).isEqualTo(11);
+        assertThat(result.g()).isEqualTo(42);
+        assertThat(result.b()).isEqualTo(38);
+        assertThat(result.opacity().value()).isEqualTo(0.94, offset(0.01));
+    }
 }
