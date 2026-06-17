@@ -417,12 +417,12 @@ public final class Color implements Serializable {
     public Color mix(final Color other, final Percent strength) {
         Objects.requireNonNull(other, "color must not be null");
         Objects.requireNonNull(strength, "strength must not be null");
-        //TODO refactor
+        final double invertStrength = strength.invert().value();
         return Color.rgb(
-            (int) (r() * strength.invert().value() + other.r() * strength.value()),
-            (int) (g() * strength.invert().value() + other.g() * strength.value()),
-            (int) (b() * strength.invert().value() + other.b() * strength.value()),
-            Percent.of(opacity().value() * strength.invert().value() + other.opacity().value() * strength.value())
+            (int) (r() * invertStrength + other.r() * strength.value()),
+            (int) (g() * invertStrength + other.g() * strength.value()),
+            (int) (b() * invertStrength + other.b() * strength.value()),
+            Percent.of(opacity().value() * invertStrength + other.opacity().value() * strength.value())
         );
     }
 }
