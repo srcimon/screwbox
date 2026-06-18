@@ -1,0 +1,8 @@
+{
+  "label": "Additional Modules",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn about the optional plugin modules within ScrewBox."
+  }
+}
