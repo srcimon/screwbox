@@ -70,3 +70,9 @@ This component automatically adds sound and particle effects when physics object
 The component can be customized with own thresholds, scheduler and assets.
 
 ![fluid effects](fluid-effects.png)
+
+## Post processing
+
+For a final touch the `FluidPostProcessingComponent` can be added and customized.
+The compoent will activate a post processing filter on the fluid body and automatically distort the background
+using the current wave heights.
