@@ -64,3 +64,11 @@ environment
     .importSource(ImportOptions.indexedSources(map.blocks(), TileMap.Block::value)
         .assign('.', new Water());
 ```
+
+## Final thoughts
+
+The `TileMap` is really helpful when creating a quick playground application.
+But off cause it clearly has it's limitations.
+For more complex content especially when multiple layers are needed it's highly recommended to switch to another source for creating content.
+ScrewBox supports maps and tilesets created with [Tiled Editor](https://www.mapeditor.org).
+Learn more [here](./../tiled-editor).
