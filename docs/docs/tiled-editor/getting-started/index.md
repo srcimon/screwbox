@@ -24,10 +24,13 @@ You can also use the `screwbox-bom` to manage your dependencies if you don't wan
 <dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>dev.screwbox</groupId>
+            <groupId>dev.screwbox</groupId>a
             <artifactId>screwbox</artifactId>
             <version><!-- your version --></version>
         </dependency>
     </dependencies>
 </dependencyManagement>
 ```
+
+After adding the dependency content from Tiled Editor can be imported.
+Learn [how to import map](./../importing-maps.md) and [how to import tilesets](./../importing-tilesets.md).
