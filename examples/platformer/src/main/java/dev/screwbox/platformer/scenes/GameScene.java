@@ -42,7 +42,6 @@ import dev.screwbox.tiled.Layer;
 import dev.screwbox.tiled.Map;
 import dev.screwbox.tiled.Tile;
 
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static dev.screwbox.core.environment.importing.ImportCondition.sourceMatches;
@@ -120,7 +119,7 @@ public class GameScene implements Scene {
             .importSource(sources(map.layers())
                 .assign(sourceMatches(Layer::isImageLayer), new Background()))
 
-            .importSource(indexedSources(map.tiles(), (Function<Tile, Object>) tile -> tile.properties().getString("type"))
+            .importSource(indexedSources(map.tiles(), this::tileType)
                 .assign("non-solid", new NonSolidTile())
                 .assign("solid", new SolidGround())
                 .assign("diggable", new Diggable())
