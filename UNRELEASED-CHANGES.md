@@ -2,6 +2,7 @@
 
 - Calculate length of polygon
 - Mix colors using strength
+- Documented support for Tiled Editor (#970)
 
 ### 🪛 Bug Fixes
 
