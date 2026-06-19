@@ -7,8 +7,7 @@ and build times.
 
 You can use the `screwbox-bom` to manage all ScrewBox dependencies.
 This ensures using compatible versions of the ScrewBox libraries.
-
-The Maven setup for a project using Tiled Editor support might look like:
+The Maven setup for a project using Tiled Editor support might look like this example:
 
 ``` xml
 <dependencyManagement>

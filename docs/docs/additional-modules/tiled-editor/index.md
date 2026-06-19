@@ -55,3 +55,19 @@ These two example projects also make use of the Tiled editor support and the imp
 
 - [platformer](https://github.com/srcimon/screwbox/tree/main/examples/platformer)
 - [vacuum-outlaw](https://github.com/srcimon/screwbox/tree/main/examples/vacuum-outlaw)
+
+## Importing tilesets
+
+Importing tilesets works quite similar.
+The tilesets can be loaded directly from the resource folder.
+It's recommended to address tiles within the tileset by the `type` attribute.
+To fetch a tile by this attribute query the tileset by name.
+
+``` java
+Tileset player = Tileset.fromJson("tilesets/player.json")
+Sprite standing = player.findByName("standing");
+
+Sprite explosion = Tileset.spriteFromJson("bomb.json", "explosion");
+```
+
+Tilesets also support lazy loading using [Assets](../../core-modules/assets.md) to improve start up times.
