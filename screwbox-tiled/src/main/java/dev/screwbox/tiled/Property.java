@@ -1,5 +1,6 @@
 package dev.screwbox.tiled;
 
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.tiled.internal.PropertyEntity;
 
 public class Property {
@@ -40,5 +41,10 @@ public class Property {
 
     public boolean getBoolean() {
         return "true".equalsIgnoreCase(get());
+    }
+
+    //TODO fix opacity is upfront not back
+    public Color getColor() {
+        return Color.hex(get());
     }
 }

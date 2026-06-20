@@ -84,8 +84,19 @@ public class Properties {
         return tryGetBoolean(name).orElseThrow(() -> missingProperty(name));
     }
 
+    //TODO refactor
     private IllegalStateException missingProperty(final String name) {
         return new IllegalStateException("missing property: " + name);
     }
 
+    public Optional<Boolean> getColor(final String name) {
+        final Optional<Property> property = tryGet(name);
+        return property.isPresent() && property.get().hasValue()
+            ? Optional.of(property.get().getColor())
+            : Optional.empty();
+    }
+
+    public boolean getColor(String name) {
+        return tryGetColor(name).orElseThrow(() -> missingProperty(name));
+    }
 }

@@ -18,6 +18,7 @@ class PropertiesTest {
     @BeforeEach
     void beforeEach() {
         List<PropertyEntity> propertyEntities = List.of(
+                createPropertyEntity("color", "#ff9e71a5"),
                 createPropertyEntity("material", "ice"),
                 createPropertyEntity("length", "15.5"),
                 createPropertyEntity("border", "TOp"),
@@ -102,6 +103,12 @@ class PropertiesTest {
     @Test
     void getBoolean_valueSetToTrue_returnsTrue() {
         assertThat(properties.getBoolean("checked")).isTrue();
+    }
+
+    //TODO tryGetColor
+    @Test
+    void getColor_valueIsColor_returnsColor() {
+        assertThat(properties.getColor("color")).isTrue();
     }
 
     private PropertyEntity createPropertyEntity(String name, String value) {
