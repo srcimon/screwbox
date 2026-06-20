@@ -35,7 +35,8 @@ class TilesetTest {
     @Test
     void findById_idMissing_throwsException() {
         assertThatThrownBy(() -> tileset.findById(5))
-                .isInstanceOf(IllegalArgumentException.class).hasMessage("sprite not found: 5");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("sprite not found: 5");
     }
 
     @Test
@@ -46,7 +47,8 @@ class TilesetTest {
     @Test
     void findByName_nameMissing_throwsException() {
         assertThatThrownBy(() -> tileset.findByName("under"))
-                .isInstanceOf(IllegalArgumentException.class).hasMessage("sprite not found: under");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("sprite not found: under");
     }
 
     @Test
@@ -68,7 +70,8 @@ class TilesetTest {
         tileset.addSprite(9, SPRITE);
 
         assertThatThrownBy(() -> tileset.single())
-                .isInstanceOf(IllegalStateException.class).hasMessage("tileset has not exactly one sprite");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("tileset has not exactly one sprite");
     }
 
     @Test
@@ -76,7 +79,8 @@ class TilesetTest {
         tileset.clear();
 
         assertThatThrownBy(() -> tileset.first())
-                .isInstanceOf(IllegalStateException.class).hasMessage("tileset has no sprite");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("tileset has no sprite");
     }
 
     @Test
