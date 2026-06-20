@@ -1,5 +1,6 @@
 package dev.screwbox.tiled;
 
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.tiled.internal.PropertyEntity;
 
 public class Property {
@@ -21,7 +22,7 @@ public class Property {
     public int getInt() {
         try {
             return Integer.parseInt(get());
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new IllegalStateException("property " + name() + " is not a number: " + get());
         }
     }
@@ -29,7 +30,7 @@ public class Property {
     public double getDouble() {
         try {
             return Double.parseDouble(get());
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new IllegalStateException("property " + name() + " is not a number: " + get());
         }
     }
@@ -40,5 +41,14 @@ public class Property {
 
     public boolean getBoolean() {
         return "true".equalsIgnoreCase(get());
+    }
+
+    /**
+     * Returns the property value as {@link Color}.
+     *
+     * @since 3.32.0
+     */
+    public Color getColor() {
+        return Color.hex(get());
     }
 }
