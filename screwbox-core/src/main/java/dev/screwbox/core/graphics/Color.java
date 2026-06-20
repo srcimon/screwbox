@@ -210,9 +210,8 @@ public final class Color implements Serializable {
      */
     public static Color hex(final String hexValue) {
         requireNonNull(hexValue, "hex value must not be NULL");
-        if (!hexValue.startsWith("#")) {
-            throw new IllegalArgumentException("hex value must start with '#'");
-        }
+        Validate.isTrue(() -> hexValue.startsWith("#"), "hex value must start with '#'");
+
         if (hexValue.length() == 7) {
             return Color.rgb(
                 parseHex(hexValue.substring(1, 3)),
