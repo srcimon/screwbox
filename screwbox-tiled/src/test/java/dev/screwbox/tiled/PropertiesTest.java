@@ -1,5 +1,6 @@
 package dev.screwbox.tiled;
 
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.navigation.Borders;
 import dev.screwbox.tiled.internal.PropertyEntity;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 class PropertiesTest {
 
@@ -18,14 +20,15 @@ class PropertiesTest {
     @BeforeEach
     void beforeEach() {
         List<PropertyEntity> propertyEntities = List.of(
-                createPropertyEntity("color", "#ff9e71a5"),
-                createPropertyEntity("material", "ice"),
-                createPropertyEntity("length", "15.5"),
-                createPropertyEntity("border", "TOp"),
-                createPropertyEntity("borderinvalid", "unknown"),
-                createPropertyEntity("referenceId", "125"),
-                createPropertyEntity("unchecked", "falsE"),
-                createPropertyEntity("checked", "true"));
+            createPropertyEntity("color", "#ffce9f9e"),
+            createPropertyEntity("colorWithOpacity", "#b2ce9f9e"),
+            createPropertyEntity("material", "ice"),
+            createPropertyEntity("length", "15.5"),
+            createPropertyEntity("border", "TOp"),
+            createPropertyEntity("borderinvalid", "unknown"),
+            createPropertyEntity("referenceId", "125"),
+            createPropertyEntity("unchecked", "falsE"),
+            createPropertyEntity("checked", "true"));
 
         properties = new Properties(propertyEntities);
     }
@@ -84,15 +87,15 @@ class PropertiesTest {
     @Test
     void tryGetDouble_propertyNotANumber_throwsException() {
         assertThatThrownBy(() -> properties.tryGetDouble("material"))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("property material is not a number: ice");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("property material is not a number: ice");
     }
 
     @Test
     void tryGetInt_propertyNotANumber_throwsException() {
         assertThatThrownBy(() -> properties.tryGetInt("material"))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("property material is not a number: ice");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("property material is not a number: ice");
     }
 
     @Test
@@ -105,13 +108,31 @@ class PropertiesTest {
         assertThat(properties.getBoolean("checked")).isTrue();
     }
 
-    //TODO tryGetColor
     @Test
-    void getColor_valueIsColor_returnsColor() {
-        assertThat(properties.getColor("color")).isTrue();
+    void tryGetColor_valueIsColor_returnsOptionalOfColor() {
+        assertThat(properties.tryGetColor("color")).contains(Color.rgb(206, 159, 158));
     }
 
-    private PropertyEntity createPropertyEntity(String name, String value) {
+    @Test
+    void tryGetColor_propertyDoesNotExist_isEmpty() {
+        assertThat(properties.tryGetColor("unknown")).isEmpty();
+    }
+
+    @Test
+    void getColor_valueIsColor_returnsColor() {
+        assertThat(properties.getColor("color")).isEqualTo(Color.rgb(206, 159, 158));
+    }
+
+    @Test
+    void getColor_valueIsColorWithOpacity_returnsColor() {
+        Color color = properties.getColor("colorWithOpacity");
+        assertThat(color.r()).isEqualTo(206);
+        assertThat(color.g()).isEqualTo(159);
+        assertThat(color.b()).isEqualTo(158);
+        assertThat(color.opacity().value()).isEqualTo(0.69, offset(0.01));
+    }
+
+    private PropertyEntity createPropertyEntity(final String name, final String value) {
         return new PropertyEntity(name, "type", value);
     }
 }

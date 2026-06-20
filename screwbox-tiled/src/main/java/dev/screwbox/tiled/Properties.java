@@ -1,5 +1,6 @@
 package dev.screwbox.tiled;
 
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.tiled.internal.PropertyEntity;
 
 import java.util.Arrays;
@@ -15,10 +16,10 @@ public class Properties {
 
     Properties(final List<PropertyEntity> propertyEntities) {
         this.propertyList = isNull(propertyEntities)
-                ? emptyList()
-                : propertyEntities.stream()
-                .map(Property::new)
-                .toList();
+            ? emptyList()
+            : propertyEntities.stream()
+            .map(Property::new)
+            .toList();
     }
 
     /**
@@ -28,8 +29,8 @@ public class Properties {
      */
     public <T extends Enum<?>> Optional<T> tryGetEnum(final String name, final Class<T> enumClazz) {
         return tryGetString(name).flatMap(value -> Arrays.stream(enumClazz.getEnumConstants())
-                .filter(enumConstant -> enumConstant.name().equalsIgnoreCase(value))
-                .findFirst());
+            .filter(enumConstant -> enumConstant.name().equalsIgnoreCase(value))
+            .findFirst());
     }
 
     public Optional<String> tryGetString(final String name) {
@@ -38,23 +39,23 @@ public class Properties {
 
     private Optional<Property> tryGet(final String name) {
         return propertyList.stream()
-                .filter(p -> name.equals(p.name()))
-                .findFirst();
+            .filter(p -> name.equals(p.name()))
+            .findFirst();
     }
 
     public Optional<Integer> tryGetInt(final String name) {
         final Optional<Property> property = tryGet(name);
         return property.isPresent() && property.get().hasValue()
-                ? Optional.of(property.get().getInt())
-                : Optional.empty();
+            ? Optional.of(property.get().getInt())
+            : Optional.empty();
 
     }
 
     public Optional<Double> tryGetDouble(final String name) {
         final Optional<Property> property = tryGet(name);
         return property.isPresent() && property.get().hasValue()
-                ? Optional.of(property.get().getDouble())
-                : Optional.empty();
+            ? Optional.of(property.get().getDouble())
+            : Optional.empty();
     }
 
     public String getString(final String name) {
@@ -76,8 +77,8 @@ public class Properties {
     public Optional<Boolean> tryGetBoolean(final String name) {
         final Optional<Property> property = tryGet(name);
         return property.isPresent() && property.get().hasValue()
-                ? Optional.of(property.get().getBoolean())
-                : Optional.empty();
+            ? Optional.of(property.get().getBoolean())
+            : Optional.empty();
     }
 
     public boolean getBoolean(final String name) {
@@ -89,14 +90,14 @@ public class Properties {
         return new IllegalStateException("missing property: " + name);
     }
 
-    public Optional<Boolean> getColor(final String name) {
+    public Optional<Color> tryGetColor(final String name) {
         final Optional<Property> property = tryGet(name);
         return property.isPresent() && property.get().hasValue()
             ? Optional.of(property.get().getColor())
             : Optional.empty();
     }
 
-    public boolean getColor(String name) {
+    public Color getColor(final String name) {
         return tryGetColor(name).orElseThrow(() -> missingProperty(name));
     }
 }
