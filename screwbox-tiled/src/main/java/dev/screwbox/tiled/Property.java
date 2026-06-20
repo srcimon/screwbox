@@ -22,7 +22,7 @@ public class Property {
     public int getInt() {
         try {
             return Integer.parseInt(get());
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new IllegalStateException("property " + name() + " is not a number: " + get());
         }
     }
@@ -30,7 +30,7 @@ public class Property {
     public double getDouble() {
         try {
             return Double.parseDouble(get());
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new IllegalStateException("property " + name() + " is not a number: " + get());
         }
     }
@@ -43,7 +43,11 @@ public class Property {
         return "true".equalsIgnoreCase(get());
     }
 
-    //TODO fix opacity is upfront not back
+    /**
+     * Returns the property value as {@link Color}.
+     *
+     * @since 3.32.0
+     */
     public Color getColor() {
         return Color.hex(get());
     }
