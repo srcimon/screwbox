@@ -12,7 +12,7 @@ import dev.screwbox.core.graphics.Viewport;
  * Context that is provided when applying {@link PostProcessingFilter}.
  *
  * @param backgroundColor configured color of the {@link Screen} background
- * @param lifetime        duration the {@link PostProcessingFilter} is already active
+ * @param lifetime        duration the {@link PostProcessingFilter} is already active. Will use static offset when called from effects filter.
  * @param viewport        {@link Viewport} the {@link PostProcessingFilter} ist applied on
  * @param resolutionScale resolution scale to provide consistent optics with different resolutions
  * @since 3.24.0

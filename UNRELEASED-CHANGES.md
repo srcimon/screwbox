@@ -7,11 +7,11 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Post effect filters will use static offset lifetime to support animated filters
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Simplified FluidPostProcessing System
 
 ### 📦 Dependency updates
 

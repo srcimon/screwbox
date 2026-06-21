@@ -1,7 +1,6 @@
 package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
@@ -53,11 +52,11 @@ public class FluidPostProcessingSystem implements EntitySystem {
             }
         }
         if (!filterFluids.isEmpty()) {
-            engine.graphics().postProcessing().addEffectFilter(new FluidPostFilter(filterFluids, engine.loop().runningTime()));
+            engine.graphics().postProcessing().addEffectFilter(new FluidPostFilter(filterFluids));
         }
     }
 
-    private record FluidPostFilter(List<FluidEffect> effects, Duration runningTime) implements PostProcessingFilter {
+    private record FluidPostFilter(List<FluidEffect> effects) implements PostProcessingFilter {
 
         @Override
         public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
@@ -72,7 +71,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
         }
 
         private void renderFluid(final Image source, final Graphics2D target, final PostProcessingContext context, final FluidEffect effect) {
-            final double index = (double) runningTime.milliseconds() / effect.config.interval.milliseconds();
+            final double index = (double) context.lifetime().milliseconds() / effect.config.interval.milliseconds();
 
             final Path2D outlinePath = AwtMapper.toPath(mapToViewport(context, effect.fluid.outline.definitionNotes()));
             final Rectangle bounds = outlinePath.getBounds();
