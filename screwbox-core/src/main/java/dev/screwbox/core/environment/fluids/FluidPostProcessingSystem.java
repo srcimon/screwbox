@@ -56,7 +56,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
         }
     }
 
-    private record FluidPostFilter(List<FluidEffect> effects, Duration runningTime) implements PostProcessingFilter {
+    private record FluidPostFilter(List<FluidEffect> effects) implements PostProcessingFilter {
 
         @Override
         public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
