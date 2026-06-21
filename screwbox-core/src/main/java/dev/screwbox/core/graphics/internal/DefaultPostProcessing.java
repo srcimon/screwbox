@@ -171,7 +171,7 @@ public class DefaultPostProcessing implements PostProcessing, Updatable {
     @Override
     public PostProcessing addEffectFilter(final PostProcessingFilter filter) {
         validateFilterNotNull(filter);
-        effectFilters.add(new AppliedFilter(now, filter, true));
+        effectFilters.add(new AppliedFilter(Time.atNanos(0), filter, true));
         return this;
     }
 
