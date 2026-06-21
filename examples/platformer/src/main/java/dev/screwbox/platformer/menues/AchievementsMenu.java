@@ -13,8 +13,8 @@ public class AchievementsMenu extends UiMenu {
 
         for (final var achievement : achievements) {
             addItem(engine -> achievement.isCompleted()
-                    ? "%s - completed".formatted(achievement.title())
-                    : "%s - %s of %s".formatted(achievement.title(), achievement.score(), achievement.goal()));
+                ? "%s - {completed}".formatted(achievement.title())
+                : "%s - {%s of %s}".formatted(achievement.title(), achievement.score(), achievement.goal()));
         }
 
         addItem("reset achievements").onActivate(engine -> engine.achievements().reset());
@@ -24,7 +24,7 @@ public class AchievementsMenu extends UiMenu {
     @Override
     public void onExit(Engine engine) {
         engine.ui()
-                .setLayout(new WobblyUiLayout())
-                .openPreviousMenu();
+            .setLayout(new WobblyUiLayout())
+            .openPreviousMenu();
     }
 }
