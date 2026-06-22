@@ -151,7 +151,7 @@ public class BoidSystem implements EntitySystem {
             x += boid.position().x();
             y += boid.position().y();
         }
-        return Vector.of(x, y);
+        return Vector.of(x / boids.size(), y / boids.size());
     }
 
     private static Vector calculateAverageVelocity(final List<Entity> boids) {

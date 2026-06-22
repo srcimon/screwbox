@@ -8,6 +8,7 @@
 ### 🪛 Bug Fixes
 
 - Post effect filters will use static offset lifetime to support animated filters
+- Fixed invalid boid center of mass calculation
 
 ### 🧽 Cleanup & refactoring
 
