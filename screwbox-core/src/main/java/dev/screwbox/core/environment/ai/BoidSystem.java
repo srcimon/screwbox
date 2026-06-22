@@ -60,7 +60,7 @@ public class BoidSystem implements EntitySystem {
 
     private static void applyCohesion(final Entity boid, final List<Entity> nearbyBoids, final BoidComponent config, final PhysicsComponent physics, final double delta) {
         final var centerOfMass = calclulateCenterOfMass(nearbyBoids);
-        final var desiredCohesionDirection = centerOfMass.divide(nearbyBoids.size()).subtract(boid.position());
+        final var desiredCohesionDirection = centerOfMass.subtract(boid.position());
         final var desiredCohesionVelocity = desiredCohesionDirection.length(config.velocity);
         final var cohesionSteer = desiredCohesionVelocity.subtract(physics.velocity);
         physics.velocity = physics.velocity.add(cohesionSteer.multiply(config.cohesionStrength * delta));
@@ -68,7 +68,7 @@ public class BoidSystem implements EntitySystem {
 
     private static void applyAlignment(final List<Entity> nearbyBoids, final BoidComponent config, final PhysicsComponent physics, double delta) {
         final var averageVelocity = calculateAverageVelocity(nearbyBoids);
-        final var desiredAlignementVelocity = averageVelocity.divide(nearbyBoids.size()).length(config.velocity);
+        final var desiredAlignementVelocity = averageVelocity.length(config.velocity);
         final var alignmentSteer = desiredAlignementVelocity.subtract(physics.velocity);
         physics.velocity = physics.velocity.add(alignmentSteer.multiply(config.alignmentStrenth * delta));
     }
@@ -151,7 +151,7 @@ public class BoidSystem implements EntitySystem {
             x += boid.position().x();
             y += boid.position().y();
         }
-        return Vector.of(x, y);
+        return Vector.of(x / boids.size(), y / boids.size());
     }
 
     private static Vector calculateAverageVelocity(final List<Entity> boids) {
@@ -162,6 +162,6 @@ public class BoidSystem implements EntitySystem {
             x += physics.velocity.x();
             y += physics.velocity.y();
         }
-        return Vector.of(x, y);
+        return Vector.of(x / boids.size(), y / boids.size());
     }
 }
