@@ -8,6 +8,7 @@
 ### 🪛 Bug Fixes
 
 - Post effect filters will use static offset lifetime to support animated filters
+- Fix light enabled after loading save game in platformer example
 
 ### 🧽 Cleanup & refactoring
 

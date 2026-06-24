@@ -9,7 +9,9 @@ public class ToggleLightSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final var useLightComponent = engine.environment().fetchSingletonComponent(UseLightComponent.class);
-        engine.graphics().configuration().setLightEnabled(useLightComponent.useLight);
-        engine.environment().remove(ToggleLightSystem.class);
+        final var configuration = engine.graphics().configuration();
+        if (configuration.isLightEnabled() != useLightComponent.useLight) {
+            configuration.setLightEnabled(useLightComponent.useLight);
+        }
     }
 }
