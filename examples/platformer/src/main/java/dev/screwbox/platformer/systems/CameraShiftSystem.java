@@ -6,8 +6,11 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
 @ExecutionOrder(Order.SIMULATION_EARLY)
@@ -21,10 +24,26 @@ public class CameraShiftSystem implements EntitySystem {
             final double delta = engine.loop().delta(100);
             for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
                 var configuration = target.get(CameraTargetComponent.class);
-                configuration.shift = player.get(RenderComponent.class).options.isFlippedHorizontal()
-                        ? Vector.x(Math.max(-50, configuration.shift.x() - configuration.followSpeed * delta))
-                        : Vector.x(Math.min(50, configuration.shift.x() + configuration.followSpeed * delta));
+                double targetX = player.get(PhysicsComponent.class).velocity.x();
+                double actualX = approachTargetSmoothing(configuration.shift.x(), targetX, 0.025, delta);
+                double targetY = player.get(PhysicsComponent.class).velocity.y();
+                double actualY = approachTargetSmoothing(configuration.shift.y()*0.25, targetY, 0.025, delta);
+                configuration.shift = Vector.$(actualX, actualY);
+                //TODO finish up
+                engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4,4, OvalDrawOptions.filled(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4,4, OvalDrawOptions.outline(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//                        ? Vector.x(Math.max(-50, configuration.shift.x() - configuration.followSpeed * delta))
+//                        : Vector.x(Math.min(50, configuration.shift.x() + configuration.followSpeed * delta));
             }
         });
+    }
+
+    //TODO math util
+    //TODO reuse where possible
+    public static double approachTargetSmoothing(double current, double target, double speed, double deltaTime) {
+        // Verhindert Ruckeln bei unregelmäßigen Frameraten
+        double interpolationFactor = 1.0 - Math.exp(-speed * deltaTime);
+
+        return current + (target - current) * interpolationFactor;
     }
 }
