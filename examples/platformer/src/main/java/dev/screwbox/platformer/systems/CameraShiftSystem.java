@@ -30,10 +30,8 @@ public class CameraShiftSystem implements EntitySystem {
                 double actualY = approachTargetSmoothing(configuration.shift.y(), targetY, 0.05 * delta);
                 configuration.shift = Vector.$(actualX, actualY);
                 //TODO finish up
-//                engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4, 4, OvalDrawOptions.filled(Color.BLUE.opacity(0.75)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-//                engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4, 4, OvalDrawOptions.outline(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-//                        ? Vector.x(Math.max(-50, configuration.shift.x() - configuration.followSpeed * delta))
-//                        : Vector.x(Math.min(50, configuration.shift.x() + configuration.followSpeed * delta));
+                engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4, 4, OvalDrawOptions.filled(Color.BLUE.opacity(0.75)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4, 4, OvalDrawOptions.outline(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }
         });
     }
