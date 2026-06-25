@@ -28,8 +28,8 @@ public class CameraShiftSystem implements EntitySystem {
                 var configuration = target.get(CameraTargetComponent.class);
                 double targetX = player.get(PhysicsComponent.class).velocity.x() * 1;
                 double targetY = player.get(PhysicsComponent.class).velocity.y() * 0.5;
-                double actualX = approachTargetSmoothing(configuration.offset.x(), targetX, 5 * delta);
-                double actualY = approachTargetSmoothing(configuration.offset.y(), targetY, 5 * delta);
+                double actualX = alignValue(configuration.offset.x(), targetX, 50 * delta);
+                double actualY = alignValue(configuration.offset.y(), targetY, 50 * delta);
                 //TODO keep within window
                 var viewport = engine.graphics().viewport(configuration.viewportId);
                 Canvas canvas = viewport.get().canvas();
@@ -45,12 +45,14 @@ public class CameraShiftSystem implements EntitySystem {
 
     //TODO math util
     //TODO reuse where possible
-    public static double approachTargetSmoothing(double current, double target, double speed) {
-        // Verhindert Ruckeln bei unregelmäßigen Frameraten
-        return current + (target - current) * speed;
+    public static double alignValue(final double value, final double targetValue, final double speed) {
+        if (Math.abs(targetValue - value) <= speed) {
+            return targetValue;
+        }
+        return value + Math.signum(targetValue - value) * speed;
     }
 
     public static void main(String[] args) {
-        System.out.println(approachTargetSmoothing(10, 50, 0.25));
+        System.out.println(alignValue(10, 50, 0.25));
     }
 }
