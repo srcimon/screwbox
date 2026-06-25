@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
@@ -25,13 +26,16 @@ public class CameraShiftSystem implements EntitySystem {
             final double delta = engine.loop().delta();
             for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
                 var configuration = target.get(CameraTargetComponent.class);
-                double targetX = player.get(PhysicsComponent.class).velocity.x()*1;
-                double targetY = player.get(PhysicsComponent.class).velocity.y()*0.5;
+                double targetX = player.get(PhysicsComponent.class).velocity.x() * 1;
+                double targetY = player.get(PhysicsComponent.class).velocity.y() * 0.5;
                 double actualX = approachTargetSmoothing(configuration.offset.x(), targetX, 5 * delta);
                 double actualY = approachTargetSmoothing(configuration.offset.y(), targetY, 5 * delta);
-
                 //TODO keep within window
-                configuration.offset = engine.graphics().visibleArea().clamp(Vector.$(actualX, actualY));
+                var viewport = engine.graphics().viewport(configuration.viewportId);
+                Canvas canvas = viewport.get().canvas();
+                configuration.offset = Vector.$( //TODO clamp not working well vertically
+                    Math.clamp(actualX, -canvas.width() / 2.0, canvas.width() / 2.0),
+                    Math.clamp(actualY, -canvas.height() / 2.0, canvas.height() / 2.0));
                 //TODO finish up
                 engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4, 4, OvalDrawOptions.filled(Color.BLUE.opacity(0.75)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                 engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4, 4, OvalDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
