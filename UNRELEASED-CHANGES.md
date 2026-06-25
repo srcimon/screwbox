@@ -13,6 +13,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Simplified FluidPostProcessing System
+- Renamed properties and added JavaDoc to `CameraTargetComponent`
 
 ### 📦 Dependency updates
 

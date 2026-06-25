@@ -23,7 +23,7 @@ public class CameraSystem implements EntitySystem {
                 final var targetBounds = targetEntity.bounds();
 
                 final var cameraBounds = engine.environment().tryFetchSingleton(CAMERA_BOUNDS);
-                if (target.allowJumping
+                if (target.allowTeleport
                     && targetBounds.position().distanceTo(cameraPosition) > viewport.visibleArea().width() / 2.0 * engine.graphics().viewports().size()
                     && (cameraBounds.isEmpty()
                         || cameraBounds.get().bounds().expand(-2 * targetBounds.extents().length()).contains(targetBounds.position()))) {
@@ -33,9 +33,9 @@ public class CameraSystem implements EntitySystem {
 
                 final Vector distance = cameraPosition
                         .subtract(targetBounds.position())
-                        .subtract(target.shift);
+                        .subtract(target.offset);
 
-                final double value = engine.loop().delta(-1 * target.followSpeed);
+                final double value = engine.loop().delta(-1 * target.maxSpeed);
                 final Vector cameraMovement = distance.multiply(Math.clamp(value, -1, 1));
 
                 cameraBounds.ifPresentOrElse(
