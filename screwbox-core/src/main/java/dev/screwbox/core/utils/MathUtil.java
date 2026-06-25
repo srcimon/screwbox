@@ -113,6 +113,11 @@ public final class MathUtil {
 
     //TODO reuse where possible
     //TODO Test
+//TODO document
+    public static double lerp(final double value, final double targetValue, final double step) {
+        return value + step * (targetValue - value);
+    }
+
     /**
      * Steps a current value toward a target value by a constant maximum increment.
      * If the remaining distance to the target is less than or equal to the step
@@ -120,7 +125,11 @@ public final class MathUtil {
      *
      * @since 3.32.0
      */
-    public static double lerp(final double value, final double targetValue, final double step) {
-        return value + step * (targetValue - value);
+    public static double advance(final double value, final double target, final double step) {
+        final double delta = target - value;
+
+        return Math.abs(delta) <= step
+            ? target
+            : value + Math.signum(delta) * step;
     }
 }

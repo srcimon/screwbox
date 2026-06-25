@@ -4,7 +4,7 @@
 - Mix colors using strength
 - Documented support for Tiled Editor (#970)
 - Support for Tiled Editor color properties added (#331)
-- Added lerp function to `MathUtil` and `Vector`
+- Added lerp and advance functions to `MathUtil` and `Vector`
 
 ### 🪛 Bug Fixes
 
