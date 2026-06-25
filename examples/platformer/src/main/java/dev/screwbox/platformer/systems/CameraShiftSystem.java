@@ -22,15 +22,16 @@ public class CameraShiftSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
-            final double delta = engine.loop().delta(100);
+            final double delta = engine.loop().delta();
             for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
                 var configuration = target.get(CameraTargetComponent.class);
                 double targetX = player.get(PhysicsComponent.class).velocity.x()*1;
                 double targetY = player.get(PhysicsComponent.class).velocity.y()*0.5;
-                double actualX = approachTargetSmoothing(configuration.offset.x(), targetX, 0.05 * delta);
-                double actualY = approachTargetSmoothing(configuration.offset.y(), targetY, 0.05 * delta);
+                double actualX = approachTargetSmoothing(configuration.offset.x(), targetX, 5 * delta);
+                double actualY = approachTargetSmoothing(configuration.offset.y(), targetY, 5 * delta);
+
                 //TODO keep within window
-                configuration.offset = Vector.$(actualX, actualY);
+                configuration.offset = engine.graphics().visibleArea().clamp(Vector.$(actualX, actualY));
                 //TODO finish up
                 engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4, 4, OvalDrawOptions.filled(Color.BLUE.opacity(0.75)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
                 engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4, 4, OvalDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));

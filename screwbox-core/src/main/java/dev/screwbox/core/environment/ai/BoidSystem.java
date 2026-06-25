@@ -96,7 +96,7 @@ public class BoidSystem implements EntitySystem {
         Vector totalSteer = Vector.zero();
         int hits = 0;
         for (var obstacle : inTheWayObstacles) {
-            final Vector closestPoint = obstacle.closestPoint(boid.position());
+            final Vector closestPoint = obstacle.clamp(boid.position());
             Vector avoidanceDirection = boid.position().subtract(closestPoint);
             if (avoidanceDirection.length() < 0.1) {
                 avoidanceDirection = Vector.of(-physics.velocity.y(), physics.velocity.x());

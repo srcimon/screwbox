@@ -14,6 +14,7 @@
 
 - Simplified FluidPostProcessing System
 - Renamed properties and added JavaDoc to `CameraTargetComponent`
+- Renamed `Bounds.clamp(Vector)`
 
 ### 📦 Dependency updates
 
