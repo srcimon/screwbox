@@ -110,4 +110,21 @@ public final class MathUtil {
         final double exponent = Math.ceil(Math.log(roundedUpValue) / Math.log(2));
         return (int) Math.pow(2, exponent);
     }
+
+    //TODO reuse where possible
+    //TODO Test
+    /**
+     * Steps a current value toward a target value by a constant maximum increment.
+     * If the remaining distance to the target is less than or equal to the step
+     * size, it snaps directly to the target value to prevent overshoot and oscillation.
+     *
+     * @since 3.32.0
+     */
+    public static double advanceValue(final double value, final double targetValue, final double step) {
+        final double delta = targetValue - value;
+
+        return Math.abs(delta) <= step
+            ? targetValue
+            : value + Math.signum(delta) * step;
+    }
 }

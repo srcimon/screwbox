@@ -4,6 +4,7 @@
 - Mix colors using strength
 - Documented support for Tiled Editor (#970)
 - Support for Tiled Editor color properties added (#331)
+- Added math support for advancing values
 
 ### 🪛 Bug Fixes
 
