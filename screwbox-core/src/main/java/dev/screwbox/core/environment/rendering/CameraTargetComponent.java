@@ -36,13 +36,23 @@ public class CameraTargetComponent implements Component {
      */
     public int viewportId;
 
+    /**
+     * Creates a new instance.
+     */
     public CameraTargetComponent() {
         this(2);
     }
+
+    /**
+     * Creates a new instance with specified {@link #maxSpeed}.
+     */
     public CameraTargetComponent(final double maxSpeed) {
-       this(0, maxSpeed);
+        this(0, maxSpeed);
     }
 
+    /**
+     * Creates a new instance with specified {@link #viewportId} and {@link #maxSpeed}.
+     */
     public CameraTargetComponent(final int viewportId, final double maxSpeed) {
         this.maxSpeed = maxSpeed;
         this.viewportId = viewportId;
