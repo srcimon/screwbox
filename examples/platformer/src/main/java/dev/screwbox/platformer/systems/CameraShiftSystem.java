@@ -27,9 +27,9 @@ public class CameraShiftSystem implements EntitySystem {
             for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
                 var configuration = target.get(CameraTargetComponent.class);
                 double targetX = player.get(PhysicsComponent.class).velocity.x() * 1;
-                double targetY = player.get(PhysicsComponent.class).velocity.y() * 0.5;
-                double actualX = alignValue(configuration.offset.x(), targetX, 50 * delta);
-                double actualY = alignValue(configuration.offset.y(), targetY, 50 * delta);
+                double targetY = player.get(PhysicsComponent.class).velocity.y() * 1;
+                double actualX = stepTowards(configuration.offset.x(), targetX, 100 * delta);
+                double actualY = stepTowards(configuration.offset.y(), targetY, 100 * delta);
                 //TODO keep within window
                 var viewport = engine.graphics().viewport(configuration.viewportId);
                 Canvas canvas = viewport.get().canvas();
@@ -37,22 +37,22 @@ public class CameraShiftSystem implements EntitySystem {
                     Math.clamp(actualX, -canvas.width() / 2.0, canvas.width() / 2.0),
                     Math.clamp(actualY, -canvas.height() / 2.0, canvas.height() / 2.0));
                 //TODO finish up
-                engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4, 4, OvalDrawOptions.filled(Color.BLUE.opacity(0.75)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4, 4, OvalDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//                engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4, 4, OvalDrawOptions.filled(Color.BLUE.opacity(0.75)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//                engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4, 4, OvalDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }
         });
     }
 
     //TODO math util
     //TODO reuse where possible
-    public static double alignValue(final double value, final double targetValue, final double speed) {
-        if (Math.abs(targetValue - value) <= speed) {
+    public static double stepTowards(final double value, final double targetValue, final double step) {
+        if (Math.abs(targetValue - value) <= step) {
             return targetValue;
         }
-        return value + Math.signum(targetValue - value) * speed;
+        return value + Math.signum(targetValue - value) * step;
     }
 
     public static void main(String[] args) {
-        System.out.println(alignValue(10, 50, 0.25));
+        System.out.println(stepTowards(10, 50, 0.25));
     }
 }
