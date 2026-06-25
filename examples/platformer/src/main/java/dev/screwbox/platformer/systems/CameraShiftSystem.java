@@ -24,14 +24,14 @@ public class CameraShiftSystem implements EntitySystem {
             final double delta = engine.loop().delta(100);
             for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
                 var configuration = target.get(CameraTargetComponent.class);
-                double targetX = player.get(PhysicsComponent.class).velocity.x();
-                double actualX = approachTargetSmoothing(configuration.shift.x(), targetX, 0.025, delta);
-                double targetY = player.get(PhysicsComponent.class).velocity.y();
-                double actualY = approachTargetSmoothing(configuration.shift.y()*0.25, targetY, 0.025, delta);
+                double targetX = player.get(PhysicsComponent.class).velocity.x()*1;
+                double targetY = player.get(PhysicsComponent.class).velocity.y()*0.5;
+                double actualX = approachTargetSmoothing(configuration.shift.x(), targetX, 0.05 * delta);
+                double actualY = approachTargetSmoothing(configuration.shift.y(), targetY, 0.05 * delta);
                 configuration.shift = Vector.$(actualX, actualY);
                 //TODO finish up
-                engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4,4, OvalDrawOptions.filled(Color.WHITE.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4,4, OvalDrawOptions.outline(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//                engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4, 4, OvalDrawOptions.filled(Color.BLUE.opacity(0.75)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//                engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4, 4, OvalDrawOptions.outline(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
 //                        ? Vector.x(Math.max(-50, configuration.shift.x() - configuration.followSpeed * delta))
 //                        : Vector.x(Math.min(50, configuration.shift.x() + configuration.followSpeed * delta));
             }
@@ -40,9 +40,9 @@ public class CameraShiftSystem implements EntitySystem {
 
     //TODO math util
     //TODO reuse where possible
-    public static double approachTargetSmoothing(double current, double target, double speed, double deltaTime) {
+    public static double approachTargetSmoothing(double current, double target, double speed) {
         // Verhindert Ruckeln bei unregelmäßigen Frameraten
-        double interpolationFactor = 1.0 - Math.exp(-speed * deltaTime);
+        double interpolationFactor = 1.0 - Math.exp(-speed);
 
         return current + (target - current) * interpolationFactor;
     }
