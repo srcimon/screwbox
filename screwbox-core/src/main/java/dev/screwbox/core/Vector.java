@@ -357,7 +357,6 @@ public final class Vector implements Serializable {
 
     //TODO document
     //TODO test
-    //TODO changelog
     //TODO use where possible
     public Vector lerp(final Vector target, final double step) {
         return Vector.of(
