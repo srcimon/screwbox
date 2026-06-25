@@ -120,11 +120,7 @@ public final class MathUtil {
      *
      * @since 3.32.0
      */
-    public static double advanceValue(final double value, final double targetValue, final double step) {
-        final double delta = targetValue - value;
-
-        return Math.abs(delta) <= step
-            ? targetValue
-            : value + Math.signum(delta) * step;
+    public static double lerp(final double value, final double targetValue, final double step) {
+        return value + step * (targetValue - value);
     }
 }

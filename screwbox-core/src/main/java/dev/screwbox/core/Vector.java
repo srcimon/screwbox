@@ -359,9 +359,9 @@ public final class Vector implements Serializable {
     //TODO test
     //TODO changelog
     //TODO use where possible
-    public Vector advance(final Vector target, final double step) {
+    public Vector lerp(final Vector target, final double step) {
         return Vector.of(
-            MathUtil.advanceValue(x, target.x(), step),
-            MathUtil.advanceValue(y, target.y(), step));
+            MathUtil.lerp(x, target.x(), step),
+            MathUtil.lerp(y, target.y(), step));
     }
 }

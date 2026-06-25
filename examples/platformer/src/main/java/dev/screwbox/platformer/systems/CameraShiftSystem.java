@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Canvas;
-import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
 @Deprecated
@@ -25,8 +24,8 @@ public class CameraShiftSystem implements EntitySystem {
             final double delta = engine.loop().delta();
             for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
                 var configuration = target.get(CameraTargetComponent.class);
-                var targetV = player.get(PhysicsComponent.class).velocity;
-                var actzualV = configuration.offset.advance(targetV, 100 *delta);
+                var targetV = Vector.of(player.get(PhysicsComponent.class).velocity.x(), player.get(PhysicsComponent.class).velocity.y() / 2.0);
+                var actzualV = configuration.offset.lerp(targetV, 5 * delta);
                 var viewport = engine.graphics().viewport(configuration.viewportId);
                 Canvas canvas = viewport.get().canvas();
                 configuration.offset = Vector.$(
