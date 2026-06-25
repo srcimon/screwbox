@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
+@Deprecated
 @ExecutionOrder(Order.SIMULATION_EARLY)
 public class CameraShiftSystem implements EntitySystem {
 
@@ -32,7 +33,7 @@ public class CameraShiftSystem implements EntitySystem {
                 configuration.offset = Vector.$(actualX, actualY);
                 //TODO finish up
                 engine.graphics().world().drawOval(Vector.$(targetX, targetY).add(target.position()), 4, 4, OvalDrawOptions.filled(Color.BLUE.opacity(0.75)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-                engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4, 4, OvalDrawOptions.outline(Color.RED).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+                engine.graphics().world().drawOval(Vector.$(actualX, actualY).add(target.position()), 4, 4, OvalDrawOptions.outline(Color.RED).strokeWidth(4).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             }
         });
     }
@@ -41,7 +42,10 @@ public class CameraShiftSystem implements EntitySystem {
     //TODO reuse where possible
     public static double approachTargetSmoothing(double current, double target, double speed) {
         // Verhindert Ruckeln bei unregelmäßigen Frameraten
-        double interpolationFactor = 1.0 - Math.exp(-speed);
-        return current + (target - current) * interpolationFactor;
+        return current + (target - current) * speed;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(approachTargetSmoothing(10, 50, 0.25));
     }
 }
