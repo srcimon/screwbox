@@ -355,22 +355,42 @@ public final class Vector implements Serializable {
         return normalize().dotProduct(other.normalize());
     }
 
-    //TODO document
-    //TODO test
-    //TODO use where possible
-    public Vector lerp(final Vector target, final double step) {
+    /**
+     * Linear interpolates the current {@link Vector} towards the target one.
+     *
+     * @since 3.32.0
+     */
+    public Vector lerp(final Vector target, final Percent progress) {
         return Vector.of(
-            MathUtil.lerp(x, target.x(), step),
-            MathUtil.lerp(y, target.y(), step));
+            MathUtil.lerp(x, target.x(), progress),
+            MathUtil.lerp(y, target.y(), progress));
     }
 
-    //TODO document
-    //TODO test
-    //TODO use where possible
+    /**
+     * Moves the current {@link Vector} towards the target one using the specified step.
+     * Will move away when step is negative.
+     *
+     * @since 3.32.0
+     */
     public Vector advance(final Vector target, final double step) {
-        return Vector.of(
-            MathUtil.advance(x, target.x(), step),
-            MathUtil.advance(y, target.y(), step));
+        if (step == 0) {
+            return this;
+        }
+        final double distance = distanceTo(target);
+
+        if (distance == 0) {
+            return this;
+        }
+
+        if (step > 0 && step >= distance) {
+            return target;
+        }
+
+        final double ratio = step / distance;
+
+        return new Vector(
+            x + (target.x - x) * ratio,
+            y + (target.y - y) * ratio);
     }
 
 }

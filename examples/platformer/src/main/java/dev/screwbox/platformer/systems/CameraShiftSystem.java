@@ -2,6 +2,7 @@ package dev.screwbox.platformer.systems;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
@@ -10,7 +11,6 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
@@ -19,6 +19,7 @@ import dev.screwbox.platformer.components.PlayerMarkerComponent;
 public class CameraShiftSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, RenderComponent.class);
+
     //TODO finish up
     @Override
     public void update(Engine engine) {
@@ -28,7 +29,7 @@ public class CameraShiftSystem implements EntitySystem {
                 var configuration = target.get(CameraTargetComponent.class);
                 Vector velocity = player.get(PhysicsComponent.class).velocity;
                 var targetV = Vector.of(velocity.x() * 1.0, velocity.y() * 0.25);
-                var actzualV = configuration.offset.lerp(targetV, 5 * delta);
+                var actzualV = configuration.offset.lerp(targetV, Percent.of(5 * delta));
                 var viewport = engine.graphics().viewport(configuration.viewportId);
 
                 configuration.offset = viewport

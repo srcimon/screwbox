@@ -1,5 +1,6 @@
 package dev.screwbox.core.utils;
 
+import dev.screwbox.core.Percent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -109,8 +110,8 @@ class MathUtilTest {
         "0.0, 2.0, 0.5, 1.0",
         "50.9, 43.2, 5.1, 43.2"
     })
-    void lerp_differentScenarios_learpsTowardsTargetValue(double value, double target, double step, double expectation) {
-        var result = MathUtil.lerp(value, target, step);
+    void lerp_differentScenarios_learpsTowardsTargetValue(double value, double target, double progress, double expectation) {
+        var result = MathUtil.lerp(value, target, Percent.of(progress));
         assertThat(result).isEqualTo(expectation);
     }
 
@@ -121,7 +122,8 @@ class MathUtilTest {
         "-1.0, 1.0, 5.0, 1.0",
         "0.0, 2.0, 0.5, 0.5",
         "50.9, 43.2, 5.1, 45.8",
-        "50.9, 43.2, 22.1, 43.2"
+        "50.9, 43.2, 22.1, 43.2",
+        "10.0, 20.0, -10.0, 0"
     })
     void advance_differenScenarios_advancesValue(double value, double target, double step, double expectation) {
         var result = MathUtil.advance(value, target, step);
