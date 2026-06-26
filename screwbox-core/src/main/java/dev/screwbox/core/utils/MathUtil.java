@@ -128,7 +128,7 @@ public final class MathUtil {
      * If the remaining distance to the target is less than or equal to the step
      * size, it snaps directly to the target value to prevent overshoot and oscillation.
      *
-     * @see #lerp(double, double, double)
+     * @see #lerp(double, double, Percent)
      * @since 3.32.0
      */
     public static double advance(final double value, final double target, final double step) {
