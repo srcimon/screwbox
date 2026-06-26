@@ -112,12 +112,11 @@ public final class MathUtil {
     }
 
     //TODO reuse where possible
-    //TODO Test
-//TODO document
 
     /**
      * Linear interpolates a value towards the specified target using the specified step.
      *
+     * @see #advance(double, double, double)
      * @since 3.32.0
      */
     public static double lerp(final double value, final double target, final double step) {
@@ -125,11 +124,14 @@ public final class MathUtil {
         return (1.0 - clampedStep) * value + clampedStep * target;
     }
 
+    //TODO reuse where possible
+
     /**
      * Steps a current value toward a target value by a constant maximum increment.
      * If the remaining distance to the target is less than or equal to the step
      * size, it snaps directly to the target value to prevent overshoot and oscillation.
      *
+     * @see #lerp(double, double, double)
      * @since 3.32.0
      */
     public static double advance(final double value, final double target, final double step) {
