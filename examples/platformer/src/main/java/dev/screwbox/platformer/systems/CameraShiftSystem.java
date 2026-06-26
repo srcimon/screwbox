@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.platformer.components.PlayerMarkerComponent;
 
 @Deprecated
@@ -18,7 +19,7 @@ import dev.screwbox.platformer.components.PlayerMarkerComponent;
 public class CameraShiftSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, RenderComponent.class);
-
+    //TODO finish up
     @Override
     public void update(Engine engine) {
         engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
@@ -29,12 +30,11 @@ public class CameraShiftSystem implements EntitySystem {
                 var targetV = Vector.of(velocity.x() * 1.0, velocity.y() * 0.25);
                 var actzualV = configuration.offset.lerp(targetV, 5 * delta);
                 var viewport = engine.graphics().viewport(configuration.viewportId);
-                Canvas canvas = viewport.get().canvas();
 
-                var maxArea = Bounds.atOrigin(-canvas.width() / 4.0, -canvas.height() / 4.0, canvas.width() / 2.0, canvas.height() / 2.0);
-                configuration.offset = maxArea.clamp(actzualV);
-                //TODO finish up
-                //TODO finish up
+                configuration.offset = viewport
+                    .map(Viewport::canvas)
+                    .map(canvas -> Bounds.atOrigin(-canvas.width() / 4.0, -canvas.height() / 4.0, canvas.width() / 2.0, canvas.height() / 2.0).clamp(actzualV))
+                    .orElse(actzualV);
             }
         });
     }
