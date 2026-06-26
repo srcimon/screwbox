@@ -114,8 +114,15 @@ public final class MathUtil {
     //TODO reuse where possible
     //TODO Test
 //TODO document
-    public static double lerp(final double value, final double targetValue, final double step) {
-        return value + step * (targetValue - value);
+
+    /**
+     * Linear interpolates a value towards the specified target using the specified step.
+     *
+     * @since 3.32.0
+     */
+    public static double lerp(final double value, final double target, final double step) {
+        final double clampedStep = Math.clamp(step, 0.0, 1.0);
+        return (1.0 - clampedStep) * value + clampedStep * target;
     }
 
     /**

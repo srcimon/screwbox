@@ -100,4 +100,29 @@ class MathUtilTest {
         var result = MathUtil.nextHighestPowerOfTwoNumber(value);
         assertThat(result).isEqualTo(expected);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "1.0, 1.0, 5.0, 1.0",
+        "-1.0, 1.0, 5.0, 1.0",
+        "0.0, 2.0, 0.5, 1.0",
+        "50.9, 43.2, 5.1, 43.2"
+    })
+    void lerp_differentScenarios_learpsTowardsTargetValue(double value, double target, double step, double expectation) {
+        var result = MathUtil.lerp(value, target, step);
+        assertThat(result).isEqualTo(expectation);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "1.0, 1.0, 5.0, 1.0",
+        "-1.0, 1.0, 5.0, 1.0",
+        "0.0, 2.0, 0.5, 0.5",
+        "50.9, 43.2, 5.1, 45.8",
+        "50.9, 43.2, 22.1, 43.2"
+    })
+    void advance_differenScenarios_advancesValue(double value, double target, double step, double expectation) {
+        var result = MathUtil.advance(value, target, step);
+        assertThat(result).isEqualTo(expectation);
+    }
 }
