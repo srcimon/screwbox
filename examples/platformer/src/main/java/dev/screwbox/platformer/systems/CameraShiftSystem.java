@@ -24,7 +24,7 @@ public class CameraShiftSystem implements EntitySystem {
             final double delta = engine.loop().delta();
             for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
                 var configuration = target.get(CameraTargetComponent.class);
-                var targetV = Vector.of(player.get(PhysicsComponent.class).velocity.x(), player.get(PhysicsComponent.class).velocity.y() / 2.0);
+                var targetV = player.get(PhysicsComponent.class).velocity.multiply(Vector.$(1, 0.5));
                 var actzualV = configuration.offset.lerp(targetV, 5 * delta);
                 var viewport = engine.graphics().viewport(configuration.viewportId);
                 Canvas canvas = viewport.get().canvas();
