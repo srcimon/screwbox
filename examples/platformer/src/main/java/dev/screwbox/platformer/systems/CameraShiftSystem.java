@@ -1,5 +1,6 @@
 package dev.screwbox.platformer.systems;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
@@ -25,14 +26,14 @@ public class CameraShiftSystem implements EntitySystem {
             for (var target : engine.environment().fetchAllHaving(CameraTargetComponent.class)) {
                 var configuration = target.get(CameraTargetComponent.class);
                 Vector velocity = player.get(PhysicsComponent.class).velocity;
-                var targetV = Vector.of(velocity.x() * 1.0, velocity.y() * 0.5);
+                var targetV = Vector.of(velocity.x() * 1.0, velocity.y() * 0.25);
                 var actzualV = configuration.offset.lerp(targetV, 5 * delta);
                 var viewport = engine.graphics().viewport(configuration.viewportId);
                 Canvas canvas = viewport.get().canvas();
 
-                configuration.offset = Vector.$(
-                    Math.clamp(actzualV.x(), -canvas.width() / 2.0, canvas.width() / 2.0),
-                    Math.clamp(actzualV.y(), -canvas.height() / 2.0, canvas.height() / 2.0));
+                var maxArea = Bounds.atOrigin(-canvas.width() / 4.0, -canvas.height() / 4.0, canvas.width() / 2.0, canvas.height() / 2.0);
+                configuration.offset = maxArea.clamp(actzualV);
+                //TODO finish up
                 //TODO finish up
             }
         });
