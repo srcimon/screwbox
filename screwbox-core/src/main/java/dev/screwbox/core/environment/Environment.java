@@ -370,6 +370,7 @@ public interface Environment extends IdPool {
      * @see RenderSystem
      * @see FixedSpinSystem
      * @see CameraSystem
+     * @see CameraLeadSystem
      * @see AutoTileSystem
      */
     Environment enableRendering();
