@@ -61,15 +61,6 @@ public final class Vector implements Serializable {
     }
 
     /**
-     * Multiplies the Vector with another one.
-     *
-     * @since 3.32.0
-     */
-    public Vector multiply(final Vector other) {
-        return Vector.of(x * other.x(), y * other.y());
-    }
-
-    /**
      * Returns a new {@link Vector} with only an {@link Vector#x}-component.
      */
     public static Vector x(final double x) {

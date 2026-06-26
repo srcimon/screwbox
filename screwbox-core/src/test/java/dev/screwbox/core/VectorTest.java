@@ -94,15 +94,6 @@ class VectorTest {
     }
 
     @Test
-    void multiply_otherVectorSpecifies_returnsResult() {
-        Vector original = $(10, -4);
-
-        Vector product = original.multiply($(10, 0.2));
-
-        assertThat(product).isEqualTo($(100, -0.8));
-    }
-
-    @Test
     void multiply_multipliesOriginalVector() {
         Vector original = $(10, -4);
 

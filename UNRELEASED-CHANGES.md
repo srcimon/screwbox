@@ -5,7 +5,6 @@
 - Documented support for Tiled Editor (#970)
 - Support for Tiled Editor color properties added (#331)
 - Added lerp and advance functions to `MathUtil` and `Vector`
-- Multiple vectors
 
 ### 🪛 Bug Fixes
 
