@@ -1,9 +1,10 @@
 ### 🚀 Features & improvements
 
+- Auto adjust camera to motion of target (#1032)
+- Support for Tiled Editor color properties added (#331)
+- Documented support for Tiled Editor (#970)
 - Calculate length of polygon
 - Mix colors using strength
-- Documented support for Tiled Editor (#970)
-- Support for Tiled Editor color properties added (#331)
 - Added lerp and advance functions to `MathUtil` and `Vector`
 
 ### 🪛 Bug Fixes
