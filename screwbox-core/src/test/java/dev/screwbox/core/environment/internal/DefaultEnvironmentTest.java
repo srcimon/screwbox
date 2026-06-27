@@ -413,12 +413,13 @@ class DefaultEnvironmentTest {
     void enableRendering_addsRenderingSystems() {
         environment.enableRendering();
 
-        assertThat(environment.systems()).hasSize(10)
+        assertThat(environment.systems()).hasSize(11)
             .anyMatch(system -> system.getClass().equals(MotionRotationSystem.class))
             .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
             .anyMatch(system -> system.getClass().equals(AutoTileSystem.class))
             .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))
             .anyMatch(system -> system.getClass().equals(CameraSystem.class))
+            .anyMatch(system -> system.getClass().equals(CameraLeadSystem.class))
             .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
             .anyMatch(system -> system.getClass().equals(RenderNotificationsSystem.class))
             .anyMatch(system -> system.getClass().equals(ReflectionRenderSystem.class))
@@ -646,7 +647,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(65)
+        assertThat(environment.systems()).hasSize(66)
             .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

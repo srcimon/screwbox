@@ -350,17 +350,17 @@ class BoundsTest {
     }
 
     @Test
-    void closestPoint_pointWithinBounds_isUnchanged() {
+    void clamp_WithinBounds_isUnchanged() {
         var bounds = Bounds.atOrigin(40, 10, 30, 10);
-        var point = bounds.closestPoint($(50, 12));
+        var point = bounds.clamp($(50, 12));
 
         assertThat(point).isEqualTo($(50, 12));
     }
 
     @Test
-    void closestPoint_pointOutOfBounds_isWithinBounds() {
+    void clamp_OutOfBounds_isWithinBounds() {
         var bounds = Bounds.atOrigin(40, 10, 30, 10);
-        var point = bounds.closestPoint($(0, 0));
+        var point = bounds.clamp($(0, 0));
 
         assertThat(point).isEqualTo($(40, 10));
         assertThat(bounds.contains(point)).isTrue();

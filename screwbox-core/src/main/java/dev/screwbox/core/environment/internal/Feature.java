@@ -77,6 +77,7 @@ public enum Feature {
         new FixedSpinSystem(),
         new RenderSystem(),
         new ReflectionRenderSystem(),
+        new CameraLeadSystem(),
         new CameraSystem()
     ),
 

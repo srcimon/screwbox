@@ -1,5 +1,7 @@
 package dev.screwbox.core.utils;
 
+import dev.screwbox.core.Percent;
+
 /**
  * Utility functions for math operations.
  */
@@ -109,5 +111,31 @@ public final class MathUtil {
         final int roundedUpValue = (int) Math.ceil(value);
         final double exponent = Math.ceil(Math.log(roundedUpValue) / Math.log(2));
         return (int) Math.pow(2, exponent);
+    }
+
+    /**
+     * Linear interpolates a value towards the specified target using the specified step.
+     *
+     * @see #advance(double, double, double)
+     * @since 3.32.0
+     */
+    public static double lerp(final double value, final double target, final Percent progress) {
+        return (1.0 - progress.value()) * value + progress.value() * target;
+    }
+
+    /**
+     * Steps a current value toward a target value by a constant maximum increment.
+     * If the remaining distance to the target is less than or equal to the step
+     * size, it snaps directly to the target value to prevent overshoot and oscillation.
+     *
+     * @see #lerp(double, double, Percent)
+     * @since 3.32.0
+     */
+    public static double advance(final double value, final double target, final double step) {
+        final double delta = target - value;
+
+        return Math.abs(delta) <= step
+            ? target
+            : value + Math.signum(delta) * step;
     }
 }

@@ -4,14 +4,18 @@
 - Mix colors using strength
 - Documented support for Tiled Editor (#970)
 - Support for Tiled Editor color properties added (#331)
+- Added lerp and advance functions to `MathUtil` and `Vector`
 
 ### 🪛 Bug Fixes
 
 - Post effect filters will use static offset lifetime to support animated filters
+- Fix light enabled after loading save game in platformer example
 
 ### 🧽 Cleanup & refactoring
 
 - Simplified FluidPostProcessing System
+- Renamed properties and added JavaDoc to `CameraTargetComponent`
+- Renamed `Bounds.clamp(Vector)`
 
 ### 📦 Dependency updates
 

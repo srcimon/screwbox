@@ -336,4 +336,43 @@ class VectorTest {
         var dotProduct = $(10, 0).normalizedDotProduct($(0, 80));
         assertThat(dotProduct).isEqualTo(0.0, offset(0.01));
     }
+
+    @Test
+    void lerp_maxProgress_isTarget() {
+        Vector result = $(4, -2).lerp($(20, 10), Percent.max());
+        assertThat(result).isEqualTo($(20, 10));
+    }
+
+    @Test
+    void lerp_someProgres_movesTowardsTarget() {
+        Vector result = $(4, -2).lerp($(20, 10), Percent.of(0.4));
+        assertThat(result).isEqualTo($(10.4, 2.8));
+    }
+
+    @Test
+    void advance_positiveStep_movesTowardsTarget() {
+        Vector result = $(4, -2).advance($(20, 10), 10);
+        assertThat(result).isEqualTo($(12, 4));
+    }
+
+    @Test
+    void advance_stepGreaterThanDistance_isTarget() {
+        Vector target = $(20, 10);
+        Vector result = $(4, -2).advance(target, 100);
+        assertThat(result).isEqualTo(target);
+    }
+
+    @Test
+    void advance_stepIsZero_isStart() {
+        Vector start = $(4, -2);
+        Vector result = start.advance($(20, 10), 0);
+        assertThat(result).isEqualTo(start);
+    }
+
+    @Test
+    void advance_negativeStep_movesAwayFromTarget() {
+        Vector start = $(4, -2);
+        Vector result = start.advance($(20, 10), -10);
+        assertThat(result).isEqualTo($(-4, -8));
+    }
 }

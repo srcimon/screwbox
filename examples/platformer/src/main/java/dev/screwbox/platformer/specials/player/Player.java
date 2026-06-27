@@ -16,6 +16,7 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CollisionDetailsComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.CameraLeadComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.FlipSpriteComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -42,6 +43,7 @@ public class Player implements Blueprint<GameObject> {
         return new Entity(object.id(), "Player")
             .add(new ParticleEmitterComponent(Duration.ofMillis(220), POSITION, SMOKE_PARTICLE),
                 emitter -> emitter.isEnabled = false)
+            .add(new CameraLeadComponent(), config -> config.xModifier = 0.25)
             .add(new CameraTargetComponent(),
                 new GlowComponent(45, Color.WHITE.opacity(0.3)),
                 new PointLightComponent(64, Color.BLACK),

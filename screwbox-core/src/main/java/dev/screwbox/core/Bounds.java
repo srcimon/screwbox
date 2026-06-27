@@ -413,7 +413,7 @@ public final class Bounds implements Serializable {
      *
      * @since 3.27.0
      */
-    public Vector closestPoint(final Vector position) {
+    public Vector clamp(final Vector position) {
         double closestX = Math.clamp(position.x(), minX(), maxX());
         double closestY = Math.clamp(position.y(), minY(), maxY());
         return Vector.of(closestX, closestY);

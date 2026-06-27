@@ -101,7 +101,7 @@ class CameraSystemTest {
         when(viewport.camera()).thenReturn(camera);
         when(camera.position()).thenReturn($(10000, 10000));
         CameraTargetComponent target = new CameraTargetComponent();
-        target.allowJumping = false;
+        target.allowTeleport = false;
 
         environment
                 .addSystem(new CameraSystem())
