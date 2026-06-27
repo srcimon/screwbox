@@ -26,7 +26,7 @@ public class CameraLeadSystem implements EntitySystem {
             final var config = target.get(CameraLeadComponent.class);
             final var velocity = target.get(PhysicsComponent.class).velocity;
             final var targetOffset = Vector.of(velocity.x() * config.xModifier, velocity.y() * config.yModifier);
-            final var smoothedOffset = camera.offset.lerp(targetOffset, Percent.of(config.adjustmentSpeed * engine.loop().delta()));
+            final var smoothedOffset = camera.offset.lerp(targetOffset, Percent.of(engine.loop().delta(config.adjustmentSpeed)));
 
             camera.offset = engine.graphics().viewport(camera.viewportId)
                 .map(Viewport::canvas)
