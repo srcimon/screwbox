@@ -77,11 +77,11 @@ public class HelloWorld {
 
         screwBox.environment()
             .enableAllFeatures()
-            .addEntity(
-                new TransformComponent(),
-                new CursorAttachmentComponent(),
-                new ParticleEmitterComponent(Duration.ofMillis(100), ParticlesBundle.CONFETTI),
-                new ParticleInteractionComponent(40, Percent.max()));
+            .addEntity(new Entity()
+                .add(new TransformComponent())
+                .add(new CursorAttachmentComponent())
+                .add(new ParticleEmitterComponent(Duration.ofMillis(100), ParticlesBundle.CONFETTI))
+                .add(new TailwindComponent(40, Percent.max())));
 
         screwBox.start();
     }
