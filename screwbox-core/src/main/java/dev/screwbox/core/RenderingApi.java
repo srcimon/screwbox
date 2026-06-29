@@ -38,7 +38,7 @@ public enum RenderingApi {
      * Automatically detects best rendering api for your machine.
      */
     public static RenderingApi autodetect() {
-        return MacOsSupport.isMacOs() ? METAL : OPEN_GL;
+        return MacOsSupport.isMacOs() ? METAL : OPEN_GL;//TODO always opengl
     }
 
     void configure() {
