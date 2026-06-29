@@ -40,7 +40,7 @@ public final class ScrewBox {
     public static Engine createEngine(final String name, final RenderingApi renderingApi) {
         requireNonNull(name, "name must not be null");
         renderingApi.configure();
-        return new DefaultEngine(name);
+        return new DefaultEngine(name, renderingApi);
     }
 
 }
