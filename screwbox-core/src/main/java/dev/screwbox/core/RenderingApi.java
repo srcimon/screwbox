@@ -23,6 +23,7 @@ public enum RenderingApi {
      */
     METAL,//TODO update guide
     //TODO update performance guide
+    //TODO More color accuracy but slower
 
     /**
      * Use Direct3D rendering. Only available on Windows machines.
@@ -36,10 +37,11 @@ public enum RenderingApi {
     OPEN_GL;
 
     /**
-     * Automatically detects best rendering api for your machine.
+     * Automatically detects best rendering api for your machine. Currently this is always {@link #OPEN_GL} but this is
+     * likely to change in the future.
      */
     public static RenderingApi autodetect() {
-        return MacOsSupport.isMacOs() ? METAL : OPEN_GL;//TODO always opengl
+        return OPEN_GL;
     }
 
     void configure() {

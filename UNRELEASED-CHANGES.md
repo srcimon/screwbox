@@ -7,7 +7,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Updated default rendering api on MacOs to OpenGL
 
 ### 📦 Dependency updates
 

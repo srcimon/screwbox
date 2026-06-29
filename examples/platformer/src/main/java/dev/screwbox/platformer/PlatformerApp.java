@@ -10,7 +10,7 @@ public class PlatformerApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Platformer");
-
+        
         engine.achievements()
             .addAllFromClassPackage(PlatformerApp.class);
 
