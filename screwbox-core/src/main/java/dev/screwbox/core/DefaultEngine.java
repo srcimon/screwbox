@@ -132,16 +132,9 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
-        final Toolkit toolkit = Toolkit.getDefaultToolkit();
-
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
 
-        final Updatable graphicsUpdate = RenderingApi.METAL.equals(renderingApi)
-            ? () -> {
-            toolkit.sync();
-            graphics.update();
-        } : graphics::update;
-
+        final Updatable graphicsUpdate = createGraphicsUpdate(renderingApi);
         loop = new DefaultLoop(List.of(achievements, keyboard, graphicsUpdate, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         physics = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
@@ -158,6 +151,17 @@ class DefaultEngine implements Engine {
         this.name = name;
         this.version = detectVersion();
         window.setTitle(name);
+    }
+
+    private Updatable createGraphicsUpdate(final RenderingApi renderingApi) {
+        if (!RenderingApi.METAL.equals(renderingApi)) {
+            return graphics;
+        }
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        return () -> {
+            toolkit.sync(); // needed to avoid frame drop which causes micro stuttering
+            graphics.update();
+        };
     }
 
     private String detectVersion() {
