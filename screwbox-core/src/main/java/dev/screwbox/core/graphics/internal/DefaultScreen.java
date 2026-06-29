@@ -61,10 +61,7 @@ public class DefaultScreen implements Screen, Updatable {
         this.postProcessing = postProcessing;
     }
 
-    private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
-
     public void updateScreen() {
-        TOOLKIT.sync();//TODO only when using metal rendering api
         renderer.updateContext(createGraphicsSupplier());
         final var color = configuration.backgroundColor();
         final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());

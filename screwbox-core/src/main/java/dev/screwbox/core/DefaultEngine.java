@@ -29,6 +29,7 @@ import dev.screwbox.core.log.Log;
 import dev.screwbox.core.log.internal.DefaultLog;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.loop.internal.DefaultLoop;
+import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.mouse.Mouse;
 import dev.screwbox.core.mouse.internal.DefaultMouse;
 import dev.screwbox.core.navigation.Navigation;
@@ -77,7 +78,7 @@ class DefaultEngine implements Engine {
     private final String version;
     private boolean stopCalled = false;
 
-    DefaultEngine(final String name) {
+    DefaultEngine(final String name, final RenderingApi renderingApi) {
         log = new DefaultLog(new ConsoleLoggingAdapter());
         if (MacOsSupport.isMacOs() && !MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
             log.warn("Please run application with the following JVM option to add full MacOs support: {}", MacOsSupport.FULLSCREEN_JVM_OPTION);
@@ -131,9 +132,17 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
 
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
-        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
+
+        final Updatable graphicsUpdate = RenderingApi.METAL.equals(renderingApi)
+            ? () -> {
+            toolkit.sync();
+            graphics.update();
+        } : graphics::update;
+
+        loop = new DefaultLoop(List.of(achievements, keyboard, graphicsUpdate, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         physics = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
