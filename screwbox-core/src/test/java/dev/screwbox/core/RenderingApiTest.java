@@ -17,8 +17,21 @@ class RenderingApiTest {
     }
 
     @Test
-    void autodetect_always_isOpenGl() {
-        assertThat(RenderingApi.autodetect()).isEqualTo(RenderingApi.OPEN_GL);
+    void autodetect_onMacOs_isUnspecified() {
+        System.setProperty("os.name", "Mac OS X");
+
+        var renderingApi = RenderingApi.autodetect();
+
+        assertThat(renderingApi).isEqualTo(RenderingApi.METAL);
+    }
+
+    @Test
+    void autodetect_onWindows_isOpenGl() {
+        System.setProperty("os.name", "Windows");
+
+        var renderingApi = RenderingApi.autodetect();
+
+        assertThat(renderingApi).isEqualTo(RenderingApi.OPEN_GL);
     }
 
     @Test
@@ -79,8 +92,8 @@ class RenderingApiTest {
         System.setProperty("os.name", "Mac OS X");
 
         assertThatThrownBy(RenderingApi.DIRECT_3D::configure)
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Direct3D rendering is not supported on MacOs");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Direct3D rendering is not supported on MacOs");
     }
 
     @Test
@@ -88,7 +101,7 @@ class RenderingApiTest {
         System.setProperty("os.name", "WinDos");
 
         assertThatThrownBy(RenderingApi.METAL::configure)
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Metal rendering is only supported on MacOs");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Metal rendering is only supported on MacOs");
     }
 }

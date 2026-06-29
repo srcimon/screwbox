@@ -35,11 +35,10 @@ public enum RenderingApi {
     OPEN_GL;
 
     /**
-     * Automatically detects best rendering api for your machine. Currently this is always {@link #OPEN_GL} but this is
-     * likely to change in the future.
+     * Automatically detects best rendering api for your machine.
      */
     public static RenderingApi autodetect() {
-        return OPEN_GL;
+        return MacOsSupport.isMacOs() ? METAL : OPEN_GL;
     }
 
     void configure() {
