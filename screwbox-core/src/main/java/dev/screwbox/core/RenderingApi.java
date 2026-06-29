@@ -21,9 +21,7 @@ public enum RenderingApi {
      * <p>
      * Warning: Currently affected by <a href="https://bugs.java.com/bugdatabase/JDK-8371679">JDK-8371679</a>.
      */
-    METAL,//TODO update guide
-    //TODO update performance guide
-    //TODO More color accuracy but slower
+    METAL,
 
     /**
      * Use Direct3D rendering. Only available on Windows machines.

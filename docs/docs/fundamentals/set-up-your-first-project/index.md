@@ -99,12 +99,12 @@ The rendering API is the actual way Java brings graphic content to your screen.
 There is a bunch of system properties to enable different rendering APIs.
 Sadly not all APIs can be specified explicitly and the actual API used cannot be enforced.
 
-| Rendering API | Operation System          | Notes                                                                                                                                                                                      |
-|---------------|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| software      | all                       | Is very slow and should be avoided.                                                                                                                                                        |
-| OpenGl        | all (deprecated on MacOs) | A lot faster than software mode. On MacOs Metal should be the preferred option.                                                                                                            |
-| Direct3D      | Windows                   | Not available on other operation system. Due to lack of test systems I have no experience with Direct3D.                                                                                   |
-| Metal         | MacOs                     | Preferred option on MacOs because of best performance. Not available on other systems. Currently affected by [JDK-8371679](https://bugs.java.com/bugdatabase/view_bug?bug_id=JDK-8371679). |
+| Rendering API | Operation System          | Notes                                                                                                                                                                                                                |
+|---------------|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| software      | all                       | Is very slow and should be avoided.                                                                                                                                                                                  |
+| OpenGl        | all (deprecated on MacOs) | A lot faster than software mode. Might cause slightly off colors on MacOs.                                                                                                                                           |
+| Direct3D      | Windows                   | Not available on other operation system. Due to lack of test systems I have no experience with Direct3D.                                                                                                             |
+| Metal         | MacOs                     | De facto standard on MacOs. Not available on other systems. Currently affected by [JDK-8371679](https://bugs.java.com/bugdatabase/view_bug?bug_id=JDK-8371679). Also has significantly less performance than OpenGl. |
 
 If you are experiencing bad performance this might be rooted by the wrong rendering API.
 ScrewBox tries its best to specify the recommended API itself on application start.

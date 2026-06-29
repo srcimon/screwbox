@@ -61,10 +61,19 @@ Sadly these cannot be avoided on MacOs.
 Metal rendering is currently affected by [JDK-8371679](https://bugs.java.com/bugdatabase/view_bug?bug_id=JDK-8371679)
 which results in some weird pixel snapping effects on the screen edges.
 To avoid these issues switch to OpenGl render.
-Sadly this will come with a huge fps drop.
 
 ```java
 Engine engine = ScrewBox.createEngine("My Game", RenderingApi.OPEN_GL);
+```
+
+## OpenGL Rendering Issues (MacOs)
+
+The default rendering api on MacOs is OpenGL.
+OpenGL rendering does not consider color profiles so the saturation might be slightly too high.
+To avoid this switch back to Metal Rendering API.
+
+```java
+Engine engine = ScrewBox.createEngine("My Game", RenderingApi.METAL);
 ```
 
 ## Components don't work
