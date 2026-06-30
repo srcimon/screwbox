@@ -29,7 +29,6 @@ import dev.screwbox.core.log.Log;
 import dev.screwbox.core.log.internal.DefaultLog;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.loop.internal.DefaultLoop;
-import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.mouse.Mouse;
 import dev.screwbox.core.mouse.internal.DefaultMouse;
 import dev.screwbox.core.navigation.Navigation;
@@ -126,7 +125,7 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, executor, postProcessing);
 
-        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing);
+        graphics = new DefaultGraphics(renderingApi, configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
@@ -134,8 +133,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
 
-        final Updatable graphicsUpdate = createGraphicsUpdate(renderingApi);
-        loop = new DefaultLoop(List.of(achievements, keyboard, graphicsUpdate, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
+        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         physics = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
@@ -151,17 +149,6 @@ class DefaultEngine implements Engine {
         this.name = name;
         this.version = detectVersion();
         window.setTitle(name);
-    }
-
-    private Updatable createGraphicsUpdate(final RenderingApi renderingApi) {
-        if (!RenderingApi.METAL.equals(renderingApi)) {
-            return graphics;
-        }
-        final Toolkit toolkit = Toolkit.getDefaultToolkit();
-        return () -> {
-            toolkit.sync(); // needed to avoid frame drop which causes micro stuttering
-            graphics.update();
-        };
     }
 
     private String detectVersion() {

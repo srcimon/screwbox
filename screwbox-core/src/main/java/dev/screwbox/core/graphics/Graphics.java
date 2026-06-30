@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
@@ -174,4 +175,11 @@ public interface Graphics extends Viewport {
      * @since 3.28.0
      */
     boolean isVisible(Bounds bounds);
+
+    /**
+     * Returns the used {@link RenderingApi}. The {@link RenderingApi} cannot be changed after launching the {@link dev.screwbox.core.ScrewBox}.
+     *
+     * @since 3.32.1
+     */
+    RenderingApi renderingApi();
 }

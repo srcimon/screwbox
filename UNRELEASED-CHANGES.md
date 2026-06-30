@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Get info on used rendering API
 
 ### 🪛 Bug Fixes
 
