@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.rendering;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Camera;
@@ -37,7 +38,7 @@ class ReflectionRenderSystemTest {
     void update_reflectionNotOnScreen_noReflectionDrawn(DefaultEnvironment environment, Graphics graphics) {
         when(viewport.camera()).thenReturn(camera);
         when(graphics.viewports()).thenReturn(List.of(viewport));
-        when(graphics.configuration()).thenReturn(new GraphicsConfiguration());
+        when(graphics.configuration()).thenReturn(new GraphicsConfiguration(RenderingApi.DIRECT_3D));
         when(camera.zoom()).thenReturn(2.0);
         when(viewport.visibleArea()).thenReturn(Bounds.$$(0, 0, 640, 480));
         environment

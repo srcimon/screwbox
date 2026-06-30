@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
@@ -30,7 +31,7 @@ class DefaultGraphicsTest {
     RenderPipeline renderPipeline;
 
     @Spy
-    GraphicsConfiguration configuration = new GraphicsConfiguration();
+    GraphicsConfiguration configuration = new GraphicsConfiguration(RenderingApi.DIRECT_3D);
 
     @Test
     void supportedResolutions_threeDisplayModes_returnsReverseOrderedListOfDistinctModes() {

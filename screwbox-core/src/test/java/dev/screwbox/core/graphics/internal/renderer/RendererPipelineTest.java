@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal.renderer;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -34,7 +35,7 @@ class RendererPipelineTest {
         final var engine = Mockito.mock(Engine.class);
         when(engine.environment()).thenReturn(new DefaultEnvironment(engine));
         executorService = Executors.newSingleThreadExecutor();
-        renderPipeline = new RenderPipeline(executorService, new GraphicsConfiguration(), engine);
+        renderPipeline = new RenderPipeline(executorService, new GraphicsConfiguration(RenderingApi.OPEN_GL), engine);
         image = ImageOperations.createImage(Size.of(240, 160));
         renderPipeline.toggleOnOff();
         updateContext();

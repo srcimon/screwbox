@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
-import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.*;
 import dev.screwbox.core.graphics.Canvas;
@@ -21,8 +20,6 @@ import static java.util.Comparator.reverseOrder;
 
 public class DefaultGraphics implements Graphics, Updatable {
 
-    private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
-
     private final GraphicsConfiguration configuration;
     private final DefaultWorld world;
     private final DefaultLight light;
@@ -32,17 +29,14 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final ViewportManager viewportManager;
     private final AttentionFocus attentionFocus;
     private final PostProcessing postProcessing;
-    private final RenderingApi renderingApi;
 
-    public DefaultGraphics(final RenderingApi renderingApi,
-                           final GraphicsConfiguration configuration,
+    public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
                            final PostProcessing postProcessing) {
-        this.renderingApi = renderingApi;
         this.configuration = configuration;
         this.light = light;
         this.screen = screen;
@@ -185,15 +179,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public RenderingApi renderingApi() {
-        return renderingApi;
-    }
-
-    @Override
     public void update() {
-        if (RenderingApi.METAL.equals(renderingApi)) {
-            TOOLKIT.sync(); // needed to avoid frame drop which causes micro stuttering
-        }
         screen.updateScreen();
     }
 

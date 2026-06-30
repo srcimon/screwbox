@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
@@ -30,7 +31,7 @@ class DefaultPostprocessingTest {
 
     @BeforeEach
     void setUp() {
-        configuration = new GraphicsConfiguration();
+        configuration = new GraphicsConfiguration(RenderingApi.DIRECT_3D);
         final var canvasBounds = new ScreenBounds(0, 0, 40, 40);
         final var canvas = new DefaultCanvas(new DefaultRenderer(), canvasBounds);
         final var defaultViewport = new DefaultViewport(canvas, new DefaultCamera(canvas));

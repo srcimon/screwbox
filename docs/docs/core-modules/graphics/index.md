@@ -156,6 +156,7 @@ Options that can be specified:
 | indirectLightIntensity   | `0.9`      | specify the intensity of indirect light that is cast when light hits occluders                                  |
 | indirectLightDiameter    | `16`       | sets the diameter of indirect light rays.                                                                       |
 | maxLightBounces          | `2`        | specify the maximum number of consecutive bounces that light will make when hitting occluders                   |
+| renderingApi             | auto       | returns the specified rendering API. Read only property.                                                        |
 
 :::info
 Currently there is no way to preserve the configuration when quitting the game.
@@ -291,12 +292,13 @@ improve rendering performance.
 The recommended way to add light to your scenes is by using the corresponding components of the ecs.
 See [Components Overview](../../reference/components-overview.md).
 
-
 ### Indirect lighting
 
 Spot lights and cone lights will cast indirect light when bouncing off occluders.
-Indirect light is active by default, but it can be heavily customized or disabled using the corresponding `GraphicsConfiguration` options.
-Using indirect light helps illuminating occluders and to set the mood of the game scene but it's also quite heavy on the fps.
+Indirect light is active by default, but it can be heavily customized or disabled using the corresponding
+`GraphicsConfiguration` options.
+Using indirect light helps illuminating occluders and to set the mood of the game scene but it's also quite heavy on the
+fps.
 You can see how indirect light plays a role in this image comparison:
 
 ![indirect-light.png](indirect-lighting.png)
@@ -326,9 +328,12 @@ For example:
 
 ## Post processing
 
-Post-processing allows you to apply one or more `PostProcessingFilter` to the entire screen or each split screen viewport.
-This can create stunning effects, but applying such a filter significantly slows down the rendering process because the entire screen is copied to the graphics card multiple times.
-Therefore, post-processing filters operate directly on the `Graphics2D` target, bypassing the convenience of using the canvas API provided by ScrewBox.
+Post-processing allows you to apply one or more `PostProcessingFilter` to the entire screen or each split screen
+viewport.
+This can create stunning effects, but applying such a filter significantly slows down the rendering process because the
+entire screen is copied to the graphics card multiple times.
+Therefore, post-processing filters operate directly on the `Graphics2D` target, bypassing the convenience of using the
+canvas API provided by ScrewBox.
 
 ![shockwave.png](shockwave.png)
 

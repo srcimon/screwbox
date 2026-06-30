@@ -83,7 +83,7 @@ class DefaultEngine implements Engine {
             log.warn("Please run application with the following JVM option to add full MacOs support: {}", MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
 
-        final GraphicsConfiguration configuration = new GraphicsConfiguration();
+        final GraphicsConfiguration configuration = new GraphicsConfiguration(renderingApi);
         final WindowFrame frame = MacOsSupport.isMacOs()
             ? new MacOsWindowFrame(configuration.resolution())
             : new WindowFrame(configuration.resolution());
@@ -125,7 +125,7 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, executor, postProcessing);
 
-        graphics = new DefaultGraphics(renderingApi, configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing);
+        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);

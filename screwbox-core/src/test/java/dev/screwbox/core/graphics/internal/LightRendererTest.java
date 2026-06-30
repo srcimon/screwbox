@@ -4,6 +4,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
@@ -49,7 +50,7 @@ class LightRendererTest {
 
     @BeforeEach
     void setUp() {
-        configuration = new GraphicsConfiguration();
+        configuration = new GraphicsConfiguration(RenderingApi.DIRECT_3D);
         lightPhysics = new LightPhysics(configuration);
         canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 160, 80));
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
