@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Get info on used rendering API
 
 ### 🪛 Bug Fixes
 
@@ -12,4 +12,5 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump JUnit to 6.1.1
+- Bump Node dependencies

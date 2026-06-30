@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.RenderingApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -24,7 +25,7 @@ class GraphicsConfigurationTest {
 
     @BeforeEach
     void beforeEach() {
-        graphicsConfiguration = new GraphicsConfiguration();
+        graphicsConfiguration = new GraphicsConfiguration(RenderingApi.DIRECT_3D);
         graphicsConfiguration.addListener(graphicsConfigListener);
     }
 

@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +22,7 @@ class LightPhysicsTest {
     LightPhysics lightPhysics;
 
     @Spy
-    GraphicsConfiguration configuration = new GraphicsConfiguration();
+    GraphicsConfiguration configuration = new GraphicsConfiguration(RenderingApi.METAL);
 
     @Test
     void addOccluder_affectedByShadowOccluderNull_throwsException() {
@@ -147,5 +148,10 @@ class LightPhysicsTest {
         assertThat(indirectLights.getFirst().ray()).isEqualTo(Line.between($(100, 40), $(100, 72)));
         assertThat(indirectLights.getFirst().startStrength()).isEqualTo(Percent.max());
         assertThat(indirectLights.getFirst().endStrength()).isEqualTo(Percent.zero());
+    }
+
+    @Test
+    void renderingApi_returnsRenderingApi() {
+        assertThat(configuration.renderingApi()).isEqualTo(RenderingApi.METAL);
     }
 }

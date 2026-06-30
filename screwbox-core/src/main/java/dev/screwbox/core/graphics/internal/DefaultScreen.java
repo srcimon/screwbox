@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
@@ -28,6 +29,8 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultScreen implements Screen, Updatable {
+
+    private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
 
     private final Renderer renderer;
     private final WindowFrame frame;
@@ -62,6 +65,9 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     public void updateScreen() {
+        if (RenderingApi.METAL.equals(configuration.renderingApi())) {
+            TOOLKIT.sync(); // needed to avoid frame drop which causes micro stuttering
+        }
         renderer.updateContext(createGraphicsSupplier());
         final var color = configuration.backgroundColor();
         final ScreenBounds clip = new ScreenBounds(frame.getCanvasSize());

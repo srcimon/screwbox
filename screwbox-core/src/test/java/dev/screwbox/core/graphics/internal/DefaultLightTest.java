@@ -5,6 +5,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Size;
@@ -46,7 +47,7 @@ class DefaultLightTest {
 
     @BeforeEach
     void setUp() {
-        configuration = new GraphicsConfiguration();
+        configuration = new GraphicsConfiguration(RenderingApi.UNSPECIFIED);
         executor = Executors.newCachedThreadPool();
         light = new DefaultLight(configuration, new ViewportManager(viewport, renderPipeline), executor);
     }

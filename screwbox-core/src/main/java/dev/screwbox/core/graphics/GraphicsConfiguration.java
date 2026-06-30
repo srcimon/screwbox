@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.utils.Validate;
 
@@ -25,6 +26,7 @@ public class GraphicsConfiguration {
     public static final Size DEFAULT_RESOLUTION = Size.of(1280, 720);
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
+    private final RenderingApi renderingApi;
     private Size resolution = DEFAULT_RESOLUTION;
     private boolean isFullscreen = false;
     private boolean useAntialiasing = false;
@@ -42,6 +44,10 @@ public class GraphicsConfiguration {
     private Percent indirectLightIntensity = Percent.of(0.9);
     private float indirectLightDiameter = 16f;
     private int maxLightBounces = 2;
+
+    public GraphicsConfiguration(final RenderingApi renderingApi) {
+        this.renderingApi = renderingApi;
+    }
 
     /**
      * Returns {@code true} if indirect light is enabled. Is controlled by {@link #maxLightBounces()}
@@ -482,6 +488,15 @@ public class GraphicsConfiguration {
      */
     public double resolutionScale() {
         return (double) resolution().height() / DEFAULT_RESOLUTION.height();
+    }
+
+    /**
+     * Returns the used {@link RenderingApi}. The {@link RenderingApi} cannot be changed after launching the {@link dev.screwbox.core.ScrewBox}.
+     *
+     * @since 3.32.1
+     */
+    public RenderingApi renderingApi() {
+        return renderingApi;
     }
 
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
