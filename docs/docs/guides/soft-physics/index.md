@@ -156,10 +156,7 @@ To make it easier use the `SoftPhysicsSupport` class.
 var cloth = SoftPhysicsSupport.createCloth(Bounds.$$(0,0,128,256), Size.of(16, 16), e.environment());
 
 // add rendering of a flag with white background
-cloth.root().add(new ClothRenderComponent(), x -> {
-    x.texture = Sprite.fromFile("flag.png");
-    x.backgroundColor = Color.WHITE;
-});
+cloth.root().add(new ClothRenderComponent(), cloth -> cloth.backgroundColor = Color.WHITE);
 
 // attach the top border of the flag to the game world 
 cloth.topBorder().forEach(entity -> entity.remove(PhysicsComponent.class));
