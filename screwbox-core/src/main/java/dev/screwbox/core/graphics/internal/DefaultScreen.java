@@ -79,7 +79,9 @@ public class DefaultScreen implements Screen, Updatable {
         return () -> {
             frame.getCanvas().getBufferStrategy().show();
             final Graphics2D graphics = fetchGraphics();
-            graphics.clearRect(0, 0, width(), height()); // fixes possible JVM bug that causes black screen (see 3.27.0)
+            if (!hasFreshScreenBuffer) {
+                graphics.clearRect(0, 0, width(), height()); // fixes possible JVM bug that causes black screen (see 3.27.0)
+            }
             ImageOperations.applyHighPerformanceRenderingHints(graphics);
             if (configuration.isUseAntialiasing()) {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
@@ -107,6 +109,10 @@ public class DefaultScreen implements Screen, Updatable {
             || screenCanvasSize.width() != screenBuffer.getWidth()
             || screenCanvasSize.height() != screenBuffer.getHeight() || !hasFreshScreenBuffer) {
             screenBuffer = ImageOperations.createVolatileImage(screenCanvasSize);
+            final var graphics = screenBuffer.createGraphics();
+            graphics.setColor(AwtMapper.toAwtColor(configuration.backgroundColor()));
+            graphics.fillRect(0, 0, width(), height());
+            graphics.dispose();
             hasFreshScreenBuffer = true;
         } else {
             final var transformFilter = isTransformed
