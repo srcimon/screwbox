@@ -133,62 +133,89 @@ public class Grid implements Serializable {
 
     //TODO move into GridGraph
     public List<Offset> freeAdjacentNodes(final Offset node) {
-        final List<Offset> neighbors = new ArrayList<>();
-        final Consumer<Offset> addIfFree = nde -> {
-            if (isFree(nde)) {
-                neighbors.add(nde);
-            }
-        };
+        final List<Offset> neighbors = new ArrayList<>(4);
 
-        final Offset down = node.addY(1);
-        final Offset up = node.addY(-1);
-        final Offset left = node.addX(-1);
-        final Offset right = node.addX(1);
-        addIfFree.accept(down);
-        addIfFree.accept(up);
-        addIfFree.accept(left);
-        addIfFree.accept(right);
+        final Offset bottom = node.bottom();
+        if (isFree(bottom)) {
+            neighbors.add(bottom);
+        }
+
+        final Offset top = node.top();
+        if (isFree(top)) {
+            neighbors.add(top);
+        }
+
+        final Offset left = node.left();
+        if (isFree(left)) {
+            neighbors.add(left);
+        }
+
+        final Offset right = node.right();
+        if (isFree(right)) {
+            neighbors.add(right);
+        }
 
         return neighbors;
     }
 
     //TODO move into GridGraph
     public List<Offset> freeSurroundingNodes(final Offset node) {
-        final List<Offset> neighbors = new ArrayList<>();
-        final Consumer<Offset> addIfFree = nde -> {
-            if (isFree(nde)) {
-                neighbors.add(nde);
-            }
-        };
+        final List<Offset> neighbors = new ArrayList<>(8);
 
         final Offset bottom = node.bottom();
+        final boolean isBottomFree = isFree(bottom);
+        if (isBottomFree) {
+            neighbors.add(bottom);
+        }
+
         final Offset top = node.top();
+        final boolean isTopFree = isFree(top);
+        if (isTopFree) {
+            neighbors.add(top);
+        }
+
         final Offset left = node.left();
+        final boolean isLeftFree = isFree(left);
+        if (isLeftFree) {
+            neighbors.add(left);
+        }
+
         final Offset right = node.right();
-        addIfFree.accept(bottom);
-        addIfFree.accept(top);
-        addIfFree.accept(left);
-        addIfFree.accept(right);
+        final boolean isRightFree = isFree(right);
+        if (isRightFree) {
+            neighbors.add(right);
+        }
 
-        if (isFree(bottom)) {
-            if (isFree(right)) {
-                addIfFree.accept(node.bottomRight());
+        if (isBottomFree) {
+            if (isRightFree) {
+                final Offset bottomRight = node.bottomRight();
+                if (isFree(bottomRight)) {
+                    neighbors.add(bottomRight);
+                }
             }
-            if (isFree(left)) {
-                addIfFree.accept(node.bottomLeft());
+            if (isLeftFree) {
+                final Offset bottomLeft = node.bottomLeft();
+                if (isFree(bottomLeft)) {
+                    neighbors.add(bottomLeft);
+                }
             }
         }
 
-        if (isFree(top)) {
-            final Offset topLeft = node.topLeft();
-            if (isFree(topLeft) && isFree(left)) {
-                addIfFree.accept(topLeft);
+        if (isTopFree) {
+            if (isLeftFree) {
+                final Offset topLeft = node.topLeft();
+                if (isFree(topLeft)) {
+                    neighbors.add(topLeft);
+                }
             }
-            final Offset topRight = node.topRight();
-            if (isFree(topRight) && isFree(right)) {
-                addIfFree.accept(topRight);
+            if (isRightFree) {
+                final Offset topRight = node.topRight();
+                if (isFree(topRight)) {
+                    neighbors.add(topRight);
+                }
             }
         }
+
         return neighbors;
     }
 

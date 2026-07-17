@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Add relative position methods to `Offset`
+- Slightly improved pathfinding performance
 
 ### 🪛 Bug Fixes
 
