@@ -10,7 +10,6 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.awt.image.Kernel;
 import java.util.Arrays;
 
 public class PlaygroundApp {
