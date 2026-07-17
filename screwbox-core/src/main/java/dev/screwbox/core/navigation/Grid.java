@@ -4,7 +4,6 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.World;
-import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -237,11 +236,6 @@ public class Grid implements Serializable {
 
     public int nodeCount() {
         return width * height;
-    }
-
-    public Vector snap(final Vector position) {
-        final Offset node = toGrid(position);
-        return toWorld(node);
     }
 
     public boolean isBlocked(final int x, final int y) {

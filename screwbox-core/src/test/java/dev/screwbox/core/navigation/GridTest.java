@@ -126,15 +126,6 @@ class GridTest {
     }
 
     @Test
-    void snap_positionNotNull_snapsPositionToGrid() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16);
-
-        var snapped = grid.snap($(40.12, 401.40));
-        assertThat(snapped).isEqualTo($(40.0, 408.0));
-    }
-
-    @Test
     void cellSize_returnsCellSize() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
         var grid = new Grid(area, 16);
