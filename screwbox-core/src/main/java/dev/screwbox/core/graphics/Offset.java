@@ -138,7 +138,7 @@ public final class Offset implements Serializable {
     }
 
     /**
-     * Will return the distance between the two {@link Offset offsets}.
+     * Returns the distance between the two {@link Offset offsets}.
      *
      * @since 3.8.0
      */
@@ -146,5 +146,78 @@ public final class Offset implements Serializable {
         final double deltaX = (double) x() - other.x;
         final double deltaY = (double) y() - other.y;
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    //TODO test all below
+    /**
+     * Returns the {@link Offset} below the current one.
+     *
+     * @since 3.33.0
+     */
+    public Offset bottom() {
+        return addY(1);
+    }
+
+    /**
+     * Returns the {@link Offset} above the current one.
+     *
+     * @since 3.33.0
+     */
+    public Offset top() {
+        return addY(-1);
+    }
+
+    /**
+     * Returns the {@link Offset} left to the current one.
+     *
+     * @since 3.33.0
+     */
+    public Offset left() {
+        return addX(-1);
+    }
+
+    /**
+     * Returns the {@link Offset} right to the current one.
+     *
+     * @since 3.33.0
+     */
+    public Offset right() {
+        return addX(1);
+    }
+
+    /**
+     * Returns the {@link Offset} on the left below the current one.
+     *
+     * @since 3.33.0
+     */
+    public Offset bottomLeft() {
+        return add(-1, 1);
+    }
+
+    /**
+     * Returns the {@link Offset} on the right below the current one.
+     *
+     * @since 3.33.0
+     */
+    public Offset bottomRight() {
+        return add(1, 1);
+    }
+
+    /**
+     * Returns the {@link Offset} on the left above the current one.
+     *
+     * @since 3.33.0
+     */
+    public Offset topLeft() {
+        return add(-1, -1);
+    }
+
+    /**
+     * Returns the {@link Offset} on the right above the current one.
+     *
+     * @since 3.33.0
+     */
+    public Offset topRight() {
+        return add(1, -1);
     }
 }

@@ -4,6 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.World;
+import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -189,35 +190,32 @@ public class Grid implements Serializable {
             }
         };
 
-        final Offset down = node.addY(1);
-        final Offset up = node.addY(-1);
-        final Offset left = node.addX(-1);
-        final Offset right = node.addX(1);
-        addIfFree.accept(down);
-        addIfFree.accept(up);
+        final Offset bottom = node.bottom();
+        final Offset top = node.top();
+        final Offset left = node.left();
+        final Offset right = node.right();
+        addIfFree.accept(bottom);
+        addIfFree.accept(top);
         addIfFree.accept(left);
         addIfFree.accept(right);
 
-        final Offset downLeft = node.add(-1, 1);
-        final Offset downRight = node.add(1, 1);
-
-        if (isFree(down)) {
+        if (isFree(bottom)) {
             if (isFree(right)) {
-                addIfFree.accept(downRight);
+                addIfFree.accept(node.bottomRight());
             }
             if (isFree(left)) {
-                addIfFree.accept(downLeft);
+                addIfFree.accept(node.bottomLeft());
             }
         }
 
-        final Offset upLeft = node.add(-1, -1);
-        final Offset upRight = node.add(1, -1);
-        if (isFree(up)) {
-            if (isFree(upLeft) && isFree(left)) {
-                addIfFree.accept(upLeft);
+        if (isFree(top)) {
+            final Offset topLeft = node.topLeft();
+            if (isFree(topLeft) && isFree(left)) {
+                addIfFree.accept(topLeft);
             }
-            if (isFree(upRight) && isFree(right)) {
-                addIfFree.accept(upRight);
+            final Offset topRight = node.topRight();
+            if (isFree(topRight) && isFree(right)) {
+                addIfFree.accept(topRight);
             }
         }
         return neighbors;

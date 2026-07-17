@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Add relative position methods to `Offset`
 
 ### 🪛 Bug Fixes
 
