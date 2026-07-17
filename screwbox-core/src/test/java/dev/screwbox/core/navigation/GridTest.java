@@ -222,31 +222,6 @@ class GridTest {
         assertThat(grid.nodeCount()).isEqualTo(9);
     }
 
-    @Test
-    void surroundingNodes_positionOutsideOfGrid_isEmpty() {
-        var grid = new Grid($$(0, 0, 12, 12), 4);
-
-        var surroundingNodes = grid.surroundingNodes(Offset.at(-4, -4));
-
-        assertThat(surroundingNodes).isEmpty();
-    }
-
-    @Test
-    void surroundingNodes_positionInsideOfGrid_returnsNeighbors() {
-        var grid = new Grid($$(0, 0, 12, 12), 2);
-
-        var surroundingNodes = grid.surroundingNodes(Offset.at(2, 2));
-
-        assertThat(surroundingNodes).containsExactly(
-            Offset.at(2, 3),
-            Offset.at(2, 1),
-            Offset.at(1, 2),
-            Offset.at(3, 2),
-            Offset.at(1, 3),
-            Offset.at(3, 3),
-            Offset.at(1, 1),
-            Offset.at(3, 1));
-    }
 
     @Test
     void isBlocked_notBlocked_isFalse() {
@@ -293,21 +268,5 @@ class GridTest {
         assertThatThrownBy(() -> Grid.findCell(vector, 0))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("cell size must be positive (actual value: 0)");
-    }
-
-    @Test
-    void adjacentNodes_centralNode_hasFourNodes() {
-        Grid grid = new Grid(Bounds.atOrigin(0, 0, 128, 128), 16);
-
-        var adjacentNodes = grid.adjacentNodes(Offset.at(3, 3));
-        assertThat(adjacentNodes).containsExactly(Offset.at(3, 4), Offset.at(3, 2), Offset.at(2, 3), Offset.at(4, 3));
-    }
-
-    @Test
-    void adjacentNodes_edgeNode_hasOnlyValidNodes() {
-        Grid grid = new Grid(Bounds.atOrigin(0, 0, 128, 128), 16);
-
-        var adjacentNodes = grid.adjacentNodes(Offset.origin());
-        assertThat(adjacentNodes).containsExactly(Offset.at(0, 1), Offset.at(1, 0));
     }
 }

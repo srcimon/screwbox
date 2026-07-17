@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Removed unused Grid methods
 
 ### 📦 Dependency updates
 
