@@ -39,28 +39,28 @@ public class GridUpdateSystem implements EntitySystem {
 
     private int blockedSurroundingNodesCount(final Grid grid, final Offset node) {
         int count = 0;
-        if (grid.isBlocked(node.add(0, 1))) {
+        if (grid.isBlocked(node.top())) {
             count++;
         }
-        if (grid.isBlocked(node.add(0, -1))) {
+        if (grid.isBlocked(node.topRight())) {
             count++;
         }
-        if (grid.isBlocked(node.add(-1, 1))) {
+        if (grid.isBlocked(node.right())) {
             count++;
         }
-        if (grid.isBlocked(node.add(-1, 0))) {
+        if (grid.isBlocked(node.bottomRight())) {
             count++;
         }
-        if (grid.isBlocked(node.add(-1, -1))) {
+        if (grid.isBlocked(node.bottom())) {
             count++;
         }
-        if (grid.isBlocked(node.add(1, 1))) {
+        if (grid.isBlocked(node.bottomLeft())) {
             count++;
         }
-        if (grid.isBlocked(node.add(1, -1))) {
+        if (grid.isBlocked(node.left())) {
             count++;
         }
-        if (grid.isBlocked(node.add(1, 0))) {
+        if (grid.isBlocked(node.topLeft())) {
             count++;
         }
         return count;

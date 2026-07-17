@@ -136,6 +136,7 @@ public class Grid implements Serializable {
      * Returns a list of all directly adjacent nodes within the grid.
      * Will return the node to the east, west, north and south.
      */
+    @Deprecated
     public List<Offset> adjacentNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>();
         addIfInGrid(neighbors, node.add(0, 1));
@@ -149,6 +150,7 @@ public class Grid implements Serializable {
      * Returns a list of all surrounding nodes within the grid.
      * Will contain eight nodes max.
      */
+    @Deprecated
     public List<Offset> surroundingNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>();
         addIfInGrid(neighbors, node.add(0, 1));
@@ -162,6 +164,7 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
+    //TODO move into GridGraph
     public List<Offset> freeAdjacentNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>();
         final Consumer<Offset> addIfFree = nde -> {
@@ -182,6 +185,7 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
+    //TODO move into GridGraph
     public List<Offset> freeSurroundingNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>();
         final Consumer<Offset> addIfFree = nde -> {
