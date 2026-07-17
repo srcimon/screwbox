@@ -16,14 +16,12 @@ public class PlaygroundApp {
 
     private static final int WIDTH = GraphicsConfiguration.DEFAULT_RESOLUTION.width();
     private static final int HEIGHT = GraphicsConfiguration.DEFAULT_RESOLUTION.height();
-    private static BufferedImage image;
     private static int[] pixels;
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-        image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-        // 2. Extract the direct underlying pixel memory bank
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         screwBox.loop().unlockFps();
         screwBox.environment()
@@ -38,9 +36,7 @@ public class PlaygroundApp {
     }
 
     private static void updateAndDrawPixels(int frame) {
-        // Nutzt nativ alle CPU-Kerne parallel
         Arrays.parallelSetAll(pixels, gid -> {
-            // Berechne X und Y aus dem 1D-Index (0 bis 999.999)
             int x = gid % WIDTH;
             int y = gid / WIDTH;
 
@@ -48,7 +44,6 @@ public class PlaygroundApp {
             int g = (y - frame) & 0xFF;
             int b = (x * y + frame) & 0xFF;
 
-            // Packt RGB in das Pixel-Array
             return (r << 16) | (g << 8) | b;
         });
     }
