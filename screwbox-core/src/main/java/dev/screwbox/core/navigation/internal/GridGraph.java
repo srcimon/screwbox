@@ -20,8 +20,8 @@ public class GridGraph implements Graph<Offset> {
     @Override
     public List<Offset> adjacentNodes(final Offset node) {
         return isDiagonalMovementAllowed
-                ? grid.freeSurroundingNodes(node)
-                : grid.freeAdjacentNodes(node);
+                ? grid.freeNodes(node, true)
+                : grid.freeNodes(node, false);
     }
 
     @Override
