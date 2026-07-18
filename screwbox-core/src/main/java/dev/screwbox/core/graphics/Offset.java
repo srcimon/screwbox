@@ -148,7 +148,6 @@ public final class Offset implements Serializable {
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
-    //TODO test all below
     /**
      * Returns the {@link Offset} below the current one.
      *
