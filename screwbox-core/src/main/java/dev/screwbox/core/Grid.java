@@ -9,7 +9,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -57,23 +56,23 @@ public class Grid<T> implements Serializable {
         return Math.floorDiv((int) value, cellSize);
     }
 
-    public Vector toWorld(final Offset cell) {
+    public final Vector toWorld(final Offset cell) {
         final double x = (cell.x() + 0.5) * cellSize + bounds.origin().x();
         final double y = (cell.y() + 0.5) * cellSize + bounds.origin().y();
         return Vector.$(x, y);
     }
 
-    public Bounds cellBounds(final Offset node) {
+    public final Bounds cellBounds(final Offset node) {
         final Vector position = toWorld(node);
         return Bounds.atPosition(position, cellSize, cellSize);
     }
 
-    public Offset toCell(final Vector position) {
+    public final Offset toCell(final Vector position) {
         final var translated = position.subtract(bounds.origin());
         return BinaryGrid.findCell(translated, cellSize);
     }
 
-    public List<Offset> nodes() {
+    public final List<Offset> nodes() {
         final var nodes = new ArrayList<Offset>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -83,4 +82,23 @@ public class Grid<T> implements Serializable {
         return nodes;
     }
 
+    public final int width() {
+        return width;
+    }
+
+    public final int height() {
+        return height;
+    }
+
+    public final int nodeCount() {
+        return width * height;
+    }
+
+    public final int cellSize() {
+        return cellSize;
+    }
+
+    protected boolean isInGrid(final int x, final int y) {
+        return x >= 0 && x < width && y >= 0 && y < height;
+    }
 }

@@ -58,14 +58,6 @@ public class BinaryGrid extends Grid<Boolean> {
         markRegion(area, true);
     }
 
-    public int width() {
-        return width;
-    }
-
-    public int height() {
-        return height;
-    }
-
     //TODO move into GridGraph?
     public List<Offset> freeAdjacentNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>(4);
@@ -154,17 +146,11 @@ public class BinaryGrid extends Grid<Boolean> {
         return neighbors;
     }
 
-    public int nodeCount() {
-        return width * height;
-    }
 
     public boolean isBlocked(final int x, final int y) {
         return isInGrid(x, y) && isBlocked.get(bitsetIndex(x, y));
     }
 
-    public int cellSize() {
-        return cellSize;
-    }
 
     public boolean isBlocked(final Offset node) {
         return isBlocked(node.x(), node.y());
@@ -192,7 +178,4 @@ public class BinaryGrid extends Grid<Boolean> {
         }
     }
 
-    private boolean isInGrid(final int x, final int y) {
-        return x >= 0 && x < width && y >= 0 && y < height;
-    }
 }
