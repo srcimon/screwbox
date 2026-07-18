@@ -155,7 +155,7 @@ public class Grid<T> implements Serializable {
     }
 
     /**
-     * Clears the contents of the cell at the specified position-
+     * Clears the contents of the cell at the specified position.
      */
     public void clear(final Vector position) {
         clear(toCell(position));
@@ -175,31 +175,48 @@ public class Grid<T> implements Serializable {
         set(x, y, null);
     }
 
-    //TODO javadoc below
-    public void set(Vector position, T value) {
+    /**
+     * Sets the contents at the specified position.
+     */
+    public void set(final Vector position, final T value) {
         set(toCell(position), value);
     }
 
-    public void set(int x, int y, T value) {
+    /**
+     * Sets the contents of the specified cell.
+     */
+    public void set(Offset cell, T value) {
+        set(cell.x(), cell.y(), value);
+    }
+
+    /**
+     * Sets the contents of the specified cell.
+     */
+    public void set(final int x, final int y, final T value) {
         validateCell(x, y);
         final var internalIndex = toDataIndex(x, y);
         cellData[internalIndex] = value;
     }
 
-    public T get(Offset cell) {
+    /**
+     * Returns the contents of the specified cell.
+     */
+    public T get(final Offset cell) {
         return get(cell.x(), cell.y());
     }
 
-    public T get(int x, int y) {
+    /**
+     * Returns the contents of the specified cell.
+     */
+    public T get(final int x, final int y) {
         validateCell(x, y);
         final var internalIndex = toDataIndex(x, y);
         return cellData[internalIndex];
     }
 
-    public void set(Offset cell, T value) {
-        set(cell.x(), cell.y(), value);
-    }
-
+    /**
+     * Sets the contents of all cells within the specified area.
+     */
     public void set(final Bounds area, final T value) {
         final var areaTranslated = area.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
         final int minX = Math.max(toCell(areaTranslated.origin().x()), 0);
