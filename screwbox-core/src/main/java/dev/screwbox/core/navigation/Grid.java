@@ -142,4 +142,16 @@ public class Grid<T> implements Serializable {
         set(cell.x(), cell.y(), value);
     }
 
+    protected void set(final Bounds region, final T value) {
+        final var areaTranslated = region.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
+        final int minX = Math.max(toCell(areaTranslated.origin().x()), 0);
+        final int maxX = Math.min(toCell(areaTranslated.bottomRight().x()), width - 1);
+        final int minY = Math.max(toCell(areaTranslated.origin().y()), 0);
+        final int maxY = Math.min(toCell(areaTranslated.bottomRight().y()), height - 1);
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                set(x, y, value);
+            }
+        }
+    }
 }

@@ -52,7 +52,7 @@ public class BinaryGrid extends Grid<Boolean> {
     }
 
     public void blockArea(final Bounds area) {
-        markRegion(area, true);
+        set(area, true);
     }
 
     //TODO move into GridGraph?
@@ -151,19 +151,6 @@ public class BinaryGrid extends Grid<Boolean> {
 
     public boolean isBlocked(final Offset node) {
         return isBlocked(node.x(), node.y());
-    }
-
-    private void markRegion(final Bounds region, final boolean status) {
-        final var areaTranslated = region.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
-        final int minX = Math.max(toCell(areaTranslated.origin().x()), 0);
-        final int maxX = Math.min(toCell(areaTranslated.bottomRight().x()), width - 1);
-        final int minY = Math.max(toCell(areaTranslated.origin().y()), 0);
-        final int maxY = Math.min(toCell(areaTranslated.bottomRight().y()), height - 1);
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                set(x, y, status);
-            }
-        }
     }
 
 }
