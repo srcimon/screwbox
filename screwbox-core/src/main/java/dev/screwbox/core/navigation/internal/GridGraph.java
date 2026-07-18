@@ -2,9 +2,10 @@ package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.navigation.Graph;
 import dev.screwbox.core.navigation.BinaryGrid;
+import dev.screwbox.core.navigation.Graph;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GridGraph implements Graph<Offset> {
@@ -19,9 +20,57 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public List<Offset> adjacentNodes(final Offset node) {
-        return isDiagonalMovementAllowed
-                ? grid.freeNodes(node, true)
-                : grid.freeNodes(node, false);
+        final List<Offset> outNeighbors = new ArrayList<>();
+        final Offset bottom = node.bottom();
+        final Offset top = node.top();
+        final Offset left = node.left();
+        final Offset right = node.right();
+
+        final boolean isBottomFree = isFree(bottom);
+        final boolean isTopFree = isFree(top);
+        final boolean isLeftFree = isFree(left);
+        final boolean isRightFree = isFree(right);
+
+        if (isBottomFree) {
+            outNeighbors.add(bottom);
+        }
+        if (isTopFree) {
+            outNeighbors.add(top);
+        }
+        if (isLeftFree) {
+            outNeighbors.add(left);
+        }
+        if (isRightFree) {
+            outNeighbors.add(right);
+        }
+
+        if (isDiagonalMovementAllowed) {
+            if (isBottomFree && isRightFree) {
+                final Offset diag = node.bottomRight();
+                if (isFree(diag)) {
+                    outNeighbors.add(diag);
+                }
+            }
+            if (isBottomFree && isLeftFree) {
+                final Offset diag = node.bottomLeft();
+                if (isFree(diag)) {
+                    outNeighbors.add(diag);
+                }
+            }
+            if (isTopFree && isLeftFree) {
+                final Offset diag = node.topLeft();
+                if (isFree(diag)) {
+                    outNeighbors.add(diag);
+                }
+            }
+            if (isTopFree && isRightFree) {
+                final Offset diag = node.topRight();
+                if (isFree(diag)) {
+                    outNeighbors.add(diag);
+                }
+            }
+        }
+        return outNeighbors;
     }
 
     @Override
@@ -43,4 +92,9 @@ public class GridGraph implements Graph<Offset> {
     public boolean nodeExists(final Offset node) {
         return grid.contains(node);
     }
+
+    private boolean isFree(final Offset node) {
+        return grid.contains(node) && !grid.hasValue(node);
+    }
+
 }
