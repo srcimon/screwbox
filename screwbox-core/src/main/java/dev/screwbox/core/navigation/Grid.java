@@ -2,29 +2,26 @@ package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.BitSet;
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
-public class Grid implements Serializable {
+/**
+ * A grid aligned to the game world. Stores any kind of data within cells.
+ */
+public class Grid<T extends Serializable> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    private final BitSet isBlocked;
-    private final int width;
-    private final int height;
-    private final int cellSize;
-    private final Bounds bounds;
 
     /**
      * Returns the cell that this {@link Vector} would reside in within a grid with the specified cell size.
@@ -37,193 +34,82 @@ public class Grid implements Serializable {
         return Offset.at(Math.floorDiv((int) vector.x(), cellSize), Math.floorDiv((int) vector.y(), cellSize));
     }
 
-    public Grid(final Bounds bounds, final int cellSize) {
-        requireNonNull(bounds, "grid bounds must not be null");
-        Validate.positive(cellSize, "cell size must be positive");
-        Validate.isTrue(() -> bounds.origin().x() % cellSize == 0, "bounds should fit cell size");
-        Validate.isTrue(() -> bounds.origin().y() % cellSize == 0, "bounds should fit cell size");
+    protected final int width;
+    protected final int height;
+    protected final int cellSize;
+    protected final Bounds bounds;
+    protected final T[] cellData;
 
-        this.cellSize = cellSize;
-        this.bounds = bounds;
-        width = toGrid(bounds.width());
-        height = toGrid(bounds.height());
-        isBlocked = new BitSet(width * height);
+
+    /**
+     * Creates an instance of a boolean grid.
+     */
+    public static Grid<Boolean> booleanGrid(final Bounds bounds, final int cellSize) {
+        return new Grid<>(bounds, cellSize, Boolean.class);
     }
 
     /**
-     * Returns the area of this {@link Grid} in the {@link World}.
+     * Creates a new instance at the specified bounds with the specified cell size.
+     * Cells must fit exactly within the bounds.
+     */
+    public Grid(final Bounds bounds, final int cellSize, Class<T> type) {
+        requireNonNull(bounds, "grid bounds must not be null");
+        Validate.positive(cellSize, "cell size must be positive");
+        Validate.isTrue(() -> bounds.width() % cellSize == 0, "bounds should fit cell size");
+        Validate.isTrue(() -> bounds.height() % cellSize == 0, "bounds should fit cell size");
+
+        this.cellSize = cellSize;
+        this.bounds = bounds;
+        width = toCell(bounds.width());
+        height = toCell(bounds.height());
+        this.cellData = (T[]) Array.newInstance(type, width * height);
+    }
+
+    /**
+     * Fills all cells with the specified data.
+     *
+     * @since 3.33.0
+     */
+    public void fill(T value) {
+        Arrays.fill(cellData, value);
+    }
+
+    /**
+     * Returns the {@link Bounds} of this {@link Grid} in the {@link Environment}.
      */
     public Bounds bounds() {
         return bounds;
     }
 
     /**
-     * Returns {@code true} if the specified position is not blocked and inside the {@link Grid}.
+     * Returns the cell position of the specified cell within the world.  Will return positions that reside outside the grid.
      */
-    public boolean isFree(final int x, final int y) {
-        return isInGrid(x, y) && !isBlocked.get(bitsetIndex(x, y));
-    }
-
-    private boolean isInGrid(final int x, final int y) {
-        return x >= 0 && x < width && y >= 0 && y < height;
-    }
-
-    public boolean isFree(final Offset node) {
-        return isFree(node.x(), node.y());
-    }
-
-    public Vector toWorld(final Offset node) {
-        final double x = (node.x() + 0.5) * cellSize + bounds.origin().x();
-        final double y = (node.y() + 0.5) * cellSize + bounds.origin().y();
+    public Vector cellPosition(final Offset cell) {
+        final double x = (cell.x() + 0.5) * cellSize + bounds.origin().x();
+        final double y = (cell.y() + 0.5) * cellSize + bounds.origin().y();
         return Vector.$(x, y);
     }
 
-    public Bounds nodeBounds(final Offset node) {
-        final Vector position = toWorld(node);
+    /**
+     * Returns the cell {@link Bounds} of the specified cell within the world. Will return {@link Bounds} that reside outside the grid.
+     */
+    public Bounds cellBounds(final Offset cell) {
+        final Vector position = cellPosition(cell);
         return Bounds.atPosition(position, cellSize, cellSize);
     }
 
-    public Offset toGrid(final Vector position) {
+    /**
+     * Returns the cell at the specified positon. Will return cells that reside outside the grid.
+     */
+    public Offset toCell(final Vector position) {
         final var translated = position.subtract(bounds.origin());
         return Grid.findCell(translated, cellSize);
     }
 
-    public void freeArea(final Bounds area) {
-        markRegion(area, false);
-    }
-
-    public void freeAt(final Vector position) {
-        statusChangeAt(position, false);
-    }
-
-    public void blockAt(final Vector position) {
-        statusChangeAt(position, true);
-    }
-
-    public void block(final Offset node) {
-        block(node.x(), node.y());
-    }
-
-    public void block(final int x, final int y) {
-        statusChange(x, y, true);
-    }
-
-    private void statusChange(final int x, final int y, final boolean status) {
-        if (isInGrid(x, y)) {
-            isBlocked.set(bitsetIndex(x, y), status);
-        }
-    }
-
-    private void statusChangeAt(final Vector position, boolean status) {
-        final Offset node = toGrid(position);
-        statusChange(node.x(), node.y(), status);
-    }
-
-    public void blockArea(final Bounds area) {
-        markRegion(area, true);
-    }
-
-    public int width() {
-        return width;
-    }
-
-    public int height() {
-        return height;
-    }
-
     /**
-     * Returns a list of all directly adjacent nodes within the grid.
-     * Will return the node to the east, west, north and south.
+     * Returns a list of all cells within the grid.
      */
-    public List<Offset> adjacentNodes(final Offset node) {
-        final List<Offset> neighbors = new ArrayList<>();
-        addIfInGrid(neighbors, node.add(0, 1));
-        addIfInGrid(neighbors, node.add(0, -1));
-        addIfInGrid(neighbors, node.add(-1, 0));
-        addIfInGrid(neighbors, node.add(1, 0));
-        return neighbors;
-    }
-
-    /**
-     * Returns a list of all surrounding nodes within the grid.
-     * Will contain eight nodes max.
-     */
-    public List<Offset> surroundingNodes(final Offset node) {
-        final List<Offset> neighbors = new ArrayList<>();
-        addIfInGrid(neighbors, node.add(0, 1));
-        addIfInGrid(neighbors, node.add(0, -1));
-        addIfInGrid(neighbors, node.add(-1, 0));
-        addIfInGrid(neighbors, node.add(1, 0));
-        addIfInGrid(neighbors, node.add(-1, 1));
-        addIfInGrid(neighbors, node.add(1, 1));
-        addIfInGrid(neighbors, node.add(-1, -1));
-        addIfInGrid(neighbors, node.add(1, -1));
-        return neighbors;
-    }
-
-    public List<Offset> freeAdjacentNodes(final Offset node) {
-        final List<Offset> neighbors = new ArrayList<>();
-        final Consumer<Offset> addIfFree = nde -> {
-            if (isFree(nde)) {
-                neighbors.add(nde);
-            }
-        };
-
-        final Offset down = node.addY(1);
-        final Offset up = node.addY(-1);
-        final Offset left = node.addX(-1);
-        final Offset right = node.addX(1);
-        addIfFree.accept(down);
-        addIfFree.accept(up);
-        addIfFree.accept(left);
-        addIfFree.accept(right);
-
-        return neighbors;
-    }
-
-    public List<Offset> freeSurroundingNodes(final Offset node) {
-        final List<Offset> neighbors = new ArrayList<>();
-        final Consumer<Offset> addIfFree = nde -> {
-            if (isFree(nde)) {
-                neighbors.add(nde);
-            }
-        };
-
-        final Offset down = node.addY(1);
-        final Offset up = node.addY(-1);
-        final Offset left = node.addX(-1);
-        final Offset right = node.addX(1);
-        addIfFree.accept(down);
-        addIfFree.accept(up);
-        addIfFree.accept(left);
-        addIfFree.accept(right);
-
-        final Offset downLeft = node.add(-1, 1);
-        final Offset downRight = node.add(1, 1);
-
-        if (isFree(down)) {
-            if (isFree(right)) {
-                addIfFree.accept(downRight);
-            }
-            if (isFree(left)) {
-                addIfFree.accept(downLeft);
-            }
-        }
-
-        final Offset upLeft = node.add(-1, -1);
-        final Offset upRight = node.add(1, -1);
-        if (isFree(up)) {
-            if (isFree(upLeft) && isFree(left)) {
-                addIfFree.accept(upLeft);
-            }
-            if (isFree(upRight) && isFree(right)) {
-                addIfFree.accept(upRight);
-            }
-        }
-        return neighbors;
-    }
-
-    public List<Offset> nodes() {
+    public List<Offset> cells() {
         final var nodes = new ArrayList<Offset>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -233,55 +119,151 @@ public class Grid implements Serializable {
         return nodes;
     }
 
-    public int nodeCount() {
+    /**
+     * Returns the horizontal number of cells within the grid.
+     */
+    public int width() {
+        return width;
+    }
+
+    /**
+     * Returns the vertical number of cells within the grid.
+     */
+    public int height() {
+        return height;
+    }
+
+    /**
+     * Returns the number of cells within the grid.
+     */
+    public int cellCount() {
         return width * height;
     }
 
-    public Vector snap(final Vector position) {
-        final Offset node = toGrid(position);
-        return toWorld(node);
-    }
-
-    public boolean isBlocked(final int x, final int y) {
-        return isInGrid(x, y) && isBlocked.get(bitsetIndex(x, y));
-    }
-
+    /**
+     * Returns the size of a single cell within the grid.
+     */
     public int cellSize() {
         return cellSize;
     }
 
-    public boolean isBlocked(final Offset node) {
-        return isBlocked(node.x(), node.y());
+
+    /**
+     * Returns {@code true} if the specified cell exits within the grid.
+     */
+    public boolean contains(final Offset cell) {
+        return contains(cell.x(), cell.y());
     }
 
-    private int toGrid(final double value) {
-        return Math.floorDiv((int) value, cellSize);
+    /**
+     * Returns {@code true} if the specified cell exits within the grid.
+     */
+    public boolean contains(final int x, final int y) {
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 
-    private int bitsetIndex(final int x, final int y) {
-        return x * height + y;
+    /**
+     * Clears the contents of the cell at the specified position.
+     */
+    public void clear(final Vector position) {
+        clear(toCell(position));
     }
 
-    private boolean isInGrid(final Offset node) {
-        return node.x() > -1 && node.x() < width && node.y() > -1 && node.y() < height;
+    /**
+     * Clears the contents of the specified cell.
+     */
+    public void clear(final Offset cell) {
+        clear(cell.x(), cell.y());
     }
 
-    private void markRegion(final Bounds region, final boolean status) {
-        final var areaTranslated = region.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
-        final int minX = Math.max(toGrid(areaTranslated.origin().x()), 0);
-        final int maxX = Math.min(toGrid(areaTranslated.bottomRight().x()), width - 1);
-        final int minY = Math.max(toGrid(areaTranslated.origin().y()), 0);
-        final int maxY = Math.min(toGrid(areaTranslated.bottomRight().y()), height - 1);
+    /**
+     * Clears the contents of the specified cell.
+     */
+    public void clear(final int x, final int y) {
+        set(x, y, null);
+    }
+
+    /**
+     * Sets the contents at the specified position.
+     */
+    public void set(final Vector position, final T value) {
+        set(toCell(position), value);
+    }
+
+    /**
+     * Sets the contents of the specified cell.
+     */
+    public void set(Offset cell, T value) {
+        set(cell.x(), cell.y(), value);
+    }
+
+    /**
+     * Sets the contents of the specified cell.
+     */
+    public void set(final int x, final int y, final T value) {
+        validateCell(x, y);
+        final var internalIndex = toDataIndex(x, y);
+        cellData[internalIndex] = value;
+    }
+
+    /**
+     * Returns the contents of the specified cell.
+     */
+    public T get(final Offset cell) {
+        return get(cell.x(), cell.y());
+    }
+
+    /**
+     * Returns the contents of the specified cell.
+     */
+    public T get(final int x, final int y) {
+        validateCell(x, y);
+        final var internalIndex = toDataIndex(x, y);
+        return cellData[internalIndex];
+    }
+
+    /**
+     * Sets the contents of all cells within the specified area.
+     */
+    public void set(final Bounds area, final T value) {
+        final var areaTranslated = area.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
+        final int minX = Math.max(toCell(areaTranslated.origin().x()), 0);
+        final int maxX = Math.min(toCell(areaTranslated.bottomRight().x()), width - 1);
+        final int minY = Math.max(toCell(areaTranslated.origin().y()), 0);
+        final int maxY = Math.min(toCell(areaTranslated.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                isBlocked.set(bitsetIndex(x, y), status);
+                set(x, y, value);
             }
         }
     }
 
-    private void addIfInGrid(final List<Offset> nodes, final Offset node) {
-        if (isInGrid(node)) {
-            nodes.add(node);
+    /**
+     * Returns {@code true} if the specified cell exists and has a value.
+     */
+    public boolean hasValue(final Offset cell) {
+        return hasValue(cell.x(), cell.y());
+    }
+
+    /**
+     * Returns {@code true} if the specified cell exists and has a value.
+     */
+    public boolean hasValue(int x, int y) {
+        return contains(x, y) && get(x, y) != null;
+    }
+
+    private int toCell(final double value) {
+        return Math.floorDiv((int) value, cellSize);
+    }
+
+    private void validateCell(final int x, final int y) {
+        if (!contains(x, y)) {
+            throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
         }
     }
+
+    private int toDataIndex(final int x, final int y) {
+        return y * width + x;
+    }
+
 }

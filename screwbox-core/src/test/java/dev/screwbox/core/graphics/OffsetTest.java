@@ -104,4 +104,52 @@ class OffsetTest {
     void replaceY_newY_returnsSameX() {
         assertThat(Offset.at(2, 9).replaceY(3)).isEqualTo(Offset.at(2, 3));
     }
+
+    @Test
+    void top_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+        assertThat(offset.top()).isEqualTo(Offset.at(5, 29));
+    }
+
+    @Test
+    void bottom_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+        assertThat(offset.bottom()).isEqualTo(Offset.at(5, 31));
+    }
+
+    @Test
+    void left_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+        assertThat(offset.left()).isEqualTo(Offset.at(4, 30));
+    }
+
+    @Test
+    void right_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+        assertThat(offset.right()).isEqualTo(Offset.at(6, 30));
+    }
+
+    @Test
+    void bottomLeft_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+        assertThat(offset.bottomLeft()).isEqualTo(Offset.at(4, 31));
+    }
+
+    @Test
+    void bottomRight_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+        assertThat(offset.bottomRight()).isEqualTo(Offset.at(6, 31));
+    }
+
+    @Test
+    void topLeft_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+        assertThat(offset.topLeft()).isEqualTo(Offset.at(4, 29));
+    }
+
+    @Test
+    void topRight_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+        assertThat(offset.topRight()).isEqualTo(Offset.at(6, 29));
+    }
 }

@@ -16,7 +16,7 @@ class GridTest {
 
     @Test
     void newInstance_areaNull_throwsException() {
-        assertThatThrownBy(() -> new Grid(null, 4))
+        assertThatThrownBy(() -> Grid.booleanGrid(null, 4))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("grid bounds must not be null");
     }
@@ -24,23 +24,23 @@ class GridTest {
     @Test
     void newInstance_cellSizeZero_throwsException() {
         Bounds area = Bounds.max();
-        assertThatThrownBy(() -> new Grid(area, 0))
+        assertThatThrownBy(() -> Grid.booleanGrid(area, 0))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("cell size must be positive (actual value: 0)");
     }
 
     @Test
-    void newInstance_invalidAreaOriginX_throwsException() {
+    void newInstance_invalidAreaWidth_throwsException() {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
-        assertThatThrownBy(() -> new Grid(area, 16))
+        assertThatThrownBy(() -> Grid.booleanGrid(area, 16))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("bounds should fit cell size");
     }
 
     @Test
-    void newInstance_invalidAreaOriginY_throwsException() {
-        Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
-        assertThatThrownBy(() -> new Grid(area, 16))
+    void newInstance_invalidAreaHeight_throwsException() {
+        Bounds area = Bounds.atOrigin(-32, 4, 16, 10);
+        assertThatThrownBy(() -> Grid.booleanGrid(area, 16))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("bounds should fit cell size");
     }
@@ -49,239 +49,84 @@ class GridTest {
     void newInstance_validArguments_createsEmptyGrid() {
         Bounds area = Bounds.atOrigin(Vector.zero(), 400, 200);
 
-        var grid = new Grid(area, 20);
+        var grid = Grid.booleanGrid(area, 20);
 
-        assertThat(grid.nodes())
+        assertThat(grid.cells())
             .hasSize(200)
-            .allMatch(grid::isFree);
+            .noneMatch(grid::hasValue);
 
         assertThat(grid.width()).isEqualTo(20);
         assertThat(grid.height()).isEqualTo(10);
     }
 
-    @Test
-    void freeAdjacentNodes_noneBlocked_returnsAdjacentNodes() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-
-        var grid = new Grid(area, 16);
-
-        assertThat(grid.freeAdjacentNodes(Offset.at(1, 1)))
-            .hasSize(4)
-            .contains(Offset.at(0, 1))
-            .contains(Offset.at(2, 1))
-            .contains(Offset.at(1, 0))
-            .contains(Offset.at(1, 2));
-    }
 
     @Test
-    void freeSurroundingNodes_noneBlocked_returnsSurroundingNodes() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-
-        var grid = new Grid(area, 16);
-
-        assertThat(grid.freeSurroundingNodes(Offset.at(1, 1)))
-            .hasSize(8)
-            .contains(Offset.at(0, 1))
-            .contains(Offset.at(2, 1))
-            .contains(Offset.at(1, 0))
-            .contains(Offset.at(1, 2))
-            .contains(Offset.at(0, 0))
-            .contains(Offset.at(0, 1))
-            .contains(Offset.at(2, 0))
-            .contains(Offset.at(2, 2));
-    }
-
-    @Test
-    void freeSurroundingNodes_onEdge_returnsOnlyTheOnesThatResideInTheGrid() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-
-        var grid = new Grid(area, 16);
-
-        assertThat(grid.freeSurroundingNodes(Offset.at(0, 0)))
-            .hasSize(3)
-            .contains(Offset.at(0, 1))
-            .contains(Offset.at(1, 1))
-            .contains(Offset.at(1, 0));
-    }
-
-    @Test
-    void toGrid_translatesVectorToOffset() {
+    void toCell_translatesVectorToOffset() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new Grid(area, 16);
+        var grid = Grid.booleanGrid(area, 16);
 
-        Offset node = grid.toGrid($(192, -64));
+        Offset node = grid.toCell($(192, -64));
 
         assertThat(node).isEqualTo(Offset.at(11, -2));
     }
 
     @Test
-    void toGrid_translatesNodeFromGridToWorld() {
+    void toCell_translatesNodeFromGridToWorld() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new Grid(area, 16);
+        var grid = Grid.booleanGrid(area, 16);
 
-        Offset node = grid.toGrid($(192, -64));
-        Vector vector = grid.toWorld(node);
+        Offset node = grid.toCell($(192, -64));
+        Vector vector = grid.cellPosition(node);
 
         assertThat(vector).isEqualTo($(200, -56));
     }
 
     @Test
-    void snap_positionNotNull_snapsPositionToGrid() {
-        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16);
-
-        var snapped = grid.snap($(40.12, 401.40));
-        assertThat(snapped).isEqualTo($(40.0, 408.0));
-    }
-
-    @Test
     void cellSize_returnsCellSize() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16);
+        var grid = Grid.booleanGrid(area, 16);
 
         assertThat(grid.cellSize()).isEqualTo(16);
     }
 
     @Test
-    void blockArea_areaInGrid_blocksGridArea() {
+    void set_areaInGrid_setsValuesWithinArea() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = Grid.booleanGrid(area, 4);
 
-        grid.blockArea($$(3, 2, 2, 3));
+        grid.set($$(3, 2, 2, 3), true);
 
-        assertThat(grid.isFree(0, 0)).isFalse();
-        assertThat(grid.isFree(0, 1)).isFalse();
-        assertThat(grid.isFree(1, 0)).isFalse();
-        assertThat(grid.isFree(1, 1)).isFalse();
-        assertThat(grid.isFree(2, 0)).isTrue();
-        assertThat(grid.isFree(2, 1)).isTrue();
-        assertThat(grid.isFree(0, 2)).isTrue();
-        assertThat(grid.isFree(1, 2)).isTrue();
-        assertThat(grid.isFree(2, 2)).isTrue();
+        assertThat(grid.get(0, 0)).isTrue();
+        assertThat(grid.get(0, 1)).isTrue();
+        assertThat(grid.get(1, 0)).isTrue();
+        assertThat(grid.get(1, 1)).isTrue();
+        assertThat(grid.get(1, 1)).isTrue();
+        assertThat(grid.hasValue(2, 0)).isFalse();
+        assertThat(grid.hasValue(2, 1)).isFalse();
+        assertThat(grid.hasValue(0, 2)).isFalse();
+        assertThat(grid.hasValue(1, 2)).isFalse();
+        assertThat(grid.hasValue(2, 2)).isFalse();
     }
 
-    @Test
-    void blockAt_positionInGrid_blocksNodeAtPosition() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        grid.blockAt($(5, 5));
-
-        assertThat(grid.isBlocked(1, 1)).isTrue();
-    }
 
     @Test
-    void freeAt_positionInGrid_freesPosition() {
+    void cellBounds_cellOutOfGrid_returnsBoundsInWorld() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-        grid.blockArea(area);
+        var grid = Grid.booleanGrid(area, 4);
 
-        grid.freeAt($(5, 5));
-
-        assertThat(grid.isFree(1, 1)).isTrue();
-    }
-
-    @Test
-    void nodeBoundsnodeInGrid_returnsAreaInWorld() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        var result = grid.nodeBounds(Offset.at(3, 3));
-        assertThat(result).isEqualTo($$(12, 12, 4, 4));
-    }
-
-    @Test
-    void nodeBounds_nodeOutOfGrid_returnsAreaInWorld() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        var result = grid.nodeBounds(Offset.at(30, 30));
+        var result = grid.cellBounds(Offset.at(30, 30));
         assertThat(result).isEqualTo($$(120, 120, 4, 4));
     }
 
+
     @Test
-    void freeArea_someBlocked_freesArea() {
+    void cellCount_3X3Area_returns9() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-        grid.block(0, 0);
-        grid.block(0, 1);
+        var grid = Grid.booleanGrid(area, 4);
 
-        grid.freeArea($$(0, 0, 2, 2));
-
-        assertThat(grid.isFree(0, 0)).isTrue();
-        assertThat(grid.isFree(0, 1)).isFalse();
+        assertThat(grid.cellCount()).isEqualTo(9);
     }
 
-    @Test
-    void block_nodeInGrid_blocksNode() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        Offset node = Offset.at(1, 2);
-        grid.block(node);
-
-        assertThat(grid.isBlocked(node)).isTrue();
-    }
-
-    @Test
-    void nodeCount_3x3area_returns9() {
-        Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
-
-        assertThat(grid.nodeCount()).isEqualTo(9);
-    }
-
-    @Test
-    void surroundingNodes_positionOutsideOfGrid_isEmpty() {
-        var grid = new Grid($$(0, 0, 12, 12), 4);
-
-        var surroundingNodes = grid.surroundingNodes(Offset.at(-4, -4));
-
-        assertThat(surroundingNodes).isEmpty();
-    }
-
-    @Test
-    void surroundingNodes_positionInsideOfGrid_returnsNeighbors() {
-        var grid = new Grid($$(0, 0, 12, 12), 2);
-
-        var surroundingNodes = grid.surroundingNodes(Offset.at(2, 2));
-
-        assertThat(surroundingNodes).containsExactly(
-            Offset.at(2, 3),
-            Offset.at(2, 1),
-            Offset.at(1, 2),
-            Offset.at(3, 2),
-            Offset.at(1, 3),
-            Offset.at(3, 3),
-            Offset.at(1, 1),
-            Offset.at(3, 1));
-    }
-
-    @Test
-    void isBlocked_notBlocked_isFalse() {
-        var grid = new Grid($$(0, 0, 10, 16), 1);
-        grid.block(0, 0);
-        grid.block(8, 0);
-        grid.block(1, 12);
-        grid.block(1, 15);
-
-        assertThat(grid.isBlocked(2, 5)).isFalse();
-        assertThat(grid.isBlocked(2, 2)).isFalse();
-    }
-
-    @Test
-    void isBlocked_blocked_isTrue() {
-        var grid = new Grid($$(0, 0, 10, 16), 1);
-        grid.block(0, 0);
-        grid.block(8, 0);
-        grid.block(1, 12);
-        grid.block(1, 15);
-
-        assertThat(grid.isBlocked(0, 0)).isTrue();
-        assertThat(grid.isBlocked(8, 0)).isTrue();
-        assertThat(grid.isBlocked(1, 12)).isTrue();
-        assertThat(grid.isBlocked(1, 15)).isTrue();
-    }
 
     @ParameterizedTest
     @CsvSource({
@@ -305,18 +150,21 @@ class GridTest {
     }
 
     @Test
-    void adjacentNodes_centralNode_hasFourNodes() {
-        Grid grid = new Grid(Bounds.atOrigin(0, 0, 128, 128), 16);
+    void fill_emptyGrid_fillsAllsCells() {
+        var grid = new Grid<>(Bounds.atOrigin(4, 4, 4, 4), 4, String.class);
+        grid.fill("test");
 
-        var adjacentNodes = grid.adjacentNodes(Offset.at(3, 3));
-        assertThat(adjacentNodes).containsExactly(Offset.at(3, 4), Offset.at(3, 2), Offset.at(2, 3), Offset.at(4, 3));
+        assertThat(grid.cells()).allMatch(cell -> grid.get(cell).equals("test"));
     }
 
     @Test
-    void adjacentNodes_edgeNode_hasOnlyValidNodes() {
-        Grid grid = new Grid(Bounds.atOrigin(0, 0, 128, 128), 16);
+    void clear_cellWithinGrid_clearsCellData() {
+        var grid = new Grid<>(Bounds.atOrigin(4, 4, 4, 4), 1, String.class);
+        var cell = Offset.at(2, 0);
+        grid.set(cell, "test");
 
-        var adjacentNodes = grid.adjacentNodes(Offset.origin());
-        assertThat(adjacentNodes).containsExactly(Offset.at(0, 1), Offset.at(1, 0));
+        grid.clear(cell);
+
+        assertThat(grid.hasValue(cell)).isFalse();
     }
 }

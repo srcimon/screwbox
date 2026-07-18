@@ -22,45 +22,45 @@ public class GridUpdateSystem implements EntitySystem {
     }
 
     private void update(final GridComponent gridComponent) {
-        final Grid oldGrid = gridComponent.grid;
-        final Grid grid = new Grid(oldGrid.bounds(), oldGrid.cellSize());
-        oldGrid.nodes().stream().parallel().forEach(node -> {
+        final Grid<Boolean> oldGrid = gridComponent.grid;
+        final Grid<Boolean> grid = Grid.booleanGrid(oldGrid.bounds(), oldGrid.cellSize());
+        oldGrid.cells().stream().parallel().forEach(node -> {
             final int count = blockedSurroundingNodesCount(oldGrid, node);
-            if (oldGrid.isFree(node)) {
+            if (oldGrid.contains(node) && !oldGrid.hasValue(node)) {
                 if (count == 3) {
-                    grid.block(node);
+                    grid.set(node, true);
                 }
             } else if (count == 2 || count == 3) {
-                grid.block(node);
+                grid.set(node, true);
             }
         });
         gridComponent.grid = grid;
     }
 
-    private int blockedSurroundingNodesCount(final Grid grid, final Offset node) {
+    private int blockedSurroundingNodesCount(final Grid<Boolean> grid, final Offset node) {
         int count = 0;
-        if (grid.isBlocked(node.add(0, 1))) {
+        if (grid.hasValue(node.top())) {
             count++;
         }
-        if (grid.isBlocked(node.add(0, -1))) {
+        if (grid.hasValue(node.topRight())) {
             count++;
         }
-        if (grid.isBlocked(node.add(-1, 1))) {
+        if (grid.hasValue(node.right())) {
             count++;
         }
-        if (grid.isBlocked(node.add(-1, 0))) {
+        if (grid.hasValue(node.bottomRight())) {
             count++;
         }
-        if (grid.isBlocked(node.add(-1, -1))) {
+        if (grid.hasValue(node.bottom())) {
             count++;
         }
-        if (grid.isBlocked(node.add(1, 1))) {
+        if (grid.hasValue(node.bottomLeft())) {
             count++;
         }
-        if (grid.isBlocked(node.add(1, -1))) {
+        if (grid.hasValue(node.left())) {
             count++;
         }
-        if (grid.isBlocked(node.add(1, 0))) {
+        if (grid.hasValue(node.topLeft())) {
             count++;
         }
         return count;

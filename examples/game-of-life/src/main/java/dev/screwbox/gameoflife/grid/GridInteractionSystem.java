@@ -13,10 +13,10 @@ public class GridInteractionSystem implements EntitySystem {
         final Vector mousePosition = engine.mouse().position();
 
         if (engine.mouse().isDown(MouseButton.LEFT)) {
-            grid.blockAt(mousePosition);
+            grid.set(mousePosition, true);
         }
         if (engine.mouse().isDown(MouseButton.RIGHT)) {
-            grid.freeAt(mousePosition);
+            grid.clear(mousePosition);
         }
     }
 

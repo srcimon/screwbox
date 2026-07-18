@@ -21,8 +21,8 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid grid = new Grid($$(0, 0, 5, 5), 1);
-        grid.blockArea($$(2, 0, 1, 5));
+        Grid<Boolean> grid = Grid.booleanGrid($$(0, 0, 5, 5), 1);
+        grid.set($$(2, 0, 1, 5), true);
 
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
@@ -34,8 +34,8 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid grid = new Grid($$(0, 0, 5, 5), 1);
-        grid.blockArea($$(2, 2, 2, 2));
+        Grid<Boolean> grid = Grid.booleanGrid($$(0, 0, 5, 5), 1);
+        grid.set($$(2, 2, 2, 2), true);
 
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
@@ -43,12 +43,12 @@ class DijkstraAlgorithmTest {
         List<Offset> path = algorithm.findPath(new GridGraph(grid, true), start, end);
 
         assertThat(path).containsExactly(
-                Offset.at(0, 1),
-                Offset.at(0, 2),
-                Offset.at(0, 3),
-                Offset.at(1, 4),
-                Offset.at(2, 4),
-                Offset.at(3, 4),
-                Offset.at(4, 4));
+            Offset.at(0, 1),
+            Offset.at(0, 2),
+            Offset.at(0, 3),
+            Offset.at(1, 4),
+            Offset.at(2, 4),
+            Offset.at(3, 4),
+            Offset.at(4, 4));
     }
 }
