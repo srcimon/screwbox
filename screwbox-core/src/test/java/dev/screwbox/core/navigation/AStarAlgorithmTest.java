@@ -21,7 +21,7 @@ class AStarAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid<Boolean> grid = new Grid<>($$(0, 0, 5, 5), 1);
+        Grid<Boolean> grid = Grid.booleanGrid($$(0, 0, 5, 5), 1);
         grid.set($$(2, 0, 1, 5), true);
 
         Offset start = Offset.at(0, 0);
@@ -35,7 +35,7 @@ class AStarAlgorithmTest {
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid<Boolean> grid = new Grid<>($$(0, 0, 5, 5), 1);
+        Grid<Boolean> grid = Grid.booleanGrid($$(0, 0, 5, 5), 1);
         grid.set($$(2, 2, 2, 2), true);
         grid.set($$(2, 1, 1, 1), true);
 

@@ -17,7 +17,7 @@ public class GridComponent implements Component {
 
     public GridComponent() {
         final Random random = new Random();
-        grid = new Grid<>($$(-1000, -1000, 1000, 1000), 2);
+        grid = Grid.booleanGrid($$(-1000, -1000, 1000, 1000), 2);
         for (int i = 0; i < grid.width() * 60; i++) {
             final int x = random.nextInt(0, grid.width());
             final int y = random.nextInt(0, grid.height());

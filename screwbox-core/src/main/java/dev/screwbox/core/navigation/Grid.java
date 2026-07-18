@@ -8,6 +8,7 @@ import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,11 +40,19 @@ public class Grid<T extends Serializable> implements Serializable {
     protected final Bounds bounds;
     protected final T[] cellData;
 
+
+    /**
+     * Creates an instance of a boolean grid.
+     */
+    public static Grid<Boolean> booleanGrid(final Bounds bounds, final int cellSize) {
+        return new Grid<>(bounds, cellSize, Boolean.class);
+    }
+
     /**
      * Creates a new instance at the specified bounds with the specified cell size.
-     * Cells must fit exactly within the bounds. Supports only cells with
+     * Cells must fit exactly within the bounds.
      */
-    public Grid(final Bounds bounds, final int cellSize) {
+    public Grid(final Bounds bounds, final int cellSize, Class<T> type) {
         requireNonNull(bounds, "grid bounds must not be null");
         Validate.positive(cellSize, "cell size must be positive");
         Validate.isTrue(() -> bounds.width() % cellSize == 0, "bounds should fit cell size");
@@ -53,7 +62,7 @@ public class Grid<T extends Serializable> implements Serializable {
         this.bounds = bounds;
         width = toCell(bounds.width());
         height = toCell(bounds.height());
-        cellData = (T[]) new Object[width * height];
+        this.cellData = (T[]) Array.newInstance(type, width * height);
     }
 
     /**

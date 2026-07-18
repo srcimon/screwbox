@@ -16,7 +16,7 @@ class GridTest {
 
     @Test
     void newInstance_areaNull_throwsException() {
-        assertThatThrownBy(() -> new Grid<>(null, 4))
+        assertThatThrownBy(() -> Grid.booleanGrid(null, 4))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("grid bounds must not be null");
     }
@@ -24,7 +24,7 @@ class GridTest {
     @Test
     void newInstance_cellSizeZero_throwsException() {
         Bounds area = Bounds.max();
-        assertThatThrownBy(() -> new Grid<>(area, 0))
+        assertThatThrownBy(() -> Grid.booleanGrid(area, 0))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("cell size must be positive (actual value: 0)");
     }
@@ -32,7 +32,7 @@ class GridTest {
     @Test
     void newInstance_invalidAreaWidth_throwsException() {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
-        assertThatThrownBy(() -> new Grid<>(area, 16))
+        assertThatThrownBy(() -> Grid.booleanGrid(area, 16))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("bounds should fit cell size");
     }
@@ -40,7 +40,7 @@ class GridTest {
     @Test
     void newInstance_invalidAreaHeight_throwsException() {
         Bounds area = Bounds.atOrigin(-32, 4, 16, 10);
-        assertThatThrownBy(() -> new Grid<>(area, 16))
+        assertThatThrownBy(() -> Grid.booleanGrid(area, 16))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("bounds should fit cell size");
     }
@@ -49,7 +49,7 @@ class GridTest {
     void newInstance_validArguments_createsEmptyGrid() {
         Bounds area = Bounds.atOrigin(Vector.zero(), 400, 200);
 
-        var grid = new Grid<Boolean>(area, 20);
+        var grid = Grid.booleanGrid(area, 20);
 
         assertThat(grid.cells())
             .hasSize(200)
@@ -63,7 +63,7 @@ class GridTest {
     @Test
     void toCell_translatesVectorToOffset() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new Grid<Boolean>(area, 16);
+        var grid = Grid.booleanGrid(area, 16);
 
         Offset node = grid.toCell($(192, -64));
 
@@ -73,7 +73,7 @@ class GridTest {
     @Test
     void toCell_translatesNodeFromGridToWorld() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new Grid<>(area, 16);
+        var grid = Grid.booleanGrid(area, 16);
 
         Offset node = grid.toCell($(192, -64));
         Vector vector = grid.cellPosition(node);
@@ -84,7 +84,7 @@ class GridTest {
     @Test
     void cellSize_returnsCellSize() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid<>(area, 16);
+        var grid = Grid.booleanGrid(area, 16);
 
         assertThat(grid.cellSize()).isEqualTo(16);
     }
@@ -92,7 +92,7 @@ class GridTest {
     @Test
     void set_areaInGrid_setsValuesWithinArea() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid<Boolean>(area, 4);
+        var grid = Grid.booleanGrid(area, 4);
 
         grid.set($$(3, 2, 2, 3), true);
 
@@ -112,7 +112,7 @@ class GridTest {
     @Test
     void cellBounds_cellOutOfGrid_returnsBoundsInWorld() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid<>(area, 4);
+        var grid = Grid.booleanGrid(area, 4);
 
         var result = grid.cellBounds(Offset.at(30, 30));
         assertThat(result).isEqualTo($$(120, 120, 4, 4));
@@ -122,7 +122,7 @@ class GridTest {
     @Test
     void cellCount_3X3Area_returns9() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = Grid.booleanGrid(area, 4);
 
         assertThat(grid.cellCount()).isEqualTo(9);
     }
@@ -151,7 +151,7 @@ class GridTest {
 
     @Test
     void fill_emptyGrid_fillsAllsCells() {
-        var grid = new Grid<String>(Bounds.atOrigin(4, 4, 4, 4), 4);
+        var grid = new Grid<>(Bounds.atOrigin(4, 4, 4, 4), 4, String.class);
         grid.fill("test");
 
         assertThat(grid.cells()).allMatch(cell -> grid.get(cell).equals("test"));
@@ -159,7 +159,7 @@ class GridTest {
 
     @Test
     void clear_cellWithinGrid_clearsCellData() {
-        var grid = new Grid<String>(Bounds.atOrigin(4, 4, 4, 4), 1);
+        var grid = new Grid<>(Bounds.atOrigin(4, 4, 4, 4), 1, String.class);
         var cell = Offset.at(2, 0);
         grid.set(cell, "test");
 
