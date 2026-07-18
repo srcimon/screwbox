@@ -18,71 +18,45 @@ public class BinaryGrid extends Grid<Boolean> {
     }
 
     public List<Offset> freeNodes(final Offset node, final boolean isDiagonalMovementAllowed) {
-        final List<Offset> neighbors = new ArrayList<>(8);
-
+        final List<Offset> outNeighbors = new ArrayList<>();
         final Offset bottom = node.bottom();
+        final Offset top    = node.top();
+        final Offset left   = node.left();
+        final Offset right  = node.right();
+
         final boolean isBottomFree = isFree(bottom);
-        if (isBottomFree) {
-            neighbors.add(bottom);
-        }
+        final boolean isTopFree    = isFree(top);
+        final boolean isLeftFree   = isFree(left);
+        final boolean isRightFree  = isFree(right);
 
-        final Offset top = node.top();
-        final boolean isTopFree = isFree(top);
-        if (isTopFree) {
-            neighbors.add(top);
-        }
-
-        final Offset left = node.left();
-        final boolean isLeftFree = isFree(left);
-        if (isLeftFree) {
-            neighbors.add(left);
-        }
-
-        final Offset right = node.right();
-        final boolean isRightFree = isFree(right);
-        if (isRightFree) {
-            neighbors.add(right);
-        }
+        if (isBottomFree) outNeighbors.add(bottom);
+        if (isTopFree)    outNeighbors.add(top);
+        if (isLeftFree)   outNeighbors.add(left);
+        if (isRightFree)  outNeighbors.add(right);
 
         if (isDiagonalMovementAllowed) {
-            if (isBottomFree) {
-                if (isRightFree) {
-                    final Offset bottomRight = node.bottomRight();
-                    if (isFree(bottomRight)) {
-                        neighbors.add(bottomRight);
-                    }
-                }
-                if (isLeftFree) {
-                    final Offset bottomLeft = node.bottomLeft();
-                    if (isFree(bottomLeft)) {
-                        neighbors.add(bottomLeft);
-                    }
-                }
+            if (isBottomFree && isRightFree) {
+                final Offset diag = node.bottomRight();
+                if (isFree(diag)) outNeighbors.add(diag);
             }
-
-            if (isTopFree) {
-                if (isLeftFree) {
-                    final Offset topLeft = node.topLeft();
-                    if (isFree(topLeft)) {
-                        neighbors.add(topLeft);
-                    }
-                }
-                if (isRightFree) {
-                    final Offset topRight = node.topRight();
-                    if (isFree(topRight)) {
-                        neighbors.add(topRight);
-                    }
-                }
+            if (isBottomFree && isLeftFree) {
+                final Offset diag = node.bottomLeft();
+                if (isFree(diag)) outNeighbors.add(diag);
+            }
+            if (isTopFree && isLeftFree) {
+                final Offset diag = node.topLeft();
+                if (isFree(diag)) outNeighbors.add(diag);
+            }
+            if (isTopFree && isRightFree) {
+                final Offset diag = node.topRight();
+                if (isFree(diag)) outNeighbors.add(diag);
             }
         }
-
-        return neighbors;
+        return outNeighbors;
     }
 
     private boolean isFree(final Offset node) {
-        final int x = node.x();
-        final int y = node.y();
-        return contains(x, y) && !hasValue(node);
+        return contains(node) && !hasValue(node);
     }
 
 }
