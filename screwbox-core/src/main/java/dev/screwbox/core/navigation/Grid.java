@@ -63,10 +63,6 @@ public class Grid<T> implements Serializable {
         return bounds;
     }
 
-    protected int toCell(final double value) {
-        return Math.floorDiv((int) value, cellSize);
-    }
-
     public Vector toWorld(final Offset cell) {
         final double x = (cell.x() + 0.5) * cellSize + bounds.origin().x();
         final double y = (cell.y() + 0.5) * cellSize + bounds.origin().y();
@@ -153,12 +149,6 @@ public class Grid<T> implements Serializable {
         return cellData[internalIndex];
     }
 
-    private void validateIsWithinGrid(final int x, final int y) {
-        if (!contains(x, y)) {
-            throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
-        }
-    }
-
     public void set(Offset cell, T value) {
         set(cell.x(), cell.y(), value);
     }
@@ -184,5 +174,15 @@ public class Grid<T> implements Serializable {
 
     public boolean hasValue(int x, int y) {
         return contains(x, y) && get(x, y) != null;
+    }
+
+    private int toCell(final double value) {
+        return Math.floorDiv((int) value, cellSize);
+    }
+
+    private void validateIsWithinGrid(final int x, final int y) {
+        if (!contains(x, y)) {
+            throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
+        }
     }
 }
