@@ -24,14 +24,6 @@ public class BinaryGrid extends Grid<Boolean> {
         return isInGrid(x, y) && !hasValue(node);
     }
 
-    public void freeAt(final Vector position) {
-        set(position, null);
-    }
-
-    public void blockAt(final Vector position) {
-        set(position, true);
-    }
-
     public void block(final Offset node) {
         block(node.x(), node.y());
     }

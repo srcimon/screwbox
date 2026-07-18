@@ -116,6 +116,18 @@ public class Grid<T> implements Serializable {
         return (y + PADDING) * internalWidth + (x + PADDING);
     }
 
+    public void clear(Vector position) {
+        clear(toCell(position));
+    }
+
+    public void clear(final Offset cell) {
+        clear(cell.x(), cell.y());
+    }
+
+    public void clear(final int x, final int y) {
+        set(x, y, null);
+    }
+
     public void set(Vector position, T value) {
         set(toCell(position), value);
     }
