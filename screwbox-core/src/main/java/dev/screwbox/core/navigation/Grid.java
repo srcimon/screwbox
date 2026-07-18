@@ -11,10 +11,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Stores binary data within cells that are aligned to the game world.
+ */
 public class Grid implements Serializable {
 
     @Serial
@@ -61,11 +63,7 @@ public class Grid implements Serializable {
      * Returns {@code true} if the specified position is not blocked and inside the {@link Grid}.
      */
     public boolean isFree(final int x, final int y) {
-        return isInGrid(x, y) && !isBlocked.get(bitsetIndex(x, y));
-    }
-
-    private boolean isInGrid(final int x, final int y) {
-        return x >= 0 && x < width && y >= 0 && y < height;
+        return isInGrid(x, y) r&& !isBlocked.get(bitsetIndex(x, y));
     }
 
     public boolean isFree(final Offset node) {
@@ -131,7 +129,7 @@ public class Grid implements Serializable {
         return height;
     }
 
-    //TODO move into GridGraph
+    //TODO move into GridGraph?
     public List<Offset> freeAdjacentNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>(4);
 
@@ -158,7 +156,7 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
-    //TODO move into GridGraph
+    //TODO move into GridGraph?
     public List<Offset> freeSurroundingNodes(final Offset node) {
         final List<Offset> neighbors = new ArrayList<>(8);
 
@@ -268,5 +266,9 @@ public class Grid implements Serializable {
                 isBlocked.set(bitsetIndex(x, y), status);
             }
         }
+    }
+
+    private boolean isInGrid(final int x, final int y) {
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 }
