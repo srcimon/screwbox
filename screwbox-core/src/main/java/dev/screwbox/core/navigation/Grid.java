@@ -2,8 +2,8 @@ package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -14,6 +14,7 @@ import java.util.List;
 import static java.util.Objects.requireNonNull;
 
 //TODO add javadoc
+
 public class Grid<T> implements Serializable {
 
     private static final int PADDING = 1;
@@ -56,8 +57,32 @@ public class Grid<T> implements Serializable {
         cellData = (T[]) new Object[internalWidth * internalHeight];//TODO padding actually used?
     }
 
+    public void initialize(T value) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                set(x, y, value);
+            }
+        }
+    }
+
+    public void initializePadding(T value) {
+        for (int x = 0; x < internalWidth; x++) {
+            set(x, 0, value);
+            if (internalHeight > 1) {
+                set(x, internalHeight - 1, value);
+            }
+        }
+
+        for (int y = 1; y < internalHeight - 1; y++) {
+            set(0, y, value);
+            if (internalWidth > 1) {
+                set(internalWidth - 1, y, value);
+            }
+        }
+    }
+
     /**
-     * Returns the area of this {@link Grid} in the {@link World}.
+     * Returns the {@link Bounds} of this {@link Grid} in the {@link Environment}.
      */
     public Bounds bounds() {
         return bounds;
