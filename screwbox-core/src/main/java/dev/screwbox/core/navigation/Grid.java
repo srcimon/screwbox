@@ -56,7 +56,7 @@ public class Grid<T> implements Serializable {
     }
 
     /**
-     * Returns the area of this {@link BinaryGrid} in the {@link World}.
+     * Returns the area of this {@link Grid} in the {@link World}.
      */
     public Bounds bounds() {
         return bounds;
@@ -178,7 +178,10 @@ public class Grid<T> implements Serializable {
     public boolean hasValue(final Offset cell) {
         final int x = cell.x();
         final int y = cell.y();
-        return contains(x, y) && get(x, y) != null;
+        return hasValue(x, y);
     }
 
+    public boolean hasValue(int x, int y) {
+        return contains(x, y) && get(x, y) != null;
+    }
 }

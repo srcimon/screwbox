@@ -15,8 +15,9 @@ import dev.screwbox.core.log.Log;
 import dev.screwbox.core.log.LoggingAdapter;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.mouse.Mouse;
-import dev.screwbox.core.particles.Particles;
+import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.navigation.Navigation;
+import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.ui.UiMenu;
@@ -91,7 +92,7 @@ public interface Engine {
     Audio audio();
 
     /**
-     * Advanced searching for entities, pathfinding, raycasting and adjusting entities to a {@link BinaryGrid}.
+     * Advanced searching for entities, pathfinding, raycasting and adjusting entities to a {@link Grid}.
      *
      * @see <a href="http://screwbox.dev/docs/core-modules/navigation">Documentation</a>
      */

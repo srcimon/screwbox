@@ -21,7 +21,7 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        BinaryGrid grid = new BinaryGrid($$(0, 0, 5, 5), 1);
+        Grid<Boolean> grid = new Grid<>($$(0, 0, 5, 5), 1);
         grid.set($$(2, 0, 1, 5), true);
 
         Offset start = Offset.at(0, 0);
@@ -34,7 +34,7 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        BinaryGrid grid = new BinaryGrid($$(0, 0, 5, 5), 1);
+        Grid<Boolean> grid = new Grid<>($$(0, 0, 5, 5), 1);
         grid.set($$(2, 2, 2, 2), true);
 
         Offset start = Offset.at(0, 0);
@@ -43,12 +43,12 @@ class DijkstraAlgorithmTest {
         List<Offset> path = algorithm.findPath(new GridGraph(grid, true), start, end);
 
         assertThat(path).containsExactly(
-                Offset.at(0, 1),
-                Offset.at(0, 2),
-                Offset.at(0, 3),
-                Offset.at(1, 4),
-                Offset.at(2, 4),
-                Offset.at(3, 4),
-                Offset.at(4, 4));
+            Offset.at(0, 1),
+            Offset.at(0, 2),
+            Offset.at(0, 3),
+            Offset.at(1, 4),
+            Offset.at(2, 4),
+            Offset.at(3, 4),
+            Offset.at(4, 4));
     }
 }
