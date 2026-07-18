@@ -7,7 +7,9 @@ import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.BitSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -40,8 +42,8 @@ public class Grid<T> implements Serializable {
 
         this.cellSize = cellSize;
         this.bounds = bounds;
-        width = toGrid(bounds.width());
-        height = toGrid(bounds.height());
+        width = toCell(bounds.width());
+        height = toCell(bounds.height());
     }
 
     /**
@@ -51,7 +53,34 @@ public class Grid<T> implements Serializable {
         return bounds;
     }
 
-    protected int toGrid(final double value) {
+    protected int toCell(final double value) {
         return Math.floorDiv((int) value, cellSize);
     }
+
+    public Vector toWorld(final Offset cell) {
+        final double x = (cell.x() + 0.5) * cellSize + bounds.origin().x();
+        final double y = (cell.y() + 0.5) * cellSize + bounds.origin().y();
+        return Vector.$(x, y);
+    }
+
+    public Bounds cellBounds(final Offset node) {
+        final Vector position = toWorld(node);
+        return Bounds.atPosition(position, cellSize, cellSize);
+    }
+
+    public Offset toCell(final Vector position) {
+        final var translated = position.subtract(bounds.origin());
+        return BinaryGrid.findCell(translated, cellSize);
+    }
+
+    public List<Offset> nodes() {
+        final var nodes = new ArrayList<Offset>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                nodes.add(Offset.at(x, y));
+            }
+        }
+        return nodes;
+    }
+
 }
