@@ -52,7 +52,7 @@ public class Grid<T> implements Serializable {
         height = toCell(bounds.height());
         internalWidth = width + (PADDING * 2);
         internalHeight = height + (PADDING * 2);
-        cellData = (T[]) new Object[internalWidth * internalHeight];
+        cellData = (T[]) new Object[internalWidth * internalHeight];//TODO padding actually used?
     }
 
     /**
