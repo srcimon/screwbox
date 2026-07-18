@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * A grid aligned to the game world. Stores any kind of data within cells.
  */
-public class Grid<T> implements Serializable {
+public class Grid<T extends Serializable> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -43,7 +43,6 @@ public class Grid<T> implements Serializable {
      * Creates a new instance at the specified bounds with the specified cell size.
      * Cells must fit exactly within the bounds. Supports only cells with
      */
-    @SuppressWarnings("unchecked")
     public Grid(final Bounds bounds, final int cellSize) {
         requireNonNull(bounds, "grid bounds must not be null");
         Validate.positive(cellSize, "cell size must be positive");

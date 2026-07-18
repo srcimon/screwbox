@@ -150,6 +150,6 @@ class OffsetTest {
     @Test
     void topRight_returnsNewOffset() {
         Offset offset = Offset.at(5, 30);
-        assertThat(offset.topLeft()).isEqualTo(Offset.at(4, 29));
+        assertThat(offset.topRight()).isEqualTo(Offset.at(6, 29));
     }
 }

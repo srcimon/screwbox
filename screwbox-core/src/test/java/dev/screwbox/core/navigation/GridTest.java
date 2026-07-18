@@ -12,7 +12,6 @@ import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-//TODO double check test names
 class GridTest {
 
     @Test
@@ -31,7 +30,7 @@ class GridTest {
     }
 
     @Test
-    void newInstance_invalidAreaOriginX_throwsException() {
+    void newInstance_invalidAreaWidth_throwsException() {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
         assertThatThrownBy(() -> new Grid<>(area, 16))
             .isInstanceOf(IllegalArgumentException.class)
@@ -39,8 +38,8 @@ class GridTest {
     }
 
     @Test
-    void newInstance_invalidAreaOriginY_throwsException() {
-        Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
+    void newInstance_invalidAreaHeight_throwsException() {
+        Bounds area = Bounds.atOrigin(-32, 4, 16, 10);
         assertThatThrownBy(() -> new Grid<>(area, 16))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("bounds should fit cell size");
@@ -148,5 +147,24 @@ class GridTest {
         assertThatThrownBy(() -> Grid.findCell(vector, 0))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("cell size must be positive (actual value: 0)");
+    }
+
+    @Test
+    void fill_emptyGrid_fillsAllsCells() {
+        var grid = new Grid<String>(Bounds.atOrigin(4, 4, 4, 4), 4);
+        grid.fill("test");
+
+        assertThat(grid.cells()).allMatch(cell -> grid.get(cell).equals("test"));
+    }
+
+    @Test
+    void clear_cellWithinGrid_clearsCellData() {
+        var grid = new Grid<String>(Bounds.atOrigin(4, 4, 4, 4), 1);
+        var cell = Offset.at(2, 0);
+        grid.set(cell, "test");
+
+        grid.clear(cell);
+
+        assertThat(grid.hasValue(cell)).isFalse();
     }
 }
