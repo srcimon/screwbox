@@ -1,7 +1,6 @@
 package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Grid;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 
@@ -160,10 +159,6 @@ public class BinaryGrid extends Grid<Boolean> {
 
     private int bitsetIndex(final int x, final int y) {
         return x * height + y;
-    }
-
-    private boolean isInGrid(final Offset node) {
-        return node.x() > -1 && node.x() < width && node.y() > -1 && node.y() < height;
     }
 
     private void markRegion(final Bounds region, final boolean status) {

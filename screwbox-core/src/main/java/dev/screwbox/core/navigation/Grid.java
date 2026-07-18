@@ -1,8 +1,9 @@
-package dev.screwbox.core;
+package dev.screwbox.core.navigation;
 
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.World;
-import dev.screwbox.core.navigation.BinaryGrid;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+//TODO changelog: completely reworked grid class
 public class Grid<T> implements Serializable {
 
     private static final int PADDING = 1;
