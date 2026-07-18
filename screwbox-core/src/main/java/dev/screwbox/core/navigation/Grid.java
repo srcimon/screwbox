@@ -9,11 +9,14 @@ import dev.screwbox.core.utils.Validate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-//TODO add javadoc
+/**
+ * A grid aligned to the game world. Stores any kind of data within cells.
+ */
 public class Grid<T> implements Serializable {
 
     @Serial
@@ -36,6 +39,10 @@ public class Grid<T> implements Serializable {
     protected final Bounds bounds;
     protected final T[] cellData;
 
+    /**
+     * Creates a new instance at the specified bounds with the specified cell size.
+     * Cells must fit exactly within the bounds.
+     */
     @SuppressWarnings("unchecked")
     public Grid(final Bounds bounds, final int cellSize) {
         requireNonNull(bounds, "grid bounds must not be null");
@@ -50,12 +57,13 @@ public class Grid<T> implements Serializable {
         cellData = (T[]) new Object[width * height];
     }
 
-    public void initialize(T value) {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                set(x, y, value);
-            }
-        }
+    /**
+     * Fills all cells with the specified data.
+     *
+     * @since 3.33.0
+     */
+    public void fill(T value) {
+        Arrays.fill(cellData, value);
     }
 
     /**
