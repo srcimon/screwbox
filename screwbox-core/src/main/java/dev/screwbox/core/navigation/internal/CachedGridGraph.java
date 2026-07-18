@@ -1,7 +1,7 @@
 package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.navigation.Grid;
+import dev.screwbox.core.navigation.BinaryGrid;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ public class CachedGridGraph extends GridGraph {
 
     private final List<Offset>[][] adjacentNodes;
 
-    public CachedGridGraph(final Grid grid, final boolean isDiagonalMovementAllowed) {
+    public CachedGridGraph(final BinaryGrid grid, final boolean isDiagonalMovementAllowed) {
         super(grid, isDiagonalMovementAllowed);
         adjacentNodes = new List[grid.width()][grid.height()];
         for (final var node : grid.nodes()) {

@@ -1,69 +1,32 @@
 package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Grid;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.World;
-import dev.screwbox.core.utils.Validate;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * Stores binary data within cells that are aligned to the game world.
  */
-public class Grid implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class BinaryGrid extends Grid<Boolean> {
 
     private final BitSet isBlocked;
-    private final int width;
-    private final int height;
-    private final int cellSize;
-    private final Bounds bounds;
 
-    /**
-     * Returns the cell that this {@link Vector} would reside in within a grid with the specified cell size.
-     *
-     * @param cellSize size of cell (must be positive)
-     * @since 3.12.0
-     */
-    public static Offset findCell(final Vector vector, final int cellSize) {
-        Validate.positive(cellSize, "cell size must be positive");
-        return Offset.at(Math.floorDiv((int) vector.x(), cellSize), Math.floorDiv((int) vector.y(), cellSize));
-    }
-
-    public Grid(final Bounds bounds, final int cellSize) {
-        requireNonNull(bounds, "grid bounds must not be null");
-        Validate.positive(cellSize, "cell size must be positive");
-        Validate.isTrue(() -> bounds.origin().x() % cellSize == 0, "bounds should fit cell size");
-        Validate.isTrue(() -> bounds.origin().y() % cellSize == 0, "bounds should fit cell size");
-
-        this.cellSize = cellSize;
-        this.bounds = bounds;
-        width = toGrid(bounds.width());
-        height = toGrid(bounds.height());
+    public BinaryGrid(final Bounds bounds, final int cellSize) {
+        super(bounds, cellSize);
         isBlocked = new BitSet(width * height);
     }
 
     /**
-     * Returns the area of this {@link Grid} in the {@link World}.
-     */
-    public Bounds bounds() {
-        return bounds;
-    }
-
-    /**
-     * Returns {@code true} if the specified position is not blocked and inside the {@link Grid}.
+     * Returns {@code true} if the specified position is not blocked and inside the {@link BinaryGrid}.
      */
     public boolean isFree(final int x, final int y) {
-        return isInGrid(x, y) r&& !isBlocked.get(bitsetIndex(x, y));
+        return isInGrid(x, y) && !isBlocked.get(bitsetIndex(x, y));
     }
 
     public boolean isFree(final Offset node) {
@@ -83,7 +46,7 @@ public class Grid implements Serializable {
 
     public Offset toGrid(final Vector position) {
         final var translated = position.subtract(bounds.origin());
-        return Grid.findCell(translated, cellSize);
+        return BinaryGrid.findCell(translated, cellSize);
     }
 
     public void freeArea(final Bounds area) {
@@ -243,9 +206,6 @@ public class Grid implements Serializable {
         return isBlocked(node.x(), node.y());
     }
 
-    private int toGrid(final double value) {
-        return Math.floorDiv((int) value, cellSize);
-    }
 
     private int bitsetIndex(final int x, final int y) {
         return x * height + y;

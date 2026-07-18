@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.World;
-import dev.screwbox.core.navigation.Grid;
+import dev.screwbox.core.navigation.BinaryGrid;
 import dev.screwbox.core.utils.PerlinNoise;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class GridRenderSystem implements EntitySystem {
         final var gridComponent = engine.environment().fetchSingletonComponent(GridComponent.class);
         final World world = engine.graphics().world();
         Bounds visibleArea = engine.graphics().visibleArea();
-        final Grid grid = gridComponent.grid;
+        final BinaryGrid grid = gridComponent.grid;
         double z = engine.loop().runningTime().milliseconds() / 1500.0;
         for (final var node : blockedNodesIn(grid, visibleArea)) {
             final Bounds bounds = grid.nodeBounds(node);
@@ -37,7 +37,7 @@ public class GridRenderSystem implements EntitySystem {
         world.drawCircle(snappedMousePosition, 1, filled(YELLOW));
     }
 
-    private List<Offset> blockedNodesIn(final Grid grid, final Bounds bounds) {
+    private List<Offset> blockedNodesIn(final BinaryGrid grid, final Bounds bounds) {
         final var nodes = new ArrayList<Offset>();
         final var minNode = grid.toGrid(bounds.origin());
         final var maxNode = grid.toGrid(bounds.bottomRight());
@@ -55,7 +55,7 @@ public class GridRenderSystem implements EntitySystem {
         return nodes;
     }
 
-    private Vector snap(final Grid grid, final Vector position) {
+    private Vector snap(final BinaryGrid grid, final Vector position) {
         final Offset node = grid.toGrid(position);
         return grid.toWorld(node);
     }

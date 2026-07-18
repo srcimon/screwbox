@@ -12,11 +12,11 @@ import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class GridTest {
+class BinaryGridTest {
 
     @Test
     void newInstance_areaNull_throwsException() {
-        assertThatThrownBy(() -> new Grid(null, 4))
+        assertThatThrownBy(() -> new BinaryGrid(null, 4))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("grid bounds must not be null");
     }
@@ -24,7 +24,7 @@ class GridTest {
     @Test
     void newInstance_cellSizeZero_throwsException() {
         Bounds area = Bounds.max();
-        assertThatThrownBy(() -> new Grid(area, 0))
+        assertThatThrownBy(() -> new BinaryGrid(area, 0))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("cell size must be positive (actual value: 0)");
     }
@@ -32,7 +32,7 @@ class GridTest {
     @Test
     void newInstance_invalidAreaOriginX_throwsException() {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
-        assertThatThrownBy(() -> new Grid(area, 16))
+        assertThatThrownBy(() -> new BinaryGrid(area, 16))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("bounds should fit cell size");
     }
@@ -40,7 +40,7 @@ class GridTest {
     @Test
     void newInstance_invalidAreaOriginY_throwsException() {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
-        assertThatThrownBy(() -> new Grid(area, 16))
+        assertThatThrownBy(() -> new BinaryGrid(area, 16))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("bounds should fit cell size");
     }
@@ -49,7 +49,7 @@ class GridTest {
     void newInstance_validArguments_createsEmptyGrid() {
         Bounds area = Bounds.atOrigin(Vector.zero(), 400, 200);
 
-        var grid = new Grid(area, 20);
+        var grid = new BinaryGrid(area, 20);
 
         assertThat(grid.nodes())
             .hasSize(200)
@@ -63,7 +63,7 @@ class GridTest {
     void freeAdjacentNodes_noneBlocked_returnsAdjacentNodes() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new Grid(area, 16);
+        var grid = new BinaryGrid(area, 16);
 
         assertThat(grid.freeAdjacentNodes(Offset.at(1, 1)))
             .hasSize(4)
@@ -77,7 +77,7 @@ class GridTest {
     void freeSurroundingNodes_noneBlocked_returnsSurroundingNodes() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new Grid(area, 16);
+        var grid = new BinaryGrid(area, 16);
 
         assertThat(grid.freeSurroundingNodes(Offset.at(1, 1)))
             .hasSize(8)
@@ -95,7 +95,7 @@ class GridTest {
     void freeSurroundingNodes_onEdge_returnsOnlyTheOnesThatResideInTheGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new Grid(area, 16);
+        var grid = new BinaryGrid(area, 16);
 
         assertThat(grid.freeSurroundingNodes(Offset.at(0, 0)))
             .hasSize(3)
@@ -107,7 +107,7 @@ class GridTest {
     @Test
     void toGrid_translatesVectorToOffset() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new Grid(area, 16);
+        var grid = new BinaryGrid(area, 16);
 
         Offset node = grid.toGrid($(192, -64));
 
@@ -117,7 +117,7 @@ class GridTest {
     @Test
     void toGrid_translatesNodeFromGridToWorld() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new Grid(area, 16);
+        var grid = new BinaryGrid(area, 16);
 
         Offset node = grid.toGrid($(192, -64));
         Vector vector = grid.toWorld(node);
@@ -128,7 +128,7 @@ class GridTest {
     @Test
     void cellSize_returnsCellSize() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16);
+        var grid = new BinaryGrid(area, 16);
 
         assertThat(grid.cellSize()).isEqualTo(16);
     }
@@ -136,7 +136,7 @@ class GridTest {
     @Test
     void blockArea_areaInGrid_blocksGridArea() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = new BinaryGrid(area, 4);
 
         grid.blockArea($$(3, 2, 2, 3));
 
@@ -154,7 +154,7 @@ class GridTest {
     @Test
     void blockAt_positionInGrid_blocksNodeAtPosition() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = new BinaryGrid(area, 4);
 
         grid.blockAt($(5, 5));
 
@@ -164,7 +164,7 @@ class GridTest {
     @Test
     void freeAt_positionInGrid_freesPosition() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = new BinaryGrid(area, 4);
         grid.blockArea(area);
 
         grid.freeAt($(5, 5));
@@ -175,7 +175,7 @@ class GridTest {
     @Test
     void nodeBoundsnodeInGrid_returnsAreaInWorld() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = new BinaryGrid(area, 4);
 
         var result = grid.nodeBounds(Offset.at(3, 3));
         assertThat(result).isEqualTo($$(12, 12, 4, 4));
@@ -184,7 +184,7 @@ class GridTest {
     @Test
     void nodeBounds_nodeOutOfGrid_returnsAreaInWorld() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = new BinaryGrid(area, 4);
 
         var result = grid.nodeBounds(Offset.at(30, 30));
         assertThat(result).isEqualTo($$(120, 120, 4, 4));
@@ -193,7 +193,7 @@ class GridTest {
     @Test
     void freeArea_someBlocked_freesArea() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = new BinaryGrid(area, 4);
         grid.block(0, 0);
         grid.block(0, 1);
 
@@ -206,7 +206,7 @@ class GridTest {
     @Test
     void block_nodeInGrid_blocksNode() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = new BinaryGrid(area, 4);
 
         Offset node = Offset.at(1, 2);
         grid.block(node);
@@ -217,7 +217,7 @@ class GridTest {
     @Test
     void nodeCount_3x3area_returns9() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4);
+        var grid = new BinaryGrid(area, 4);
 
         assertThat(grid.nodeCount()).isEqualTo(9);
     }
@@ -225,7 +225,7 @@ class GridTest {
 
     @Test
     void isBlocked_notBlocked_isFalse() {
-        var grid = new Grid($$(0, 0, 10, 16), 1);
+        var grid = new BinaryGrid($$(0, 0, 10, 16), 1);
         grid.block(0, 0);
         grid.block(8, 0);
         grid.block(1, 12);
@@ -237,7 +237,7 @@ class GridTest {
 
     @Test
     void isBlocked_blocked_isTrue() {
-        var grid = new Grid($$(0, 0, 10, 16), 1);
+        var grid = new BinaryGrid($$(0, 0, 10, 16), 1);
         grid.block(0, 0);
         grid.block(8, 0);
         grid.block(1, 12);
@@ -256,7 +256,7 @@ class GridTest {
         "-17, 50.123, -2, 3",
     })
     void findCell_validPosition_returnsCell(double x, double y, int cellX, int cellY) {
-        Offset cell = Grid.findCell($(x, y), 16);
+        Offset cell = BinaryGrid.findCell($(x, y), 16);
 
         assertThat(cell).isEqualTo(Offset.at(cellX, cellY));
     }
@@ -265,7 +265,7 @@ class GridTest {
     void findCell_invalidCellSize_throwsException() {
         Vector vector = $(4, 1);
 
-        assertThatThrownBy(() -> Grid.findCell(vector, 0))
+        assertThatThrownBy(() -> BinaryGrid.findCell(vector, 0))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("cell size must be positive (actual value: 0)");
     }

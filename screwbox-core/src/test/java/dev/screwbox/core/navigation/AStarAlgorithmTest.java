@@ -21,7 +21,7 @@ class AStarAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid grid = new Grid($$(0, 0, 5, 5), 1);
+        BinaryGrid grid = new BinaryGrid($$(0, 0, 5, 5), 1);
         grid.blockArea($$(2, 0, 1, 5));
 
         Offset start = Offset.at(0, 0);
@@ -35,7 +35,7 @@ class AStarAlgorithmTest {
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid grid = new Grid($$(0, 0, 5, 5), 1);
+        BinaryGrid grid = new BinaryGrid($$(0, 0, 5, 5), 1);
         grid.blockArea($$(2, 2, 2, 2));
         grid.blockArea($$(2, 1, 1, 1));
 

@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.AutoTile;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.navigation.Grid;
+import dev.screwbox.core.navigation.BinaryGrid;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +60,7 @@ public class AutoTileSystem implements EntitySystem {
         for (final var entity : autoTiles) {
             final var autoTileComponent = entity.get(AutoTileComponent.class);
             final AutoTile autoTile = autoTileComponent.tile;
-            final Offset cell = Grid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
+            final Offset cell = BinaryGrid.findCell(entity.position(), autoTile.width()); // AutoTiles are always square
             index.put(cell, new TileIndexEntry(cell, entity, autoTileComponent));
         }
         return index;
