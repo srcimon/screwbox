@@ -87,7 +87,7 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public Vector toPosition(final Offset node) {
-        return grid.toWorld(node);
+        return grid.cellPosition(node);
     }
 
     @Override

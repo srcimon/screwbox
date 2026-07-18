@@ -52,7 +52,7 @@ class GridTest {
 
         var grid = new Grid<Boolean>(area, 20);
 
-        assertThat(grid.nodes())
+        assertThat(grid.cells())
             .hasSize(200)
             .noneMatch(grid::hasValue);
 
@@ -77,7 +77,7 @@ class GridTest {
         var grid = new Grid<>(area, 16);
 
         Offset node = grid.toCell($(192, -64));
-        Vector vector = grid.toWorld(node);
+        Vector vector = grid.cellPosition(node);
 
         assertThat(vector).isEqualTo($(200, -56));
     }
@@ -121,11 +121,11 @@ class GridTest {
 
 
     @Test
-    void nodeCount_3x3area_returns9() {
+    void cellCount_3X3Area_returns9() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
 
-        assertThat(grid.nodeCount()).isEqualTo(9);
+        assertThat(grid.cellCount()).isEqualTo(9);
     }
 
 

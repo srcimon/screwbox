@@ -33,7 +33,8 @@ public class GridRenderSystem implements EntitySystem {
             final var b = Percent.of((PerlinNoise.generatePerlinNoise3d(53545L, node.x() / 10.0, node.y() / 10.0, z) + 1) / 2.0);
             world.drawCircle(bounds.position(), (int) bounds.width() / 2.0, filled(Color.rgb(r.rangeValue(0, 255), g.rangeValue(0, 255), b.rangeValue(0, 255))));
         }
-        final Vector snappedMousePosition = snap(grid, engine.mouse().position());
+        final Offset node = grid.toCell(engine.mouse().position());
+        final Vector snappedMousePosition = grid.cellPosition(node);
         world.drawCircle(snappedMousePosition, 1, filled(YELLOW));
     }
 
@@ -56,8 +57,4 @@ public class GridRenderSystem implements EntitySystem {
         return nodes;
     }
 
-    private Vector snap(final Grid<Boolean> grid, final Vector position) {
-        final Offset node = grid.toCell(position);
-        return grid.toWorld(node);
-    }
 }

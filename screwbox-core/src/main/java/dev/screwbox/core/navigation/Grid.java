@@ -73,23 +73,37 @@ public class Grid<T> implements Serializable {
         return bounds;
     }
 
-    public Vector toWorld(final Offset cell) {
+    /**
+     * Returns the cell position of the specified cell within the world.  Will return positions that reside outside the grid.
+     */
+    public Vector cellPosition(final Offset cell) {
         final double x = (cell.x() + 0.5) * cellSize + bounds.origin().x();
         final double y = (cell.y() + 0.5) * cellSize + bounds.origin().y();
         return Vector.$(x, y);
     }
 
-    public Bounds cellBounds(final Offset node) {
-        final Vector position = toWorld(node);
+    /**
+     * Returns the cell {@link Bounds} of the specified cell within the world. Will return {@link Bounds} that reside outside the grid.
+     */
+    public Bounds cellBounds(final Offset cell) {
+        final Vector position = cellPosition(cell);
         return Bounds.atPosition(position, cellSize, cellSize);
     }
 
+    //TODO javadoc below
+
+    /**
+     * Returns the cell at the specified positon. Will return cells that reside outside the grid.
+     */
     public Offset toCell(final Vector position) {
         final var translated = position.subtract(bounds.origin());
         return Grid.findCell(translated, cellSize);
     }
 
-    public List<Offset> nodes() {
+    /**
+     * Returns a list of all cells within the grid.
+     */
+    public List<Offset> cells() {
         final var nodes = new ArrayList<Offset>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -99,18 +113,30 @@ public class Grid<T> implements Serializable {
         return nodes;
     }
 
+    /**
+     * Returns the horizontal number of cells within the grid.
+     */
     public int width() {
         return width;
     }
 
+    /**
+     * Returns the vertical number of cells within the grid.
+     */
     public int height() {
         return height;
     }
 
-    public int nodeCount() {
+    /**
+     * Returns the number of cells within the grid.
+     */
+    public int cellCount() {
         return width * height;
     }
 
+    /**
+     * Returns the size of a single cell within the grid.
+     */
     public int cellSize() {
         return cellSize;
     }
@@ -144,8 +170,8 @@ public class Grid<T> implements Serializable {
     }
 
     public void set(int x, int y, T value) {
-        validateIsWithinGrid(x, y);
-        var internalIndex = toInternalIndex(x, y);
+        validateCell(x, y);
+        final var internalIndex = toInternalIndex(x, y);
         cellData[internalIndex] = value;
     }
 
@@ -154,8 +180,8 @@ public class Grid<T> implements Serializable {
     }
 
     public T get(int x, int y) {
-        validateIsWithinGrid(x, y);
-        var internalIndex = toInternalIndex(x, y);
+        validateCell(x, y);
+        final var internalIndex = toInternalIndex(x, y);
         return cellData[internalIndex];
     }
 
@@ -190,7 +216,7 @@ public class Grid<T> implements Serializable {
         return Math.floorDiv((int) value, cellSize);
     }
 
-    private void validateIsWithinGrid(final int x, final int y) {
+    private void validateCell(final int x, final int y) {
         if (!contains(x, y)) {
             throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
         }

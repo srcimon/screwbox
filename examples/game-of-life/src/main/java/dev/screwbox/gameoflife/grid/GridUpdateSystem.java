@@ -24,7 +24,7 @@ public class GridUpdateSystem implements EntitySystem {
     private void update(final GridComponent gridComponent) {
         final Grid<Boolean> oldGrid = gridComponent.grid;
         final Grid<Boolean> grid = new Grid<>(oldGrid.bounds(), oldGrid.cellSize());
-        oldGrid.nodes().stream().parallel().forEach(node -> {
+        oldGrid.cells().stream().parallel().forEach(node -> {
             final int count = blockedSurroundingNodesCount(oldGrid, node);
             if (oldGrid.contains(node) && !oldGrid.hasValue(node)) {
                 if (count == 3) {

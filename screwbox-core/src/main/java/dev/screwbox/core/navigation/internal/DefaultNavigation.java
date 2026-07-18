@@ -148,7 +148,7 @@ public class DefaultNavigation implements Navigation {
 
     private void updateGraph() {
         if (nonNull(grid)) {
-            long gridNodes = grid.nodeCount();
+            long gridNodes = grid.cellCount();
             graph = gridNodes <= graphCachingNodeLimit
                 ? new CachedGridGraph(grid, isDiagonalMovementAllowed)
                 : new GridGraph(grid, isDiagonalMovementAllowed);
