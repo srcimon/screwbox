@@ -20,59 +20,32 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public List<Offset> adjacentNodes(final Offset node) {
-        final List<Offset> outNeighbors = new ArrayList<>(isDiagonalMovementAllowed ? 8 : 4);
+        final List<Offset> nodes = new ArrayList<>(isDiagonalMovementAllowed ? 8 : 4);
 
-        final Offset bottom = node.bottom();
-        final boolean isBottomFree = isFree(bottom);
-        if (isBottomFree) {
-            outNeighbors.add(bottom);
-        }
-
-        final Offset top = node.top();
-        final boolean isTopFree = isFree(top);
-        if (isTopFree) {
-            outNeighbors.add(top);
-        }
-
-        final Offset left = node.left();
-        final boolean isLeftFree = isFree(left);
-        if (isLeftFree) {
-            outNeighbors.add(left);
-        }
-
-        final Offset right = node.right();
-        final boolean isRightFree = isFree(right);
-        if (isRightFree) {
-            outNeighbors.add(right);
-        }
+        addIfFree(node.bottom(), nodes);
+        addIfFree(node.top(), nodes);
+        addIfFree(node.left(), nodes);
+        addIfFree(node.right(), nodes);
 
         if (isDiagonalMovementAllowed) {
+            final boolean isBottomFree = isFree(node.bottom());
+            final boolean isLeftFree = isFree(node.left());
+            final boolean isRightFree = isFree(node.right());
             if (isBottomFree && isRightFree) {
-                final Offset diag = node.bottomRight();
-                if (isFree(diag)) {
-                    outNeighbors.add(diag);
-                }
+                addIfFree(node.bottomRight(), nodes);
             }
             if (isBottomFree && isLeftFree) {
-                final Offset diag = node.bottomLeft();
-                if (isFree(diag)) {
-                    outNeighbors.add(diag);
-                }
+                addIfFree(node.bottomLeft(), nodes);
             }
+            final boolean isTopFree = isFree(node.top());
             if (isTopFree && isLeftFree) {
-                final Offset diag = node.topLeft();
-                if (isFree(diag)) {
-                    outNeighbors.add(diag);
-                }
+                addIfFree(node.topLeft(), nodes);
             }
             if (isTopFree && isRightFree) {
-                final Offset diag = node.topRight();
-                if (isFree(diag)) {
-                    outNeighbors.add(diag);
-                }
+                addIfFree(node.topRight(), nodes);
             }
         }
-        return outNeighbors;
+        return nodes;
     }
 
     @Override
@@ -99,4 +72,9 @@ public class GridGraph implements Graph<Offset> {
         return grid.contains(node) && !grid.hasValue(node);
     }
 
+    private void addIfFree(final Offset node, final List<Offset> offsets) {
+        if (isFree(node)) {
+            offsets.add(node);
+        }
+    }
 }
