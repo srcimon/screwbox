@@ -14,10 +14,7 @@ import java.util.List;
 import static java.util.Objects.requireNonNull;
 
 //TODO add javadoc
-
 public class Grid<T> implements Serializable {
-
-    private static final int PADDING = 1;
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -35,8 +32,6 @@ public class Grid<T> implements Serializable {
 
     protected final int width;
     protected final int height;
-    protected final int internalWidth;
-    protected final int internalHeight;
     protected final int cellSize;
     protected final Bounds bounds;
     protected final T[] cellData;
@@ -52,31 +47,13 @@ public class Grid<T> implements Serializable {
         this.bounds = bounds;
         width = toCell(bounds.width());
         height = toCell(bounds.height());
-        internalWidth = width + (PADDING * 2);
-        internalHeight = height + (PADDING * 2);
-        cellData = (T[]) new Object[internalWidth * internalHeight];//TODO padding actually used?
+        cellData = (T[]) new Object[width * height];
     }
 
     public void initialize(T value) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 set(x, y, value);
-            }
-        }
-    }
-
-    public void initializePadding(T value) {
-        for (int x = 0; x < internalWidth; x++) {
-            set(x, 0, value);
-            if (internalHeight > 1) {
-                set(x, internalHeight - 1, value);
-            }
-        }
-
-        for (int y = 1; y < internalHeight - 1; y++) {
-            set(0, y, value);
-            if (internalWidth > 1) {
-                set(internalWidth - 1, y, value);
             }
         }
     }
@@ -139,7 +116,7 @@ public class Grid<T> implements Serializable {
     }
 
     private int toInternalIndex(final int x, final int y) {
-        return (y + PADDING) * internalWidth + (x + PADDING);
+        return y * width + x;
     }
 
     public void clear(Vector position) {
