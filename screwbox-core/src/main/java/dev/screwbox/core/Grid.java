@@ -14,6 +14,8 @@ import static java.util.Objects.requireNonNull;
 
 public class Grid<T> implements Serializable {
 
+    private static final int PADDING = 1;
+
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -30,8 +32,11 @@ public class Grid<T> implements Serializable {
 
     protected final int width;
     protected final int height;
+    protected final int internalWidth;
+    protected final int internalHeight;
     protected final int cellSize;
     protected final Bounds bounds;
+    protected final T[] cellData;
 
     public Grid(final Bounds bounds, final int cellSize) {
         requireNonNull(bounds, "grid bounds must not be null");
@@ -43,12 +48,15 @@ public class Grid<T> implements Serializable {
         this.bounds = bounds;
         width = toCell(bounds.width());
         height = toCell(bounds.height());
+        internalWidth = width + (PADDING * 2);
+        internalHeight = height + (PADDING * 2);
+        cellData = (T[]) new Object[internalWidth * internalHeight];
     }
 
     /**
      * Returns the area of this {@link BinaryGrid} in the {@link World}.
      */
-    public final Bounds bounds() {
+    public Bounds bounds() {
         return bounds;
     }
 
@@ -56,23 +64,23 @@ public class Grid<T> implements Serializable {
         return Math.floorDiv((int) value, cellSize);
     }
 
-    public final Vector toWorld(final Offset cell) {
+    public Vector toWorld(final Offset cell) {
         final double x = (cell.x() + 0.5) * cellSize + bounds.origin().x();
         final double y = (cell.y() + 0.5) * cellSize + bounds.origin().y();
         return Vector.$(x, y);
     }
 
-    public final Bounds cellBounds(final Offset node) {
+    public Bounds cellBounds(final Offset node) {
         final Vector position = toWorld(node);
         return Bounds.atPosition(position, cellSize, cellSize);
     }
 
-    public final Offset toCell(final Vector position) {
+    public Offset toCell(final Vector position) {
         final var translated = position.subtract(bounds.origin());
         return BinaryGrid.findCell(translated, cellSize);
     }
 
-    public final List<Offset> nodes() {
+    public List<Offset> nodes() {
         final var nodes = new ArrayList<Offset>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -82,23 +90,50 @@ public class Grid<T> implements Serializable {
         return nodes;
     }
 
-    public final int width() {
+    public int width() {
         return width;
     }
 
-    public final int height() {
+    public int height() {
         return height;
     }
 
-    public final int nodeCount() {
+    public int nodeCount() {
         return width * height;
     }
 
-    public final int cellSize() {
+    public int cellSize() {
         return cellSize;
     }
 
     protected boolean isInGrid(final int x, final int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
+
+    private int toInternalIndex(final int x, final int y) {
+        return (y + PADDING) * internalWidth + (x + PADDING);
+    }
+
+    public void set(int x, int y, T value) {
+        validateIsWithinGrid(x, y);
+        var internalIndex = toInternalIndex(x, y);
+        cellData[internalIndex] = value;
+    }
+
+    public T get(int x, int y) {
+        validateIsWithinGrid(x, y);
+        var internalIndex = toInternalIndex(x, y);
+        return cellData[internalIndex];
+    }
+
+    private void validateIsWithinGrid(final int x, final int y) {
+        if (!isInGrid(x, y)) {
+            throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
+        }
+    }
+
+    public void set(Offset cell, T value) {
+        set(cell.x(), cell.y(), value);
+    }
+
 }

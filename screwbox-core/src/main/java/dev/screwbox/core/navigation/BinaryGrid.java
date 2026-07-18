@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
+//TODO get rid completly!
 /**
  * Stores binary data within cells that are aligned to the game world.
  */
