@@ -11,7 +11,7 @@ import java.util.List;
 public class GridGraph implements Graph<Offset> {
 
     private final Grid<Boolean> grid;
-    private boolean isDiagonalMovementAllowed;
+    private final boolean isDiagonalMovementAllowed;
 
     public GridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed) {
         this.grid = grid;
@@ -20,26 +20,28 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public List<Offset> adjacentNodes(final Offset node) {
-        final List<Offset> outNeighbors = new ArrayList<>();
+        final List<Offset> outNeighbors = new ArrayList<>(isDiagonalMovementAllowed ? 8 : 4);
+
         final Offset bottom = node.bottom();
-        final Offset top = node.top();
-        final Offset left = node.left();
-        final Offset right = node.right();
-
         final boolean isBottomFree = isFree(bottom);
-        final boolean isTopFree = isFree(top);
-        final boolean isLeftFree = isFree(left);
-        final boolean isRightFree = isFree(right);
-
         if (isBottomFree) {
             outNeighbors.add(bottom);
         }
+
+        final Offset top = node.top();
+        final boolean isTopFree = isFree(top);
         if (isTopFree) {
             outNeighbors.add(top);
         }
+
+        final Offset left = node.left();
+        final boolean isLeftFree = isFree(left);
         if (isLeftFree) {
             outNeighbors.add(left);
         }
+
+        final Offset right = node.right();
+        final boolean isRightFree = isFree(right);
         if (isRightFree) {
             outNeighbors.add(right);
         }

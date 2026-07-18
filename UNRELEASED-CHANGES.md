@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Add relative position methods to `Offset`
-- Slightly improved pathfinding performance
+- Completely reworked Grid class to store any data not just booleans (#791)
 
 ### 🪛 Bug Fixes
 
