@@ -35,8 +35,8 @@ public class Grid<T> implements Serializable {
     public Grid(final Bounds bounds, final int cellSize) {
         requireNonNull(bounds, "grid bounds must not be null");
         Validate.positive(cellSize, "cell size must be positive");
-        Validate.isTrue(() -> bounds.origin().x() % cellSize == 0, "bounds should fit cell size");
-        Validate.isTrue(() -> bounds.origin().y() % cellSize == 0, "bounds should fit cell size");
+        Validate.isTrue(() -> bounds.width() % cellSize == 0, "bounds should fit cell size");
+        Validate.isTrue(() -> bounds.height() % cellSize == 0, "bounds should fit cell size");
 
         this.cellSize = cellSize;
         this.bounds = bounds;
