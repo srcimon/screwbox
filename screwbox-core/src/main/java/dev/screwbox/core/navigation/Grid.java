@@ -122,6 +122,10 @@ public class Grid<T> implements Serializable {
         cellData[internalIndex] = value;
     }
 
+    public T get(Offset cell) {
+        return get(cell.x(), cell.y());
+    }
+
     public T get(int x, int y) {
         validateIsWithinGrid(x, y);
         var internalIndex = toInternalIndex(x, y);

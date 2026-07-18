@@ -5,30 +5,27 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 //TODO get rid completly!
+
 /**
  * Stores binary data within cells that are aligned to the game world.
  */
 public class BinaryGrid extends Grid<Boolean> {
 
-    private final BitSet isBlocked;
-
     public BinaryGrid(final Bounds bounds, final int cellSize) {
         super(bounds, cellSize);
-        isBlocked = new BitSet(width * height);
     }
 
     public boolean isFree(final Offset node) {
         final int x = node.x();
         final int y = node.y();
-        return isInGrid(x, y) && !isBlocked.get(bitsetIndex(x, y));
+        return isInGrid(x, y) && get(node) == null;
     }
 
     public void freeAt(final Vector position) {
-        statusChangeAt(position, false);
+        statusChangeAt(position, (Boolean)null);
     }
 
     public void blockAt(final Vector position) {
@@ -45,7 +42,7 @@ public class BinaryGrid extends Grid<Boolean> {
 
     private void statusChange(final int x, final int y, final boolean status) {
         if (isInGrid(x, y)) {
-            isBlocked.set(bitsetIndex(x, y), status);
+            set(x, y, status);
         }
     }
 
@@ -148,17 +145,12 @@ public class BinaryGrid extends Grid<Boolean> {
 
 
     public boolean isBlocked(final int x, final int y) {
-        return isInGrid(x, y) && isBlocked.get(bitsetIndex(x, y));
+        return isInGrid(x, y) && get(x, y) != null;
     }
 
 
     public boolean isBlocked(final Offset node) {
         return isBlocked(node.x(), node.y());
-    }
-
-
-    private int bitsetIndex(final int x, final int y) {
-        return x * height + y;
     }
 
     private void markRegion(final Bounds region, final boolean status) {
@@ -169,7 +161,7 @@ public class BinaryGrid extends Grid<Boolean> {
         final int maxY = Math.min(toCell(areaTranslated.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                isBlocked.set(bitsetIndex(x, y), status);
+                set(x, y, status);
             }
         }
     }
