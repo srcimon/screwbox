@@ -108,7 +108,11 @@ public class Grid<T> implements Serializable {
         return cellSize;
     }
 
-    protected boolean isInGrid(final int x, final int y) {
+    public boolean contains(final Offset cell) {
+        return contains(cell.x(), cell.y());
+    }
+
+    public boolean contains(final int x, final int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
@@ -149,7 +153,7 @@ public class Grid<T> implements Serializable {
     }
 
     private void validateIsWithinGrid(final int x, final int y) {
-        if (!isInGrid(x, y)) {
+        if (!contains(x, y)) {
             throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
         }
     }
@@ -158,8 +162,8 @@ public class Grid<T> implements Serializable {
         set(cell.x(), cell.y(), value);
     }
 
-    protected void set(final Bounds region, final T value) {
-        final var areaTranslated = region.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
+    public void set(final Bounds area, final T value) {
+        final var areaTranslated = area.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
         final int minX = Math.max(toCell(areaTranslated.origin().x()), 0);
         final int maxX = Math.min(toCell(areaTranslated.bottomRight().x()), width - 1);
         final int minY = Math.max(toCell(areaTranslated.origin().y()), 0);
@@ -174,6 +178,7 @@ public class Grid<T> implements Serializable {
     public boolean hasValue(final Offset cell) {
         final int x = cell.x();
         final int y = cell.y();
-        return isInGrid(x, y) && get(x, y) != null;
+        return contains(x, y) && get(x, y) != null;
     }
+
 }

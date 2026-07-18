@@ -26,12 +26,12 @@ public class GridUpdateSystem implements EntitySystem {
         final BinaryGrid grid = new BinaryGrid(oldGrid.bounds(), oldGrid.cellSize());
         oldGrid.nodes().stream().parallel().forEach(node -> {
             final int count = blockedSurroundingNodesCount(oldGrid, node);
-            if (oldGrid.isFree(node)) {
+            if (oldGrid.contains(node) && !oldGrid.hasValue(node)) {
                 if (count == 3) {
-                    grid.block(node);
+                    grid.set(node, true);
                 }
             } else if (count == 2 || count == 3) {
-                grid.block(node);
+                grid.set(node, true);
             }
         });
         gridComponent.grid = grid;

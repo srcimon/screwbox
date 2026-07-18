@@ -41,6 +41,6 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public boolean nodeExists(final Offset node) {
-        return grid.isFree(node);
+        return grid.contains(node);
     }
 }

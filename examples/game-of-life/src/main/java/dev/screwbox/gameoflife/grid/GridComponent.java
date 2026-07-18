@@ -19,7 +19,9 @@ public class GridComponent implements Component {
         final Random random = new Random();
         grid = new BinaryGrid($$(-1000, -1000, 1000, 1000), 2);
         for (int i = 0; i < grid.width() * 60; i++) {
-            grid.block(random.nextInt(0, grid.width()), random.nextInt(0, grid.height()));
+            final int x = random.nextInt(0, grid.width());
+            final int y = random.nextInt(0, grid.height());
+            grid.set(x, y, true);
         }
     }
 }

@@ -22,7 +22,7 @@ class DijkstraAlgorithmTest {
     @Test
     void findPath_noPath_returnsEmpty() {
         BinaryGrid grid = new BinaryGrid($$(0, 0, 5, 5), 1);
-        grid.blockArea($$(2, 0, 1, 5));
+        grid.set($$(2, 0, 1, 5), true);
 
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
@@ -35,7 +35,7 @@ class DijkstraAlgorithmTest {
     @Test
     void findPath_pathPresent_returnsShortestPath() {
         BinaryGrid grid = new BinaryGrid($$(0, 0, 5, 5), 1);
-        grid.blockArea($$(2, 2, 2, 2));
+        grid.set($$(2, 2, 2, 2), true);
 
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);

@@ -1,7 +1,6 @@
 package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 
 import java.util.ArrayList;
@@ -16,24 +15,6 @@ public class BinaryGrid extends Grid<Boolean> {
 
     public BinaryGrid(final Bounds bounds, final int cellSize) {
         super(bounds, cellSize);
-    }
-
-    public boolean isFree(final Offset node) {
-        final int x = node.x();
-        final int y = node.y();
-        return isInGrid(x, y) && !hasValue(node);
-    }
-
-    public void block(final Offset node) {
-        block(node.x(), node.y());
-    }
-
-    public void block(final int x, final int y) {
-        set(x, y, true);
-    }
-
-    public void blockArea(final Bounds area) {
-        set(area, true);
     }
 
     //TODO move into GridGraph?
@@ -122,6 +103,12 @@ public class BinaryGrid extends Grid<Boolean> {
         }
 
         return neighbors;
+    }
+
+    private boolean isFree(final Offset node) {
+        final int x = node.x();
+        final int y = node.y();
+        return contains(x, y) && !hasValue(node);
     }
 
 }

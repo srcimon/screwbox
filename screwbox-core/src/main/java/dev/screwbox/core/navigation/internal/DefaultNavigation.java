@@ -2,13 +2,13 @@ package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.navigation.AStarAlgorithm;
-import dev.screwbox.core.navigation.Graph;
 import dev.screwbox.core.navigation.BinaryGrid;
+import dev.screwbox.core.navigation.Graph;
 import dev.screwbox.core.navigation.Navigation;
-import dev.screwbox.core.Polygon;
 import dev.screwbox.core.navigation.PathfindingAlgorithm;
 import dev.screwbox.core.navigation.RaycastBuilder;
 import dev.screwbox.core.navigation.SelectEntityBuilder;
@@ -48,7 +48,7 @@ public class DefaultNavigation implements Navigation {
         navigationRegion = region.snapExpand(cellSize);
         grid = new BinaryGrid(navigationRegion, cellSize);
         for (final var obstacle : obstacles) {
-            grid.blockArea(obstacle);
+            grid.set(obstacle, true);
         }
         updateGraph();
         return this;
@@ -142,16 +142,16 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Optional<Polygon> findPath(final Vector start, final Vector end) {
         return isNull(graph)
-                ? Optional.empty()
-                : findPath(start, end, graph, algorithm);
+            ? Optional.empty()
+            : findPath(start, end, graph, algorithm);
     }
 
     private void updateGraph() {
         if (nonNull(grid)) {
             long gridNodes = grid.nodeCount();
             graph = gridNodes <= graphCachingNodeLimit
-                    ? new CachedGridGraph(grid, isDiagonalMovementAllowed)
-                    : new GridGraph(grid, isDiagonalMovementAllowed);
+                ? new CachedGridGraph(grid, isDiagonalMovementAllowed)
+                : new GridGraph(grid, isDiagonalMovementAllowed);
         }
     }
 }
