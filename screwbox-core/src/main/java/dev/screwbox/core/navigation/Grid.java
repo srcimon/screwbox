@@ -116,6 +116,10 @@ public class Grid<T> implements Serializable {
         return (y + PADDING) * internalWidth + (x + PADDING);
     }
 
+    public void set(Vector position, T value) {
+        set(toCell(position), value);
+    }
+
     public void set(int x, int y, T value) {
         validateIsWithinGrid(x, y);
         var internalIndex = toInternalIndex(x, y);

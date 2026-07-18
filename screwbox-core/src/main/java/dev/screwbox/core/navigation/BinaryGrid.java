@@ -21,15 +21,15 @@ public class BinaryGrid extends Grid<Boolean> {
     public boolean isFree(final Offset node) {
         final int x = node.x();
         final int y = node.y();
-        return isInGrid(x, y) && get(node) == null;
+        return isInGrid(x, y) && !hasValue(node);
     }
 
     public void freeAt(final Vector position) {
-        statusChangeAt(position, (Boolean)null);
+        set(position, null);
     }
 
     public void blockAt(final Vector position) {
-        statusChangeAt(position, true);
+        set(position, true);
     }
 
     public void block(final Offset node) {
@@ -37,18 +37,7 @@ public class BinaryGrid extends Grid<Boolean> {
     }
 
     public void block(final int x, final int y) {
-        statusChange(x, y, true);
-    }
-
-    private void statusChange(final int x, final int y, final boolean status) {
-        if (isInGrid(x, y)) {
-            set(x, y, status);
-        }
-    }
-
-    private void statusChangeAt(final Vector position, boolean status) {
-        final Offset node = toCell(position);
-        statusChange(node.x(), node.y(), status);
+        set(x, y, true);
     }
 
     public void blockArea(final Bounds area) {
