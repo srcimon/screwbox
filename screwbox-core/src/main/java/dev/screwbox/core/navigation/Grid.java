@@ -41,7 +41,7 @@ public class Grid<T> implements Serializable {
 
     /**
      * Creates a new instance at the specified bounds with the specified cell size.
-     * Cells must fit exactly within the bounds.
+     * Cells must fit exactly within the bounds. Supports only cells with
      */
     @SuppressWarnings("unchecked")
     public Grid(final Bounds bounds, final int cellSize) {
@@ -89,8 +89,6 @@ public class Grid<T> implements Serializable {
         final Vector position = cellPosition(cell);
         return Bounds.atPosition(position, cellSize, cellSize);
     }
-
-    //TODO javadoc below
 
     /**
      * Returns the cell at the specified positon. Will return cells that reside outside the grid.
@@ -141,37 +139,50 @@ public class Grid<T> implements Serializable {
         return cellSize;
     }
 
+
+    /**
+     * Returns {@code true} if the specified cell exits within the grid.
+     */
     public boolean contains(final Offset cell) {
         return contains(cell.x(), cell.y());
     }
 
+    /**
+     * Returns {@code true} if the specified cell exits within the grid.
+     */
     public boolean contains(final int x, final int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
-    private int toInternalIndex(final int x, final int y) {
-        return y * width + x;
-    }
-
-    public void clear(Vector position) {
+    /**
+     * Clears the contents of the cell at the specified position-
+     */
+    public void clear(final Vector position) {
         clear(toCell(position));
     }
 
+    /**
+     * Clears the contents of the specified cell.
+     */
     public void clear(final Offset cell) {
         clear(cell.x(), cell.y());
     }
 
+    /**
+     * Clears the contents of the specified cell.
+     */
     public void clear(final int x, final int y) {
         set(x, y, null);
     }
 
+    //TODO javadoc below
     public void set(Vector position, T value) {
         set(toCell(position), value);
     }
 
     public void set(int x, int y, T value) {
         validateCell(x, y);
-        final var internalIndex = toInternalIndex(x, y);
+        final var internalIndex = toDataIndex(x, y);
         cellData[internalIndex] = value;
     }
 
@@ -181,7 +192,7 @@ public class Grid<T> implements Serializable {
 
     public T get(int x, int y) {
         validateCell(x, y);
-        final var internalIndex = toInternalIndex(x, y);
+        final var internalIndex = toDataIndex(x, y);
         return cellData[internalIndex];
     }
 
@@ -202,12 +213,16 @@ public class Grid<T> implements Serializable {
         }
     }
 
+    /**
+     * Returns {@code true} if the specified cell exists and has a value.
+     */
     public boolean hasValue(final Offset cell) {
-        final int x = cell.x();
-        final int y = cell.y();
-        return hasValue(x, y);
+        return hasValue(cell.x(), cell.y());
     }
 
+    /**
+     * Returns {@code true} if the specified cell exists and has a value.
+     */
     public boolean hasValue(int x, int y) {
         return contains(x, y) && get(x, y) != null;
     }
@@ -221,4 +236,9 @@ public class Grid<T> implements Serializable {
             throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
         }
     }
+
+    private int toDataIndex(final int x, final int y) {
+        return y * width + x;
+    }
+
 }
