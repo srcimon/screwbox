@@ -16,7 +16,6 @@ import dev.screwbox.core.log.LoggingAdapter;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.mouse.Mouse;
 import dev.screwbox.core.particles.Particles;
-import dev.screwbox.core.navigation.BinaryGrid;
 import dev.screwbox.core.navigation.Navigation;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.ui.Ui;

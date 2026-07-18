@@ -2,18 +2,18 @@ package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.navigation.BinaryGrid;
 import dev.screwbox.core.navigation.Graph;
+import dev.screwbox.core.navigation.Grid;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GridGraph implements Graph<Offset> {
 
-    private final BinaryGrid grid;
+    private final Grid<Boolean> grid;
     private boolean isDiagonalMovementAllowed;
 
-    public GridGraph(final BinaryGrid grid, final boolean isDiagonalMovementAllowed) {
+    public GridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed) {
         this.grid = grid;
         this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
     }

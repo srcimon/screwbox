@@ -1,7 +1,7 @@
 package dev.screwbox.gameoflife.grid;
 
 import dev.screwbox.core.environment.Component;
-import dev.screwbox.core.navigation.BinaryGrid;
+import dev.screwbox.core.navigation.Grid;
 
 import java.io.Serial;
 import java.util.Random;
@@ -13,11 +13,11 @@ public class GridComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public BinaryGrid grid;
+    public Grid<Boolean> grid;
 
     public GridComponent() {
         final Random random = new Random();
-        grid = new BinaryGrid($$(-1000, -1000, 1000, 1000), 2);
+        grid = new Grid<>($$(-1000, -1000, 1000, 1000), 2);
         for (int i = 0; i < grid.width() * 60; i++) {
             final int x = random.nextInt(0, grid.width());
             final int y = random.nextInt(0, grid.height());

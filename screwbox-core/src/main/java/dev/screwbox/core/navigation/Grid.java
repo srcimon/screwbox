@@ -79,7 +79,7 @@ public class Grid<T> implements Serializable {
 
     public Offset toCell(final Vector position) {
         final var translated = position.subtract(bounds.origin());
-        return BinaryGrid.findCell(translated, cellSize);
+        return Grid.findCell(translated, cellSize);
     }
 
     public List<Offset> nodes() {

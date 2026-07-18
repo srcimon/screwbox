@@ -3,7 +3,7 @@ package dev.screwbox.gameoflife.grid;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.navigation.BinaryGrid;
+import dev.screwbox.core.navigation.Grid;
 import dev.screwbox.core.utils.Scheduler;
 
 import static dev.screwbox.core.Duration.ofMillis;
@@ -22,8 +22,8 @@ public class GridUpdateSystem implements EntitySystem {
     }
 
     private void update(final GridComponent gridComponent) {
-        final BinaryGrid oldGrid = gridComponent.grid;
-        final BinaryGrid grid = new BinaryGrid(oldGrid.bounds(), oldGrid.cellSize());
+        final Grid<Boolean> oldGrid = gridComponent.grid;
+        final Grid<Boolean> grid = new Grid<>(oldGrid.bounds(), oldGrid.cellSize());
         oldGrid.nodes().stream().parallel().forEach(node -> {
             final int count = blockedSurroundingNodesCount(oldGrid, node);
             if (oldGrid.contains(node) && !oldGrid.hasValue(node)) {
@@ -37,7 +37,7 @@ public class GridUpdateSystem implements EntitySystem {
         gridComponent.grid = grid;
     }
 
-    private int blockedSurroundingNodesCount(final BinaryGrid grid, final Offset node) {
+    private int blockedSurroundingNodesCount(final Grid<Boolean> grid, final Offset node) {
         int count = 0;
         if (grid.hasValue(node.top())) {
             count++;
