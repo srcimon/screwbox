@@ -31,7 +31,7 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public Offset toGraph(final Vector position) {
-        return grid.toGrid(position);
+        return grid.toCell(position);
     }
 
     @Override

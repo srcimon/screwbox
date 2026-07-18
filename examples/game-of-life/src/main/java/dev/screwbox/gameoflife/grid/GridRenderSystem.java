@@ -27,7 +27,7 @@ public class GridRenderSystem implements EntitySystem {
         final BinaryGrid grid = gridComponent.grid;
         double z = engine.loop().runningTime().milliseconds() / 1500.0;
         for (final var node : blockedNodesIn(grid, visibleArea)) {
-            final Bounds bounds = grid.nodeBounds(node);
+            final Bounds bounds = grid.cellBounds(node);
             final var r = Percent.of((PerlinNoise.generatePerlinNoise3d(123120L, node.x() / 10.0, node.y() / 10.0, z) + 1) / 2.0);
             final var g = Percent.of((PerlinNoise.generatePerlinNoise3d(14545L, node.x() / 10.0, node.y() / 10.0, z) + 1) / 2.0);
             final var b = Percent.of((PerlinNoise.generatePerlinNoise3d(53545L, node.x() / 10.0, node.y() / 10.0, z) + 1) / 2.0);
@@ -39,8 +39,8 @@ public class GridRenderSystem implements EntitySystem {
 
     private List<Offset> blockedNodesIn(final BinaryGrid grid, final Bounds bounds) {
         final var nodes = new ArrayList<Offset>();
-        final var minNode = grid.toGrid(bounds.origin());
-        final var maxNode = grid.toGrid(bounds.bottomRight());
+        final var minNode = grid.toCell(bounds.origin());
+        final var maxNode = grid.toCell(bounds.bottomRight());
         final int minX = Math.max(minNode.x(), 0);
         final int maxX = Math.min(maxNode.x(), grid.width());
         final int minY = Math.max(minNode.y(), 0);
@@ -56,7 +56,7 @@ public class GridRenderSystem implements EntitySystem {
     }
 
     private Vector snap(final BinaryGrid grid, final Vector position) {
-        final Offset node = grid.toGrid(position);
+        final Offset node = grid.toCell(position);
         return grid.toWorld(node);
     }
 }

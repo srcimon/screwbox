@@ -4,7 +4,6 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Grid;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.World;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -22,35 +21,10 @@ public class BinaryGrid extends Grid<Boolean> {
         isBlocked = new BitSet(width * height);
     }
 
-    /**
-     * Returns {@code true} if the specified position is not blocked and inside the {@link BinaryGrid}.
-     */
-    public boolean isFree(final int x, final int y) {
-        return isInGrid(x, y) && !isBlocked.get(bitsetIndex(x, y));
-    }
-
     public boolean isFree(final Offset node) {
-        return isFree(node.x(), node.y());
-    }
-
-    public Vector toWorld(final Offset node) {
-        final double x = (node.x() + 0.5) * cellSize + bounds.origin().x();
-        final double y = (node.y() + 0.5) * cellSize + bounds.origin().y();
-        return Vector.$(x, y);
-    }
-
-    public Bounds nodeBounds(final Offset node) {
-        final Vector position = toWorld(node);
-        return Bounds.atPosition(position, cellSize, cellSize);
-    }
-
-    public Offset toGrid(final Vector position) {
-        final var translated = position.subtract(bounds.origin());
-        return BinaryGrid.findCell(translated, cellSize);
-    }
-
-    public void freeArea(final Bounds area) {
-        markRegion(area, false);
+        final int x = node.x();
+        final int y = node.y();
+        return isInGrid(x, y) && !isBlocked.get(bitsetIndex(x, y));
     }
 
     public void freeAt(final Vector position) {
@@ -76,7 +50,7 @@ public class BinaryGrid extends Grid<Boolean> {
     }
 
     private void statusChangeAt(final Vector position, boolean status) {
-        final Offset node = toGrid(position);
+        final Offset node = toCell(position);
         statusChange(node.x(), node.y(), status);
     }
 
@@ -180,16 +154,6 @@ public class BinaryGrid extends Grid<Boolean> {
         return neighbors;
     }
 
-    public List<Offset> nodes() {
-        final var nodes = new ArrayList<Offset>();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                nodes.add(Offset.at(x, y));
-            }
-        }
-        return nodes;
-    }
-
     public int nodeCount() {
         return width * height;
     }
@@ -217,10 +181,10 @@ public class BinaryGrid extends Grid<Boolean> {
 
     private void markRegion(final Bounds region, final boolean status) {
         final var areaTranslated = region.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
-        final int minX = Math.max(toGrid(areaTranslated.origin().x()), 0);
-        final int maxX = Math.min(toGrid(areaTranslated.bottomRight().x()), width - 1);
-        final int minY = Math.max(toGrid(areaTranslated.origin().y()), 0);
-        final int maxY = Math.min(toGrid(areaTranslated.bottomRight().y()), height - 1);
+        final int minX = Math.max(toCell(areaTranslated.origin().x()), 0);
+        final int maxX = Math.min(toCell(areaTranslated.bottomRight().x()), width - 1);
+        final int minY = Math.max(toCell(areaTranslated.origin().y()), 0);
+        final int maxY = Math.min(toCell(areaTranslated.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 isBlocked.set(bitsetIndex(x, y), status);
