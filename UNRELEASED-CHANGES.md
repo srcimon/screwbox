@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Add relative position methods to `Offset`
-- Completely reworked Grid class to store any data not just booleans (#791)
+- `Grid` can now store any data not just booleans (#791)
 
 ### 🪛 Bug Fixes
 
@@ -10,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Removed unused Grid methods
+- Cleaned up `Grid` methods
 
 ### 📦 Dependency updates
 
