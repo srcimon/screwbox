@@ -13,7 +13,7 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-//TODO changelog: completely reworked grid class
+//TODO add javadoc
 public class Grid<T> implements Serializable {
 
     private static final int PADDING = 1;
@@ -40,6 +40,7 @@ public class Grid<T> implements Serializable {
     protected final Bounds bounds;
     protected final T[] cellData;
 
+    @SuppressWarnings("unchecked")
     public Grid(final Bounds bounds, final int cellSize) {
         requireNonNull(bounds, "grid bounds must not be null");
         Validate.positive(cellSize, "cell size must be positive");
