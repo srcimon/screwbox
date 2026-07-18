@@ -143,14 +143,4 @@ public class BinaryGrid extends Grid<Boolean> {
         return neighbors;
     }
 
-
-    public boolean isBlocked(final int x, final int y) {
-        return isInGrid(x, y) && get(x, y) != null;
-    }
-
-
-    public boolean isBlocked(final Offset node) {
-        return isBlocked(node.x(), node.y());
-    }
-
 }

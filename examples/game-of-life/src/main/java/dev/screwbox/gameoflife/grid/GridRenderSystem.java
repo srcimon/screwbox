@@ -47,8 +47,9 @@ public class GridRenderSystem implements EntitySystem {
         final int maxY = Math.min(maxNode.y(), grid.height());
         for (int x = minX; x < maxX; x++) {
             for (int y = minY; y < maxY; y++) {
-                if (grid.isBlocked(x, y)) {
-                    nodes.add(Offset.at(x, y));
+                Offset offset = Offset.at(x, y);
+                if (grid.hasValue(offset)) {
+                    nodes.add(offset);
                 }
             }
         }

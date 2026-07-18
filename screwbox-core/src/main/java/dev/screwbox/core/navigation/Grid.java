@@ -154,4 +154,10 @@ public class Grid<T> implements Serializable {
             }
         }
     }
+
+    public boolean hasValue(final Offset cell) {
+        final int x = cell.x();
+        final int y = cell.y();
+        return isInGrid(x, y) && get(x, y) != null;
+    }
 }
