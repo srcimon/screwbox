@@ -1,12 +1,18 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.playground.render.GasRenderComponent;
+import dev.screwbox.playground.render.GasRenderSystem;
+import dev.screwbox.playground.simulate.GasSimulationComponent;
+import dev.screwbox.playground.simulate.GasSimulationSystem;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -27,10 +33,15 @@ public class PlaygroundApp {
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
-            .addSystem(e -> {
-                e.graphics().canvas().drawSprite(Sprite.fromImage(image), Offset.origin(), SpriteDrawOptions.originalSize());
-                updateAndDrawPixels((int) e.loop().frameNumber());
-            });
+            .addSystem(new GasSimulationSystem())
+            .addSystem(new GasRenderSystem())
+                .addEntity(new Entity().bounds(Bounds.atPosition(32, 32, 64,64))
+                    .add(new GasRenderComponent())
+                    .add(new GasSimulationComponent(1)));
+//            .addSystem(e -> {
+//                e.graphics().canvas().drawSprite(Sprite.fromImage(image), Offset.origin(), SpriteDrawOptions.originalSize());
+//                updateAndDrawPixels((int) e.loop().frameNumber());
+//            });
 
         screwBox.start();
     }
