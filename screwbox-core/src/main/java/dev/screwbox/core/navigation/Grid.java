@@ -12,8 +12,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -40,7 +42,7 @@ public class Grid<T extends Serializable> implements Serializable {
     protected final int cellSize;
     protected final Bounds bounds;
     protected final T[] cellData;
-
+    protected T autoPaddingValue;
 
     /**
      * Creates an instance of a boolean grid.
@@ -209,7 +211,12 @@ public class Grid<T extends Serializable> implements Serializable {
      * Sets the contents of the specified cell.
      */
     public void set(final int x, final int y, final T value) {
-        validateCell(x, y);
+        if (!contains(x, y)) {
+            if(nonNull(autoPaddingValue)) {
+                return;
+            }
+            throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
+        }
         final var internalIndex = toDataIndex(x, y);
         cellData[internalIndex] = value;
     }
@@ -225,7 +232,12 @@ public class Grid<T extends Serializable> implements Serializable {
      * Returns the contents of the specified cell.
      */
     public T get(final int x, final int y) {
-        validateCell(x, y);
+        if (!contains(x, y)) {
+            if(nonNull(autoPaddingValue)) {
+                return autoPaddingValue;
+            }
+            throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
+        }
         final var internalIndex = toDataIndex(x, y);
         return cellData[internalIndex];
     }
@@ -264,14 +276,13 @@ public class Grid<T extends Serializable> implements Serializable {
         return Math.floorDiv((int) value, cellSize);
     }
 
-    private void validateCell(final int x, final int y) {
-        if (!contains(x, y)) {
-            throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
-        }
-    }
-
     private int toDataIndex(final int x, final int y) {
         return y * width + x;
     }
 
+    //TODO document, test, changelog
+    //TODO disableAutoPaddding
+    public void enableAutoPadding(T defaultValue) {
+        autoPaddingValue = defaultValue;
+    }
 }

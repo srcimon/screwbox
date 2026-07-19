@@ -1,6 +1,5 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Entity;
@@ -21,7 +20,7 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystem(new GasSimulationSystem())
             .addSystem(new GasRenderSystem())
-            .addEntity(new Entity().bounds(Bounds.atPosition(32, 32, 128, 64))
+            .addEntity(new Entity().bounds(screwBox.graphics().visibleArea().expand(-64))
                 .add(new GasRenderComponent())
                 .add(new GasSimulationComponent(4)));
 

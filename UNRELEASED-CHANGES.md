@@ -6,6 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed white screen when starting a new game with postfilter enabled
+- Fixed incorrect visible area size before opening the game window
 
 ### 🧽 Cleanup & refactoring
 

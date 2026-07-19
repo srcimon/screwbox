@@ -21,12 +21,26 @@ public class GasSimulationSystem implements EntitySystem {
             var simulation = gas.get(GasSimulationComponent.class);
             if (isNull(simulation.state)) {
                 simulation.state = new Grid<>(gas.bounds(), simulation.cellSize, GasCellState.class);
+                simulation.state.enableAutoPadding(new GasCellState());
                 simulation.state.fill(GasCellState::new);
+                initRandomly(simulation, random);
             }
             for (int y = 0; y < simulation.state.height(); y++) {
                 for (int x = 0; x < simulation.state.width(); x++) {
-                    simulation.state.get(x, y).density = random.nextDouble();
+                    simulation.state.get(x, y).density = simulation.state.get(x, y).density
+                                                         + simulation.state.get(x + 1, y).density * 0.01
+                                                         - simulation.state.get(x + 1, y - 1).density * 0.01
+                                                         - simulation.state.get(x - 1, y).density * 0.01
+                                                         + simulation.state.get(x, y + 1).density * 0.02;
                 }
+            }
+        }
+    }
+
+    private static void initRandomly(GasSimulationComponent simulation, Random random) {
+        for (int y = 0; y < simulation.state.height(); y++) {
+            for (int x = 0; x < simulation.state.width(); x++) {
+                simulation.state.get(x, y).density = random.nextDouble();
             }
         }
     }
