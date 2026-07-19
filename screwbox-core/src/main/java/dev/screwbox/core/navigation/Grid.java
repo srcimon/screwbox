@@ -279,6 +279,7 @@ public class Grid<T extends Serializable> implements Serializable {
         return y * width + x;
     }
 
+    //TODO a more elegant way to enable this?
     //TODO document, test, changelog
     //TODO disableAutoPaddding
     public void enableAutoPadding(T defaultValue) {
