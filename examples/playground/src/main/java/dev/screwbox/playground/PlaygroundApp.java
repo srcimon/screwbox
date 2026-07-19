@@ -20,11 +20,6 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystem(new GasSimulationSystem())
             .addSystem(new GasRenderSystem())
-            .addSystem(engine -> {
-                engine.graphics().camera().setZoomRestriction(0.1,10);
-                engine.graphics().camera().move(engine.mouse().drag().multiply(0.1));
-                engine.graphics().camera().changeZoomBy(engine.mouse().unitsScrolled()/10.0);
-            })
             .addEntity(new Entity().bounds(screwBox.graphics().visibleArea().expand(-32))
                 .add(new GasRenderComponent())
                 .add(new GasSimulationComponent(4)));

@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.navigation.Grid;
+import dev.screwbox.core.utils.PerlinNoise;
 
 import java.util.Random;
 
@@ -29,15 +30,16 @@ public class GasSimulationSystem implements EntitySystem {
             for (int y = 0; y < simulation.state.height(); y++) {
                 for (int x = 0; x < simulation.state.width(); x++) {
                     var c = Offset.at(x, y);
-                    simulation.state.get(x, y).density = simulation.state.get(c).density
-                                                         + simulation.state.get(c.top()).density * 0.001
-                                                         - simulation.state.get(c.bottom()).density * 0.001
-                                                         + simulation.state.get(c.left()).density * 0.001
-                                                         - simulation.state.get(c.right()).density * 0.001
-                                                         + simulation.state.get(c.right()).density * 0.001
-                                                         - simulation.state.get(c.left()).density * 0.001
-                                                         + simulation.state.get(c.top()).density * 0.001
-                                                         - simulation.state.get(c.right()).density * 0.001;
+                    simulation.state.get(c).density = simulation.state.get(c).density + 0.1* PerlinNoise.generatePerlinNoise(1230L, (x+engine.loop().frameNumber())/40.0,(y+engine.loop().frameNumber())/40.0);
+//                    simulation.state.get(x, y).density = simulation.state.get(c).density
+//                                                         + simulation.state.get(c.top()).density * 0.001
+//                                                         - simulation.state.get(c.bottom()).density * 0.001
+//                                                         + simulation.state.get(c.left()).density * 0.001
+//                                                         - simulation.state.get(c.right()).density * 0.001
+//                                                         + simulation.state.get(c.right()).density * 0.001
+//                                                         - simulation.state.get(c.left()).density * 0.001
+//                                                         + simulation.state.get(c.top()).density * 0.001
+//                                                         - simulation.state.get(c.right()).density * 0.001;
 
                 }
             }
