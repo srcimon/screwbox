@@ -48,7 +48,7 @@ public class DefaultNavigation implements Navigation {
         navigationRegion = region.snapExpand(cellSize);
         grid = Grid.booleanGrid(navigationRegion, cellSize);
         for (final var obstacle : obstacles) {
-            grid.set(obstacle, true);
+            grid.fill(obstacle, true);
         }
         updateGraph();
         return this;

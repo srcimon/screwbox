@@ -225,7 +225,7 @@ public class Grid<T extends Serializable> implements Serializable {
     /**
      * Sets the contents of all cells within the specified area.
      */
-    public void set(final Bounds area, final T value) {
+    public void fill(final Bounds area, final T value) {
         final var areaTranslated = area.moveBy(-this.bounds.origin().x(), -this.bounds.origin().y()).expand(-0.1);
         final int minX = Math.max(toCell(areaTranslated.origin().x()), 0);
         final int maxX = Math.min(toCell(areaTranslated.bottomRight().x()), width - 1);

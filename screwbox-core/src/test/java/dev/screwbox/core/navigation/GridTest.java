@@ -90,11 +90,11 @@ class GridTest {
     }
 
     @Test
-    void set_areaInGrid_setsValuesWithinArea() {
+    void fill_areaInGrid_setsValuesWithinArea() {
         Bounds area = $$(0, 0, 12, 12);
         var grid = Grid.booleanGrid(area, 4);
 
-        grid.set($$(3, 2, 2, 3), true);
+        grid.fill($$(3, 2, 2, 3), true);
 
         assertThat(grid.get(0, 0)).isTrue();
         assertThat(grid.get(0, 1)).isTrue();
