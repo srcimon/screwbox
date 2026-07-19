@@ -12,7 +12,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import static java.util.Objects.nonNull;
@@ -212,7 +211,7 @@ public class Grid<T extends Serializable> implements Serializable {
      */
     public void set(final int x, final int y, final T value) {
         if (!contains(x, y)) {
-            if(nonNull(autoPaddingValue)) {
+            if (nonNull(autoPaddingValue)) {
                 return;
             }
             throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
@@ -233,7 +232,7 @@ public class Grid<T extends Serializable> implements Serializable {
      */
     public T get(final int x, final int y) {
         if (!contains(x, y)) {
-            if(nonNull(autoPaddingValue)) {
+            if (nonNull(autoPaddingValue)) {
                 return autoPaddingValue;
             }
             throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));

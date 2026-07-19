@@ -20,7 +20,7 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystem(new GasSimulationSystem())
             .addSystem(new GasRenderSystem())
-            .addEntity(new Entity().bounds(screwBox.graphics().visibleArea().expand(-64))
+            .addEntity(new Entity().bounds(screwBox.graphics().visibleArea().expand(-32))
                 .add(new GasRenderComponent())
                 .add(new GasSimulationComponent(4)));
 
