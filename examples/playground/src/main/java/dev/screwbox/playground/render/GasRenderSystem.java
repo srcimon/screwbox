@@ -15,6 +15,7 @@ import static java.util.Objects.nonNull;
 
 public class GasRenderSystem implements EntitySystem {
 
+    //TODO Optimization: reuse image
     private static final Archetype GASSES = Archetype.ofSpacial(GasSimulationComponent.class, GasRenderComponent.class);
 
     @Override
@@ -24,17 +25,17 @@ public class GasRenderSystem implements EntitySystem {
             if (nonNull(simulation.state)) {
                 BufferedImage image = new BufferedImage(simulation.state.width(), simulation.state.height(), BufferedImage.TYPE_INT_RGB);
                 var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-                
+
                 Arrays.parallelSetAll(pixels, gid -> {
                     int x = gid % simulation.state.width();
                     int y = gid / simulation.state.width();
 
-                    int r = (int) (Math.max(0, Math.min(1.0, simulation.state.get(x, y).density)) );
+                    int r = (int) (Math.clamp(simulation.state.get(x, y).density, 0, 1.0) * 255);
 
                     return (0xFF << 24) | (r << 16);
                 });
 
-                engine.graphics().world().drawSprite(Sprite.fromImage(image), gas.origin(), SpriteDrawOptions.originalSize());
+                engine.graphics().world().drawSprite(Sprite.fromImage(image), gas.origin(), SpriteDrawOptions.scaled(simulation.cellSize));
             }
         }
     }

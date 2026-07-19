@@ -12,6 +12,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
@@ -72,6 +73,13 @@ public class Grid<T extends Serializable> implements Serializable {
      */
     public void fill(T value) {
         Arrays.fill(cellData, value);
+    }
+
+    //TODO document, test, changelog
+    public void fill(Supplier<T> value) {
+        for (int i = 0; i < cellData.length; i++) {
+            cellData[i] = value.get();
+        }
     }
 
     /**
