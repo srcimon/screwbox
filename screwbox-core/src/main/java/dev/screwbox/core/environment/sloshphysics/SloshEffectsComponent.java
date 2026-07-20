@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.sloshphysics;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.audio.Sound;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Adds audio and particle effects to liquids.
+ * Adds audio and particle effects to slosh volumes.
  *
  * @see <a href="https://screwbox.dev/docs/guides/slosh-physics/">Guide: Slosh phyics</a>
  * @since 3.3.0

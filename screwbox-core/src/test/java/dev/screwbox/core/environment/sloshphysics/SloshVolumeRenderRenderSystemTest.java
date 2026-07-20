@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.sloshphysics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;

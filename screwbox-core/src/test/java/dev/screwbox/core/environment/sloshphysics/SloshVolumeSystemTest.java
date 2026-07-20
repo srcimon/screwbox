@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.sloshphysics;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Entity;
@@ -33,7 +33,7 @@ class SloshVolumeSystemTest {
 
         assertThatThrownBy(environment::update)
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("fluid must have at least two nodes (actual value: 1)");
+                .hasMessage("liquid must have at least two nodes (actual value: 1)");
     }
 
     @Test

@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.sloshphysics;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;

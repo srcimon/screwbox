@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.sloshphysics;
 
 import dev.screwbox.core.Line;
 import dev.screwbox.core.environment.Component;
@@ -44,7 +44,7 @@ public class FloatComponent implements Component {
     public double depth;
 
     /**
-     * Dive depth into liquids. Will be multiplied with body height. 0.5 will result in half submerged body.
+     * Dive depth into slosh volumes. Will be multiplied with body height. 0.5 will result in half submerged body.
      *
      * @since 3.1.0
      */
