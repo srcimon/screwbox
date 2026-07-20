@@ -157,4 +157,12 @@ class GridTest {
 
         assertThat(grid.hasValue(cell)).isFalse();
     }
+
+    @Test
+    void createByApproxCellSize_notQuiteMatching_coversWholeArea() {
+        var grid = Grid.createByApproxCellSize(Size.square(2), Bounds.atOrigin(4, 4, 5, 4), String.class);
+
+        assertThat(grid.toCell($(8.9, 4.1))).isEqualTo(Offset.at(2, 0));
+        assertThat(grid.size()).isEqualTo(Size.of(3, 2));
+    }
 }
