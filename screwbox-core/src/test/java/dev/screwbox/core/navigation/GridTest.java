@@ -16,39 +16,41 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class GridTest {
 
     @Test
-    void createFixSize_areaNull_throwsException() {
+    void createByGridSize_areaNull_throwsException() {
         var size = Size.square(1);
-        assertThatThrownBy(() -> Grid.createFixSize(size, null, Boolean.class))
+        assertThatThrownBy(() -> Grid.createByGridSize(size, null, Boolean.class))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("grid bounds must not be null");
     }
 
     @Test
-    void createFixSize_cellSizeZero_throwsException() {
+    void createByGridSize_cellSizeZero_throwsException() {
         Bounds area = Bounds.max();
-        assertThatThrownBy(() -> Grid.createFixSize(Size.none(), area, Boolean.class))
+        assertThatThrownBy(() -> Grid.createByGridSize(Size.none(), area, Boolean.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("grid size must be valid");
     }
 
     @Test
-    void createByApproxCellSize_validArguments_createsEmptyGrid() {
+    void createByCellSize_validArguments_createsEmptyGrid() {
         Bounds area = Bounds.atOrigin(Vector.zero(), 400, 200);
 
-        var grid = Grid.createByApproxCellSize(Size.square(10), area, Boolean.class);
+        var grid = Grid.createByCellSize(Size.square(10), area, Boolean.class);
 
         assertThat(grid.cells())
             .hasSize(800)
             .noneMatch(grid::hasValue);
 
         assertThat(grid.size()).isEqualTo(Size.of(40, 20));
+        assertThat(grid.cellWidth()).isEqualTo(10.0);
+        assertThat(grid.cellHeight()).isEqualTo(10.0);
     }
 
 
     @Test
     void toCell_translatesVectorToOffset() {
         Bounds area = Bounds.atOrigin(32, 32, 64, 64);
-        var grid = Grid.createFixSize(Size.square(16), area, Boolean.class);
+        var grid = Grid.createByGridSize(Size.square(16), area, Boolean.class);
 
         Offset node = grid.toCell($(0, -8));
 
@@ -58,7 +60,7 @@ class GridTest {
     @Test
     void toCell_translatesNodeFromGridToWorld() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = Grid.createByApproxCellSize(Size.square(16), area, Boolean.class);
+        var grid = Grid.createByCellSize(Size.square(16), area, Boolean.class);
 
         Offset node = grid.toCell($(192, -64));
         Vector vector = grid.cellPosition(node);
@@ -69,7 +71,7 @@ class GridTest {
     @Test
     void cellWidth_returnsCellWidth() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = Grid.createByApproxCellSize(Size.of(16, 8), area, Boolean.class);
+        var grid = Grid.createByCellSize(Size.of(16, 8), area, Boolean.class);
 
         assertThat(grid.cellWidth()).isEqualTo(16.0);
     }
@@ -77,7 +79,7 @@ class GridTest {
     @Test
     void cellHeight_returnsCellHeight() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = Grid.createByApproxCellSize(Size.of(16, 8), area, Boolean.class);
+        var grid = Grid.createByCellSize(Size.of(16, 8), area, Boolean.class);
 
         assertThat(grid.cellHeight()).isEqualTo(8.0);
     }
@@ -85,7 +87,7 @@ class GridTest {
     @Test
     void fill_areaInGrid_setsValuesWithinArea() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = Grid.createByApproxCellSize(Size.square(4), area, Boolean.class);
+        var grid = Grid.createByCellSize(Size.square(4), area, Boolean.class);
 
         grid.fill($$(3, 2, 2, 3), true);
 
@@ -104,7 +106,7 @@ class GridTest {
     @Test
     void cellBounds_cellOutOfGrid_returnsBoundsInWorld() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = Grid.createByApproxCellSize(Size.square(4), area, Boolean.class);
+        var grid = Grid.createByCellSize(Size.square(4), area, Boolean.class);
 
         var result = grid.cellBounds(Offset.at(30, 30));
         assertThat(result).isEqualTo($$(120, 120, 4, 4));
@@ -113,7 +115,7 @@ class GridTest {
     @Test
     void cellCount_3X3Area_returns9() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = Grid.createByApproxCellSize(Size.square(4), area, Boolean.class);
+        var grid = Grid.createByCellSize(Size.square(4), area, Boolean.class);
 
         assertThat(grid.cellCount()).isEqualTo(9);
     }
@@ -141,7 +143,7 @@ class GridTest {
 
     @Test
     void fill_emptyGrid_fillsAllsCells() {
-        var grid = Grid.createByApproxCellSize(Size.square(4), Bounds.atOrigin(4, 4, 4, 4), String.class);
+        var grid = Grid.createByCellSize(Size.square(4), Bounds.atOrigin(4, 4, 4, 4), String.class);
         grid.fill("test");
 
         assertThat(grid.cells()).allMatch(cell -> grid.get(cell).equals("test"));
@@ -149,7 +151,7 @@ class GridTest {
 
     @Test
     void clear_cellWithinGrid_clearsCellData() {
-        var grid = Grid.createByApproxCellSize(Size.square(1), Bounds.atOrigin(4, 4, 4, 4), String.class);
+        var grid = Grid.createByCellSize(Size.square(1), Bounds.atOrigin(4, 4, 4, 4), String.class);
         var cell = Offset.at(2, 0);
         grid.set(cell, "test");
 
@@ -159,10 +161,26 @@ class GridTest {
     }
 
     @Test
-    void createByApproxCellSize_notQuiteMatching_coversWholeArea() {
-        var grid = Grid.createByApproxCellSize(Size.square(2), Bounds.atOrigin(4, 4, 5, 4), String.class);
+    void createByCellSize_notQuiteMatching_coversWholeArea() {
+        var grid = Grid.createByCellSize(Size.square(2), Bounds.atOrigin(4, 4, 5, 4), String.class);
 
         assertThat(grid.toCell($(8.9, 4.1))).isEqualTo(Offset.at(2, 0));
         assertThat(grid.size()).isEqualTo(Size.of(3, 2));
+    }
+
+    @Test
+    void updateBounds_validPosition_updatesBoundsAndCellSizes() {
+        var grid = Grid.createByGridSize(Size.square(2), Bounds.atOrigin(4, 4, 8, 8), String.class);
+        assertThat(grid.size()).isEqualTo(Size.square(2));
+        assertThat(grid.cellWidth()).isEqualTo(4.0);
+        assertThat(grid.cellHeight()).isEqualTo(4.0);
+        assertThat(grid.bounds()).isEqualTo(Bounds.atOrigin(4, 4, 8, 8));
+
+        grid.updateBounds(Bounds.atOrigin(10, 10, 4, 6));
+
+        assertThat(grid.size()).isEqualTo(Size.square(2));
+        assertThat(grid.cellWidth()).isEqualTo(2.0);
+        assertThat(grid.cellHeight()).isEqualTo(3.0);
+        assertThat(grid.bounds()).isEqualTo(Bounds.atOrigin(10, 10, 4, 6));
     }
 }

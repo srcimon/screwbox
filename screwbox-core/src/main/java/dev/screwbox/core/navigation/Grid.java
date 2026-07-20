@@ -20,7 +20,6 @@ import static java.util.Objects.requireNonNull;
 /**
  * A grid aligned to the game world. Stores any kind of data within cells.
  */
-//TODO fixup documentation
 public class Grid<T extends Serializable> implements Serializable {
 
     @Serial
@@ -37,33 +36,34 @@ public class Grid<T extends Serializable> implements Serializable {
         return Offset.at(Math.floorDiv((int) vector.x(), cellSize), Math.floorDiv((int) vector.y(), cellSize));
     }
 
-    private final Bounds bounds;//TODO implement resizing and repositioning
     private final Size size;
+    private final T[] cellData;
+    private Bounds bounds;
     private double cellWidth;
     private double cellHeight;
-    private final T[] cellData;
 
-    public static <T extends Serializable> Grid<T> createByApproxCellSize(final Size approxCellSize, final Bounds bounds, final Class<T> type) {
-        var size = Size.of(
-            Math.ceil(bounds.width() / approxCellSize.width()),
-            Math.ceil(bounds.height() / approxCellSize.height()));
-        return createFixSize(size, bounds, type);
+    /**
+     * Creates a new instance with the specified cell size.
+     */
+    public static <T extends Serializable> Grid<T> createByCellSize(final Size cellSize, final Bounds bounds, final Class<T> type) {
+        final var size = Size.of(
+            Math.ceil(bounds.width() / cellSize.width()),
+            Math.ceil(bounds.height() / cellSize.height()));
+        return createByGridSize(size, bounds, type);
     }
 
-    //TODO fixup docs
-    public static <T extends Serializable> Grid<T> createFixSize(final Size size, final Bounds bounds, final Class<T> type) {
+    /**
+     * Creates a new instance with the specified grid size.
+     */
+    public static <T extends Serializable> Grid<T> createByGridSize(final Size size, final Bounds bounds, final Class<T> type) {
         return new Grid<T>(size, bounds, type);
     }
 
     public Grid(final Size size, final Bounds bounds, final Class<T> type) {
-        requireNonNull(bounds, "grid bounds must not be null");
         Validate.isTrue(size::isValid, "grid size must be valid");
-
         this.size = size;
-        this.bounds = bounds;
         this.cellData = (T[]) Array.newInstance(type, size.width() * size.height());
-        this.cellWidth = bounds.width() / size.width();
-        this.cellHeight = bounds.height() / size.height();
+        updateBounds(bounds);
     }
 
     /**
@@ -75,8 +75,12 @@ public class Grid<T extends Serializable> implements Serializable {
         Arrays.fill(cellData, value);
     }
 
-    //TODO document, test, changelog
-    public void fill(Supplier<T> value) {
+    /**
+     * Fills all cells with data provided by the specified {@link Supplier}.
+     *
+     * @since 3.33.0
+     */
+    public void fill(final Supplier<T> value) {
         for (int i = 0; i < cellData.length; i++) {
             cellData[i] = value.get();
         }
@@ -138,10 +142,16 @@ public class Grid<T extends Serializable> implements Serializable {
         return size.pixelCount();
     }
 
+    /**
+     * Returns the width of the cells.
+     */
     public double cellWidth() {
         return cellWidth;
     }
 
+    /**
+     * Returns the height of the cells.
+     */
     public double cellHeight() {
         return cellHeight;
     }
@@ -220,12 +230,6 @@ public class Grid<T extends Serializable> implements Serializable {
         return cellData[internalIndex];
     }
 
-    private void validateGridPosition(final int x, final int y) {
-        if (!contains(x, y)) {
-            throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
-        }
-    }
-
     /**
      * Sets the contents of all cells within the specified area.
      */
@@ -256,8 +260,17 @@ public class Grid<T extends Serializable> implements Serializable {
         return contains(x, y) && get(x, y) != null;
     }
 
+    /**
+     * Reassignes the {@link Grid#bounds()}. May affect {@link #cellWidth()} and {@link #cellHeight()}.
+     *
+     * @since 3.33.0
+     */
     public void updateBounds(final Bounds bounds) {
-        //TODO IMPLEMENT
+        requireNonNull(bounds, "grid bounds must not be null");
+
+        this.bounds = bounds;
+        this.cellWidth = bounds.width() / this.size.width();
+        this.cellHeight = bounds.height() / this.size.height();
     }
 
     private int toCellX(final double value) {
@@ -270,5 +283,11 @@ public class Grid<T extends Serializable> implements Serializable {
 
     private int toDataIndex(final int x, final int y) {
         return y * size.width() + x;
+    }
+
+    private void validateGridPosition(final int x, final int y) {
+        if (!contains(x, y)) {
+            throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
+        }
     }
 }

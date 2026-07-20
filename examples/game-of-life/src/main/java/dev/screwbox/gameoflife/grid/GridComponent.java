@@ -18,7 +18,7 @@ public class GridComponent implements Component {
 
     public GridComponent() {
         final Random random = new Random();
-        grid = Grid.createByApproxCellSize(Size.square(2), $$(-1000, -1000, 1000, 1000), Boolean.class);
+        grid = Grid.createByCellSize(Size.square(2), $$(-1000, -1000, 1000, 1000), Boolean.class);
         for (int i = 0; i < grid.size().width() * 60; i++) {
             final int x = random.nextInt(0, grid.size().width());
             final int y = random.nextInt(0, grid.size().height());

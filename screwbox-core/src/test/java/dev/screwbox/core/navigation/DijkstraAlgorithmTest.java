@@ -22,7 +22,7 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid<Boolean> grid = Grid.createByApproxCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
+        Grid<Boolean> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
         grid.fill($$(2, 0, 1, 5), true);
 
         Offset start = Offset.at(0, 0);
@@ -35,7 +35,7 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid<Boolean> grid = Grid.createByApproxCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
+        Grid<Boolean> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
         grid.fill($$(2, 2, 2, 2), true);
 
         Offset start = Offset.at(0, 0);

@@ -23,7 +23,7 @@ public class GasSimulationSystem implements EntitySystem {
         for (final var gas : engine.environment().fetchAll(GASSES)) {
             var simulation = gas.get(GasSimulationComponent.class);
             if (isNull(simulation.state)) {
-                simulation.state = Grid.createByApproxCellSize(Size.square(simulation.cellSize), gas.bounds(), GasCellState.class);
+                simulation.state = Grid.createByCellSize(Size.square(simulation.cellSize), gas.bounds(), GasCellState.class);
                 simulation.state.fill(GasCellState::new);
                 initRandomly(simulation, random);
             }

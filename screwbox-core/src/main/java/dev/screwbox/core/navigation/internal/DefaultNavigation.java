@@ -47,7 +47,7 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles) {
         navigationRegion = region.snapExpand(cellSize);
-        grid = Grid.createByApproxCellSize(Size.square(cellSize), navigationRegion, Boolean.class);
+        grid = Grid.createByCellSize(Size.square(cellSize), navigationRegion, Boolean.class);
         for (final var obstacle : obstacles) {
             grid.fill(obstacle, true);
         }
