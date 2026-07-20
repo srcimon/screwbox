@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
@@ -28,9 +28,9 @@ import java.util.List;
 @ExecutionOrder(Order.PRESENTATION_EFFECTS)
 public class FluidPostProcessingSystem implements EntitySystem {
 
-    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class, FluidPostProcessingComponent.class);
+    private static final Archetype FLUIDS = Archetype.ofSpacial(SloshComponent.class, FluidPostProcessingComponent.class);
 
-    private record FluidEffect(FluidComponent fluid, FluidPostProcessingComponent config) {
+    private record FluidEffect(SloshComponent fluid, FluidPostProcessingComponent config) {
 
         FluidEffect {
             Validate.range(config.tileSize, 4, 32, "tile size must be in range 4 to 32");
@@ -45,7 +45,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
         }
         final List<FluidEffect> filterFluids = new ArrayList<>();
         for (final var fluid : fluids) {
-            final var fluidComponent = fluid.get(FluidComponent.class);
+            final var fluidComponent = fluid.get(SloshComponent.class);
             final Bounds boundingBox = Bounds.around(fluidComponent.outline.nodes());
             if (engine.graphics().isVisible(boundingBox)) {
                 filterFluids.add(new FluidEffect(fluidComponent, fluid.get(FluidPostProcessingComponent.class)));

@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.audio.Sound;

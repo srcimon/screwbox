@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
@@ -6,7 +6,7 @@ import dev.screwbox.core.graphics.Color;
 import java.io.Serial;
 
 /**
- * Will render fluid when added to entity also containing {@link FluidComponent}.
+ * Will render fluid when added to entity also containing {@link SloshComponent}.
  *
  * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
  * @since 2.19.0

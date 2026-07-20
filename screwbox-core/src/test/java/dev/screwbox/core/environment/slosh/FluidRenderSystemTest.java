@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
@@ -21,13 +21,13 @@ class FluidRenderSystemTest {
 
     @Test
     void update_multipleColors_drawsGradient(DefaultEnvironment environment, World world) {
-        FluidComponent fluid = new FluidComponent(6);
+        SloshComponent fluid = new SloshComponent(6);
         fluid.height[0] = 10;
         fluid.height[1] = -2;
         fluid.height[4] = 4;
 
         environment
-            .addSystem(new FluidSystem())
+            .addSystem(new SloshSystem())
             .addSystem(new FluidRenderSystem())
             .addEntity(new Entity()
                 .add(fluid)
@@ -42,13 +42,13 @@ class FluidRenderSystemTest {
 
     @Test
     void update_singleColor_drawsFilled(DefaultEnvironment environment, World world) {
-        FluidComponent fluid = new FluidComponent(6);
+        SloshComponent fluid = new SloshComponent(6);
         fluid.height[0] = 10;
         fluid.height[1] = -2;
         fluid.height[4] = 4;
 
         environment
-            .addSystem(new FluidSystem())
+            .addSystem(new SloshSystem())
             .addSystem(new FluidRenderSystem())
             .addEntity(new Entity()
                 .add(fluid)

@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
@@ -17,7 +17,7 @@ class FluidTurbulenceSystemTest {
     void update_addsNoiseToAllNodes(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.02);
 
-        FluidComponent fluid = new FluidComponent(4);
+        SloshComponent fluid = new SloshComponent(4);
 
         environment
                 .addSystem(new FluidTurbulenceSystem())

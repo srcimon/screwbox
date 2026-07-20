@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
@@ -30,7 +30,7 @@ import static java.util.Objects.nonNull;
 @ExecutionOrder(Order.SIMULATION_LATE)
 public class FluidEffectsSystem implements EntitySystem {
 
-    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, FluidComponent.class);
+    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, SloshComponent.class);
     private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
 
     @Override
@@ -38,7 +38,7 @@ public class FluidEffectsSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
             final var config = entity.get(FluidEffectsComponent.class);
             if (config.scheduler.isTick(engine.loop().time())) {
-                final var surfaceNodes = entity.get(FluidComponent.class).surface.definitionNotes();
+                final var surfaceNodes = entity.get(SloshComponent.class).surface.definitionNotes();
                 applyEffects(config, surfaceNodes, engine);
             }
         }

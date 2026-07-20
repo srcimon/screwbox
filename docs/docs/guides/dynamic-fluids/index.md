@@ -8,7 +8,7 @@ To make use of the components below add fluid related systems using `environment
 
 ## Setup a fluid body
 
-A fluid body can be created via adding a `FluidComponent` to an entity.
+A fluid body can be created via adding a `SloshComponent` to an entity.
 The most important property of any fluid is the count of nodes used to create the surface.
 This number massively influences the fluids behaviour.
 The node count cannot be changed once the fluid is created.

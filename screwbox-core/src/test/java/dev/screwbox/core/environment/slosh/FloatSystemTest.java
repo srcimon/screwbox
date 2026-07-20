@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -24,10 +24,10 @@ class FloatSystemTest {
         when(loop.delta()).thenReturn(0.02);
 
         environment
-                .addSystem(new FluidSystem())
+                .addSystem(new SloshSystem())
                 .addSystem(new FloatSystem())
                 .addEntity(new Entity().name("water")
-                        .add(new FluidComponent(10))
+                        .add(new SloshComponent(10))
                         .bounds($$(0, 0, 800, 400)));
     }
 

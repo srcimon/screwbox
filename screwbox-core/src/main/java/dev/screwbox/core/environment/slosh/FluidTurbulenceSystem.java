@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
@@ -15,14 +15,14 @@ import java.util.Random;
  */
 public class FluidTurbulenceSystem implements EntitySystem {
 
-    private static final Archetype NOISY_FLUIDS = Archetype.of(FluidComponent.class, FluidTurbulenceComponent.class);
+    private static final Archetype NOISY_FLUIDS = Archetype.of(SloshComponent.class, FluidTurbulenceComponent.class);
     private static final Random RANDOM = new Random();
 
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(NOISY_FLUIDS)) {
             final var strength = entity.get(FluidTurbulenceComponent.class).strength;
-            final var nodeSpeeds = entity.get(FluidComponent.class).speed;
+            final var nodeSpeeds = entity.get(SloshComponent.class).speed;
             for (int i = 0; i < nodeSpeeds.length; i++) {
                 nodeSpeeds[i] += RANDOM.nextDouble(-1, 1) * strength * engine.loop().delta();
             }

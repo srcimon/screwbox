@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
@@ -19,12 +19,12 @@ import static java.util.Objects.nonNull;
 @ExecutionOrder(Order.PRESENTATION_EFFECTS)
 public class FluidRenderSystem implements EntitySystem {
 
-    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class, FluidRenderComponent.class);
+    private static final Archetype FLUIDS = Archetype.ofSpacial(SloshComponent.class, FluidRenderComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
-            final var fluid = entity.get(FluidComponent.class);
+            final var fluid = entity.get(SloshComponent.class);
 
             final var renderConfig = entity.get(FluidRenderComponent.class);
 

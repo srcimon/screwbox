@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
@@ -24,7 +24,7 @@ class FluidInteractionSystemTest {
     @Test
     void update_rockHitsWaterSpeedBelowThreshold_doesNotInteract(DefaultEnvironment environment) {
 
-        FluidComponent fluid = new FluidComponent(40);
+        SloshComponent fluid = new SloshComponent(40);
 
         environment.addSystem(new FluidInteractionSystem())
                 .addEntity(new Entity().name("fluid")
@@ -44,7 +44,7 @@ class FluidInteractionSystemTest {
 
     @Test
     void update_rockHitsWaterSpeedAboveThreshold_doesNotInteract(DefaultEnvironment environment) {
-        FluidComponent fluid = new FluidComponent(40);
+        SloshComponent fluid = new SloshComponent(40);
 
         environment.addSystem(new FluidInteractionSystem())
                 .addEntity(new Entity().name("fluid")

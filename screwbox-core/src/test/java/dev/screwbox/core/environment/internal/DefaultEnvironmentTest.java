@@ -18,8 +18,8 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.environment.fluids.FluidRenderSystem;
-import dev.screwbox.core.environment.fluids.FluidSystem;
+import dev.screwbox.core.environment.slosh.FluidRenderSystem;
+import dev.screwbox.core.environment.slosh.SloshSystem;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
@@ -386,7 +386,7 @@ class DefaultEnvironmentTest {
         environment.enableFluids();
 
         assertThat(environment.systems()).hasSize(9)
-            .anyMatch(system -> system.getClass().equals(FluidSystem.class))
+            .anyMatch(system -> system.getClass().equals(SloshSystem.class))
             .anyMatch(system -> system.getClass().equals(FluidRenderSystem.class));
     }
 

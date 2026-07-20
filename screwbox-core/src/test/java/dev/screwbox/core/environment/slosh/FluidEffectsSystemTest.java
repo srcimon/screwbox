@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
@@ -27,7 +27,7 @@ class FluidEffectsSystemTest {
     void setUp(DefaultEnvironment environment) {
         environment
                 .addSystem(new FluidEffectsSystem())
-                .addSystem(new FluidSystem());
+                .addSystem(new SloshSystem());
     }
 
     @Test
@@ -36,7 +36,7 @@ class FluidEffectsSystemTest {
 
         environment.addEntity(new Entity().name("water")
                         .bounds($$(10, 10, 100, 100))
-                        .add(new FluidComponent(10))
+                        .add(new SloshComponent(10))
                         .add(new FluidEffectsComponent(Collections.emptyList()), config -> config.particleOptions = null))
                 .addEntity(new Entity().name("boat")
                         .add(new PhysicsComponent(Vector.of(100, 0)))
@@ -54,7 +54,7 @@ class FluidEffectsSystemTest {
 
         environment.addEntity(new Entity().name("water")
                 .bounds($$(10, 10, 100, 100))
-                .add(new FluidComponent(10))
+                .add(new SloshComponent(10))
                 .add(new FluidEffectsComponent()));
 
         environment.update();

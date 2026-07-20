@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Entity;
@@ -31,9 +31,9 @@ class FluidPostProcessingSystemTest {
     void update_twoFluidsNoneVisible_noEffectsAdded(DefaultEnvironment environment, PostProcessing postProcessing, Graphics graphics) {
         environment
             .addSystem(new FluidPostProcessingSystem())
-            .addSystem(new FluidSystem())
-            .addEntity(new Entity().bounds(Bounds.$$(0, 0, 20, 20)).add(new FluidComponent(4)).add(new FluidPostProcessingComponent()))
-            .addEntity(new Entity().bounds(Bounds.$$(20, 0, 20, 20)).add(new FluidComponent(4)).add(new FluidPostProcessingComponent()));
+            .addSystem(new SloshSystem())
+            .addEntity(new Entity().bounds(Bounds.$$(0, 0, 20, 20)).add(new SloshComponent(4)).add(new FluidPostProcessingComponent()))
+            .addEntity(new Entity().bounds(Bounds.$$(20, 0, 20, 20)).add(new SloshComponent(4)).add(new FluidPostProcessingComponent()));
 
         when(graphics.isVisible(any())).thenReturn(false);
 
@@ -46,9 +46,9 @@ class FluidPostProcessingSystemTest {
     void update_twoFluidsOneVisible_effectsAdded(DefaultEnvironment environment, PostProcessing postProcessing, Graphics graphics) {
         environment
             .addSystem(new FluidPostProcessingSystem())
-            .addSystem(new FluidSystem())
-            .addEntity(new Entity().bounds(Bounds.$$(0, 0, 20, 20)).add(new FluidComponent(4)).add(new FluidPostProcessingComponent()))
-            .addEntity(new Entity().bounds(Bounds.$$(20, 0, 20, 20)).add(new FluidComponent(4)).add(new FluidPostProcessingComponent()));
+            .addSystem(new SloshSystem())
+            .addEntity(new Entity().bounds(Bounds.$$(0, 0, 20, 20)).add(new SloshComponent(4)).add(new FluidPostProcessingComponent()))
+            .addEntity(new Entity().bounds(Bounds.$$(20, 0, 20, 20)).add(new SloshComponent(4)).add(new FluidPostProcessingComponent()));
 
         when(graphics.isVisible(any())).thenReturn(false, true);
 
@@ -61,10 +61,10 @@ class FluidPostProcessingSystemTest {
     void update_invalidTileSize_throwsException(DefaultEnvironment environment, Graphics graphics) {
         environment
             .addSystem(new FluidPostProcessingSystem())
-            .addSystem(new FluidSystem())
+            .addSystem(new SloshSystem())
             .addEntity(new Entity()
                 .bounds(Bounds.$$(20, 0, 20, 20))
-                .add(new FluidComponent(4))
+                .add(new SloshComponent(4))
                 .add(new FluidPostProcessingComponent(), config -> config.tileSize = 40));
 
         when(graphics.isVisible(any())).thenReturn(true);

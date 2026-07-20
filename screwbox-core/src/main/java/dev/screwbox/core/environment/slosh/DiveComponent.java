@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
@@ -6,10 +6,10 @@ import dev.screwbox.core.environment.Entity;
 import java.io.Serial;
 
 /**
- * Lets floating physics {@link Entity entities} dive into fluids.
+ * Lets floating physics {@link Entity entities} dive.
  *
  * @see FloatComponent
- * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
+ * @see <a href="https://screwbox.dev/docs/guides/slosh-physics/">Guide: Slosh phyics</a>
  * @since 3.1.0
  */
 public class DiveComponent implements Component {

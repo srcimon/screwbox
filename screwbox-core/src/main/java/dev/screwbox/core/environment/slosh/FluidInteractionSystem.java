@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
@@ -16,14 +16,14 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 public class FluidInteractionSystem implements EntitySystem {
 
     private static final Archetype INTERACTORS = Archetype.ofSpacial(FluidInteractionComponent.class, PhysicsComponent.class);
-    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
+    private static final Archetype FLUIDS = Archetype.ofSpacial(SloshComponent.class);
 
     @Override
     public void update(final Engine engine) {
         final var fluids = engine.environment().fetchAll(FLUIDS);
         final var interactors = engine.environment().fetchAll(INTERACTORS);
         for (final var entity : fluids) {
-            final var fluid = entity.get(FluidComponent.class);
+            final var fluid = entity.get(SloshComponent.class);
             for (final var interactor : interactors) {
                 final var physics = interactor.get(PhysicsComponent.class);
                 final var fluidInteraction = interactor.get(FluidInteractionComponent.class);
@@ -35,7 +35,7 @@ public class FluidInteractionSystem implements EntitySystem {
         }
     }
 
-    private static void interact(final FluidComponent fluid, final Bounds projection, final Bounds interaction, final double strength) {
+    private static void interact(final SloshComponent fluid, final Bounds projection, final Bounds interaction, final double strength) {
         final var gap = projection.width() / (fluid.nodeCount - 1);
         for (int i = 0; i < fluid.nodeCount; i++) {
             final Vector nodePosition = projection.origin().add(i * gap, fluid.height[i]);
@@ -45,7 +45,7 @@ public class FluidInteractionSystem implements EntitySystem {
         }
     }
 
-    private static double maxHeight(final FluidComponent fluid) {
+    private static double maxHeight(final SloshComponent fluid) {
         double maxHeight = 0;
         for (int i = 0; i < fluid.nodeCount; i++) {
             var height = fluid.height[i];

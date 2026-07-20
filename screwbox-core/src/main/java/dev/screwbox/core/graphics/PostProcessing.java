@@ -45,7 +45,7 @@ public interface PostProcessing {
      * must be reconfigured every frame due to game content e.g. water rendering.
      * Note that every filter added will slow down the rendering massivly.
      *
-     * @see dev.screwbox.core.environment.fluids.FluidPostProcessingComponent
+     * @see dev.screwbox.core.environment.slosh.FluidPostProcessingComponent
      * @since 3.28.0
      */
     PostProcessing addEffectFilter(PostProcessingFilter filter);

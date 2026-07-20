@@ -8,13 +8,13 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
-import dev.screwbox.core.environment.fluids.DiveSystem;
-import dev.screwbox.core.environment.fluids.FloatRotationSystem;
-import dev.screwbox.core.environment.fluids.FloatSystem;
-import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
-import dev.screwbox.core.environment.fluids.FluidRenderSystem;
-import dev.screwbox.core.environment.fluids.FluidSystem;
-import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
+import dev.screwbox.core.environment.slosh.DiveSystem;
+import dev.screwbox.core.environment.slosh.FloatRotationSystem;
+import dev.screwbox.core.environment.slosh.FloatSystem;
+import dev.screwbox.core.environment.slosh.FluidInteractionSystem;
+import dev.screwbox.core.environment.slosh.FluidRenderSystem;
+import dev.screwbox.core.environment.slosh.SloshSystem;
+import dev.screwbox.core.environment.slosh.FluidTurbulenceSystem;
 import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.importing.ImportOptions;
@@ -382,7 +382,7 @@ public interface Environment extends IdPool {
      * @see FloatSystem
      * @see DiveSystem
      * @see FluidTurbulenceSystem
-     * @see FluidSystem
+     * @see SloshSystem
      * @see FluidRenderSystem
      * @see FloatRotationSystem
      */
