@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -8,7 +8,7 @@ import java.io.Serial;
 /**
  * Adjusts rotation of {@link RenderComponent} to {@link FloatComponent#attachedWave}.
  *
- * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
+ * @see <a href="https://screwbox.dev/docs/guides/slosh-physics/">Guide: Slosh phyics</a>
  * @since 2.19.0
  */
 public class FloatRotationComponent implements Component {

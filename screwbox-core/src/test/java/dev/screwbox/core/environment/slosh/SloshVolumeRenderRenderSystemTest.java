@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Polygon;
@@ -16,22 +16,22 @@ import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.HO
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(EnvironmentExtension.class)
-class FluidRenderSystemTest {
+class SloshVolumeRenderRenderSystemTest {
 
 
     @Test
     void update_multipleColors_drawsGradient(DefaultEnvironment environment, World world) {
-        FluidComponent fluid = new FluidComponent(6);
+        SloshVolumeComponent fluid = new SloshVolumeComponent(6);
         fluid.height[0] = 10;
         fluid.height[1] = -2;
         fluid.height[4] = 4;
 
         environment
-            .addSystem(new FluidSystem())
-            .addSystem(new FluidRenderSystem())
+            .addSystem(new SloshVolumeSystem())
+            .addSystem(new SloshVolumeRenderRenderSystem())
             .addEntity(new Entity()
                 .add(fluid)
-                .add(new FluidRenderComponent(), f -> f.drawOrder = 8)
+                .add(new SloshVolumeRenderComponent(), f -> f.drawOrder = 8)
                 .bounds(Bounds.$$(24, 18, 100, 20)));
 
         environment.update();
@@ -42,17 +42,17 @@ class FluidRenderSystemTest {
 
     @Test
     void update_singleColor_drawsFilled(DefaultEnvironment environment, World world) {
-        FluidComponent fluid = new FluidComponent(6);
+        SloshVolumeComponent fluid = new SloshVolumeComponent(6);
         fluid.height[0] = 10;
         fluid.height[1] = -2;
         fluid.height[4] = 4;
 
         environment
-            .addSystem(new FluidSystem())
-            .addSystem(new FluidRenderSystem())
+            .addSystem(new SloshVolumeSystem())
+            .addSystem(new SloshVolumeRenderRenderSystem())
             .addEntity(new Entity()
                 .add(fluid)
-                .add(new FluidRenderComponent(Color.RED), render -> render.surfaceColor = Color.WHITE)
+                .add(new SloshVolumeRenderComponent(Color.RED), render -> render.surfaceColor = Color.WHITE)
                 .bounds(Bounds.$$(24, 18, 100, 20)));
 
         environment.update();

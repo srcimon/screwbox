@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Entity;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class FluidSystemTest {
+class SloshVolumeSystemTest {
 
     @BeforeEach
     void setUp(Loop loop) {
@@ -26,23 +26,23 @@ class FluidSystemTest {
     @Test
     void update_justOneNode_throwsException(DefaultEnvironment environment) {
         environment
-                .addSystem(new FluidSystem())
+                .addSystem(new SloshVolumeSystem())
                 .addEntity(new Entity()
-                        .add(new FluidComponent(1))
+                        .add(new SloshVolumeComponent(1))
                         .bounds(Bounds.$$(20, 20, 400, 300)));
 
         assertThatThrownBy(environment::update)
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("fluid must have at least two nodes (actual value: 1)");
+                .hasMessage("liquid must have at least two nodes (actual value: 1)");
     }
 
     @Test
     void update_noInteraction_noMovement(DefaultEnvironment environment) {
-        FluidComponent fluid = new FluidComponent(10);
+        SloshVolumeComponent fluid = new SloshVolumeComponent(10);
 
         environment
                 .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20, 20, 400, 300)))
-                .addSystem(new FluidSystem());
+                .addSystem(new SloshVolumeSystem());
 
         environment.update();
 
@@ -55,11 +55,11 @@ class FluidSystemTest {
 
     @Test
     void update_waveExist_appliesSpeedAndHeightChange(DefaultEnvironment environment) {
-        FluidComponent fluid = new FluidComponent(5);
+        SloshVolumeComponent fluid = new SloshVolumeComponent(5);
 
         environment
                 .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20, 20, 400, 300)))
-                .addSystem(new FluidSystem());
+                .addSystem(new SloshVolumeSystem());
 
         fluid.speed[2] = 10;
 
@@ -80,10 +80,10 @@ class FluidSystemTest {
 
     @Test
     void update_waveExist_waveVanishesAfterSomeUpdates(DefaultEnvironment environment) {
-        FluidComponent fluid = new FluidComponent(5);
+        SloshVolumeComponent fluid = new SloshVolumeComponent(5);
         environment
                 .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20, 20, 400, 300)))
-                .addSystem(new FluidSystem());
+                .addSystem(new SloshVolumeSystem());
 
         fluid.speed[2] = 0.2;
 
@@ -94,10 +94,10 @@ class FluidSystemTest {
 
     @Test
     void update_heavyWave_neverHigherThanEntity(DefaultEnvironment environment) {
-        FluidComponent fluid = new FluidComponent(5);
+        SloshVolumeComponent fluid = new SloshVolumeComponent(5);
         environment
                 .addEntity(new Entity().add(fluid).bounds(Bounds.$$(20, 20, 400, 20)))
-                .addSystem(new FluidSystem());
+                .addSystem(new SloshVolumeSystem());
 
         fluid.speed[2] = 200000;
 

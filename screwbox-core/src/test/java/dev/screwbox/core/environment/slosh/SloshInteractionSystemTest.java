@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class FluidInteractionSystemTest {
+class SloshInteractionSystemTest {
 
     @BeforeEach
     void setUp(Loop loop) {
@@ -24,15 +24,15 @@ class FluidInteractionSystemTest {
     @Test
     void update_rockHitsWaterSpeedBelowThreshold_doesNotInteract(DefaultEnvironment environment) {
 
-        FluidComponent fluid = new FluidComponent(40);
+        SloshVolumeComponent fluid = new SloshVolumeComponent(40);
 
-        environment.addSystem(new FluidInteractionSystem())
+        environment.addSystem(new SloshInteractionSystem())
                 .addEntity(new Entity().name("fluid")
                         .bounds(Bounds.atOrigin(0, 0, 800, 400))
                         .add(fluid))
                 .addEntity(new Entity().name("stone")
                         .bounds(Bounds.atOrigin(40, -10, 40, 40))
-                        .add(new FluidInteractionComponent(1, 20))
+                        .add(new SloshInteractionComponent(1, 20))
                         .add(new PhysicsComponent(Vector.y(-19))));
 
         environment.update();
@@ -44,15 +44,15 @@ class FluidInteractionSystemTest {
 
     @Test
     void update_rockHitsWaterSpeedAboveThreshold_doesNotInteract(DefaultEnvironment environment) {
-        FluidComponent fluid = new FluidComponent(40);
+        SloshVolumeComponent fluid = new SloshVolumeComponent(40);
 
-        environment.addSystem(new FluidInteractionSystem())
+        environment.addSystem(new SloshInteractionSystem())
                 .addEntity(new Entity().name("fluid")
                         .bounds(Bounds.atOrigin(0, 0, 800, 400))
                         .add(fluid))
                 .addEntity(new Entity().name("stone")
                         .bounds(Bounds.atOrigin(40, -10, 40, 40))
-                        .add(new FluidInteractionComponent(1, 20))
+                        .add(new SloshInteractionComponent(1, 20))
                         .add(new PhysicsComponent(Vector.y(-80))));
 
         environment.update();

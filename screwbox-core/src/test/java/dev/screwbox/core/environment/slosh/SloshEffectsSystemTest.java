@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
@@ -20,14 +20,14 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class FluidEffectsSystemTest {
+class SloshEffectsSystemTest {
 
 
     @BeforeEach
     void setUp(DefaultEnvironment environment) {
         environment
-                .addSystem(new FluidEffectsSystem())
-                .addSystem(new FluidSystem());
+                .addSystem(new SloshEffectsSystem())
+                .addSystem(new SloshVolumeSystem());
     }
 
     @Test
@@ -36,8 +36,8 @@ class FluidEffectsSystemTest {
 
         environment.addEntity(new Entity().name("water")
                         .bounds($$(10, 10, 100, 100))
-                        .add(new FluidComponent(10))
-                        .add(new FluidEffectsComponent(Collections.emptyList()), config -> config.particleOptions = null))
+                        .add(new SloshVolumeComponent(10))
+                        .add(new SloshEffectsComponent(Collections.emptyList()), config -> config.particleOptions = null))
                 .addEntity(new Entity().name("boat")
                         .add(new PhysicsComponent(Vector.of(100, 0)))
                         .bounds($$(0, 0, 20, 20)));
@@ -54,8 +54,8 @@ class FluidEffectsSystemTest {
 
         environment.addEntity(new Entity().name("water")
                 .bounds($$(10, 10, 100, 100))
-                .add(new FluidComponent(10))
-                .add(new FluidEffectsComponent()));
+                .add(new SloshVolumeComponent(10))
+                .add(new SloshEffectsComponent()));
 
         environment.update();
 

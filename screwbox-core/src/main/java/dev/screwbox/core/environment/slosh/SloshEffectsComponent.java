@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.audio.Sound;
@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Adds audio and particle effects to fluids.
+ * Adds audio and particle effects to slosh volumes.
  *
- * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
+ * @see <a href="https://screwbox.dev/docs/guides/slosh-physics/">Guide: Slosh phyics</a>
  * @since 3.3.0
  */
-public class FluidEffectsComponent implements Component {
+public class SloshEffectsComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -57,14 +57,14 @@ public class FluidEffectsComponent implements Component {
     /**
      * Creates a new instance using default sounds.
      */
-    public FluidEffectsComponent() {
-        this(List.of(SoundBundle.FLUID.get(), SoundBundle.FLUID_ALT.get()));
+    public SloshEffectsComponent() {
+        this(List.of(SoundBundle.SLOSH.get(), SoundBundle.SLOSH_ALT.get()));
     }
 
     /**
      * Creates a new instance using specified sounds.
      */
-    public FluidEffectsComponent(final List<Sound> sounds) {
+    public SloshEffectsComponent(final List<Sound> sounds) {
         this.sounds = new ArrayList<>(sounds);
     }
 

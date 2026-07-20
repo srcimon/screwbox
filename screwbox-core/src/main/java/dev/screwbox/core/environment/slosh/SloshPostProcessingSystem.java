@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.fluids;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
@@ -21,63 +21,63 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Processes all effects with {@link FluidPostProcessingComponent}.
+ * Processes all effects with {@link SloshPostProcessingComponent}.
  *
  * @since 3.28.0
  */
 @ExecutionOrder(Order.PRESENTATION_EFFECTS)
-public class FluidPostProcessingSystem implements EntitySystem {
+public class SloshPostProcessingSystem implements EntitySystem {
 
-    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class, FluidPostProcessingComponent.class);
+    private static final Archetype VOLUMES = Archetype.ofSpacial(SloshVolumeComponent.class, SloshPostProcessingComponent.class);
 
-    private record FluidEffect(FluidComponent fluid, FluidPostProcessingComponent config) {
+    private record SloshEffect(SloshVolumeComponent volume, SloshPostProcessingComponent config) {
 
-        FluidEffect {
+        SloshEffect {
             Validate.range(config.tileSize, 4, 32, "tile size must be in range 4 to 32");
         }
     }
 
     @Override
     public void update(final Engine engine) {
-        final List<Entity> fluids = engine.environment().fetchAll(FLUIDS);
-        if (fluids.isEmpty()) {
+        final List<Entity> volumes = engine.environment().fetchAll(VOLUMES);
+        if (volumes.isEmpty()) {
             return;
         }
-        final List<FluidEffect> filterFluids = new ArrayList<>();
-        for (final var fluid : fluids) {
-            final var fluidComponent = fluid.get(FluidComponent.class);
-            final Bounds boundingBox = Bounds.around(fluidComponent.outline.nodes());
+        final List<SloshEffect> filterVolumes = new ArrayList<>();
+        for (final var volume : volumes) {
+            final var sloshVolume = volume.get(SloshVolumeComponent.class);
+            final Bounds boundingBox = Bounds.around(sloshVolume.outline.nodes());
             if (engine.graphics().isVisible(boundingBox)) {
-                filterFluids.add(new FluidEffect(fluidComponent, fluid.get(FluidPostProcessingComponent.class)));
+                filterVolumes.add(new SloshEffect(sloshVolume, volume.get(SloshPostProcessingComponent.class)));
             }
         }
-        if (!filterFluids.isEmpty()) {
-            engine.graphics().postProcessing().addEffectFilter(new FluidPostFilter(filterFluids));
+        if (!filterVolumes.isEmpty()) {
+            engine.graphics().postProcessing().addEffectFilter(new SloshPostFilter(filterVolumes));
         }
     }
 
-    private record FluidPostFilter(List<FluidEffect> effects) implements PostProcessingFilter {
+    private record SloshPostFilter(List<SloshEffect> effects) implements PostProcessingFilter {
 
         @Override
         public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
             drawSourceImage(source, target, context);
 
             for (final var effect : effects) {
-                final Bounds fluidBounds = Bounds.around(effect.fluid.outline.definitionNotes());
-                if (fluidBounds.intersects(context.viewport().visibleArea())) {
-                    renderFluid(source, target, context, effect);
+                final Bounds volumeBounds = Bounds.around(effect.volume.outline.definitionNotes());
+                if (volumeBounds.intersects(context.viewport().visibleArea())) {
+                    renderSloshVolume(source, target, context, effect);
                 }
             }
         }
 
-        private void renderFluid(final Image source, final Graphics2D target, final PostProcessingContext context, final FluidEffect effect) {
+        private void renderSloshVolume(final Image source, final Graphics2D target, final PostProcessingContext context, final SloshEffect effect) {
             final double index = (double) context.lifetime().milliseconds() / effect.config.interval.milliseconds();
 
-            final Path2D outlinePath = AwtMapper.toPath(mapToViewport(context, effect.fluid.outline.definitionNotes()));
+            final Path2D outlinePath = AwtMapper.toPath(mapToViewport(context, effect.volume.outline.definitionNotes()));
             final Rectangle bounds = outlinePath.getBounds();
             target.setClip(outlinePath);
 
-            final var surfaceNodes = mapToViewport(context, effect.fluid.surface.definitionNotes());
+            final var surfaceNodes = mapToViewport(context, effect.volume.surface.definitionNotes());
             final double averageHeight = getAverageHeight(surfaceNodes);
             final int tileSize = Math.max(1, (int) (effect.config.tileSize * context.resolutionScale()));
             for (int y = (bounds.y / tileSize) * tileSize; y < bounds.y + bounds.height; y += tileSize) {
@@ -113,7 +113,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
             return outlineNodes;
         }
 
-        // dampening prevents copying graphics outside of fluid shape
+        // dampening prevents copying graphics outside of volume shape
         private double calculateDampening(final Offset position, final int tileSize, final Vector off, final Rectangle bounds, final List<Offset> surfaceNodes) {
             double targetX = position.x() + off.x();
             double targetY = position.y() + off.y();
@@ -134,7 +134,7 @@ public class FluidPostProcessingSystem implements EntitySystem {
             return nodes.get(leftIndex).y() * (1.0 - transform) + nodes.get(rightIndex).y() * transform;
         }
 
-        private static Vector calculatePreciseOffset(final FluidEffect effect, final Offset position, final double index, final Viewport viewport, final PostProcessingContext context, final List<Offset> surfaceNodes, final double avgY) {
+        private static Vector calculatePreciseOffset(final SloshEffect effect, final Offset position, final double index, final Viewport viewport, final PostProcessingContext context, final List<Offset> surfaceNodes, final double avgY) {
             final Vector worldPos = viewport.toWorld(context.bounds().offset().add(position));
             final var node = surfaceNodes.get(Math.clamp(position.x() / effect.config.tileSize, 0, surfaceNodes.size() - 1));
             final double distToSurface = Math.abs((context.bounds().y() + position.y()) - node.y());
