@@ -15,6 +15,7 @@
 
 - Removed unused Grid methods
 - Cleaned up `Grid` methods
+- Renamed fluid components to slosh physics
 
 ### 📦 Dependency updates
 

@@ -141,7 +141,7 @@ To utilize these components, first call `environment.enableNavigation()`.
 ## Fluid Components
 
 To utilize these components, first call `environment.enableFluids()`.
-Get a more inside from the [dynamic fluids guide](../guides/dynamic-fluids).
+Get a more inside from the [dynamic fluids guide](../guides/slosh-physics).
 
 | Component                      | Description                                                                                           |
 |--------------------------------|-------------------------------------------------------------------------------------------------------|
