@@ -23,12 +23,12 @@ public class GasRenderSystem implements EntitySystem {
         for (final var gas : engine.environment().fetchAll(GASSES)) {
             var simulation = gas.get(GasSimulationComponent.class);
             if (nonNull(simulation.state)) {
-                BufferedImage image = new BufferedImage(simulation.state.width(), simulation.state.height(), BufferedImage.TYPE_INT_RGB);
+                BufferedImage image = new BufferedImage(simulation.state.size().width(), simulation.state.size().height(), BufferedImage.TYPE_INT_RGB);
                 var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
                 Arrays.parallelSetAll(pixels, gid -> {
-                    int x = gid % simulation.state.width();
-                    int y = gid / simulation.state.width();
+                    int x = gid % simulation.state.size().width();
+                    int y = gid / simulation.state.size().width();
 
                     int r = (int) (Math.clamp(simulation.state.get(x, y).density, 0, 1.0) * 255);
 
