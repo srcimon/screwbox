@@ -43,9 +43,9 @@ public class GridRenderSystem implements EntitySystem {
         final var minNode = grid.toCell(bounds.origin());
         final var maxNode = grid.toCell(bounds.bottomRight());
         final int minX = Math.max(minNode.x(), 0);
-        final int maxX = Math.min(maxNode.x(), grid.width());
+        final int maxX = Math.min(maxNode.x(), grid.size().width());
         final int minY = Math.max(minNode.y(), 0);
-        final int maxY = Math.min(maxNode.y(), grid.height());
+        final int maxY = Math.min(maxNode.y(), grid.size().height());
         for (int x = minX; x < maxX; x++) {
             for (int y = minY; y < maxY; y++) {
                 Offset offset = Offset.at(x, y);
