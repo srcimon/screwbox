@@ -26,7 +26,8 @@ class GridTest {
     @Test
     void createByGridSize_cellSizeZero_throwsException() {
         Bounds area = Bounds.max();
-        assertThatThrownBy(() -> Grid.createByGridSize(Size.none(), area, Boolean.class))
+        Size size = Size.none();
+        assertThatThrownBy(() -> Grid.createByGridSize(size, area, Boolean.class))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("grid size must be valid");
     }
