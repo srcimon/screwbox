@@ -1,14 +1,18 @@
 package dev.screwbox.playground.render;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.playground.simulate.GasSimulationComponent;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.awt.image.ImageObserver;
 import java.util.Arrays;
 
 import static java.util.Objects.nonNull;
@@ -34,7 +38,7 @@ public class GasRenderSystem implements EntitySystem {
 
                     return (0xFF << 24) | (r << 16);
                 });
-
+                ImageOperations.blurImage(image, 3);
                 engine.graphics().world().drawSprite(Sprite.fromImage(image), gas.origin(), SpriteDrawOptions.scaled(simulation.cellSize));
             }
         }
