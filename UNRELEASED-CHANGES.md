@@ -2,6 +2,8 @@
 
 - Add relative position methods to `Offset`
 - `Grid` can now store any data not just booleans (#791)
+- More flexible `Grid` instantiation
+- Ability to resize and move grids
 
 ### 🪛 Bug Fixes
 

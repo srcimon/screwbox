@@ -256,6 +256,10 @@ public class Grid<T extends Serializable> implements Serializable {
         return contains(x, y) && get(x, y) != null;
     }
 
+    public void updateBounds(final Bounds bounds) {
+        //TODO IMPLEMENT
+    }
+
     private int toCellX(final double value) {
         return (int) Math.floor(value / cellWidth);
     }
