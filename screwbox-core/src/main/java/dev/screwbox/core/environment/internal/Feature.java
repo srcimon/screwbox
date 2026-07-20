@@ -13,12 +13,12 @@ import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.slosh.DiveSystem;
 import dev.screwbox.core.environment.slosh.FloatRotationSystem;
 import dev.screwbox.core.environment.slosh.FloatSystem;
-import dev.screwbox.core.environment.slosh.FluidEffectsSystem;
-import dev.screwbox.core.environment.slosh.FluidInteractionSystem;
-import dev.screwbox.core.environment.slosh.FluidPostProcessingSystem;
-import dev.screwbox.core.environment.slosh.FluidRenderSystem;
-import dev.screwbox.core.environment.slosh.SloshSystem;
-import dev.screwbox.core.environment.slosh.FluidTurbulenceSystem;
+import dev.screwbox.core.environment.slosh.SloshEffectsSystem;
+import dev.screwbox.core.environment.slosh.SloshInteractionSystem;
+import dev.screwbox.core.environment.slosh.SloshPostProcessingSystem;
+import dev.screwbox.core.environment.slosh.SloshVolumeRenderRenderSystem;
+import dev.screwbox.core.environment.slosh.SloshVolumeSystem;
+import dev.screwbox.core.environment.slosh.SloshTurbulenceSystem;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -87,14 +87,14 @@ public enum Feature {
     ),
 
     FLUIDS(
-        new SloshSystem(),
-        new FluidPostProcessingSystem(),
-        new FluidRenderSystem(),
-        new FluidEffectsSystem(),
+        new SloshVolumeSystem(),
+        new SloshPostProcessingSystem(),
+        new SloshVolumeRenderRenderSystem(),
+        new SloshEffectsSystem(),
         new FloatRotationSystem(),
-        new FluidInteractionSystem(),
+        new SloshInteractionSystem(),
         new DiveSystem(),
-        new FluidTurbulenceSystem(),
+        new SloshTurbulenceSystem(),
         new FloatSystem()
     ),
 

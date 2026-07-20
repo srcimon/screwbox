@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Updates wave positions and speeds of all {@link SloshComponent slosh components}.
+ * Updates wave positions and speeds of all {@link SloshVolumeComponent slosh components}.
  */
-public class SloshSystem implements EntitySystem {
+public class SloshVolumeSystem implements EntitySystem {
 
-    private static final Archetype SLOSH = Archetype.ofSpacial(SloshComponent.class);
+    private static final Archetype SLOSH = Archetype.ofSpacial(SloshVolumeComponent.class);
 
     private static final double MAX_DELTA = 0.01;
 
@@ -24,7 +24,7 @@ public class SloshSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var sloshEntity : engine.environment().fetchAll(SLOSH)) {
             final double liquidHeight = sloshEntity.bounds().height();
-            final var slosh = sloshEntity.get(SloshComponent.class);
+            final var slosh = sloshEntity.get(SloshVolumeComponent.class);
 
             double remainingDelta = engine.loop().delta();
             while (remainingDelta > 0) {
@@ -38,7 +38,7 @@ public class SloshSystem implements EntitySystem {
         }
     }
 
-    private static Polygon createSurface(final Bounds bounds, final SloshComponent slosh) {
+    private static Polygon createSurface(final Bounds bounds, final SloshVolumeComponent slosh) {
         Validate.min(slosh.nodeCount, 2, "liquid must have at least two nodes");
         final var gap = bounds.width() / (slosh.nodeCount - 1);
         final List<Vector> surface = new ArrayList<>();
@@ -48,13 +48,13 @@ public class SloshSystem implements EntitySystem {
         return Polygon.ofNodes(surface);
     }
 
-    private void updateHeights(final SloshComponent slosh, final double delta, final double liquidHeight) {
+    private void updateHeights(final SloshVolumeComponent slosh, final double delta, final double liquidHeight) {
         for (int i = 0; i < slosh.nodeCount; i++) {
             slosh.height[i] = Math.min(slosh.height[i] + delta * slosh.speed[i], liquidHeight);
         }
     }
 
-    private void updateSpeeds(final SloshComponent slosh, final double delta) {
+    private void updateSpeeds(final SloshVolumeComponent slosh, final double delta) {
         for (int i = 0; i < slosh.nodeCount; i++) {
             // side pull
             final double deltaLeft = i > 0 ? slosh.height[i] - slosh.height[i - 1] : 0;

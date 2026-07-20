@@ -16,11 +16,11 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class FluidPostProcessingSystemTest {
+class SloshPostProcessingSystemTest {
 
     @Test
     void update_noFluids_noEffectsAdded(DefaultEnvironment environment, PostProcessing postProcessing) {
-        environment.addSystem(new FluidPostProcessingSystem());
+        environment.addSystem(new SloshPostProcessingSystem());
 
         environment.update();
 
@@ -30,10 +30,10 @@ class FluidPostProcessingSystemTest {
     @Test
     void update_twoFluidsNoneVisible_noEffectsAdded(DefaultEnvironment environment, PostProcessing postProcessing, Graphics graphics) {
         environment
-            .addSystem(new FluidPostProcessingSystem())
-            .addSystem(new SloshSystem())
-            .addEntity(new Entity().bounds(Bounds.$$(0, 0, 20, 20)).add(new SloshComponent(4)).add(new FluidPostProcessingComponent()))
-            .addEntity(new Entity().bounds(Bounds.$$(20, 0, 20, 20)).add(new SloshComponent(4)).add(new FluidPostProcessingComponent()));
+            .addSystem(new SloshPostProcessingSystem())
+            .addSystem(new SloshVolumeSystem())
+            .addEntity(new Entity().bounds(Bounds.$$(0, 0, 20, 20)).add(new SloshVolumeComponent(4)).add(new SloshPostProcessingComponent()))
+            .addEntity(new Entity().bounds(Bounds.$$(20, 0, 20, 20)).add(new SloshVolumeComponent(4)).add(new SloshPostProcessingComponent()));
 
         when(graphics.isVisible(any())).thenReturn(false);
 
@@ -45,10 +45,10 @@ class FluidPostProcessingSystemTest {
     @Test
     void update_twoFluidsOneVisible_effectsAdded(DefaultEnvironment environment, PostProcessing postProcessing, Graphics graphics) {
         environment
-            .addSystem(new FluidPostProcessingSystem())
-            .addSystem(new SloshSystem())
-            .addEntity(new Entity().bounds(Bounds.$$(0, 0, 20, 20)).add(new SloshComponent(4)).add(new FluidPostProcessingComponent()))
-            .addEntity(new Entity().bounds(Bounds.$$(20, 0, 20, 20)).add(new SloshComponent(4)).add(new FluidPostProcessingComponent()));
+            .addSystem(new SloshPostProcessingSystem())
+            .addSystem(new SloshVolumeSystem())
+            .addEntity(new Entity().bounds(Bounds.$$(0, 0, 20, 20)).add(new SloshVolumeComponent(4)).add(new SloshPostProcessingComponent()))
+            .addEntity(new Entity().bounds(Bounds.$$(20, 0, 20, 20)).add(new SloshVolumeComponent(4)).add(new SloshPostProcessingComponent()));
 
         when(graphics.isVisible(any())).thenReturn(false, true);
 
@@ -60,12 +60,12 @@ class FluidPostProcessingSystemTest {
     @Test
     void update_invalidTileSize_throwsException(DefaultEnvironment environment, Graphics graphics) {
         environment
-            .addSystem(new FluidPostProcessingSystem())
-            .addSystem(new SloshSystem())
+            .addSystem(new SloshPostProcessingSystem())
+            .addSystem(new SloshVolumeSystem())
             .addEntity(new Entity()
                 .bounds(Bounds.$$(20, 0, 20, 20))
-                .add(new SloshComponent(4))
-                .add(new FluidPostProcessingComponent(), config -> config.tileSize = 40));
+                .add(new SloshVolumeComponent(4))
+                .add(new SloshPostProcessingComponent(), config -> config.tileSize = 40));
 
         when(graphics.isVisible(any())).thenReturn(true);
 

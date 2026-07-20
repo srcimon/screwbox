@@ -24,10 +24,10 @@ class FloatSystemTest {
         when(loop.delta()).thenReturn(0.02);
 
         environment
-                .addSystem(new SloshSystem())
+                .addSystem(new SloshVolumeSystem())
                 .addSystem(new FloatSystem())
                 .addEntity(new Entity().name("water")
-                        .add(new SloshComponent(10))
+                        .add(new SloshVolumeComponent(10))
                         .bounds($$(0, 0, 800, 400)));
     }
 

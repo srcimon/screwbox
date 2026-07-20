@@ -12,30 +12,30 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
- * Will render all fluids also containing {@link FluidRenderComponent}.
+ * Will render all slosh volumes also containing {@link SloshVolumeRenderComponent}.
  *
  * @since 2.19.0
  */
 @ExecutionOrder(Order.PRESENTATION_EFFECTS)
-public class FluidRenderSystem implements EntitySystem {
+public class SloshVolumeRenderRenderSystem implements EntitySystem {
 
-    private static final Archetype FLUIDS = Archetype.ofSpacial(SloshComponent.class, FluidRenderComponent.class);
+    private static final Archetype VOLUMES = Archetype.ofSpacial(SloshVolumeComponent.class, SloshVolumeRenderComponent.class);
 
     @Override
     public void update(final Engine engine) {
-        for (final var entity : engine.environment().fetchAll(FLUIDS)) {
-            final var fluid = entity.get(SloshComponent.class);
+        for (final var entity : engine.environment().fetchAll(VOLUMES)) {
+            final var volume = entity.get(SloshVolumeComponent.class);
 
-            final var renderConfig = entity.get(FluidRenderComponent.class);
+            final var renderConfig = entity.get(SloshVolumeRenderComponent.class);
 
             final var options = isNull(renderConfig.secondaryColor)
                 ? PolygonDrawOptions.filled(renderConfig.color)
                 : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor);
 
-            engine.graphics().world().drawPolygon(fluid.outline, options.smoothing(HORIZONTAL).drawOrder(renderConfig.drawOrder));
+            engine.graphics().world().drawPolygon(volume.outline, options.smoothing(HORIZONTAL).drawOrder(renderConfig.drawOrder));
 
             if (nonNull(renderConfig.surfaceColor)) {
-                engine.graphics().world().drawPolygon(fluid.surface, PolygonDrawOptions.outline(renderConfig.surfaceColor)
+                engine.graphics().world().drawPolygon(volume.surface, PolygonDrawOptions.outline(renderConfig.surfaceColor)
                     .smoothing(HORIZONTAL)
                     .strokeWidth(renderConfig.surfaceStrokeWidth));
             }

@@ -9,10 +9,10 @@ import java.io.Serial;
  * Creates a liquid that can be used to create animated liquid visuals and interact with physics entities.
  *
  * @see <a href="https://screwbox.dev/docs/guides/slosh-physics/">Guide: Slosh phyics</a>
- * @see SloshSystem
+ * @see SloshVolumeSystem
  * @since 2.19.0
  */
-public class SloshComponent implements Component {
+public class SloshVolumeComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -64,7 +64,7 @@ public class SloshComponent implements Component {
     /**
      * Creates a new instance using the specified node count.
      */
-    public SloshComponent(final int nodeCount) {
+    public SloshVolumeComponent(final int nodeCount) {
         height = new double[nodeCount];
         speed = new double[nodeCount];
         this.nodeCount = nodeCount;

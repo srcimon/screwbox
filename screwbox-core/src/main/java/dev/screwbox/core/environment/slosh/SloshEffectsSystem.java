@@ -28,23 +28,23 @@ import static java.util.Objects.nonNull;
  * @since 3.3.0
  */
 @ExecutionOrder(Order.SIMULATION_LATE)
-public class FluidEffectsSystem implements EntitySystem {
+public class SloshEffectsSystem implements EntitySystem {
 
-    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidEffectsComponent.class, SloshComponent.class);
+    private static final Archetype FLUIDS = Archetype.ofSpacial(SloshEffectsComponent.class, SloshVolumeComponent.class);
     private static final Archetype PHYSICS = Archetype.ofSpacial(PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(FLUIDS)) {
-            final var config = entity.get(FluidEffectsComponent.class);
+            final var config = entity.get(SloshEffectsComponent.class);
             if (config.scheduler.isTick(engine.loop().time())) {
-                final var surfaceNodes = entity.get(SloshComponent.class).surface.definitionNotes();
+                final var surfaceNodes = entity.get(SloshVolumeComponent.class).surface.definitionNotes();
                 applyEffects(config, surfaceNodes, engine);
             }
         }
     }
 
-    private static void applyEffects(final FluidEffectsComponent effects, final List<Vector> surfaceNodes, final Engine engine) {
+    private static void applyEffects(final SloshEffectsComponent effects, final List<Vector> surfaceNodes, final Engine engine) {
         final List<Entity> physics = engine.environment().fetchAll(PHYSICS);
         for (final var physicsEntity : physics) {
             fetchInteractingNode(physicsEntity, effects.speedThreshold, surfaceNodes).ifPresent(node -> {
@@ -66,7 +66,7 @@ public class FluidEffectsSystem implements EntitySystem {
         }
     }
 
-    private static Predicate<Playback> alreadyPlayingWaterSoundsNear(final FluidEffectsComponent effects, final Vector position) {
+    private static Predicate<Playback> alreadyPlayingWaterSoundsNear(final SloshEffectsComponent effects, final Vector position) {
         return playback -> nonNull(playback.options().position())
                            && effects.sounds.contains(playback.sound())
                            && position.distanceTo(playback.options().position()) < effects.soundSuppressionRange;

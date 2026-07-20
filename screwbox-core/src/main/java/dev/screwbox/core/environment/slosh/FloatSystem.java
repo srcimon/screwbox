@@ -24,7 +24,7 @@ import static java.util.Objects.nonNull;
  */
 public class FloatSystem implements EntitySystem {
 
-    private static final Archetype SLOSH = Archetype.ofSpacial(SloshComponent.class);
+    private static final Archetype VOLUMES = Archetype.ofSpacial(SloshVolumeComponent.class);
     private static final Archetype FLOATINGS = Archetype.ofSpacial(FloatComponent.class, PhysicsComponent.class);
 
     @Override
@@ -35,21 +35,21 @@ public class FloatSystem implements EntitySystem {
                 .map(gravityComponent -> gravityComponent.gravity.multiply(delta).invert())
                 .orElse(Vector.zero());
 
-        final var slosh = engine.environment().fetchAll(SLOSH);
+        final var volume = engine.environment().fetchAll(VOLUMES);
         for (final var floating : floatings) {
-            updateFloatingEntity(floating, slosh, delta, antiGravity);
+            updateFloatingEntity(floating, volume, delta, antiGravity);
         }
     }
 
-    private static void updateFloatingEntity(final Entity floating, final List<Entity> sloshs, final double delta, final Vector antiGravity) {
+    private static void updateFloatingEntity(final Entity floating, final List<Entity> volumes, final double delta, final Vector antiGravity) {
         final var options = floating.get(FloatComponent.class);
         options.attachedWave = null;
         options.depth = 0;
-        for (final var sloshEntity : sloshs) {
-            final SloshComponent slosh = sloshEntity.get(SloshComponent.class);
+        for (final var volume : volumes) {
+            final SloshVolumeComponent slosh = volume.get(SloshVolumeComponent.class);
             final Vector floatPosition = floating.position().addY(floating.bounds().height() / 2.0 - options.dive * floating.bounds().height());
-            final var wave = findWave(floatPosition, sloshEntity.bounds(), slosh.surface);
-            final var depth = detectDepth(wave, floatPosition, sloshEntity.bounds());
+            final var wave = findWave(floatPosition, volume.bounds(), slosh.surface);
+            final var depth = detectDepth(wave, floatPosition, volume.bounds());
             if (nonNull(depth) && depth < 0) {
                 final var physics = floating.get(PhysicsComponent.class);
                 physics.velocity = physics.velocity
@@ -65,21 +65,21 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
-    private static Double detectDepth(final Line wave, final Vector floatingPosition, final Bounds slosh) {
+    private static Double detectDepth(final Line wave, final Vector floatingPosition, final Bounds volume) {
         if (isNull(wave)) {
             return null;
         }
-        final Vector surfaceAnchor = wave.intersectionPoint(Line.normal(floatingPosition, -slosh.height() * 2));
+        final Vector surfaceAnchor = wave.intersectionPoint(Line.normal(floatingPosition, -volume.height() * 2));
         return isNull(surfaceAnchor) ? null : surfaceAnchor.y() - floatingPosition.y();
     }
 
-    private static Line findWave(final Vector position, final Bounds slosh, final Polygon surface) {
-        boolean isOutOfBounds = !(position.x() >= slosh.minX() && position.x() <= slosh.maxX() && slosh.maxY() >= position.y());
+    private static Line findWave(final Vector position, final Bounds volume, final Polygon surface) {
+        boolean isOutOfBounds = !(position.x() >= volume.minX() && position.x() <= volume.maxX() && volume.maxY() >= position.y());
         if (isOutOfBounds) {
             return null;
         }
-        final double gap = slosh.width() / (surface.nodeCount() - 1);
-        final double xRelative = position.x() - slosh.origin().x();
+        final double gap = volume.width() / (surface.nodeCount() - 1);
+        final double xRelative = position.x() - volume.origin().x();
         final int nodeNr = Math.min((int) (xRelative / gap), surface.nodeCount() - 2);
         return Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
     }

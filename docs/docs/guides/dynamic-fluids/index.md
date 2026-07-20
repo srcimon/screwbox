@@ -8,7 +8,7 @@ To make use of the components below add fluid related systems using `environment
 
 ## Setup a fluid body
 
-A fluid body can be created via adding a `SloshComponent` to an entity.
+A fluid body can be created via adding a `SloshVolumeComponent` to an entity.
 The most important property of any fluid is the count of nodes used to create the surface.
 This number massively influences the fluids behaviour.
 The node count cannot be changed once the fluid is created.
@@ -19,15 +19,15 @@ You can also specify multiple properties to change the fluids behaviour:
 - **dampening** reduction of wave speed over time.
 - **transmission** amount of wave height used to affect neighbour surface nodes
 
-The fluid won't be visible unless a `FluidRenderComponent` is added as well.
-The `FluidRenderComponent` supports two colors for a gradient effect but also allows specifying a single color for filling the fluid polygon.
-The `FluidPostProcessingComponent` can also add to the immersion by creating a special post processing filter that creates and under water effect.
+The fluid won't be visible unless a `SloshVolumeRenderComponent` is added as well.
+The `SloshVolumeRenderComponent` supports two colors for a gradient effect but also allows specifying a single color for filling the fluid polygon.
+The `SloshPostProcessingComponent` can also add to the immersion by creating a special post processing filter that creates and under water effect.
 
 ## Creating waves
 
 Fluids won't show any waves unless you are actively creating waves.
 
-This can be done by adding a `FluidTurbulenceComponent`.
+This can be done by adding a `SloshTurbulenceComponent`.
 This will create random waves on the whole fluid surface.
 Alternatively you can create waves by manually setting a wave height of one of the fluids nodes.
 See example code:
@@ -39,7 +39,7 @@ fluidEntity.get(FluidComponent.class).height[4] = 20;
 
 This mechanism can be used for custom wave machines.
 You can also create waves automatically with interaction of physics entities with fluids.
-To do so, just add a `FluidInteractionComponent` to any physics entity.
+To do so, just add a `SloshInteractionComponent` to any physics entity.
 The entity will create waves when touching the surface.
 The impact of vertical and horizontal movement can be specified individually.
 
@@ -65,7 +65,7 @@ You can also customize the maximum dive depth of the object.
 
 ## Sound and particle effects
 
-To add real interaction to the fluid a `FluidEffectsComponent` can be added.
+To add real interaction to the fluid a `SloshEffectsComponent` can be added.
 This component automatically adds sound and particle effects when physics objects interact with the fluid.
 The component can be customized with own thresholds, scheduler and assets.
 
@@ -73,6 +73,6 @@ The component can be customized with own thresholds, scheduler and assets.
 
 ## Post processing
 
-For a final touch the `FluidPostProcessingComponent` can be added and customized.
+For a final touch the `SloshPostProcessingComponent` can be added and customized.
 The compoent will activate a post processing filter on the fluid body and automatically distort the background
 using the current wave heights.
