@@ -11,7 +11,7 @@ public class CachedGridGraph extends GridGraph {
 
     public CachedGridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed) {
         super(grid, isDiagonalMovementAllowed);
-        adjacentNodes = new List[grid.width()][grid.height()];
+        adjacentNodes = new List[grid.size().width()][grid.size().height()];
         for (final var node : grid.cells()) {
             adjacentNodes[node.x()][node.y()] = super.adjacentNodes(node);
         }

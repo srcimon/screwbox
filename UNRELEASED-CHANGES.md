@@ -2,10 +2,14 @@
 
 - Add relative position methods to `Offset`
 - `Grid` can now store any data not just booleans (#791)
+- More flexible `Grid` instantiation
+- Ability to resize and move grids
+- Allow non square grid cells
 
 ### 🪛 Bug Fixes
 
 - Fixed white screen when starting a new game with postfilter enabled
+- Fixed incorrect visible area size before opening the game window
 
 ### 🧽 Cleanup & refactoring
 

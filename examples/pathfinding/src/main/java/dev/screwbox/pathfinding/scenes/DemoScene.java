@@ -64,7 +64,7 @@ public class DemoScene implements Scene {
 
     private Blueprint<GameObject> player() {
         return object -> new Entity(object.id())
-                .add(new CameraTargetComponent())
+                .add(new CameraTargetComponent(), config -> config.allowTeleport = false)
                 .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsComponent())

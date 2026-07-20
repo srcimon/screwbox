@@ -23,6 +23,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     private final Size initialSize;
 
     public WindowFrame(final Size initialSize) {
+        addNotify(); // forces window calculate insets
         setIcon(defaultIcon());
         setName("ScrewBox Window");
         this.initialSize = initialSize;
@@ -69,8 +70,8 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     public Size getCanvasSize() {
         final var bounds = getCanvas().getBounds();
         return bounds.width == 0
-                ? initialSize
-                : Size.of(bounds.width, bounds.height);
+            ? Size.of(initialSize.width() - getInsets().left - getInsets().right, initialSize.height() - getInsets().top - getInsets().bottom)
+            : Size.of(bounds.width, bounds.height);
     }
 
     public Offset getCanvasOffset() {
