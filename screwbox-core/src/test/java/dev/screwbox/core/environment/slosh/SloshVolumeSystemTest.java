@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.sloshphysics;
+package dev.screwbox.core.environment.slosh;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Entity;

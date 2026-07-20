@@ -1,4 +1,4 @@
 /**
  * Components and systems used to work with slosh volumes.
  */
-package dev.screwbox.core.environment.sloshphysics;
+package dev.screwbox.core.environment.slosh;
