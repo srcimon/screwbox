@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.navigation.AStarAlgorithm;
 import dev.screwbox.core.navigation.Graph;
 import dev.screwbox.core.navigation.Grid;
@@ -46,7 +47,7 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles) {
         navigationRegion = region.snapExpand(cellSize);
-        grid = Grid.booleanGrid(navigationRegion, cellSize);
+        grid = Grid.createByApproxCellSize(Size.square(cellSize), navigationRegion, Boolean.class);
         for (final var obstacle : obstacles) {
             grid.fill(obstacle, true);
         }

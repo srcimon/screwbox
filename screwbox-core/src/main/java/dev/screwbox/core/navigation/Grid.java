@@ -43,10 +43,11 @@ public class Grid<T extends Serializable> implements Serializable {
     private double cellHeight;
     private final T[] cellData;
 
-    //TODO fixup docs
-    public static <T extends Serializable> Grid<T> createByApproxCellSize(final int approxCellSize, final Bounds bounds, final Class<T> type) {
-        return null;
-        //TODO implement return new Grid<T>(bounds, cellSize, type);
+    public static <T extends Serializable> Grid<T> createByApproxCellSize(final Size approxCellSize, final Bounds bounds, final Class<T> type) {
+        var size = Size.of(
+            Math.ceil(bounds.width() / approxCellSize.width()),
+            Math.ceil(bounds.height() / approxCellSize.height()));
+        return createFixSize(size, bounds, type);
     }
 
     //TODO fixup docs
@@ -118,8 +119,8 @@ public class Grid<T extends Serializable> implements Serializable {
      */
     public List<Offset> cells() {
         final var nodes = new ArrayList<Offset>();
-        for (int x = 0; x < cellWidth; x++) {
-            for (int y = 0; y < cellHeight; y++) {
+        for (int x = 0; x < size.width(); x++) {
+            for (int y = 0; y < size.height(); y++) {
                 nodes.add(Offset.at(x, y));
             }
         }

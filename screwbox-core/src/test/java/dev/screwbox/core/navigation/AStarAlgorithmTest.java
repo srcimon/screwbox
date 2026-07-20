@@ -1,6 +1,7 @@
 package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.navigation.internal.GridGraph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ class AStarAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid<Boolean> grid = Grid.booleanGrid($$(0, 0, 5, 5), 1);
+        Grid<Boolean> grid = Grid.createByApproxCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
         grid.fill($$(2, 0, 1, 5), true);
 
         Offset start = Offset.at(0, 0);
@@ -32,10 +33,9 @@ class AStarAlgorithmTest {
         assertThat(path).isEmpty();
     }
 
-
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid<Boolean> grid = Grid.booleanGrid($$(0, 0, 5, 5), 1);
+        Grid<Boolean> grid = Grid.createByApproxCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
         grid.fill($$(2, 2, 2, 2), true);
         grid.fill($$(2, 1, 1, 1), true);
 

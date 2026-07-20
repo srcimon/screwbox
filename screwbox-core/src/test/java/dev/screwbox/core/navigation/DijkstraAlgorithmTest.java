@@ -1,6 +1,7 @@
 package dev.screwbox.core.navigation;
 
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.navigation.internal.GridGraph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid<Boolean> grid = Grid.booleanGrid($$(0, 0, 5, 5), 1);
+        Grid<Boolean> grid = Grid.createByApproxCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
         grid.fill($$(2, 0, 1, 5), true);
 
         Offset start = Offset.at(0, 0);
@@ -34,12 +35,11 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid<Boolean> grid = Grid.booleanGrid($$(0, 0, 5, 5), 1);
+        Grid<Boolean> grid = Grid.createByApproxCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
         grid.fill($$(2, 2, 2, 2), true);
 
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
-
         List<Offset> path = algorithm.findPath(new GridGraph(grid, true), start, end);
 
         assertThat(path).containsExactly(
