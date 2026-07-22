@@ -31,7 +31,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final ViewportManager viewportManager;
     private final AttentionFocus attentionFocus;
     private final PostProcessing postProcessing;
-    private final Smoke smoke;
+    private final DefaultSmoke smoke;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -190,6 +190,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public void update() {
         screen.updateScreen();
+        smoke.update();
     }
 
     @Override

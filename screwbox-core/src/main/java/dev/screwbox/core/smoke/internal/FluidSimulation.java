@@ -192,4 +192,8 @@ public class FluidSimulation {
         x[IX(cells - 1, 0)] = 0.5 * (x[IX(cells - 2, 0)] + x[IX(cells - 1, 1)]);
         x[IX(cells - 1, cells - 1)] = 0.5 * (x[IX(cells - 2, cells - 1)] + x[IX(cells - 1, cells - 2)]);
     }
+
+    public int size() {
+        return cells;
+    }
 }
