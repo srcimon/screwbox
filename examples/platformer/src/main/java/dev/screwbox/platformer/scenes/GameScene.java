@@ -85,6 +85,7 @@ public class GameScene implements Scene {
             .addSystem(new ToggleSplitscreenSystem())
             .addSystem(new KillZoneSystem())
             .addSystem(new DebugConfigSystem())
+            .addSystem(e -> e.log().warn(e.graphics().visibleArea().width()+""))
             .addSystem(new PauseSystem())
             .addSystem(new ZoomSystem())
             .addSystem(new OldschoolModeSystem())
