@@ -101,10 +101,7 @@ class DefaultEngine implements Engine {
             return newThread;
         });
 
-        Thread.currentThread().setUncaughtExceptionHandler((thread, throwable) -> {
-            executor.shutdown();
-            thread.getThreadGroup().uncaughtException(thread, throwable);
-        });
+        Thread.currentThread().setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
 
         final var renderPipeline = new RenderPipeline(executor, configuration, this);
         final var clip = new ScreenBounds(Offset.origin(), frame.getCanvasSize());
