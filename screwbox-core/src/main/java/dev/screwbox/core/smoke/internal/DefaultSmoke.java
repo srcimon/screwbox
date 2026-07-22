@@ -3,10 +3,13 @@ package dev.screwbox.core.smoke.internal;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ViewportManager;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.smoke.Smoke;
 import dev.screwbox.core.loop.internal.Updatable;
@@ -19,9 +22,9 @@ public class DefaultSmoke implements Smoke, Updatable {
 //TODO support split screen
     private final ViewportManager viewportManager;
     private int cellSize = 8;
-    private int screenBorder=32;
+    private int screenBorder=-32;
 
-    private Vector lastFocus;
+    private Vector worldAnchor;
     private FluidSimulation simulation;
 
     public DefaultSmoke(final ViewportManager viewportManager) {
@@ -30,24 +33,21 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     @Override
     public Smoke enable() {
-        Bounds visibleArea = viewportManager.defaultViewport().visibleArea();
-        var size = (int)Math.max(
-            Math.ceil((visibleArea.width() + 2 * screenBorder) / cellSize),
-            Math.ceil((visibleArea.height() + 2 * screenBorder) / cellSize));
-        System.out.println(size);
-        simulation = new FluidSimulation(size);
-        lastFocus = snapFocus();
+        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand(screenBorder);//TODO remove expand
+        var boundsArea = visibleArea.snapExpand(cellSize);
+        boundsArea = boundsArea.resize(
+            Math.max(boundsArea.width(), boundsArea.height()),
+            Math.max(boundsArea.width(), boundsArea.height()));
+        Vector origin = boundsArea.origin();
+        worldAnchor = origin;
+        simulation = new FluidSimulation((int)(boundsArea.width() / cellSize));
         return this;
-    }
-
-    private Vector snapFocus() {
-        return viewportManager.defaultViewport().camera().focus().snap(cellSize);
     }
 
     @Override
     public Smoke disable() {
         simulation = null;
-        lastFocus = null;
+        worldAnchor = null;
         return this;
     }
 
@@ -56,18 +56,18 @@ public class DefaultSmoke implements Smoke, Updatable {
         if(simulation != null) {
             //TODO get delta from update()
             simulation.step(0.002 , 0.0004,0.0003, 4);
-            var focus = snapFocus();
-            if(focus.distanceTo(lastFocus) > 0) {
-                lastFocus = focus;
-            }
-            var worldFocus = viewportManager.defaultViewport().camera().focus();
             simulation.addDensity(10,10, 2);
             simulation.addVelocity(10,10, 8,8);
+
             BufferedImage image = createImage();
 
-            viewportManager.defaultViewport().canvas().drawSprite(Sprite.fromImage(image), viewportManager.defaultViewport().toCanvas(viewportManager.defaultViewport().visibleArea().origin().add(-screenBorder, -screenBorder)), SpriteDrawOptions
-                .scaled(simulation.size() / viewportManager.defaultViewport().camera().zoom())
+            double scale = simulation.size() / viewportManager.defaultViewport().camera().zoom();
+            Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
+
+            viewportManager.defaultViewport().canvas().drawSprite(Sprite.fromImage(image), origin, SpriteDrawOptions
+                .scaled(scale)
                 .drawOrder(Order.DEBUG_OVERLAY.drawOrder()));//TODO size
+            viewportManager.defaultViewport().canvas().drawRectangle(origin, Size.of(100,100), RectangleDrawOptions.filled(Color.BLUE.opacity(0.9)));
             //TODO handle zoom changes
         }
     }
