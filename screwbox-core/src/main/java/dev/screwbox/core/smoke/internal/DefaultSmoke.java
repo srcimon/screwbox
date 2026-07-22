@@ -3,26 +3,22 @@ package dev.screwbox.core.smoke.internal;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.smoke.Smoke;
 import dev.screwbox.core.loop.internal.Updatable;
+import dev.screwbox.core.smoke.Smoke;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 public class DefaultSmoke implements Smoke, Updatable {
 
-//TODO support split screen
+    //TODO support split screen
     private final ViewportManager viewportManager;
-    private int cellSize =4;
-    private int screenBorder=32;
+    private int cellSize = 4;
+    private int screenBorder = 32;
 
     private Vector worldAnchor;
     private FluidSimulation simulation;
@@ -40,7 +36,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private void reassignGrid() {
         var boundsArea = calculateBestBounds();
         worldAnchor = boundsArea.origin();
-        simulation = new FluidSimulation((int)(boundsArea.width() / cellSize));
+        simulation = new FluidSimulation((int) (boundsArea.width() / cellSize));
     }
 
     private Bounds calculateBestBounds() {
@@ -59,15 +55,36 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
     @Override
+    public Smoke emit(Vector position, double amount) {
+        var cell = toCell(position);
+        System.out.println(cell);
+        simulation.addDensity(cell.x(), cell.y(), amount);
+        return this;
+    }
+
+    private Offset toCell(Vector position) {
+        var cellX = Math.floor((position.x() - worldAnchor.x()) / cellSize);
+        var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
+        return Offset.at(cellX, cellY);
+    }
+
+    @Override
+    public Smoke affect(Vector position, Vector velocity) {
+        var cell = toCell(position);
+        simulation.addVelocity(cell.x(), cell.y(), velocity.x(), velocity.y());//TODO apply x and y fixes
+        return this;
+    }
+
+    @Override
     public void update() {
-        if(simulation != null) {
-            if(calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
+        if (simulation != null) {
+            if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
                 reassignGrid();
             }
             //TODO get delta from update()
-            simulation.step(0.002 , 0.0004,0.0003, 4);
-            simulation.addDensity(30,30, 2);
-            simulation.addVelocity(30,30, 8,8);
+            simulation.step(0.002, 0.0004, 0.0003, 4);
+//            simulation.addDensity(30,30, 2);
+//            simulation.addVelocity(30,30, 8,8);
 
             BufferedImage image = createImage();
 

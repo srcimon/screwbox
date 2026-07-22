@@ -54,6 +54,10 @@ public class GameScene implements Scene {
             .addSystem(new NavigationSystem())
             .addSystem(new HurtSystem())
             .addSystem(new RunAtPlayerSystem())
+            .addSystem(x -> {
+                x.graphics().smoke().emit(x.mouse().position(), 2);
+                x.graphics().smoke().affect(x.mouse().position(), x.mouse().drag().invert().multiply(100));
+            })
             .addSystem(new EnemySpawnSystem())
             .addSystem(new DeathpitSystem())
             .addSystem(new DynamicCursorImageSystem())
