@@ -54,16 +54,16 @@ public class DefaultSmoke implements Smoke, Updatable {
     public void update() {
         if(simulation != null) {
             //TODO get delta from update()
-            simulation.step(0.02 , 0.004,0.003, 4);
+            simulation.step(0.002 , 0.004,0.003, 4);
             var focus = snapFocus();
             if(focus.distanceTo(lastFocus) > 0) {
                 lastFocus = focus;
             }
             var worldFocus = viewportManager.defaultViewport().camera().focus();
             simulation.addDensity(20,20, 2);
-            simulation.addVelocity(20,20, 1,0);
+            simulation.addVelocity(20,20, 8,0);
             BufferedImage image = createImage();
-            viewportManager.defaultViewport().canvas().drawSprite(Sprite.fromImage(image), Offset.at(0,0), SpriteDrawOptions
+            viewportManager.defaultViewport().canvas().drawSprite(Sprite.fromImage(image), viewportManager.defaultViewport().toCanvas(worldFocus), SpriteDrawOptions
                 .scaled(viewportManager.defaultViewport().camera().zoom())
                 .drawOrder(Order.DEBUG_OVERLAY.drawOrder()));//TODO size
             //TODO handle zoom changes
