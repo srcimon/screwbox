@@ -2,6 +2,7 @@ package dev.screwbox.vacuum.scenes;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
@@ -55,7 +56,8 @@ public class GameScene implements Scene {
             .addSystem(new HurtSystem())
             .addSystem(new RunAtPlayerSystem())
             .addSystem(x -> {
-                x.graphics().smoke().emit(x.mouse().position(),x.loop().delta(400));
+                x.graphics().smoke().emit(x.mouse().position(),x.loop().delta(100));
+                x.graphics().smoke().affect(x.mouse().position(), Vector.x(50*x.loop().delta()));
                 x.graphics().smoke().affect(x.mouse().position(), x.mouse().drag().invert().multiply(100));
             })
 //            .addSystem(new EnemySpawnSystem())//TODO reanable
