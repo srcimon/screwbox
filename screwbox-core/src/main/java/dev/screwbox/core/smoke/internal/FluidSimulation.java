@@ -105,14 +105,16 @@ public class FluidSimulation {
     }
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
+        double h = 1.0 / (cells - 2);
+
         for (int j = 1; j < cells - 1; j++) {
             for (int i = 1; i < cells - 1; i++) {
-                div[IX(i, j)] = -0.5 * (
+                div[IX(i, j)] = -0.5 * h * (
                     velocX[IX(i + 1, j)]
                     - velocX[IX(i - 1, j)]
                     + velocY[IX(i, j + 1)]
                     - velocY[IX(i, j - 1)]
-                ) / cells;
+                );
                 p[IX(i, j)] = 0;
             }
         }
@@ -123,8 +125,8 @@ public class FluidSimulation {
 
         for (int j = 1; j < cells - 1; j++) {
             for (int i = 1; i < cells - 1; i++) {
-                velocX[IX(i, j)] -= 0.5 * (p[IX(i + 1, j)] - p[IX(i - 1, j)]);
-                velocY[IX(i, j)] -= 0.5 * (p[IX(i, j + 1)] - p[IX(i, j - 1)]);
+                velocX[IX(i, j)] -= 0.5 * (p[IX(i + 1, j)] - p[IX(i - 1, j)]) / h;
+                velocY[IX(i, j)] -= 0.5 * (p[IX(i, j + 1)] - p[IX(i, j - 1)]) / h;
             }
         }
         set_bnd(1, velocX);

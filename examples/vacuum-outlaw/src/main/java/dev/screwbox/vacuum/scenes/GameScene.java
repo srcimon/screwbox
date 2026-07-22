@@ -56,9 +56,9 @@ public class GameScene implements Scene {
             .addSystem(new HurtSystem())
             .addSystem(new RunAtPlayerSystem())
             .addSystem(x -> {
-                x.graphics().smoke().emit(x.mouse().position(),x.loop().delta(100));
-                x.graphics().smoke().affect(x.mouse().position(), Vector.x(50*x.loop().delta()));
-                x.graphics().smoke().affect(x.mouse().position(), x.mouse().drag().invert().multiply(100));
+                x.graphics().smoke().emit(x.mouse().position(),x.loop().delta(400));
+                x.graphics().smoke().affect(x.mouse().position(), Vector.x(4*x.loop().delta()));
+                x.graphics().smoke().affect(x.mouse().position(), x.mouse().drag().invert().multiply(10));
             })
 //            .addSystem(new EnemySpawnSystem())//TODO reanable
             .addSystem(new DeathpitSystem())
