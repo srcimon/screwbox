@@ -10,15 +10,15 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
-import dev.screwbox.core.environment.slosh.DiveSystem;
-import dev.screwbox.core.environment.slosh.FloatRotationSystem;
-import dev.screwbox.core.environment.slosh.FloatSystem;
-import dev.screwbox.core.environment.slosh.SloshEffectsSystem;
-import dev.screwbox.core.environment.slosh.SloshInteractionSystem;
-import dev.screwbox.core.environment.slosh.SloshPostProcessingSystem;
-import dev.screwbox.core.environment.slosh.SloshVolumeRenderRenderSystem;
-import dev.screwbox.core.environment.slosh.SloshVolumeSystem;
-import dev.screwbox.core.environment.slosh.SloshTurbulenceSystem;
+import dev.screwbox.core.environment.fluids.DiveSystem;
+import dev.screwbox.core.environment.fluids.FloatRotationSystem;
+import dev.screwbox.core.environment.fluids.FloatSystem;
+import dev.screwbox.core.environment.fluids.FluidEffectsSystem;
+import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
+import dev.screwbox.core.environment.fluids.FluidPostProcessingSystem;
+import dev.screwbox.core.environment.fluids.FluidRenderSystem;
+import dev.screwbox.core.environment.fluids.FluidSystem;
+import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -86,15 +86,15 @@ public enum Feature {
         new StateSystem()
     ),
 
-    SLOSH_PHYSICS(
-        new SloshVolumeSystem(),
-        new SloshPostProcessingSystem(),
-        new SloshVolumeRenderRenderSystem(),
-        new SloshEffectsSystem(),
+    FLUIDS(
+        new FluidSystem(),
+        new FluidPostProcessingSystem(),
+        new FluidRenderSystem(),
+        new FluidEffectsSystem(),
         new FloatRotationSystem(),
-        new SloshInteractionSystem(),
+        new FluidInteractionSystem(),
         new DiveSystem(),
-        new SloshTurbulenceSystem(),
+        new FluidTurbulenceSystem(),
         new FloatSystem()
     ),
 

@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
@@ -24,7 +24,7 @@ import static java.util.Objects.nonNull;
  */
 public class FloatSystem implements EntitySystem {
 
-    private static final Archetype VOLUMES = Archetype.ofSpacial(SloshVolumeComponent.class);
+    private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class);
     private static final Archetype FLOATINGS = Archetype.ofSpacial(FloatComponent.class, PhysicsComponent.class);
 
     @Override
@@ -35,21 +35,21 @@ public class FloatSystem implements EntitySystem {
                 .map(gravityComponent -> gravityComponent.gravity.multiply(delta).invert())
                 .orElse(Vector.zero());
 
-        final var volume = engine.environment().fetchAll(VOLUMES);
+        final var fluids = engine.environment().fetchAll(FLUIDS);
         for (final var floating : floatings) {
-            updateFloatingEntity(floating, volume, delta, antiGravity);
+            updateFloatingEntity(floating, fluids, delta, antiGravity);
         }
     }
 
-    private static void updateFloatingEntity(final Entity floating, final List<Entity> volumes, final double delta, final Vector antiGravity) {
+    private static void updateFloatingEntity(final Entity floating, final List<Entity> fluids, final double delta, final Vector antiGravity) {
         final var options = floating.get(FloatComponent.class);
         options.attachedWave = null;
         options.depth = 0;
-        for (final var volume : volumes) {
-            final SloshVolumeComponent slosh = volume.get(SloshVolumeComponent.class);
+        for (final var fluidEntity : fluids) {
+            final FluidComponent fluid = fluidEntity.get(FluidComponent.class);
             final Vector floatPosition = floating.position().addY(floating.bounds().height() / 2.0 - options.dive * floating.bounds().height());
-            final var wave = findWave(floatPosition, volume.bounds(), slosh.surface);
-            final var depth = detectDepth(wave, floatPosition, volume.bounds());
+            final var wave = findWave(floatPosition, fluidEntity.bounds(), fluid.surface);
+            final var depth = detectDepth(wave, floatPosition, fluidEntity.bounds());
             if (nonNull(depth) && depth < 0) {
                 final var physics = floating.get(PhysicsComponent.class);
                 physics.velocity = physics.velocity
@@ -65,21 +65,21 @@ public class FloatSystem implements EntitySystem {
         }
     }
 
-    private static Double detectDepth(final Line wave, final Vector floatingPosition, final Bounds volume) {
+    private static Double detectDepth(final Line wave, final Vector floatingPosition, final Bounds fluid) {
         if (isNull(wave)) {
             return null;
         }
-        final Vector surfaceAnchor = wave.intersectionPoint(Line.normal(floatingPosition, -volume.height() * 2));
+        final Vector surfaceAnchor = wave.intersectionPoint(Line.normal(floatingPosition, -fluid.height() * 2));
         return isNull(surfaceAnchor) ? null : surfaceAnchor.y() - floatingPosition.y();
     }
 
-    private static Line findWave(final Vector position, final Bounds volume, final Polygon surface) {
-        boolean isOutOfBounds = !(position.x() >= volume.minX() && position.x() <= volume.maxX() && volume.maxY() >= position.y());
+    private static Line findWave(final Vector position, final Bounds fluid, final Polygon surface) {
+        boolean isOutOfBounds = !(position.x() >= fluid.minX() && position.x() <= fluid.maxX() && fluid.maxY() >= position.y());
         if (isOutOfBounds) {
             return null;
         }
-        final double gap = volume.width() / (surface.nodeCount() - 1);
-        final double xRelative = position.x() - volume.origin().x();
+        final double gap = fluid.width() / (surface.nodeCount() - 1);
+        final double xRelative = position.x() - fluid.origin().x();
         final int nodeNr = Math.min((int) (xRelative / gap), surface.nodeCount() - 2);
         return Line.between(surface.node(nodeNr), surface.node(nodeNr + 1));
     }

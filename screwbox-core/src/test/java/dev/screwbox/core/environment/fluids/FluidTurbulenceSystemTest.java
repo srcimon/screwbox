@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
@@ -11,19 +11,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class SloshTurbulenceSystemTest {
+class FluidTurbulenceSystemTest {
 
     @Test
     void update_addsNoiseToAllNodes(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.02);
 
-        SloshVolumeComponent fluid = new SloshVolumeComponent(4);
+        FluidComponent fluid = new FluidComponent(4);
 
         environment
-                .addSystem(new SloshTurbulenceSystem())
+                .addSystem(new FluidTurbulenceSystem())
                 .addEntity(new Entity()
                         .add(fluid)
-                        .add(new SloshTurbulenceComponent()));
+                        .add(new FluidTurbulenceComponent()));
 
         environment.update();
 

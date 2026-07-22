@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Line;
 import dev.screwbox.core.environment.Component;
@@ -7,9 +7,9 @@ import dev.screwbox.core.environment.Entity;
 import java.io.Serial;
 
 /**
- * Lets physics {@link Entity entities} float.
+ * Lets physics {@link Entity entities} float on fluids.
  *
- * @see <a href="https://screwbox.dev/docs/guides/slosh-physics/">Guide: Slosh phyics</a>
+ * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
  * @since 2.19.0
  */
 public class FloatComponent implements Component {
@@ -18,12 +18,12 @@ public class FloatComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Horizontal friction applied by liquid.
+     * Horizontal friction applied by fluid.
      */
     public final double horizontalFriction;
 
     /**
-     * Vertical friction applied by liquid.
+     * Vertical friction applied by fluid.
      */
     public final double verticalFriction;
 
@@ -39,12 +39,12 @@ public class FloatComponent implements Component {
     public Line attachedWave;
 
     /**
-     * Current depth in liquid. Will be automatically updated by {@link FloatSystem}.
+     * Current depth in fluid. Will be automatically updated by {@link FloatSystem}.
      */
     public double depth;
 
     /**
-     * Dive depth into slosh volumes. Will be multiplied with body height. 0.5 will result in half submerged body.
+     * Dive depth into fluids. Will be multiplied with body height. 0.5 will result in half submerged body.
      *
      * @since 3.1.0
      */

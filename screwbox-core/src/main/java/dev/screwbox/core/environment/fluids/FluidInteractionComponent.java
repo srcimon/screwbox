@@ -1,16 +1,16 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
 /**
- * Will apply waves when on liquid when in contact with the surface.
+ * Will apply waves when on fluids when in contact.
  *
- * @see <a href="https://screwbox.dev/docs/guides/slosh-physics/">Guide: Slosh phyics</a>
+ * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
  * @since 2.19.0
  */
-public class SloshInteractionComponent implements Component {
+public class FluidInteractionComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -30,11 +30,11 @@ public class SloshInteractionComponent implements Component {
      */
     public double yModifier;
 
-    public SloshInteractionComponent() {
+    public FluidInteractionComponent() {
         this(1.5, 30);
     }
 
-    public SloshInteractionComponent(final double yModifier, final double threshold) {
+    public FluidInteractionComponent(final double yModifier, final double threshold) {
         this.yModifier = yModifier;
         this.xModifier = yModifier / 2.0;
         this.threshold = threshold;

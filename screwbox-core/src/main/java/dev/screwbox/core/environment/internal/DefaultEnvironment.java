@@ -313,8 +313,8 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment enableSloshPhysics() {
-        return enableFeature(Feature.SLOSH_PHYSICS);
+    public Environment enableFluids() {
+        return enableFeature(Feature.FLUIDS);
     }
 
     @Override

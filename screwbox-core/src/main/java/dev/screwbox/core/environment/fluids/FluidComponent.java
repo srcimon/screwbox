@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Component;
@@ -6,13 +6,12 @@ import dev.screwbox.core.environment.Component;
 import java.io.Serial;
 
 /**
- * Creates a liquid that can be used to create animated liquid visuals and interact with physics entities.
+ * Creates a fluid that can be used to create animated fluid visuals and interact with physics entities.
  *
- * @see <a href="https://screwbox.dev/docs/guides/slosh-physics/">Guide: Slosh phyics</a>
- * @see SloshVolumeSystem
+ * @see FluidSystem
  * @since 2.19.0
  */
-public class SloshVolumeComponent implements Component {
+public class FluidComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -64,7 +63,7 @@ public class SloshVolumeComponent implements Component {
     /**
      * Creates a new instance using the specified node count.
      */
-    public SloshVolumeComponent(final int nodeCount) {
+    public FluidComponent(final int nodeCount) {
         height = new double[nodeCount];
         speed = new double[nodeCount];
         this.nodeCount = nodeCount;

@@ -8,13 +8,13 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
-import dev.screwbox.core.environment.slosh.DiveSystem;
-import dev.screwbox.core.environment.slosh.FloatRotationSystem;
-import dev.screwbox.core.environment.slosh.FloatSystem;
-import dev.screwbox.core.environment.slosh.SloshInteractionSystem;
-import dev.screwbox.core.environment.slosh.SloshVolumeRenderRenderSystem;
-import dev.screwbox.core.environment.slosh.SloshVolumeSystem;
-import dev.screwbox.core.environment.slosh.SloshTurbulenceSystem;
+import dev.screwbox.core.environment.fluids.DiveSystem;
+import dev.screwbox.core.environment.fluids.FloatRotationSystem;
+import dev.screwbox.core.environment.fluids.FloatSystem;
+import dev.screwbox.core.environment.fluids.FluidInteractionSystem;
+import dev.screwbox.core.environment.fluids.FluidRenderSystem;
+import dev.screwbox.core.environment.fluids.FluidSystem;
+import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
 import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.importing.ImportOptions;
@@ -376,17 +376,17 @@ public interface Environment extends IdPool {
     Environment enableRendering();
 
     /**
-     * Adds systems needed when working with slosh volumes like water or lava.
+     * Adds systems needed when working with fluids.
      *
-     * @see SloshInteractionSystem
+     * @see FluidInteractionSystem
      * @see FloatSystem
      * @see DiveSystem
-     * @see SloshTurbulenceSystem
-     * @see SloshVolumeSystem
-     * @see SloshVolumeRenderRenderSystem
+     * @see FluidTurbulenceSystem
+     * @see FluidSystem
+     * @see FluidRenderSystem
      * @see FloatRotationSystem
      */
-    Environment enableSloshPhysics();
+    Environment enableFluids();
 
     /**
      * Adds systems needed for ai.

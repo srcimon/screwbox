@@ -1,4 +1,4 @@
-package dev.screwbox.core.environment.slosh;
+package dev.screwbox.core.environment.fluids;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
@@ -6,28 +6,28 @@ import dev.screwbox.core.graphics.Color;
 import java.io.Serial;
 
 /**
- * Will render slosh volumes when added to entity also containing {@link SloshVolumeComponent}.
+ * Will render fluid when added to entity also containing {@link FluidComponent}.
  *
- * @see <a href="https://screwbox.dev/docs/guides/slosh-physics/">Guide: Slosh phyics</a>
+ * @see <a href="https://screwbox.dev/docs/guides/dynamic-fluids/">Guide: Dynamic fluids</a>
  * @since 2.19.0
  */
-public class SloshVolumeRenderComponent implements Component {
+public class FluidRenderComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary {@link Color} of the slosh volume. Will be used to fill the slosh volume polygon.
+     * Primary {@link Color} of the fluid. Will be used to fill the fluid polygon.
      */
     public Color color;
 
     /**
-     * Secondary optional {@link Color} of the slosh volume. Will be used to fill the slosh volume polygon using a gradient.
+     * Secondary optional {@link Color} of the fluid. Will be used to fill the fluid polygon using a gradient.
      */
     public Color secondaryColor;
 
     /**
-     * Surface {@link Color} of the slosh volume. Will be used to draw a line on the surface using {@link #surfaceStrokeWidth}.
+     * Surface {@link Color} of the fluid. Will be used to draw a line on the surface using {@link #surfaceStrokeWidth}.
      *
      * @since 3.20.0
      */
@@ -47,15 +47,15 @@ public class SloshVolumeRenderComponent implements Component {
      */
     public int drawOrder;
 
-    public SloshVolumeRenderComponent() {
+    public FluidRenderComponent() {
         this(Color.hex("#777fd8").opacity(0.5), Color.hex("#3445ff").opacity(0.5));
     }
 
-    public SloshVolumeRenderComponent(final Color color) {
+    public FluidRenderComponent(final Color color) {
         this(color, null);
     }
 
-    public SloshVolumeRenderComponent(final Color color, final Color secondaryColor) {
+    public FluidRenderComponent(final Color color, final Color secondaryColor) {
         this.color = color;
         this.secondaryColor = secondaryColor;
     }
