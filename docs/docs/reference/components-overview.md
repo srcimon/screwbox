@@ -138,9 +138,9 @@ To utilize these components, first call `environment.enableNavigation()`.
 | `NavigationRegionComponent` | Singleton component that indexes the region for pathfinding.  |
 | `ObstacleComponent`         | Marks entity as obstacle that will be avoided in pathfinding. |
 
-## Fluid Components
+## Slosh Components
 
-To utilize these components, first call `environment.enableFluids()`.
+To utilize these components, first call `environment.enableSloshPhysics()`.
 Get a more inside from the [dynamic fluids guide](../guides/slosh-physics).
 
 | Component                      | Description                                                                                           |
