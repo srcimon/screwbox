@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.smoke;
+package dev.screwbox.core.smoke;
 
 public interface Smoke {
 

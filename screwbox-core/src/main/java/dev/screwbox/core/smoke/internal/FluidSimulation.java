@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.smoke.internal;
+package dev.screwbox.core.smoke.internal;
 
 public class FluidSimulation {
 

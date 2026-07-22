@@ -8,8 +8,9 @@ import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
-import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.loop.internal.Updatable;
+import dev.screwbox.core.smoke.Smoke;
+import dev.screwbox.core.smoke.internal.DefaultSmoke;
 
 import java.awt.*;
 import java.util.List;
@@ -38,8 +39,7 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final GraphicsDevice graphicsDevice,
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
-                           final PostProcessing postProcessing,
-                           final Smoke smoke) {
+                           final PostProcessing postProcessing) {
         this.configuration = configuration;
         this.light = light;
         this.screen = screen;
@@ -49,7 +49,7 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.postProcessing = postProcessing;
         this.attentionFocus = new AttentionFocus(viewportManager);
         this.world = new DefaultWorld(viewportManager);
-        this.smoke = smoke;
+        this.smoke = new DefaultSmoke(viewportManager);
     }
 
     @Override
