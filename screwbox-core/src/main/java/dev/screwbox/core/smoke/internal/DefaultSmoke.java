@@ -17,7 +17,7 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     //TODO support split screen
     private final ViewportManager viewportManager;
-    private int cellSize = 4;
+    private int cellSize = 2;
     private int screenBorder = 32;
 
     private Vector worldAnchor;
@@ -57,7 +57,6 @@ public class DefaultSmoke implements Smoke, Updatable {
     @Override
     public Smoke emit(Vector position, double amount) {
         var cell = toCell(position);
-        System.out.println(cell);
         simulation.addDensity(cell.x(), cell.y(), amount);
         return this;
     }
@@ -83,6 +82,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             }
             //TODO get delta from update()
             simulation.step(0.002, 0.0004, 0.0003, 4);
+            simulation.fade(0.005);
 //            simulation.addDensity(30,30, 2);
 //            simulation.addVelocity(30,30, 8,8);
 
@@ -109,8 +109,8 @@ public class DefaultSmoke implements Smoke, Updatable {
 
                 int r = (int) (Math.clamp(simulation.density(x, y), 0, 1.0) * 255);
                 int g = r;
-                int b = 50;
-                int a = 128;
+                int b = r;
+                int a = r;
                 pixels[pixelIndex + x] = (a << 24) | (r << 16) | (g << 8) | b;
             }
         }
