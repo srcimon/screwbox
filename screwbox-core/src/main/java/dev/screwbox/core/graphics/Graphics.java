@@ -6,6 +6,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
+import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.window.Window;
 
@@ -19,6 +20,8 @@ import java.util.Optional;
  * @see <a href="https://screwbox.dev/docs/core-modules/graphics/">Documentation</a>
  */
 public interface Graphics extends Viewport {
+
+    Smoke smoke();
 
     /**
      * Returns the {@link Viewport} at the specified {@link Offset}.

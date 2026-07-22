@@ -5,6 +5,7 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.smoke.internal.FluidSimulation;
 
 public class PlaygroundApp {
 

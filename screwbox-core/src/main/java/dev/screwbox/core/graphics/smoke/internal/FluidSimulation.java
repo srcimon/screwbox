@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.graphics.Size;
 
