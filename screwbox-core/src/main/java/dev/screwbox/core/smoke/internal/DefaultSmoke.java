@@ -21,7 +21,7 @@ public class DefaultSmoke implements Smoke, Updatable {
 
 //TODO support split screen
     private final ViewportManager viewportManager;
-    private int cellSize = 4;
+    private int cellSize =4;
     private int screenBorder=32;
 
     private Vector worldAnchor;
@@ -76,7 +76,6 @@ public class DefaultSmoke implements Smoke, Updatable {
             viewportManager.defaultViewport().canvas().drawSprite(Sprite.fromImage(image), origin, SpriteDrawOptions
                 .scaled(scale)
                 .drawOrder(Order.DEBUG_OVERLAY.drawOrder()));//TODO size
-            System.out.println(scale);
             //TODO handle zoom changes
         }
     }
