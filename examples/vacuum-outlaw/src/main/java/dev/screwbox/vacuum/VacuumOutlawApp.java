@@ -13,6 +13,7 @@ public class VacuumOutlawApp {
 
         screwBox.window().enableCursorLock(16);
 
+        screwBox.graphics().smoke().enable();
         screwBox.assets()
             .enableLogging()
             .prepareClassPackageAsync(VacuumOutlawApp.class)

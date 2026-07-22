@@ -2,7 +2,9 @@ package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -57,27 +59,35 @@ public class DefaultSmoke implements Smoke, Updatable {
             if(focus.distanceTo(lastFocus) > 0) {
                 lastFocus = focus;
             }
-            var focusOnScreen = viewportManager.defaultViewport().toCanvas(viewportManager.defaultViewport().camera().focus());
-
-            BufferedImage image = new BufferedImage(simulation.size(), simulation.size(), BufferedImage.TYPE_INT_ARGB);//TODO image ops
-                var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-
-                int width = image.getWidth();
-
-                for (int y = 0; y < image.getHeight(); y++) {
-                    int pixelIndex = y * width;
-                    for (int x = 0; x < width; x++) {
-
-                        int r = (int) (Math.clamp(simulation.density(x, y), 0, 1.0) * 255);
-                        int g = r;
-                        int b = r;
-                        pixels[pixelIndex + x] = (255 << 24) | (r << 16) | (g << 8) | b;
-                    }
-                }
-
-//                ImageOperations.blurImage(image, 3);
-            viewportManager.defaultViewport().canvas().drawSprite(Sprite.fromImage(image), Offset.at(0,0), SpriteDrawOptions.originalSize());//TODO size
+            var worldFocus = viewportManager.defaultViewport().camera().focus();
+            simulation.addDensity(20,20, 100);
+            simulation.addVelocity(20,20, 140,0);
+            BufferedImage image = createImage();
+            viewportManager.defaultViewport().canvas().drawSprite(Sprite.fromImage(image), Offset.at(0,0), SpriteDrawOptions
+                .scaled(viewportManager.defaultViewport().camera().zoom())
+                .drawOrder(Order.DEBUG_OVERLAY.drawOrder()));//TODO size
             //TODO handle zoom changes
         }
+    }
+
+    private BufferedImage createImage() {
+        BufferedImage image = new BufferedImage(simulation.size(), simulation.size(), BufferedImage.TYPE_INT_ARGB);//TODO image ops
+        var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+
+        int width = image.getWidth();
+
+        for (int y = 0; y < image.getHeight(); y++) {
+            int pixelIndex = y * width;
+            for (int x = 0; x < width; x++) {
+
+                int r = (int) (Math.clamp(simulation.density(x, y), 0, 1.0) * 255);
+                int g = r;
+                int b = r;
+                int a = r;
+                pixels[pixelIndex + x] = (a << 24) | (r << 16) | (g << 8) | b;
+            }
+        }
+        //                ImageOperations.blurImage(image, 3);
+        return image;
     }
 }
