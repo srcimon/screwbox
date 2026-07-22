@@ -61,7 +61,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     @Override
     public void update() {
         if(simulation != null) {
-            if(calculateBestBounds().origin().distanceTo(worldAnchor) > 0) {//TODO > border
+            if(calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
                 reassignGrid();
             }
             //TODO get delta from update()
@@ -98,7 +98,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 pixels[pixelIndex + x] = (a << 24) | (r << 16) | (g << 8) | b;
             }
         }
-                        ImageOperations.blurImage(image, 3);
+//                        ImageOperations.blurImage(image, 3);
         return image;
     }
 }
