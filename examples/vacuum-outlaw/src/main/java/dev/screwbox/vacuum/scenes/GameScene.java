@@ -42,6 +42,7 @@ public class GameScene implements Scene {
         engine.window().setCursor(MouseCursor.HIDDEN);
         engine.graphics().camera().setZoom(3.5);
         engine.graphics().light().setAmbientLight(Percent.of(0.2)).setDefaultLensFlareNone();
+        engine.graphics().smoke().enable();//TODO neeeded?
     }
 
     @Override

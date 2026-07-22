@@ -34,6 +34,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         var size = (int)Math.max(
             Math.ceil((visibleArea.width() + 2 * screenBorder) / cellSize),
             Math.ceil((visibleArea.height() + 2 * screenBorder) / cellSize));
+        System.out.println(size);
         simulation = new FluidSimulation(size);
         lastFocus = snapFocus();
         return this;
@@ -54,15 +55,16 @@ public class DefaultSmoke implements Smoke, Updatable {
     public void update() {
         if(simulation != null) {
             //TODO get delta from update()
-            simulation.step(0.002 , 0.004,0.003, 4);
+            simulation.step(0.002 , 0.0004,0.0003, 4);
             var focus = snapFocus();
             if(focus.distanceTo(lastFocus) > 0) {
                 lastFocus = focus;
             }
             var worldFocus = viewportManager.defaultViewport().camera().focus();
-            simulation.addDensity(20,20, 2);
-            simulation.addVelocity(20,20, 8,0);
+            simulation.addDensity(9,9, 2);
+            simulation.addVelocity(9,9, 8,0);
             BufferedImage image = createImage();
+
             viewportManager.defaultViewport().canvas().drawSprite(Sprite.fromImage(image), viewportManager.defaultViewport().toCanvas(worldFocus), SpriteDrawOptions
                 .scaled(viewportManager.defaultViewport().camera().zoom())
                 .drawOrder(Order.DEBUG_OVERLAY.drawOrder()));//TODO size
@@ -82,8 +84,8 @@ public class DefaultSmoke implements Smoke, Updatable {
 
                 int r = (int) (Math.clamp(simulation.density(x, y), 0, 1.0) * 255);
                 int g = r;
-                int b = r;
-                int a = r;
+                int b = 50;
+                int a = 128;
                 pixels[pixelIndex + x] = (a << 24) | (r << 16) | (g << 8) | b;
             }
         }
