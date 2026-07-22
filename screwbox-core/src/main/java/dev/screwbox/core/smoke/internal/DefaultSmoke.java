@@ -82,7 +82,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             }
             //TODO get delta from update()
             simulation.step(0.002, 0.0004, 0.0003, 4);
-            simulation.fade(0.005);
+            simulation.fade(0.0005);
 //            simulation.addDensity(30,30, 2);
 //            simulation.addVelocity(30,30, 8,8);
 
