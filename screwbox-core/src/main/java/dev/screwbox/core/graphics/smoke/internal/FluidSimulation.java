@@ -1,12 +1,8 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
-import dev.screwbox.core.graphics.Size;
-
 public class FluidSimulation {
 
-    private final int width;
-    private final int height;
-    private final int N;
+    private final int cells;
 
     private final double[] density;
     private final double[] density0;
@@ -17,25 +13,16 @@ public class FluidSimulation {
     private final double[] velocityY0;
 
 
-    public FluidSimulation(final Size size) {
-        this.width = size.width();
-        this.height = size.height();
-        this.N = size.width();//TODO get rid of N
-        this.density = new double[width * height];
-        this.density0 = new double[width * height];
-        this.velocityX = new double[width * height];
-        this.velocityX0 = new double[width * height];
-        this.velocityY = new double[width * height];
-        this.velocityY0 = new double[width * height];
+    public FluidSimulation(final int cells) {
+        this.cells = cells;
+        this.density = new double[this.cells * this.cells];
+        this.density0 = new double[this.cells * this.cells];
+        this.velocityX = new double[this.cells * this.cells];
+        this.velocityX0 = new double[this.cells * this.cells];
+        this.velocityY = new double[this.cells * this.cells];
+        this.velocityY0 = new double[this.cells * this.cells];
     }
 
-    public int width() {
-        return width;
-    }
-
-    public int height() {
-        return height;
-    }
 
     public void addDensity(final int x, int y, final double amount) {
         density[IX(x, y)] += amount;
@@ -51,8 +38,8 @@ public class FluidSimulation {
     }
 
     private int IX(int x, int y) {
-        return Math.clamp(x, 0, N - 1) +
-               Math.clamp(y, 0, N - 1) * N;
+        return Math.clamp(x, 0, cells - 1) +
+               Math.clamp(y, 0, cells - 1) * cells;
     }
 
     public void step(double delta, double visc, double diff, int iter) {
@@ -82,7 +69,7 @@ public class FluidSimulation {
     }
 
     void diffuse(int b, double[] x, double[] x0, double diff, double dt, int iter) {
-        double a = dt * diff * (N - 2) * (N - 2);
+        double a = dt * diff * (cells - 2) * (cells - 2);
         double c = 1.0 + 4.0 * a;
         lin_solve(b, x, x0, a, c, iter);
     }
@@ -91,14 +78,14 @@ public class FluidSimulation {
         double cRecip = 1.0 / c;
 
         for (int k = 0; k < iter; k++) {
-            for (int j = 1; j < N - 1; j++) {
-                int idx_current = 1 + j * N;
+            for (int j = 1; j < cells - 1; j++) {
+                int idx_current = 1 + j * cells;
                 int idx_left = idx_current - 1;
                 int idx_right = idx_current + 1;
-                int idx_top = idx_current - N;
-                int idx_bottom = idx_current + N;
+                int idx_top = idx_current - cells;
+                int idx_bottom = idx_current + cells;
 
-                for (int i = 1; i < N - 1; i++) {
+                for (int i = 1; i < cells - 1; i++) {
                     x[idx_current] = (x0[idx_current] + a * (
                         x[idx_right] +
                         x[idx_left] +
@@ -118,14 +105,14 @@ public class FluidSimulation {
     }
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
-        for (int j = 1; j < N - 1; j++) {
-            for (int i = 1; i < N - 1; i++) {
+        for (int j = 1; j < cells - 1; j++) {
+            for (int i = 1; i < cells - 1; i++) {
                 div[IX(i, j)] = -0.5 * (
                     velocX[IX(i + 1, j)]
                     - velocX[IX(i - 1, j)]
                     + velocY[IX(i, j + 1)]
                     - velocY[IX(i, j - 1)]
-                ) / N;
+                ) / cells;
                 p[IX(i, j)] = 0;
             }
         }
@@ -134,8 +121,8 @@ public class FluidSimulation {
 
         lin_solve(0, p, div, 1, 4, iter);
 
-        for (int j = 1; j < N - 1; j++) {
-            for (int i = 1; i < N - 1; i++) {
+        for (int j = 1; j < cells - 1; j++) {
+            for (int i = 1; i < cells - 1; i++) {
                 velocX[IX(i, j)] -= 0.5 * (p[IX(i + 1, j)] - p[IX(i - 1, j)]);
                 velocY[IX(i, j)] -= 0.5 * (p[IX(i, j + 1)] - p[IX(i, j - 1)]);
             }
@@ -147,18 +134,18 @@ public class FluidSimulation {
     void advect(int b, double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
         double i0, i1, j0, j1;
 
-        double dtx = dt * (N - 2);
-        double dty = dt * (N - 2);
+        double dtx = dt * (cells - 2);
+        double dty = dt * (cells - 2);
 
         double s0, s1, t0, t1;
         double tmp1, tmp2, x, y;
 
-        double Nfloat = N;
+        double Nfloat = cells;
         double ifloat, jfloat;
         int i, j;
 
-        for (j = 1, jfloat = 1; j < N - 1; j++, jfloat++) {
-            for (i = 1, ifloat = 1; i < N - 1; i++, ifloat++) {
+        for (j = 1, jfloat = 1; j < cells - 1; j++, jfloat++) {
+            for (i = 1, ifloat = 1; i < cells - 1; i++, ifloat++) {
                 tmp1 = dtx * velocX[IX(i, j)];
                 tmp2 = dty * velocY[IX(i, j)];
                 x = ifloat - tmp1;
@@ -191,18 +178,18 @@ public class FluidSimulation {
     }
 
     void set_bnd(int b, double[] x) {
-        for (int i = 1; i < N - 1; i++) {
+        for (int i = 1; i < cells - 1; i++) {
             x[IX(i, 0)] = b == 2 ? -x[IX(i, 1)] : x[IX(i, 1)];
-            x[IX(i, N - 1)] = b == 2 ? -x[IX(i, N - 2)] : x[IX(i, N - 2)];
+            x[IX(i, cells - 1)] = b == 2 ? -x[IX(i, cells - 2)] : x[IX(i, cells - 2)];
         }
-        for (int j = 1; j < N - 1; j++) {
+        for (int j = 1; j < cells - 1; j++) {
             x[IX(0, j)] = b == 1 ? -x[IX(1, j)] : x[IX(1, j)];
-            x[IX(N - 1, j)] = b == 1 ? -x[IX(N - 2, j)] : x[IX(N - 2, j)];
+            x[IX(cells - 1, j)] = b == 1 ? -x[IX(cells - 2, j)] : x[IX(cells - 2, j)];
         }
 
         x[IX(0, 0)] = 0.5 * (x[IX(1, 0)] + x[IX(0, 1)]);
-        x[IX(0, N - 1)] = 0.5 * (x[IX(1, N - 1)] + x[IX(0, N - 2)]);
-        x[IX(N - 1, 0)] = 0.5 * (x[IX(N - 2, 0)] + x[IX(N - 1, 1)]);
-        x[IX(N - 1, N - 1)] = 0.5 * (x[IX(N - 2, N - 1)] + x[IX(N - 1, N - 2)]);
+        x[IX(0, cells - 1)] = 0.5 * (x[IX(1, cells - 1)] + x[IX(0, cells - 2)]);
+        x[IX(cells - 1, 0)] = 0.5 * (x[IX(cells - 2, 0)] + x[IX(cells - 1, 1)]);
+        x[IX(cells - 1, cells - 1)] = 0.5 * (x[IX(cells - 2, cells - 1)] + x[IX(cells - 1, cells - 2)]);
     }
 }
