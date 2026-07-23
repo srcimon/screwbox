@@ -62,7 +62,7 @@ public class FluidSimulation {
 
     public void step(double delta, double visc, double diff, int iter) {
         // DIFFUSION FIX 1: Geschwindigkeiten zusammen diffundieren (2-in-1 Pass)
-        diffuse2D(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, diff, delta, iter);
+        diffuse2D(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, visc, delta, iter);
 
         // clean up so that same amount of fluid is everywhere
         project(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, iter);
@@ -75,7 +75,7 @@ public class FluidSimulation {
         project(this.velocityX, this.velocityY, this.velocityX0, this.velocityY0, iter);
 
         // DIFFUSION FIX 2: Alle drei Farbkanäle zusammen diffundieren (3-in-1 Pass)
-        diffuseRGB(this.densityR0, this.densityG0, this.densityB0, this.densityR, this.densityG, this.densityB, visc, delta, iter);
+        diffuseRGB(this.densityR0, this.densityG0, this.densityB0, this.densityR, this.densityG, this.densityB, diff, delta, iter);
 
         // 2. Advect all three color channels using the solved velocities
         advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
