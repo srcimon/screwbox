@@ -237,19 +237,30 @@ public class FluidSimulation {
     }
 
     public void loadFrom(FluidSimulation oldSimulation, int deltaX, int deltaY) {
-        for (int x = 2; x < cells-2; x++) {
-            for (int y = 2; y < cells-2; y++) {
-                var xOld = x+deltaX;
-                var yOld = y+deltaY;
-                var ixOld = IXFastButUnsave(xOld, yOld);
-                var ix = IXFastButUnsave(x, y);
-                if(xOld >= 2 && xOld < cells-2 && yOld >= 2 && yOld < cells-2 ) {
-                    density[ix] = oldSimulation.density[ixOld];
-                    density0[ix] = oldSimulation.density0[ixOld];
+        // Schleife läuft über das NEUE Gitter (this.cells)
+        for (int x = 2; x < this.cells - 2; x++) {
+            for (int y = 2; y < this.cells - 2; y++) {
 
-                    velocityX[ix] = oldSimulation.velocityX[ixOld];
+                // Wo lag diese Zelle in der alten Simulation?
+                // Wenn die neue Kamera weiter rechts steht (deltaX > 0),
+                // müssen wir im alten Gitter weiter rechts lesen (+ deltaX).
+                int xOld = x + deltaX;
+                int yOld = y + deltaY;
+
+                // ABSOLUTE BRANDMAUER: Prüfe gegen die Dimensionen der ALTEN Simulation!
+                if (xOld >= 2 && xOld < oldSimulation.cells - 2 &&
+                    yOld >= 2 && yOld < oldSimulation.cells - 2) {
+
+                    // Nutze für jedes Objekt die jeweils eigene Index-Arithmetik!
+                    int ix = x + y * this.cells; // Inlined für das neue Grid
+                    int ixOld = xOld + yOld * oldSimulation.cells; // Nutzt oldSimulation.cells!
+
+                    density[ix]    = oldSimulation.density[ixOld];
+                    density0[ix]   = oldSimulation.density0[ixOld];
+
+                    velocityX[ix]  = oldSimulation.velocityX[ixOld];
                     velocityX0[ix] = oldSimulation.velocityX0[ixOld];
-                    velocityY[ix] = oldSimulation.velocityY[ixOld];
+                    velocityY[ix]  = oldSimulation.velocityY[ixOld];
                     velocityY0[ix] = oldSimulation.velocityY0[ixOld];
                 }
             }

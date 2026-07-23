@@ -45,39 +45,27 @@ public class DefaultSmoke implements Smoke, Updatable {
         var lastAnchor = worldAnchor;
         var boundsArea = calculateBestBounds();
 
-        // 1. ANKER-RASTERUNG: Symmetrisches Snapping auf das Zellraster
+        // 1. Snapping wie gehabt, um Sub-Pixel-Zittern zu vermeiden
         double snappedX = Math.round(boundsArea.origin().x() / cellSize) * cellSize;
         double snappedY = Math.round(boundsArea.origin().y() / cellSize) * cellSize;
         worldAnchor = Vector.of(snappedX, snappedY);
 
         var oldSimulation = simulation;
-
-        // 2. DIE FINALE RETTUNG: Zellenanzahl absolut stabilisieren!
-        // Wenn es bereits eine alte Simulation gibt, übernehmen wir DEREN Zellenzahl.
-        // Das verhindert, dass minimale Breitenschwankungen (100 vs 101) die Physik zerreißen.
-        int newCells;
-        if (oldSimulation != null) {
-            newCells = oldSimulation.size(); // Größe bleibt knallhart identisch!
-        } else {
-            newCells = (int) Math.round(boundsArea.width() / cellSize);
-        }
+        // Hier erlauben wir die dynamische Größenänderung explizit!
+        int newCells = (int) Math.round(boundsArea.width() / cellSize);
         simulation = new FluidSimulation(newCells);
 
         if (lastAnchor != null) {
-            // 3. EXAKTE GANZZAHL-DIVISION
-            int deltaX = (int) Math.round((lastAnchor.x() - worldAnchor.x()) / cellSize);
-            int deltaY = (int) Math.round((lastAnchor.y() - worldAnchor.y()) / cellSize);
+            // 2. MATHEMATISCH KORREKTES DELTA BEI GRÖSSENÄNDERUNG:
+            // Wir berechnen, wie viele Zellen die NEUE linke obere Ecke von der ALTEN linken oberen Ecke entfernt ist.
+            // Das gleicht eine Expansion/Kontraktion des Gitters perfekt aus.
+            int deltaX = (int) Math.round((worldAnchor.x() - lastAnchor.x()) / cellSize);
+            int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / cellSize);
 
-            // Sicherheits-Check: Da die Größen jetzt immer identisch sind,
-            // funktioniert das Laden im Speicher absolut fehlerfrei und ohne Verzerrung.
-            if (deltaX != 0 || deltaY != 0) {
-                simulation.loadFrom(oldSimulation, -deltaX, -deltaY);
-            } else {
-                simulation.loadFrom(oldSimulation, 0, 0);
-            }
+            // Wir übergeben die reinen Deltas direkt an die neue loadFrom-Methode
+            simulation.loadFrom(oldSimulation, deltaX, deltaY);
         }
     }
-
 
     private Bounds calculateBestBounds() {
         Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand(screenBorder);//TODO remove expand
