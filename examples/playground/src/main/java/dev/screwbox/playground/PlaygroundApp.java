@@ -25,7 +25,7 @@ public class PlaygroundApp {
     static Color color = Color.WHITE;
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-
+screwBox.graphics().configuration().toggleFullscreen();
         screwBox.loop().unlockFps();
         screwBox.graphics().smoke().enable();
         screwBox.environment()

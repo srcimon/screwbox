@@ -26,8 +26,8 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 12;
-    private int screenBorder = 128;
+    private int cellSize = 8;
+    private int screenBorder = 32;
     private int drawOrder = 4;//TODO configure
     private DensityInfo densityInfo;
     private FutureTask<?> updateTask;
