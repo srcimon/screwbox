@@ -1,8 +1,6 @@
 package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
@@ -44,9 +42,16 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
     private void reassignGrid() {
+        var lastAnchor = worldAnchor;
         var boundsArea = calculateBestBounds();
         worldAnchor = boundsArea.origin();
+        var oldSimulation = simulation;
         simulation = new FluidSimulation((int) (boundsArea.width() / cellSize));
+
+        if (lastAnchor != null) {
+            var delta = Offset.at(lastAnchor.subtract(worldAnchor).x() / cellSize, worldAnchor.subtract(lastAnchor).y() / cellSize);
+            simulation.loadFrom(oldSimulation, delta.x(), delta.y());
+        }
     }
 
     private Bounds calculateBestBounds() {
@@ -96,7 +101,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             densityInfo = simulation.densityInfo();
             Asset<Sprite> image = Asset.asset(() -> createImage(densityInfo));
             executor.submit(image::get);
-            if(updateTask!= null) {
+            if (updateTask != null) {
                 try {
                     updateTask.get();
                 } catch (InterruptedException e) {
@@ -106,14 +111,14 @@ public class DefaultSmoke implements Smoke, Updatable {
                 }
             }
             updateTask = (FutureTask<?>) executor.submit(() -> {
-                simulation.step(0.002, 0.0004, 0.0003, 4);
-                simulation.fade(0.0005);
+             //   simulation.step(0.002, 0.0004, 0.0003, 4);
+           //     simulation.fade(0.0005);
             });
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom();
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
             viewportManager.defaultViewport().canvas().drawSprite(image, origin, SpriteDrawOptions
                 .scaled(scale)
-                .drawOrder(Order.PRESENTATION_WORLD.drawOrder() +drawOrder));//TODO size
+                .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
             //TODO handle zoom changes
         }
 

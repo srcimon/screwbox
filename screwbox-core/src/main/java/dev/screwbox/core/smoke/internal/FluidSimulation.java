@@ -1,5 +1,7 @@
 package dev.screwbox.core.smoke.internal;
 
+import dev.screwbox.core.graphics.Offset;
+
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -232,5 +234,25 @@ public class FluidSimulation {
 
     public int size() {
         return cells;
+    }
+
+    public void loadFrom(FluidSimulation oldSimulation, int deltaX, int deltaY) {
+        for (int x = 2; x < cells-2; x++) {
+            for (int y = 2; y < cells-2; y++) {
+                var xOld = x+deltaX;
+                var yOld = y+deltaY;
+                var ixOld = IXFastButUnsave(xOld, yOld);
+                var ix = IXFastButUnsave(x, y);
+                if(xOld >= 2 && xOld < cells-2 && yOld >= 2 && yOld < cells-2 ) {
+                    density[ix] = oldSimulation.density[ixOld];
+                    density0[ix] = oldSimulation.density0[ixOld];
+
+                    velocityX[ix] = oldSimulation.velocityX[ixOld];
+                    velocityX0[ix] = oldSimulation.velocityX0[ixOld];
+                    velocityY[ix] = oldSimulation.velocityY[ixOld];
+                    velocityY0[ix] = oldSimulation.velocityY0[ixOld];
+                }
+            }
+        }
     }
 }
