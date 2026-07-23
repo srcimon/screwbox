@@ -86,49 +86,35 @@ public class FluidSimulation {
         double cRecip = 1.0 / c;
 
         for (int k = 0; k < iter; k++) {
-            // Phase 1: Rote Zellen parallel berechnen
-            runPhase(x, x0, a, cRecip, true);
+            // Eine einzige, sequentielle Schleife über alle Zeilen (Keine Streams!)
+            for (int j = 1; j < cells - 1; j++) {
 
-            // Phase 2: Schwarze Zellen parallel berechnen
-            runPhase(x, x0, a, cRecip, false);
+                // Pointer-Initialisierung für den Zeilenstart (i = 1)
+                int idx_current = 1 + j * cells;
+                int idx_left    = idx_current - 1;
+                int idx_right   = idx_current + 1;
+                int idx_top     = idx_current - cells;
+                int idx_bottom  = idx_current + cells;
 
-        }
-    }
+                // Die schnellstmögliche innere Schleife für die CPU (i++)
+                // Perfekt linear im Speicher, ideal für das automatische Hardware-Prefetching
+                for (int i = 1; i < cells - 1; i++) {
+                    x[idx_current] = (x0[idx_current] + a * (
+                        x[idx_right] +
+                        x[idx_left] +
+                        x[idx_bottom] +
+                        x[idx_top]
+                    )) * cRecip;
 
-    private void runPhase(double[] x, double[] x0, double a, double cRecip, boolean isRedPhase) {
-        IntStream.range(1, cells - 1).parallel().forEach(j -> {
-            int idx_current = 1 + j * cells;
-            int idx_left = idx_current - 1;
-            int idx_right = idx_current + 1;
-            int idx_top = idx_current - cells;
-            int idx_bottom = idx_current + cells;
-
-            // Schachbrett-Logik für den Zeilenstart
-            int startX = ((1 + j) % 2 == (isRedPhase ? 1 : 0)) ? 1 : 2;
-
-            int offset = startX - 1;
-            idx_current += offset;
-            idx_left += offset;
-            idx_right += offset;
-            idx_top += offset;
-            idx_bottom += offset;
-
-            // Die innere Schleife bleibt eine normale, superschnelle sequentielle for-Schleife
-            for (int i = startX; i < cells - 1; i += 2) {
-                x[idx_current] = (x0[idx_current] + a * (
-                    x[idx_right] +
-                    x[idx_left] +
-                    x[idx_bottom] +
-                    x[idx_top]
-                )) * cRecip;
-
-                idx_current += 2;
-                idx_left += 2;
-                idx_right += 2;
-                idx_top += 2;
-                idx_bottom += 2;
+                    // Alle Pointer rücken synchron um genau 1 Zelle weiter
+                    idx_current++;
+                    idx_left++;
+                    idx_right++;
+                    idx_top++;
+                    idx_bottom++;
+                }
             }
-        });
+        }
     }
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
