@@ -49,6 +49,10 @@ public class FluidSimulation {
                Math.clamp(y, 0, cells - 1) * cells;
     }
 
+    private int IXFastButUnsave(int x, int y) {
+        return x + y * cells;
+    }
+
     public void step(double delta, double visc, double diff, int iter) {
 
         // diffuse velocities
@@ -136,7 +140,7 @@ public class FluidSimulation {
 
         for (int j = 1; j < cells - 1; j++) {
             for (int i = 1; i < cells - 1; i++) {
-                int ix = IX(i, j);
+                int ix = IXFastButUnsave(i, j);
                 div[ix] = -0.5 * h * (
                     velocX[IX(i + 1, j)]
                     - velocX[IX(i - 1, j)]
@@ -153,7 +157,7 @@ public class FluidSimulation {
 
         for (int j = 1; j < cells - 1; j++) {
             for (int i = 1; i < cells - 1; i++) {
-                int ix = IX(i, j);
+                int ix = IXFastButUnsave(i, j);
                 velocX[ix] -= 0.5 * (p[IX(i + 1, j)] - p[IX(i - 1, j)]) / h;
                 velocY[ix] -= 0.5 * (p[IX(i, j + 1)] - p[IX(i, j - 1)]) / h;
             }
@@ -177,7 +181,7 @@ public class FluidSimulation {
 
         for (j = 1, jfloat = 1; j < cells - 1; j++, jfloat++) {
             for (i = 1, ifloat = 1; i < cells - 1; i++, ifloat++) {
-                int ix = IX(i, j);
+                int ix = IXFastButUnsave(i, j);
                 tmp1 = dtx * velocX[ix];
                 tmp2 = dty * velocY[ix];
                 x = ifloat - tmp1;
