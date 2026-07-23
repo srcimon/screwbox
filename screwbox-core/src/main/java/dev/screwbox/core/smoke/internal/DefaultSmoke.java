@@ -129,7 +129,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 }
             }
             updateTask = (FutureTask<?>) executor.submit(() -> {
-                simulation.step(0.002, 0.0004, 0.000003, 6);
+                simulation.step(0.002, 0.0004, 0.000003, 2);
                 var delta =  (double)Duration.since(lastUpdate).nanos()/ (double)Time.Unit.SECONDS.nanos();
                 simulation.fade(delta/10.0);
                 lastUpdate = Time.now();

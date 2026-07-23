@@ -61,8 +61,6 @@ public class FluidSimulation {
     }
 
     public void step(double delta, double visc, double diff, int iter) {
-        Time t = Time.now();
-
         // DIFFUSION FIX 1: Geschwindigkeiten zusammen diffundieren (2-in-1 Pass)
         diffuse2D(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, diff, delta, iter);
 
@@ -83,13 +81,12 @@ public class FluidSimulation {
         advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
         advect(this.densityG, this.densityG0, this.velocityX, this.velocityY, delta);
         advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
-
-     //   System.out.println(Duration.since(t).nanos());
     }
 
     void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
         int size = this.cells;
-        double a = dt * diff * (size - 2) * (size - 2);
+        double iterationBonus = 1.0 + (20.0 - iter) * 0.05; // Faktor empirisch anpassen (z.B. bei iter=5 -> ~1.75)
+        double a = dt * (diff * iterationBonus) * (size - 2) * (size - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int k = 0; k < iter; k++) {
@@ -126,7 +123,8 @@ public class FluidSimulation {
     // Kombinierter Solver für alle 3 Farbkanäle (Massiver Cache-Gewinn!)
     void diffuseRGB(double[] r, double[] g, double[] b, double[] r0, double[] g0, double[] b0, double diff, double dt, int iter) {
         int size = this.cells;
-        double a = dt * diff * (size - 2) * (size - 2);
+        double iterationBonus = 1.0 + (20.0 - iter) * 0.05; // Faktor empirisch anpassen (z.B. bei iter=5 -> ~1.75)
+        double a = dt * (diff * iterationBonus) * (size - 2) * (size - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int k = 0; k < iter; k++) {
