@@ -6,6 +6,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.loop.internal.Updatable;
@@ -22,7 +23,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 2;
+    private int cellSize = 8;
     private int screenBorder = 16;
     private int drawOrder = 4;//TODO configure
     private DensityInfo densityInfo;
@@ -127,7 +128,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 simulation.step(0.002, 0.0004, 0.0003, 6);
                 simulation.fade(0.0008);
             });
-            double scale = cellSize * viewportManager.defaultViewport().camera().zoom();
+            double scale = cellSize * viewportManager.defaultViewport().camera().zoom()/upscale;
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
             viewportManager.defaultViewport().canvas().drawSprite(image, origin, SpriteDrawOptions
                 .scaled(scale)
@@ -137,8 +138,11 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     }
 
+    private static int upscale = 4;
+    private static int blur = 4;
+
     private static Sprite createImage(DensityInfo densityInfo) {
-        BufferedImage image = new BufferedImage(densityInfo.cells(), densityInfo.cells(), BufferedImage.TYPE_INT_ARGB);//TODO image ops
+        BufferedImage image = new BufferedImage(densityInfo.cells()*upscale, densityInfo.cells()*upscale, BufferedImage.TYPE_INT_ARGB);//TODO image ops
         var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         int width = image.getWidth();
@@ -147,14 +151,16 @@ public class DefaultSmoke implements Smoke, Updatable {
             int pixelIndex = y * width;
             for (int x = 0; x < width; x++) {
 
-                int r = (int) (Math.clamp(densityInfo.dessityAt(x, y), 0, 1.0) * 255);
+                int r = (int) (Math.clamp(densityInfo.dessityAt(x/upscale, y/upscale), 0, 1.0) * 255);
                 int g = r;
                 int b = r;
                 int a = r;
                 pixels[pixelIndex + x] = (a << 24) | (r << 16) | (g << 8) | b;
             }
         }
-//                        ImageOperations.blurImage(image, 3);
+        if(blur > 0) {
+            ImageOperations.blurImage(image, blur);
+        }
         return Sprite.fromImage(image);
     }
 }

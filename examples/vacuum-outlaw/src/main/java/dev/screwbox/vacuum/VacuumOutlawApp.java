@@ -12,7 +12,7 @@ public class VacuumOutlawApp {
         Engine screwBox = ScrewBox.createEngine("Vacuum Outlaw");
 
         screwBox.window().enableCursorLock(16);
-
+screwBox.loop().unlockFps();//TODO remove
         screwBox.assets()
             .enableLogging()
             .prepareClassPackageAsync(VacuumOutlawApp.class)
