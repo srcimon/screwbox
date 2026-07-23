@@ -16,6 +16,7 @@ import dev.screwbox.core.environment.smoke.SmokeEmitterComponent;
 import dev.screwbox.core.environment.smoke.SmokeSystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.postfilter.CrtMonitorPostFilter;
 
 import java.util.Random;
 
@@ -39,7 +40,6 @@ public class PlaygroundApp {
             Color random = Color.random();
             screwBox.environment().addEntity(new Entity().add(new PhysicsComponent())
                 .bounds(Bounds.atPosition(new Random().nextDouble(-100, 100), new Random().nextDouble(-100, 100), 16, 16))
-                .add(new SmokeAffectorComponent())
                 .add(new RenderComponent(SpriteBundle.DOT_WHITE.get().replaceColor(Color.WHITE, random)))
                 .add(new BoidComponent()).add(new SmokeEmitterComponent(20, random)));
         }
