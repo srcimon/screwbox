@@ -26,6 +26,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private final ExecutorService executor;
     private int cellSize = 2;
     private int screenBorder = 32;
+    private int drawOrder = 4;//TODO configure
     private DensityInfo densityInfo;
     private FutureTask<?> updateTask;
     private Vector worldAnchor;
@@ -105,16 +106,14 @@ public class DefaultSmoke implements Smoke, Updatable {
                 }
             }
             updateTask = (FutureTask<?>) executor.submit(() -> {
-                Time t = Time.now();
-                simulation.step(0.002, 0.0004, 0.0003, 4);
+                simulation.step(0.002, 0.0004, 0.0003, 8);
                 simulation.fade(0.0005);
-                System.out.println(Duration.since(t).nanos());
             });
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom();
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
             viewportManager.defaultViewport().canvas().drawSprite(image, origin, SpriteDrawOptions
                 .scaled(scale)
-                .drawOrder(Order.DEBUG_OVERLAY.drawOrder()));//TODO size
+                .drawOrder(Order.PRESENTATION_WORLD.drawOrder() +drawOrder));//TODO size
             //TODO handle zoom changes
         }
 
