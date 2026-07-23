@@ -106,9 +106,9 @@ public class DefaultSmoke implements Smoke, Updatable {
             }
             updateTask = (FutureTask<?>) executor.submit(() -> {
                 Time t = Time.now();
-                simulation.step(0.002, 0.0004, 0.0003, 8);
+                simulation.step(0.002, 0.0004, 0.0003, 4);
                 simulation.fade(0.0005);
-                System.out.println(Duration.since(t).nanos());
+            //    System.out.println(Duration.since(t).nanos());
             });
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom();
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
