@@ -1,8 +1,8 @@
 package dev.screwbox.vacuum.player;
 
-import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.logic.StateComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -10,8 +10,6 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeAffectorComponent;
-import dev.screwbox.core.environment.smoke.SmokeEmitterComponent;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.vacuum.player.movement.PlayerWalkingState;
 
@@ -20,15 +18,14 @@ public class Player implements Blueprint<GameObject> {
     @Override
     public Entity assembleFrom(GameObject object) {
         return new Entity(object.id()).name("player")
-                .add(new TransformComponent(object.position(), 10, 10))
-                .add(new PlayerComponent())
-                .add(new PhysicsComponent())
+            .add(new TransformComponent(object.position(), 10, 10))
+            .add(new PlayerComponent())
+            .add(new PhysicsComponent())
             .add(new SmokeAffectorComponent())
-            .add(new SmokeEmitterComponent(150, Color.RED))
-                .add(new MotionRotationComponent())
-                .add(new StateComponent(new PlayerWalkingState()))
-                .add(new OccluderComponent(false))
-                .add(new RenderComponent(object.layer().order()), render -> render.isSortOrthographic = true)
-                .add(new CameraTargetComponent(5));
+            .add(new MotionRotationComponent())
+            .add(new StateComponent(new PlayerWalkingState()))
+            .add(new OccluderComponent(false))
+            .add(new RenderComponent(object.layer().order()), render -> render.isSortOrthographic = true)
+            .add(new CameraTargetComponent(5));
     }
 }

@@ -133,6 +133,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
             viewportManager.defaultViewport().canvas().drawSprite(image, origin, SpriteDrawOptions
                 .scaled(scale)
+                    .opacity(0.6)
                 .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
             //TODO handle zoom changes
         }
@@ -155,7 +156,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 int r = (int) (Math.clamp(densityInfo.dessityRAt(x/upscale, y/upscale), 0, 1.0) * 255);
                 int g =(int) (Math.clamp(densityInfo.dessityGAt(x/upscale, y/upscale), 0, 1.0) * 255);
                 int b = (int) (Math.clamp(densityInfo.dessityBAt(x/upscale, y/upscale), 0, 1.0) * 255);
-                int a = Math.min(255, r+g+b);
+                int a = Math.min(255, (r + g + b));
                 pixels[pixelIndex + x] = (a << 24) | (r << 16) | (g << 8) | b;
             }
         }

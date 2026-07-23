@@ -63,7 +63,7 @@ public class GameScene implements Scene {
            //     x.graphics().smoke().affect(x.mouse().position(), x.mouse().position().subtract(x.graphics().visibleArea().position()).length(500*x.loop().delta()));
               //  x.graphics().smoke().affect(x.mouse().position(), x.mouse().drag().invert().multiply(0.2));
             })
-//            .addSystem(new EnemySpawnSystem())//TODO reanable
+            .addSystem(new EnemySpawnSystem())
             .addSystem(new DeathpitSystem())
             .addSystem(new DynamicCursorImageSystem())
             .addSystem(new PlayerAttackControlSystem())
