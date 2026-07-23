@@ -19,7 +19,7 @@ public class SmokeSystem implements EntitySystem {
         for(final var entity : engine.environment().fetchAll(Archetype.ofSpacial(SmokeAffectorComponent.class))) {
             if(engine.graphics().isWithinDistanceToVisibleArea(entity.position(), 32)) {
                 var affector = entity.get(SmokeAffectorComponent.class);
-                Vector speed = affector.speed == null ? entity.get(PhysicsComponent.class).velocity : affector.speed;
+                Vector speed = affector.speed == null ? entity.get(PhysicsComponent.class).velocity.multiply(0.1) : affector.speed;
                 engine.graphics().smoke().affect(entity.position(), speed.multiply(engine.loop().delta()));
             }
         }

@@ -1,6 +1,8 @@
 package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
@@ -24,7 +26,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 5;
+    private int cellSize = 12;
     private int screenBorder = 128;
     private int drawOrder = 4;//TODO configure
     private DensityInfo densityInfo;
@@ -104,6 +106,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         return this;
     }
 
+    static Time lastUpdate = Time.now();
     @Override
     public void update() {
 
@@ -127,7 +130,9 @@ public class DefaultSmoke implements Smoke, Updatable {
             }
             updateTask = (FutureTask<?>) executor.submit(() -> {
                 simulation.step(0.002, 0.0004, 0.0003, 6);
-                simulation.fade(0.0008);
+                var delta =  (double)Duration.since(lastUpdate).nanos()/ (double)Time.Unit.SECONDS.nanos();
+                simulation.fade(delta/10.0);
+                lastUpdate = Time.now();
             });
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom()/upscale;
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);

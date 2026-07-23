@@ -2,7 +2,6 @@ package dev.screwbox.vacuum.scenes;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
