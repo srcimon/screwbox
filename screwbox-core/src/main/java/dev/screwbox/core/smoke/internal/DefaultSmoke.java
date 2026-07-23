@@ -44,15 +44,40 @@ public class DefaultSmoke implements Smoke, Updatable {
     private void reassignGrid() {
         var lastAnchor = worldAnchor;
         var boundsArea = calculateBestBounds();
-        worldAnchor = boundsArea.origin();
+
+        // 1. ANKER-RASTERUNG: Symmetrisches Snapping auf das Zellraster
+        double snappedX = Math.round(boundsArea.origin().x() / cellSize) * cellSize;
+        double snappedY = Math.round(boundsArea.origin().y() / cellSize) * cellSize;
+        worldAnchor = Vector.of(snappedX, snappedY);
+
         var oldSimulation = simulation;
-        simulation = new FluidSimulation((int) (boundsArea.width() / cellSize));
+
+        // 2. DIE FINALE RETTUNG: Zellenanzahl absolut stabilisieren!
+        // Wenn es bereits eine alte Simulation gibt, übernehmen wir DEREN Zellenzahl.
+        // Das verhindert, dass minimale Breitenschwankungen (100 vs 101) die Physik zerreißen.
+        int newCells;
+        if (oldSimulation != null) {
+            newCells = oldSimulation.size(); // Größe bleibt knallhart identisch!
+        } else {
+            newCells = (int) Math.round(boundsArea.width() / cellSize);
+        }
+        simulation = new FluidSimulation(newCells);
 
         if (lastAnchor != null) {
-            var delta = Offset.at(lastAnchor.subtract(worldAnchor).x() / cellSize, worldAnchor.subtract(lastAnchor).y() / cellSize);
-            simulation.loadFrom(oldSimulation, delta.x(), delta.y());
+            // 3. EXAKTE GANZZAHL-DIVISION
+            int deltaX = (int) Math.round((lastAnchor.x() - worldAnchor.x()) / cellSize);
+            int deltaY = (int) Math.round((lastAnchor.y() - worldAnchor.y()) / cellSize);
+
+            // Sicherheits-Check: Da die Größen jetzt immer identisch sind,
+            // funktioniert das Laden im Speicher absolut fehlerfrei und ohne Verzerrung.
+            if (deltaX != 0 || deltaY != 0) {
+                simulation.loadFrom(oldSimulation, -deltaX, -deltaY);
+            } else {
+                simulation.loadFrom(oldSimulation, 0, 0);
+            }
         }
     }
+
 
     private Bounds calculateBestBounds() {
         Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand(screenBorder);//TODO remove expand
