@@ -129,9 +129,9 @@ public class DefaultSmoke implements Smoke, Updatable {
                 }
             }
             updateTask = (FutureTask<?>) executor.submit(() -> {
-                simulation.step(0.002, 0.0000004, 0.000000003, 2);
+                simulation.step(0.002, 0.00000000004, 0.000003, 2);
                 var delta =  (double)Duration.since(lastUpdate).nanos()/ (double)Time.Unit.SECONDS.nanos();
-                simulation.fade(delta/100.0);
+                simulation.fade(delta/2.0);
                 lastUpdate = Time.now();
             });
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom()/upscale;
