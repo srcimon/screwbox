@@ -123,7 +123,8 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, executor, postProcessing);
 
-        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing);
+        DefaultSmoke smoke = new DefaultSmoke(viewportManager, executor);
+        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing, smoke);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
@@ -131,7 +132,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
 
-        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
+        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen, smoke));
         physics = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);

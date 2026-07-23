@@ -185,20 +185,21 @@ public class FluidSimulation {
         set_bnd(b, d);
     }
 
+    //TODO not needed for my scenario
     void set_bnd(int b, double[] x) {
-        for (int i = 1; i < cells - 1; i++) {
-            x[IX(i, 0)] = b == 2 ? -x[IX(i, 1)] : x[IX(i, 1)];
-            x[IX(i, cells - 1)] = b == 2 ? -x[IX(i, cells - 2)] : x[IX(i, cells - 2)];
-        }
-        for (int j = 1; j < cells - 1; j++) {
-            x[IX(0, j)] = b == 1 ? -x[IX(1, j)] : x[IX(1, j)];
-            x[IX(cells - 1, j)] = b == 1 ? -x[IX(cells - 2, j)] : x[IX(cells - 2, j)];
-        }
-
-        x[IX(0, 0)] = 0.5 * (x[IX(1, 0)] + x[IX(0, 1)]);
-        x[IX(0, cells - 1)] = 0.5 * (x[IX(1, cells - 1)] + x[IX(0, cells - 2)]);
-        x[IX(cells - 1, 0)] = 0.5 * (x[IX(cells - 2, 0)] + x[IX(cells - 1, 1)]);
-        x[IX(cells - 1, cells - 1)] = 0.5 * (x[IX(cells - 2, cells - 1)] + x[IX(cells - 1, cells - 2)]);
+//        for (int i = 1; i < cells - 1; i++) {
+//            x[IX(i, 0)] = b == 2 ? -x[IX(i, 1)] : x[IX(i, 1)];
+//            x[IX(i, cells - 1)] = b == 2 ? -x[IX(i, cells - 2)] : x[IX(i, cells - 2)];
+//        }
+//        for (int j = 1; j < cells - 1; j++) {
+//            x[IX(0, j)] = b == 1 ? -x[IX(1, j)] : x[IX(1, j)];
+//            x[IX(cells - 1, j)] = b == 1 ? -x[IX(cells - 2, j)] : x[IX(cells - 2, j)];
+//        }
+//
+//        x[IX(0, 0)] = 0.5 * (x[IX(1, 0)] + x[IX(0, 1)]);
+//        x[IX(0, cells - 1)] = 0.5 * (x[IX(1, cells - 1)] + x[IX(0, cells - 2)]);
+//        x[IX(cells - 1, 0)] = 0.5 * (x[IX(cells - 2, 0)] + x[IX(cells - 1, 1)]);
+//        x[IX(cells - 1, cells - 1)] = 0.5 * (x[IX(cells - 2, cells - 1)] + x[IX(cells - 1, cells - 2)]);
     }
 
     public int size() {

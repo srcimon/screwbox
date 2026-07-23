@@ -1,7 +1,10 @@
 package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Sprite;
@@ -12,19 +15,25 @@ import dev.screwbox.core.smoke.Smoke;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
 
 public class DefaultSmoke implements Smoke, Updatable {
 
     //TODO support split screen
     private final ViewportManager viewportManager;
+    private final ExecutorService executor;
     private int cellSize = 2;
     private int screenBorder = 32;
-
+    private DensityInfo densityInfo;
+    private FutureTask<?> updateTask;
     private Vector worldAnchor;
     private FluidSimulation simulation;
 
-    public DefaultSmoke(final ViewportManager viewportManager) {
+    public DefaultSmoke(final ViewportManager viewportManager, ExecutorService executor) {
         this.viewportManager = viewportManager;
+        this.executor = executor;
     }
 
     @Override
@@ -76,25 +85,42 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     @Override
     public void update() {
+
         if (simulation != null) {
             if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
                 reassignGrid();
             }
             //TODO get delta from update()
-            simulation.step(0.002, 0.0004, 0.0003, 4);
-            simulation.fade(0.0005);
-            BufferedImage image = createImage(simulation.densityInfo());
 
+            densityInfo = simulation.densityInfo();
+            Asset<Sprite> image = Asset.asset(() -> createImage(densityInfo));
+            executor.submit(image::get);
+            if(updateTask!= null) {
+                try {
+                    updateTask.get();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            updateTask = (FutureTask<?>) executor.submit(() -> {
+                Time t = Time.now();
+                simulation.step(0.002, 0.0004, 0.0003, 3);
+                simulation.fade(0.0005);
+                System.out.println(Duration.since(t).nanos());
+            });
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom();
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
-            viewportManager.defaultViewport().canvas().drawSprite(Sprite.fromImage(image), origin, SpriteDrawOptions
+            viewportManager.defaultViewport().canvas().drawSprite(image, origin, SpriteDrawOptions
                 .scaled(scale)
                 .drawOrder(Order.DEBUG_OVERLAY.drawOrder()));//TODO size
             //TODO handle zoom changes
         }
+
     }
 
-    private static BufferedImage createImage(DensityInfo densityInfo) {
+    private static Sprite createImage(DensityInfo densityInfo) {
         BufferedImage image = new BufferedImage(densityInfo.cells(), densityInfo.cells(), BufferedImage.TYPE_INT_ARGB);//TODO image ops
         var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
@@ -112,6 +138,6 @@ public class DefaultSmoke implements Smoke, Updatable {
             }
         }
 //                        ImageOperations.blurImage(image, 3);
-        return image;
+        return Sprite.fromImage(image);
     }
 }

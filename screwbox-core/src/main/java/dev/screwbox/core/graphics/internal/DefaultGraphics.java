@@ -39,7 +39,8 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final GraphicsDevice graphicsDevice,
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
-                           final PostProcessing postProcessing) {
+                           final PostProcessing postProcessing,
+                           final DefaultSmoke smoke) {
         this.configuration = configuration;
         this.light = light;
         this.screen = screen;
@@ -49,7 +50,7 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.postProcessing = postProcessing;
         this.attentionFocus = new AttentionFocus(viewportManager);
         this.world = new DefaultWorld(viewportManager);
-        this.smoke = new DefaultSmoke(viewportManager);
+        this.smoke = smoke;
     }
 
     @Override
@@ -190,7 +191,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public void update() {
         screen.updateScreen();
-        smoke.update();
     }
 
     @Override
