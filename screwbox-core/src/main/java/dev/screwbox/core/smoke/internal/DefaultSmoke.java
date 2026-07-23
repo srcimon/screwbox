@@ -133,7 +133,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
             viewportManager.defaultViewport().canvas().drawSprite(image, origin, SpriteDrawOptions
                 .scaled(scale)
-                    .opacity(0.6)
+                    .opacity(0.5)//TODO config
                 .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
             //TODO handle zoom changes
         }
