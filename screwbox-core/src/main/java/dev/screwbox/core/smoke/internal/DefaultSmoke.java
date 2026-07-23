@@ -27,7 +27,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private int cellSize = 10;
-    private int screenBorder = 32;
+    private int screenBorder = 64;
     private int drawOrder = 4;//TODO configure
     private DensityInfo densityInfo;
     private FutureTask<?> updateTask;
@@ -146,7 +146,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
     private static int upscale = 3;
-    private static int blur = 3;
+    private static int blur = 10;
 
     private static Sprite createImage(DensityInfo densityInfo) {
         BufferedImage image = new BufferedImage(densityInfo.cells()*upscale, densityInfo.cells()*upscale, BufferedImage.TYPE_INT_ARGB);//TODO image ops
