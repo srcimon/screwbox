@@ -1,5 +1,7 @@
 package dev.screwbox.core.smoke.internal;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
 
 import java.util.Arrays;
@@ -59,10 +61,10 @@ public class FluidSimulation {
     }
 
     public void step(double delta, double visc, double diff, int iter) {
-
+        Time t = Time.now();
         // diffuse velocities
-        diffuse(this.velocityX0, this.velocityX, visc, delta, iter);
-        diffuse(this.velocityY0, this.velocityY, visc, delta, iter);
+        diffuse(this.velocityX0, this.velocityX, diff, delta, iter);
+        diffuse(this.velocityY0, this.velocityY, diff, delta, iter);
 
         // clean up so that same amount of fluid is everywhere
         project(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, iter);
@@ -78,7 +80,6 @@ public class FluidSimulation {
         diffuse(this.densityR0, this.densityR, visc, delta, iter);
         diffuse(this.densityG0, this.densityG, visc, delta, iter);
         diffuse(this.densityB0, this.densityB, visc, delta, iter);
-
 
         // 2. Advect all three color channels using the solved velocities
         advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
