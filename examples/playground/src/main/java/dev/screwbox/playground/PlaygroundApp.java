@@ -22,6 +22,7 @@ import java.util.Random;
 
 public class PlaygroundApp {
 
+    static Color color = Color.WHITE;
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
@@ -34,16 +35,12 @@ public class PlaygroundApp {
 
         screwBox.environment().addSystem(x -> {
             x.graphics().smoke().affect(screwBox.mouse().position(), x.mouse().position().subtract(x.graphics().visibleArea().position()).multiply(x.loop().delta()));
-            x.graphics().smoke().emit(screwBox.mouse().position(), 480 * x.loop().delta(), Color.YELLOW);
+            x.graphics().smoke().emit(screwBox.mouse().position(), 480 * x.loop().delta(), color);
+            if(x.mouse().isPressedLeft()) {
+                color = Color.random();
+            }
         });
         screwBox.environment().addEntity(new Entity().bounds(screwBox.graphics().visibleArea()).add(new BoidObstacleComponent(), c -> c.isContainer =true));
-        for(int i = 0; i < 4; i++) {
-            Color random = Color.random();
-            screwBox.environment().addEntity(new Entity().add(new PhysicsComponent())
-                .bounds(Bounds.atPosition(new Random().nextDouble(-100, 100), new Random().nextDouble(-100, 100), 16, 16))
-                .add(new RenderComponent(SpriteBundle.DOT_WHITE.get().replaceColor(Color.WHITE, random)))
-                .add(new BoidComponent()).add(new SmokeEmitterComponent(10, random)));
-        }
 
         screwBox.start();
     }
