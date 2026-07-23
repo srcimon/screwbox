@@ -25,8 +25,8 @@ public class PlaygroundApp {
     static Color color = Color.WHITE;
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-screwBox.graphics().configuration().toggleFullscreen();
-        screwBox.loop().unlockFps();
+
+        screwBox.graphics().configuration().toggleFullscreen();
         screwBox.graphics().smoke().enable();
         screwBox.environment()
             .enableAllFeatures()
@@ -34,6 +34,7 @@ screwBox.graphics().configuration().toggleFullscreen();
             .addSystem(new SmokeSystem());
 
         screwBox.environment().addSystem(x -> {
+
             x.graphics().smoke().affect(screwBox.mouse().position(), x.mouse().position().subtract(x.graphics().visibleArea().position()).multiply(x.loop().delta()));
             x.graphics().smoke().emit(screwBox.mouse().position(), 480 * x.loop().delta(), color);
             if(x.mouse().isPressedLeft()) {
