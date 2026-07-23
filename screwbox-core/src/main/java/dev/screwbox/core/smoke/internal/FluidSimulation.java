@@ -75,9 +75,10 @@ public class FluidSimulation {
         project(this.velocityX, this.velocityY, this.velocityX0, this.velocityY0, iter);
 
         // 1. Diffuse all three color channels
-        diffuse(this.densityR0, this.densityR, diff, delta, iter);
-        diffuse(this.densityG0, this.densityG, diff, delta, iter);
-        diffuse(this.densityB0, this.densityB, diff, delta, iter);
+        System.arraycopy(this.densityR, 0, this.densityR0, 0, this.densityR.length);
+        System.arraycopy(this.densityG, 0, this.densityG0, 0, this.densityG.length);
+        System.arraycopy(this.densityB, 0, this.densityB0, 0, this.densityB.length);
+
 
         // 2. Advect all three color channels using the solved velocities
         advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
