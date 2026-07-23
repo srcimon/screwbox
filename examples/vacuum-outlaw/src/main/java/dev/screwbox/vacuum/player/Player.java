@@ -9,6 +9,8 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.environment.smoke.SmokeAffectorComponent;
+import dev.screwbox.core.environment.smoke.SmokeEmitterComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.vacuum.player.movement.PlayerWalkingState;
 
@@ -20,6 +22,7 @@ public class Player implements Blueprint<GameObject> {
                 .add(new TransformComponent(object.position(), 10, 10))
                 .add(new PlayerComponent())
                 .add(new PhysicsComponent())
+            .add(new SmokeAffectorComponent())
                 .add(new MotionRotationComponent())
                 .add(new StateComponent(new PlayerWalkingState()))
                 .add(new OccluderComponent(false))
