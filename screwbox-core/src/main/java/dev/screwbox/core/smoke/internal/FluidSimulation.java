@@ -1,7 +1,5 @@
 package dev.screwbox.core.smoke.internal;
 
-import dev.screwbox.core.graphics.Offset;
-
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -38,9 +36,6 @@ public class FluidSimulation {
         velocityY[IX(x, y)] += amountY;
     }
 
-    public double density(final int x, final int y) {
-        return density[IX(x, y)];
-    }
 
     public DensityInfo densityInfo() {
         return new DensityInfo(cells, Arrays.copyOf(density, density.length));
@@ -58,21 +53,21 @@ public class FluidSimulation {
     public void step(double delta, double visc, double diff, int iter) {
 
         // diffuse velocities
-        diffuse(1, this.velocityX0, this.velocityX, visc, delta, iter);
-        diffuse(2, this.velocityY0, this.velocityY, visc, delta, iter);
+        diffuse(this.velocityX0, this.velocityX, visc, delta, iter);
+        diffuse(this.velocityY0, this.velocityY, visc, delta, iter);
 
         // clean up so that same amount of fluid is everywhere
         project(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, iter);
 
         // advect velocities
-        advect(1, this.velocityX, this.velocityX0, this.velocityX0, this.velocityY0, delta);
-        advect(2, this.velocityY, this.velocityY0, this.velocityX0, this.velocityY0, delta);
+        advect(this.velocityX, this.velocityX0, this.velocityX0, this.velocityY0, delta);
+        advect(this.velocityY, this.velocityY0, this.velocityX0, this.velocityY0, delta);
 
         // clean that up
         project(this.velocityX, this.velocityY, this.velocityX0, this.velocityY0, iter);
 
-        diffuse(0, this.density0, this.density, diff, delta, iter);
-        advect(0, this.density, this.density0, this.velocityX, this.velocityY, delta);
+        diffuse(this.density0, this.density, diff, delta, iter);
+        advect(this.density, this.density0, this.velocityX, this.velocityY, delta);
     }
 
     public void fade(double fade) {
@@ -81,13 +76,13 @@ public class FluidSimulation {
         }
     }
 
-    void diffuse(int b, double[] x, double[] x0, double diff, double dt, int iter) {
+    void diffuse(double[] x, double[] x0, double diff, double dt, int iter) {
         double a = dt * diff * (cells - 2) * (cells - 2);
         double c = 1.0 + 4.0 * a;
-        lin_solve(b, x, x0, a, c, iter);
+        lin_solve(x, x0, a, c, iter);
     }
 
-    void lin_solve(int b, double[] x, double[] x0, double a, double c, int iter) {
+    void lin_solve(double[] x, double[] x0, double a, double c, int iter) {
         double cRecip = 1.0 / c;
 
         for (int k = 0; k < iter; k++) {
@@ -97,7 +92,6 @@ public class FluidSimulation {
             // Phase 2: Schwarze Zellen parallel berechnen
             runPhase(x, x0, a, cRecip, false);
 
-            set_bnd(b, x);
         }
     }
 
@@ -152,10 +146,7 @@ public class FluidSimulation {
                 p[ix] = 0;
             }
         }
-        set_bnd(0, div);
-        set_bnd(0, p);
-
-        lin_solve(0, p, div, 1, 4, iter);
+        lin_solve(p, div, 1, 4, iter);
 
         for (int j = 1; j < cells - 1; j++) {
             for (int i = 1; i < cells - 1; i++) {
@@ -164,11 +155,9 @@ public class FluidSimulation {
                 velocY[ix] -= 0.5 * (p[IX(i, j + 1)] - p[IX(i, j - 1)]) / h;
             }
         }
-        set_bnd(1, velocX);
-        set_bnd(2, velocY);
     }
 
-    void advect(int b, double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
+    void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
         double i0, i1, j0, j1;
 
         double dtx = dt * (cells - 2);
@@ -209,28 +198,11 @@ public class FluidSimulation {
                 int j1i = (int) (j1);
 
                 d[ix] = s0 * (t0 * d0[IX(i0i, j0i)] + t1 * d0[IX(i0i, j1i)]) +
-                              s1 * (t0 * d0[IX(i1i, j0i)] + t1 * d0[IX(i1i, j1i)]);
+                        s1 * (t0 * d0[IX(i1i, j0i)] + t1 * d0[IX(i1i, j1i)]);
             }
         }
-        set_bnd(b, d);
     }
 
-    //TODO not needed for my scenario
-    void set_bnd(int b, double[] x) {
-//        for (int i = 1; i < cells - 1; i++) {
-//            x[IX(i, 0)] = b == 2 ? -x[IX(i, 1)] : x[IX(i, 1)];
-//            x[IX(i, cells - 1)] = b == 2 ? -x[IX(i, cells - 2)] : x[IX(i, cells - 2)];
-//        }
-//        for (int j = 1; j < cells - 1; j++) {
-//            x[IX(0, j)] = b == 1 ? -x[IX(1, j)] : x[IX(1, j)];
-//            x[IX(cells - 1, j)] = b == 1 ? -x[IX(cells - 2, j)] : x[IX(cells - 2, j)];
-//        }
-//
-//        x[IX(0, 0)] = 0.5 * (x[IX(1, 0)] + x[IX(0, 1)]);
-//        x[IX(0, cells - 1)] = 0.5 * (x[IX(1, cells - 1)] + x[IX(0, cells - 2)]);
-//        x[IX(cells - 1, 0)] = 0.5 * (x[IX(cells - 2, 0)] + x[IX(cells - 1, 1)]);
-//        x[IX(cells - 1, cells - 1)] = 0.5 * (x[IX(cells - 2, cells - 1)] + x[IX(cells - 1, cells - 2)]);
-    }
 
     public int size() {
         return cells;
@@ -255,12 +227,12 @@ public class FluidSimulation {
                     int ix = x + y * this.cells; // Inlined für das neue Grid
                     int ixOld = xOld + yOld * oldSimulation.cells; // Nutzt oldSimulation.cells!
 
-                    density[ix]    = oldSimulation.density[ixOld];
-                    density0[ix]   = oldSimulation.density0[ixOld];
+                    density[ix] = oldSimulation.density[ixOld];
+                    density0[ix] = oldSimulation.density0[ixOld];
 
-                    velocityX[ix]  = oldSimulation.velocityX[ixOld];
+                    velocityX[ix] = oldSimulation.velocityX[ixOld];
                     velocityX0[ix] = oldSimulation.velocityX0[ixOld];
-                    velocityY[ix]  = oldSimulation.velocityY[ixOld];
+                    velocityY[ix] = oldSimulation.velocityY[ixOld];
                     velocityY0[ix] = oldSimulation.velocityY0[ixOld];
                 }
             }
