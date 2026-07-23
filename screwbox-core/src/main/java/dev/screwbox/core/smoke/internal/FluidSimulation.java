@@ -85,6 +85,8 @@ public class FluidSimulation {
         advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
         advect(this.densityG, this.densityG0, this.velocityX, this.velocityY, delta);
         advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
+
+        System.out.println(Duration.since(t).nanos());
     }
 
     public void fade(double fade) {
