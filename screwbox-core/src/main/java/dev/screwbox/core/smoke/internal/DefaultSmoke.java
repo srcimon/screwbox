@@ -145,8 +145,8 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     }
 
-    private static int upscale = 3;
-    private static int blur = 3;
+    private static int upscale = 4;
+    private static int blur = 4;
 
     private static Sprite createImage(DensityInfo densityInfo) {
         BufferedImage image = new BufferedImage(densityInfo.cells()*upscale, densityInfo.cells()*upscale, BufferedImage.TYPE_INT_ARGB);//TODO image ops

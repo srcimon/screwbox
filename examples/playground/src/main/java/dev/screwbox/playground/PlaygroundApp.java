@@ -31,13 +31,17 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystem(new SmokeSystem());
 
+        screwBox.environment().addSystem(x -> {
+            x.graphics().smoke().affect(screwBox.mouse().position(), screwBox.mouse().drag().invert().multiply(.1));
+        });
         screwBox.environment().addEntity(new Entity().bounds(screwBox.graphics().visibleArea()).add(new BoidObstacleComponent(), c -> c.isContainer =true));
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 40; i++) {
+            Color random = Color.random();
             screwBox.environment().addEntity(new Entity().add(new PhysicsComponent())
                 .bounds(Bounds.atPosition(new Random().nextDouble(-100, 100), new Random().nextDouble(-100, 100), 16, 16))
                 .add(new SmokeAffectorComponent())
-                .add(new RenderComponent(SpriteBundle.DOT_WHITE))
-                .add(new BoidComponent()).add(new SmokeEmitterComponent(30, Color.random())));
+                .add(new RenderComponent(SpriteBundle.DOT_WHITE.get().replaceColor(Color.WHITE, random)))
+                .add(new BoidComponent()).add(new SmokeEmitterComponent(40, random)));
         }
 
         screwBox.start();
