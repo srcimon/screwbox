@@ -40,6 +40,7 @@ public class PlaygroundApp {
             if(x.mouse().isPressedLeft()) {
                 color = Color.random();
             }
+            x.graphics().camera().move(x.keyboard().wsadMovement(2));
         });
         screwBox.environment().addEntity(new Entity().bounds(screwBox.graphics().visibleArea()).add(new BoidObstacleComponent(), c -> c.isContainer =true));
 

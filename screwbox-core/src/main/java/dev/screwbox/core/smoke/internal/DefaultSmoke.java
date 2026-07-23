@@ -26,7 +26,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 8;
+    private int cellSize = 10;
     private int screenBorder = 32;
     private int drawOrder = 4;//TODO configure
     private DensityInfo densityInfo;
@@ -131,7 +131,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             updateTask = (FutureTask<?>) executor.submit(() -> {
                 simulation.step(0.002, 0.00000000004, 0.000003, 2);
                 var delta =  (double)Duration.since(lastUpdate).nanos()/ (double)Time.Unit.SECONDS.nanos();
-                simulation.fade(delta/2.0);
+                simulation.fade(delta/10.0);
                 lastUpdate = Time.now();
             });
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom()/upscale;
@@ -145,8 +145,8 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     }
 
-    private static int upscale = 1;
-    private static int blur = 0;
+    private static int upscale = 3;
+    private static int blur = 3;
 
     private static Sprite createImage(DensityInfo densityInfo) {
         BufferedImage image = new BufferedImage(densityInfo.cells()*upscale, densityInfo.cells()*upscale, BufferedImage.TYPE_INT_ARGB);//TODO image ops
