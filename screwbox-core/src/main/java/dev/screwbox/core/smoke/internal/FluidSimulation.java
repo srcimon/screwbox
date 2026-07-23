@@ -115,13 +115,14 @@ public class FluidSimulation {
 
         for (int j = 1; j < cells - 1; j++) {
             for (int i = 1; i < cells - 1; i++) {
-                div[IX(i, j)] = -0.5 * h * (
+                int ix = IX(i, j);
+                div[ix] = -0.5 * h * (
                     velocX[IX(i + 1, j)]
                     - velocX[IX(i - 1, j)]
                     + velocY[IX(i, j + 1)]
                     - velocY[IX(i, j - 1)]
                 );
-                p[IX(i, j)] = 0;
+                p[ix] = 0;
             }
         }
         set_bnd(0, div);
