@@ -25,7 +25,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private int cellSize = 5;
-    private int screenBorder = 16;
+    private int screenBorder = 32;
     private int drawOrder = 4;//TODO configure
     private DensityInfo densityInfo;
     private FutureTask<?> updateTask;
