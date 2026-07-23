@@ -4,6 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
@@ -84,9 +85,9 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
     @Override
-    public Smoke emit(Vector position, double amount) {
+    public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);
-        simulation.addDensity(cell.x(), cell.y(), amount);
+        simulation.addDensity(cell.x(), cell.y(), amount, color);
         return this;
     }
 
@@ -151,10 +152,10 @@ public class DefaultSmoke implements Smoke, Updatable {
             int pixelIndex = y * width;
             for (int x = 0; x < width; x++) {
 
-                int r = (int) (Math.clamp(densityInfo.dessityAt(x/upscale, y/upscale), 0, 1.0) * 255);
-                int g = r;
-                int b = r;
-                int a = r;
+                int r = (int) (Math.clamp(densityInfo.dessityRAt(x/upscale, y/upscale), 0, 1.0) * 255);
+                int g =(int) (Math.clamp(densityInfo.dessityGAt(x/upscale, y/upscale), 0, 1.0) * 255);
+                int b = (int) (Math.clamp(densityInfo.dessityBAt(x/upscale, y/upscale), 0, 1.0) * 255);
+                int a = Math.min(255, r+g+b);
                 pixels[pixelIndex + x] = (a << 24) | (r << 16) | (g << 8) | b;
             }
         }

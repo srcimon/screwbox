@@ -34,7 +34,7 @@ public class PlayerAttackControlSystem implements EntitySystem {
                 engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(player.position()));
                 engine.environment().addEntity("shoot",
                         new TransformComponent(player.position(), 8, 8),
-                        new SmokeEmitterComponent(80),
+                        new SmokeEmitterComponent(80, Color.YELLOW),
                         new GlowComponent(8, Color.WHITE.opacity(0.75)),
                         new PointLightComponent(64, Color.BLACK),
                         new ShotComponent(),

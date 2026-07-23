@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.rendering.MotionRotationComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeAffectorComponent;
 import dev.screwbox.core.environment.smoke.SmokeEmitterComponent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.vacuum.player.movement.PlayerWalkingState;
 
@@ -23,6 +24,7 @@ public class Player implements Blueprint<GameObject> {
                 .add(new PlayerComponent())
                 .add(new PhysicsComponent())
             .add(new SmokeAffectorComponent())
+            .add(new SmokeEmitterComponent(150, Color.RED))
                 .add(new MotionRotationComponent())
                 .add(new StateComponent(new PlayerWalkingState()))
                 .add(new OccluderComponent(false))

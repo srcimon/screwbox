@@ -1,14 +1,16 @@
 package dev.screwbox.core.smoke.internal;
 
+import dev.screwbox.core.graphics.Color;
+
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class FluidSimulation {
 
     private final int cells;
 
-    private final double[] density;
-    private final double[] density0;
+    private double[] densityR, densityR0;
+    private double[] densityG, densityG0;
+    private double[] densityB, densityB0;
 
     private final double[] velocityX;
     private final double[] velocityX0;
@@ -18,8 +20,12 @@ public class FluidSimulation {
 
     public FluidSimulation(final int cells) {
         this.cells = cells;
-        this.density = new double[this.cells * this.cells];
-        this.density0 = new double[this.cells * this.cells];
+        this.densityR = new double[this.cells * this.cells];
+        this.densityR0 = new double[this.cells * this.cells];
+        this.densityG = new double[this.cells * this.cells];
+        this.densityG0 = new double[this.cells * this.cells];
+        this.densityB = new double[this.cells * this.cells];
+        this.densityB0 = new double[this.cells * this.cells];
         this.velocityX = new double[this.cells * this.cells];
         this.velocityX0 = new double[this.cells * this.cells];
         this.velocityY = new double[this.cells * this.cells];
@@ -27,8 +33,10 @@ public class FluidSimulation {
     }
 
 
-    public void addDensity(final int x, int y, final double amount) {
-        density[IX(x, y)] += amount;
+    public void addDensity(final int x, int y, final double amount, Color color) {
+        densityR[IX(x, y)] += amount * color.r() / 255.0;
+        densityG[IX(x, y)] += amount * color.g() / 255.0;
+        densityB[IX(x, y)] += amount * color.b() / 255.0;
     }
 
     public void addVelocity(final int x, int y, final double amountX, final double amountY) {
@@ -38,7 +46,7 @@ public class FluidSimulation {
 
 
     public DensityInfo densityInfo() {
-        return new DensityInfo(cells, Arrays.copyOf(density, density.length));
+        return new DensityInfo(cells, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length),Arrays.copyOf(densityB, densityB.length));
     }
 
     private int IX(int x, int y) {
@@ -66,13 +74,22 @@ public class FluidSimulation {
         // clean that up
         project(this.velocityX, this.velocityY, this.velocityX0, this.velocityY0, iter);
 
-        diffuse(this.density0, this.density, diff, delta, iter);
-        advect(this.density, this.density0, this.velocityX, this.velocityY, delta);
+        // 1. Diffuse all three color channels
+        diffuse(this.densityR0, this.densityR, diff, delta, iter);
+        diffuse(this.densityG0, this.densityG, diff, delta, iter);
+        diffuse(this.densityB0, this.densityB, diff, delta, iter);
+
+        // 2. Advect all three color channels using the solved velocities
+        advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
+        advect(this.densityG, this.densityG0, this.velocityX, this.velocityY, delta);
+        advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
     }
 
     public void fade(double fade) {
-        for (int i = 0; i < density.length; i++) {
-            density[i] = Math.max(0, density[i] - fade);
+        for (int i = 0; i < densityR.length; i++) {
+            densityR[i] = Math.max(0, densityR[i] - fade);
+            densityG[i] = Math.max(0, densityG[i] - fade);
+            densityB[i] = Math.max(0, densityB[i] - fade);
         }
     }
 
@@ -91,10 +108,10 @@ public class FluidSimulation {
 
                 // Pointer-Initialisierung für den Zeilenstart (i = 1)
                 int idx_current = 1 + j * cells;
-                int idx_left    = idx_current - 1;
-                int idx_right   = idx_current + 1;
-                int idx_top     = idx_current - cells;
-                int idx_bottom  = idx_current + cells;
+                int idx_left = idx_current - 1;
+                int idx_right = idx_current + 1;
+                int idx_top = idx_current - cells;
+                int idx_bottom = idx_current + cells;
 
                 // Die schnellstmögliche innere Schleife für die CPU (i++)
                 // Perfekt linear im Speicher, ideal für das automatische Hardware-Prefetching
@@ -213,8 +230,13 @@ public class FluidSimulation {
                     int ix = x + y * this.cells; // Inlined für das neue Grid
                     int ixOld = xOld + yOld * oldSimulation.cells; // Nutzt oldSimulation.cells!
 
-                    density[ix] = oldSimulation.density[ixOld];
-                    density0[ix] = oldSimulation.density0[ixOld];
+                    densityR[ix] = oldSimulation.densityR[ixOld];
+                    densityR0[ix] = oldSimulation.densityR0[ixOld];
+                    densityG[ix] = oldSimulation.densityG[ixOld];
+                    densityG0[ix] = oldSimulation.densityG0[ixOld];
+
+                    densityB[ix] = oldSimulation.densityB[ixOld];
+                    densityB0[ix] = oldSimulation.densityB0[ixOld];
 
                     velocityX[ix] = oldSimulation.velocityX[ixOld];
                     velocityX0[ix] = oldSimulation.velocityX0[ixOld];
