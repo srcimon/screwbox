@@ -12,6 +12,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.loop.internal.DefaultLoop;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.smoke.Smoke;
 
@@ -128,11 +129,10 @@ public class DefaultSmoke implements Smoke, Updatable {
                     throw new RuntimeException(e);
                 }
             }
+            double de = DefaultLoop.DE;
             updateTask = (FutureTask<?>) executor.submit(() -> {
-                simulation.step(0.002, 0.00000000004, 0.000003, 2);
-                var delta =  (double)Duration.since(lastUpdate).nanos()/ (double)Time.Unit.SECONDS.nanos();
-                simulation.fade(delta/10.0);
-                lastUpdate = Time.now();
+                simulation.step(de, 0.00000000004, 0.000003, 2);
+                simulation.fade(de/8.0);
             });
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom()/upscale;
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
