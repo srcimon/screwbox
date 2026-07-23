@@ -62,9 +62,9 @@ public class FluidSimulation {
 
     public void step(double delta, double visc, double diff, int iter) {
         Time t = Time.now();
-        // diffuse velocities
-        diffuse(this.velocityX0, this.velocityX, diff, delta, iter);
-        diffuse(this.velocityY0, this.velocityY, diff, delta, iter);
+
+        // DIFFUSION FIX 1: Geschwindigkeiten zusammen diffundieren (2-in-1 Pass)
+        diffuse2D(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, diff, delta, iter);
 
         // clean up so that same amount of fluid is everywhere
         project(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, iter);
@@ -76,17 +76,90 @@ public class FluidSimulation {
         // clean that up
         project(this.velocityX, this.velocityY, this.velocityX0, this.velocityY0, iter);
 
-        // 1. Diffuse all three color channels
-        diffuse(this.densityR0, this.densityR, visc, delta, iter);
-        diffuse(this.densityG0, this.densityG, visc, delta, iter);
-        diffuse(this.densityB0, this.densityB, visc, delta, iter);
+        // DIFFUSION FIX 2: Alle drei Farbkanäle zusammen diffundieren (3-in-1 Pass)
+        diffuseRGB(this.densityR0, this.densityG0, this.densityB0, this.densityR, this.densityG, this.densityB, visc, delta, iter);
 
         // 2. Advect all three color channels using the solved velocities
         advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
         advect(this.densityG, this.densityG0, this.velocityX, this.velocityY, delta);
         advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
 
-        System.out.println(Duration.since(t).nanos());
+     //   System.out.println(Duration.since(t).nanos());
+    }
+
+    void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
+        int size = this.cells;
+        double a = dt * diff * (size - 2) * (size - 2);
+        double cRecip = 1.0 / (1.0 + 4.0 * a);
+
+        for (int k = 0; k < iter; k++) {
+            for (int j = 1; j < size - 1; j++) {
+                int row = j * size;
+                int topRow = row - size;
+                int botRow = row + size;
+
+                int i = 1;
+                // Loop Unrolling (Faktor 2 für X und Y parallel)
+                for (; i < size - 2; i += 2) {
+                    int curr0 = i + row;     int curr1 = curr0 + 1;
+                    int top0  = i + topRow;  int top1  = top0 + 1;
+                    int bot0  = i + botRow;  int bot1  = bot0 + 1;
+
+                    // Index i
+                    x[curr0] = (x0[curr0] + a * (x[curr0 + 1] + x[curr0 - 1] + x[bot0] + x[top0])) * cRecip;
+                    y[curr0] = (y0[curr0] + a * (y[curr0 + 1] + y[curr0 - 1] + y[bot0] + y[top0])) * cRecip;
+
+                    // Index i + 1
+                    x[curr1] = (x0[curr1] + a * (x[curr1 + 1] + x[curr1 - 1] + x[bot1] + x[top1])) * cRecip;
+                    y[curr1] = (y0[curr1] + a * (y[curr1 + 1] + y[curr1 - 1] + y[bot1] + y[top1])) * cRecip;
+                }
+                // Rest-Zelle falls ungerade
+                for (; i < size - 1; i++) {
+                    int curr = i + row;
+                    x[curr] = (x0[curr] + a * (x[curr + 1] + x[curr - 1] + x[i + botRow] + x[i + topRow])) * cRecip;
+                    y[curr] = (y0[curr] + a * (y[curr + 1] + y[curr - 1] + y[i + botRow] + y[i + topRow])) * cRecip;
+                }
+            }
+        }
+    }
+
+    // Kombinierter Solver für alle 3 Farbkanäle (Massiver Cache-Gewinn!)
+    void diffuseRGB(double[] r, double[] g, double[] b, double[] r0, double[] g0, double[] b0, double diff, double dt, int iter) {
+        int size = this.cells;
+        double a = dt * diff * (size - 2) * (size - 2);
+        double cRecip = 1.0 / (1.0 + 4.0 * a);
+
+        for (int k = 0; k < iter; k++) {
+            for (int j = 1; j < size - 1; j++) {
+                int row = j * size;
+                int topRow = row - size;
+                int botRow = row + size;
+
+                int i = 1;
+                // Verarbeitet R, G und B für 2 Zellen pro Schleifendurchlauf
+                for (; i < size - 2; i += 2) {
+                    int curr0 = i + row;     int curr1 = curr0 + 1;
+                    int top0  = i + topRow;  int top1  = top0 + 1;
+                    int bot0  = i + botRow;  int bot1  = bot0 + 1;
+
+                    // Index i
+                    r[curr0] = (r0[curr0] + a * (r[curr0 + 1] + r[curr0 - 1] + r[bot0] + r[top0])) * cRecip;
+                    g[curr0] = (g0[curr0] + a * (g[curr0 + 1] + g[curr0 - 1] + g[bot0] + g[top0])) * cRecip;
+                    b[curr0] = (b0[curr0] + a * (b[curr0 + 1] + b[curr0 - 1] + b[bot0] + b[top0])) * cRecip;
+
+                    // Index i + 1
+                    r[curr1] = (r0[curr1] + a * (r[curr1 + 1] + r[curr1 - 1] + r[bot1] + r[top1])) * cRecip;
+                    g[curr1] = (g0[curr1] + a * (g[curr1 + 1] + g[curr1 - 1] + g[bot1] + g[top1])) * cRecip;
+                    b[curr1] = (b0[curr1] + a * (b[curr1 + 1] + b[curr1 - 1] + b[bot1] + b[top1])) * cRecip;
+                }
+                for (; i < size - 1; i++) {
+                    int curr = i + row;
+                    r[curr] = (r0[curr] + a * (r[curr + 1] + r[curr - 1] + r[i + botRow] + r[i + topRow])) * cRecip;
+                    g[curr] = (g0[curr] + a * (g[curr + 1] + g[curr - 1] + g[i + botRow] + g[i + topRow])) * cRecip; // Fix Tippfehler im Quellcode
+                    b[curr] = (b0[curr] + a * (b[curr + 1] + b[curr - 1] + b[i + botRow] + b[i + topRow])) * cRecip;
+                }
+            }
+        }
     }
 
     public void fade(double fade) {
@@ -97,11 +170,6 @@ public class FluidSimulation {
         }
     }
 
-    void diffuse(double[] x, double[] x0, double diff, double dt, int iter) {
-        double a = dt * diff * (cells - 2) * (cells - 2);
-        double c = 1.0 + 4.0 * a;
-        lin_solve(x, x0, a, c, iter);
-    }
 
     void lin_solve(double[] x, double[] x0, double a, double c, int iter) {
         double cRecip = 1.0 / c;
