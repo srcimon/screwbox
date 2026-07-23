@@ -41,7 +41,7 @@ public class PlaygroundApp {
                 .bounds(Bounds.atPosition(new Random().nextDouble(-100, 100), new Random().nextDouble(-100, 100), 16, 16))
                 .add(new SmokeAffectorComponent())
                 .add(new RenderComponent(SpriteBundle.DOT_WHITE.get().replaceColor(Color.WHITE, random)))
-                .add(new BoidComponent()).add(new SmokeEmitterComponent(40, random)));
+                .add(new BoidComponent()).add(new SmokeEmitterComponent(20, random)));
         }
 
         screwBox.start();
