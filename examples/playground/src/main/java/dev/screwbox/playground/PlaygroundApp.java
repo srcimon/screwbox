@@ -33,8 +33,8 @@ public class PlaygroundApp {
             .addSystem(new SmokeSystem());
 
         screwBox.environment().addSystem(x -> {
-            x.graphics().smoke().affect(screwBox.mouse().position(), x.mouse().drag().invert().multiply(10*x.loop().delta()));
-            x.graphics().smoke().emit(screwBox.mouse().position(), 80 * x.loop().delta(), Color.YELLOW);
+            x.graphics().smoke().affect(screwBox.mouse().position(), x.mouse().position().subtract(x.graphics().visibleArea().position()).multiply(x.loop().delta()));
+            x.graphics().smoke().emit(screwBox.mouse().position(), 480 * x.loop().delta(), Color.YELLOW);
         });
         screwBox.environment().addEntity(new Entity().bounds(screwBox.graphics().visibleArea()).add(new BoidObstacleComponent(), c -> c.isContainer =true));
         for(int i = 0; i < 4; i++) {
