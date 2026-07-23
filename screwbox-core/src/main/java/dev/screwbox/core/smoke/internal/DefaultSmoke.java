@@ -83,10 +83,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             //TODO get delta from update()
             simulation.step(0.002, 0.0004, 0.0003, 4);
             simulation.fade(0.0005);
-//            simulation.addDensity(30,30, 2);
-//            simulation.addVelocity(30,30, 8,8);
-
-            BufferedImage image = createImage();
+            BufferedImage image = createImage(simulation.densityInfo());
 
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom();
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
@@ -97,8 +94,8 @@ public class DefaultSmoke implements Smoke, Updatable {
         }
     }
 
-    private BufferedImage createImage() {
-        BufferedImage image = new BufferedImage(simulation.size(), simulation.size(), BufferedImage.TYPE_INT_ARGB);//TODO image ops
+    private static BufferedImage createImage(DensityInfo densityInfo) {
+        BufferedImage image = new BufferedImage(densityInfo.cells(), densityInfo.cells(), BufferedImage.TYPE_INT_ARGB);//TODO image ops
         var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         int width = image.getWidth();
@@ -107,7 +104,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             int pixelIndex = y * width;
             for (int x = 0; x < width; x++) {
 
-                int r = (int) (Math.clamp(simulation.density(x, y), 0, 1.0) * 255);
+                int r = (int) (Math.clamp(densityInfo.dessityAt(x, y), 0, 1.0) * 255);
                 int g = r;
                 int b = r;
                 int a = r;

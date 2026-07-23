@@ -1,5 +1,7 @@
 package dev.screwbox.core.smoke.internal;
 
+import java.util.Arrays;
+
 public class FluidSimulation {
 
     private final int cells;
@@ -35,6 +37,10 @@ public class FluidSimulation {
 
     public double density(final int x, final int y) {
         return density[IX(x, y)];
+    }
+
+    public DensityInfo densityInfo() {
+        return new DensityInfo(cells, Arrays.copyOf(density, density.length));
     }
 
     private int IX(int x, int y) {
