@@ -160,6 +160,9 @@ public class DefaultSmoke implements Smoke, Updatable {
     private static int upscale = 2;
     private static int blur = 2;
 
+    //TODO only create image if different
+    //TODO reuse bufferimage
+    //TODO only switch grid size when resolution changes
     private static Sprite createImage(DensityInfo densityInfo) {
         BufferedImage image = new BufferedImage(densityInfo.cells() * upscale, densityInfo.cells() * upscale, BufferedImage.TYPE_INT_ARGB);//TODO image ops
         var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
