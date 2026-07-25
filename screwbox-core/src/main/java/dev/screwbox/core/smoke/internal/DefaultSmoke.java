@@ -151,15 +151,15 @@ public class DefaultSmoke implements Smoke, Updatable {
         Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale)
-            .opacity(1)); //TODO config
+            .opacity(0.4)); //TODO config
     }
 
     @Override
     public void update() {
     }
 
-    private static int upscale = 2;
-    private static int blur = 2;
+    private static int upscale = 3;
+    private static int blur = 0;
 
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
