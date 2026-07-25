@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 public class DefaultSmoke implements Smoke, Updatable {
@@ -112,6 +113,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         return Offset.at(cellX, cellY);
     }
 
+    Future<?> simulationTask;
     @Override
     public void render() {
         if (simulation == null) {
@@ -127,8 +129,20 @@ public class DefaultSmoke implements Smoke, Updatable {
             task.run();
         }
         tasks.clear();
-        simulation.step(de, 0.00000000004, 0.0001, 2);
-        simulation.fade(de * 0.04);
+        if(simulationTask != null) {
+            try {
+                simulationTask.get();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        simulationTask = executor.submit(() -> {
+            simulation.step(de, 0.00000000004, 0.0001, 2);
+            simulation.fade(de * 0.04);
+        });
+
 
         DensityInfo densityInfo = simulation.densityInfo();
         var sprite = Asset.asset(() -> createImage(densityInfo));
