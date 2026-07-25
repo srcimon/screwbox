@@ -133,8 +133,8 @@ public class DefaultSmoke implements Smoke, Updatable {
                 double delta = cummulativeDelta;
                 updateTask = (FutureTask<?>) executor.submit(() -> {
 
-                    simulation.step(delta, 0.00000000004, 0.000003, 2);
-                    simulation.fade(delta  *0.1);
+                    simulation.step(delta, 0.00000000004, 0.0001, 4);
+                    simulation.fade(delta  *0.003);
                     if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 0.80) {//TODO > border
                         reassignGrid();
                     }
