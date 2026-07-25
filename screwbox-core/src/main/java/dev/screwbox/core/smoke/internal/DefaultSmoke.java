@@ -137,7 +137,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 updateTask = (FutureTask<?>) executor.submit(() -> {
 
                     simulation.step(delta, 0.00000000004, 0.000003, 2);
-                    simulation.fade(delta );
+                    simulation.fade(delta  );
                 });
                 cummulativeDelta = 0;
             }
