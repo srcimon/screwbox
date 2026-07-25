@@ -91,9 +91,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);
         if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
-            tasks.add(() -> {
-                simulation.addDensity(cell.x(), cell.y(), amount * delta, color);//TODO move multiplication outside
-            });
+            tasks.add(() -> simulation.addDensity(cell.x(), cell.y(), amount, color));
         }
 
         return this;
@@ -103,10 +101,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     public Smoke affect(Vector position, Vector velocity) {
         var cell = toCell(position);
         if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
-            tasks.add(() -> {
-                var scaledVelocity = velocity.multiply(delta);//TODO move multiplication outside
-                simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes#
-            });
+            tasks.add(() -> simulation.addVelocity(cell.x(), cell.y(), velocity.x(), velocity.y()));
         }
         return this;
     }
@@ -117,7 +112,6 @@ public class DefaultSmoke implements Smoke, Updatable {
         return Offset.at(cellX, cellY);
     }
 
-    private static double delta;
     @Override
     public void render() {
         if (simulation == null) {
@@ -128,7 +122,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         }
         //TODO get delta from update()
         imageWorldAnchor = worldAnchor;
-        double de = delta;
+        double de = DefaultLoop.DE;
         for (var task : tasks) {
             task.run();
         }
@@ -148,7 +142,6 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     @Override
     public void update() {
-delta=DefaultLoop.DE;
     }
 
     private static int upscale = 2;
