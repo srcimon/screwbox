@@ -1,8 +1,6 @@
 package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
@@ -27,7 +25,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 8;
+    private int cellSize = 4;
     private int screenBorder = 64;
     private int drawOrder = 4;//TODO configure
     private DensityInfo densityInfo;
@@ -107,7 +105,9 @@ public class DefaultSmoke implements Smoke, Updatable {
         return this;
     }
 
-    static Time lastUpdate = Time.now();
+    boolean isUpdate = false;
+    double cummulativeDelta = 0;
+
     @Override
     public void update() {
 
@@ -120,36 +120,46 @@ public class DefaultSmoke implements Smoke, Updatable {
             densityInfo = simulation.densityInfo();
             Asset<Sprite> image = Asset.asset(() -> createImage(densityInfo));
             executor.submit(image::get);
-            if (updateTask != null) {
-                try {
-                    updateTask.get();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (ExecutionException e) {
-                    throw new RuntimeException(e);
+
+            cummulativeDelta += DefaultLoop.DE;
+            if (isUpdate) {
+
+                if (updateTask != null) {
+                    try {
+                        updateTask.get();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
+                double delta = cummulativeDelta;
+                updateTask = (FutureTask<?>) executor.submit(() -> {
+
+                    simulation.step(delta, 0.00004, 0.0000000003, 2);
+                    simulation.fade(delta );
+                });
+                cummulativeDelta = 0;
             }
-            double de = DefaultLoop.DE;
-            updateTask = (FutureTask<?>) executor.submit(() -> {
-                simulation.step(de, 0.00004, 0.0000000003, 2);
-                simulation.fade(de/8.0);
-            });
-            double scale = cellSize * viewportManager.defaultViewport().camera().zoom()/upscale;
+            isUpdate = !isUpdate;
+
+
+            double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
             viewportManager.defaultViewport().canvas().drawSprite(image, origin, SpriteDrawOptions
                 .scaled(scale)
-                    .opacity(1)//TODO config
+                .opacity(1)//TODO config
                 .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
             //TODO handle zoom changes
         }
 
     }
 
-    private static int upscale = 3;
-    private static int blur = 4;
+    private static int upscale = 2;
+    private static int blur = 2;
 
     private static Sprite createImage(DensityInfo densityInfo) {
-        BufferedImage image = new BufferedImage(densityInfo.cells()*upscale, densityInfo.cells()*upscale, BufferedImage.TYPE_INT_ARGB);//TODO image ops
+        BufferedImage image = new BufferedImage(densityInfo.cells() * upscale, densityInfo.cells() * upscale, BufferedImage.TYPE_INT_ARGB);//TODO image ops
         var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         int width = image.getWidth();
@@ -158,14 +168,14 @@ public class DefaultSmoke implements Smoke, Updatable {
             int pixelIndex = y * width;
             for (int x = 0; x < width; x++) {
 
-                int r = (int) (Math.clamp(densityInfo.dessityRAt(x/upscale, y/upscale), 0, 1.0) * 255);
-                int g =(int) (Math.clamp(densityInfo.dessityGAt(x/upscale, y/upscale), 0, 1.0) * 255);
-                int b = (int) (Math.clamp(densityInfo.dessityBAt(x/upscale, y/upscale), 0, 1.0) * 255);
+                int r = (int) (Math.clamp(densityInfo.dessityRAt(x / upscale, y / upscale), 0, 1.0) * 255);
+                int g = (int) (Math.clamp(densityInfo.dessityGAt(x / upscale, y / upscale), 0, 1.0) * 255);
+                int b = (int) (Math.clamp(densityInfo.dessityBAt(x / upscale, y / upscale), 0, 1.0) * 255);
                 int a = Math.min(255, (r + g + b));
                 pixels[pixelIndex + x] = (a << 24) | (r << 16) | (g << 8) | b;
             }
         }
-        if(blur > 0) {
+        if (blur > 0) {
             ImageOperations.blurImage(image, blur);
         }
         return Sprite.fromImage(image);
