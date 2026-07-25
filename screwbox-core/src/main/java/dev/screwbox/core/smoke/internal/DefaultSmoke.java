@@ -28,8 +28,8 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 14;
-    private int screenBorder = 64;
+    private int cellSize = 10;
+    private int screenBorder = 20;
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
