@@ -35,8 +35,8 @@ public class PlaygroundApp {
         }
         screwBox.environment().addSystem(x -> {
 
-            x.graphics().smoke().affect(screwBox.mouse().position(), Vector.y(-2));
-            x.graphics().smoke().emit(screwBox.mouse().position(), 5, color);
+            x.graphics().smoke().affect(screwBox.mouse().position(), Vector.y(-1));
+            x.graphics().smoke().emit(screwBox.mouse().position(), 1, color);
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
             }

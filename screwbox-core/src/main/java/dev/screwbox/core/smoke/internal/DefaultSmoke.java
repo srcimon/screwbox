@@ -28,7 +28,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 8;
+    private int cellSize = 14;
     private int screenBorder = 64;
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
@@ -158,8 +158,8 @@ public class DefaultSmoke implements Smoke, Updatable {
     public void update() {
     }
 
-    private static int upscale = 3;
-    private static int blur = 4;
+    private static int upscale = 4;
+    private static int blur = 8;
 
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
