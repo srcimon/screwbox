@@ -139,7 +139,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             }
         }
         simulationTask = executor.submit(() -> {
-            simulation.step(de, 0.00000000004, 0.0001, 2);
+            simulation.step(de, 0.00000000004, 0.0000001, 2);
             simulation.fade(de * 0.04);
         });
 
@@ -203,7 +203,9 @@ public class DefaultSmoke implements Smoke, Updatable {
                 int gInt = (int) (Math.clamp(g, 0.0, 1.0) * 255);
                 int bInt = (int) (Math.clamp(b, 0.0, 1.0) * 255);
 
-                int aInt = (rInt + gInt + bInt) / 3;
+
+// NEU: Alpha basiert auf der reinen Präsenz von Farbe, nicht auf deren Additivität
+                int aInt = Math.max(rInt, Math.max(gInt, bInt));
 
                 pixels[pixelIndex + x] = (aInt << 24) | (rInt << 16) | (gInt << 8) | bInt;
             }
