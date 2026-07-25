@@ -31,7 +31,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 8;
+    private int cellSize = 10;
     private int screenBorder = 256;
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
@@ -164,7 +164,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
     private static int upscale = 3;
-    private static int blur = 6;
+    private static int blur = 4;
 
     static Percent maxOpacity = Percent.max();
     //TODO reuse bufferimage
