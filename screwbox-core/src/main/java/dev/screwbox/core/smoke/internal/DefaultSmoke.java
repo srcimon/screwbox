@@ -2,6 +2,7 @@ package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
@@ -26,7 +27,6 @@ public class DefaultSmoke implements Smoke, Updatable {
     private final ExecutorService executor;
     private int cellSize = 4;
     private int screenBorder = 64;
-    private FutureTask<?> updateTask;
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
@@ -115,38 +115,24 @@ public class DefaultSmoke implements Smoke, Updatable {
         if (simulation == null) {
             return;
         }
-        //TODO get delta from update()
-
-
-        if (updateTask != null) {
-            try {
-                updateTask.get();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            }
+        if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
+            reassignGrid();
         }
+        //TODO get delta from update()
         imageWorldAnchor = worldAnchor;
-        updateTask = (FutureTask<?>) executor.submit(() -> {
-
-            simulation.step(DefaultLoop.DE, 0.00000000004, 0.0001, 4);
-            simulation.fade(DefaultLoop.DE * 0.04);
-            if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
-                reassignGrid();
-            }
-            var sprite = createImage(simulation.densityInfo());
-            double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
-            Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
-            viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
-                .scaled(scale)
-                .opacity(1)//TODO config
-                .drawOrder(Order.PRESENTATION_WORLD.drawOrder()));//TODO size
+        double de = DefaultLoop.DE;
+        var sprite = Asset.asset(() -> {
+            simulation.step(de, 0.00000000004, 0.0001, 4);
+            simulation.fade(de * 0.04);
+            return createImage(simulation.densityInfo());
         });
-
-
-        //TODO handle zoom changes
-
+        executor.submit(sprite::get);
+        double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
+        Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
+        viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
+            .scaled(scale)
+            .opacity(1)//TODO config
+            .drawOrder(Order.PRESENTATION_WORLD.drawOrder()));//TODO size
     }
 
     @Override
