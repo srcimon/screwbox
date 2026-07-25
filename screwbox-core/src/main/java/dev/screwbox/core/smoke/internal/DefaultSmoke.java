@@ -6,6 +6,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
@@ -28,7 +29,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 10;
+    private int cellSize = 14;
     private int screenBorder = 20;
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
@@ -169,7 +170,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         int targetSize = cells * upscale;
 
         // 1. Schritt: Das Bild in der Zielgröße erstellen
-        BufferedImage image = new BufferedImage(targetSize, targetSize, BufferedImage.TYPE_INT_ARGB);
+           var  image = new BufferedImage(targetSize, targetSize, BufferedImage.TYPE_INT_ARGB);
         var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         // 2. Schritt: Generierung mit bilinearer Interpolation der Zelldaten
