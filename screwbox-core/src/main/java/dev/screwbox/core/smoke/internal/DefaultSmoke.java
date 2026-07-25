@@ -114,9 +114,6 @@ public class DefaultSmoke implements Smoke, Updatable {
     public void update() {
 
         if (simulation != null) {
-            if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
-                reassignGrid();
-            }
             //TODO get delta from update()
 
             densityInfo = simulation.densityInfo();
@@ -153,6 +150,9 @@ public class DefaultSmoke implements Smoke, Updatable {
                 .opacity(1)//TODO config
                 .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
             //TODO handle zoom changes
+            if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 0.80) {//TODO > border
+                reassignGrid();
+            }
         }
 
     }
