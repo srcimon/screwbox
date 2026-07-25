@@ -158,8 +158,8 @@ public class DefaultSmoke implements Smoke, Updatable {
     public void update() {
     }
 
-    private static int upscale = 4;
-    private static int blur = 8;
+    private static int upscale = 3;
+    private static int blur = 6;
 
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes

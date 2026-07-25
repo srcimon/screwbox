@@ -24,6 +24,7 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
         screwBox.graphics().smoke().enable();
         screwBox.loop().unlockFps();
+        screwBox.graphics().configuration().toggleFullscreen();
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
@@ -36,7 +37,7 @@ public class PlaygroundApp {
         screwBox.environment().addSystem(x -> {
 
             x.graphics().smoke().affect(screwBox.mouse().position(), Vector.y(-40).multiply(screwBox.loop().delta()));
-            x.graphics().smoke().emit(screwBox.mouse().position(), 400*screwBox.loop().delta(), Color.DARK_BLUE);
+            x.graphics().smoke().emit(screwBox.mouse().position(), 400*screwBox.loop().delta(), color);
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
             }
