@@ -15,6 +15,8 @@ import dev.screwbox.core.smoke.Smoke;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
@@ -86,8 +88,11 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
-        var cell = toCell(position);
-        simulation.addDensity(cell.x(), cell.y(), amount * cummulativeDelta, color);//TODO move multiplication outside
+        tasks.add(() -> {
+            var cell = toCell(position);
+            simulation.addDensity(cell.x(), cell.y(), amount * cummulativeDelta, color);//TODO move multiplication outside
+        });
+
         return this;
     }
 
@@ -99,12 +104,15 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     @Override
     public Smoke affect(Vector position, Vector velocity) {
-        var cell = toCell(position);
-        var scaledVelocity = velocity.multiply(cummulativeDelta);//TODO move multiplication outside
-        simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes
+        tasks.add(() -> {
+            var cell = toCell(position);
+            var scaledVelocity = velocity.multiply(cummulativeDelta);//TODO move multiplication outside
+            simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes
+        });
         return this;
     }
 
+    List<Runnable> tasks = new ArrayList<>();
     boolean isUpdate = false;
     double cummulativeDelta = 0;
 
@@ -119,7 +127,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         //TODO get delta from update()
 
         cummulativeDelta += DefaultLoop.DE;
-        if (isUpdate) {
+        if (isUpdate || (updateTask != null && updateTask.isDone())) {
 
             if (updateTask != null) {
                 try {
@@ -131,6 +139,10 @@ public class DefaultSmoke implements Smoke, Updatable {
                 }
             }
             double delta = cummulativeDelta;
+            for(var task : tasks) {
+                task.run();
+            }
+            tasks.clear();
             updateTask = (FutureTask<?>) executor.submit(() -> {
 
                 simulation.step(delta, 0.00000000004, 0.0001, 4);
