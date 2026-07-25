@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
@@ -32,10 +33,13 @@ public class PlaygroundApp {
 
         screwBox.environment().addSystem(x -> {
 
-            x.graphics().smoke().affect(screwBox.mouse().position(), Vector.y(-40).multiply(screwBox.loop().delta()));
+            x.graphics().smoke().affect(screwBox.mouse().position(), range.multiply(screwBox.loop().delta()));
             x.graphics().smoke().emit(screwBox.mouse().position(), 400*screwBox.loop().delta(), color);
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
+            }
+            if(x.mouse().isDownLeft()) {
+                range = Angle.degrees(200*x.loop().delta()).rotate(range);
             }
             x.graphics().camera().move(x.keyboard().wsadMovement(2));
         });
@@ -43,4 +47,6 @@ public class PlaygroundApp {
 
         screwBox.start();
     }
+
+    static Vector range =Vector.y(-40);
 }

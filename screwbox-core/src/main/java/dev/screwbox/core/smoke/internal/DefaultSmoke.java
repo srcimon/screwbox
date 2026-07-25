@@ -147,7 +147,6 @@ public class DefaultSmoke implements Smoke, Updatable {
 
         DensityInfo densityInfo = simulation.densityInfo();
         if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder * 0.95) {//TODO > border
-            System.out.println("rass");
             reassignGrid();
         }
         var sprite = Asset.asset(() -> createImage(densityInfo));
