@@ -142,8 +142,8 @@ public class DefaultSmoke implements Smoke, Updatable {
             }
         }
         simulationTask = executor.submit(() -> {
-            simulation.step(de, 0.00000000004, 0.0000001, 2);
-            simulation.fade(de * 0.04);
+            simulation.step(de, 0.000004, 0.000000000001, 2);
+            simulation.fade(de * 0.004);
         });
 
 
@@ -161,8 +161,8 @@ public class DefaultSmoke implements Smoke, Updatable {
     public void update() {
     }
 
-    private static int upscale = 5;
-    private static int blur = 10;
+    private static int upscale = 8;
+    private static int blur = 4;
 
     static Percent maxOpacity = Percent.quarter();
     //TODO reuse bufferimage

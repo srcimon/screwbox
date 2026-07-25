@@ -23,16 +23,13 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
         screwBox.graphics().smoke().enable();
+        screwBox.graphics().configuration().toggleFullscreen();
         screwBox.loop().unlockFps();
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystem(new SmokeSystem());
 
-        screwBox.environment().addEntity(new Entity().bounds(screwBox.graphics().visibleArea()).add(new BoidObstacleComponent(), x -> x.isContainer = true));
-        for(int i = 0; i < 80; i++) {
-            screwBox.environment().addEntity(new Entity().add(new SmokeAffectorComponent()).add(new PhysicsComponent()).add(new RenderComponent(SpriteBundle.DOT_RED)).bounds(Bounds.$$(0,0,16,16)).add(new BoidComponent()));
-        }
         screwBox.environment().addSystem(x -> {
 
             x.graphics().smoke().affect(screwBox.mouse().position(), Vector.y(-40).multiply(screwBox.loop().delta()));
