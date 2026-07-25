@@ -135,7 +135,6 @@ public class DefaultLoop implements Loop {
         fps = (int) (Time.Unit.SECONDS.nanos() / timeBetweenUpdates.nanos());
         final double maxUpdateFactor = fps <= CRITICAL_FPS_COUNT ? 0.005 : 1.0 / fps;
         delta = Math.min(timeBetweenUpdates.nanos() * 1.0 / Time.Unit.SECONDS.nanos(), maxUpdateFactor) * speed;
-
         DE = delta;
     updateDuration = Duration.between(now, beforeUpdate);
         runningTime = Duration.between(startTime, lastUpdate);

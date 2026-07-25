@@ -30,9 +30,9 @@ public class DefaultSmoke implements Smoke, Updatable {
     private int screenBorder = 64;
     private FutureTask<?> updateTask;
     private Vector worldAnchor;
-    private Vector imageWorldAnchor=Vector.zero();
+    private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
-//TODO allow skipping more than one frame
+
     public DefaultSmoke(final ViewportManager viewportManager, ExecutorService executor) {
         this.viewportManager = viewportManager;
         this.executor = executor;
@@ -88,12 +88,10 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
-        tasks.add(() -> {
-            var cell = toCell(position);
-            if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
-                simulation.addDensity(cell.x(), cell.y(), amount * cummulativeDelta, color);//TODO move multiplication outside
-            }
-        });
+        var cell = toCell(position);
+        if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
+            simulation.addDensity(cell.x(), cell.y(), amount * DefaultLoop.DE, color);//TODO move multiplication outside
+        }
 
         return this;
     }
@@ -106,28 +104,21 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     @Override
     public Smoke affect(Vector position, Vector velocity) {
-        tasks.add(() -> {
-            var cell = toCell(position);
-            if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
-
-
-                var scaledVelocity = velocity.multiply(cummulativeDelta);//TODO move multiplication outside
-                simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes#
-            }
-        });
+        var cell = toCell(position);
+        if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
+            var scaledVelocity = velocity.multiply(DefaultLoop.DE);//TODO move multiplication outside
+            simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes#
+        }
         return this;
     }
 
     @Override
     public void render() {
-
         if (simulation == null) {
             return;
         }
         //TODO get delta from update()
 
-        cummulativeDelta += DefaultLoop.DE;
-        if (isUpdate || (updateTask != null && updateTask.isDone())) {
 
             if (updateTask != null) {
                 try {
@@ -138,53 +129,36 @@ public class DefaultSmoke implements Smoke, Updatable {
                     throw new RuntimeException(e);
                 }
             }
-            double delta = cummulativeDelta;
-            for (var task : tasks) {
-                task.run();
-            }
-            tasks.clear();
-            imageWorldAnchor=worldAnchor;
+            imageWorldAnchor = worldAnchor;
             updateTask = (FutureTask<?>) executor.submit(() -> {
 
-                simulation.step(delta, 0.00000000004, 0.0001, 4);
-                simulation.fade(delta * 0.04);
+                simulation.step(DefaultLoop.DE, 0.00000000004, 0.0001, 4);
+                simulation.fade(DefaultLoop.DE * 0.04);
                 if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
                     reassignGrid();
                 }
-
-                lastSprite = createImage(simulation.densityInfo());
+                var sprite = createImage(simulation.densityInfo());
+                double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
+                Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
+                viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
+                    .scaled(scale)
+                    .opacity(1)//TODO config
+                    .drawOrder(Order.PRESENTATION_WORLD.drawOrder()));//TODO size
             });
-            cummulativeDelta = 0;
-        }
-        isUpdate = !isUpdate;
 
 
-        double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
-        Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
-        if (lastSprite != null) {
-            viewportManager.defaultViewport().canvas().drawSprite(lastSprite, origin, SpriteDrawOptions
-                .scaled(scale)
-                .opacity(1)//TODO config
-                .drawOrder(Order.PRESENTATION_WORLD.drawOrder()));//TODO size
-        }
         //TODO handle zoom changes
 
     }
 
-    List<Runnable> tasks = new ArrayList<>();
-    boolean isUpdate = false;
-    double cummulativeDelta = 0;
-
-    Sprite lastSprite = null;
-
     @Override
     public void update() {
-
 
     }
 
     private static int upscale = 2;
     private static int blur = 2;
+
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
