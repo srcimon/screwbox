@@ -23,5 +23,7 @@ public class SmokeSystem implements EntitySystem {
                 engine.graphics().smoke().affect(entity.position(), speed);
             }
         }
+
+        engine.graphics().smoke().render();
     }
 }

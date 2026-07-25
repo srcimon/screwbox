@@ -28,7 +28,6 @@ public class DefaultSmoke implements Smoke, Updatable {
     private final ExecutorService executor;
     private int cellSize = 4;
     private int screenBorder = 64;
-    private int drawOrder = 4;//TODO configure
     private FutureTask<?> updateTask;
     private Vector worldAnchor;
     private Vector imageWorldAnchor=Vector.zero();
@@ -119,14 +118,8 @@ public class DefaultSmoke implements Smoke, Updatable {
         return this;
     }
 
-    List<Runnable> tasks = new ArrayList<>();
-    boolean isUpdate = false;
-    double cummulativeDelta = 0;
-
-    Sprite lastSprite = null;
-
     @Override
-    public void update() {
+    public void render() {
 
         if (simulation == null) {
             return;
@@ -172,9 +165,20 @@ public class DefaultSmoke implements Smoke, Updatable {
             viewportManager.defaultViewport().canvas().drawSprite(lastSprite, origin, SpriteDrawOptions
                 .scaled(scale)
                 .opacity(1)//TODO config
-                .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
+                .drawOrder(Order.PRESENTATION_WORLD.drawOrder()));//TODO size
         }
         //TODO handle zoom changes
+
+    }
+
+    List<Runnable> tasks = new ArrayList<>();
+    boolean isUpdate = false;
+    double cummulativeDelta = 0;
+
+    Sprite lastSprite = null;
+
+    @Override
+    public void update() {
 
 
     }

@@ -11,4 +11,7 @@ public interface Smoke {
 
     Smoke emit(Vector position, double amount, Color color);
     Smoke affect(Vector position, Vector velocity);
+
+    void render();
+
 }
