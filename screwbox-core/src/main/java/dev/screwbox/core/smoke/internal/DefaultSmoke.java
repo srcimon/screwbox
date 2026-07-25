@@ -111,15 +111,12 @@ public class DefaultSmoke implements Smoke, Updatable {
     boolean isUpdate = false;
     double cummulativeDelta = 0;
 
+    Sprite lastSprite = null;
     @Override
     public void update() {
 
         if (simulation != null) {
             //TODO get delta from update()
-
-            densityInfo = simulation.densityInfo();
-            Asset<Sprite> image = Asset.asset(() -> createImage(densityInfo));
-            executor.submit(image::get);
 
             cummulativeDelta += DefaultLoop.DE;
             if (isUpdate) {
@@ -138,6 +135,11 @@ public class DefaultSmoke implements Smoke, Updatable {
 
                     simulation.step(delta, 0.00000000004, 0.000003, 2);
                     simulation.fade(delta  *0.001);
+                    if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 0.80) {//TODO > border
+                        reassignGrid();
+                    }
+
+                    lastSprite = createImage(simulation.densityInfo());
                 });
                 cummulativeDelta = 0;
             }
@@ -146,14 +148,14 @@ public class DefaultSmoke implements Smoke, Updatable {
 
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
-            viewportManager.defaultViewport().canvas().drawSprite(image, origin, SpriteDrawOptions
+            if(lastSprite != null) {
+            viewportManager.defaultViewport().canvas().drawSprite(lastSprite, origin, SpriteDrawOptions
                 .scaled(scale)
                 .opacity(1)//TODO config
                 .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
-            //TODO handle zoom changes
-            if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 0.80) {//TODO > border
-                reassignGrid();
             }
+            //TODO handle zoom changes
+
         }
 
     }
