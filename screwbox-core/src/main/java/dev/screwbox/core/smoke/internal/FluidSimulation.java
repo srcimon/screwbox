@@ -33,17 +33,25 @@ public class FluidSimulation {
         this.velocityY = new double[this.cells * this.cells];
         this.velocityY0 = new double[this.cells * this.cells];
     }
-
+    double maxDensity = 4;
+    double maxVelocity = 20;
 
     public void addDensity(final int x, int y, final double amount, Color color) {
-        densityR[IX(x, y)] += amount * color.r() / 255.0;
-        densityG[IX(x, y)] += amount * color.g() / 255.0;
-        densityB[IX(x, y)] += amount * color.b() / 255.0;
+        int ix = IX(x, y);
+        densityR[ix] += amount * color.r() / 255.0;
+        densityG[ix] += amount * color.g() / 255.0;
+        densityB[ix] += amount * color.b() / 255.0;
+        densityR[ix] = Math.min(maxDensity,  densityR[ix] );
+        densityG[ix] = Math.min(maxDensity,  densityG[ix] );
+        densityB[ix] = Math.min(maxDensity,  densityB[ix] );
     }
 
     public void addVelocity(final int x, int y, final double amountX, final double amountY) {
-        velocityX[IX(x, y)] += amountX;
-        velocityY[IX(x, y)] += amountY;
+        int ix = IX(x, y);
+        velocityX[ix] += amountX;
+        velocityY[ix] += amountY;
+        velocityX[ix] = Math.min(maxVelocity, velocityX[ix]);
+        velocityY[ix] = Math.min(maxVelocity, velocityY[ix]);
     }
 
 

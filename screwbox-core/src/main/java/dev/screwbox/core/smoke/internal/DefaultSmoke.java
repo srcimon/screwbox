@@ -85,6 +85,8 @@ public class DefaultSmoke implements Smoke, Updatable {
         return this;
     }
 
+
+
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);
@@ -137,7 +139,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 updateTask = (FutureTask<?>) executor.submit(() -> {
 
                     simulation.step(delta, 0.00000000004, 0.000003, 2);
-                    simulation.fade(delta  );
+                    simulation.fade(delta  *0.01);
                 });
                 cummulativeDelta = 0;
             }
