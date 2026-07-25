@@ -25,7 +25,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private int cellSize = 4;
-    private int screenBorder = 128;
+    private int screenBorder = 64;
     private int drawOrder = 4;//TODO configure
     private FutureTask<?> updateTask;
     private Vector worldAnchor;
@@ -132,7 +132,7 @@ public class DefaultSmoke implements Smoke, Updatable {
 
                     simulation.step(delta, 0.00000000004, 0.0001, 4);
                     simulation.fade(delta * 0.04);
-                    if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 0.25) {//TODO > border
+                    if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
                         reassignGrid();
                     }
 
