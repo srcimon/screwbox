@@ -1,6 +1,7 @@
 package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
@@ -14,6 +15,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.loop.internal.DefaultLoop;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.smoke.Smoke;
+import dev.screwbox.core.utils.PerlinNoise;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -162,10 +164,12 @@ public class DefaultSmoke implements Smoke, Updatable {
     private static int upscale = 5;
     private static int blur = 10;
 
+    static Percent maxOpacity = Percent.quarter();
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     private static Sprite createImage(DensityInfo densityInfo) {
+        int maxOpacityva = maxOpacity.rangeValue(0,255);
         int cells = densityInfo.cells();
         int targetSize = cells * upscale;
 
@@ -206,7 +210,7 @@ public class DefaultSmoke implements Smoke, Updatable {
 
 
 // NEU: Alpha basiert auf der reinen Präsenz von Farbe, nicht auf deren Additivität
-                int aInt = Math.max(rInt, Math.max(gInt, bInt));
+                int aInt = Math.min(maxOpacityva, Math.max(rInt, Math.max(gInt, bInt)));
 
                 pixels[pixelIndex + x] = (aInt << 24) | (rInt << 16) | (gInt << 8) | bInt;
             }
