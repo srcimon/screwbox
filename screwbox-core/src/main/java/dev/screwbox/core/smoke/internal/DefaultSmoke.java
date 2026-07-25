@@ -151,7 +151,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale)
-            .opacity(0.4)); //TODO config
+            .opacity(1)); //TODO config
     }
 
     @Override
@@ -203,8 +203,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 int gInt = (int) (Math.clamp(g, 0.0, 1.0) * 255);
                 int bInt = (int) (Math.clamp(b, 0.0, 1.0) * 255);
 
-                // Alpha-Berechnung beibehalten
-                int aInt = Math.min(255, (rInt + gInt + bInt));
+                int aInt = (rInt + gInt + bInt) / 3;
 
                 pixels[pixelIndex + x] = (aInt << 24) | (rInt << 16) | (gInt << 8) | bInt;
             }
