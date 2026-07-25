@@ -87,7 +87,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);
-        simulation.addDensity(cell.x(), cell.y(), amount, color);
+        simulation.addDensity(cell.x(), cell.y(), amount * cummulativeDelta, color);//TODO move multiplication outside
         return this;
     }
 
@@ -100,7 +100,8 @@ public class DefaultSmoke implements Smoke, Updatable {
     @Override
     public Smoke affect(Vector position, Vector velocity) {
         var cell = toCell(position);
-        simulation.addVelocity(cell.x(), cell.y(), velocity.x(), velocity.y());//TODO apply x and y fixes
+        var scaledVelocity = velocity.multiply(cummulativeDelta);//TODO move multiplication outside
+        simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes
         return this;
     }
 
@@ -112,48 +113,49 @@ public class DefaultSmoke implements Smoke, Updatable {
     @Override
     public void update() {
 
-        if (simulation != null) {
-            //TODO get delta from update()
-
-            cummulativeDelta += DefaultLoop.DE;
-            if (isUpdate) {
-
-                if (updateTask != null) {
-                    try {
-                        updateTask.get();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    } catch (ExecutionException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                double delta = cummulativeDelta;
-                updateTask = (FutureTask<?>) executor.submit(() -> {
-
-                    simulation.step(delta, 0.00000000004, 0.0001, 4);
-                    simulation.fade(delta * 0.04);
-                    if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
-                        reassignGrid();
-                    }
-
-                    lastSprite = createImage(simulation.densityInfo());
-                });
-                cummulativeDelta = 0;
-            }
-            isUpdate = !isUpdate;
-
-
-            double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
-            Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
-            if (lastSprite != null) {
-                viewportManager.defaultViewport().canvas().drawSprite(lastSprite, origin, SpriteDrawOptions
-                    .scaled(scale)
-                    .opacity(1)//TODO config
-                    .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
-            }
-            //TODO handle zoom changes
-
+        if (simulation == null) {
+            return;
         }
+        //TODO get delta from update()
+
+        cummulativeDelta += DefaultLoop.DE;
+        if (isUpdate) {
+
+            if (updateTask != null) {
+                try {
+                    updateTask.get();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            double delta = cummulativeDelta;
+            updateTask = (FutureTask<?>) executor.submit(() -> {
+
+                simulation.step(delta, 0.00000000004, 0.0001, 4);
+                simulation.fade(delta * 0.04);
+                if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
+                    reassignGrid();
+                }
+
+                lastSprite = createImage(simulation.densityInfo());
+            });
+            cummulativeDelta = 0;
+        }
+        isUpdate = !isUpdate;
+
+
+        double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
+        Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
+        if (lastSprite != null) {
+            viewportManager.defaultViewport().canvas().drawSprite(lastSprite, origin, SpriteDrawOptions
+                .scaled(scale)
+                .opacity(1)//TODO config
+                .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
+        }
+        //TODO handle zoom changes
+
 
     }
 

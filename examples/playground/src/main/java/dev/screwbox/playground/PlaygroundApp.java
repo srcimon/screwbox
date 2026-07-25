@@ -17,6 +17,7 @@ import dev.screwbox.core.environment.smoke.SmokeSystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.postfilter.CrtMonitorPostFilter;
+import dev.screwbox.core.window.MouseCursor;
 
 import java.util.Random;
 
@@ -26,7 +27,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
-        screwBox.loop().unlockFps();
         screwBox.graphics().smoke().enable();
         screwBox.environment()
             .enableAllFeatures()
@@ -35,8 +35,8 @@ public class PlaygroundApp {
 
         screwBox.environment().addSystem(x -> {
 
-            x.graphics().smoke().affect(screwBox.mouse().position(), x.mouse().position().subtract(x.graphics().visibleArea().position()).multiply(x.loop().delta()));
-            x.graphics().smoke().emit(screwBox.mouse().position(), 1000 * x.loop().delta(), color);
+            x.graphics().smoke().affect(screwBox.mouse().position(), Vector.y(-50));
+            x.graphics().smoke().emit(screwBox.mouse().position(), 500 , color);
             if(x.mouse().isPressedLeft()) {
                 color = Color.random();
             }
