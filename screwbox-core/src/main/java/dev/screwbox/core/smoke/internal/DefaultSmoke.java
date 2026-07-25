@@ -90,7 +90,9 @@ public class DefaultSmoke implements Smoke, Updatable {
     public Smoke emit(Vector position, double amount, Color color) {
         tasks.add(() -> {
             var cell = toCell(position);
-            simulation.addDensity(cell.x(), cell.y(), amount * cummulativeDelta, color);//TODO move multiplication outside
+            if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
+                simulation.addDensity(cell.x(), cell.y(), amount * cummulativeDelta, color);//TODO move multiplication outside
+            }
         });
 
         return this;
@@ -106,8 +108,12 @@ public class DefaultSmoke implements Smoke, Updatable {
     public Smoke affect(Vector position, Vector velocity) {
         tasks.add(() -> {
             var cell = toCell(position);
-            var scaledVelocity = velocity.multiply(cummulativeDelta);//TODO move multiplication outside
-            simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes
+            if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
+
+
+                var scaledVelocity = velocity.multiply(cummulativeDelta);//TODO move multiplication outside
+                simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes#
+            }
         });
         return this;
     }
@@ -139,7 +145,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 }
             }
             double delta = cummulativeDelta;
-            for(var task : tasks) {
+            for (var task : tasks) {
                 task.run();
             }
             tasks.clear();
