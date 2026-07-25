@@ -2,12 +2,10 @@ package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -29,7 +27,6 @@ public class DefaultSmoke implements Smoke, Updatable {
     private int cellSize = 4;
     private int screenBorder = 32;
     private int drawOrder = 4;//TODO configure
-    private DensityInfo densityInfo;
     private FutureTask<?> updateTask;
     private Vector worldAnchor;
     private FluidSimulation simulation;
@@ -87,7 +84,6 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
 
-
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);
@@ -112,6 +108,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     double cummulativeDelta = 0;
 
     Sprite lastSprite = null;
+
     @Override
     public void update() {
 
@@ -134,7 +131,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 updateTask = (FutureTask<?>) executor.submit(() -> {
 
                     simulation.step(delta, 0.00000000004, 0.0001, 4);
-                    simulation.fade(delta  *0.003);
+                    simulation.fade(delta * 0.04);
                     if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 0.80) {//TODO > border
                         reassignGrid();
                     }
@@ -148,11 +145,11 @@ public class DefaultSmoke implements Smoke, Updatable {
 
             double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
             Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
-            if(lastSprite != null) {
-            viewportManager.defaultViewport().canvas().drawSprite(lastSprite, origin, SpriteDrawOptions
-                .scaled(scale)
-                .opacity(1)//TODO config
-                .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
+            if (lastSprite != null) {
+                viewportManager.defaultViewport().canvas().drawSprite(lastSprite, origin, SpriteDrawOptions
+                    .scaled(scale)
+                    .opacity(1)//TODO config
+                    .drawOrder(Order.PRESENTATION_WORLD.drawOrder() + drawOrder));//TODO size
             }
             //TODO handle zoom changes
 
