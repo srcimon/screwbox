@@ -27,7 +27,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 4;
+    private int cellSize = 8;
     private int screenBorder = 64;
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
@@ -127,11 +127,11 @@ public class DefaultSmoke implements Smoke, Updatable {
             task.run();
         }
         tasks.clear();
-        var sprite = Asset.asset(() -> {
-            simulation.step(de, 0.00000000004, 0.0001, 2);
-            simulation.fade(de * 0.04);
-            return createImage(simulation.densityInfo());
-        });
+        simulation.step(de, 0.00000000004, 0.0001, 2);
+        simulation.fade(de * 0.04);
+
+        DensityInfo densityInfo = simulation.densityInfo();
+        var sprite = Asset.asset(() -> createImage(densityInfo));
         executor.submit(sprite::get);
         double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
         Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
