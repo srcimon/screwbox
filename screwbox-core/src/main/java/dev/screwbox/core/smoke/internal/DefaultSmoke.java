@@ -16,6 +16,8 @@ import dev.screwbox.core.smoke.Smoke;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
@@ -84,20 +86,17 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
 
+    List<Runnable> tasks = new ArrayList<>();
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);
         if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
-            simulation.addDensity(cell.x(), cell.y(), amount * DefaultLoop.DE, color);//TODO move multiplication outside
+            tasks.add(() -> {
+                simulation.addDensity(cell.x(), cell.y(), amount * DefaultLoop.DE, color);//TODO move multiplication outside
+            });
         }
 
         return this;
-    }
-
-    private Offset toCell(Vector position) {
-        var cellX = Math.floor((position.x() - worldAnchor.x()) / cellSize);
-        var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
-        return Offset.at(cellX, cellY);
     }
 
     @Override
@@ -105,9 +104,17 @@ public class DefaultSmoke implements Smoke, Updatable {
         var cell = toCell(position);
         if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
             var scaledVelocity = velocity.multiply(DefaultLoop.DE);//TODO move multiplication outside
-            simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes#
+            tasks.add(() -> {
+                simulation.addVelocity(cell.x(), cell.y(), scaledVelocity.x(), scaledVelocity.y());//TODO apply x and y fixes#
+            });
         }
         return this;
+    }
+
+    private Offset toCell(Vector position) {
+        var cellX = Math.floor((position.x() - worldAnchor.x()) / cellSize);
+        var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
+        return Offset.at(cellX, cellY);
     }
 
     @Override
@@ -121,8 +128,12 @@ public class DefaultSmoke implements Smoke, Updatable {
         //TODO get delta from update()
         imageWorldAnchor = worldAnchor;
         double de = DefaultLoop.DE;
+        for (var task : tasks) {
+            task.run();
+        }
+        tasks.clear();
         var sprite = Asset.asset(() -> {
-            simulation.step(de, 0.00000000004, 0.0001, 4);
+            simulation.step(de, 0.00000000004, 0.0001, 2);
             simulation.fade(de * 0.04);
             return createImage(simulation.densityInfo());
         });
@@ -131,8 +142,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale)
-            .opacity(1)//TODO config
-            .drawOrder(Order.PRESENTATION_WORLD.drawOrder()));//TODO size
+            .opacity(1)); //TODO config
     }
 
     @Override
