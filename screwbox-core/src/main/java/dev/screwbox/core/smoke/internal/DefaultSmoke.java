@@ -158,8 +158,8 @@ public class DefaultSmoke implements Smoke, Updatable {
     public void update() {
     }
 
-    private static int upscale = 3;
-    private static int blur = 6;
+    private static int upscale = 5;
+    private static int blur = 10;
 
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
@@ -216,24 +216,8 @@ public class DefaultSmoke implements Smoke, Updatable {
             ImageOperations.blurImage(image, blur);
         }
 
-        // 3. Schritt: Unsharp Mask anwenden, um den interpolierten Rauch scharfzuzeichnen
-        // Ein milder Kernel sorgt für scharfe Kanten, ohne den Rauch körnig zu machen
-        float[] sharpenKernel = {
-            0.0f, -0.4f,  0.0f,
-            -0.4f,  2.6f, -0.4f,
-            0.0f, -0.4f,  0.0f
-        };
-        java.awt.image.Kernel kernel = new java.awt.image.Kernel(3, 3, sharpenKernel);
-        java.awt.image.ConvolveOp convolve = new java.awt.image.ConvolveOp(
-            kernel,
-            java.awt.image.ConvolveOp.EDGE_NO_OP,
-            null
-        );
 
-        // Filter direkt auf das Bild anwenden (In-Place oder via Zuweisung)
-        BufferedImage sharpenedImage = convolve.filter(image, null);
-
-        return Sprite.fromImage(sharpenedImage);
+        return Sprite.fromImage(image);
     }
 
     // Hilfsmethode für die bilineare Interpolation
