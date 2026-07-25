@@ -22,6 +22,7 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
+        screwBox.loop().unlockFps();
         screwBox.graphics().smoke().enable();
         screwBox.environment()
             .enableAllFeatures()

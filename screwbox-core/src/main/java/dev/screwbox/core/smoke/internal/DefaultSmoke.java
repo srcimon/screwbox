@@ -159,31 +159,87 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
     private static int upscale = 3;
-    private static int blur = 0;
+    private static int blur = 4;
 
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     private static Sprite createImage(DensityInfo densityInfo) {
-        BufferedImage image = new BufferedImage(densityInfo.cells() * upscale, densityInfo.cells() * upscale, BufferedImage.TYPE_INT_ARGB);//TODO image ops
+        int cells = densityInfo.cells();
+        int targetSize = cells * upscale;
+
+        // 1. Schritt: Das Bild in der Zielgröße erstellen
+        BufferedImage image = new BufferedImage(targetSize, targetSize, BufferedImage.TYPE_INT_ARGB);
         var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-        int width = image.getWidth();
+        // 2. Schritt: Generierung mit bilinearer Interpolation der Zelldaten
+        for (int y = 0; y < targetSize; y++) {
+            int pixelIndex = y * targetSize;
 
-        for (int y = 0; y < image.getHeight(); y++) {
-            int pixelIndex = y * width;
-            for (int x = 0; x < width; x++) {
+            // Berechne die genaue Fließkomma-Position im Quellgitter
+            double srcY = (double) y / upscale;
+            int y0 = (int) Math.floor(srcY);
+            int y1 = Math.min(cells - 1, y0 + 1);
+            double tY = srcY - y0; // Gewichtungfaktor für Y
 
-                int r = (int) (Math.clamp(densityInfo.dessityRAt(x / upscale, y / upscale), 0, 1.0) * 255);
-                int g = (int) (Math.clamp(densityInfo.dessityGAt(x / upscale, y / upscale), 0, 1.0) * 255);
-                int b = (int) (Math.clamp(densityInfo.dessityBAt(x / upscale, y / upscale), 0, 1.0) * 255);
-                int a = Math.min(255, (r + g + b));
-                pixels[pixelIndex + x] = (a << 24) | (r << 16) | (g << 8) | b;
+            for (int x = 0; x < targetSize; x++) {
+                double srcX = (double) x / upscale;
+                int x0 = (int) Math.floor(srcX);
+                int x1 = Math.min(cells - 1, x0 + 1);
+                double tX = srcX - x0; // Gewichtungfaktor für X
+
+                // Bilineare Interpolation für jeden Farbkanal einzeln
+                double r = interpolate(densityInfo.dessityRAt(x0, y0), densityInfo.dessityRAt(x1, y0),
+                    densityInfo.dessityRAt(x0, y1), densityInfo.dessityRAt(x1, y1), tX, tY);
+
+                double g = interpolate(densityInfo.dessityGAt(x0, y0), densityInfo.dessityGAt(x1, y0),
+                    densityInfo.dessityGAt(x0, y1), densityInfo.dessityGAt(x1, y1), tX, tY);
+
+                double b = interpolate(densityInfo.dessityBAt(x0, y0), densityInfo.dessityBAt(x1, y0),
+                    densityInfo.dessityBAt(x0, y1), densityInfo.dessityBAt(x1, y1), tX, tY);
+
+                // Skalieren auf 0-255
+                int rInt = (int) (Math.clamp(r, 0.0, 1.0) * 255);
+                int gInt = (int) (Math.clamp(g, 0.0, 1.0) * 255);
+                int bInt = (int) (Math.clamp(b, 0.0, 1.0) * 255);
+
+                // Alpha-Berechnung beibehalten
+                int aInt = Math.min(255, (rInt + gInt + bInt));
+
+                pixels[pixelIndex + x] = (aInt << 24) | (rInt << 16) | (gInt << 8) | bInt;
             }
         }
+
+        // Optionaler Blur (falls konfiguriert)
         if (blur > 0) {
             ImageOperations.blurImage(image, blur);
         }
-        return Sprite.fromImage(image);
+
+        // 3. Schritt: Unsharp Mask anwenden, um den interpolierten Rauch scharfzuzeichnen
+        // Ein milder Kernel sorgt für scharfe Kanten, ohne den Rauch körnig zu machen
+        float[] sharpenKernel = {
+            0.0f, -0.4f,  0.0f,
+            -0.4f,  2.6f, -0.4f,
+            0.0f, -0.4f,  0.0f
+        };
+        java.awt.image.Kernel kernel = new java.awt.image.Kernel(3, 3, sharpenKernel);
+        java.awt.image.ConvolveOp convolve = new java.awt.image.ConvolveOp(
+            kernel,
+            java.awt.image.ConvolveOp.EDGE_NO_OP,
+            null
+        );
+
+        // Filter direkt auf das Bild anwenden (In-Place oder via Zuweisung)
+        BufferedImage sharpenedImage = convolve.filter(image, null);
+
+        return Sprite.fromImage(sharpenedImage);
     }
+
+    // Hilfsmethode für die bilineare Interpolation
+    private static double interpolate(double v00, double v10, double v01, double v11, double tX, double tY) {
+        double top = v00 + tX * (v10 - v00);
+        double bottom = v01 + tX * (v11 - v01);
+        return top + tY * (bottom - top);
+    }
+
 }
