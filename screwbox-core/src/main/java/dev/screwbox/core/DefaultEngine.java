@@ -20,9 +20,16 @@ import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
-import dev.screwbox.core.graphics.internal.*;
+import dev.screwbox.core.graphics.internal.AttentionFocus;
+import dev.screwbox.core.graphics.internal.DefaultCamera;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
+import dev.screwbox.core.graphics.internal.DefaultGraphics;
+import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
+import dev.screwbox.core.graphics.internal.DefaultScreen;
+import dev.screwbox.core.graphics.internal.DefaultViewport;
+import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
-import dev.screwbox.core.smoke.internal.DefaultSmoke;
 import dev.screwbox.core.keyboard.Keyboard;
 import dev.screwbox.core.keyboard.internal.DefaultKeyboard;
 import dev.screwbox.core.log.ConsoleLoggingAdapter;
@@ -38,6 +45,7 @@ import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.internal.DefaultParticles;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
+import dev.screwbox.core.smoke.internal.DefaultSmoke;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.ui.internal.DefaultUi;
 import dev.screwbox.core.utils.internal.MacOsSupport;
@@ -116,7 +124,7 @@ class DefaultEngine implements Engine {
         mouse = new DefaultMouse(screen, viewportManager);
         final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
         window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline, cursorLockInSupport);
-        final DefaultLight light = new DefaultLight(configuration, viewportManager, executor);
+
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
@@ -124,7 +132,7 @@ class DefaultEngine implements Engine {
         scenes = new DefaultScenes(this, executor, postProcessing);
 
         DefaultSmoke smoke = new DefaultSmoke(viewportManager, executor);
-        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing, smoke);
+        graphics = new DefaultGraphics(configuration, screen, graphicsDevice, renderPipeline, viewportManager, postProcessing, executor);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
@@ -132,7 +140,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
 
-        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen, smoke));
+        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen, smoke));
         physics = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);

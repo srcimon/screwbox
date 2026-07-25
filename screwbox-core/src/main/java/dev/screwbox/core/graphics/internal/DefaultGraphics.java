@@ -15,6 +15,7 @@ import dev.screwbox.core.smoke.internal.DefaultSmoke;
 import java.awt.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.stream;
@@ -35,14 +36,13 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
-                           final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
                            final PostProcessing postProcessing,
-                           final DefaultSmoke smoke) {
+                           final ExecutorService executor) {
         this.configuration = configuration;
-        this.light = light;
+        this.light = new DefaultLight(configuration, viewportManager, executor);
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
         this.renderPipeline = renderPipeline;
@@ -50,7 +50,7 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.postProcessing = postProcessing;
         this.attentionFocus = new AttentionFocus(viewportManager);
         this.world = new DefaultWorld(viewportManager);
-        this.smoke = smoke;
+        this.smoke = new DefaultSmoke(viewportManager, executor);
     }
 
     @Override
@@ -191,6 +191,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public void update() {
         screen.updateScreen();
+        light.update();
     }
 
     @Override
