@@ -31,8 +31,8 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private int cellSize = 14;
-    private int screenBorder = 20;
+    private int cellSize = 12;
+    private int screenBorder = 256;
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
@@ -122,9 +122,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         if (simulation == null) {
             return;
         }
-        if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
-            reassignGrid();
-        }
+
         //TODO get delta from update()
         imageWorldAnchor = worldAnchor;
         double de = DefaultLoop.DE;
@@ -148,6 +146,10 @@ public class DefaultSmoke implements Smoke, Updatable {
 
 
         DensityInfo densityInfo = simulation.densityInfo();
+        if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder * 0.75) {//TODO > border
+            System.out.println("rass");
+            reassignGrid();
+        }
         var sprite = Asset.asset(() -> createImage(densityInfo));
         executor.submit(sprite::get);
         double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
@@ -155,16 +157,17 @@ public class DefaultSmoke implements Smoke, Updatable {
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale)
             .opacity(1)); //TODO config
+
     }
 
     @Override
     public void update() {
     }
 
-    private static int upscale = 8;
-    private static int blur = 4;
+    private static int upscale = 6;
+    private static int blur = 8;
 
-    static Percent maxOpacity = Percent.quarter();
+    static Percent maxOpacity = Percent.half();
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
