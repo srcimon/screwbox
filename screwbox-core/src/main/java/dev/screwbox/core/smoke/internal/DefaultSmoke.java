@@ -166,7 +166,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private static int upscale = 6;
     private static int blur = 8;
 
-    static Percent maxOpacity = Percent.half();
+    static Percent maxOpacity = Percent.max();
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
