@@ -15,8 +15,6 @@ import dev.screwbox.core.smoke.Smoke;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
@@ -120,31 +118,31 @@ public class DefaultSmoke implements Smoke, Updatable {
         //TODO get delta from update()
 
 
-            if (updateTask != null) {
-                try {
-                    updateTask.get();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (ExecutionException e) {
-                    throw new RuntimeException(e);
-                }
+        if (updateTask != null) {
+            try {
+                updateTask.get();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
             }
-            imageWorldAnchor = worldAnchor;
-            updateTask = (FutureTask<?>) executor.submit(() -> {
+        }
+        imageWorldAnchor = worldAnchor;
+        updateTask = (FutureTask<?>) executor.submit(() -> {
 
-                simulation.step(DefaultLoop.DE, 0.00000000004, 0.0001, 4);
-                simulation.fade(DefaultLoop.DE * 0.04);
-                if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
-                    reassignGrid();
-                }
-                var sprite = createImage(simulation.densityInfo());
-                double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
-                Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
-                viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
-                    .scaled(scale)
-                    .opacity(1)//TODO config
-                    .drawOrder(Order.PRESENTATION_WORLD.drawOrder()));//TODO size
-            });
+            simulation.step(DefaultLoop.DE, 0.00000000004, 0.0001, 4);
+            simulation.fade(DefaultLoop.DE * 0.04);
+            if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder / 2.0) {//TODO > border
+                reassignGrid();
+            }
+            var sprite = createImage(simulation.densityInfo());
+            double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
+            Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
+            viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
+                .scaled(scale)
+                .opacity(1)//TODO config
+                .drawOrder(Order.PRESENTATION_WORLD.drawOrder()));//TODO size
+        });
 
 
         //TODO handle zoom changes
