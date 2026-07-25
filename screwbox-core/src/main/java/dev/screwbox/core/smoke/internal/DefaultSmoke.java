@@ -33,7 +33,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private Vector worldAnchor;
     private Vector imageWorldAnchor=Vector.zero();
     private FluidSimulation simulation;
-
+//TODO allow skipping more than one frame
     public DefaultSmoke(final ViewportManager viewportManager, ExecutorService executor) {
         this.viewportManager = viewportManager;
         this.executor = executor;
