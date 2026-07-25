@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -26,7 +27,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private int cellSize = 4;
-    private int screenBorder = 64;
+    private int screenBorder = 32;
     private int drawOrder = 4;//TODO configure
     private DensityInfo densityInfo;
     private FutureTask<?> updateTask;
@@ -136,7 +137,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 updateTask = (FutureTask<?>) executor.submit(() -> {
 
                     simulation.step(delta, 0.00000000004, 0.000003, 2);
-                    simulation.fade(delta  *0.1);
+                    simulation.fade(delta  *0.001);
                 });
                 cummulativeDelta = 0;
             }
