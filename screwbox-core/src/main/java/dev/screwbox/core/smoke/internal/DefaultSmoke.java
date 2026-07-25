@@ -31,6 +31,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private int drawOrder = 4;//TODO configure
     private FutureTask<?> updateTask;
     private Vector worldAnchor;
+    private Vector imageWorldAnchor=Vector.zero();
     private FluidSimulation simulation;
 
     public DefaultSmoke(final ViewportManager viewportManager, ExecutorService executor) {
@@ -149,6 +150,7 @@ public class DefaultSmoke implements Smoke, Updatable {
                 task.run();
             }
             tasks.clear();
+            imageWorldAnchor=worldAnchor;
             updateTask = (FutureTask<?>) executor.submit(() -> {
 
                 simulation.step(delta, 0.00000000004, 0.0001, 4);
@@ -165,7 +167,7 @@ public class DefaultSmoke implements Smoke, Updatable {
 
 
         double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
-        Offset origin = viewportManager.defaultViewport().toCanvas(worldAnchor);
+        Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
         if (lastSprite != null) {
             viewportManager.defaultViewport().canvas().drawSprite(lastSprite, origin, SpriteDrawOptions
                 .scaled(scale)
@@ -179,7 +181,6 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     private static int upscale = 2;
     private static int blur = 2;
-
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
