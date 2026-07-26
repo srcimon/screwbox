@@ -71,7 +71,7 @@ class DefaultEngine implements Engine {
     private final DefaultKeyboard keyboard;
     private final DefaultScenes scenes;
     private final DefaultAudio audio;
-    private final DefaultNavigation physics;
+    private final DefaultNavigation navigation;
     private final DefaultMouse mouse;
     private final DefaultUi ui;
     private final DefaultLog log;
@@ -139,7 +139,7 @@ class DefaultEngine implements Engine {
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
 
         loop = new DefaultLoop(List.of(achievements, keyboard, graphics, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
-        physics = new DefaultNavigation(this);
+        navigation = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
         frame.addWindowFocusListener(keyboard);
@@ -215,7 +215,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public Navigation navigation() {
-        return physics;
+        return navigation;
     }
 
     @Override
