@@ -321,8 +321,8 @@ public class DefaultSmoke implements Smoke {
                 int maxRGB = Math.max(rInt, gInt);
                 if (bInt > maxRGB) maxRGB = bInt;
                 int aInt = Math.min(maxRGB, maxOpacityva);
-
                 pixels[pixelIndex + x] = (aInt << 24) | (rInt << 16) | (gInt << 8) | bInt;
+
             }
         }
 
