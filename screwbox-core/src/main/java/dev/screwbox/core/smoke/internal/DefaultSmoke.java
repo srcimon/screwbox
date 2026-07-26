@@ -32,7 +32,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private int cellSize = 10;
-    private int screenBorderCells = 8;
+    private int screenBorderCells = 20;
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
@@ -61,7 +61,6 @@ public class DefaultSmoke implements Smoke, Updatable {
         // Hier erlauben wir die dynamische Größenänderung explizit!
         int newCells = (int) Math.round(boundsArea.width() / cellSize);
         simulation = new FluidSimulation(newCells);
-
         if (lastAnchor != null) {
             // 2. MATHEMATISCH KORREKTES DELTA BEI GRÖSSENÄNDERUNG:
             // Wir berechnen, wie viele Zellen die NEUE linke obere Ecke von der ALTEN linken oberen Ecke entfernt ist.
@@ -154,8 +153,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
         Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
-            .scaled(scale)
-            .opacity(1)); //TODO config
+            .scaled(scale));
 
     }
 
