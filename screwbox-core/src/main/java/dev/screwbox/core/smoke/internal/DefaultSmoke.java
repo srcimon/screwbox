@@ -1,24 +1,19 @@
 package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.loop.internal.DefaultLoop;
-import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.smoke.Smoke;
 
-import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-public class DefaultSmoke implements Smoke, Updatable {
+public class DefaultSmoke implements Smoke {
 
     //TODO support split screen
     private final ViewportManager viewportManager;
@@ -163,10 +158,6 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     private Bounds calculateFluidOnWorld() {
         return Bounds.atOrigin(worldAnchor, cellSize * simulation.size(), cellSize * simulation.size());
-    }
-
-    @Override
-    public void update() {
     }
 
     private static int upscale = 5;
