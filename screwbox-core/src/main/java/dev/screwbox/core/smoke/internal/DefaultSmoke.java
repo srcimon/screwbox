@@ -183,50 +183,81 @@ public class DefaultSmoke implements Smoke, Updatable {
         int cells = densityInfo.cells();
         int targetSize = cells * upscale;
 
-        // 1. Schritt: Das Bild in der Zielgröße erstellen
         var image = ImageOperations.createImage(Size.square(targetSize));
-        var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-        // 2. Schritt: Generierung mit bilinearer Interpolation der Zelldaten
+        // 1. Look-Up-Tabellen (LUT) für X-Achse vorbereiten (Vermeidet double-Arithmetik in der inneren Schleife)
+        int[] x0Arr = new int[targetSize];
+        int[] x1Arr = new int[targetSize];
+        float[] tXArr = new float[targetSize];
+
+        for (int x = 0; x < targetSize; x++) {
+            float srcX = (float) x / upscale;
+            int x0 = (int) srcX; // Math.floor nicht nötig bei positiven Zahlen
+            x0Arr[x] = x0;
+            x1Arr[x] = Math.min(cells - 1, x0 + 1);
+            tXArr[x] = srcX - x0;
+        }
+
+        // 2. Hauptschleife mit optimierter Interpolation
         for (int y = 0; y < targetSize; y++) {
             int pixelIndex = y * targetSize;
 
-            // Berechne die genaue Fließkomma-Position im Quellgitter
-            double srcY = (double) y / upscale;
-            int y0 = (int) Math.floor(srcY);
+            float srcY = (float) y / upscale;
+            int y0 = (int) srcY;
             int y1 = Math.min(cells - 1, y0 + 1);
-            double tY = srcY - y0; // Gewichtungfaktor für Y
+            float tY = srcY - y0;
+            float invTY = 1.0f - tY;
 
             for (int x = 0; x < targetSize; x++) {
-                double srcX = (double) x / upscale;
-                int x0 = (int) Math.floor(srcX);
-                int x1 = Math.min(cells - 1, x0 + 1);
-                double tX = srcX - x0; // Gewichtungfaktor für X
+                int x0 = x0Arr[x];
+                int x1 = x1Arr[x];
+                float tX = tXArr[x];
+                float invTX = 1.0f - tX;
 
-                // Bilineare Interpolation für jeden Farbkanal einzeln
-                double r = interpolate(densityInfo.dessityRAt(x0, y0), densityInfo.dessityRAt(x1, y0),
-                    densityInfo.dessityRAt(x0, y1), densityInfo.dessityRAt(x1, y1), tX, tY);
+                // Gewichtungen vorab berechnen
+                float w00 = invTX * invTY;
+                float w10 = tX * invTY;
+                float w01 = invTX * tY;
+                float w11 = tX * tY;
 
-                double g = interpolate(densityInfo.dessityGAt(x0, y0), densityInfo.dessityGAt(x1, y0),
-                    densityInfo.dessityGAt(x0, y1), densityInfo.dessityGAt(x1, y1), tX, tY);
+                // Rot-Kanal (Inlined Interpolation)
+                float r = (float) (densityInfo.dessityRAt(x0, y0) * w00 +
+                                   densityInfo.dessityRAt(x1, y0) * w10 +
+                                   densityInfo.dessityRAt(x0, y1) * w01 +
+                                   densityInfo.dessityRAt(x1, y1) * w11);
 
-                double b = interpolate(densityInfo.dessityBAt(x0, y0), densityInfo.dessityBAt(x1, y0),
-                    densityInfo.dessityBAt(x0, y1), densityInfo.dessityBAt(x1, y1), tX, tY);
+                // Grün-Kanal
+                float g = (float) (densityInfo.dessityGAt(x0, y0) * w00 +
+                                   densityInfo.dessityGAt(x1, y0) * w10 +
+                                   densityInfo.dessityGAt(x0, y1) * w01 +
+                                   densityInfo.dessityGAt(x1, y1) * w11);
 
-                // Skalieren auf 0-255
-                int rInt = (int) (Math.clamp(r, 0.0, 1.0) * 255);
-                int gInt = (int) (Math.clamp(g, 0.0, 1.0) * 255);
-                int bInt = (int) (Math.clamp(b, 0.0, 1.0) * 255);
+                // Blau-Kanal
+                float b = (float) (densityInfo.dessityBAt(x0, y0) * w00 +
+                                   densityInfo.dessityBAt(x1, y0) * w10 +
+                                   densityInfo.dessityBAt(x0, y1) * w01 +
+                                   densityInfo.dessityBAt(x1, y1) * w11);
 
+                // Skalieren & Clamping (Manuelles Math.min/max ist schneller als Math.clamp)
+                int rInt = (int) (r * 255);
+                rInt = rInt < 0 ? 0 : (Math.min(rInt, 255));
 
-// NEU: Alpha basiert auf der reinen Präsenz von Farbe, nicht auf deren Additivität
-                int aInt = Math.min(maxOpacityva, Math.max(rInt, Math.max(gInt, bInt)));
+                int gInt = (int) (g * 255);
+                gInt = gInt < 0 ? 0 : (Math.min(gInt, 255));
+
+                int bInt = (int) (b * 255);
+                bInt = bInt < 0 ? 0 : (Math.min(bInt, 255));
+
+                // Alpha-Berechnung
+                int maxRGB = rInt > gInt ? rInt : gInt;
+                if (bInt > maxRGB) maxRGB = bInt;
+                int aInt = maxRGB > maxOpacityva ? maxOpacityva : maxRGB;
 
                 pixels[pixelIndex + x] = (aInt << 24) | (rInt << 16) | (gInt << 8) | bInt;
             }
         }
 
-        // Optionaler Blur (falls konfiguriert)
         if (blur > 0) {
             ImageOperations.blurImage(image, blur);
         }
