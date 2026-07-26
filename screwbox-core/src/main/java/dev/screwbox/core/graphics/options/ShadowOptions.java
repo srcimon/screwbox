@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.graphics.Light;
+import dev.screwbox.core.graphics.light.Light;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serializable;

@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.LensFlare;
-import dev.screwbox.core.graphics.Light;
+import dev.screwbox.core.graphics.light.Light;
 
 import java.io.Serial;
 

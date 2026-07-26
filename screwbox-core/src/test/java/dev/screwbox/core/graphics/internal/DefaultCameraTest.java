@@ -60,7 +60,7 @@ class DefaultCameraTest {
     void updatePosition_positionNull_throwsException() {
         assertThatThrownBy(() -> camera.setPosition(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("position must not be NULL");
+                .hasMessage("position must not be null");
     }
 
 

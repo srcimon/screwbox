@@ -1,6 +1,6 @@
 package dev.screwbox.core.scenes.animations;
 
-import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
+import dev.screwbox.core.graphics.postprocessing.filter.PostProcessingFilter;
 
 import java.awt.*;
 

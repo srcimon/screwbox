@@ -1,6 +1,6 @@
 package dev.screwbox.core.environment.light;
 
-import dev.screwbox.core.graphics.Light;
+import dev.screwbox.core.graphics.light.Light;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;

@@ -5,7 +5,7 @@ import dev.screwbox.core.Line;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Light;
+import dev.screwbox.core.graphics.light.Light;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;

@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.RenderingApi;
+import dev.screwbox.core.graphics.light.Light;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.utils.Validate;
 

@@ -3,17 +3,18 @@ package dev.screwbox.core.graphics.options;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.postprocessing.PostProcessing;
 import dev.screwbox.core.utils.Validate;
 
 /**
- * Specify options used to for triggering shockwaves in {@link dev.screwbox.core.graphics.PostProcessing}.
+ * Specify options used to for triggering shockwaves in {@link PostProcessing}.
  *
  * @param radius    radius of shockwave when finished
  * @param intensity intensity of shockwave reflection
  * @param duration  duration that shockwave needs to expand
  * @param width     initial width of the shockwave
  * @param growth    growth rate that is applied on width while shockwave expands
- * @see dev.screwbox.core.graphics.PostProcessing#triggerShockwave(Vector, ShockwaveOptions)
+ * @see PostProcessing#triggerShockwave(Vector, ShockwaveOptions)
  * @since 3.24.0
  */
 public record ShockwaveOptions(double radius, int intensity, Duration duration, double width, Percent growth) {

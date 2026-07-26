@@ -2,7 +2,7 @@ package dev.screwbox.platformer.systems;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.graphics.postfilter.CrtMonitorPostFilter;
+import dev.screwbox.core.graphics.postprocessing.filter.CrtMonitorPostFilter;
 import dev.screwbox.core.keyboard.Key;
 
 public class OldschoolModeSystem implements EntitySystem {

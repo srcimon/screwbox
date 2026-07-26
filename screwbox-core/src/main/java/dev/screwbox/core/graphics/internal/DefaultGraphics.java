@@ -7,11 +7,13 @@ import dev.screwbox.core.graphics.*;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
-import dev.screwbox.core.graphics.internal.light.DefaultLight;
+import dev.screwbox.core.graphics.light.internal.DefaultLight;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
+import dev.screwbox.core.graphics.light.Light;
+import dev.screwbox.core.graphics.postprocessing.PostProcessing;
 import dev.screwbox.core.loop.internal.Updatable;
-import dev.screwbox.core.smoke.Smoke;
-import dev.screwbox.core.smoke.internal.DefaultSmoke;
+import dev.screwbox.core.graphics.smoke.Smoke;
+import dev.screwbox.core.graphics.smoke.internal.DefaultSmoke;
 
 import java.awt.*;
 import java.util.List;

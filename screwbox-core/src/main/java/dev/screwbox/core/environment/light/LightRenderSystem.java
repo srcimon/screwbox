@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.graphics.Light;
+import dev.screwbox.core.graphics.light.Light;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_LIGHT;
 
