@@ -133,7 +133,7 @@ class DefaultEngine implements Engine {
         scenes = new DefaultScenes(this, executor, postProcessing);
 
         final var light = new DefaultLight(configuration, viewportManager, executor);
-        final var smoke = new DefaultSmoke(viewportManager, executor);
+        final var smoke = new DefaultSmoke(viewportManager, configuration, executor);
         graphics = new DefaultGraphics(configuration, screen, renderPipeline, viewportManager, postProcessing, light, smoke);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);

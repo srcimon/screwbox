@@ -15,12 +15,6 @@ import dev.screwbox.core.graphics.Color;
  */
 public interface Smoke {
 
-    @Deprecated
-    Smoke enable();
-
-    @Deprecated
-    Smoke disable();
-
     //TODO implement config.autoTurnOnSmoke
 
     Smoke emit(Vector position, double amount, Color color);

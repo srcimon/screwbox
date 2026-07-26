@@ -5,6 +5,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
@@ -28,6 +29,7 @@ public class DefaultSmoke implements Smoke {
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private final SmokeRenderer smokeRender;
+    private final GraphicsConfiguration configuration;
     private int cellSize = 8;
     private int screenBorderCells = 32;
 
@@ -35,16 +37,12 @@ public class DefaultSmoke implements Smoke {
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
 
-    public DefaultSmoke(final ViewportManager viewportManager, final ExecutorService executor) {
+    public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor) {
         this.viewportManager = viewportManager;
         this.executor = executor;
         this.smokeRender = new SmokeRenderer();
-    }
-
-    @Override
-    public Smoke enable() {
+        this.configuration = configuration;
         reassignGrid();
-        return this;
     }
 
     private void reassignGrid() {
@@ -81,14 +79,6 @@ public class DefaultSmoke implements Smoke {
             Math.max(boundsArea.width(), boundsArea.height()));
     }
 
-    @Override
-    public Smoke disable() {
-        simulation = null;
-        worldAnchor = null;
-        return this;
-    }
-
-
     List<Runnable> tasks = new ArrayList<>();
 
     @Override
@@ -120,9 +110,8 @@ public class DefaultSmoke implements Smoke {
 
     @Override
     public Smoke render(final double delta) {
-        if (simulation == null) {
-            return this;
-        }
+        if (configuration.isSmokeEnabled()) {
+
 
         //TODO get delta from update()
         imageWorldAnchor = worldAnchor;
@@ -149,6 +138,7 @@ public class DefaultSmoke implements Smoke {
             .scaled(scale));
         if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
             reassignGrid();
+        }
         }
         return this;
     }

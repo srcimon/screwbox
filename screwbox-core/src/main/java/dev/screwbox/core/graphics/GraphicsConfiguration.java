@@ -28,6 +28,7 @@ public class GraphicsConfiguration {
      */
     public static final Size DEFAULT_RESOLUTION = Size.of(1280, 720);
 
+    private boolean isSmokeEnabled = true;//TODO finish up
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
     private final RenderingApi renderingApi;
     private Size resolution = DEFAULT_RESOLUTION;
@@ -357,7 +358,7 @@ public class GraphicsConfiguration {
 
     /**
      * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
-     * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
+     * {@link Screen#supportedResolutions()} to get a list of all supported fullscreen resolutions.
      *
      * @param width  the width of the resolution to set
      * @param height the height of the resolution to set
@@ -369,7 +370,7 @@ public class GraphicsConfiguration {
 
     /**
      * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
-     * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
+     * {@link Screen#supportedResolutions()} to get a list of all supported fullscreen resolutions.
      */
     public GraphicsConfiguration setResolution(final Size resolution) {
         this.resolution = requireNonNull(resolution, "resolution must not be null");
@@ -500,6 +501,15 @@ public class GraphicsConfiguration {
      */
     public RenderingApi renderingApi() {
         return renderingApi;
+    }
+
+    /**
+     * Returns {@code true} if smoke is enabled.
+     *
+     * @since 3.33.0
+     */
+    public boolean isSmokeEnabled() {
+        return isSmokeEnabled;
     }
 
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
