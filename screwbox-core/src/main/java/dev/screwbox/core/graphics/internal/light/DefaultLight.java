@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.internal;
+package dev.screwbox.core.graphics.internal.light;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
@@ -13,6 +13,8 @@ import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.Light;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.internal.filter.ExpandImageFilter;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.loop.internal.Updatable;

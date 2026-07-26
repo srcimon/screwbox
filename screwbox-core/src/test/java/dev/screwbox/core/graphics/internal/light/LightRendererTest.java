@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.internal;
+package dev.screwbox.core.graphics.internal.light;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Line;
@@ -13,6 +13,10 @@ import dev.screwbox.core.graphics.LensFlareBundle;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.internal.DefaultCamera;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
+import dev.screwbox.core.graphics.internal.DefaultViewport;
+import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;

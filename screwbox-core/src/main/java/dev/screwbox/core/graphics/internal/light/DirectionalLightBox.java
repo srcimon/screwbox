@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.internal;
+package dev.screwbox.core.graphics.internal.light;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
@@ -7,7 +7,7 @@ import dev.screwbox.core.Vector;
 
 import java.awt.*;
 
-class DirectionalLightBox {
+public class DirectionalLightBox {
 
     private final Polygon polygon;
     private final Vector bottomRight;

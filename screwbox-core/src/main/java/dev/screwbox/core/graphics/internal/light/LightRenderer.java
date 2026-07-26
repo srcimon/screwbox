@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.internal;
+package dev.screwbox.core.graphics.internal.light;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;

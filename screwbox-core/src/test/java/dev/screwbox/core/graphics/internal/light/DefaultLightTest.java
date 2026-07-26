@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.internal;
+package dev.screwbox.core.graphics.internal.light;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
@@ -9,6 +9,9 @@ import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
+import dev.screwbox.core.graphics.internal.DefaultViewport;
+import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.graphics.options.ShadowOptions;
 import dev.screwbox.core.test.TestUtil;
