@@ -224,7 +224,7 @@ public class DefaultSmoke implements Smoke {
     private static int upscale = 6;
     private static int blur = 4;
 
-    static Percent maxOpacity = Percent.max();
+    static Percent maxOpacity = Percent.of(0.1);
 
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
@@ -309,18 +309,18 @@ public class DefaultSmoke implements Smoke {
 
                 // Skalieren & Clamping
                 int rInt = (int) (r * 255);
-                rInt = rInt < 0 ? 0 : (rInt > 255 ? 255 : rInt);
+                rInt = rInt < 0 ? 0 : (Math.min(rInt, 255));
 
                 int gInt = (int) (g * 255);
-                gInt = gInt < 0 ? 0 : (gInt > 255 ? 255 : gInt);
+                gInt = gInt < 0 ? 0 : (Math.min(gInt, 255));
 
                 int bInt = (int) (b * 255);
-                bInt = bInt < 0 ? 0 : (bInt > 255 ? 255 : bInt);
+                bInt = bInt < 0 ? 0 : (Math.min(bInt, 255));
 
                 // Alpha-Berechnung
-                int maxRGB = rInt > gInt ? rInt : gInt;
+                int maxRGB = Math.max(rInt, gInt);
                 if (bInt > maxRGB) maxRGB = bInt;
-                int aInt = maxRGB > maxOpacityva ? maxOpacityva : maxRGB;
+                int aInt = Math.min(maxRGB, maxOpacityva);
 
                 pixels[pixelIndex + x] = (aInt << 24) | (rInt << 16) | (gInt << 8) | bInt;
             }
