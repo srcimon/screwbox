@@ -41,11 +41,11 @@ public class PlaygroundApp {
             """, Size.square(32));
 
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-            .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.GREEN, 32)))));
+            .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32)))));
         screwBox.environment().addSystem(x -> {
             x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             x.graphics().smoke().push(screwBox.mouse().position(), range.multiply(screwBox.loop().delta()));
-            x.graphics().smoke().emit(screwBox.mouse().position(), 400 * screwBox.loop().delta(), color);
+            x.graphics().smoke().emit(screwBox.mouse().position(), 100 * screwBox.loop().delta(), color);
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
             }
@@ -55,7 +55,6 @@ public class PlaygroundApp {
             x.graphics().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
 
-        screwBox.graphics().configuration().setBackgroundColor(Color.BLUE);
         screwBox.start();
     }
 
