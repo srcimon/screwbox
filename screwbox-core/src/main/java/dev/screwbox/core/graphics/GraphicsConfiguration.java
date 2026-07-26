@@ -16,6 +16,8 @@ import static java.util.Objects.requireNonNull;
 /**
  * Configuration of major {@link Graphics} and rendering properties. Every change creates a
  * {@link GraphicsConfigurationEvent} that can be used to adjust to the new configuration.
+ *
+ * @see <a href="https://screwbox.dev/docs/core-modules/graphics/#configuration">Documentation</a>
  */
 public class GraphicsConfiguration {
 
