@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_SMOKE;
-
+//TODO document test
 @ExecutionOrder(PRESENTATION_SMOKE)
 public class SmokeSystem implements EntitySystem {
 
@@ -26,7 +26,7 @@ public class SmokeSystem implements EntitySystem {
                 engine.graphics().smoke().emit(entity.position(), entity.get(SmokeEmitterComponent.class).amount * engine.loop().delta() , entity.get(SmokeEmitterComponent.class).color);
             }
         }
-
+//TODO split physics and non physics
         for(final var entity : engine.environment().fetchAll(Archetype.ofSpacial(SmokeAffectorComponent.class))) {
             if(engine.graphics().isWithinDistanceToVisibleArea(entity.position(), 128)) {
                 var affector = entity.get(SmokeAffectorComponent.class);
