@@ -46,14 +46,8 @@ public class PlaygroundApp {
             """, Size.square(32));
 
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-            .assign('#', new AdvancedBlueprint<TileMap.Tile<Character>>() {
-                @Override
-                public Entity assembleFrom(TileMap.Tile<Character> source, IdPool idPool) {
-                    return new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.GREEN, 32)));
-                }
-            }));
+            .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.GREEN, 32)))));
         screwBox.environment().addSystem(x -> {
-            x.graphics().canvas().fillWith(SpriteBundle.SHADER_PREVIEW.get(), SpriteFillOptions.scale(3).drawOrder(-100));
             x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             x.graphics().smoke().affect(screwBox.mouse().position(), range.multiply(screwBox.loop().delta()));
             x.graphics().smoke().emit(screwBox.mouse().position(), 400 * screwBox.loop().delta(), color);
