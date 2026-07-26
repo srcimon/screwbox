@@ -137,9 +137,7 @@ public class DefaultSmoke implements Smoke {
             }
         }
 
-        if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
-            reassignGrid();
-        }
+
         simulationTask = executor.submit(() -> {
             simulation.step(de, 0.000004, 0.000000000001, 2);
             simulation.fade(de * 0.04);
@@ -154,7 +152,9 @@ public class DefaultSmoke implements Smoke {
         final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int)(actuallyVisibleBounds.x()*cellSize* viewportManager.defaultViewport().camera().zoom()),(int)( actuallyVisibleBounds.y()*cellSize* viewportManager.defaultViewport().camera().zoom()));
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale));
-
+        if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
+            reassignGrid();
+        }
     }
 
     private ScreenBounds calculateActuallyVisibleBounds() {

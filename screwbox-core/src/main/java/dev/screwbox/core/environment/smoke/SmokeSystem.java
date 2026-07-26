@@ -4,8 +4,11 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
+@ExecutionOrder(Order.PRESENTATION_LIGHT)//TODO introduce new order before light
 public class SmokeSystem implements EntitySystem {
 
     @Override
