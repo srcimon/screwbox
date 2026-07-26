@@ -8,6 +8,8 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
@@ -182,7 +184,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         int targetSize = cells * upscale;
 
         // 1. Schritt: Das Bild in der Zielgröße erstellen
-        var image = new BufferedImage(targetSize, targetSize, BufferedImage.TYPE_INT_ARGB);
+        var image = ImageOperations.createImage(Size.square(targetSize));
         var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         // 2. Schritt: Generierung mit bilinearer Interpolation der Zelldaten
