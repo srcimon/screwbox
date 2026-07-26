@@ -31,7 +31,7 @@ x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled()/-20.0);
             if (x.mouse().isDownLeft()) {
                 range = Angle.degrees(200 * x.loop().delta()).rotate(range);
             }
-            x.graphics().camera().move(x.keyboard().wsadMovement(140*screwBox.loop().delta()));
+            x.graphics().camera().move(x.keyboard().wsadMovement(500*screwBox.loop().delta()));
         });
 
         screwBox.start();

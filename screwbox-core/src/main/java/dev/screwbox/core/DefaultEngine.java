@@ -45,7 +45,6 @@ import dev.screwbox.core.particles.Particles;
 import dev.screwbox.core.particles.internal.DefaultParticles;
 import dev.screwbox.core.scenes.Scenes;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
-import dev.screwbox.core.smoke.internal.DefaultSmoke;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.ui.internal.DefaultUi;
 import dev.screwbox.core.utils.internal.MacOsSupport;
@@ -131,7 +130,6 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, executor, postProcessing);
 
-        DefaultSmoke smoke = new DefaultSmoke(viewportManager, executor);
         graphics = new DefaultGraphics(configuration, screen, graphicsDevice, renderPipeline, viewportManager, postProcessing, executor);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);
