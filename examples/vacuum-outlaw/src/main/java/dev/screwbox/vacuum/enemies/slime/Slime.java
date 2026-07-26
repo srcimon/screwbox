@@ -2,17 +2,15 @@ package dev.screwbox.vacuum.enemies.slime;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.smoke.SmokeEmitterComponent;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.particles.ParticleOptions;
 import dev.screwbox.core.particles.SpawnMode;

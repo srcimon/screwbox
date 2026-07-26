@@ -13,8 +13,6 @@ import dev.screwbox.core.environment.logic.StateComponent;
 import dev.screwbox.core.environment.physics.CollisionSensorComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.smoke.SmokeAffectorComponent;
-import dev.screwbox.core.environment.smoke.SmokeEmitterComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.mouse.MouseButton;
@@ -33,15 +31,14 @@ public class PlayerAttackControlSystem implements EntitySystem {
                 attackControl.lastShotFired = engine.loop().time();
                 engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(player.position()));
                 engine.environment().addEntity("shoot",
-                        new TransformComponent(player.position(), 8, 8),
-                        new SmokeEmitterComponent(80, Color.YELLOW),
-                        new GlowComponent(8, Color.WHITE.opacity(0.75)),
-                        new PointLightComponent(64, Color.BLACK),
-                        new ShotComponent(),
-                        new CollisionSensorComponent(),
-                        new StateComponent(new ShotUnderwayState()),
-                        new PhysicsComponent(engine.mouse().position().subtract(player.position()).length(120)),
-                        new RenderComponent(SHOOT, player.get(RenderComponent.class).options.drawOrder()));
+                    new TransformComponent(player.position(), 8, 8),
+                    new GlowComponent(8, Color.WHITE.opacity(0.75)),
+                    new PointLightComponent(64, Color.BLACK),
+                    new ShotComponent(),
+                    new CollisionSensorComponent(),
+                    new StateComponent(new ShotUnderwayState()),
+                    new PhysicsComponent(engine.mouse().position().subtract(player.position()).length(120)),
+                    new RenderComponent(SHOOT, player.get(RenderComponent.class).options.drawOrder()));
             }
         });
     }

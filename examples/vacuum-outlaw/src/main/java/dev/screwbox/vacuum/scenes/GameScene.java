@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
-import dev.screwbox.core.environment.smoke.SmokeSystem;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.window.MouseCursor;
 import dev.screwbox.tiled.GameObject;
@@ -43,7 +42,6 @@ public class GameScene implements Scene {
         engine.window().setCursor(MouseCursor.HIDDEN);
         engine.graphics().camera().setZoom(3.5);
         engine.graphics().light().setAmbientLight(Percent.of(0.2)).setDefaultLensFlareNone();
-        engine.graphics().smoke().enable();//TODO neeeded?
     }
 
     @Override
@@ -55,13 +53,6 @@ public class GameScene implements Scene {
             .addSystem(new NavigationSystem())
             .addSystem(new HurtSystem())
             .addSystem(new RunAtPlayerSystem())
-            .addSystem(new SmokeSystem())
-            .addSystem(x -> {
-                x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled()/10.0);
-               // x.graphics().smoke().emit(x.mouse().position(),x.loop().delta(100));
-           //     x.graphics().smoke().affect(x.mouse().position(), x.mouse().position().subtract(x.graphics().visibleArea().position()).length(500*x.loop().delta()));
-              //  x.graphics().smoke().affect(x.mouse().position(), x.mouse().drag().invert().multiply(0.2));
-            })
             .addSystem(new EnemySpawnSystem())
             .addSystem(new DeathpitSystem())
             .addSystem(new DynamicCursorImageSystem())

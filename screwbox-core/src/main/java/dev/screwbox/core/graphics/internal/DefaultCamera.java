@@ -33,7 +33,7 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public Camera setPosition(final Vector position) {
-        this.position = requireNonNull(position, "position must not be NULL");
+        this.position = requireNonNull(position, "position must not be null");
         updateFocus();
         return this;
     }
