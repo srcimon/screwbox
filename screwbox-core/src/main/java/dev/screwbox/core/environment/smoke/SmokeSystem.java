@@ -8,7 +8,9 @@ import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
-@ExecutionOrder(Order.PRESENTATION_LIGHT)//TODO introduce new order before light
+import static dev.screwbox.core.environment.Order.PRESENTATION_SMOKE;
+
+@ExecutionOrder(PRESENTATION_SMOKE)
 public class SmokeSystem implements EntitySystem {
 
     @Override
