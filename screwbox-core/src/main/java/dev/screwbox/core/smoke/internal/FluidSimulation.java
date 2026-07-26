@@ -18,6 +18,7 @@ public class FluidSimulation {
     private final double[] velocityX0;
     private final double[] velocityY;
     private final double[] velocityY0;
+    private final boolean[] obstacles;
 
     public void loadDensityFromImageTiled(BufferedImage img) {
         int imgWidth = img.getWidth();
@@ -68,6 +69,13 @@ public class FluidSimulation {
         this.velocityX0 = new double[length];
         this.velocityY = new double[length];
         this.velocityY0 = new double[length];
+        this.obstacles = new boolean[length];
+
+        for(int x = 40; x < 80; x++) {
+            for (int y = 80; y < 100; y++) {
+                this.obstacles[IX(x, y)] = true;
+            }
+        }
     }
 
     double maxDensity = 4;
@@ -130,7 +138,7 @@ public class FluidSimulation {
 
     void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
         int size = this.cells;
-        double iterationBonus = 1.0 + (20.0 - iter) * 0.05; // Faktor empirisch anpassen (z.B. bei iter=5 -> ~1.75)
+        double iterationBonus = 1.0 + (20.0 - iter) * 0.05;
         double a = dt * (diff * iterationBonus) * (size - 2) * (size - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
@@ -141,28 +149,86 @@ public class FluidSimulation {
                 int botRow = row + size;
 
                 int i = 1;
-                // Loop Unrolling (Faktor 2 für X und Y parallel)
+                // Loop Unrolling (Faktor 2)
                 for (; i < size - 2; i += 2) {
                     int curr0 = i + row;
                     int curr1 = curr0 + 1;
-                    int top0 = i + topRow;
-                    int top1 = top0 + 1;
-                    int bot0 = i + botRow;
-                    int bot1 = bot0 + 1;
 
-                    // Index i
-                    x[curr0] = (x0[curr0] + a * (x[curr0 + 1] + x[curr0 - 1] + x[bot0] + x[top0])) * cRecip;
-                    y[curr0] = (y0[curr0] + a * (y[curr0 + 1] + y[curr0 - 1] + y[bot0] + y[top0])) * cRecip;
+                    // --- INDEX i ---
+                    if (obstacles[curr0]) {
+                        x[curr0] = 0;
+                        y[curr0] = 0;
+                    } else {
+                        int top0 = i + topRow;
+                        int bot0 = i + botRow;
+                        int left0 = curr0 - 1;
+                        int right0 = curr0 + 1;
 
-                    // Index i + 1
-                    x[curr1] = (x0[curr1] + a * (x[curr1 + 1] + x[curr1 - 1] + x[bot1] + x[top1])) * cRecip;
-                    y[curr1] = (y0[curr1] + a * (y[curr1 + 1] + y[curr1 - 1] + y[bot1] + y[top1])) * cRecip;
+                        // Wenn Nachbar ein Hindernis ist, nimm den aktuellen Zellwert (Spiegelung)
+                        double nLeft  = obstacles[left0]  ? -x[curr0] : x[left0]; // -x für Reflektion der Geschwindigkeit
+                        double nRight = obstacles[right0] ? -x[curr0] : x[right0];
+                        double nTop   = obstacles[top0]   ?  x[curr0] : x[top0];
+                        double nBot   = obstacles[bot0]   ?  x[curr0] : x[bot0];
+
+                        double nLeftY  = obstacles[left0]  ?  y[curr0] : y[left0];
+                        double nRightY = obstacles[right0] ?  y[curr0] : y[right0];
+                        double nTopY   = obstacles[top0]   ? -y[curr0] : y[top0]; // -y für Reflektion an waagerechten Wänden
+                        double nBotY   = obstacles[bot0]   ? -y[curr0] : y[bot0];
+
+                        x[curr0] = (x0[curr0] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
+                        y[curr0] = (y0[curr0] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
+                    }
+
+                    // --- INDEX i + 1 ---
+                    if (obstacles[curr1]) {
+                        x[curr1] = 0;
+                        y[curr1] = 0;
+                    } else {
+                        int top1 = (i + 1) + topRow;
+                        int bot1 = (i + 1) + botRow;
+                        int left1 = curr1 - 1;
+                        int right1 = curr1 + 1;
+
+                        double nLeft  = obstacles[left1]  ? -x[curr1] : x[left1];
+                        double nRight = obstacles[right1] ? -x[curr1] : x[right1];
+                        double nTop   = obstacles[top1]   ?  x[curr1] : x[top1];
+                        double nBot   = obstacles[bot1]   ?  x[curr1] : x[bot1];
+
+                        double nLeftY  = obstacles[left1]  ?  y[curr1] : y[left1];
+                        double nRightY = obstacles[right1] ?  y[curr1] : y[right1];
+                        double nTopY   = obstacles[top1]   ? -y[curr1] : y[top1];
+                        double nBotY   = obstacles[bot1]   ? -y[curr1] : y[bot1];
+
+                        x[curr1] = (x0[curr1] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
+                        y[curr1] = (y0[curr1] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
+                    }
                 }
+
                 // Rest-Zelle falls ungerade
                 for (; i < size - 1; i++) {
                     int curr = i + row;
-                    x[curr] = (x0[curr] + a * (x[curr + 1] + x[curr - 1] + x[i + botRow] + x[i + topRow])) * cRecip;
-                    y[curr] = (y0[curr] + a * (y[curr + 1] + y[curr - 1] + y[i + botRow] + y[i + topRow])) * cRecip;
+                    if (obstacles[curr]) {
+                        x[curr] = 0;
+                        y[curr] = 0;
+                    } else {
+                        int top = i + topRow;
+                        int bot = i + botRow;
+                        int left = curr - 1;
+                        int right = curr + 1;
+
+                        double nLeft  = obstacles[left]  ? -x[curr] : x[left];
+                        double nRight = obstacles[right] ? -x[curr] : x[right];
+                        double nTop   = obstacles[top]   ?  x[curr] : x[top];
+                        double nBot   = obstacles[bot]   ?  x[curr] : x[bot];
+
+                        double nLeftY  = obstacles[left]  ?  y[curr] : y[left];
+                        double nRightY = obstacles[right] ?  y[curr] : y[right];
+                        double nTopY   = obstacles[top]   ? -y[curr] : y[top];
+                        double nBotY   = obstacles[bot]   ? -y[curr] : y[bot];
+
+                        x[curr] = (x0[curr] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
+                        y[curr] = (y0[curr] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
+                    }
                 }
             }
         }
@@ -224,7 +290,6 @@ public class FluidSimulation {
         double cRecip = 1.0 / c;
 
         for (int k = 0; k < iter; k++) {
-            // Eine einzige, sequentielle Schleife über alle Zeilen (Keine Streams!)
             for (int j = 1; j < cells - 1; j++) {
 
                 // Pointer-Initialisierung für den Zeilenstart (i = 1)
@@ -234,17 +299,21 @@ public class FluidSimulation {
                 int idx_top = idx_current - cells;
                 int idx_bottom = idx_current + cells;
 
-                // Die schnellstmögliche innere Schleife für die CPU (i++)
-                // Perfekt linear im Speicher, ideal für das automatische Hardware-Prefetching
                 for (int i = 1; i < cells - 1; i++) {
-                    x[idx_current] = (x0[idx_current] + a * (
-                        x[idx_right] +
-                        x[idx_left] +
-                        x[idx_bottom] +
-                        x[idx_top]
-                    )) * cRecip;
 
-                    // Alle Pointer rücken synchron um genau 1 Zelle weiter
+                    if (obstacles[idx_current]) {
+                        x[idx_current] = 0; // Druck/Wert im Hindernis ist Null
+                    } else {
+                        // Wenn Nachbar ein Hindernis ist, nimm den Wert der aktuellen Zelle (Reflektion)
+                        double nRight  = obstacles[idx_right]  ? x[idx_current] : x[idx_right];
+                        double nLeft   = obstacles[idx_left]   ? x[idx_current] : x[idx_left];
+                        double nBottom = obstacles[idx_bottom] ? x[idx_current] : x[idx_bottom];
+                        double nTop    = obstacles[idx_top]    ? x[idx_current] : x[idx_top];
+
+                        x[idx_current] = (x0[idx_current] + a * (nRight + nLeft + nBottom + nTop)) * cRecip;
+                    }
+
+                    // Alle Pointer rücken synchron um genau 1 Zelle weiter (Hardware-Prefetching bleibt aktiv)
                     idx_current++;
                     idx_left++;
                     idx_right++;
@@ -258,25 +327,60 @@ public class FluidSimulation {
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
         double h = 1.0 / (cells - 2);
 
+        // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
         for (int j = 1; j < cells - 1; j++) {
             for (int i = 1; i < cells - 1; i++) {
                 int ix = IXFastButUnsave(i, j);
-                div[ix] = -0.5 * h * (
-                    velocX[IXFastButUnsave(i + 1, j)]
-                    - velocX[IXFastButUnsave(i - 1, j)]
-                    + velocY[IXFastButUnsave(i, j + 1)]
-                    - velocY[IXFastButUnsave(i, j - 1)]
-                );
+
+                if (obstacles[ix]) {
+                    div[ix] = 0;
+                    p[ix] = 0;
+                    continue;
+                }
+
+                int left  = IXFastButUnsave(i - 1, j);
+                int right = IXFastButUnsave(i + 1, j);
+                int top   = IXFastButUnsave(i, j - 1);
+                int bot   = IXFastButUnsave(i, j + 1);
+
+                // Wenn der Nachbar ein Hindernis ist, fließt dort nichts durch (Geschwindigkeit = 0)
+                double vL = obstacles[left]  ? 0 : velocX[left];
+                double vR = obstacles[right] ? 0 : velocX[right];
+                double vT = obstacles[top]   ? 0 : velocY[top];
+                double vB = obstacles[bot]   ? 0 : velocY[bot];
+
+                div[ix] = -0.5 * h * (vR - vL + vB - vT);
                 p[ix] = 0;
             }
         }
+
+        // Berechnet das Druckfeld p basierend auf der Divergenz (lin_solve muss obstacles ebenfalls beachten!)
         lin_solve(p, div, 1, 4, iter);
 
+        // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
         for (int j = 1; j < cells - 1; j++) {
             for (int i = 1; i < cells - 1; i++) {
                 int ix = IXFastButUnsave(i, j);
-                velocX[ix] -= 0.5 * (p[IX(i + 1, j)] - p[IX(i - 1, j)]) / h;
-                velocY[ix] -= 0.5 * (p[IX(i, j + 1)] - p[IX(i, j - 1)]) / h;
+
+                if (obstacles[ix]) {
+                    velocX[ix] = 0;
+                    velocY[ix] = 0;
+                    continue;
+                }
+
+                int left  = IX(i - 1, j);
+                int right = IX(i + 1, j);
+                int top   = IX(i, j - 1);
+                int bot   = IX(i, j + 1);
+
+                // Neumann-Randbedingung für den Druck: p spiegeln, wenn der Nachbar ein Hindernis ist
+                double pL = obstacles[left]  ? p[ix] : p[left];
+                double pR = obstacles[right] ? p[ix] : p[right];
+                double pT = obstacles[top]   ? p[ix] : p[top];
+                double pB = obstacles[bot]   ? p[ix] : p[bot];
+
+                velocX[ix] -= 0.5 * (pR - pL) / h;
+                velocY[ix] -= 0.5 * (pB - pT) / h;
             }
         }
     }
@@ -297,17 +401,26 @@ public class FluidSimulation {
         for (j = 1, jfloat = 1; j < cells - 1; j++, jfloat++) {
             for (i = 1, ifloat = 1; i < cells - 1; i++, ifloat++) {
                 int ix = IXFastButUnsave(i, j);
+
+                // Wenn die aktuelle Zelle ein Hindernis ist, strömt hier nichts hin
+                if (obstacles[ix]) {
+                    d[ix] = 0;
+                    continue;
+                }
+
                 tmp1 = dtx * velocX[ix];
                 tmp2 = dty * velocY[ix];
                 x = ifloat - tmp1;
                 y = jfloat - tmp2;
 
-                if (x < 0.5f) x = 0.5;
-                if (x > Nfloat + 0.5) x = Nfloat + 0.5;
+                // Grenzen des Simulationsbereichs einhalten
+                if (x < 0.5) x = 0.5;
+                if (x > Nfloat - 1.5) x = Nfloat - 1.5; // Leicht korrigiert für sichere Grid-Indizes
                 i0 = Math.floor(x);
                 i1 = i0 + 1.0;
+
                 if (y < 0.5) y = 0.5;
-                if (y > Nfloat + 0.5) y = Nfloat + 0.5;
+                if (y > Nfloat - 1.5) y = Nfloat - 1.5;
                 j0 = Math.floor(y);
                 j1 = j0 + 1.0;
 
@@ -321,8 +434,16 @@ public class FluidSimulation {
                 int j0i = (int) (j0);
                 int j1i = (int) (j1);
 
-                d[ix] = s0 * (t0 * d0[IX(i0i, j0i)] + t1 * d0[IX(i0i, j1i)]) +
-                        s1 * (t0 * d0[IX(i1i, j0i)] + t1 * d0[IX(i1i, j1i)]);
+                // Hindernis-Check für die 4 Interpolations-Nachbarn:
+                // Wenn ein Quellpixel im Hindernis liegt, nutzen wir stattdessen das aktuelle Feld (ix)
+                int idx00 = obstacles[IX(i0i, j0i)] ? ix : IX(i0i, j0i);
+                int idx01 = obstacles[IX(i0i, j1i)] ? ix : IX(i0i, j1i);
+                int idx10 = obstacles[IX(i1i, j0i)] ? ix : IX(i1i, j0i);
+                int idx11 = obstacles[IX(i1i, j1i)] ? ix : IX(i1i, j1i);
+
+                // Bilineare Interpolation mit den korrigierten Indizes
+                d[ix] = s0 * (t0 * d0[idx00] + t1 * d0[idx01]) +
+                        s1 * (t0 * d0[idx10] + t1 * d0[idx11]);
             }
         }
     }
