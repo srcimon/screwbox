@@ -16,14 +16,13 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
         screwBox.graphics().smoke().enable();
         screwBox.loop().unlockFps();
-        screwBox.graphics().configuration().toggleFullscreen();
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystem(new SmokeSystem());
 
         screwBox.environment().addSystem(x -> {
-
+x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled()/-20.0);
             x.graphics().smoke().affect(screwBox.mouse().position(), range.multiply(screwBox.loop().delta()));
             x.graphics().smoke().emit(screwBox.mouse().position(), 400 * screwBox.loop().delta(), color);
             if (x.mouse().isPressedLeft()) {
@@ -32,7 +31,7 @@ public class PlaygroundApp {
             if (x.mouse().isDownLeft()) {
                 range = Angle.degrees(200 * x.loop().delta()).rotate(range);
             }
-            x.graphics().camera().move(x.keyboard().wsadMovement(2));
+            x.graphics().camera().move(x.keyboard().wsadMovement(40*screwBox.loop().delta()));
         });
 
         screwBox.start();
