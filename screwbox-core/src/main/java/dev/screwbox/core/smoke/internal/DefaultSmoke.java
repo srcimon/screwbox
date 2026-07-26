@@ -6,6 +6,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
@@ -147,13 +148,26 @@ public class DefaultSmoke implements Smoke {
 
 
         DensityInfo densityInfo = simulation.densityInfo();
-        final var sprite = Asset.asset(() -> createImage(densityInfo));
+        var actuallyVisibleBounds = calculateActuallyVisibleBounds();
+        final var sprite = Asset.asset(() -> createImage(densityInfo, actuallyVisibleBounds));
         executor.submit(sprite::get);
         final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
-        final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
+        final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int)(actuallyVisibleBounds.x()*cellSize* viewportManager.defaultViewport().camera().zoom()),(int)( actuallyVisibleBounds.y()*cellSize* viewportManager.defaultViewport().camera().zoom()));
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale));
 
+    }
+
+    private ScreenBounds calculateActuallyVisibleBounds() {
+        //TODO use densityInfoFromFluid object
+        Offset worldStart = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
+        Offset offset = Offset.origin().add(Math.floorDiv(-worldStart.x(), cellSize), Math.floorDiv(-worldStart.y(), cellSize));
+        var endOffset = viewportManager.defaultViewport().toCanvas(imageWorldAnchor.add(viewportManager.defaultViewport().visibleArea().extents().multiply(2)));
+        var viewportSize = viewportManager.defaultViewport().canvas().size();
+        var deltaX = Math.ceilDiv(viewportSize.width()-endOffset.x(), cellSize);
+        var deltaY = Math.ceilDiv(viewportSize.height()-endOffset.y(), cellSize);
+        Size size = Size.of(simulation.size() - offset.x()-deltaX, simulation.size() - offset.y()-deltaY);
+        return new ScreenBounds(offset, size);
     }
 
     private Bounds calculateFluidOnWorld() {
@@ -169,37 +183,54 @@ public class DefaultSmoke implements Smoke {
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
-    private static Sprite createImage(DensityInfo densityInfo) {
+    private static Sprite createImage(DensityInfo densityInfo, ScreenBounds actuallyVisibleBounds) {
         int maxOpacityva = maxOpacity.rangeValue(0, 255);
-        int cells = densityInfo.cells();
-        int targetSize = cells * upscale;
-        var image = ImageOperations.createImage(Size.square(targetSize));//TODO reuse
+        int totalCells = densityInfo.cells(); // Gesamtzahl der Zellen im Quellgitter
+
+        // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
+        int startX = actuallyVisibleBounds.x();
+        int startY = actuallyVisibleBounds.y();
+        int viewWidthCells = actuallyVisibleBounds.width();
+        int viewHeightCells = actuallyVisibleBounds.height();
+
+        // Zielgröße des neuen Bildes in Pixeln
+        int targetWidth = viewWidthCells * upscale;
+        int targetHeight = viewHeightCells * upscale;
+
+        // Erstelle das Bild exakt in der benötigten Zielgröße (nicht mehr quadratisch blockiert)
+        Size size = Size.of(targetWidth, targetHeight);
+        var image = ImageOperations.createImage(size);
         int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-        // 1. Look-Up-Tabellen (LUT) für X-Achse vorbereiten (Vermeidet double-Arithmetik in der inneren Schleife)
-        int[] x0Arr = new int[targetSize];
-        int[] x1Arr = new int[targetSize];
-        float[] tXArr = new float[targetSize];
+        // 1. Look-Up-Tabellen (LUT) für X-Achse vorbereiten (relativ zu startX)
+        int[] x0Arr = new int[targetWidth];
+        int[] x1Arr = new int[targetWidth];
+        float[] tXArr = new float[targetWidth];
 
-        for (int x = 0; x < targetSize; x++) {
-            float srcX = (float) x / upscale;
-            int x0 = (int) srcX; // Math.floor nicht nötig bei positiven Zahlen
-            x0Arr[x] = x0;
-            x1Arr[x] = Math.min(cells - 1, x0 + 1);
+        for (int x = 0; x < targetWidth; x++) {
+            // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
+            float srcX = startX + ((float) x / upscale);
+            int x0 = (int) srcX;
+
+            x0Arr[x] = Math.clamp(x0, 0, totalCells - 1);
+            x1Arr[x] = Math.clamp(x0 + 1, 0, totalCells - 1);
             tXArr[x] = srcX - x0;
         }
 
-        // 2. Hauptschleife mit optimierter Interpolation
-        for (int y = 0; y < targetSize; y++) {
-            int pixelIndex = y * targetSize;
+        // 2. Hauptschleife mit optimierter Interpolation über die Subimage-Pixel
+        for (int y = 0; y < targetHeight; y++) {
+            int pixelIndex = y * targetWidth;
 
-            float srcY = (float) y / upscale;
+            // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
+            float srcY = startY + ((float) y / upscale);
             int y0 = (int) srcY;
-            int y1 = Math.min(cells - 1, y0 + 1);
+
+            int clampedY0 = Math.clamp(y0, 0, totalCells - 1);
+            int clampedY1 = Math.clamp(y0 + 1, 0, totalCells - 1);
             float tY = srcY - y0;
             float invTY = 1.0f - tY;
 
-            for (int x = 0; x < targetSize; x++) {
+            for (int x = 0; x < targetWidth; x++) {
                 int x0 = x0Arr[x];
                 int x1 = x1Arr[x];
                 float tX = tXArr[x];
@@ -211,33 +242,33 @@ public class DefaultSmoke implements Smoke {
                 float w01 = invTX * tY;
                 float w11 = tX * tY;
 
-                // Rot-Kanal (Inlined Interpolation)
-                float r = (float) (densityInfo.dessityRAt(x0, y0) * w00 +
-                                   densityInfo.dessityRAt(x1, y0) * w10 +
-                                   densityInfo.dessityRAt(x0, y1) * w01 +
-                                   densityInfo.dessityRAt(x1, y1) * w11);
+                // Rot-Kanal (Interpolation mit globalen, geklammerten Koordinaten)
+                float r = (float) (densityInfo.dessityRAt(x0, clampedY0) * w00 +
+                                   densityInfo.dessityRAt(x1, clampedY0) * w10 +
+                                   densityInfo.dessityRAt(x0, clampedY1) * w01 +
+                                   densityInfo.dessityRAt(x1, clampedY1) * w11);
 
                 // Grün-Kanal
-                float g = (float) (densityInfo.dessityGAt(x0, y0) * w00 +
-                                   densityInfo.dessityGAt(x1, y0) * w10 +
-                                   densityInfo.dessityGAt(x0, y1) * w01 +
-                                   densityInfo.dessityGAt(x1, y1) * w11);
+                float g = (float) (densityInfo.dessityGAt(x0, clampedY0) * w00 +
+                                   densityInfo.dessityGAt(x1, clampedY0) * w10 +
+                                   densityInfo.dessityGAt(x0, clampedY1) * w01 +
+                                   densityInfo.dessityGAt(x1, clampedY1) * w11);
 
                 // Blau-Kanal
-                float b = (float) (densityInfo.dessityBAt(x0, y0) * w00 +
-                                   densityInfo.dessityBAt(x1, y0) * w10 +
-                                   densityInfo.dessityBAt(x0, y1) * w01 +
-                                   densityInfo.dessityBAt(x1, y1) * w11);
+                float b = (float) (densityInfo.dessityBAt(x0, clampedY0) * w00 +
+                                   densityInfo.dessityBAt(x1, clampedY0) * w10 +
+                                   densityInfo.dessityBAt(x0, clampedY1) * w01 +
+                                   densityInfo.dessityBAt(x1, clampedY1) * w11);
 
-                // Skalieren & Clamping (Manuelles Math.min/max ist schneller als Math.clamp)
+                // Skalieren & Clamping
                 int rInt = (int) (r * 255);
-                rInt = rInt < 0 ? 0 : (Math.min(rInt, 255));
+                rInt = rInt < 0 ? 0 : (rInt > 255 ? 255 : rInt);
 
                 int gInt = (int) (g * 255);
-                gInt = gInt < 0 ? 0 : (Math.min(gInt, 255));
+                gInt = gInt < 0 ? 0 : (gInt > 255 ? 255 : gInt);
 
                 int bInt = (int) (b * 255);
-                bInt = bInt < 0 ? 0 : (Math.min(bInt, 255));
+                bInt = bInt < 0 ? 0 : (bInt > 255 ? 255 : bInt);
 
                 // Alpha-Berechnung
                 int maxRGB = rInt > gInt ? rInt : gInt;
