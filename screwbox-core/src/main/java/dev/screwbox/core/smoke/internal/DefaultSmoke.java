@@ -157,6 +157,14 @@ public class DefaultSmoke implements Smoke, Updatable {
 
     }
 
+    @Override
+    public Vector velocityAt(Vector position) {
+        var cel = toCell(position);
+        var x= simulation.velocityX(cel.x(), cel.y());
+        var y =  simulation.velocityY(cel.x(), cel.y());
+        return Vector.$(x, y);
+    }
+
     private Bounds calculateFluidOnWorld() {
         return Bounds.atOrigin(worldAnchor, cellSize * simulation.size(), cellSize * simulation.size());
     }
@@ -172,6 +180,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
+    //TODO do not render image when empty
     private static Sprite createImage(DensityInfo densityInfo) {
         int maxOpacityva = maxOpacity.rangeValue(0,255);
         int cells = densityInfo.cells();

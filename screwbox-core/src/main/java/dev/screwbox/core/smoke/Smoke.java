@@ -14,4 +14,5 @@ public interface Smoke {
 
     void render();
 
+    Vector velocityAt(Vector position);
 }

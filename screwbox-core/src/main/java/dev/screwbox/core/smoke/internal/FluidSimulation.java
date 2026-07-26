@@ -1,5 +1,6 @@
 package dev.screwbox.core.smoke.internal;
 
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 
 import java.awt.image.BufferedImage;
@@ -360,5 +361,12 @@ public class FluidSimulation {
                 }
             }
         }
+    }
+
+    public double velocityX(int x, int y) {
+        return velocityX[IX(x, y)];
+    }
+    public double velocityY(int x, int y) {
+        return velocityY[IX(x, y)];
     }
 }

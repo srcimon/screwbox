@@ -22,6 +22,7 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 
 public class PlaygroundApp {
 
