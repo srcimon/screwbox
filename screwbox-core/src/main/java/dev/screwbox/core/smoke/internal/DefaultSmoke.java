@@ -307,32 +307,23 @@ public class DefaultSmoke implements Smoke {
                                    densityInfo.dessityBAt(x0, clampedY1) * w01 +
                                    densityInfo.dessityBAt(x1, clampedY1) * w11);
 
-                // Skalieren & Clamping
-                int rInt = (int) (r * 255);
-                rInt = rInt < 0 ? 0 : (Math.min(rInt, 255));
+                // 1. Clamping der float-Werte direkt auf 0.0 - 1.0
+                r = Math.max(0.0f, Math.min(1.0f, r));
+                g = Math.max(0.0f, Math.min(1.0f, g));
+                b = Math.max(0.0f, Math.min(1.0f, b));
 
-                int gInt = (int) (g * 255);
-                gInt = gInt < 0 ? 0 : (Math.min(gInt, 255));
+// 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
+                float maxChannel = Math.max(r, Math.max(g, b));
+                float alpha = Math.min(maxChannel, b1 / 255.0f); // b1 muss normalisiert werden, falls es 0-255 ist
 
-                int bInt = (int) (b * 255);
-                bInt = bInt < 0 ? 0 : (Math.min(bInt, 255));
+// 3. Premultiplied Alpha direkt im Float-Raum berechnen
+                int rPremult = (int) (r * alpha * 255.0f + 0.5f);
+                int gPremult = (int) (g * alpha * 255.0f + 0.5f);
+                int bPremult = (int) (b * alpha * 255.0f + 0.5f);
+                int aInt = (int) (alpha * 255.0f + 0.5f);
 
-                // Alpha-Berechnung
-                int maxRGB = Math.max(rInt, gInt);
-                if (bInt > maxRGB) maxRGB = bInt;
-
-                int aInt = Math.min(maxRGB, b1);
-                float alphaPercent = (aInt & 0xFF) / 255.0f;
-
-// Farbkanäle mit dem Alpha-Wert runterrechnen (Premultiplication)
-                int rPremult = (int) (((rInt & 0xFF) * alphaPercent) + 0.5f);
-                int gPremult = (int) (((gInt & 0xFF) * alphaPercent) + 0.5f);
-                int bPremult = (int) (((bInt & 0xFF) * alphaPercent) + 0.5f);
-// Erst jetzt in das Array schreiben
-                pixels[pixelIndex + x] = ((aInt & 0xFF) << 24) |
-                                         (rPremult << 16) |
-                                         (gPremult << 8)  |
-                                         bPremult;
+// 4. Direktes Schreiben ohne Maskierungs-Fehler
+                pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
 
 
             }
