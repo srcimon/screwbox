@@ -144,8 +144,7 @@ public class DefaultSmoke implements Smoke {
         final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
         final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int)(actuallyVisibleBounds.x()*cellSize* viewportManager.defaultViewport().camera().zoom()),(int)( actuallyVisibleBounds.y()*cellSize* viewportManager.defaultViewport().camera().zoom()));
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
-            .scaled(scale)
-            .opacity(maxOpacity));
+            .scaled(scale));
         if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
             reassignGrid();
         }
@@ -225,13 +224,14 @@ public class DefaultSmoke implements Smoke {
     private static int upscale = 6;
     private static int blur = 4;
 
-    static Percent maxOpacity = Percent.of(0.4);
+    static Percent maxOpacity = Percent.of(1);
 
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
     private static Sprite createImage(DensityInfo densityInfo, ScreenBounds actuallyVisibleBounds) {
+        int b1 = maxOpacity.rangeValue(0, 255);
         int totalCells = densityInfo.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
@@ -320,10 +320,20 @@ public class DefaultSmoke implements Smoke {
                 // Alpha-Berechnung
                 int maxRGB = Math.max(rInt, gInt);
                 if (bInt > maxRGB) maxRGB = bInt;
-                pixels[pixelIndex + x] = ((maxRGB & 0xFF) << 24) |
-                                         ((rInt & 0xFF) << 16) |
-                                         ((gInt & 0xFF) << 8)  |
-                                         (bInt & 0xFF);
+
+                int aInt = Math.min(maxRGB, b1);
+                float alphaPercent = (aInt & 0xFF) / 255.0f;
+
+// Farbkanäle mit dem Alpha-Wert runterrechnen (Premultiplication)
+                int rPremult = (int) (((rInt & 0xFF) * alphaPercent) + 0.5f);
+                int gPremult = (int) (((gInt & 0xFF) * alphaPercent) + 0.5f);
+                int bPremult = (int) (((bInt & 0xFF) * alphaPercent) + 0.5f);
+// Erst jetzt in das Array schreiben
+                pixels[pixelIndex + x] = ((aInt & 0xFF) << 24) |
+                                         (rPremult << 16) |
+                                         (gPremult << 8)  |
+                                         bPremult;
+
 
             }
         }

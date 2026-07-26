@@ -60,6 +60,7 @@ public class PlaygroundApp {
             x.graphics().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
 
+        screwBox.graphics().configuration().setBackgroundColor(Color.BLUE);
         screwBox.start();
     }
 
