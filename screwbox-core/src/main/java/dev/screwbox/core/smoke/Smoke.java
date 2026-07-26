@@ -4,7 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 
-public interface Smoke {
+public interface Smoke {//TODO Vapor?
 
     Smoke enable();
 
@@ -17,4 +17,5 @@ public interface Smoke {
 
     Smoke addObstacle(Bounds bounds);
 
+    //TODO Smoke setOptions(SmokeOptions.styling(GREYSCALE));
 }
