@@ -265,11 +265,4 @@ public class DefaultSmoke implements Smoke, Updatable {
         return Sprite.fromImage(image);
     }
 
-    // Hilfsmethode für die bilineare Interpolation
-    private static double interpolate(double v00, double v10, double v01, double v11, double tX, double tY) {
-        double top = v00 + tX * (v10 - v00);
-        double bottom = v01 + tX * (v11 - v01);
-        return top + tY * (bottom - top);
-    }
-
 }
