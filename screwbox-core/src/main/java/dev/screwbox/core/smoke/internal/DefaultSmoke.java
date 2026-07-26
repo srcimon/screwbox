@@ -4,10 +4,8 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
@@ -15,7 +13,6 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.loop.internal.DefaultLoop;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.smoke.Smoke;
-import dev.screwbox.core.utils.PerlinNoise;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -24,7 +21,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 public class DefaultSmoke implements Smoke, Updatable {
 
@@ -74,7 +70,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
     private Bounds calculateBestBounds() {
-        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand(screenBorderCells*cellSize);//TODO remove expand
+        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand(screenBorderCells * cellSize);//TODO remove expand
         var boundsArea = visibleArea.snapExpand(cellSize);
         return boundsArea.resize(
             Math.max(boundsArea.width(), boundsArea.height()),
@@ -90,6 +86,7 @@ public class DefaultSmoke implements Smoke, Updatable {
 
 
     List<Runnable> tasks = new ArrayList<>();
+
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);
@@ -116,6 +113,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
     Future<?> simulationTask;
+
     @Override
     public void render() {
         if (simulation == null) {
@@ -129,7 +127,7 @@ public class DefaultSmoke implements Smoke, Updatable {
             task.run();
         }
         tasks.clear();
-        if(simulationTask != null) {
+        if (simulationTask != null) {
             try {
                 simulationTask.get();
             } catch (InterruptedException e) {
@@ -138,12 +136,11 @@ public class DefaultSmoke implements Smoke, Updatable {
                 throw new RuntimeException(e);
             }
         }
+
+
         simulationTask = executor.submit(() -> {
             simulation.step(de, 0.000004, 0.000000000001, 2);
             simulation.fade(de * 0.04);
-            if(!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize*screenBorderCells*0.5))) {
-                reassignGrid();
-            }
         });
 
 
@@ -154,16 +151,11 @@ public class DefaultSmoke implements Smoke, Updatable {
         Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale));
-
+        if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
+            reassignGrid();
+        }
     }
 
-    @Override
-    public Vector velocityAt(Vector position) {
-        var cel = toCell(position);
-        var x= simulation.velocityX(cel.x(), cel.y());
-        var y =  simulation.velocityY(cel.x(), cel.y());
-        return Vector.$(x, y);
-    }
 
     private Bounds calculateFluidOnWorld() {
         return Bounds.atOrigin(worldAnchor, cellSize * simulation.size(), cellSize * simulation.size());
@@ -177,17 +169,18 @@ public class DefaultSmoke implements Smoke, Updatable {
     private static int blur = 5;
 
     static Percent maxOpacity = Percent.max();
+
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
     private static Sprite createImage(DensityInfo densityInfo) {
-        int maxOpacityva = maxOpacity.rangeValue(0,255);
+        int maxOpacityva = maxOpacity.rangeValue(0, 255);
         int cells = densityInfo.cells();
         int targetSize = cells * upscale;
 
         // 1. Schritt: Das Bild in der Zielgröße erstellen
-           var  image = new BufferedImage(targetSize, targetSize, BufferedImage.TYPE_INT_ARGB);
+        var image = new BufferedImage(targetSize, targetSize, BufferedImage.TYPE_INT_ARGB);
         var pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         // 2. Schritt: Generierung mit bilinearer Interpolation der Zelldaten
