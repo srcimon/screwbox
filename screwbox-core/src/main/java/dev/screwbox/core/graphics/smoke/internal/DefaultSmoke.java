@@ -8,14 +8,11 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.loop.internal.DefaultLoop;
 
-import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -23,10 +20,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 public class DefaultSmoke implements Smoke {
+    private static int upscale = 6;
+    private static int blur = 4;
+
+    static Percent maxOpacity = Percent.of(1);
 
     //TODO support split screen
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
+    private final SmokeRenderer smokeRender;
     private int cellSize = 8;
     private int screenBorderCells = 32;
     private Vector worldAnchor;
@@ -36,6 +38,7 @@ public class DefaultSmoke implements Smoke {
     public DefaultSmoke(final ViewportManager viewportManager, ExecutorService executor) {
         this.viewportManager = viewportManager;
         this.executor = executor;
+        this.smokeRender = new SmokeRenderer();
     }
 
     @Override
@@ -90,7 +93,7 @@ public class DefaultSmoke implements Smoke {
 
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
-        var cell = toCell(position);
+        var cell = toCell(position);//TODO no emission on obstacles
         if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
             tasks.add(() -> simulation.addDensity(cell.x(), cell.y(), amount, color));
         }
@@ -100,7 +103,7 @@ public class DefaultSmoke implements Smoke {
 
     @Override
     public Smoke push(Vector position, Vector velocity) {
-        var cell = toCell(position);
+        var cell = toCell(position);//TODO no emission on obstacles
         if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
             tasks.add(() -> simulation.addVelocity(cell.x(), cell.y(), velocity.x(), velocity.y()));
         }
@@ -139,10 +142,10 @@ public class DefaultSmoke implements Smoke {
 
         DensityInfo densityInfo = simulation.densityInfo();
         var actuallyVisibleBounds = calculateActuallyVisibleBounds();
-        final var sprite = Asset.asset(() -> createImage(densityInfo, actuallyVisibleBounds));
+        final var sprite = Asset.asset(() -> smokeRender.createImage(blur, upscale, maxOpacity, densityInfo, actuallyVisibleBounds));
         executor.submit(sprite::get);
         final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
-        final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int)(actuallyVisibleBounds.x()*cellSize* viewportManager.defaultViewport().camera().zoom()),(int)( actuallyVisibleBounds.y()*cellSize* viewportManager.defaultViewport().camera().zoom()));
+        final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewportManager.defaultViewport().camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewportManager.defaultViewport().camera().zoom()));
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale));
         if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
@@ -155,9 +158,9 @@ public class DefaultSmoke implements Smoke {
         tasks.add(() -> {
             var origin = toCell(bounds.origin());
             var max = toCell(bounds.bottomRight());
-            for(int x = origin.x(); x < max.x(); x++) {
-                for(int y = origin.y(); y < max.y(); y++) {
-                    simulation.setObstacle(x,y, true);
+            for (int x = origin.x(); x < max.x(); x++) {
+                for (int y = origin.y(); y < max.y(); y++) {
+                    simulation.setObstacle(x, y, true);
                 }
             }
         });
@@ -195,21 +198,21 @@ public class DefaultSmoke implements Smoke {
         // 3. Bestimme die exakten Start- und End-Zellen (Abrunden/Aufrunden via Double)
         int startCellX = (int) Math.floor(gridMinX / cellSize);
         int startCellY = (int) Math.floor(gridMinY / cellSize);
-        int endCellX   = (int) Math.ceil(gridMaxX / cellSize);
-        int endCellY   = (int) Math.ceil(gridMaxY / cellSize);
+        int endCellX = (int) Math.ceil(gridMaxX / cellSize);
+        int endCellY = (int) Math.ceil(gridMaxY / cellSize);
 
         // 4. Füge den gewünschten Sicherheitsabstand (1 Zelle Puffer rundherum) hinzu
         startCellX = startCellX - 1;
         startCellY = startCellY - 1;
-        endCellX   = endCellX + 1;
-        endCellY   = endCellY + 1;
+        endCellX = endCellX + 1;
+        endCellY = endCellY + 1;
 
         // 5. Striktes Clamping an die physikalischen Simulationsgrenzen
         final int maxCells = simulation.size();
         startCellX = Math.clamp(startCellX, 0, maxCells - 1);
         startCellY = Math.clamp(startCellY, 0, maxCells - 1);
-        endCellX   = Math.clamp(endCellX, startCellX + 1, maxCells);
-        endCellY   = Math.clamp(endCellY, startCellY + 1, maxCells);
+        endCellX = Math.clamp(endCellX, startCellX + 1, maxCells);
+        endCellY = Math.clamp(endCellY, startCellY + 1, maxCells);
 
         int width = endCellX - startCellX;
         int height = endCellY - startCellY;
@@ -221,119 +224,5 @@ public class DefaultSmoke implements Smoke {
         return Bounds.atOrigin(worldAnchor, cellSize * simulation.size(), cellSize * simulation.size());
     }
 
-    private static int upscale = 6;
-    private static int blur = 4;
-
-    static Percent maxOpacity = Percent.of(1);
-
-    //TODO reuse bufferimage
-    //TODO only switch grid size when resolution changes
-    //TODO only create image from visible cells
-    //TODO do not render image when empty
-    private static Sprite createImage(DensityInfo densityInfo, ScreenBounds actuallyVisibleBounds) {
-        int b1 = maxOpacity.rangeValue(0, 255);
-        int totalCells = densityInfo.cells(); // Gesamtzahl der Zellen im Quellgitter
-
-        // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
-        int startX = actuallyVisibleBounds.x();
-        int startY = actuallyVisibleBounds.y();
-        int viewWidthCells = actuallyVisibleBounds.width();
-        int viewHeightCells = actuallyVisibleBounds.height();
-
-        // Zielgröße des neuen Bildes in Pixeln
-        int targetWidth = viewWidthCells * upscale;
-        int targetHeight = viewHeightCells * upscale;
-
-        // Erstelle das Bild exakt in der benötigten Zielgröße (nicht mehr quadratisch blockiert)
-        Size size = Size.of(targetWidth, targetHeight);
-        var image = ImageOperations.createImage(size);
-        int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-
-        // 1. Look-Up-Tabellen (LUT) für X-Achse vorbereiten (relativ zu startX)
-        int[] x0Arr = new int[targetWidth];
-        int[] x1Arr = new int[targetWidth];
-        float[] tXArr = new float[targetWidth];
-
-        for (int x = 0; x < targetWidth; x++) {
-            // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
-            float srcX = startX + ((float) x / upscale);
-            int x0 = (int) srcX;
-
-            x0Arr[x] = Math.clamp(x0, 0, totalCells - 1);
-            x1Arr[x] = Math.clamp(x0 + 1, 0, totalCells - 1);
-            tXArr[x] = srcX - x0;
-        }
-
-        // 2. Hauptschleife mit optimierter Interpolation über die Subimage-Pixel
-        for (int y = 0; y < targetHeight; y++) {
-            int pixelIndex = y * targetWidth;
-
-            // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
-            float srcY = startY + ((float) y / upscale);
-            int y0 = (int) srcY;
-
-            int clampedY0 = Math.clamp(y0, 0, totalCells - 1);
-            int clampedY1 = Math.clamp(y0 + 1, 0, totalCells - 1);
-            float tY = srcY - y0;
-            float invTY = 1.0f - tY;
-
-            for (int x = 0; x < targetWidth; x++) {
-                int x0 = x0Arr[x];
-                int x1 = x1Arr[x];
-                float tX = tXArr[x];
-                float invTX = 1.0f - tX;
-
-                // Gewichtungen vorab berechnen
-                float w00 = invTX * invTY;
-                float w10 = tX * invTY;
-                float w01 = invTX * tY;
-                float w11 = tX * tY;
-
-                // Rot-Kanal (Interpolation mit globalen, geklammerten Koordinaten)
-                float r = (float) (densityInfo.dessityRAt(x0, clampedY0) * w00 +
-                                   densityInfo.dessityRAt(x1, clampedY0) * w10 +
-                                   densityInfo.dessityRAt(x0, clampedY1) * w01 +
-                                   densityInfo.dessityRAt(x1, clampedY1) * w11);
-
-                // Grün-Kanal
-                float g = (float) (densityInfo.dessityGAt(x0, clampedY0) * w00 +
-                                   densityInfo.dessityGAt(x1, clampedY0) * w10 +
-                                   densityInfo.dessityGAt(x0, clampedY1) * w01 +
-                                   densityInfo.dessityGAt(x1, clampedY1) * w11);
-
-                // Blau-Kanal
-                float b = (float) (densityInfo.dessityBAt(x0, clampedY0) * w00 +
-                                   densityInfo.dessityBAt(x1, clampedY0) * w10 +
-                                   densityInfo.dessityBAt(x0, clampedY1) * w01 +
-                                   densityInfo.dessityBAt(x1, clampedY1) * w11);
-
-                // 1. Clamping der float-Werte direkt auf 0.0 - 1.0
-                r = Math.max(0.0f, Math.min(1.0f, r));
-                g = Math.max(0.0f, Math.min(1.0f, g));
-                b = Math.max(0.0f, Math.min(1.0f, b));
-
-// 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
-                float maxChannel = Math.max(r, Math.max(g, b));
-                float alpha = Math.min(maxChannel, b1 / 255.0f); // b1 muss normalisiert werden, falls es 0-255 ist
-
-// 3. Premultiplied Alpha direkt im Float-Raum berechnen
-                int rPremult = (int) (r * alpha * 255.0f + 0.5f);
-                int gPremult = (int) (g * alpha * 255.0f + 0.5f);
-                int bPremult = (int) (b * alpha * 255.0f + 0.5f);
-                int aInt = (int) (alpha * 255.0f + 0.5f);
-
-// 4. Direktes Schreiben ohne Maskierungs-Fehler
-                pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
-
-
-            }
-        }
-
-        if (blur > 0) {
-            ImageOperations.blurImage(image, blur);
-        }
-
-        return Sprite.fromImage(image);
-    }
 
 }
