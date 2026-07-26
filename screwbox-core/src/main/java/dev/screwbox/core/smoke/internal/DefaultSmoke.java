@@ -45,6 +45,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     private void reassignGrid() {
+        awaitEndOfSimulationTask();
         var lastAnchor = worldAnchor;
         var boundsArea = calculateBestBounds();
 
@@ -127,16 +128,7 @@ public class DefaultSmoke implements Smoke {
             task.run();
         }
         tasks.clear();
-        if (simulationTask != null) {
-            try {
-                simulationTask.get();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
+        awaitEndOfSimulationTask();
 
         simulationTask = executor.submit(() -> {
             simulation.step(de, 0.000004, 0.000000000001, 2);
@@ -154,6 +146,18 @@ public class DefaultSmoke implements Smoke {
             .scaled(scale));
         if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
             reassignGrid();
+        }
+    }
+
+    private void awaitEndOfSimulationTask() {
+        if (simulationTask != null) {
+            try {
+                simulationTask.get();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
