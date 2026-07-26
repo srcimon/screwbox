@@ -36,7 +36,7 @@ public class DefaultSmoke implements Smoke {
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
 
-    public DefaultSmoke(final ViewportManager viewportManager, ExecutorService executor) {
+    public DefaultSmoke(final ViewportManager viewportManager, final ExecutorService executor) {
         this.viewportManager = viewportManager;
         this.executor = executor;
         this.smokeRender = new SmokeRenderer();
@@ -224,6 +224,4 @@ public class DefaultSmoke implements Smoke {
     private Bounds calculateFluidOnWorld() {
         return Bounds.atOrigin(worldAnchor, cellSize * simulation.resolution(), cellSize * simulation.resolution());
     }
-
-
 }

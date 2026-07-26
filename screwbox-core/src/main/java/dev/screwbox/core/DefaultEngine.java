@@ -30,6 +30,8 @@ import dev.screwbox.core.graphics.internal.DefaultViewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
+import dev.screwbox.core.graphics.light.internal.DefaultLight;
+import dev.screwbox.core.graphics.smoke.internal.DefaultSmoke;
 import dev.screwbox.core.keyboard.Keyboard;
 import dev.screwbox.core.keyboard.internal.DefaultKeyboard;
 import dev.screwbox.core.log.ConsoleLoggingAdapter;
@@ -130,7 +132,9 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, executor, postProcessing);
 
-        graphics = new DefaultGraphics(configuration, screen, renderPipeline, viewportManager, postProcessing, executor);
+        final var light = new DefaultLight(configuration, viewportManager, executor);
+        final var smoke = new DefaultSmoke(viewportManager, executor);
+        graphics = new DefaultGraphics(configuration, screen, renderPipeline, viewportManager, postProcessing, light, smoke);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);

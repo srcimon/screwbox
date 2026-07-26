@@ -18,7 +18,6 @@ import dev.screwbox.core.loop.internal.Updatable;
 import java.awt.*;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
 public class DefaultGraphics implements Graphics, Updatable {
@@ -38,16 +37,17 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
                            final PostProcessing postProcessing,
-                           final ExecutorService executor) {
+                           final DefaultLight light,//TODO bind only interface
+                           final DefaultSmoke smoke) {//TODO bind only interface
         this.configuration = configuration;
-        this.light = new DefaultLight(configuration, viewportManager, executor);
         this.screen = screen;
         this.renderPipeline = renderPipeline;
         this.viewportManager = viewportManager;
         this.postProcessing = postProcessing;
         this.attentionFocus = new AttentionFocus(viewportManager);
         this.world = new DefaultWorld(viewportManager);
-        this.smoke = new DefaultSmoke(viewportManager, executor);
+        this.light = light;
+        this.smoke = smoke;
     }
 
     @Override
