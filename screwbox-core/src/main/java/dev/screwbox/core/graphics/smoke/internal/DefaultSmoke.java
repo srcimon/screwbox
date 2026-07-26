@@ -60,8 +60,8 @@ public class DefaultSmoke implements Smoke {
 
         var oldSimulation = simulation;
         // Hier erlauben wir die dynamische Größenänderung explizit!
-        int newCells = (int) Math.round(boundsArea.width() / cellSize);
-        simulation = new FluidSimulation(newCells);
+        int resolution = (int) Math.round(boundsArea.width() / cellSize);
+        simulation = new FluidSimulation(resolution);
         if (lastAnchor != null) {
             // 2. MATHEMATISCH KORREKTES DELTA BEI GRÖSSENÄNDERUNG:
             // Wir berechnen, wie viele Zellen die NEUE linke obere Ecke von der ALTEN linken oberen Ecke entfernt ist.

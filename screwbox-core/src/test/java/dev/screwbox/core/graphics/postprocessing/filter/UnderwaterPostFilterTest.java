@@ -1,9 +1,7 @@
-package dev.screwbox.core.graphics.postprocessing.internal.filter;
+package dev.screwbox.core.graphics.postprocessing.filter;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.postprocessing.filter.PostProcessingContext;
-import dev.screwbox.core.graphics.postprocessing.filter.UnderwaterPostFilter;
 import org.junit.jupiter.api.Test;
 
 import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;

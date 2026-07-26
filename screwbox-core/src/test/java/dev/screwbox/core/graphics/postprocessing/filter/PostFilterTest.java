@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.postprocessing.internal.filter;
+package dev.screwbox.core.graphics.postprocessing.filter;
 
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;

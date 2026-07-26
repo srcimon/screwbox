@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class FluidSimulation {
 
-    private final int cells;
+    private final int resolution;
 
     private double[] densityR, densityR0;
     private double[] densityG, densityG0;
@@ -23,16 +23,16 @@ public class FluidSimulation {
         int imgWidth = img.getWidth();
         int imgHeight = img.getHeight();
 
-        for (int y = 0; y < cells; y++) {
+        for (int y = 0; y < resolution; y++) {
             // Kachelung in Y-Richtung per Modulo
             int imgY = y % imgHeight;
 
-            for (int x = 0; x < cells; x++) {
+            for (int x = 0; x < resolution; x++) {
                 // Kachelung in X-Richtung per Modulo
                 int imgX = x % imgWidth;
 
                 // 2D-zu-1D Index für die Simulations-Arrays
-                int index = x + y * cells;
+                int index = x + y * resolution;
 
                 // Holt den kombinierten ARGB-Wert des Pixels
                 int rgb = img.getRGB(imgX, imgY);
@@ -55,9 +55,9 @@ public class FluidSimulation {
         }
     }
 
-    public FluidSimulation(final int cells) {
-        this.cells = cells;
-        int length = this.cells * this.cells;
+    public FluidSimulation(final int resolution) {
+        this.resolution = resolution;
+        final int length = resolution * resolution;
         this.densityR = new double[length];
         this.densityR0 = new double[length];
         this.densityG = new double[length];
@@ -94,16 +94,16 @@ public class FluidSimulation {
 
 
     public DensityInfo densityInfo() {
-        return new DensityInfo(cells, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
+        return new DensityInfo(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
     }
 
     private int IX(int x, int y) {
-        return Math.clamp(x, 0, cells - 1) +
-               Math.clamp(y, 0, cells - 1) * cells;
+        return Math.clamp(x, 0, resolution - 1) +
+               Math.clamp(y, 0, resolution - 1) * resolution;
     }
 
     private int IXFastButUnsave(int x, int y) {
-        return x + y * cells;
+        return x + y * resolution;
     }
 
     public void step(double delta, double visc, double diff, int iter) {
@@ -130,7 +130,7 @@ public class FluidSimulation {
     }
 
     void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
-        int size = this.cells;
+        int size = this.resolution;
         double iterationBonus = 1.0 + (20.0 - iter) * 0.05;
         double a = dt * (diff * iterationBonus) * (size - 2) * (size - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
@@ -229,7 +229,7 @@ public class FluidSimulation {
 
     // Kombinierter Solver für alle 3 Farbkanäle (Massiver Cache-Gewinn!)
     void diffuseRGB(double[] r, double[] g, double[] b, double[] r0, double[] g0, double[] b0, double diff, double dt, int iter) {
-        int size = this.cells;
+        int size = this.resolution;
         double iterationBonus = 1.0 + (20.0 - iter) * 0.05; // Faktor empirisch anpassen (z.B. bei iter=5 -> ~1.75)
         double a = dt * (diff * iterationBonus) * (size - 2) * (size - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
@@ -283,16 +283,16 @@ public class FluidSimulation {
         double cRecip = 1.0 / c;
 
         for (int k = 0; k < iter; k++) {
-            for (int j = 1; j < cells - 1; j++) {
+            for (int j = 1; j < resolution - 1; j++) {
 
                 // Pointer-Initialisierung für den Zeilenstart (i = 1)
-                int idx_current = 1 + j * cells;
+                int idx_current = 1 + j * resolution;
                 int idx_left = idx_current - 1;
                 int idx_right = idx_current + 1;
-                int idx_top = idx_current - cells;
-                int idx_bottom = idx_current + cells;
+                int idx_top = idx_current - resolution;
+                int idx_bottom = idx_current + resolution;
 
-                for (int i = 1; i < cells - 1; i++) {
+                for (int i = 1; i < resolution - 1; i++) {
 
                     if (obstacles[idx_current]) {
                         x[idx_current] = 0; // Druck/Wert im Hindernis ist Null
@@ -318,11 +318,11 @@ public class FluidSimulation {
     }
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
-        double h = 1.0 / (cells - 2);
+        double h = 1.0 / (resolution - 2);
 
         // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
-        for (int j = 1; j < cells - 1; j++) {
-            for (int i = 1; i < cells - 1; i++) {
+        for (int j = 1; j < resolution - 1; j++) {
+            for (int i = 1; i < resolution - 1; i++) {
                 int ix = IXFastButUnsave(i, j);
 
                 if (obstacles[ix]) {
@@ -351,8 +351,8 @@ public class FluidSimulation {
         lin_solve(p, div, 1, 4, iter);
 
         // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
-        for (int j = 1; j < cells - 1; j++) {
-            for (int i = 1; i < cells - 1; i++) {
+        for (int j = 1; j < resolution - 1; j++) {
+            for (int i = 1; i < resolution - 1; i++) {
                 int ix = IXFastButUnsave(i, j);
 
                 if (obstacles[ix]) {
@@ -381,18 +381,18 @@ public class FluidSimulation {
     void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
         double i0, i1, j0, j1;
 
-        double dtx = dt * (cells - 2);
-        double dty = dt * (cells - 2);
+        double dtx = dt * (resolution - 2);
+        double dty = dt * (resolution - 2);
 
         double s0, s1, t0, t1;
         double tmp1, tmp2, x, y;
 
-        double Nfloat = cells;
+        double Nfloat = resolution;
         double ifloat, jfloat;
         int i, j;
 
-        for (j = 1, jfloat = 1; j < cells - 1; j++, jfloat++) {
-            for (i = 1, ifloat = 1; i < cells - 1; i++, ifloat++) {
+        for (j = 1, jfloat = 1; j < resolution - 1; j++, jfloat++) {
+            for (i = 1, ifloat = 1; i < resolution - 1; i++, ifloat++) {
                 int ix = IXFastButUnsave(i, j);
 
                 // Wenn die aktuelle Zelle ein Hindernis ist, strömt hier nichts hin
@@ -443,22 +443,22 @@ public class FluidSimulation {
 
 
     public int size() {
-        return cells;
+        return resolution;
     }
 
     public void loadFrom(FluidSimulation oldSimulation, int deltaX, int deltaY) {
-        for (int x = 1; x < this.cells - 1; x++) {
-            for (int y = 1; y < this.cells - 1; y++) {
+        for (int x = 1; x < this.resolution - 1; x++) {
+            for (int y = 1; y < this.resolution - 1; y++) {
 
                 int xOld = x + deltaX;
                 int yOld = y + deltaY;
 
-                if (xOld >= 1 && xOld < oldSimulation.cells - 1 &&
-                    yOld >= 1 && yOld < oldSimulation.cells - 1) {
+                if (xOld >= 1 && xOld < oldSimulation.resolution - 1 &&
+                    yOld >= 1 && yOld < oldSimulation.resolution - 1) {
 
                     // Nutze für jedes Objekt die jeweils eigene Index-Arithmetik!
-                    int ix = x + y * this.cells; // Inlined für das neue Grid
-                    int ixOld = xOld + yOld * oldSimulation.cells; // Nutzt oldSimulation.cells!
+                    int ix = x + y * this.resolution; // Inlined für das neue Grid
+                    int ixOld = xOld + yOld * oldSimulation.resolution; // Nutzt oldSimulation.cells!
 
                     densityR[ix] = oldSimulation.densityR[ixOld];
                     densityR0[ix] = oldSimulation.densityR0[ixOld];
