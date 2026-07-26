@@ -9,51 +9,22 @@ public class FluidSimulation {
 
     private final int resolution;
 
-    private double[] densityR, densityR0;
-    private double[] densityG, densityG0;
-    private double[] densityB, densityB0;
+    private final double[] densityR;
+    private final double[] densityR0;
+
+    private final double[] densityG;
+    private final double[] densityG0;
+
+    private final double[] densityB;
+    private final double[] densityB0;
 
     private final double[] velocityX;
     private final double[] velocityX0;
+
     private final double[] velocityY;
     private final double[] velocityY0;
+
     private final boolean[] obstacles;
-
-    public void loadDensityFromImageTiled(BufferedImage img) {
-        int imgWidth = img.getWidth();
-        int imgHeight = img.getHeight();
-
-        for (int y = 0; y < resolution; y++) {
-            // Kachelung in Y-Richtung per Modulo
-            int imgY = y % imgHeight;
-
-            for (int x = 0; x < resolution; x++) {
-                // Kachelung in X-Richtung per Modulo
-                int imgX = x % imgWidth;
-
-                // 2D-zu-1D Index für die Simulations-Arrays
-                int index = x + y * resolution;
-
-                // Holt den kombinierten ARGB-Wert des Pixels
-                int rgb = img.getRGB(imgX, imgY);
-
-                // Bit-Shifting extrahiert die Kanäle (Wertebereich 0 bis 255)
-                int r = (rgb >> 16) & 0xFF;
-                int g = (rgb >> 8) & 0xFF;
-                int b = rgb & 0xFF;
-
-                // Normierung auf 0.0 - 1.0 für die Fluid-Simulation
-                this.densityR[index] = r / 255.0;
-                this.densityG[index] = g / 255.0;
-                this.densityB[index] = b / 255.0;
-
-                // Zurücksetzen der vorherigen Zeitschritte
-                this.densityR0[index] = 0.0;
-                this.densityG0[index] = 0.0;
-                this.densityB0[index] = 0.0;
-            }
-        }
-    }
 
     public FluidSimulation(final int resolution) {
         this.resolution = resolution;
@@ -75,7 +46,7 @@ public class FluidSimulation {
     double maxVelocity = 20;
 
     public void addDensity(final int x, int y, final double amount, Color color) {
-        int ix = IX(x, y);
+        int ix = indexSafe(x, y);
         densityR[ix] += amount * color.r() / 255.0;
         densityG[ix] += amount * color.g() / 255.0;
         densityB[ix] += amount * color.b() / 255.0;
@@ -85,7 +56,7 @@ public class FluidSimulation {
     }
 
     public void addVelocity(final int x, int y, final double amountX, final double amountY) {
-        int ix = IX(x, y);
+        int ix = indexSafe(x, y);
         velocityX[ix] += amountX;
         velocityY[ix] += amountY;
         velocityX[ix] = Math.min(maxVelocity, velocityX[ix]);
@@ -97,12 +68,12 @@ public class FluidSimulation {
         return new FluidSimulationState(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
     }
 
-    private int IX(int x, int y) {
+    private int indexSafe(int x, int y) {
         return Math.clamp(x, 0, resolution - 1) +
                Math.clamp(y, 0, resolution - 1) * resolution;
     }
 
-    private int IXFastButUnsave(int x, int y) {
+    private int index(int x, int y) {
         return x + y * resolution;
     }
 
@@ -323,7 +294,7 @@ public class FluidSimulation {
         // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
         for (int j = 1; j < resolution - 1; j++) {
             for (int i = 1; i < resolution - 1; i++) {
-                int ix = IXFastButUnsave(i, j);
+                int ix = index(i, j);
 
                 if (obstacles[ix]) {
                     div[ix] = 0;
@@ -331,10 +302,10 @@ public class FluidSimulation {
                     continue;
                 }
 
-                int left = IXFastButUnsave(i - 1, j);
-                int right = IXFastButUnsave(i + 1, j);
-                int top = IXFastButUnsave(i, j - 1);
-                int bot = IXFastButUnsave(i, j + 1);
+                int left = index(i - 1, j);
+                int right = index(i + 1, j);
+                int top = index(i, j - 1);
+                int bot = index(i, j + 1);
 
                 // Wenn der Nachbar ein Hindernis ist, fließt dort nichts durch (Geschwindigkeit = 0)
                 double vL = obstacles[left] ? 0 : velocX[left];
@@ -353,7 +324,7 @@ public class FluidSimulation {
         // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
         for (int j = 1; j < resolution - 1; j++) {
             for (int i = 1; i < resolution - 1; i++) {
-                int ix = IXFastButUnsave(i, j);
+                int ix = index(i, j);
 
                 if (obstacles[ix]) {
                     velocX[ix] = 0;
@@ -361,10 +332,10 @@ public class FluidSimulation {
                     continue;
                 }
 
-                int left = IX(i - 1, j);
-                int right = IX(i + 1, j);
-                int top = IX(i, j - 1);
-                int bot = IX(i, j + 1);
+                int left = indexSafe(i - 1, j);
+                int right = indexSafe(i + 1, j);
+                int top = indexSafe(i, j - 1);
+                int bot = indexSafe(i, j + 1);
 
                 // Neumann-Randbedingung für den Druck: p spiegeln, wenn der Nachbar ein Hindernis ist
                 double pL = obstacles[left] ? p[ix] : p[left];
@@ -393,7 +364,7 @@ public class FluidSimulation {
 
         for (j = 1, jfloat = 1; j < resolution - 1; j++, jfloat++) {
             for (i = 1, ifloat = 1; i < resolution - 1; i++, ifloat++) {
-                int ix = IXFastButUnsave(i, j);
+                int ix = index(i, j);
 
                 // Wenn die aktuelle Zelle ein Hindernis ist, strömt hier nichts hin
                 if (obstacles[ix]) {
@@ -429,10 +400,10 @@ public class FluidSimulation {
 
                 // Hindernis-Check für die 4 Interpolations-Nachbarn:
                 // Wenn ein Quellpixel im Hindernis liegt, nutzen wir stattdessen das aktuelle Feld (ix)
-                int idx00 = obstacles[IX(i0i, j0i)] ? ix : IX(i0i, j0i);
-                int idx01 = obstacles[IX(i0i, j1i)] ? ix : IX(i0i, j1i);
-                int idx10 = obstacles[IX(i1i, j0i)] ? ix : IX(i1i, j0i);
-                int idx11 = obstacles[IX(i1i, j1i)] ? ix : IX(i1i, j1i);
+                int idx00 = obstacles[indexSafe(i0i, j0i)] ? ix : indexSafe(i0i, j0i);
+                int idx01 = obstacles[indexSafe(i0i, j1i)] ? ix : indexSafe(i0i, j1i);
+                int idx10 = obstacles[indexSafe(i1i, j0i)] ? ix : indexSafe(i1i, j0i);
+                int idx11 = obstacles[indexSafe(i1i, j1i)] ? ix : indexSafe(i1i, j1i);
 
                 // Bilineare Interpolation mit den korrigierten Indizes
                 d[ix] = s0 * (t0 * d0[idx00] + t1 * d0[idx01]) +
@@ -480,11 +451,47 @@ public class FluidSimulation {
     }
 
     public void setObstacle(int x, int y, boolean b) {
-        obstacles[IX(x, y)] = b;
+        obstacles[indexSafe(x, y)] = b;
     }
 
     public void clearObstacles() {
         Arrays.fill(obstacles, false);
+    }
+
+    public void loadDensityFromImageTiled(BufferedImage img) {
+        int imgWidth = img.getWidth();
+        int imgHeight = img.getHeight();
+
+        for (int y = 0; y < resolution; y++) {
+            // Kachelung in Y-Richtung per Modulo
+            int imgY = y % imgHeight;
+
+            for (int x = 0; x < resolution; x++) {
+                // Kachelung in X-Richtung per Modulo
+                int imgX = x % imgWidth;
+
+                // 2D-zu-1D Index für die Simulations-Arrays
+                int index = x + y * resolution;
+
+                // Holt den kombinierten ARGB-Wert des Pixels
+                int rgb = img.getRGB(imgX, imgY);
+
+                // Bit-Shifting extrahiert die Kanäle (Wertebereich 0 bis 255)
+                int r = (rgb >> 16) & 0xFF;
+                int g = (rgb >> 8) & 0xFF;
+                int b = rgb & 0xFF;
+
+                // Normierung auf 0.0 - 1.0 für die Fluid-Simulation
+                this.densityR[index] = r / 255.0;
+                this.densityG[index] = g / 255.0;
+                this.densityB[index] = b / 255.0;
+
+                // Zurücksetzen der vorherigen Zeitschritte
+                this.densityR0[index] = 0.0;
+                this.densityG0[index] = 0.0;
+                this.densityB0[index] = 0.0;
+            }
+        }
     }
 
 }
