@@ -158,15 +158,48 @@ public class DefaultSmoke implements Smoke {
     }
 
     private ScreenBounds calculateActuallyVisibleBounds() {
-        //TODO use densityInfoFromFluid object
-        Offset worldStart = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
-        Offset offset = Offset.origin().add(Math.floorDiv(-worldStart.x(), cellSize), Math.floorDiv(-worldStart.y(), cellSize));
-        var endOffset = viewportManager.defaultViewport().toCanvas(imageWorldAnchor.add(viewportManager.defaultViewport().visibleArea().extents().multiply(2)));
-        var viewportSize = viewportManager.defaultViewport().canvas().size();
-        var deltaX = Math.ceilDiv(viewportSize.width()-endOffset.x(), cellSize);
-        var deltaY = Math.ceilDiv(viewportSize.height()-endOffset.y(), cellSize);
-        Size size = Size.of(simulation.size() - offset.x()-deltaX, simulation.size() - offset.y()-deltaY);
-        return new ScreenBounds(offset, size);
+        final var viewport = viewportManager.defaultViewport();
+        final double zoom = viewport.camera().zoom();
+
+        // Die tatsächliche Pixelgröße einer Zelle auf dem Bildschirm unter Berücksichtigung des Zooms
+        int currentCellPixelSize = (int) Math.max(1, cellSize * zoom);
+
+        Offset worldStart = viewport.toCanvas(imageWorldAnchor);
+
+        // 1. Berechne die theoretische Start-Zelle (Abgerundet für Pixelpräzision)
+        int startCellX = Math.floorDiv(-worldStart.x(), currentCellPixelSize);
+        int startCellY = Math.floorDiv(-worldStart.y(), currentCellPixelSize);
+
+        // 2. Erweitere das Sichtfeld um 1 Zelle nach links und oben (Puffer)
+        startCellX = startCellX - 1;
+        startCellY = startCellY - 1;
+
+        // Begrenze auf die echten Simulationsgrenzen (0 ist das Minimum)
+        startCellX = Math.clamp(startCellX, 0, simulation.size() - 1);
+        startCellY = Math.clamp(startCellY, 0, simulation.size() - 1);
+
+        // 3. Berechne das theoretische Ende der sichtbaren Zellen auf dem Canvas
+        var viewportSize = viewport.canvas().size();
+        int endCellX = Math.ceilDiv(viewportSize.width() - worldStart.x(), currentCellPixelSize);
+        int endCellY = Math.ceilDiv(viewportSize.height() - worldStart.y(), currentCellPixelSize);
+
+        // 4. Erweitere das Sichtfeld um 1 Zelle nach rechts und unten (Puffer)
+        endCellX = endCellX + 1;
+        endCellY = endCellY + 1;
+
+        // Begrenze das Ende auf die maximale Simulationsgröße
+        endCellX = Math.clamp(endCellX, startCellX + 1, simulation.size());
+        endCellY = Math.clamp(endCellY, startCellY + 1, simulation.size());
+
+        // 5. Dimensionen ausrechnen
+        int width = endCellX - startCellX;
+        int height = endCellY - startCellY;
+
+        // Verwende den neuen, stabilen Offset (inklusive Puffer)
+        Offset bufferedOffset = Offset.origin().add(startCellX, startCellY);
+        Size bufferedSize = Size.of(width, height);
+
+        return new ScreenBounds(bufferedOffset, bufferedSize);
     }
 
     private Bounds calculateFluidOnWorld() {
