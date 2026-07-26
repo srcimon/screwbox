@@ -182,8 +182,7 @@ public class DefaultSmoke implements Smoke, Updatable {
         int maxOpacityva = maxOpacity.rangeValue(0, 255);
         int cells = densityInfo.cells();
         int targetSize = cells * upscale;
-
-        var image = ImageOperations.createImage(Size.square(targetSize));
+        var image = ImageOperations.createImage(Size.square(targetSize));//TODO reuse
         int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         // 1. Look-Up-Tabellen (LUT) für X-Achse vorbereiten (Vermeidet double-Arithmetik in der inneren Schleife)
