@@ -1,7 +1,9 @@
 package dev.screwbox.core.smoke.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
@@ -148,15 +150,14 @@ public class DefaultSmoke implements Smoke, Updatable {
 
 
         DensityInfo densityInfo = simulation.densityInfo();
-        var sprite = Asset.asset(() -> createImage(densityInfo));
+        final var sprite = Asset.asset(() -> createImage(densityInfo));
         executor.submit(sprite::get);
-        double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
-        Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
+        final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
+        final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor);
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale));
 
     }
-
 
     private Bounds calculateFluidOnWorld() {
         return Bounds.atOrigin(worldAnchor, cellSize * simulation.size(), cellSize * simulation.size());
@@ -227,7 +228,6 @@ public class DefaultSmoke implements Smoke, Updatable {
         if (blur > 0) {
             ImageOperations.blurImage(image, blur);
         }
-
 
         return Sprite.fromImage(image);
     }
