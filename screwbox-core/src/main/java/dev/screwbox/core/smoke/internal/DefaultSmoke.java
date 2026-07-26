@@ -137,13 +137,12 @@ public class DefaultSmoke implements Smoke {
             }
         }
 
-
+        if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
+            reassignGrid();
+        }
         simulationTask = executor.submit(() -> {
             simulation.step(de, 0.000004, 0.000000000001, 2);
             simulation.fade(de * 0.04);
-            if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
-                reassignGrid();
-            }
         });
 
 
