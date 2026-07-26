@@ -132,7 +132,7 @@ public class DefaultSmoke implements Smoke {
         awaitEndOfSimulationTask();
 
         simulationTask = executor.submit(() -> {
-            simulation.step(de, 0.000004, 0.000000000001, 2);
+            simulation.step(de, 0.0000000004, 0.000001, 2);
             simulation.fade(de * 0.04);
         });
 
