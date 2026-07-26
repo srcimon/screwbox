@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.RenderingApi;
+import dev.screwbox.core.graphics.AspectRatio;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
@@ -17,6 +18,7 @@ import dev.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.image.VolatileImage;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -24,6 +26,8 @@ import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
+import static java.util.Arrays.stream;
+import static java.util.Comparator.reverseOrder;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -38,6 +42,7 @@ public class DefaultScreen implements Screen, Updatable {
     private final ViewportManager viewportManager;
     private final GraphicsConfiguration configuration;
     private final DefaultPostProcessing postProcessing;
+    private final GraphicsDevice graphicsDevice;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Angle rotation = Angle.none();
@@ -54,7 +59,8 @@ public class DefaultScreen implements Screen, Updatable {
                          final DefaultCanvas canvas,
                          final ViewportManager viewportManager,
                          final GraphicsConfiguration configuration,
-                         final DefaultPostProcessing postProcessing) {
+                         final DefaultPostProcessing postProcessing,
+                         final GraphicsDevice graphicsDevice) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
@@ -62,6 +68,7 @@ public class DefaultScreen implements Screen, Updatable {
         this.viewportManager = viewportManager;
         this.configuration = configuration;
         this.postProcessing = postProcessing;
+        this.graphicsDevice = graphicsDevice;
     }
 
     public void updateScreen() {
@@ -253,5 +260,30 @@ public class DefaultScreen implements Screen, Updatable {
             degrees += viewport.camera().swing().degrees();
         }
         this.shake = Angle.degrees(degrees);
+    }
+
+    @Override
+    public java.util.List<Size> supportedResolutions() {
+        return stream(graphicsDevice.getDisplayModes())
+            .map(DefaultScreen::toDimension)
+            .distinct()
+            .sorted(reverseOrder())
+            .toList();
+    }
+
+    @Override
+    public List<Size> supportedResolutions(final AspectRatio ratio) {
+        return supportedResolutions().stream()
+            .filter(ratio::matches)
+            .toList();
+    }
+
+    @Override
+    public Size resolution() {
+        return toDimension(graphicsDevice.getDisplayMode());
+    }
+
+    private static Size toDimension(final DisplayMode screenSize) {
+        return Size.of(screenSize.getWidth(), screenSize.getHeight());
     }
 }

@@ -118,8 +118,8 @@ class DefaultEngine implements Engine {
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
         final var robot = createRobot();
         final var postProcessing = new DefaultPostProcessing(configuration, viewportManager, ImageOperations::createVolatileImage);
-        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration, postProcessing);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration, postProcessing, graphicsDevice);
         mouse = new DefaultMouse(screen, viewportManager);
         final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
         window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline, cursorLockInSupport);
@@ -130,7 +130,7 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, executor, postProcessing);
 
-        graphics = new DefaultGraphics(configuration, screen, graphicsDevice, renderPipeline, viewportManager, postProcessing, executor);
+        graphics = new DefaultGraphics(configuration, screen, renderPipeline, viewportManager, postProcessing, executor);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);

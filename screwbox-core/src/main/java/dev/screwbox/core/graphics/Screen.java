@@ -4,6 +4,7 @@ import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
 import dev.screwbox.core.window.Window;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,6 +13,26 @@ import java.util.Optional;
  * @see World
  */
 public interface Screen extends Sizeable {
+
+    /**
+     * Returns a list of all supported resolutions.
+     *
+     * @see #supportedResolutions(AspectRatio)
+     */
+    List<Size> supportedResolutions();
+
+    /**
+     * Returns a list of all supported resolutions of the given {@link AspectRatio}.
+     *
+     * @see #supportedResolutions()
+     */
+    List<Size> supportedResolutions(AspectRatio ratio);
+
+    /**
+     * Returns the current {@link Screen} resolution. The {@link Screen} resolution can be different from the current
+     * {@link Window#size()} when {@link Window} is not in full screen mode.
+     */
+    Size resolution();
 
     /**
      * Specify horizontal flip state of the whole {@link Screen}.

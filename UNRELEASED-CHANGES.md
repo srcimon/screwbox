@@ -16,6 +16,7 @@
 - Removed unused Grid methods
 - Cleaned up `Grid` methods
 - Reorganized graphics package with subpackages
+- Moved methods for supported and current resolution from `Graphics` to `Screen`
 
 ### 📦 Dependency updates
 

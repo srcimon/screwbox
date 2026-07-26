@@ -7,13 +7,13 @@ import dev.screwbox.core.graphics.*;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
-import dev.screwbox.core.graphics.light.internal.DefaultLight;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.graphics.light.Light;
+import dev.screwbox.core.graphics.light.internal.DefaultLight;
 import dev.screwbox.core.graphics.postprocessing.PostProcessing;
-import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.graphics.smoke.internal.DefaultSmoke;
+import dev.screwbox.core.loop.internal.Updatable;
 
 import java.awt.*;
 import java.util.List;
@@ -21,16 +21,12 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
-import static java.util.Arrays.stream;
-import static java.util.Comparator.reverseOrder;
-
 public class DefaultGraphics implements Graphics, Updatable {
 
     private final GraphicsConfiguration configuration;
     private final DefaultWorld world;
     private final DefaultLight light;
     private final DefaultScreen screen;
-    private final GraphicsDevice graphicsDevice;
     private final RenderPipeline renderPipeline;
     private final ViewportManager viewportManager;
     private final AttentionFocus attentionFocus;
@@ -39,7 +35,6 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
-                           final GraphicsDevice graphicsDevice,
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
                            final PostProcessing postProcessing,
@@ -47,7 +42,6 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.configuration = configuration;
         this.light = new DefaultLight(configuration, viewportManager, executor);
         this.screen = screen;
-        this.graphicsDevice = graphicsDevice;
         this.renderPipeline = renderPipeline;
         this.viewportManager = viewportManager;
         this.postProcessing = postProcessing;
@@ -149,22 +143,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public List<Size> supportedResolutions() {
-        return stream(graphicsDevice.getDisplayModes())
-            .map(this::toDimension)
-            .distinct()
-            .sorted(reverseOrder())
-            .toList();
-    }
-
-    @Override
-    public List<Size> supportedResolutions(final AspectRatio ratio) {
-        return supportedResolutions().stream()
-            .filter(ratio::matches)
-            .toList();
-    }
-
-    @Override
     public List<String> availableFonts() {
         return Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
             .map(Font::getFontName)
@@ -198,11 +176,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Size resolution() {
-        return toDimension(graphicsDevice.getDisplayMode());
-    }
-
-    @Override
     public Light light() {
         return light;
     }
@@ -222,7 +195,4 @@ public class DefaultGraphics implements Graphics, Updatable {
         return screen.createCanvas(offset, size);
     }
 
-    private Size toDimension(final DisplayMode screenSize) {
-        return Size.of(screenSize.getWidth(), screenSize.getHeight());
-    }
 }
