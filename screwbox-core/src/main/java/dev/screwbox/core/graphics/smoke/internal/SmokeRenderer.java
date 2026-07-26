@@ -13,9 +13,9 @@ public class SmokeRenderer {
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
-    public Sprite createImage(int blur, int upscale, Percent maxOpacity, DensityInfo densityInfo, ScreenBounds actuallyVisibleBounds) {
+    public Sprite createImage(int blur, int upscale, Percent maxOpacity, FluidSimulationState fluidSimulationState, ScreenBounds actuallyVisibleBounds) {
         int b1 = maxOpacity.rangeValue(0, 255);
-        int totalCells = densityInfo.cells(); // Gesamtzahl der Zellen im Quellgitter
+        int totalCells = fluidSimulationState.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
         int startX = actuallyVisibleBounds.x();
@@ -73,18 +73,18 @@ public class SmokeRenderer {
                 float w11 = tX * tY;
 
                 // 1. Clamping der float-Werte direkt auf 0.0 - 1.0
-                final float r = Math.clamp((float) (densityInfo.dessityRAt(x0, clampedY0) * w00 +
-                                   densityInfo.dessityRAt(x1, clampedY0) * w10 +
-                                   densityInfo.dessityRAt(x0, clampedY1) * w01 +
-                                   densityInfo.dessityRAt(x1, clampedY1) * w11), 0.0f, 1.0f);
-                final float g = Math.clamp((float) (densityInfo.dessityGAt(x0, clampedY0) * w00 +
-                                   densityInfo.dessityGAt(x1, clampedY0) * w10 +
-                                   densityInfo.dessityGAt(x0, clampedY1) * w01 +
-                                   densityInfo.dessityGAt(x1, clampedY1) * w11), 0.0f, 1.0f);
-                final float b = Math.clamp((float) (densityInfo.dessityBAt(x0, clampedY0) * w00 +
-                                   densityInfo.dessityBAt(x1, clampedY0) * w10 +
-                                   densityInfo.dessityBAt(x0, clampedY1) * w01 +
-                                   densityInfo.dessityBAt(x1, clampedY1) * w11), 0.0f, 1.0f);
+                final float r = Math.clamp((float) (fluidSimulationState.densityRed(x0, clampedY0) * w00 +
+                                                    fluidSimulationState.densityRed(x1, clampedY0) * w10 +
+                                                    fluidSimulationState.densityRed(x0, clampedY1) * w01 +
+                                                    fluidSimulationState.densityRed(x1, clampedY1) * w11), 0.0f, 1.0f);
+                final float g = Math.clamp((float) (fluidSimulationState.densityGreen(x0, clampedY0) * w00 +
+                                                    fluidSimulationState.densityGreen(x1, clampedY0) * w10 +
+                                                    fluidSimulationState.densityGreen(x0, clampedY1) * w01 +
+                                                    fluidSimulationState.densityGreen(x1, clampedY1) * w11), 0.0f, 1.0f);
+                final float b = Math.clamp((float) (fluidSimulationState.densityBlue(x0, clampedY0) * w00 +
+                                                    fluidSimulationState.densityBlue(x1, clampedY0) * w10 +
+                                                    fluidSimulationState.densityBlue(x0, clampedY1) * w01 +
+                                                    fluidSimulationState.densityBlue(x1, clampedY1) * w11), 0.0f, 1.0f);
 
 // 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
                 float maxChannel = Math.max(r, Math.max(g, b));

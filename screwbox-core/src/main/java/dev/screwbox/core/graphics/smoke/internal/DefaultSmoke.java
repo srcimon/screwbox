@@ -70,7 +70,7 @@ public class DefaultSmoke implements Smoke {
             int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / cellSize);
 
             // Wir übergeben die reinen Deltas direkt an die neue loadFrom-Methode
-            simulation.loadFrom(oldSimulation, deltaX, deltaY);
+            simulation.loadFrom(oldSimulation, deltaX, deltaY);//TODO load from densityInfo
         }
     }
 
@@ -141,9 +141,9 @@ public class DefaultSmoke implements Smoke {
         });
 
 
-        DensityInfo densityInfo = simulation.densityInfo();
+        FluidSimulationState fluidSimulationState = simulation.state();
         var actuallyVisibleBounds = calculateActuallyVisibleBounds();
-        final var sprite = Asset.asset(() -> smokeRender.createImage(blur, upscale, maxOpacity, densityInfo, actuallyVisibleBounds));
+        final var sprite = Asset.asset(() -> smokeRender.createImage(blur, upscale, maxOpacity, fluidSimulationState, actuallyVisibleBounds));
         executor.submit(sprite::get);
         final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
         final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewportManager.defaultViewport().camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewportManager.defaultViewport().camera().zoom()));

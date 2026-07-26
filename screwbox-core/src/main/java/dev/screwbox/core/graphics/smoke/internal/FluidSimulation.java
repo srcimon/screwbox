@@ -93,8 +93,8 @@ public class FluidSimulation {
     }
 
 
-    public DensityInfo densityInfo() {
-        return new DensityInfo(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
+    public FluidSimulationState state() {
+        return new FluidSimulationState(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
     }
 
     private int IX(int x, int y) {
@@ -486,4 +486,5 @@ public class FluidSimulation {
     public void clearObstacles() {
         Arrays.fill(obstacles, false);
     }
+
 }
