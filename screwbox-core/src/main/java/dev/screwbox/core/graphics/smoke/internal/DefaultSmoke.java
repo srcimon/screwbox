@@ -95,7 +95,7 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);//TODO no emission on obstacles
-        if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
+        if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.resolution() - 2 && cell.y() < simulation.resolution() - 2) {
             tasks.add(() -> simulation.addDensity(cell.x(), cell.y(), amount, color));
         }
 
@@ -105,7 +105,7 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke push(Vector position, Vector velocity) {
         var cell = toCell(position);//TODO no emission on obstacles
-        if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
+        if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.resolution() - 2 && cell.y() < simulation.resolution() - 2) {
             tasks.add(() -> simulation.addVelocity(cell.x(), cell.y(), velocity.x(), velocity.y()));
         }
         return this;
@@ -209,7 +209,7 @@ public class DefaultSmoke implements Smoke {
         endCellY = endCellY + 1;
 
         // 5. Striktes Clamping an die physikalischen Simulationsgrenzen
-        final int maxCells = simulation.size();
+        final int maxCells = simulation.resolution();
         startCellX = Math.clamp(startCellX, 0, maxCells - 1);
         startCellY = Math.clamp(startCellY, 0, maxCells - 1);
         endCellX = Math.clamp(endCellX, startCellX + 1, maxCells);
@@ -222,7 +222,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     private Bounds calculateFluidOnWorld() {
-        return Bounds.atOrigin(worldAnchor, cellSize * simulation.size(), cellSize * simulation.size());
+        return Bounds.atOrigin(worldAnchor, cellSize * simulation.resolution(), cellSize * simulation.resolution());
     }
 
 

@@ -413,7 +413,7 @@ public class FluidSimulation {
     }
 
 
-    public int size() {
+    public int resolution() {
         return resolution;
     }
 

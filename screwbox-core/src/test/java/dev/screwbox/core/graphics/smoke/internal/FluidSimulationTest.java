@@ -11,7 +11,7 @@ class FluidSimulationTest {
     void newInstance_32cells_initializes32x32EmptyCells() {
         var simulation = new FluidSimulation(32);
 
-        assertThat(simulation.size()).isEqualTo(32);
+        assertThat(simulation.resolution()).isEqualTo(32);
 
         var state = simulation.state();
         for (var cell : Size.square(32).all()) {
