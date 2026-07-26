@@ -9,7 +9,7 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
-import dev.screwbox.core.environment.smoke.SmokeSystem;
+import dev.screwbox.core.environment.smoke.SmokeRenderSystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -26,7 +26,7 @@ public class PlaygroundApp {
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
-            .addSystem(new SmokeSystem());
+            .addSystem(new SmokeRenderSystem());
 
         var map = TileMap.fromString("""
             

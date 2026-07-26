@@ -13,8 +13,10 @@ import static dev.screwbox.core.environment.Order.PRESENTATION_SMOKE;
 
 //TODO document test
 //TODO add to feature smoke?
+//TODO OptimizeLightPerformanceSystem
+//TODO Smoke VortexComponent (Rotates smoke)
 @ExecutionOrder(PRESENTATION_SMOKE)
-public class SmokeSystem implements EntitySystem {
+public class SmokeRenderSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
@@ -32,10 +34,10 @@ public class SmokeSystem implements EntitySystem {
                 smoke.emit(entity.position(), entity.get(SmokeEmitterComponent.class).amount * engine.loop().delta(), entity.get(SmokeEmitterComponent.class).color);
             }
         }
-//TODO split physics and non physics
-        for (final var entity : engine.environment().fetchAll(Archetype.ofSpacial(SmokeAffectorComponent.class))) {
+//TODO split into SmokeConstantPusherComponent
+        for (final var entity : engine.environment().fetchAll(Archetype.ofSpacial(SmokePusherComponent.class))) {
             if (graphics.isWithinDistanceToVisibleArea(entity.position(), 128)) {
-                var affector = entity.get(SmokeAffectorComponent.class);
+                var affector = entity.get(SmokePusherComponent.class);
                 Vector speed = affector.speed == null ? entity.get(PhysicsComponent.class).velocity.multiply(0.1) : affector.speed;
                 smoke.push(entity.position(), speed.multiply(engine.loop().delta()));
             }
