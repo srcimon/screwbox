@@ -127,7 +127,7 @@ public class DefaultSmoke implements Smoke {
 
         //TODO get delta from update()
         imageWorldAnchor = worldAnchor;
-        double de = DefaultLoop.DE;
+        double delta = DefaultLoop.DE;
         simulation.clearObstacles();
         for (var task : tasks) {
             task.run();
@@ -136,8 +136,8 @@ public class DefaultSmoke implements Smoke {
         awaitEndOfSimulationTask();
 
         simulationTask = executor.submit(() -> {
-            simulation.step(de, 0.0000000004, 0.000001, 2);
-            simulation.fade(de * 0.04);
+            simulation.step(delta, 0.0000000004, 0.000001, 2);
+            simulation.fade(delta * 0.04);
         });
 
 

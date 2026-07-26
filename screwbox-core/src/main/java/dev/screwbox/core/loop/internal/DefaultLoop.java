@@ -55,7 +55,7 @@ public class DefaultLoop implements Loop {
 
     @Override
     public Loop setTargetFps(final int targetFps) {
-        Validate.range(targetFps, 60, Integer.MAX_VALUE, "target fps must be at least 60");
+        Validate.min(targetFps, 60, "target fps must be at least 60");
         this.targetFps = targetFps;
         return this;
 
@@ -86,7 +86,7 @@ public class DefaultLoop implements Loop {
         return delta;
     }
 
-    public static double DE;
+    public static double DE;//TODO REMOVE
 
     @Override
     public Duration runningTime() {
@@ -136,7 +136,7 @@ public class DefaultLoop implements Loop {
         final double maxUpdateFactor = fps <= CRITICAL_FPS_COUNT ? 0.005 : 1.0 / fps;
         delta = Math.min(timeBetweenUpdates.nanos() * 1.0 / Time.Unit.SECONDS.nanos(), maxUpdateFactor) * speed;
         DE = delta;
-    updateDuration = Duration.between(now, beforeUpdate);
+        updateDuration = Duration.between(now, beforeUpdate);
         runningTime = Duration.between(startTime, lastUpdate);
         frameNumber++;
     }
