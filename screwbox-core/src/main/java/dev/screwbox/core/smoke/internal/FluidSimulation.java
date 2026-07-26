@@ -1,7 +1,5 @@
 package dev.screwbox.core.smoke.internal;
 
-import dev.screwbox.core.Duration;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
 
 import java.awt.image.BufferedImage;
@@ -58,17 +56,19 @@ public class FluidSimulation {
 
     public FluidSimulation(final int cells) {
         this.cells = cells;
-        this.densityR = new double[this.cells * this.cells];
-        this.densityR0 = new double[this.cells * this.cells];
-        this.densityG = new double[this.cells * this.cells];
-        this.densityG0 = new double[this.cells * this.cells];
-        this.densityB = new double[this.cells * this.cells];
-        this.densityB0 = new double[this.cells * this.cells];
-        this.velocityX = new double[this.cells * this.cells];
-        this.velocityX0 = new double[this.cells * this.cells];
-        this.velocityY = new double[this.cells * this.cells];
-        this.velocityY0 = new double[this.cells * this.cells];
+        int length = this.cells * this.cells;
+        this.densityR = new double[length];
+        this.densityR0 = new double[length];
+        this.densityG = new double[length];
+        this.densityG0 = new double[length];
+        this.densityB = new double[length];
+        this.densityB0 = new double[length];
+        this.velocityX = new double[length];
+        this.velocityX0 = new double[length];
+        this.velocityY = new double[length];
+        this.velocityY0 = new double[length];
     }
+
     double maxDensity = 4;
     double maxVelocity = 20;
 
@@ -77,9 +77,9 @@ public class FluidSimulation {
         densityR[ix] += amount * color.r() / 255.0;
         densityG[ix] += amount * color.g() / 255.0;
         densityB[ix] += amount * color.b() / 255.0;
-        densityR[ix] = Math.min(maxDensity,  densityR[ix] );
-        densityG[ix] = Math.min(maxDensity,  densityG[ix] );
-        densityB[ix] = Math.min(maxDensity,  densityB[ix] );
+        densityR[ix] = Math.min(maxDensity, densityR[ix]);
+        densityG[ix] = Math.min(maxDensity, densityG[ix]);
+        densityB[ix] = Math.min(maxDensity, densityB[ix]);
     }
 
     public void addVelocity(final int x, int y, final double amountX, final double amountY) {
@@ -92,7 +92,7 @@ public class FluidSimulation {
 
 
     public DensityInfo densityInfo() {
-        return new DensityInfo(cells, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length),Arrays.copyOf(densityB, densityB.length));
+        return new DensityInfo(cells, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
     }
 
     private int IX(int x, int y) {
@@ -142,9 +142,12 @@ public class FluidSimulation {
                 int i = 1;
                 // Loop Unrolling (Faktor 2 für X und Y parallel)
                 for (; i < size - 2; i += 2) {
-                    int curr0 = i + row;     int curr1 = curr0 + 1;
-                    int top0  = i + topRow;  int top1  = top0 + 1;
-                    int bot0  = i + botRow;  int bot1  = bot0 + 1;
+                    int curr0 = i + row;
+                    int curr1 = curr0 + 1;
+                    int top0 = i + topRow;
+                    int top1 = top0 + 1;
+                    int bot0 = i + botRow;
+                    int bot1 = bot0 + 1;
 
                     // Index i
                     x[curr0] = (x0[curr0] + a * (x[curr0 + 1] + x[curr0 - 1] + x[bot0] + x[top0])) * cRecip;
@@ -180,9 +183,12 @@ public class FluidSimulation {
                 int i = 1;
                 // Verarbeitet R, G und B für 2 Zellen pro Schleifendurchlauf
                 for (; i < size - 2; i += 2) {
-                    int curr0 = i + row;     int curr1 = curr0 + 1;
-                    int top0  = i + topRow;  int top1  = top0 + 1;
-                    int bot0  = i + botRow;  int bot1  = bot0 + 1;
+                    int curr0 = i + row;
+                    int curr1 = curr0 + 1;
+                    int top0 = i + topRow;
+                    int top1 = top0 + 1;
+                    int bot0 = i + botRow;
+                    int bot1 = bot0 + 1;
 
                     // Index i
                     r[curr0] = (r0[curr0] + a * (r[curr0 + 1] + r[curr0 - 1] + r[bot0] + r[top0])) * cRecip;
@@ -255,10 +261,10 @@ public class FluidSimulation {
             for (int i = 1; i < cells - 1; i++) {
                 int ix = IXFastButUnsave(i, j);
                 div[ix] = -0.5 * h * (
-                    velocX[IX(i + 1, j)]
-                    - velocX[IX(i - 1, j)]
-                    + velocY[IX(i, j + 1)]
-                    - velocY[IX(i, j - 1)]
+                    velocX[IXFastButUnsave(i + 1, j)]
+                    - velocX[IXFastButUnsave(i - 1, j)]
+                    + velocY[IXFastButUnsave(i, j + 1)]
+                    - velocY[IXFastButUnsave(i, j - 1)]
                 );
                 p[ix] = 0;
             }
