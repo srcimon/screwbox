@@ -99,7 +99,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
-    public Smoke affect(Vector position, Vector velocity) {
+    public Smoke push(Vector position, Vector velocity) {
         var cell = toCell(position);
         if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.size() - 2 && cell.y() < simulation.size() - 2) {
             tasks.add(() -> simulation.addVelocity(cell.x(), cell.y(), velocity.x(), velocity.y()));

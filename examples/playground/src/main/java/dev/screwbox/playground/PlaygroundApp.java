@@ -6,8 +6,6 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.importing.AdvancedBlueprint;
-import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
@@ -15,9 +13,6 @@ import dev.screwbox.core.environment.smoke.SmokeSystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.core.graphics.internal.ImageOperations;
-import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
@@ -49,7 +44,7 @@ public class PlaygroundApp {
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.GREEN, 32)))));
         screwBox.environment().addSystem(x -> {
             x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
-            x.graphics().smoke().affect(screwBox.mouse().position(), range.multiply(screwBox.loop().delta()));
+            x.graphics().smoke().push(screwBox.mouse().position(), range.multiply(screwBox.loop().delta()));
             x.graphics().smoke().emit(screwBox.mouse().position(), 400 * screwBox.loop().delta(), color);
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();

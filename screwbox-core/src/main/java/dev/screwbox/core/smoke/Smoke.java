@@ -11,7 +11,7 @@ public interface Smoke {//TODO Vapor?
     Smoke disable();
 
     Smoke emit(Vector position, double amount, Color color);
-    Smoke affect(Vector position, Vector velocity);
+    Smoke push(Vector position, Vector velocity);
 
     void render();
 
