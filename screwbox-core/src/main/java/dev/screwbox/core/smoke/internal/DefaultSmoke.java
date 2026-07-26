@@ -140,15 +140,16 @@ public class DefaultSmoke implements Smoke, Updatable {
             }
         }
         simulationTask = executor.submit(() -> {
+            if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder * 0.95) {//TODO > border
+                reassignGrid();
+            }
             simulation.step(de, 0.000004, 0.000000000001, 2);
             simulation.fade(de * 0.04);
         });
 
 
         DensityInfo densityInfo = simulation.densityInfo();
-        if (calculateBestBounds().origin().distanceTo(worldAnchor) > screenBorder * 0.95) {//TODO > border
-            reassignGrid();
-        }
+
         var sprite = Asset.asset(() -> createImage(densityInfo));
         executor.submit(sprite::get);
         double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
