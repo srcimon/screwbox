@@ -28,18 +28,18 @@ public class FluidSimulation {
 
     public FluidSimulation(final int resolution) {
         this.resolution = resolution;
-        final int length = resolution * resolution;
-        this.densityR = new double[length];
-        this.densityR0 = new double[length];
-        this.densityG = new double[length];
-        this.densityG0 = new double[length];
-        this.densityB = new double[length];
-        this.densityB0 = new double[length];
-        this.velocityX = new double[length];
-        this.velocityX0 = new double[length];
-        this.velocityY = new double[length];
-        this.velocityY0 = new double[length];
-        this.obstacles = new boolean[length];
+        final int cellCount = resolution * resolution;
+        this.densityR = new double[cellCount];
+        this.densityR0 = new double[cellCount];
+        this.densityG = new double[cellCount];
+        this.densityG0 = new double[cellCount];
+        this.densityB = new double[cellCount];
+        this.densityB0 = new double[cellCount];
+        this.velocityX = new double[cellCount];
+        this.velocityX0 = new double[cellCount];
+        this.velocityY = new double[cellCount];
+        this.velocityY0 = new double[cellCount];
+        this.obstacles = new boolean[cellCount];
     }
 
     double maxDensity = 4;
