@@ -32,7 +32,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private int cellSize = 10;
-    private int screenBorder = 128;
+    private int screenBorderCells = 8;
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
@@ -75,7 +75,7 @@ public class DefaultSmoke implements Smoke, Updatable {
     }
 
     private Bounds calculateBestBounds() {
-        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand(screenBorder);//TODO remove expand
+        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand(screenBorderCells*cellSize);//TODO remove expand
         var boundsArea = visibleArea.snapExpand(cellSize);
         return boundsArea.resize(
             Math.max(boundsArea.width(), boundsArea.height()),
@@ -146,8 +146,9 @@ public class DefaultSmoke implements Smoke, Updatable {
 
 
         DensityInfo densityInfo = simulation.densityInfo();
-        if(!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea())) {
+        if(!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize*screenBorderCells*0.5))) {
             reassignGrid();
+            System.out.println("RE");
         }
         var sprite = Asset.asset(() -> createImage(densityInfo));
         executor.submit(sprite::get);
