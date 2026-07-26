@@ -11,7 +11,6 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.Smoke;
-import dev.screwbox.core.loop.internal.DefaultLoop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,14 +119,13 @@ public class DefaultSmoke implements Smoke {
     Future<?> simulationTask;
 
     @Override
-    public Smoke render() {
+    public Smoke render(final double delta) {
         if (simulation == null) {
             return this;
         }
 
         //TODO get delta from update()
         imageWorldAnchor = worldAnchor;
-        double delta = DefaultLoop.DE;
         simulation.clearObstacles();
         for (var task : tasks) {
             task.run();
