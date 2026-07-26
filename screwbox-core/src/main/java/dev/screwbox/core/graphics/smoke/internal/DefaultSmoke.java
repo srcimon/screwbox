@@ -31,6 +31,7 @@ public class DefaultSmoke implements Smoke {
     private final SmokeRenderer smokeRender;
     private int cellSize = 8;
     private int screenBorderCells = 32;
+
     private Vector worldAnchor;
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
