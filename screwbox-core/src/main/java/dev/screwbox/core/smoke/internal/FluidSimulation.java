@@ -1,6 +1,5 @@
 package dev.screwbox.core.smoke.internal;
 
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 
 import java.awt.image.BufferedImage;
@@ -70,12 +69,6 @@ public class FluidSimulation {
         this.velocityY = new double[length];
         this.velocityY0 = new double[length];
         this.obstacles = new boolean[length];
-
-        for(int x = 40; x < 80; x++) {
-            for (int y = 80; y < 100; y++) {
-                this.obstacles[IX(x, y)] = true;
-            }
-        }
     }
 
     double maxDensity = 4;
@@ -165,15 +158,15 @@ public class FluidSimulation {
                         int right0 = curr0 + 1;
 
                         // Wenn Nachbar ein Hindernis ist, nimm den aktuellen Zellwert (Spiegelung)
-                        double nLeft  = obstacles[left0]  ? -x[curr0] : x[left0]; // -x für Reflektion der Geschwindigkeit
+                        double nLeft = obstacles[left0] ? -x[curr0] : x[left0]; // -x für Reflektion der Geschwindigkeit
                         double nRight = obstacles[right0] ? -x[curr0] : x[right0];
-                        double nTop   = obstacles[top0]   ?  x[curr0] : x[top0];
-                        double nBot   = obstacles[bot0]   ?  x[curr0] : x[bot0];
+                        double nTop = obstacles[top0] ? x[curr0] : x[top0];
+                        double nBot = obstacles[bot0] ? x[curr0] : x[bot0];
 
-                        double nLeftY  = obstacles[left0]  ?  y[curr0] : y[left0];
-                        double nRightY = obstacles[right0] ?  y[curr0] : y[right0];
-                        double nTopY   = obstacles[top0]   ? -y[curr0] : y[top0]; // -y für Reflektion an waagerechten Wänden
-                        double nBotY   = obstacles[bot0]   ? -y[curr0] : y[bot0];
+                        double nLeftY = obstacles[left0] ? y[curr0] : y[left0];
+                        double nRightY = obstacles[right0] ? y[curr0] : y[right0];
+                        double nTopY = obstacles[top0] ? -y[curr0] : y[top0]; // -y für Reflektion an waagerechten Wänden
+                        double nBotY = obstacles[bot0] ? -y[curr0] : y[bot0];
 
                         x[curr0] = (x0[curr0] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
                         y[curr0] = (y0[curr0] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
@@ -189,15 +182,15 @@ public class FluidSimulation {
                         int left1 = curr1 - 1;
                         int right1 = curr1 + 1;
 
-                        double nLeft  = obstacles[left1]  ? -x[curr1] : x[left1];
+                        double nLeft = obstacles[left1] ? -x[curr1] : x[left1];
                         double nRight = obstacles[right1] ? -x[curr1] : x[right1];
-                        double nTop   = obstacles[top1]   ?  x[curr1] : x[top1];
-                        double nBot   = obstacles[bot1]   ?  x[curr1] : x[bot1];
+                        double nTop = obstacles[top1] ? x[curr1] : x[top1];
+                        double nBot = obstacles[bot1] ? x[curr1] : x[bot1];
 
-                        double nLeftY  = obstacles[left1]  ?  y[curr1] : y[left1];
-                        double nRightY = obstacles[right1] ?  y[curr1] : y[right1];
-                        double nTopY   = obstacles[top1]   ? -y[curr1] : y[top1];
-                        double nBotY   = obstacles[bot1]   ? -y[curr1] : y[bot1];
+                        double nLeftY = obstacles[left1] ? y[curr1] : y[left1];
+                        double nRightY = obstacles[right1] ? y[curr1] : y[right1];
+                        double nTopY = obstacles[top1] ? -y[curr1] : y[top1];
+                        double nBotY = obstacles[bot1] ? -y[curr1] : y[bot1];
 
                         x[curr1] = (x0[curr1] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
                         y[curr1] = (y0[curr1] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
@@ -216,15 +209,15 @@ public class FluidSimulation {
                         int left = curr - 1;
                         int right = curr + 1;
 
-                        double nLeft  = obstacles[left]  ? -x[curr] : x[left];
+                        double nLeft = obstacles[left] ? -x[curr] : x[left];
                         double nRight = obstacles[right] ? -x[curr] : x[right];
-                        double nTop   = obstacles[top]   ?  x[curr] : x[top];
-                        double nBot   = obstacles[bot]   ?  x[curr] : x[bot];
+                        double nTop = obstacles[top] ? x[curr] : x[top];
+                        double nBot = obstacles[bot] ? x[curr] : x[bot];
 
-                        double nLeftY  = obstacles[left]  ?  y[curr] : y[left];
-                        double nRightY = obstacles[right] ?  y[curr] : y[right];
-                        double nTopY   = obstacles[top]   ? -y[curr] : y[top];
-                        double nBotY   = obstacles[bot]   ? -y[curr] : y[bot];
+                        double nLeftY = obstacles[left] ? y[curr] : y[left];
+                        double nRightY = obstacles[right] ? y[curr] : y[right];
+                        double nTopY = obstacles[top] ? -y[curr] : y[top];
+                        double nBotY = obstacles[bot] ? -y[curr] : y[bot];
 
                         x[curr] = (x0[curr] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
                         y[curr] = (y0[curr] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
@@ -305,10 +298,10 @@ public class FluidSimulation {
                         x[idx_current] = 0; // Druck/Wert im Hindernis ist Null
                     } else {
                         // Wenn Nachbar ein Hindernis ist, nimm den Wert der aktuellen Zelle (Reflektion)
-                        double nRight  = obstacles[idx_right]  ? x[idx_current] : x[idx_right];
-                        double nLeft   = obstacles[idx_left]   ? x[idx_current] : x[idx_left];
+                        double nRight = obstacles[idx_right] ? x[idx_current] : x[idx_right];
+                        double nLeft = obstacles[idx_left] ? x[idx_current] : x[idx_left];
                         double nBottom = obstacles[idx_bottom] ? x[idx_current] : x[idx_bottom];
-                        double nTop    = obstacles[idx_top]    ? x[idx_current] : x[idx_top];
+                        double nTop = obstacles[idx_top] ? x[idx_current] : x[idx_top];
 
                         x[idx_current] = (x0[idx_current] + a * (nRight + nLeft + nBottom + nTop)) * cRecip;
                     }
@@ -338,16 +331,16 @@ public class FluidSimulation {
                     continue;
                 }
 
-                int left  = IXFastButUnsave(i - 1, j);
+                int left = IXFastButUnsave(i - 1, j);
                 int right = IXFastButUnsave(i + 1, j);
-                int top   = IXFastButUnsave(i, j - 1);
-                int bot   = IXFastButUnsave(i, j + 1);
+                int top = IXFastButUnsave(i, j - 1);
+                int bot = IXFastButUnsave(i, j + 1);
 
                 // Wenn der Nachbar ein Hindernis ist, fließt dort nichts durch (Geschwindigkeit = 0)
-                double vL = obstacles[left]  ? 0 : velocX[left];
+                double vL = obstacles[left] ? 0 : velocX[left];
                 double vR = obstacles[right] ? 0 : velocX[right];
-                double vT = obstacles[top]   ? 0 : velocY[top];
-                double vB = obstacles[bot]   ? 0 : velocY[bot];
+                double vT = obstacles[top] ? 0 : velocY[top];
+                double vB = obstacles[bot] ? 0 : velocY[bot];
 
                 div[ix] = -0.5 * h * (vR - vL + vB - vT);
                 p[ix] = 0;
@@ -368,16 +361,16 @@ public class FluidSimulation {
                     continue;
                 }
 
-                int left  = IX(i - 1, j);
+                int left = IX(i - 1, j);
                 int right = IX(i + 1, j);
-                int top   = IX(i, j - 1);
-                int bot   = IX(i, j + 1);
+                int top = IX(i, j - 1);
+                int bot = IX(i, j + 1);
 
                 // Neumann-Randbedingung für den Druck: p spiegeln, wenn der Nachbar ein Hindernis ist
-                double pL = obstacles[left]  ? p[ix] : p[left];
+                double pL = obstacles[left] ? p[ix] : p[left];
                 double pR = obstacles[right] ? p[ix] : p[right];
-                double pT = obstacles[top]   ? p[ix] : p[top];
-                double pB = obstacles[bot]   ? p[ix] : p[bot];
+                double pT = obstacles[top] ? p[ix] : p[top];
+                double pB = obstacles[bot] ? p[ix] : p[bot];
 
                 velocX[ix] -= 0.5 * (pR - pL) / h;
                 velocY[ix] -= 0.5 * (pB - pT) / h;
@@ -479,15 +472,18 @@ public class FluidSimulation {
                     velocityX0[ix] = oldSimulation.velocityX0[ixOld];
                     velocityY[ix] = oldSimulation.velocityY[ixOld];
                     velocityY0[ix] = oldSimulation.velocityY0[ixOld];
+
+                    obstacles[ix] = oldSimulation.obstacles[ixOld];
                 }
             }
         }
     }
 
-    public double velocityX(int x, int y) {
-        return velocityX[IX(x, y)];
+    public void setObstacle(int x, int y, boolean b) {
+        obstacles[IX(x, y)] = b;
     }
-    public double velocityY(int x, int y) {
-        return velocityY[IX(x, y)];
+
+    public void clearObstacles() {
+        Arrays.fill(obstacles, false);
     }
 }

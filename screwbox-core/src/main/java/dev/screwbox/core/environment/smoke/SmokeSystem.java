@@ -13,6 +13,12 @@ public class SmokeSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
+        for(final var entity : engine.environment().fetchAll(Archetype.ofSpacial(SmokeObstacleComponent.class))) {
+            if(engine.graphics().isWithinDistanceToVisibleArea(entity.position(), 128)) {
+                engine.graphics().smoke().addObstacle(entity.bounds());
+            }
+        }
+
         for(final var entity : engine.environment().fetchAll(Archetype.ofSpacial(SmokeEmitterComponent.class))) {
             if(engine.graphics().isWithinDistanceToVisibleArea(entity.position(), 128)) {
                 engine.graphics().smoke().emit(entity.position(), entity.get(SmokeEmitterComponent.class).amount * engine.loop().delta() , entity.get(SmokeEmitterComponent.class).color);

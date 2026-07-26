@@ -124,6 +124,7 @@ public class DefaultSmoke implements Smoke {
         //TODO get delta from update()
         imageWorldAnchor = worldAnchor;
         double de = DefaultLoop.DE;
+        simulation.clearObstacles();
         for (var task : tasks) {
             task.run();
         }
@@ -147,6 +148,20 @@ public class DefaultSmoke implements Smoke {
         if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
             reassignGrid();
         }
+    }
+
+    @Override
+    public Smoke addObstacle(Bounds bounds) {
+        tasks.add(() -> {
+            var origin = toCell(bounds.origin());
+            var max = toCell(bounds.bottomRight());
+            for(int x = origin.x(); x < max.x(); x++) {
+                for(int y = origin.y(); y < max.y(); y++) {
+                    simulation.setObstacle(x,y, true);
+                }
+            }
+        });
+        return this;
     }
 
     private void awaitEndOfSimulationTask() {

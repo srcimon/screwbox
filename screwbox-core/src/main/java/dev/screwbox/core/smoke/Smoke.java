@@ -1,5 +1,6 @@
 package dev.screwbox.core.smoke;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 
@@ -13,5 +14,7 @@ public interface Smoke {
     Smoke affect(Vector position, Vector velocity);
 
     void render();
+
+    Smoke addObstacle(Bounds bounds);
 
 }
