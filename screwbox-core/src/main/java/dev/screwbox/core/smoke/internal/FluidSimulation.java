@@ -332,19 +332,14 @@ public class FluidSimulation {
     }
 
     public void loadFrom(FluidSimulation oldSimulation, int deltaX, int deltaY) {
-        // Schleife läuft über das NEUE Gitter (this.cells)
-        for (int x = 2; x < this.cells - 2; x++) {
-            for (int y = 2; y < this.cells - 2; y++) {
+        for (int x = 1; x < this.cells - 1; x++) {
+            for (int y = 1; y < this.cells - 1; y++) {
 
-                // Wo lag diese Zelle in der alten Simulation?
-                // Wenn die neue Kamera weiter rechts steht (deltaX > 0),
-                // müssen wir im alten Gitter weiter rechts lesen (+ deltaX).
                 int xOld = x + deltaX;
                 int yOld = y + deltaY;
 
-                // ABSOLUTE BRANDMAUER: Prüfe gegen die Dimensionen der ALTEN Simulation!
-                if (xOld >= 2 && xOld < oldSimulation.cells - 2 &&
-                    yOld >= 2 && yOld < oldSimulation.cells - 2) {
+                if (xOld >= 1 && xOld < oldSimulation.cells - 1 &&
+                    yOld >= 1 && yOld < oldSimulation.cells - 1) {
 
                     // Nutze für jedes Objekt die jeweils eigene Index-Arithmetik!
                     int ix = x + y * this.cells; // Inlined für das neue Grid
