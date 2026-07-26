@@ -10,7 +10,7 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.MaxAlphaComposite;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
-import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.light.ShadowOptions;
 
 import java.awt.*;
 import java.awt.geom.Area;

@@ -15,7 +15,6 @@ import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.LensFlare;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.World;
-import dev.screwbox.core.graphics.options.ShadowOptions;
 
 import java.util.function.Supplier;
 

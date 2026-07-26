@@ -8,7 +8,7 @@ import dev.screwbox.core.graphics.postprocessing.PostProcessing;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
-import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.graphics.light.ShockwaveOptions;
 import dev.screwbox.core.graphics.postprocessing.filter.PostProcessingContext;
 import dev.screwbox.core.graphics.postprocessing.filter.PostProcessingFilter;
 import dev.screwbox.core.graphics.postprocessing.internal.Shockwave;

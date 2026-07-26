@@ -17,7 +17,7 @@ import dev.screwbox.core.graphics.internal.DefaultCamera;
 import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.graphics.internal.DefaultViewport;
 import dev.screwbox.core.graphics.internal.Renderer;
-import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

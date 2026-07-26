@@ -1,4 +1,4 @@
-package dev.screwbox.core.graphics.options;
+package dev.screwbox.core.graphics.light;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;

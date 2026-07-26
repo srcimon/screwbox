@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Screen;
 import dev.screwbox.core.graphics.Viewport;
-import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.graphics.light.ShockwaveOptions;
 import dev.screwbox.core.graphics.postprocessing.filter.PostProcessingFilter;
 
 /**

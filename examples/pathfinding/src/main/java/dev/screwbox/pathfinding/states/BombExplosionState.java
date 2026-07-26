@@ -13,7 +13,7 @@ import dev.screwbox.core.environment.logic.EntityState;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.graphics.light.ShockwaveOptions;
 import dev.screwbox.core.particles.ParticlesBundle;
 import dev.screwbox.pathfinding.components.PlayerMovementComponent;
 import dev.screwbox.tiled.Tileset;

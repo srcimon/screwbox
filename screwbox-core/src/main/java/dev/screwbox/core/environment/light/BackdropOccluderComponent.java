@@ -4,7 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.light.Light;
-import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.light.ShadowOptions;
 
 import java.io.Serial;
 

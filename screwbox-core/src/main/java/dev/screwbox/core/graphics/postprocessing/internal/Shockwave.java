@@ -3,7 +3,7 @@ package dev.screwbox.core.graphics.postprocessing.internal;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.graphics.light.ShockwaveOptions;
 
 public class Shockwave {
     private final Time startTime;

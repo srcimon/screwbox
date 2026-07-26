@@ -16,7 +16,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
-import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.light.ShadowOptions;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

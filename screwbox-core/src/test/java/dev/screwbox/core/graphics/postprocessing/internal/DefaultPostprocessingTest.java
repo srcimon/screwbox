@@ -14,7 +14,7 @@ import dev.screwbox.core.graphics.internal.DefaultViewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.options.ShockwaveOptions;
+import dev.screwbox.core.graphics.light.ShockwaveOptions;
 import dev.screwbox.core.graphics.postprocessing.filter.DeepSeaPostFilter;
 import dev.screwbox.core.graphics.postprocessing.filter.FacetEyePostFilter;
 import dev.screwbox.core.graphics.postprocessing.filter.FishEyePostFilter;

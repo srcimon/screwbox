@@ -2,7 +2,7 @@ package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.light.ShadowOptions;
 
 import java.io.Serial;
 

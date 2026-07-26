@@ -16,7 +16,7 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.internal.filter.ExpandImageFilter;
-import dev.screwbox.core.graphics.options.ShadowOptions;
+import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Validate;
 
