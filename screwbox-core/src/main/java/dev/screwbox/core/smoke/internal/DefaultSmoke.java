@@ -144,7 +144,8 @@ public class DefaultSmoke implements Smoke {
         final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
         final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int)(actuallyVisibleBounds.x()*cellSize* viewportManager.defaultViewport().camera().zoom()),(int)( actuallyVisibleBounds.y()*cellSize* viewportManager.defaultViewport().camera().zoom()));
         viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
-            .scaled(scale));
+            .scaled(scale)
+            .opacity(maxOpacity));
         if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
             reassignGrid();
         }
@@ -224,14 +225,13 @@ public class DefaultSmoke implements Smoke {
     private static int upscale = 6;
     private static int blur = 4;
 
-    static Percent maxOpacity = Percent.of(0.1);
+    static Percent maxOpacity = Percent.of(0.4);
 
     //TODO reuse bufferimage
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
     private static Sprite createImage(DensityInfo densityInfo, ScreenBounds actuallyVisibleBounds) {
-        int maxOpacityva = maxOpacity.rangeValue(0, 255);
         int totalCells = densityInfo.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
@@ -320,8 +320,10 @@ public class DefaultSmoke implements Smoke {
                 // Alpha-Berechnung
                 int maxRGB = Math.max(rInt, gInt);
                 if (bInt > maxRGB) maxRGB = bInt;
-                int aInt = Math.min(maxRGB, maxOpacityva);
-                pixels[pixelIndex + x] = (aInt << 24) | (rInt << 16) | (gInt << 8) | bInt;
+                pixels[pixelIndex + x] = ((maxRGB & 0xFF) << 24) |
+                                         ((rInt & 0xFF) << 16) |
+                                         ((gInt & 0xFF) << 8)  |
+                                         (bInt & 0xFF);
 
             }
         }

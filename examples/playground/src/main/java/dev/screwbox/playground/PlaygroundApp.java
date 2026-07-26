@@ -15,7 +15,9 @@ import dev.screwbox.core.environment.smoke.SmokeSystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
@@ -51,6 +53,7 @@ public class PlaygroundApp {
                 }
             }));
         screwBox.environment().addSystem(x -> {
+            x.graphics().canvas().fillWith(SpriteBundle.SHADER_PREVIEW.get(), SpriteFillOptions.scale(3).drawOrder(-100));
             x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             x.graphics().smoke().affect(screwBox.mouse().position(), range.multiply(screwBox.loop().delta()));
             x.graphics().smoke().emit(screwBox.mouse().position(), 400 * screwBox.loop().delta(), color);
