@@ -120,9 +120,9 @@ public class DefaultSmoke implements Smoke {
     Future<?> simulationTask;
 
     @Override
-    public void render() {
+    public Smoke render() {
         if (simulation == null) {
-            return;
+            return this;
         }
 
         //TODO get delta from update()
@@ -152,6 +152,7 @@ public class DefaultSmoke implements Smoke {
         if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
             reassignGrid();
         }
+        return this;
     }
 
     @Override
@@ -172,10 +173,9 @@ public class DefaultSmoke implements Smoke {
         if (simulationTask != null) {
             try {
                 simulationTask.get();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
+            } catch (final InterruptedException | ExecutionException e) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("error updating fluid simulation", e);
             }
         }
     }

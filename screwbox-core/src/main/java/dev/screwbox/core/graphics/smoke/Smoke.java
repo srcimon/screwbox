@@ -27,7 +27,7 @@ public interface Smoke {
 
     Smoke push(Vector position, Vector velocity);
 
-    void render();
+    Smoke render();
 
     Smoke addObstacle(Bounds bounds);
 
