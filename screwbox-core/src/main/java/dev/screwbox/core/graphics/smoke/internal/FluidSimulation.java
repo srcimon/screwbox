@@ -250,8 +250,8 @@ public class FluidSimulation {
     }
 
 
-    void lin_solve(double[] x, double[] x0, double a, double c, int iter) {
-        double cRecip = 1.0 / c;
+    void lin_solve(double[] x, double[] x0, int iter) {
+        double cRecip = 1.0 / (double) 4;
 
         for (int k = 0; k < iter; k++) {
             for (int j = 1; j < resolution - 1; j++) {
@@ -274,7 +274,7 @@ public class FluidSimulation {
                         double nBottom = obstacles[idx_bottom] ? x[idx_current] : x[idx_bottom];
                         double nTop = obstacles[idx_top] ? x[idx_current] : x[idx_top];
 
-                        x[idx_current] = (x0[idx_current] + a * (nRight + nLeft + nBottom + nTop)) * cRecip;
+                        x[idx_current] = (x0[idx_current] + (nRight + nLeft + nBottom + nTop)) * cRecip;
                     }
 
                     // Alle Pointer rücken synchron um genau 1 Zelle weiter (Hardware-Prefetching bleibt aktiv)
@@ -319,7 +319,7 @@ public class FluidSimulation {
         }
 
         // Berechnet das Druckfeld p basierend auf der Divergenz (lin_solve muss obstacles ebenfalls beachten!)
-        lin_solve(p, div, 1, 4, iter);
+        lin_solve(p, div, iter);
 
         // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
         for (int j = 1; j < resolution - 1; j++) {
