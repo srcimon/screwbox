@@ -206,8 +206,8 @@ public class DefaultSmoke implements Smoke {
         return Bounds.atOrigin(worldAnchor, cellSize * simulation.size(), cellSize * simulation.size());
     }
 
-    private static int upscale = 5;
-    private static int blur = 5;
+    private static int upscale = 6;
+    private static int blur = 4;
 
     static Percent maxOpacity = Percent.max();
 
