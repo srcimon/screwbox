@@ -4,13 +4,23 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 
-public interface Smoke {//TODO Vapor?
+//TODO add to graphics guide
+//TODO changelog
+//TODO finish up javadoc
+
+/**
+ * Subsystem for creating {@link Smoke} effects.
+ *
+ * @since 3.33.0
+ */
+public interface Smoke {
 
     Smoke enable();
 
     Smoke disable();
 
     Smoke emit(Vector position, double amount, Color color);
+
     Smoke push(Vector position, Vector velocity);
 
     void render();

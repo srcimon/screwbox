@@ -6,8 +6,8 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
-import dev.screwbox.core.smoke.Smoke;
 import dev.screwbox.core.loop.Loop;
+import dev.screwbox.core.smoke.Smoke;
 import dev.screwbox.core.window.Window;
 
 import java.util.List;
@@ -21,6 +21,11 @@ import java.util.Optional;
  */
 public interface Graphics extends Viewport {
 
+    /**
+     * Subsystem for creating {@link Smoke} effects.
+     *
+     * @since 3.33.0
+     */
     Smoke smoke();
 
     /**
