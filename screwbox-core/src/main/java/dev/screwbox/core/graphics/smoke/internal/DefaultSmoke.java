@@ -92,7 +92,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);//TODO no emission on obstacles
         tasks.add(() -> {
-            if (isFreeCell(cell)) {
+            if (isWithin(cell)) {
                 simulation.addDensity(cell, amount, maxDensity, color);
             }
         });
@@ -100,7 +100,7 @@ public class DefaultSmoke implements Smoke {
         return this;
     }
 
-    private boolean isFreeCell(final Offset cell) {
+    private boolean isWithin(final Offset cell) {
         return cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.resolution() - 2 && cell.y() < simulation.resolution() - 2 && !simulation.isObstacle(cell);
     }
 
@@ -108,7 +108,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke push(final Vector position, final Vector velocity) {
         var cell = toCell(position);//TODO no emission on obstacles
         tasks.add(() -> {
-            if (isFreeCell(cell)) {
+            if (isWithin(cell)) {
                 simulation.addVelocity(cell, velocity, maxVelocity);
             }
         });

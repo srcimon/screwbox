@@ -48,20 +48,23 @@ public class FluidSimulation {
         return resolution;
     }
 
-    public void addDensity(final Offset cell, final double amount, final double maxDensity, Color color) {
+    public void addDensity(final Offset cell, final double amount, final double limit, Color color) {
         final int index = index(cell.x(), cell.y());
 
-        densityR[index] = Math.min(densityR[index] + (color.r() * amount), maxDensity);
-        densityG[index] = Math.min(densityG[index] + (color.g() * amount), maxDensity);
-        densityB[index] = Math.min(densityB[index] + (color.b() * amount), maxDensity);
+        densityR[index] = Math.min(densityR[index] + (color.r() * amount), limit);
+        densityG[index] = Math.min(densityG[index] + (color.g() * amount), limit);
+        densityB[index] = Math.min(densityB[index] + (color.b() * amount), limit);
     }
 
-    public void addVelocity(final Offset cell, final Vector velocity, final double maxVelocity) {
+    public void addVelocity(final Offset cell, final Vector velocity, final double limit) {
         final int index = index(cell.x(), cell.y());
-        velocityX[index] = Math.min(maxVelocity, velocityX[index] + velocity.x());
-        velocityY[index] = Math.min(maxVelocity, velocityY[index] + velocity.y());
+        velocityX[index] = Math.min(limit, velocityX[index] + velocity.x());
+        velocityY[index] = Math.min(limit, velocityY[index] + velocity.y());
     }
 
+    private boolean isFreeCell(final Offset cell) {
+        return cell.x() > 2 && cell.y() > 2 && cell.x() < resolution() - 2 && cell.y() < resolution() - 2 && !.isObstacle(cell);
+    }
 
     public FluidSimulationState state() {
         return new FluidSimulationState(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
@@ -102,6 +105,7 @@ public class FluidSimulation {
     public boolean isObstacle(Offset cell) {
         return obstacles[index(cell.x(), cell.y())];
     }
+
     void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
         int size = this.resolution;
         double iterationBonus = 1.0 + (20.0 - iter) * 0.05;
