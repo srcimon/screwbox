@@ -113,32 +113,32 @@ public class DefaultSmoke implements Smoke {
         if (configuration.isSmokeEnabled()) {
 
 
-        //TODO get delta from update()
-        imageWorldAnchor = worldAnchor;
-        simulation.clearObstacles();
-        for (var task : tasks) {
-            task.run();
-        }
-        tasks.clear();
-        awaitEndOfSimulationTask();
+            //TODO get delta from update()
+            imageWorldAnchor = worldAnchor;
+            awaitEndOfSimulationTask();
+            simulation.clearObstacles();
+            for (var task : tasks) {
+                task.run();
+            }
+            tasks.clear();
 
-        simulationTask = executor.submit(() -> {
-            simulation.step(delta, 0.0000000004, 0.000001, 2);
-            simulation.fade(delta * 0.04);
-        });
+            simulationTask = executor.submit(() -> {
+                simulation.step(delta, 0.0000000004, 0.000001, 2);
+                simulation.fade(delta * 0.04);
+            });
 
 
-        FluidSimulationState fluidSimulationState = simulation.state();
-        var actuallyVisibleBounds = calculateActuallyVisibleBounds();
-        final var sprite = Asset.asset(() -> smokeRender.createImage(blur, upscale, maxOpacity, fluidSimulationState, actuallyVisibleBounds));
-        executor.submit(sprite::get);
-        final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
-        final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewportManager.defaultViewport().camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewportManager.defaultViewport().camera().zoom()));
-        viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
-            .scaled(scale));
-        if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
-            reassignGrid();
-        }
+            FluidSimulationState fluidSimulationState = simulation.state();
+            var actuallyVisibleBounds = calculateActuallyVisibleBounds();
+            final var sprite = Asset.asset(() -> smokeRender.createImage(blur, upscale, maxOpacity, fluidSimulationState, actuallyVisibleBounds));
+            executor.submit(sprite::get);
+            final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
+            final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewportManager.defaultViewport().camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewportManager.defaultViewport().camera().zoom()));
+            viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
+                .scaled(scale));
+            if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
+                reassignGrid();
+            }
         }
         return this;
     }
