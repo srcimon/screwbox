@@ -234,7 +234,7 @@ public class FluidSimulation {
                 for (; i < size - 1; i++) {
                     int curr = i + row;
                     r[curr] = (r0[curr] + a * (r[curr + 1] + r[curr - 1] + r[i + botRow] + r[i + topRow])) * cRecip;
-                    g[curr] = (g0[curr] + a * (g[curr + 1] + g[curr - 1] + g[i + botRow] + g[i + topRow])) * cRecip; // Fix Tippfehler im Quellcode
+                    g[curr] = (g0[curr] + a * (g[curr + 1] + g[curr - 1] + g[i + botRow] + g[i + topRow])) * cRecip;
                     b[curr] = (b0[curr] + a * (b[curr + 1] + b[curr - 1] + b[i + botRow] + b[i + topRow])) * cRecip;
                 }
             }
