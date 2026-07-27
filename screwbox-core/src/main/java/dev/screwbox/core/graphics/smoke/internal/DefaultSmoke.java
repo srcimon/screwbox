@@ -19,6 +19,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+//TODO add feature buble to webpage
+//TODO blog on smoke
 public class DefaultSmoke implements Smoke {
     private static int upscale = 6;
     private static int blur = 4;
