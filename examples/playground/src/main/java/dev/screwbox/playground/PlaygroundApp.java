@@ -45,7 +45,7 @@ public class PlaygroundApp {
         screwBox.environment().addSystem(x -> {
             x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             x.graphics().smoke().push(screwBox.mouse().position(), range.multiply(screwBox.loop().delta()));
-            x.graphics().smoke().emit(screwBox.mouse().position(), 400 * screwBox.loop().delta(), color);
+            x.graphics().smoke().emit(screwBox.mouse().position(),2 * screwBox.loop().delta(), color);
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
             }

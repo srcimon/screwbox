@@ -83,6 +83,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     List<Runnable> tasks = new ArrayList<>();
+    List<Runnable> obstacleTasks = new ArrayList<>();
 
     static double maxDensity = 4;
     static double maxVelocity = 20;
@@ -92,6 +93,7 @@ public class DefaultSmoke implements Smoke {
         var cell = toCell(position);//TODO no emission on obstacles
         tasks.add(() -> {
             if (isFreeCell(cell)) {
+                System.out.println("EMIT");
                 simulation.addDensity(cell.x(), cell.y(), amount, maxDensity, color);
             }
         });
@@ -132,10 +134,14 @@ public class DefaultSmoke implements Smoke {
             imageWorldAnchor = worldAnchor;
             awaitEndOfSimulationTask();
             simulation.clearObstacles();
+            for (var task : obstacleTasks) {
+                task.run();
+            }
             for (var task : tasks) {
                 task.run();
             }
             tasks.clear();
+            obstacleTasks.clear();
 
             simulationTask = executor.submit(() -> {
                 simulation.step(delta, 0.0000000004, 0.000001, 2);
@@ -159,8 +165,8 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
-    public Smoke addObstacle(Bounds bounds) {
-        tasks.add(() -> {
+    public Smoke addObstacle(final Bounds bounds) {
+        obstacleTasks.add(() -> {
             var origin = toCell(bounds.origin());
             var max = toCell(bounds.bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
