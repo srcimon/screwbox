@@ -12,6 +12,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.Smoke;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,34 +90,22 @@ public class DefaultSmoke implements Smoke {
     static double maxVelocity = 20;
 
     @Override
-    public Smoke emit(Vector position, double amount, Color color) {
-        var cell = toCell(position);//TODO no emission on obstacles
-        tasks.add(() -> {
-            if (isWithin(cell)) {
-                simulation.addDensity(cell, amount, maxDensity, color);
-            }
-        });
-
+    public Smoke emit(final Vector position, final double amount, final Color color) {
+        Validate.zeroOrPositive(amount, "amount must be positive");
+        var cell = toCell(position);
+        tasks.add(() -> simulation.addDensity(cell, amount, maxDensity, color));
         return this;
     }
 
-    private boolean isWithin(final Offset cell) {
-        return cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.resolution() - 2 && cell.y() < simulation.resolution() - 2 && !simulation.isObstacle(cell);
-    }
 
     @Override
     public Smoke push(final Vector position, final Vector velocity) {
-        var cell = toCell(position);//TODO no emission on obstacles
-        tasks.add(() -> {
-            if (isWithin(cell)) {
-                simulation.addVelocity(cell, velocity, maxVelocity);
-            }
-        });
-
+        var cell = toCell(position);
+        tasks.add(() -> simulation.addVelocity(cell, velocity, maxVelocity));
         return this;
     }
 
-    private Offset toCell(Vector position) {
+    private Offset toCell(final Vector position) {
         var cellX = Math.floor((position.x() - worldAnchor.x()) / cellSize);
         var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
         return Offset.at(cellX, cellY);

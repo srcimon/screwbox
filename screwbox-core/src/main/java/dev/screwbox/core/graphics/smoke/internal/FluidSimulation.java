@@ -49,21 +49,24 @@ public class FluidSimulation {
     }
 
     public void addDensity(final Offset cell, final double amount, final double limit, Color color) {
-        final int index = index(cell.x(), cell.y());
-
-        densityR[index] = Math.min(densityR[index] + (color.r() * amount), limit);
-        densityG[index] = Math.min(densityG[index] + (color.g() * amount), limit);
-        densityB[index] = Math.min(densityB[index] + (color.b() * amount), limit);
-    }
-
-    public void addVelocity(final Offset cell, final Vector velocity, final double limit) {
-        final int index = index(cell.x(), cell.y());
-        velocityX[index] = Math.min(limit, velocityX[index] + velocity.x());
-        velocityY[index] = Math.min(limit, velocityY[index] + velocity.y());
+        if (isFreeCell(cell)) {
+            final int index = index(cell.x(), cell.y());
+            densityR[index] = Math.min(densityR[index] + (color.r() * amount), limit);
+            densityG[index] = Math.min(densityG[index] + (color.g() * amount), limit);
+            densityB[index] = Math.min(densityB[index] + (color.b() * amount), limit);
+        }
     }
 
     private boolean isFreeCell(final Offset cell) {
-        return cell.x() > 2 && cell.y() > 2 && cell.x() < resolution() - 2 && cell.y() < resolution() - 2 && !.isObstacle(cell);
+        return cell.x() > 0 && cell.y() > 0 && cell.x() < resolution() && cell.y() < resolution() && !obstacles[index(cell.x(), cell.y())];
+    }
+
+    public void addVelocity(final Offset cell, final Vector velocity, final double limit) {
+        if(isFreeCell(cell)) {
+            final int index = index(cell.x(), cell.y());
+            velocityX[index] = Math.min(limit, velocityX[index] + velocity.x());
+            velocityY[index] = Math.min(limit, velocityY[index] + velocity.y());
+        }
     }
 
     public FluidSimulationState state() {
@@ -100,10 +103,6 @@ public class FluidSimulation {
         advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
         advect(this.densityG, this.densityG0, this.velocityX, this.velocityY, delta);
         advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
-    }
-
-    public boolean isObstacle(Offset cell) {
-        return obstacles[index(cell.x(), cell.y())];
     }
 
     void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
