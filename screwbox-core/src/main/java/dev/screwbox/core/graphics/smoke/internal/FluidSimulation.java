@@ -42,6 +42,10 @@ public class FluidSimulation {
         this.obstacles = new boolean[cellCount];
     }
 
+    public int resolution() {
+        return resolution;
+    }
+
     double maxDensity = 4;
     double maxVelocity = 20;
 
@@ -410,11 +414,6 @@ public class FluidSimulation {
                         s1 * (t0 * d0[idx10] + t1 * d0[idx11]);
             }
         }
-    }
-
-
-    public int resolution() {
-        return resolution;
     }
 
     public void loadFrom(FluidSimulation oldSimulation, int deltaX, int deltaY) {
