@@ -58,7 +58,11 @@ public class FluidSimulation {
     }
 
     private boolean isFreeCell(final Offset cell) {
-        return cell.x() > 0 && cell.y() > 0 && cell.x() < resolution() && cell.y() < resolution() && !obstacles[index(cell.x(), cell.y())];
+        return cell.x() > 0 &&
+               cell.y() > 0 &&
+               cell.x() < resolution() &&
+               cell.y() < resolution() &&
+               !obstacles[index(cell.x(), cell.y())];
     }
 
     public void addVelocity(final Offset cell, final Vector velocity, final double limit) {
@@ -106,20 +110,19 @@ public class FluidSimulation {
     }
 
     void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
-        int size = this.resolution;
         double iterationBonus = 1.0 + (20.0 - iter) * 0.05;
-        double a = dt * (diff * iterationBonus) * (size - 2) * (size - 2);
+        double a = dt * (diff * iterationBonus) * (resolution - 2) * (resolution - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int k = 0; k < iter; k++) {
-            for (int j = 1; j < size - 1; j++) {
-                int row = j * size;
-                int topRow = row - size;
-                int botRow = row + size;
+            for (int j = 1; j < resolution - 1; j++) {
+                int row = j * resolution;
+                int topRow = row - resolution;
+                int botRow = row + resolution;
 
                 int i = 1;
                 // Loop Unrolling (Faktor 2)
-                for (; i < size - 2; i += 2) {
+                for (; i < resolution - 2; i += 2) {
                     int curr0 = i + row;
                     int curr1 = curr0 + 1;
 
@@ -174,7 +177,7 @@ public class FluidSimulation {
                 }
 
                 // Rest-Zelle falls ungerade
-                for (; i < size - 1; i++) {
+                for (; i < resolution - 1; i++) {
                     int curr = i + row;
                     if (obstacles[curr]) {
                         x[curr] = 0;
@@ -205,20 +208,19 @@ public class FluidSimulation {
 
     // Kombinierter Solver für alle 3 Farbkanäle (Massiver Cache-Gewinn!)
     void diffuseRGB(double[] r, double[] g, double[] b, double[] r0, double[] g0, double[] b0, double diff, double dt, int iter) {
-        int size = this.resolution;
         double iterationBonus = 1.0 + (20.0 - iter) * 0.05; // Faktor empirisch anpassen (z.B. bei iter=5 -> ~1.75)
-        double a = dt * (diff * iterationBonus) * (size - 2) * (size - 2);
+        double a = dt * (diff * iterationBonus) * (resolution - 2) * (resolution - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int k = 0; k < iter; k++) {
-            for (int j = 1; j < size - 1; j++) {
-                int row = j * size;
-                int topRow = row - size;
-                int botRow = row + size;
+            for (int j = 1; j < resolution - 1; j++) {
+                int row = j * resolution;
+                int topRow = row - resolution;
+                int botRow = row + resolution;
 
                 int i = 1;
                 // Verarbeitet R, G und B für 2 Zellen pro Schleifendurchlauf
-                for (; i < size - 2; i += 2) {
+                for (; i < resolution - 2; i += 2) {
                     int curr0 = i + row;
                     int curr1 = curr0 + 1;
                     int top0 = i + topRow;
@@ -236,7 +238,7 @@ public class FluidSimulation {
                     g[curr1] = (g0[curr1] + a * (g[curr1 + 1] + g[curr1 - 1] + g[bot1] + g[top1])) * cRecip;
                     b[curr1] = (b0[curr1] + a * (b[curr1 + 1] + b[curr1 - 1] + b[bot1] + b[top1])) * cRecip;
                 }
-                for (; i < size - 1; i++) {
+                for (; i < resolution - 1; i++) {
                     int curr = i + row;
                     r[curr] = (r0[curr] + a * (r[curr + 1] + r[curr - 1] + r[i + botRow] + r[i + topRow])) * cRecip;
                     g[curr] = (g0[curr] + a * (g[curr + 1] + g[curr - 1] + g[i + botRow] + g[i + topRow])) * cRecip;
@@ -418,8 +420,8 @@ public class FluidSimulation {
     }
 
     public void loadFrom(FluidSimulation oldSimulation, int deltaX, int deltaY) {
-        for (int x = 1; x < this.resolution - 1; x++) {
-            for (int y = 1; y < this.resolution - 1; y++) {
+        for (int x = 1; x < resolution - 1; x++) {
+            for (int y = 1; y < resolution - 1; y++) {
 
                 int xOld = x + deltaX;
                 int yOld = y + deltaY;
@@ -428,7 +430,7 @@ public class FluidSimulation {
                     yOld >= 1 && yOld < oldSimulation.resolution - 1) {
 
                     // Nutze für jedes Objekt die jeweils eigene Index-Arithmetik!
-                    int ix = x + y * this.resolution; // Inlined für das neue Grid
+                    int ix = x + y * resolution; // Inlined für das neue Grid
                     int ixOld = xOld + yOld * oldSimulation.resolution; // Nutzt oldSimulation.cells!
 
                     densityR[ix] = oldSimulation.densityR[ixOld];
