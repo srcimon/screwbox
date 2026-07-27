@@ -1,6 +1,5 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
@@ -44,13 +43,10 @@ public class PlaygroundApp {
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32)))));
         screwBox.environment().addSystem(x -> {
             x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
-            x.graphics().smoke().push(screwBox.mouse().position(), range.multiply(screwBox.loop().delta()));
-            x.graphics().smoke().emit(screwBox.mouse().position(),2 * screwBox.loop().delta(), color);
+            x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(50,-30).multiply(screwBox.loop().delta() ));
+            x.graphics().smoke().emit(screwBox.mouse().position(),1 * screwBox.loop().delta(), color);
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
-            }
-            if (x.mouse().isDownLeft()) {
-                range = Angle.degrees(200 * x.loop().delta()).rotate(range);
             }
             x.graphics().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
@@ -58,5 +54,4 @@ public class PlaygroundApp {
         screwBox.start();
     }
 
-    static Vector range = Vector.y(-40);
 }

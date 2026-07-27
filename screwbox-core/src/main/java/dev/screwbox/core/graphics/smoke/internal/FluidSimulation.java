@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Offset;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -47,18 +48,18 @@ public class FluidSimulation {
         return resolution;
     }
 
-    public void addDensity(final int x, int y, final double amount, final double maxDensity, Color color) {
-        final int index = index(x, y);
+    public void addDensity(final Offset cell, final double amount, final double maxDensity, Color color) {
+        final int index = index(cell.x(), cell.y());
 
         densityR[index] = Math.min(densityR[index] + (color.r() * amount), maxDensity);
         densityG[index] = Math.min(densityG[index] + (color.g() * amount), maxDensity);
         densityB[index] = Math.min(densityB[index] + (color.b() * amount), maxDensity);
     }
 
-    public void addVelocity(final int x, int y, final Vector velocity, final double maxVelocity) {
-        final int index = index(x, y);
-        velocityX[index] =  Math.min(maxVelocity, velocityX[index] + velocity.x());
-        velocityY[index] += Math.min(maxVelocity, velocityY[index] + velocity.y());
+    public void addVelocity(final Offset cell, final Vector velocity, final double maxVelocity) {
+        final int index = index(cell.x(), cell.y());
+        velocityX[index] = Math.min(maxVelocity, velocityX[index] + velocity.x());
+        velocityY[index] = Math.min(maxVelocity, velocityY[index] + velocity.y());
     }
 
 
@@ -98,8 +99,8 @@ public class FluidSimulation {
         advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
     }
 
-    public boolean isObstacle(int x, int y) {
-        return obstacles[index(x, y)];
+    public boolean isObstacle(Offset cell) {
+        return obstacles[index(cell.x(), cell.y())];
     }
     void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
         int size = this.resolution;

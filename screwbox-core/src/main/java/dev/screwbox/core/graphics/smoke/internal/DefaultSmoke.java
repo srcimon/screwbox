@@ -93,8 +93,7 @@ public class DefaultSmoke implements Smoke {
         var cell = toCell(position);//TODO no emission on obstacles
         tasks.add(() -> {
             if (isFreeCell(cell)) {
-                System.out.println("EMIT");
-                simulation.addDensity(cell.x(), cell.y(), amount, maxDensity, color);
+                simulation.addDensity(cell, amount, maxDensity, color);
             }
         });
 
@@ -102,7 +101,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     private boolean isFreeCell(final Offset cell) {
-        return cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.resolution() - 2 && cell.y() < simulation.resolution() - 2 && !simulation.isObstacle(cell.x(), cell.y());
+        return cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.resolution() - 2 && cell.y() < simulation.resolution() - 2 && !simulation.isObstacle(cell);
     }
 
     @Override
@@ -110,7 +109,7 @@ public class DefaultSmoke implements Smoke {
         var cell = toCell(position);//TODO no emission on obstacles
         tasks.add(() -> {
             if (isFreeCell(cell)) {
-                simulation.addVelocity(cell.x(), cell.y(), velocity, maxVelocity);
+                simulation.addVelocity(cell, velocity, maxVelocity);
             }
         });
 
