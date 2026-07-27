@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 
 import java.awt.image.BufferedImage;
@@ -46,29 +47,18 @@ public class FluidSimulation {
         return resolution;
     }
 
-    double maxDensity = 4;
-    double maxVelocity = 20;
+    public void addDensity(final int x, int y, final double amount, final double maxDensity, Color color) {
+        final int index = index(x, y);
 
-    public void addDensity(final int x, int y, final double amount, Color color) {
-        final int ix = indexSafe(x, y);
-        final double factor = amount / 255.0;
-
-        final double r = densityR[ix] + (color.r() * factor);
-        final double g = densityG[ix] + (color.g() * factor);
-        final double b = densityB[ix] + (color.b() * factor);
-
-        // Faster than Math.min due to JVM branch prediction optimization
-        densityR[ix] = Math.min(r, maxDensity);
-        densityG[ix] = Math.min(g, maxDensity);
-        densityB[ix] = Math.min(b, maxDensity);
+        densityR[index] = Math.min(densityR[index] + (color.r() * amount), maxDensity);
+        densityG[index] = Math.min(densityG[index] + (color.g() * amount), maxDensity);
+        densityB[index] = Math.min(densityB[index] + (color.b() * amount), maxDensity);
     }
 
-    public void addVelocity(final int x, int y, final double amountX, final double amountY) {
-        int ix = indexSafe(x, y);
-        velocityX[ix] += amountX;
-        velocityY[ix] += amountY;
-        velocityX[ix] = Math.min(maxVelocity, velocityX[ix]);
-        velocityY[ix] = Math.min(maxVelocity, velocityY[ix]);
+    public void addVelocity(final int x, int y, final Vector velocity, final double maxVelocity) {
+        final int index = index(x, y);
+        velocityX[index] =  Math.min(maxVelocity, velocityX[index] + velocity.x());
+        velocityY[index] += Math.min(maxVelocity, velocityY[index] + velocity.y());
     }
 
 
@@ -108,6 +98,9 @@ public class FluidSimulation {
         advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
     }
 
+    public boolean isObstacle(int x, int y) {
+        return obstacles[index(x, y)];
+    }
     void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
         int size = this.resolution;
         double iterationBonus = 1.0 + (20.0 - iter) * 0.05;

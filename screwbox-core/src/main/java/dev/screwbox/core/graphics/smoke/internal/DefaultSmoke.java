@@ -20,6 +20,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 //TODO add feature buble to webpage
+
 //TODO blog on smoke
 public class DefaultSmoke implements Smoke {
     private static int upscale = 6;
@@ -83,22 +84,34 @@ public class DefaultSmoke implements Smoke {
 
     List<Runnable> tasks = new ArrayList<>();
 
+    static double maxDensity = 4;
+    static double maxVelocity = 20;
+
     @Override
     public Smoke emit(Vector position, double amount, Color color) {
         var cell = toCell(position);//TODO no emission on obstacles
-        if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.resolution() - 2 && cell.y() < simulation.resolution() - 2) {
-            tasks.add(() -> simulation.addDensity(cell.x(), cell.y(), amount, color));
-        }
+        tasks.add(() -> {
+            if (isFreeCell(cell)) {
+                simulation.addDensity(cell.x(), cell.y(), amount, maxDensity, color);
+            }
+        });
 
         return this;
     }
 
+    private boolean isFreeCell(final Offset cell) {
+        return cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.resolution() - 2 && cell.y() < simulation.resolution() - 2 && !simulation.isObstacle(cell.x(), cell.y());
+    }
+
     @Override
-    public Smoke push(Vector position, Vector velocity) {
+    public Smoke push(final Vector position, final Vector velocity) {
         var cell = toCell(position);//TODO no emission on obstacles
-        if (cell.x() > 2 && cell.y() > 2 && cell.x() < simulation.resolution() - 2 && cell.y() < simulation.resolution() - 2) {
-            tasks.add(() -> simulation.addVelocity(cell.x(), cell.y(), velocity.x(), velocity.y()));
-        }
+        tasks.add(() -> {
+            if (isFreeCell(cell)) {
+                simulation.addVelocity(cell.x(), cell.y(), velocity, maxVelocity);
+            }
+        });
+
         return this;
     }
 
