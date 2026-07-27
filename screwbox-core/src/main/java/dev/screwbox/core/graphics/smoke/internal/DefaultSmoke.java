@@ -93,8 +93,14 @@ public class DefaultSmoke implements Smoke {
     public Smoke emit(final Vector position, final double amount, final Color color) {
         Validate.zeroOrPositive(amount, "amount must be positive");
         var cell = toCell(position);
-        tasks.add(() -> simulation.addDensity(cell, amount, maxDensity, color));
+        densityChanges.add(new DensityChange(cell, amount, color));
         return this;
+    }
+
+    List<DensityChange> densityChanges = new ArrayList<>();
+
+    private record DensityChange(Offset cell, double amount, Color color) {
+
     }
 
 
@@ -122,10 +128,15 @@ public class DefaultSmoke implements Smoke {
             imageWorldAnchor = worldAnchor;
             awaitEndOfSimulationTask();
             simulation.clearObstacles();
-            for (var task : obstacleTasks) {
+
+            for (var task : obstacleTasks) {//TODO get rid of task
                 task.run();
             }
-            for (var task : tasks) {
+            for(final var densityChange : densityChanges) {
+                simulation.addDensity(densityChange.cell, densityChange.amount, maxDensity, densityChange.color);
+            }
+            densityChanges.clear();
+            for (var task : tasks) {//TODO get rid of task
                 task.run();
             }
             tasks.clear();

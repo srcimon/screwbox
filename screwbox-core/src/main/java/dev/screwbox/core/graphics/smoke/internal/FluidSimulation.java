@@ -57,7 +57,7 @@ public class FluidSimulation {
         }
     }
 
-    private boolean isFreeCell(final Offset cell) {
+    public boolean isFreeCell(final Offset cell) {
         return cell.x() > 0 &&
                cell.y() > 0 &&
                cell.x() < resolution() &&
