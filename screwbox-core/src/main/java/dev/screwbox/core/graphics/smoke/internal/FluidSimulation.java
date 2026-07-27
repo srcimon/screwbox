@@ -50,13 +50,17 @@ public class FluidSimulation {
     double maxVelocity = 20;
 
     public void addDensity(final int x, int y, final double amount, Color color) {
-        int ix = indexSafe(x, y);
-        densityR[ix] += amount * color.r() / 255.0;
-        densityG[ix] += amount * color.g() / 255.0;
-        densityB[ix] += amount * color.b() / 255.0;
-        densityR[ix] = Math.min(maxDensity, densityR[ix]);
-        densityG[ix] = Math.min(maxDensity, densityG[ix]);
-        densityB[ix] = Math.min(maxDensity, densityB[ix]);
+        final int ix = indexSafe(x, y);
+        final double factor = amount / 255.0;
+
+        final double r = densityR[ix] + (color.r() * factor);
+        final double g = densityG[ix] + (color.g() * factor);
+        final double b = densityB[ix] + (color.b() * factor);
+
+        // Faster than Math.min due to JVM branch prediction optimization
+        densityR[ix] = Math.min(r, maxDensity);
+        densityG[ix] = Math.min(g, maxDensity);
+        densityB[ix] = Math.min(b, maxDensity);
     }
 
     public void addVelocity(final int x, int y, final double amountX, final double amountY) {
