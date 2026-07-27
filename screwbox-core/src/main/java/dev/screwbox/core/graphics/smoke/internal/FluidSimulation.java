@@ -404,10 +404,10 @@ public class FluidSimulation {
 
                 // Hindernis-Check für die 4 Interpolations-Nachbarn:
                 // Wenn ein Quellpixel im Hindernis liegt, nutzen wir stattdessen das aktuelle Feld (ix)
-                int idx00 = obstacles[indexSafe(i0i, j0i)] ? ix : indexSafe(i0i, j0i);
-                int idx01 = obstacles[indexSafe(i0i, j1i)] ? ix : indexSafe(i0i, j1i);
-                int idx10 = obstacles[indexSafe(i1i, j0i)] ? ix : indexSafe(i1i, j0i);
-                int idx11 = obstacles[indexSafe(i1i, j1i)] ? ix : indexSafe(i1i, j1i);
+                int idx00 = obstacles[index(i0i, j0i)] ? ix : index(i0i, j0i);
+                int idx01 = obstacles[index(i0i, j1i)] ? ix : index(i0i, j1i);
+                int idx10 = obstacles[index(i1i, j0i)] ? ix : index(i1i, j0i);
+                int idx11 = obstacles[index(i1i, j1i)] ? ix : index(i1i, j1i);
 
                 // Bilineare Interpolation mit den korrigierten Indizes
                 d[ix] = s0 * (t0 * d0[idx00] + t1 * d0[idx01]) +
