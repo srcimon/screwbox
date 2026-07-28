@@ -90,7 +90,7 @@ public class FluidSimulation {
 
     public void step(final double delta, final double viscosity, final double diffusion, final int iterations) {
         // diffuse the volecities x and y
-        diffuseVelocity(viscosity, delta, iterations);
+        diffuseVelocity(delta, viscosity, iterations);
 
         // clean up so that same amount of fluid is everywhere
         project(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, iterations);
@@ -111,104 +111,66 @@ public class FluidSimulation {
         advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
     }
 
-    void diffuseVelocity(double diff, double dt, int iter) {
-        double a = dt * diff * (resolution - 2) * (resolution - 2);
+    private void diffuseCell(int i, int row, int topRow, int botRow, double a, double cRecip) {
+        int curr = i + row;
+
+        if (obstacles[curr]) {
+            velocityX0[curr] = 0;
+            velocityY0[curr] = 0;
+            return;
+        }
+
+        int top = i + topRow;
+        int bot = i + botRow;
+        int left = curr - 1;
+        int right = curr + 1;
+
+        double nLeft = obstacles[left] ? -velocityX0[curr] : velocityX0[left];
+        double nRight = obstacles[right] ? -velocityX0[curr] : velocityX0[right];
+        double nTop = obstacles[top] ? velocityX0[curr] : velocityX0[top];
+        double nBot = obstacles[bot] ? velocityX0[curr] : velocityX0[bot];
+
+        double nLeftY = obstacles[left] ? velocityY0[curr] : velocityY0[left];
+        double nRightY = obstacles[right] ? velocityY0[curr] : velocityY0[right];
+        double nTopY = obstacles[top] ? -velocityY0[curr] : velocityY0[top];
+        double nBotY = obstacles[bot] ? -velocityY0[curr] : velocityY0[bot];
+
+        velocityX0[curr] = (velocityX[curr] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
+        velocityY0[curr] = (velocityY[curr] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
+    }
+
+    void diffuseVelocity(final double delta, final double diffuse, final int iterations) {
+        final double a = calculateA(delta, diffuse);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
-        for (int k = 0; k < iter; k++) {
+        for (int k = 0; k < iterations; k++) {
             for (int j = 1; j < resolution - 1; j++) {
                 int row = j * resolution;
                 int topRow = row - resolution;
                 int botRow = row + resolution;
 
-                // Loop Unrolling (Faktor 2)
-                for (int i = 1; i < resolution - 2; i += 2) {
-                    int curr0 = i + row;
-                    int curr1 = curr0 + 1;
-
-                    // --- INDEX i ---
-                    if (obstacles[curr0]) {
-                        velocityX0[curr0] = 0;
-                        velocityY0[curr0] = 0;
-                    } else {
-                        int top0 = i + topRow;
-                        int bot0 = i + botRow;
-                        int left0 = curr0 - 1;
-                        int right0 = curr0 + 1;
-
-                        // Wenn Nachbar ein Hindernis ist, nimm den aktuellen Zellwert (Spiegelung)
-                        double nLeft = obstacles[left0] ? -velocityX0[curr0] : velocityX0[left0]; // -x für Reflektion der Geschwindigkeit
-                        double nRight = obstacles[right0] ? -velocityX0[curr0] : velocityX0[right0];
-                        double nTop = obstacles[top0] ? velocityX0[curr0] : velocityX0[top0];
-                        double nBot = obstacles[bot0] ? velocityX0[curr0] : velocityX0[bot0];
-
-                        double nLeftY = obstacles[left0] ? velocityY0[curr0] : velocityY0[left0];
-                        double nRightY = obstacles[right0] ? velocityY0[curr0] : velocityY0[right0];
-                        double nTopY = obstacles[top0] ? -velocityY0[curr0] : velocityY0[top0]; // -y für Reflektion an waagerechten Wänden
-                        double nBotY = obstacles[bot0] ? -velocityY0[curr0] : velocityY0[bot0];
-
-                        velocityX0[curr0] = (velocityX[curr0] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
-                        velocityY0[curr0] = (velocityY[curr0] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
-                    }
-
-                    // --- INDEX i + 1 ---
-                    if (obstacles[curr1]) {
-                        velocityX0[curr1] = 0;
-                        velocityY0[curr1] = 0;
-                    } else {
-                        int top1 = (i + 1) + topRow;
-                        int bot1 = (i + 1) + botRow;
-                        int left1 = curr1 - 1;
-                        int right1 = curr1 + 1;
-
-                        double nLeft = obstacles[left1] ? -velocityX0[curr1] : velocityX0[left1];
-                        double nRight = obstacles[right1] ? -velocityX0[curr1] : velocityX0[right1];
-                        double nTop = obstacles[top1] ? velocityX0[curr1] : velocityX0[top1];
-                        double nBot = obstacles[bot1] ? velocityX0[curr1] : velocityX0[bot1];
-
-                        double nLeftY = obstacles[left1] ? velocityY0[curr1] : velocityY0[left1];
-                        double nRightY = obstacles[right1] ? velocityY0[curr1] : velocityY0[right1];
-                        double nTopY = obstacles[top1] ? -velocityY0[curr1] : velocityY0[top1];
-                        double nBotY = obstacles[bot1] ? -velocityY0[curr1] : velocityY0[bot1];
-
-                        velocityX0[curr1] = (velocityX[curr1] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
-                        velocityY0[curr1] = (velocityY[curr1] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
-                    }
+                // Hauptschleife: Behält Ihr manuelles Unrolling (Faktor 2) exakt bei
+                int i = 1;
+                for (; i < resolution - 2; i += 2) {
+                    diffuseCell(i, row, topRow, botRow, a, cRecip);
+                    diffuseCell(i + 1, row, topRow, botRow, a, cRecip);
                 }
 
-                // Rest-Zelle falls ungerade
-                for (int i = 1; i < resolution - 1; i++) {
-                    int curr = i + row;
-                    if (obstacles[curr]) {
-                        velocityX0[curr] = 0;
-                        velocityY0[curr] = 0;
-                    } else {
-                        int top = i + topRow;
-                        int bot = i + botRow;
-                        int left = curr - 1;
-                        int right = curr + 1;
-
-                        double nLeft = obstacles[left] ? -velocityX0[curr] : velocityX0[left];
-                        double nRight = obstacles[right] ? -velocityX0[curr] : velocityX0[right];
-                        double nTop = obstacles[top] ? velocityX0[curr] : velocityX0[top];
-                        double nBot = obstacles[bot] ? velocityX0[curr] : velocityX0[bot];
-
-                        double nLeftY = obstacles[left] ? velocityY0[curr] : velocityY0[left];
-                        double nRightY = obstacles[right] ? velocityY0[curr] : velocityY0[right];
-                        double nTopY = obstacles[top] ? -velocityY0[curr] : velocityY0[top];
-                        double nBotY = obstacles[bot] ? -velocityY0[curr] : velocityY0[bot];
-
-                        velocityX0[curr] = (velocityX[curr] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
-                        velocityY0[curr] = (velocityY[curr] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
-                    }
+                // Rest-Schleife: Verarbeitet die verbleibende Zelle, falls resolution ungerade ist
+                for (; i < resolution - 1; i++) {
+                    diffuseCell(i, row, topRow, botRow, a, cRecip);
                 }
             }
         }
     }
 
+    private double calculateA(final double delta, final double diffuse) {
+        return delta * diffuse * (resolution - 2) * (resolution - 2);
+    }
+
     // Kombinierter Solver für alle 3 Farbkanäle (Massiver Cache-Gewinn!)
     void diffuseRGB(double[] r, double[] g, double[] b, double[] r0, double[] g0, double[] b0, double diff, double dt, int iter) {
-        double a = dt * diff * (resolution - 2) * (resolution - 2);
+        double a = calculateA(dt, diff);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int k = 0; k < iter; k++) {
