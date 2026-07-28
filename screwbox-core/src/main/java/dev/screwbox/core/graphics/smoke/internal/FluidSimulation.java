@@ -122,20 +122,20 @@ public class FluidSimulation {
             return;
         }
 
-        int top = i + topRow;
-        int bot = i + botRow;
-        int left = curr - 1;
-        int right = curr + 1;
+        final int top = i + topRow;
+        final int bottom = i + botRow;
+        final int left = curr - 1;
+        final int right = curr + 1;
 
         double nLeft = obstacles[left] ? -velocityX0[curr] : velocityX0[left];
         double nRight = obstacles[right] ? -velocityX0[curr] : velocityX0[right];
         double nTop = obstacles[top] ? velocityX0[curr] : velocityX0[top];
-        double nBot = obstacles[bot] ? velocityX0[curr] : velocityX0[bot];
+        double nBot = obstacles[bottom] ? velocityX0[curr] : velocityX0[bottom];
 
         double nLeftY = obstacles[left] ? velocityY0[curr] : velocityY0[left];
         double nRightY = obstacles[right] ? velocityY0[curr] : velocityY0[right];
         double nTopY = obstacles[top] ? -velocityY0[curr] : velocityY0[top];
-        double nBotY = obstacles[bot] ? -velocityY0[curr] : velocityY0[bot];
+        double nBotY = obstacles[bottom] ? -velocityY0[curr] : velocityY0[bottom];
 
         velocityX0[curr] = (velocityX[curr] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
         velocityY0[curr] = (velocityY[curr] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
@@ -152,14 +152,13 @@ public class FluidSimulation {
                 int botRow = row + resolution;
 
                 // Hauptschleife: Behält Ihr manuelles Unrolling (Faktor 2) exakt bei
-                int i = 1;
-                for (; i < innerResolution; i += 2) {
+                for (int i = 1; i < innerResolution; i += 2) {
                     diffuseCell(i, row, topRow, botRow, a, cRecip);
                     diffuseCell(i + 1, row, topRow, botRow, a, cRecip);
                 }
 
                 // Rest-Schleife: Verarbeitet die verbleibende Zelle, falls resolution ungerade ist
-                for (; i < resolution - 1; i++) {
+                for (int i = 1; i < resolution - 1; i++) {
                     diffuseCell(i, row, topRow, botRow, a, cRecip);
                 }
             }
