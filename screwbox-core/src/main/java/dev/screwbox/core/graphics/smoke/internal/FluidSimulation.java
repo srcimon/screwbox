@@ -220,13 +220,13 @@ public class FluidSimulation {
     }
 
 
-    void lin_solve(double[] x, double[] x0, int iter) {
-        for (int k = 0; k < iter; k++) {
+    void linearSolve(final double[] x, final double[] x0, final int iterations) {
+        for (int k = 0; k < iterations; k++) {
             linSolveInteration(x, x0);
         }
     }
 
-    private void linSolveInteration(double[] x, double[] x0) {
+    private void linSolveInteration(final double[] x, final double[] x0) {
         for (int j = 1; j < resolutionMinusOne; j++) {
 
             // Pointer-Initialisierung für den Zeilenstart (i = 1)
@@ -261,7 +261,7 @@ public class FluidSimulation {
     }
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
-        double h = 1.0 / resolutionMinusTwo;
+        final double h = 1.0 / resolutionMinusTwo;
 
         // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
         for (int j = 1; j < resolutionMinusOne; j++) {
@@ -291,7 +291,7 @@ public class FluidSimulation {
         }
 
         // Berechnet das Druckfeld p basierend auf der Divergenz (lin_solve muss obstacles ebenfalls beachten!)
-        lin_solve(p, div, iter);
+        linearSolve(p, div, iter);
 
         // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
         for (int j = 1; j < resolutionMinusOne; j++) {
@@ -304,10 +304,10 @@ public class FluidSimulation {
                     continue;
                 }
 
-                int left = indexSafe(i - 1, j);
-                int right = indexSafe(i + 1, j);
-                int top = indexSafe(i, j - 1);
-                int bot = indexSafe(i, j + 1);
+                int left = index(i - 1, j);
+                int right = index(i + 1, j);
+                int top = index(i, j - 1);
+                int bot = index(i, j + 1);
 
                 // Neumann-Randbedingung für den Druck: p spiegeln, wenn der Nachbar ein Hindernis ist
                 double pL = obstacles[left] ? p[ix] : p[left];
