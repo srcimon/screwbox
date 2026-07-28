@@ -219,8 +219,6 @@ public class FluidSimulation {
 
 
     void lin_solve(double[] x, double[] x0, int iter) {
-        double cRecip = 1.0 / (double) 4;
-
         for (int k = 0; k < iter; k++) {
             for (int j = 1; j < resolution - 1; j++) {
 
@@ -242,7 +240,7 @@ public class FluidSimulation {
                         double nBottom = obstacles[idx_bottom] ? x[idx_current] : x[idx_bottom];
                         double nTop = obstacles[idx_top] ? x[idx_current] : x[idx_top];
 
-                        x[idx_current] = (x0[idx_current] + (nRight + nLeft + nBottom + nTop)) * cRecip;
+                        x[idx_current] = (x0[idx_current] + (nRight + nLeft + nBottom + nTop)) * 0.25;
                     }
 
                     // Alle Pointer rücken synchron um genau 1 Zelle weiter (Hardware-Prefetching bleibt aktiv)
