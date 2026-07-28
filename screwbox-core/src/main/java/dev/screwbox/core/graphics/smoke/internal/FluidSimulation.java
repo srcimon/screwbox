@@ -95,22 +95,22 @@ public class FluidSimulation {
         diffuseVelocity(delta, viscosity, iterations);
 
         // clean up so that same amount of fluid is everywhere
-        project(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, iterations);
+        project(velocityX0, velocityY0, velocityX, velocityY, iterations);
 
         // advect velocities
-        advect(this.velocityX, this.velocityX0, this.velocityX0, this.velocityY0, delta);
-        advect(this.velocityY, this.velocityY0, this.velocityX0, this.velocityY0, delta);
+        advect(velocityX, velocityX0, velocityX0, velocityY0, delta);
+        advect(velocityY, velocityY0, velocityX0, velocityY0, delta);
 
         // clean that up
-        project(this.velocityX, this.velocityY, this.velocityX0, this.velocityY0, iterations);
+        project(velocityX, velocityY, velocityX0, velocityY0, iterations);
 
         // DIFFUSION FIX 2: Alle drei Farbkanäle zusammen diffundieren (3-in-1 Pass)
-        diffuseRGB(this.densityR0, this.densityG0, this.densityB0, this.densityR, this.densityG, this.densityB, diffusion, delta, iterations);
+        diffuseRGB(densityR0, densityG0, densityB0, densityR, densityG, densityB, diffusion, delta, iterations);
 
         // 2. Advect all three color channels using the solved velocities
-        advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
-        advect(this.densityG, this.densityG0, this.velocityX, this.velocityY, delta);
-        advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
+        advect(densityR, densityR0, velocityX, velocityY, delta);
+        advect(densityG, densityG0, velocityX, velocityY, delta);
+        advect(densityB, densityB0, velocityX, velocityY, delta);
     }
 
     private void diffuseCell(int i, int row, int topRow, int botRow, double a, double cRecip) {
