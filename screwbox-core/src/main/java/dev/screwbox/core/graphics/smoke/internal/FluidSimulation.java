@@ -122,13 +122,6 @@ public class FluidSimulation {
                 final int topRow = row - resolution;
                 final int botRow = row + resolution;
 
-                // Hauptschleife: Behält Ihr manuelles Unrolling (Faktor 2) exakt bei
-                for (int i = 1; i < resolutionMinusTwo; i += 2) {
-                    diffuseVelocityCell(i, row, topRow, botRow, a, cRecip);
-                    diffuseVelocityCell(i + 1, row, topRow, botRow, a, cRecip);
-                }
-
-                // Rest-Schleife: Verarbeitet die verbleibende Zelle, falls resolution ungerade ist
                 for (int i = 1; i < resolutionMinusOne; i++) {
                     diffuseVelocityCell(i, row, topRow, botRow, a, cRecip);
                 }
