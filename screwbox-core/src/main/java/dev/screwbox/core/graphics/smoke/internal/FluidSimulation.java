@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class FluidSimulation {
 
     private final int resolution;
+    private final int innerResolution;
 
     private final double[] densityR;
     private final double[] densityR0;
@@ -30,6 +31,7 @@ public class FluidSimulation {
 
     public FluidSimulation(final int resolution) {
         this.resolution = resolution;
+        this.innerResolution = resolution - 2;
         final int cellCount = resolution * resolution;
         this.densityR = new double[cellCount];
         this.densityR0 = new double[cellCount];
@@ -151,7 +153,7 @@ public class FluidSimulation {
 
                 // Hauptschleife: Behält Ihr manuelles Unrolling (Faktor 2) exakt bei
                 int i = 1;
-                for (; i < resolution - 2; i += 2) {
+                for (; i < innerResolution; i += 2) {
                     diffuseCell(i, row, topRow, botRow, a, cRecip);
                     diffuseCell(i + 1, row, topRow, botRow, a, cRecip);
                 }
@@ -165,7 +167,7 @@ public class FluidSimulation {
     }
 
     private double calculateA(final double delta, final double diffuse) {
-        return delta * diffuse * (resolution - 2) * (resolution - 2);
+        return delta * diffuse * innerResolution * innerResolution;
     }
 
     // Kombinierter Solver für alle 3 Farbkanäle (Massiver Cache-Gewinn!)
@@ -181,7 +183,7 @@ public class FluidSimulation {
 
                 int i = 1;
                 // Verarbeitet R, G und B für 2 Zellen pro Schleifendurchlauf
-                for (; i < resolution - 2; i += 2) {
+                for (; i < innerResolution; i += 2) {
                     int curr0 = i + row;
                     int curr1 = curr0 + 1;
                     int top0 = i + topRow;
@@ -257,7 +259,7 @@ public class FluidSimulation {
     }
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
-        double h = 1.0 / (resolution - 2);
+        double h = 1.0 / innerResolution;
 
         // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
         for (int j = 1; j < resolution - 1; j++) {
@@ -320,8 +322,8 @@ public class FluidSimulation {
     void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
         double i0, i1, j0, j1;
 
-        double dtx = dt * (resolution - 2);
-        double dty = dt * (resolution - 2);
+        double dtx = dt * innerResolution;
+        double dty = dt * innerResolution;
 
         double s0, s1, t0, t1;
         double tmp1, tmp2, x, y;
