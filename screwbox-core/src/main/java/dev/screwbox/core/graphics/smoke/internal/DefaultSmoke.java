@@ -170,7 +170,7 @@ public class DefaultSmoke implements Smoke {
             var max = toCell(bounds.bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
-                    simulation.setObstacle(x, y, true);
+                    simulation.setObstacle(x, y);
                 }
             }
         });

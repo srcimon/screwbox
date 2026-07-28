@@ -57,7 +57,7 @@ public class FluidSimulation {
         }
     }
 
-    public boolean isFreeCell(final Offset cell) {
+    private boolean isFreeCell(final Offset cell) {
         return cell.x() > 0 &&
                cell.y() > 0 &&
                cell.x() < resolution() &&
@@ -452,8 +452,8 @@ public class FluidSimulation {
         }
     }
 
-    public void setObstacle(int x, int y, boolean b) {
-        obstacles[indexSafe(x, y)] = b;
+    public void setObstacle(int x, int y) {
+        obstacles[indexSafe(x, y)] = true;
     }
 
     public void clearObstacles() {
