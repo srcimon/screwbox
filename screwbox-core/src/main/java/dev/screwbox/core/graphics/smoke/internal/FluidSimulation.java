@@ -10,7 +10,8 @@ import java.util.Arrays;
 public class FluidSimulation {
 
     private final int resolution;
-    private final int innerResolution;
+    private final int resolutionMinusTwo; // performance
+    private final int resolutionMinusOne; // performance
 
     private final double[] densityR;
     private final double[] densityR0;
@@ -31,7 +32,8 @@ public class FluidSimulation {
 
     public FluidSimulation(final int resolution) {
         this.resolution = resolution;
-        this.innerResolution = resolution - 2;
+        this.resolutionMinusTwo = resolution - 2;
+        this.resolutionMinusOne = resolution - 1;
         final int cellCount = resolution * resolution;
         this.densityR = new double[cellCount];
         this.densityR0 = new double[cellCount];
@@ -82,8 +84,8 @@ public class FluidSimulation {
 
     //TODO reduce usage as much as possible
     private int indexSafe(int x, int y) {
-        return Math.clamp(x, 0, resolution - 1) +
-               Math.clamp(y, 0, resolution - 1) * resolution;
+        return Math.clamp(x, 0, resolutionMinusOne) +
+               Math.clamp(y, 0, resolutionMinusOne) * resolution;
     }
 
     private int index(final int x, final int y) {
@@ -146,19 +148,19 @@ public class FluidSimulation {
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int k = 0; k < iterations; k++) {
-            for (int j = 1; j < resolution - 1; j++) {
+            for (int j = 1; j < resolutionMinusOne; j++) {
                 int row = j * resolution;
                 int topRow = row - resolution;
                 int botRow = row + resolution;
 
                 // Hauptschleife: Behält Ihr manuelles Unrolling (Faktor 2) exakt bei
-                for (int i = 1; i < innerResolution; i += 2) {
+                for (int i = 1; i < resolutionMinusTwo; i += 2) {
                     diffuseCell(i, row, topRow, botRow, a, cRecip);
                     diffuseCell(i + 1, row, topRow, botRow, a, cRecip);
                 }
 
                 // Rest-Schleife: Verarbeitet die verbleibende Zelle, falls resolution ungerade ist
-                for (int i = 1; i < resolution - 1; i++) {
+                for (int i = 1; i < resolutionMinusOne; i++) {
                     diffuseCell(i, row, topRow, botRow, a, cRecip);
                 }
             }
@@ -166,7 +168,7 @@ public class FluidSimulation {
     }
 
     private double calculateA(final double delta, final double diffuse) {
-        return delta * diffuse * innerResolution * innerResolution;
+        return delta * diffuse * resolutionMinusTwo * resolutionMinusTwo;
     }
 
     void diffuseRGB(double diff, double dt, int iter) {
@@ -174,14 +176,14 @@ public class FluidSimulation {
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int k = 0; k < iter; k++) {
-            for (int j = 1; j < resolution - 1; j++) {
+            for (int j = 1; j < resolutionMinusOne; j++) {
                 int row = j * resolution;
                 int topRow = row - resolution;
                 int botRow = row + resolution;
 
                 int i = 1;
                 // Verarbeitet R, G und B für 2 Zellen pro Schleifendurchlauf
-                for (; i < innerResolution; i += 2) {
+                for (; i < resolutionMinusTwo; i += 2) {
                     int curr0 = i + row;
                     int curr1 = curr0 + 1;
                     int top0 = i + topRow;
@@ -199,7 +201,7 @@ public class FluidSimulation {
                     densityG0[curr1] = (densityG[curr1] + a * (densityG0[curr1 + 1] + densityG0[curr1 - 1] + densityG0[bot1] + densityG0[top1])) * cRecip;
                     densityB0[curr1] = (densityB[curr1] + a * (densityB0[curr1 + 1] + densityB0[curr1 - 1] + densityB0[bot1] + densityB0[top1])) * cRecip;
                 }
-                for (; i < resolution - 1; i++) {
+                for (; i < resolutionMinusOne; i++) {
                     int curr = i + row;
                     densityR0[curr] = (densityR[curr] + a * (densityR0[curr + 1] + densityR0[curr - 1] + densityR0[i + botRow] + densityR0[i + topRow])) * cRecip;
                     densityG0[curr] = (densityG[curr] + a * (densityG0[curr + 1] + densityG0[curr - 1] + densityG0[i + botRow] + densityG0[i + topRow])) * cRecip;
@@ -220,46 +222,50 @@ public class FluidSimulation {
 
     void lin_solve(double[] x, double[] x0, int iter) {
         for (int k = 0; k < iter; k++) {
-            for (int j = 1; j < resolution - 1; j++) {
+            linSolveInteration(x, x0);
+        }
+    }
 
-                // Pointer-Initialisierung für den Zeilenstart (i = 1)
-                int indexCurrent = 1 + j * resolution;
-                int indexLeft = indexCurrent - 1;
-                int indexRight = indexCurrent + 1;
-                int indexTop = indexCurrent - resolution;
-                int indexBottom = indexCurrent + resolution;
+    private void linSolveInteration(double[] x, double[] x0) {
+        for (int j = 1; j < resolutionMinusOne; j++) {
 
-                for (int i = 1; i < resolution - 1; i++) {
+            // Pointer-Initialisierung für den Zeilenstart (i = 1)
+            int indexCurrent = 1 + j * resolution;
+            int indexLeft = indexCurrent - 1;
+            int indexRight = indexCurrent + 1;
+            int indexTop = indexCurrent - resolution;
+            int indexBottom = indexCurrent + resolution;
 
-                    if (obstacles[indexCurrent]) {
-                        x[indexCurrent] = 0;
-                    } else {
-                        // Wenn Nachbar ein Hindernis ist, nimm den Wert der aktuellen Zelle (Reflektion)
-                        double nRight = obstacles[indexRight] ? x[indexCurrent] : x[indexRight];
-                        double nLeft = obstacles[indexLeft] ? x[indexCurrent] : x[indexLeft];
-                        double nBottom = obstacles[indexBottom] ? x[indexCurrent] : x[indexBottom];
-                        double nTop = obstacles[indexTop] ? x[indexCurrent] : x[indexTop];
+            for (int i = 1; i < resolutionMinusOne; i++) {
 
-                        x[indexCurrent] = (x0[indexCurrent] + nRight + nLeft + nBottom + nTop) * 0.25;
-                    }
+                if (obstacles[indexCurrent]) {
+                    x[indexCurrent] = 0;
+                } else {
+                    // Wenn Nachbar ein Hindernis ist, nimm den Wert der aktuellen Zelle (Reflektion)
+                    double nRight = obstacles[indexRight] ? x[indexCurrent] : x[indexRight];
+                    double nLeft = obstacles[indexLeft] ? x[indexCurrent] : x[indexLeft];
+                    double nBottom = obstacles[indexBottom] ? x[indexCurrent] : x[indexBottom];
+                    double nTop = obstacles[indexTop] ? x[indexCurrent] : x[indexTop];
 
-                    // Alle Pointer rücken synchron um genau 1 Zelle weiter (Hardware-Prefetching bleibt aktiv)
-                    indexCurrent++;
-                    indexLeft++;
-                    indexRight++;
-                    indexTop++;
-                    indexBottom++;
+                    x[indexCurrent] = (x0[indexCurrent] + nRight + nLeft + nBottom + nTop) * 0.25;
                 }
+
+                // Alle Pointer rücken synchron um genau 1 Zelle weiter (Hardware-Prefetching bleibt aktiv)
+                indexCurrent++;
+                indexLeft++;
+                indexRight++;
+                indexTop++;
+                indexBottom++;
             }
         }
     }
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
-        double h = 1.0 / innerResolution;
+        double h = 1.0 / resolutionMinusTwo;
 
         // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
-        for (int j = 1; j < resolution - 1; j++) {
-            for (int i = 1; i < resolution - 1; i++) {
+        for (int j = 1; j < resolutionMinusOne; j++) {
+            for (int i = 1; i < resolutionMinusOne; i++) {
                 int ix = index(i, j);
 
                 if (obstacles[ix]) {
@@ -288,8 +294,8 @@ public class FluidSimulation {
         lin_solve(p, div, iter);
 
         // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
-        for (int j = 1; j < resolution - 1; j++) {
-            for (int i = 1; i < resolution - 1; i++) {
+        for (int j = 1; j < resolutionMinusOne; j++) {
+            for (int i = 1; i < resolutionMinusOne; i++) {
                 int ix = index(i, j);
 
                 if (obstacles[ix]) {
@@ -318,8 +324,8 @@ public class FluidSimulation {
     void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
         double i0, i1, j0, j1;
 
-        double dtx = dt * innerResolution;
-        double dty = dt * innerResolution;
+        double dtx = dt * resolutionMinusTwo;
+        double dty = dt * resolutionMinusTwo;
 
         double s0, s1, t0, t1;
         double tmp1, tmp2, x, y;
@@ -328,8 +334,8 @@ public class FluidSimulation {
         double ifloat, jfloat;
         int i, j;
 
-        for (j = 1, jfloat = 1; j < resolution - 1; j++, jfloat++) {
-            for (i = 1, ifloat = 1; i < resolution - 1; i++, ifloat++) {
+        for (j = 1, jfloat = 1; j < resolutionMinusOne; j++, jfloat++) {
+            for (i = 1, ifloat = 1; i < resolutionMinusOne; i++, ifloat++) {
                 int ix = index(i, j);
 
                 // Wenn die aktuelle Zelle ein Hindernis ist, strömt hier nichts hin
@@ -379,14 +385,14 @@ public class FluidSimulation {
     }
 
     public void loadFrom(FluidSimulation oldSimulation, int deltaX, int deltaY) {
-        for (int x = 1; x < resolution - 1; x++) {
-            for (int y = 1; y < resolution - 1; y++) {
+        for (int x = 1; x < resolutionMinusOne; x++) {
+            for (int y = 1; y < resolutionMinusOne; y++) {
 
                 int xOld = x + deltaX;
                 int yOld = y + deltaY;
 
-                if (xOld >= 1 && xOld < oldSimulation.resolution - 1 &&
-                    yOld >= 1 && yOld < oldSimulation.resolution - 1) {
+                if (xOld >= 1 && xOld < oldSimulation.resolutionMinusOne &&
+                    yOld >= 1 && yOld < oldSimulation.resolutionMinusOne) {
 
                     // Nutze für jedes Objekt die jeweils eigene Index-Arithmetik!
                     int ix = x + y * resolution; // Inlined für das neue Grid
