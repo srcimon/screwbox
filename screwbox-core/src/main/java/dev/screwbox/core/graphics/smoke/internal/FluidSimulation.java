@@ -252,44 +252,16 @@ public class FluidSimulation {
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
         // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
-        extracted(velocX, velocY, p, div);
+        projectVelocities(velocX, velocY, p, div);
 
         // Berechnet das Druckfeld p basierend auf der Divergenz (lin_solve muss obstacles ebenfalls beachten!)
         linearSolve(p, div, iter);
 
         // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
-        extracted(velocX, velocY, p);
+        projectVelocities(velocX, velocY, p);
     }
 
-    private void extracted(double[] velocX, double[] velocY, double[] p) {
-        for (int y = 1; y < resolutionMinusOne; y++) {
-            for (int x = 1; x < resolutionMinusOne; x++) {
-                final int index = index(x, y);
-
-                if (obstacles[index]) {
-                    velocX[index] = 0;
-                    velocY[index] = 0;
-                    continue;
-                }
-
-                final int left = index(x - 1, y);
-                final int right = index(x + 1, y);
-                final int top = index(x, y - 1);
-                final int bot = index(x, y + 1);
-
-                // mirror pressure
-                final double pressureLeft = obstacles[left] ? p[index] : p[left];
-                final double pressureRight = obstacles[right] ? p[index] : p[right];
-                final double pressureTop = obstacles[top] ? p[index] : p[top];
-                final double pressureBottom = obstacles[bot] ? p[index] : p[bot];
-
-                velocX[index] -= 0.5 * (pressureRight - pressureLeft) / physicalCellSize;
-                velocY[index] -= 0.5 * (pressureBottom - pressureTop) / physicalCellSize;
-            }
-        }
-    }
-
-    private void extracted(double[] velocX, double[] velocY, double[] p, double[] div) {
+    private void projectVelocities(double[] velocX, double[] velocY, double[] p, double[] div) {
         for (int j = 1; j < resolutionMinusOne; j++) {
             for (int i = 1; i < resolutionMinusOne; i++) {
                 final int index = index(i, j);
@@ -313,6 +285,34 @@ public class FluidSimulation {
 
                 div[index] = -0.5 * physicalCellSize * (velocityRight - velocityLeft + velocityBottom - velocityTop);
                 p[index] = 0;
+            }
+        }
+    }
+
+    private void projectVelocities(double[] velocX, double[] velocY, double[] p) {
+        for (int y = 1; y < resolutionMinusOne; y++) {
+            for (int x = 1; x < resolutionMinusOne; x++) {
+                final int index = index(x, y);
+
+                if (obstacles[index]) {
+                    velocX[index] = 0;
+                    velocY[index] = 0;
+                    continue;
+                }
+
+                final int left = index(x - 1, y);
+                final int right = index(x + 1, y);
+                final int top = index(x, y - 1);
+                final int bot = index(x, y + 1);
+
+                // mirror pressure
+                final double pressureLeft = obstacles[left] ? p[index] : p[left];
+                final double pressureRight = obstacles[right] ? p[index] : p[right];
+                final double pressureTop = obstacles[top] ? p[index] : p[top];
+                final double pressureBottom = obstacles[bot] ? p[index] : p[bot];
+
+                velocX[index] -= 0.5 * (pressureRight - pressureLeft) / physicalCellSize;
+                velocY[index] -= 0.5 * (pressureBottom - pressureTop) / physicalCellSize;
             }
         }
     }
