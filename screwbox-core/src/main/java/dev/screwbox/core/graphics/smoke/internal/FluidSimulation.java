@@ -112,8 +112,7 @@ public class FluidSimulation {
     }
 
     void diffuseVelocity(double diff, double dt, int iter) {
-        double iterationBonus = 1.0 + (20.0 - iter) * 0.05;
-        double a = dt * (diff * iterationBonus) * (resolution - 2) * (resolution - 2);
+        double a = dt * diff * (resolution - 2) * (resolution - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int k = 0; k < iter; k++) {
@@ -209,8 +208,7 @@ public class FluidSimulation {
 
     // Kombinierter Solver für alle 3 Farbkanäle (Massiver Cache-Gewinn!)
     void diffuseRGB(double[] r, double[] g, double[] b, double[] r0, double[] g0, double[] b0, double diff, double dt, int iter) {
-        double iterationBonus = 1.0 + (20.0 - iter) * 0.05; // Faktor empirisch anpassen (z.B. bei iter=5 -> ~1.75)
-        double a = dt * (diff * iterationBonus) * (resolution - 2) * (resolution - 2);
+        double a = dt * diff * (resolution - 2) * (resolution - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int k = 0; k < iter; k++) {
