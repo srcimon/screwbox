@@ -116,30 +116,28 @@ public class FluidSimulation {
         final double a = calculateA(delta, diffuse);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
-        for (int k = 0; k < iterations; k++) {
-            for (int j = 1; j < resolutionMinusOne; j++) {
-                final int row = j * resolution;
-                final int topRow = row - resolution;
-                final int botRow = row + resolution;
+        for (int iteration = 0; iteration < iterations; iteration++) {
+            for (int y = 1; y < resolutionMinusOne; y++) {
+                final int row = y * resolution;
 
-                for (int i = 1; i < resolutionMinusOne; i++) {
-                    diffuseVelocityCell(i, row, topRow, botRow, a, cRecip);
+
+                for (int x = 1; x < resolutionMinusOne; x++) {
+                    diffuseVelocityCell(x, row, a, cRecip);
                 }
             }
         }
     }
 
-    private void diffuseVelocityCell(int i, int row, int topRow, int botRow, double a, double cRecip) {
-        int index = i + row;
-
+    private void diffuseVelocityCell(final int x, final int row, final double a, final double cRecip) {
+        final int index = x + row;
         if (obstacles[index]) {
             velocityX0[index] = 0;
             velocityY0[index] = 0;
             return;
         }
 
-        final int top = i + topRow;
-        final int bottom = i + botRow;
+        final int top = x + row - resolution;
+        final int bottom = x + row + resolution;
         final int left = index - 1;
         final int right = index + 1;
 
