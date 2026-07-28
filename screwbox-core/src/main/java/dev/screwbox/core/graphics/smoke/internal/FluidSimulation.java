@@ -322,22 +322,20 @@ public class FluidSimulation {
         double Nfloat = resolution;
         double ifloat;
         double jfloat;
-        int i, j;
+        int i;
+        int j;
 
         for (j = 1, jfloat = 1; j < resolutionMinusOne; j++, jfloat++) {
             for (i = 1, ifloat = 1; i < resolutionMinusOne; i++, ifloat++) {
                 int ix = index(i, j);
 
-                // Wenn die aktuelle Zelle ein Hindernis ist, strömt hier nichts hin
                 if (obstacles[ix]) {
                     d[ix] = 0;
                     continue;
                 }
 
-                double tmp1 = tdRes * velocX[ix];
-                double tmp2 = tdRes * velocY[ix];
-                double x = ifloat - tmp1;
-                double y = jfloat - tmp2;
+                double x = ifloat - tdRes * velocX[ix];
+                double y = jfloat - tdRes * velocY[ix];
 
                 // Grenzen des Simulationsbereichs einhalten
                 if (x < 0.5) x = 0.5;
@@ -350,10 +348,6 @@ public class FluidSimulation {
                 double j0 = Math.floor(y);
                 double j1 = j0 + 1.0;
 
-                double s1 = x - i0;
-                double s0 = 1.0 - s1;
-                double t1 = y - j0;
-                double t0 = 1.0 - t1;
 
                 int i0i = (int) (i0);
                 int i1i = (int) (i1);
@@ -367,6 +361,10 @@ public class FluidSimulation {
                 int idx10 = obstacles[index(i1i, j0i)] ? ix : index(i1i, j0i);
                 int idx11 = obstacles[index(i1i, j1i)] ? ix : index(i1i, j1i);
 
+                double s1 = x - i0;
+                double s0 = 1.0 - s1;
+                double t1 = y - j0;
+                double t0 = 1.0 - t1;
                 // Bilineare Interpolation mit den korrigierten Indizes
                 d[ix] = s0 * (t0 * d0[idx00] + t1 * d0[idx01]) +
                         s1 * (t0 * d0[idx10] + t1 * d0[idx11]);
