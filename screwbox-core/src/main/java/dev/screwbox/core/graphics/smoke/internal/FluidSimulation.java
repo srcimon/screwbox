@@ -90,7 +90,7 @@ public class FluidSimulation {
 
     public void step(double delta, double visc, double diff, int iter) {
         // DIFFUSION FIX 1: Geschwindigkeiten zusammen diffundieren (2-in-1 Pass)
-        diffuse2D(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, visc, delta, iter);
+        diffuseVelocity(visc, delta, iter);
 
         // clean up so that same amount of fluid is everywhere
         project(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, iter);
@@ -111,7 +111,7 @@ public class FluidSimulation {
         advect(this.densityB, this.densityB0, this.velocityX, this.velocityY, delta);
     }
 
-    void diffuse2D(double[] x, double[] y, double[] x0, double[] y0, double diff, double dt, int iter) {
+    void diffuseVelocity(double diff, double dt, int iter) {
         double iterationBonus = 1.0 + (20.0 - iter) * 0.05;
         double a = dt * (diff * iterationBonus) * (resolution - 2) * (resolution - 2);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
@@ -122,16 +122,15 @@ public class FluidSimulation {
                 int topRow = row - resolution;
                 int botRow = row + resolution;
 
-                int i = 1;
                 // Loop Unrolling (Faktor 2)
-                for (; i < resolution - 2; i += 2) {
+                for (int i = 1; i < resolution - 2; i += 2) {
                     int curr0 = i + row;
                     int curr1 = curr0 + 1;
 
                     // --- INDEX i ---
                     if (obstacles[curr0]) {
-                        x[curr0] = 0;
-                        y[curr0] = 0;
+                        velocityX0[curr0] = 0;
+                        velocityY0[curr0] = 0;
                     } else {
                         int top0 = i + topRow;
                         int bot0 = i + botRow;
@@ -139,69 +138,69 @@ public class FluidSimulation {
                         int right0 = curr0 + 1;
 
                         // Wenn Nachbar ein Hindernis ist, nimm den aktuellen Zellwert (Spiegelung)
-                        double nLeft = obstacles[left0] ? -x[curr0] : x[left0]; // -x für Reflektion der Geschwindigkeit
-                        double nRight = obstacles[right0] ? -x[curr0] : x[right0];
-                        double nTop = obstacles[top0] ? x[curr0] : x[top0];
-                        double nBot = obstacles[bot0] ? x[curr0] : x[bot0];
+                        double nLeft = obstacles[left0] ? -velocityX0[curr0] : velocityX0[left0]; // -x für Reflektion der Geschwindigkeit
+                        double nRight = obstacles[right0] ? -velocityX0[curr0] : velocityX0[right0];
+                        double nTop = obstacles[top0] ? velocityX0[curr0] : velocityX0[top0];
+                        double nBot = obstacles[bot0] ? velocityX0[curr0] : velocityX0[bot0];
 
-                        double nLeftY = obstacles[left0] ? y[curr0] : y[left0];
-                        double nRightY = obstacles[right0] ? y[curr0] : y[right0];
-                        double nTopY = obstacles[top0] ? -y[curr0] : y[top0]; // -y für Reflektion an waagerechten Wänden
-                        double nBotY = obstacles[bot0] ? -y[curr0] : y[bot0];
+                        double nLeftY = obstacles[left0] ? velocityY0[curr0] : velocityY0[left0];
+                        double nRightY = obstacles[right0] ? velocityY0[curr0] : velocityY0[right0];
+                        double nTopY = obstacles[top0] ? -velocityY0[curr0] : velocityY0[top0]; // -y für Reflektion an waagerechten Wänden
+                        double nBotY = obstacles[bot0] ? -velocityY0[curr0] : velocityY0[bot0];
 
-                        x[curr0] = (x0[curr0] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
-                        y[curr0] = (y0[curr0] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
+                        velocityX0[curr0] = (velocityX[curr0] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
+                        velocityY0[curr0] = (velocityY[curr0] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
                     }
 
                     // --- INDEX i + 1 ---
                     if (obstacles[curr1]) {
-                        x[curr1] = 0;
-                        y[curr1] = 0;
+                        velocityX0[curr1] = 0;
+                        velocityY0[curr1] = 0;
                     } else {
                         int top1 = (i + 1) + topRow;
                         int bot1 = (i + 1) + botRow;
                         int left1 = curr1 - 1;
                         int right1 = curr1 + 1;
 
-                        double nLeft = obstacles[left1] ? -x[curr1] : x[left1];
-                        double nRight = obstacles[right1] ? -x[curr1] : x[right1];
-                        double nTop = obstacles[top1] ? x[curr1] : x[top1];
-                        double nBot = obstacles[bot1] ? x[curr1] : x[bot1];
+                        double nLeft = obstacles[left1] ? -velocityX0[curr1] : velocityX0[left1];
+                        double nRight = obstacles[right1] ? -velocityX0[curr1] : velocityX0[right1];
+                        double nTop = obstacles[top1] ? velocityX0[curr1] : velocityX0[top1];
+                        double nBot = obstacles[bot1] ? velocityX0[curr1] : velocityX0[bot1];
 
-                        double nLeftY = obstacles[left1] ? y[curr1] : y[left1];
-                        double nRightY = obstacles[right1] ? y[curr1] : y[right1];
-                        double nTopY = obstacles[top1] ? -y[curr1] : y[top1];
-                        double nBotY = obstacles[bot1] ? -y[curr1] : y[bot1];
+                        double nLeftY = obstacles[left1] ? velocityY0[curr1] : velocityY0[left1];
+                        double nRightY = obstacles[right1] ? velocityY0[curr1] : velocityY0[right1];
+                        double nTopY = obstacles[top1] ? -velocityY0[curr1] : velocityY0[top1];
+                        double nBotY = obstacles[bot1] ? -velocityY0[curr1] : velocityY0[bot1];
 
-                        x[curr1] = (x0[curr1] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
-                        y[curr1] = (y0[curr1] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
+                        velocityX0[curr1] = (velocityX[curr1] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
+                        velocityY0[curr1] = (velocityY[curr1] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
                     }
                 }
 
                 // Rest-Zelle falls ungerade
-                for (; i < resolution - 1; i++) {
+                for (int i = 1; i < resolution - 1; i++) {
                     int curr = i + row;
                     if (obstacles[curr]) {
-                        x[curr] = 0;
-                        y[curr] = 0;
+                        velocityX0[curr] = 0;
+                        velocityY0[curr] = 0;
                     } else {
                         int top = i + topRow;
                         int bot = i + botRow;
                         int left = curr - 1;
                         int right = curr + 1;
 
-                        double nLeft = obstacles[left] ? -x[curr] : x[left];
-                        double nRight = obstacles[right] ? -x[curr] : x[right];
-                        double nTop = obstacles[top] ? x[curr] : x[top];
-                        double nBot = obstacles[bot] ? x[curr] : x[bot];
+                        double nLeft = obstacles[left] ? -velocityX0[curr] : velocityX0[left];
+                        double nRight = obstacles[right] ? -velocityX0[curr] : velocityX0[right];
+                        double nTop = obstacles[top] ? velocityX0[curr] : velocityX0[top];
+                        double nBot = obstacles[bot] ? velocityX0[curr] : velocityX0[bot];
 
-                        double nLeftY = obstacles[left] ? y[curr] : y[left];
-                        double nRightY = obstacles[right] ? y[curr] : y[right];
-                        double nTopY = obstacles[top] ? -y[curr] : y[top];
-                        double nBotY = obstacles[bot] ? -y[curr] : y[bot];
+                        double nLeftY = obstacles[left] ? velocityY0[curr] : velocityY0[left];
+                        double nRightY = obstacles[right] ? velocityY0[curr] : velocityY0[right];
+                        double nTopY = obstacles[top] ? -velocityY0[curr] : velocityY0[top];
+                        double nBotY = obstacles[bot] ? -velocityY0[curr] : velocityY0[bot];
 
-                        x[curr] = (x0[curr] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
-                        y[curr] = (y0[curr] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
+                        velocityX0[curr] = (velocityX[curr] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
+                        velocityY0[curr] = (velocityY[curr] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
                     }
                 }
             }
