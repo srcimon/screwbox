@@ -261,7 +261,7 @@ public class FluidSimulation {
         projectVelocities(velocX, velocY, p);
     }
 
-    private void projectVelocities(double[] velocX, double[] velocY, double[] p, double[] div) {
+    private void projectVelocities(final double[] velocX,final double[] velocY, final double[] p, final double[] div) {
         for (int j = 1; j < resolutionMinusOne; j++) {
             for (int i = 1; i < resolutionMinusOne; i++) {
                 final int index = index(i, j);
@@ -289,7 +289,7 @@ public class FluidSimulation {
         }
     }
 
-    private void projectVelocities(double[] velocX, double[] velocY, double[] p) {
+    private void projectVelocities(final double[] velocX,final  double[] velocY,final  double[] p) {
         for (int y = 1; y < resolutionMinusOne; y++) {
             for (int x = 1; x < resolutionMinusOne; x++) {
                 final int index = index(x, y);
