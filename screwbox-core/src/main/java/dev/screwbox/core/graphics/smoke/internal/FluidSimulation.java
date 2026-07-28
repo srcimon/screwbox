@@ -112,7 +112,31 @@ public class FluidSimulation {
         advect(densityB, densityB0, velocityX, velocityY, delta);
     }
 
-    private void diffuseCell(int i, int row, int topRow, int botRow, double a, double cRecip) {
+    void diffuseVelocity(final double delta, final double diffuse, final int iterations) {
+        final double a = calculateA(delta, diffuse);
+        double cRecip = 1.0 / (1.0 + 4.0 * a);
+
+        for (int k = 0; k < iterations; k++) {
+            for (int j = 1; j < resolutionMinusOne; j++) {
+                final int row = j * resolution;
+                final int topRow = row - resolution;
+                final int botRow = row + resolution;
+
+                // Hauptschleife: Behält Ihr manuelles Unrolling (Faktor 2) exakt bei
+                for (int i = 1; i < resolutionMinusTwo; i += 2) {
+                    diffuseVelocityCell(i, row, topRow, botRow, a, cRecip);
+                    diffuseVelocityCell(i + 1, row, topRow, botRow, a, cRecip);
+                }
+
+                // Rest-Schleife: Verarbeitet die verbleibende Zelle, falls resolution ungerade ist
+                for (int i = 1; i < resolutionMinusOne; i++) {
+                    diffuseVelocityCell(i, row, topRow, botRow, a, cRecip);
+                }
+            }
+        }
+    }
+
+    private void diffuseVelocityCell(int i, int row, int topRow, int botRow, double a, double cRecip) {
         int index = i + row;
 
         if (obstacles[index]) {
@@ -126,42 +150,18 @@ public class FluidSimulation {
         final int left = index - 1;
         final int right = index + 1;
 
-        double nLeft = obstacles[left] ? -velocityX0[index] : velocityX0[left];
-        double nRight = obstacles[right] ? -velocityX0[index] : velocityX0[right];
-        double nTop = obstacles[top] ? velocityX0[index] : velocityX0[top];
-        double nBot = obstacles[bottom] ? velocityX0[index] : velocityX0[bottom];
+        final double nLeft = obstacles[left] ? -velocityX0[index] : velocityX0[left];
+        final double nRight = obstacles[right] ? -velocityX0[index] : velocityX0[right];
+        final double nTop = obstacles[top] ? velocityX0[index] : velocityX0[top];
+        final double nBot = obstacles[bottom] ? velocityX0[index] : velocityX0[bottom];
 
-        double nLeftY = obstacles[left] ? velocityY0[index] : velocityY0[left];
-        double nRightY = obstacles[right] ? velocityY0[index] : velocityY0[right];
-        double nTopY = obstacles[top] ? -velocityY0[index] : velocityY0[top];
-        double nBotY = obstacles[bottom] ? -velocityY0[index] : velocityY0[bottom];
+        final double nLeftY = obstacles[left] ? velocityY0[index] : velocityY0[left];
+        final double nRightY = obstacles[right] ? velocityY0[index] : velocityY0[right];
+        final double nTopY = obstacles[top] ? -velocityY0[index] : velocityY0[top];
+        final double nBotY = obstacles[bottom] ? -velocityY0[index] : velocityY0[bottom];
 
         velocityX0[index] = (velocityX[index] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
         velocityY0[index] = (velocityY[index] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
-    }
-
-    void diffuseVelocity(final double delta, final double diffuse, final int iterations) {
-        final double a = calculateA(delta, diffuse);
-        double cRecip = 1.0 / (1.0 + 4.0 * a);
-
-        for (int k = 0; k < iterations; k++) {
-            for (int j = 1; j < resolutionMinusOne; j++) {
-                int row = j * resolution;
-                int topRow = row - resolution;
-                int botRow = row + resolution;
-
-                // Hauptschleife: Behält Ihr manuelles Unrolling (Faktor 2) exakt bei
-                for (int i = 1; i < resolutionMinusTwo; i += 2) {
-                    diffuseCell(i, row, topRow, botRow, a, cRecip);
-                    diffuseCell(i + 1, row, topRow, botRow, a, cRecip);
-                }
-
-                // Rest-Schleife: Verarbeitet die verbleibende Zelle, falls resolution ungerade ist
-                for (int i = 1; i < resolutionMinusOne; i++) {
-                    diffuseCell(i, row, topRow, botRow, a, cRecip);
-                }
-            }
-        }
     }
 
     private double calculateA(final double delta, final double diffuse) {

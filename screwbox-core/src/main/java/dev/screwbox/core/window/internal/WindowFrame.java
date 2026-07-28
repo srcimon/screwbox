@@ -22,7 +22,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
 
     private final Canvas canvas;
     private final Size initialSize;
-    private final Robot robot;
+    private transient Robot robot;
 
     public WindowFrame(final Robot robot, final Size initialSize) {
         addNotify(); // forces window calculate insets
