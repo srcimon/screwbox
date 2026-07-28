@@ -57,14 +57,6 @@ public class FluidSimulation {
         }
     }
 
-    private boolean isFreeCell(final Offset cell) {
-        return cell.x() > 0 &&
-               cell.y() > 0 &&
-               cell.x() < resolution() &&
-               cell.y() < resolution() &&
-               !obstacles[index(cell.x(), cell.y())];
-    }
-
     public void addVelocity(final Offset cell, final Vector velocity, final double limit) {
         if(isFreeCell(cell)) {
             final int index = index(cell.x(), cell.y());
@@ -73,16 +65,26 @@ public class FluidSimulation {
         }
     }
 
+    private boolean isFreeCell(final Offset cell) {
+        return cell.x() > 0 &&
+               cell.y() > 0 &&
+               cell.x() < resolution() &&
+               cell.y() < resolution() &&
+               !obstacles[index(cell.x(), cell.y())];
+    }
+
+    //TODO me dont like this
     public FluidSimulationState state() {
         return new FluidSimulationState(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
     }
 
+    //TODO reduce usage as much as possible
     private int indexSafe(int x, int y) {
         return Math.clamp(x, 0, resolution - 1) +
                Math.clamp(y, 0, resolution - 1) * resolution;
     }
 
-    private int index(int x, int y) {
+    private int index(final int x, final int y) {
         return x + y * resolution;
     }
 

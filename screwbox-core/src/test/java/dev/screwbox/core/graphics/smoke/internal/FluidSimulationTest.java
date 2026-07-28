@@ -6,7 +6,10 @@ import dev.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 
 class FluidSimulationTest {
 
@@ -21,15 +24,6 @@ class FluidSimulationTest {
     void newInstance_32cells_initializes32x32EmptyCells() {
         assertThat(simulation.resolution()).isEqualTo(32);
         assertAllCellsHaveZeroDensity();
-    }
-
-    private void assertAllCellsHaveZeroDensity() {
-        final var state = simulation.state();
-        for (var cell : Size.square(32).all()) {
-            assertThat(state.densityRed(cell.x(), cell.y())).isZero();
-            assertThat(state.densityGreen(cell.x(), cell.y())).isZero();
-            assertThat(state.densityBlue(cell.x(), cell.y())).isZero();
-        }
     }
 
     @Test
@@ -63,5 +57,44 @@ class FluidSimulationTest {
         simulation.step(0.01, 0.0000000004, 0.000001, 2);
 
         assertAllCellsHaveZeroDensity();
+    }
+
+    @Test
+    void step_densityIsSet_diffuesesToNeighbours() {
+        Offset cell = Offset.at(4, 4);
+        simulation.addDensity(cell, 50, 50, Color.ORANGE);
+
+
+        var state = simulation.state();
+        assertThat(state.densityRed(cell.x(), cell.y())).isEqualTo(49.99, offset(0.01));
+        assertThat(state.densityGreen(cell.x(), cell.y())).isEqualTo(49.99, offset(0.01));
+        assertThat(state.densityBlue(cell.x(), cell.y())).isZero();
+
+        for (var neighbour : Set.of(cell.top(), cell.bottom(), cell.left(), cell.right())) {
+            assertThat(state.densityRed(neighbour.x(), neighbour.y())).isEqualTo(0, offset(0.01));
+            assertThat(state.densityGreen(neighbour.x(), neighbour.y())).isEqualTo(0, offset(0.01));
+            assertThat(state.densityBlue(neighbour.x(), neighbour.y())).isZero();
+        }
+
+        assertTotalRedDensity(50.0);
+    }
+
+    private void assertTotalRedDensity(double expectedDensity) {
+        final var state = simulation.state();
+        var sum = 0.0;
+        for (var c : Size.square(32).all()) {
+            sum += state.densityRed(c.x(), c.y());
+
+        }
+        assertThat(sum).isEqualTo(expectedDensity, offset(0.01));
+    }
+
+    private void assertAllCellsHaveZeroDensity() {
+        final var state = simulation.state();
+        for (var cell : Size.square(32).all()) {
+            assertThat(state.densityRed(cell.x(), cell.y())).isZero();
+            assertThat(state.densityGreen(cell.x(), cell.y())).isZero();
+            assertThat(state.densityBlue(cell.x(), cell.y())).isZero();
+        }
     }
 }
