@@ -60,7 +60,7 @@ class FluidSimulationTest {
     }
 
     @Test
-    void step_densityIsSet_diffuesesToNeighbours() {
+    void step_densityIsSet_diffusesToNeighbours() {
         Offset cell = Offset.at(4, 4);
         simulation.addDensity(cell, 50, 50, Color.ORANGE);
 
