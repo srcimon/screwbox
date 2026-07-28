@@ -292,27 +292,27 @@ public class FluidSimulation {
     private void extracted(double[] velocX, double[] velocY, double[] p, double[] div) {
         for (int j = 1; j < resolutionMinusOne; j++) {
             for (int i = 1; i < resolutionMinusOne; i++) {
-                int ix = index(i, j);
+                final int index = index(i, j);
 
-                if (obstacles[ix]) {
-                    div[ix] = 0;
-                    p[ix] = 0;
+                if (obstacles[index]) {
+                    div[index] = 0;
+                    p[index] = 0;
                     continue;
                 }
 
-                int left = index(i - 1, j);
-                int right = index(i + 1, j);
-                int top = index(i, j - 1);
-                int bot = index(i, j + 1);
+                final int left = index(i - 1, j);
+                final int right = index(i + 1, j);
+                final int top = index(i, j - 1);
+                final int bot = index(i, j + 1);
 
                 // Wenn der Nachbar ein Hindernis ist, fließt dort nichts durch (Geschwindigkeit = 0)
-                double vL = obstacles[left] ? 0 : velocX[left];
-                double vR = obstacles[right] ? 0 : velocX[right];
-                double vT = obstacles[top] ? 0 : velocY[top];
-                double vB = obstacles[bot] ? 0 : velocY[bot];
+                double velocityLeft = obstacles[left] ? 0 : velocX[left];
+                double velocityRight = obstacles[right] ? 0 : velocX[right];
+                double velocityTop = obstacles[top] ? 0 : velocY[top];
+                double velocityBottom = obstacles[bot] ? 0 : velocY[bot];
 
-                div[ix] = -0.5 * physicalCellSize * (vR - vL + vB - vT);
-                p[ix] = 0;
+                div[index] = -0.5 * physicalCellSize * (velocityRight - velocityLeft + velocityBottom - velocityTop);
+                p[index] = 0;
             }
         }
     }
