@@ -322,12 +322,8 @@ public class FluidSimulation {
     }
 
     void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
-        double i0, i1, j0, j1;
+        double tdRes = dt * resolutionMinusTwo;
 
-        double dtx = dt * resolutionMinusTwo;
-        double dty = dt * resolutionMinusTwo;
-
-        double s0, s1, t0, t1;
         double tmp1, tmp2, x, y;
 
         double Nfloat = resolution;
@@ -344,26 +340,26 @@ public class FluidSimulation {
                     continue;
                 }
 
-                tmp1 = dtx * velocX[ix];
-                tmp2 = dty * velocY[ix];
+                tmp1 = tdRes * velocX[ix];
+                tmp2 = tdRes * velocY[ix];
                 x = ifloat - tmp1;
                 y = jfloat - tmp2;
 
                 // Grenzen des Simulationsbereichs einhalten
                 if (x < 0.5) x = 0.5;
                 if (x > Nfloat - 1.5) x = Nfloat - 1.5; // Leicht korrigiert für sichere Grid-Indizes
-                i0 = Math.floor(x);
-                i1 = i0 + 1.0;
+                double i0 = Math.floor(x);
+                double i1 = i0 + 1.0;
 
                 if (y < 0.5) y = 0.5;
                 if (y > Nfloat - 1.5) y = Nfloat - 1.5;
-                j0 = Math.floor(y);
-                j1 = j0 + 1.0;
+                double j0 = Math.floor(y);
+                double j1 = j0 + 1.0;
 
-                s1 = x - i0;
-                s0 = 1.0 - s1;
-                t1 = y - j0;
-                t0 = 1.0 - t1;
+                double s1 = x - i0;
+                double s0 = 1.0 - s1;
+                double t1 = y - j0;
+                double t0 = 1.0 - t1;
 
                 int i0i = (int) (i0);
                 int i1i = (int) (i1);
