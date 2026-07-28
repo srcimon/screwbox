@@ -53,7 +53,7 @@ public class FluidSimulation {
     }
 
     public void addDensity(final Offset cell, final double amount, final double limit, Color color) {
-        if (isFreeCell(cell)) {
+        if (isInGrid(cell.x(), cell.y()) && isObstacle(cell)) {
             final int index = index(cell.x(), cell.y());
             densityR[index] = Math.min(densityR[index] + (color.r() * amount), limit);
             densityG[index] = Math.min(densityG[index] + (color.g() * amount), limit);
@@ -62,30 +62,27 @@ public class FluidSimulation {
     }
 
     public void addVelocity(final Offset cell, final Vector velocity, final double limit) {
-        if (isFreeCell(cell)) {
+        if (isInGrid(cell.x(), cell.y()) && isObstacle(cell)) {
             final int index = index(cell.x(), cell.y());
             velocityX[index] = Math.min(limit, velocityX[index] + velocity.x());
             velocityY[index] = Math.min(limit, velocityY[index] + velocity.y());
         }
     }
 
-    private boolean isFreeCell(final Offset cell) {
-        return cell.x() > 0 &&
-               cell.y() > 0 &&
-               cell.x() < resolution() &&
-               cell.y() < resolution() &&
-               !obstacles[index(cell.x(), cell.y())];
+    private boolean isObstacle(final Offset cell) {
+        return !obstacles[index(cell.x(), cell.y())];
+    }
+
+    private boolean isInGrid(final int x, final int y) {
+        return x > 0 &&
+               y > 0 &&
+               x < resolution() &&
+               y < resolution();
     }
 
     //TODO me dont like this
     public FluidSimulationState state() {
         return new FluidSimulationState(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
-    }
-
-    //TODO reduce usage as much as possible
-    private int indexSafe(int x, int y) {
-        return Math.clamp(x, 0, resolutionMinusOne) +
-               Math.clamp(y, 0, resolutionMinusOne) * resolution;
     }
 
     private int index(final int x, final int y) {
@@ -412,8 +409,10 @@ public class FluidSimulation {
         }
     }
 
-    public void setObstacle(int x, int y) {
-        obstacles[indexSafe(x, y)] = true;
+    public void setObstacle(final int x, final int y) {
+        if (isInGrid(x, y)) {
+            obstacles[index(x, y)] = true;
+        }
     }
 
     public void clearObstacles() {
