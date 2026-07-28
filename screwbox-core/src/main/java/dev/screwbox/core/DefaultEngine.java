@@ -93,10 +93,11 @@ class DefaultEngine implements Engine {
             log.warn("Please run application with the following JVM option to add full MacOs support: {}", MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
 
+        final var robot = createRobot();
         final var configuration = new GraphicsConfiguration(renderingApi);
         final WindowFrame frame = MacOsSupport.isMacOs()
-            ? new MacOsWindowFrame(configuration.resolution())
-            : new WindowFrame(configuration.resolution());
+            ? new MacOsWindowFrame(robot, configuration.resolution())
+            : new WindowFrame(robot, configuration.resolution());
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -118,10 +119,9 @@ class DefaultEngine implements Engine {
         final DefaultCanvas screenCanvas = new DefaultCanvas(renderPipeline.renderer(), clip);
         final DefaultCamera camera = new DefaultCamera(screenCanvas);
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
-        final var robot = createRobot();
         final var postProcessing = new DefaultPostProcessing(configuration, viewportManager, ImageOperations::createVolatileImage);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration, postProcessing, graphicsDevice);
+        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), screenCanvas, viewportManager, configuration, postProcessing, graphicsDevice);
         mouse = new DefaultMouse(screen, viewportManager);
         final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
         window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline, cursorLockInSupport);

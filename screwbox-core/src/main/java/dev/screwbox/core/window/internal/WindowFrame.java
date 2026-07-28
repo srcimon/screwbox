@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 public class WindowFrame extends JFrame implements WindowFocusListener {
@@ -21,12 +22,14 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
 
     private final Canvas canvas;
     private final Size initialSize;
+    private final Robot robot;
 
-    public WindowFrame(final Size initialSize) {
+    public WindowFrame(final Robot robot, final Size initialSize) {
         addNotify(); // forces window calculate insets
         setIcon(defaultIcon());
         setName("ScrewBox Window");
         this.initialSize = initialSize;
+        this.robot = robot;
         addWindowFocusListener(this);
         canvas = new Canvas();
         add(canvas);
@@ -81,5 +84,11 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
 
     public ScreenBounds getCanvasBounds() {
         return new ScreenBounds(getCanvasOffset(), getCanvasSize());
+    }
+
+    public BufferedImage createScreenCapture() {
+        final var canvasOffset = getCanvasOffset();
+        final var rectangle = new Rectangle(canvasOffset.x(), canvasOffset.y(), canvas.getWidth(), canvas.getHeight());
+        return robot.createScreenCapture(rectangle);
     }
 }

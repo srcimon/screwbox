@@ -38,7 +38,6 @@ public class DefaultScreen implements Screen, Updatable {
 
     private final Renderer renderer;
     private final WindowFrame frame;
-    private final Robot robot;
     private final ViewportManager viewportManager;
     private final GraphicsConfiguration configuration;
     private final DefaultPostProcessing postProcessing;
@@ -55,7 +54,6 @@ public class DefaultScreen implements Screen, Updatable {
 
     public DefaultScreen(final WindowFrame frame,
                          final Renderer renderer,
-                         final Robot robot,
                          final DefaultCanvas canvas,
                          final ViewportManager viewportManager,
                          final GraphicsConfiguration configuration,
@@ -63,7 +61,6 @@ public class DefaultScreen implements Screen, Updatable {
                          final GraphicsDevice graphicsDevice) {
         this.renderer = renderer;
         this.frame = frame;
-        this.robot = robot;
         this.canvas = canvas;
         this.viewportManager = viewportManager;
         this.configuration = configuration;
@@ -170,9 +167,7 @@ public class DefaultScreen implements Screen, Updatable {
         if (!frame.isVisible()) {
             throw new IllegalStateException("window must be opened first to create screenshot");
         }
-        final var canvasOffset = frame.getCanvasOffset();
-        final var rectangle = new Rectangle(canvasOffset.x(), canvasOffset.y(), width(), height());
-        final var screenCapture = robot.createScreenCapture(rectangle);
+        final var screenCapture = frame.createScreenCapture();
         lastScreenshot = Sprite.fromImage(screenCapture);
         return lastScreenshot;
     }

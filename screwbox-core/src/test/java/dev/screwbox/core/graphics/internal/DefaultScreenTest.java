@@ -47,19 +47,17 @@ class DefaultScreenTest {
     }
 
     @Test
-    void takeScreenshot_windowNotOpened_throwsException() {
+    void takeScreenshot_frameNotVisible_throwsException() {
         assertThatThrownBy(() -> screen.takeScreenshot())
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("window must be opened first to create screenshot");
     }
 
     @Test
-    void takeScreenshot_windowIsNotAtZeroOffset_createsScreenshotFromWholeWindow() {
+    void takeScreenshot_frameIsVisible_createsScreenshot() {
         var screenshot = ImageOperations.createImage(Size.square(30));
         when(frame.isVisible()).thenReturn(true);
-        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
-        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 90));
-        when(robot.createScreenCapture(new Rectangle(40, 90, 640, 480))).thenReturn(screenshot);
+        when(frame.createScreenCapture()).thenReturn(screenshot);
 
         var result = screen.takeScreenshot();
 
