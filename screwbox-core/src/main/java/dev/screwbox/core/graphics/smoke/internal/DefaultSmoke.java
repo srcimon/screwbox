@@ -37,16 +37,15 @@ public class DefaultSmoke implements Smoke {
     private int cellSize = 8;
     private int screenBorderCells = 32;
 
-    private Vector worldAnchor;
+    private Vector worldAnchor = Vector.zero();
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
 
-    public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor) {
+    public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, SmokeRenderer smokeRender) {
         this.viewportManager = viewportManager;
         this.executor = executor;
-        this.smokeRender = new SmokeRenderer();
+        this.smokeRender = smokeRender;
         this.configuration = configuration;
-        reassignGrid();
     }
 
     private void reassignGrid() {
@@ -71,7 +70,9 @@ public class DefaultSmoke implements Smoke {
             int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / cellSize);
 
             // Wir übergeben die reinen Deltas direkt an die neue loadFrom-Methode
-            simulation.loadFrom(oldSimulation, deltaX, deltaY);//TODO load from densityInfo
+            if (oldSimulation != null) {
+                simulation.loadFrom(oldSimulation, deltaX, deltaY);//TODO load from densityInfo
+            }
         }
     }
 
@@ -83,7 +84,10 @@ public class DefaultSmoke implements Smoke {
             Math.max(boundsArea.width(), boundsArea.height()));
     }
 
+    @Deprecated
     List<Runnable> tasks = new ArrayList<>();
+
+    @Deprecated
     List<Runnable> obstacleTasks = new ArrayList<>();
 
     static double maxDensity = 4;
@@ -121,6 +125,9 @@ public class DefaultSmoke implements Smoke {
 
     @Override
     public Smoke render(final double delta) {
+        if (simulation == null) {
+            reassignGrid();
+        }
         if (configuration.isSmokeEnabled()) {
 
 
@@ -132,7 +139,7 @@ public class DefaultSmoke implements Smoke {
             for (var task : obstacleTasks) {//TODO get rid of task
                 task.run();
             }
-            for(final var densityChange : densityChanges) {
+            for (final var densityChange : densityChanges) {
                 simulation.addDensity(densityChange.cell, densityChange.amount, maxDensity, densityChange.color);
             }
             densityChanges.clear();

@@ -317,7 +317,7 @@ public class FluidSimulation {
         }
     }
 
-    void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
+    private void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
         final double tdRes = dt * resolutionMinusTwo;
         final double maxVal = resolution - 1.5;
 
