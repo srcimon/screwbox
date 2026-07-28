@@ -58,7 +58,7 @@ public class FluidSimulation {
     }
 
     public void addVelocity(final Offset cell, final Vector velocity, final double limit) {
-        if(isFreeCell(cell)) {
+        if (isFreeCell(cell)) {
             final int index = index(cell.x(), cell.y());
             velocityX[index] = Math.min(limit, velocityX[index] + velocity.x());
             velocityY[index] = Math.min(limit, velocityY[index] + velocity.y());
@@ -88,22 +88,22 @@ public class FluidSimulation {
         return x + y * resolution;
     }
 
-    public void step(double delta, double visc, double diff, int iter) {
-        // DIFFUSION FIX 1: Geschwindigkeiten zusammen diffundieren (2-in-1 Pass)
-        diffuseVelocity(visc, delta, iter);
+    public void step(final double delta, final double viscosity, final double diffusion, final int iterations) {
+        // diffuse the volecities x and y
+        diffuseVelocity(viscosity, delta, iterations);
 
         // clean up so that same amount of fluid is everywhere
-        project(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, iter);
+        project(this.velocityX0, this.velocityY0, this.velocityX, this.velocityY, iterations);
 
         // advect velocities
         advect(this.velocityX, this.velocityX0, this.velocityX0, this.velocityY0, delta);
         advect(this.velocityY, this.velocityY0, this.velocityX0, this.velocityY0, delta);
 
         // clean that up
-        project(this.velocityX, this.velocityY, this.velocityX0, this.velocityY0, iter);
+        project(this.velocityX, this.velocityY, this.velocityX0, this.velocityY0, iterations);
 
         // DIFFUSION FIX 2: Alle drei Farbkanäle zusammen diffundieren (3-in-1 Pass)
-        diffuseRGB(this.densityR0, this.densityG0, this.densityB0, this.densityR, this.densityG, this.densityB, diff, delta, iter);
+        diffuseRGB(this.densityR0, this.densityG0, this.densityB0, this.densityR, this.densityG, this.densityB, diffusion, delta, iterations);
 
         // 2. Advect all three color channels using the solved velocities
         advect(this.densityR, this.densityR0, this.velocityX, this.velocityY, delta);
