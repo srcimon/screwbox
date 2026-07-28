@@ -318,56 +318,50 @@ public class FluidSimulation {
     }
 
     void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
-        double tdRes = dt * resolutionMinusTwo;
-        double Nfloat = resolution;
-        double ifloat;
-        double jfloat;
-        int i;
-        int j;
+        final double tdRes = dt * resolutionMinusTwo;
+        final double maxVal = resolution - 1.5;
 
-        for (j = 1, jfloat = 1; j < resolutionMinusOne; j++, jfloat++) {
-            for (i = 1, ifloat = 1; i < resolutionMinusOne; i++, ifloat++) {
-                int ix = index(i, j);
+        for (int j = 1; j < resolutionMinusOne; j++) {
+            final double jfloat = j; // Cache außerhalb der inneren Schleife
+
+            for (int i = 1; i < resolutionMinusOne; i++) {
+                final int ix = index(i, j);
 
                 if (obstacles[ix]) {
                     d[ix] = 0;
                     continue;
                 }
 
-                double x = ifloat - tdRes * velocX[ix];
+                // Clamping direkt über Math.max/min (wird vom JIT oft in SIMD/Hardware-Flipped-Ops übersetzt)
+                double x = i - tdRes * velocX[ix];
+                if (x < 0.5) x = 0.5; else if (x > maxVal) x = maxVal;
+
                 double y = jfloat - tdRes * velocY[ix];
+                if (y < 0.5) y = 0.5; else if (y > maxVal) y = maxVal;
 
-                // Grenzen des Simulationsbereichs einhalten
-                if (x < 0.5) x = 0.5;
-                if (x > Nfloat - 1.5) x = Nfloat - 1.5; // Leicht korrigiert für sichere Grid-Indizes
-                double i0 = Math.floor(x);
-                double i1 = i0 + 1.0;
+                // Schnelles Abrunden durch direkten Cast (da x und y garantiert positiv sind)
+                final int i0i = (int) x;
+                final int j0i = (int) y;
+                final int i1i = i0i + 1;
+                final int j1i = j0i + 1;
 
-                if (y < 0.5) y = 0.5;
-                if (y > Nfloat - 1.5) y = Nfloat - 1.5;
-                double j0 = Math.floor(y);
-                double j1 = j0 + 1.0;
+                // Interpolationsfaktoren berechnen
+                final double s1 = x - i0i;
+                final double s0 = 1.0 - s1;
+                final double t1 = y - j0i;
+                final double t0 = 1.0 - t1;
 
+                // Indizes der Nachbarn bestimmen
+                final int idx00 = index(i0i, j0i);
+                final int idx01 = index(i0i, j1i);
+                final int idx10 = index(i1i, j0i);
+                final int idx11 = index(i1i, j1i);
 
-                int i0i = (int) (i0);
-                int i1i = (int) (i1);
-                int j0i = (int) (j0);
-                int j1i = (int) (j1);
-
-                // Hindernis-Check für die 4 Interpolations-Nachbarn:
-                // Wenn ein Quellpixel im Hindernis liegt, nutzen wir stattdessen das aktuelle Feld (ix)
-                int idx00 = obstacles[index(i0i, j0i)] ? ix : index(i0i, j0i);
-                int idx01 = obstacles[index(i0i, j1i)] ? ix : index(i0i, j1i);
-                int idx10 = obstacles[index(i1i, j0i)] ? ix : index(i1i, j0i);
-                int idx11 = obstacles[index(i1i, j1i)] ? ix : index(i1i, j1i);
-
-                double s1 = x - i0;
-                double s0 = 1.0 - s1;
-                double t1 = y - j0;
-                double t0 = 1.0 - t1;
-                // Bilineare Interpolation mit den korrigierten Indizes
-                d[ix] = s0 * (t0 * d0[idx00] + t1 * d0[idx01]) +
-                        s1 * (t0 * d0[idx10] + t1 * d0[idx11]);
+                // Bilineare Interpolation mit konditionalem Hindernis-Fallback
+                d[ix] = s0 * (t0 * (obstacles[idx00] ? d0[ix] : d0[idx00]) +
+                              t1 * (obstacles[idx01] ? d0[ix] : d0[idx01])) +
+                        s1 * (t0 * (obstacles[idx10] ? d0[ix] : d0[idx10]) +
+                              t1 * (obstacles[idx11] ? d0[ix] : d0[idx11]));
             }
         }
     }
