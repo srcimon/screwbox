@@ -261,36 +261,16 @@ public class FluidSimulation {
         final double h = 1.0 / resolutionMinusTwo;
 
         // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
-        for (int j = 1; j < resolutionMinusOne; j++) {
-            for (int i = 1; i < resolutionMinusOne; i++) {
-                int ix = index(i, j);
-
-                if (obstacles[ix]) {
-                    div[ix] = 0;
-                    p[ix] = 0;
-                    continue;
-                }
-
-                int left = index(i - 1, j);
-                int right = index(i + 1, j);
-                int top = index(i, j - 1);
-                int bot = index(i, j + 1);
-
-                // Wenn der Nachbar ein Hindernis ist, fließt dort nichts durch (Geschwindigkeit = 0)
-                double vL = obstacles[left] ? 0 : velocX[left];
-                double vR = obstacles[right] ? 0 : velocX[right];
-                double vT = obstacles[top] ? 0 : velocY[top];
-                double vB = obstacles[bot] ? 0 : velocY[bot];
-
-                div[ix] = -0.5 * h * (vR - vL + vB - vT);
-                p[ix] = 0;
-            }
-        }
+        extracted(velocX, velocY, p, div, h);
 
         // Berechnet das Druckfeld p basierend auf der Divergenz (lin_solve muss obstacles ebenfalls beachten!)
         linearSolve(p, div, iter);
 
         // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
+        extracted(velocX, velocY, p, h);
+    }
+
+    private void extracted(double[] velocX, double[] velocY, double[] p, double h) {
         for (int j = 1; j < resolutionMinusOne; j++) {
             for (int i = 1; i < resolutionMinusOne; i++) {
                 int ix = index(i, j);
@@ -318,12 +298,39 @@ public class FluidSimulation {
         }
     }
 
+    private void extracted(double[] velocX, double[] velocY, double[] p, double[] div, double h) {
+        for (int j = 1; j < resolutionMinusOne; j++) {
+            for (int i = 1; i < resolutionMinusOne; i++) {
+                int ix = index(i, j);
+
+                if (obstacles[ix]) {
+                    div[ix] = 0;
+                    p[ix] = 0;
+                    continue;
+                }
+
+                int left = index(i - 1, j);
+                int right = index(i + 1, j);
+                int top = index(i, j - 1);
+                int bot = index(i, j + 1);
+
+                // Wenn der Nachbar ein Hindernis ist, fließt dort nichts durch (Geschwindigkeit = 0)
+                double vL = obstacles[left] ? 0 : velocX[left];
+                double vR = obstacles[right] ? 0 : velocX[right];
+                double vT = obstacles[top] ? 0 : velocY[top];
+                double vB = obstacles[bot] ? 0 : velocY[bot];
+
+                div[ix] = -0.5 * h * (vR - vL + vB - vT);
+                p[ix] = 0;
+            }
+        }
+    }
+
     void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
         double tdRes = dt * resolutionMinusTwo;
-
-
         double Nfloat = resolution;
-        double ifloat, jfloat;
+        double ifloat;
+        double jfloat;
         int i, j;
 
         for (j = 1, jfloat = 1; j < resolutionMinusOne; j++, jfloat++) {
