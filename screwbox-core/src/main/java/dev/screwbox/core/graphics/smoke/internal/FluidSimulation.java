@@ -324,7 +324,6 @@ public class FluidSimulation {
     void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
         double tdRes = dt * resolutionMinusTwo;
 
-        double tmp1, tmp2, x, y;
 
         double Nfloat = resolution;
         double ifloat, jfloat;
@@ -340,10 +339,10 @@ public class FluidSimulation {
                     continue;
                 }
 
-                tmp1 = tdRes * velocX[ix];
-                tmp2 = tdRes * velocY[ix];
-                x = ifloat - tmp1;
-                y = jfloat - tmp2;
+                double tmp1 = tdRes * velocX[ix];
+                double tmp2 = tdRes * velocY[ix];
+                double x = ifloat - tmp1;
+                double y = jfloat - tmp2;
 
                 // Grenzen des Simulationsbereichs einhalten
                 if (x < 0.5) x = 0.5;
