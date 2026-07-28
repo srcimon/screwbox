@@ -12,6 +12,7 @@ public class FluidSimulation {
     private final int resolution;
     private final int resolutionMinusTwo; // performance
     private final int resolutionMinusOne; // performance
+    private final double physicalCellSize; // performance
 
     private final double[] densityR;
     private final double[] densityR0;
@@ -34,6 +35,7 @@ public class FluidSimulation {
         this.resolution = resolution;
         this.resolutionMinusTwo = resolution - 2;
         this.resolutionMinusOne = resolution - 1;
+        this.physicalCellSize = 1.0 / resolutionMinusTwo;
         final int cellCount = resolution * resolution;
         this.densityR = new double[cellCount];
         this.densityR0 = new double[cellCount];
@@ -249,47 +251,45 @@ public class FluidSimulation {
     }
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
-        final double h = 1.0 / resolutionMinusTwo;
-
         // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
-        extracted(velocX, velocY, p, div, h);
+        extracted(velocX, velocY, p, div);
 
         // Berechnet das Druckfeld p basierend auf der Divergenz (lin_solve muss obstacles ebenfalls beachten!)
         linearSolve(p, div, iter);
 
         // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
-        extracted(velocX, velocY, p, h);
+        extracted(velocX, velocY, p);
     }
 
-    private void extracted(double[] velocX, double[] velocY, double[] p, double h) {
-        for (int j = 1; j < resolutionMinusOne; j++) {
-            for (int i = 1; i < resolutionMinusOne; i++) {
-                int ix = index(i, j);
+    private void extracted(double[] velocX, double[] velocY, double[] p) {
+        for (int y = 1; y < resolutionMinusOne; y++) {
+            for (int x = 1; x < resolutionMinusOne; x++) {
+                final int index = index(x, y);
 
-                if (obstacles[ix]) {
-                    velocX[ix] = 0;
-                    velocY[ix] = 0;
+                if (obstacles[index]) {
+                    velocX[index] = 0;
+                    velocY[index] = 0;
                     continue;
                 }
 
-                int left = index(i - 1, j);
-                int right = index(i + 1, j);
-                int top = index(i, j - 1);
-                int bot = index(i, j + 1);
+                final int left = index(x - 1, y);
+                final int right = index(x + 1, y);
+                final int top = index(x, y - 1);
+                final int bot = index(x, y + 1);
 
-                // Neumann-Randbedingung für den Druck: p spiegeln, wenn der Nachbar ein Hindernis ist
-                double pL = obstacles[left] ? p[ix] : p[left];
-                double pR = obstacles[right] ? p[ix] : p[right];
-                double pT = obstacles[top] ? p[ix] : p[top];
-                double pB = obstacles[bot] ? p[ix] : p[bot];
+                // mirror pressure
+                final double pressureLeft = obstacles[left] ? p[index] : p[left];
+                final double pressureRight = obstacles[right] ? p[index] : p[right];
+                final double pressureTop = obstacles[top] ? p[index] : p[top];
+                final double pressureBottom = obstacles[bot] ? p[index] : p[bot];
 
-                velocX[ix] -= 0.5 * (pR - pL) / h;
-                velocY[ix] -= 0.5 * (pB - pT) / h;
+                velocX[index] -= 0.5 * (pressureRight - pressureLeft) / physicalCellSize;
+                velocY[index] -= 0.5 * (pressureBottom - pressureTop) / physicalCellSize;
             }
         }
     }
 
-    private void extracted(double[] velocX, double[] velocY, double[] p, double[] div, double h) {
+    private void extracted(double[] velocX, double[] velocY, double[] p, double[] div) {
         for (int j = 1; j < resolutionMinusOne; j++) {
             for (int i = 1; i < resolutionMinusOne; i++) {
                 int ix = index(i, j);
@@ -311,7 +311,7 @@ public class FluidSimulation {
                 double vT = obstacles[top] ? 0 : velocY[top];
                 double vB = obstacles[bot] ? 0 : velocY[bot];
 
-                div[ix] = -0.5 * h * (vR - vL + vB - vT);
+                div[ix] = -0.5 * physicalCellSize * (vR - vL + vB - vT);
                 p[ix] = 0;
             }
         }
