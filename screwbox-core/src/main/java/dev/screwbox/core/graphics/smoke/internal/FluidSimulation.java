@@ -105,7 +105,7 @@ public class FluidSimulation {
         project(velocityX, velocityY, velocityX0, velocityY0, iterations);
 
         // DIFFUSION FIX 2: Alle drei Farbkanäle zusammen diffundieren (3-in-1 Pass)
-        diffuseRGB(densityR0, densityG0, densityB0, densityR, densityG, densityB, diffusion, delta, iterations);
+        diffuseRGB(diffusion, delta, iterations);
 
         // 2. Advect all three color channels using the solved velocities
         advect(densityR, densityR0, velocityX, velocityY, delta);
@@ -170,8 +170,7 @@ public class FluidSimulation {
         return delta * diffuse * innerResolution * innerResolution;
     }
 
-    // Kombinierter Solver für alle 3 Farbkanäle (Massiver Cache-Gewinn!)
-    void diffuseRGB(double[] r, double[] g, double[] b, double[] r0, double[] g0, double[] b0, double diff, double dt, int iter) {
+    void diffuseRGB(double diff, double dt, int iter) {
         double a = calculateA(dt, diff);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
@@ -192,20 +191,20 @@ public class FluidSimulation {
                     int bot1 = bot0 + 1;
 
                     // Index i
-                    r[curr0] = (r0[curr0] + a * (r[curr0 + 1] + r[curr0 - 1] + r[bot0] + r[top0])) * cRecip;
-                    g[curr0] = (g0[curr0] + a * (g[curr0 + 1] + g[curr0 - 1] + g[bot0] + g[top0])) * cRecip;
-                    b[curr0] = (b0[curr0] + a * (b[curr0 + 1] + b[curr0 - 1] + b[bot0] + b[top0])) * cRecip;
+                    densityR0[curr0] = (densityR[curr0] + a * (densityR0[curr0 + 1] + densityR0[curr0 - 1] + densityR0[bot0] + densityR0[top0])) * cRecip;
+                    densityG0[curr0] = (densityG[curr0] + a * (densityG0[curr0 + 1] + densityG0[curr0 - 1] + densityG0[bot0] + densityG0[top0])) * cRecip;
+                    densityB0[curr0] = (densityB[curr0] + a * (densityB0[curr0 + 1] + densityB0[curr0 - 1] + densityB0[bot0] + densityB0[top0])) * cRecip;
 
                     // Index i + 1
-                    r[curr1] = (r0[curr1] + a * (r[curr1 + 1] + r[curr1 - 1] + r[bot1] + r[top1])) * cRecip;
-                    g[curr1] = (g0[curr1] + a * (g[curr1 + 1] + g[curr1 - 1] + g[bot1] + g[top1])) * cRecip;
-                    b[curr1] = (b0[curr1] + a * (b[curr1 + 1] + b[curr1 - 1] + b[bot1] + b[top1])) * cRecip;
+                    densityR0[curr1] = (densityR[curr1] + a * (densityR0[curr1 + 1] + densityR0[curr1 - 1] + densityR0[bot1] + densityR0[top1])) * cRecip;
+                    densityG0[curr1] = (densityG[curr1] + a * (densityG0[curr1 + 1] + densityG0[curr1 - 1] + densityG0[bot1] + densityG0[top1])) * cRecip;
+                    densityB0[curr1] = (densityB[curr1] + a * (densityB0[curr1 + 1] + densityB0[curr1 - 1] + densityB0[bot1] + densityB0[top1])) * cRecip;
                 }
                 for (; i < resolution - 1; i++) {
                     int curr = i + row;
-                    r[curr] = (r0[curr] + a * (r[curr + 1] + r[curr - 1] + r[i + botRow] + r[i + topRow])) * cRecip;
-                    g[curr] = (g0[curr] + a * (g[curr + 1] + g[curr - 1] + g[i + botRow] + g[i + topRow])) * cRecip;
-                    b[curr] = (b0[curr] + a * (b[curr + 1] + b[curr - 1] + b[i + botRow] + b[i + topRow])) * cRecip;
+                    densityR0[curr] = (densityR[curr] + a * (densityR0[curr + 1] + densityR0[curr - 1] + densityR0[i + botRow] + densityR0[i + topRow])) * cRecip;
+                    densityG0[curr] = (densityG[curr] + a * (densityG0[curr + 1] + densityG0[curr - 1] + densityG0[i + botRow] + densityG0[i + topRow])) * cRecip;
+                    densityB0[curr] = (densityB[curr] + a * (densityB0[curr + 1] + densityB0[curr - 1] + densityB0[i + botRow] + densityB0[i + topRow])) * cRecip;
                 }
             }
         }
