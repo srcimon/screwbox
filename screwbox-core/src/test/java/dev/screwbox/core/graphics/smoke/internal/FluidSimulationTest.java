@@ -57,4 +57,11 @@ class FluidSimulationTest {
         assertThat(state.densityGreen(cell.x(), cell.y())).isZero();
         assertThat(state.densityBlue(cell.x(), cell.y())).isZero();
     }
+
+    @Test
+    void step_noDensity_densityIsStillZero() {
+        simulation.step(0.01, 0.0000000004, 0.000001, 2);
+
+        assertAllCellsHaveZeroDensity();
+    }
 }
