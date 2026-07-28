@@ -232,7 +232,7 @@ public class FluidSimulation {
                 for (int i = 1; i < resolution - 1; i++) {
 
                     if (obstacles[indexCurrent]) {
-                        x[indexCurrent] = 0; // Druck/Wert im Hindernis ist Null
+                        x[indexCurrent] = 0;
                     } else {
                         // Wenn Nachbar ein Hindernis ist, nimm den Wert der aktuellen Zelle (Reflektion)
                         double nRight = obstacles[indexRight] ? x[indexCurrent] : x[indexRight];
@@ -240,7 +240,7 @@ public class FluidSimulation {
                         double nBottom = obstacles[indexBottom] ? x[indexCurrent] : x[indexBottom];
                         double nTop = obstacles[indexTop] ? x[indexCurrent] : x[indexTop];
 
-                        x[indexCurrent] = (x0[indexCurrent] + (nRight + nLeft + nBottom + nTop)) * 0.25;
+                        x[indexCurrent] = (x0[indexCurrent] + nRight + nLeft + nBottom + nTop) * 0.25;
                     }
 
                     // Alle Pointer rücken synchron um genau 1 Zelle weiter (Hardware-Prefetching bleibt aktiv)
