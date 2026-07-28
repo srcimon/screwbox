@@ -113,31 +113,31 @@ public class FluidSimulation {
     }
 
     private void diffuseCell(int i, int row, int topRow, int botRow, double a, double cRecip) {
-        int curr = i + row;
+        int index = i + row;
 
-        if (obstacles[curr]) {
-            velocityX0[curr] = 0;
-            velocityY0[curr] = 0;
+        if (obstacles[index]) {
+            velocityX0[index] = 0;
+            velocityY0[index] = 0;
             return;
         }
 
         final int top = i + topRow;
         final int bottom = i + botRow;
-        final int left = curr - 1;
-        final int right = curr + 1;
+        final int left = index - 1;
+        final int right = index + 1;
 
-        double nLeft = obstacles[left] ? -velocityX0[curr] : velocityX0[left];
-        double nRight = obstacles[right] ? -velocityX0[curr] : velocityX0[right];
-        double nTop = obstacles[top] ? velocityX0[curr] : velocityX0[top];
-        double nBot = obstacles[bottom] ? velocityX0[curr] : velocityX0[bottom];
+        double nLeft = obstacles[left] ? -velocityX0[index] : velocityX0[left];
+        double nRight = obstacles[right] ? -velocityX0[index] : velocityX0[right];
+        double nTop = obstacles[top] ? velocityX0[index] : velocityX0[top];
+        double nBot = obstacles[bottom] ? velocityX0[index] : velocityX0[bottom];
 
-        double nLeftY = obstacles[left] ? velocityY0[curr] : velocityY0[left];
-        double nRightY = obstacles[right] ? velocityY0[curr] : velocityY0[right];
-        double nTopY = obstacles[top] ? -velocityY0[curr] : velocityY0[top];
-        double nBotY = obstacles[bottom] ? -velocityY0[curr] : velocityY0[bottom];
+        double nLeftY = obstacles[left] ? velocityY0[index] : velocityY0[left];
+        double nRightY = obstacles[right] ? velocityY0[index] : velocityY0[right];
+        double nTopY = obstacles[top] ? -velocityY0[index] : velocityY0[top];
+        double nBotY = obstacles[bottom] ? -velocityY0[index] : velocityY0[bottom];
 
-        velocityX0[curr] = (velocityX[curr] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
-        velocityY0[curr] = (velocityY[curr] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
+        velocityX0[index] = (velocityX[index] + a * (nRight + nLeft + nBot + nTop)) * cRecip;
+        velocityY0[index] = (velocityY[index] + a * (nRightY + nLeftY + nBotY + nTopY)) * cRecip;
     }
 
     void diffuseVelocity(final double delta, final double diffuse, final int iterations) {
