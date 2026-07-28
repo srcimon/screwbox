@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics.light;
 
-import dev.screwbox.core.graphics.light.LensFlareBundle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 

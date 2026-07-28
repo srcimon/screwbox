@@ -223,32 +223,32 @@ public class FluidSimulation {
             for (int j = 1; j < resolution - 1; j++) {
 
                 // Pointer-Initialisierung für den Zeilenstart (i = 1)
-                int idx_current = 1 + j * resolution;
-                int idx_left = idx_current - 1;
-                int idx_right = idx_current + 1;
-                int idx_top = idx_current - resolution;
-                int idx_bottom = idx_current + resolution;
+                int indexCurrent = 1 + j * resolution;
+                int indexLeft = indexCurrent - 1;
+                int indexRight = indexCurrent + 1;
+                int indexTop = indexCurrent - resolution;
+                int indexBottom = indexCurrent + resolution;
 
                 for (int i = 1; i < resolution - 1; i++) {
 
-                    if (obstacles[idx_current]) {
-                        x[idx_current] = 0; // Druck/Wert im Hindernis ist Null
+                    if (obstacles[indexCurrent]) {
+                        x[indexCurrent] = 0; // Druck/Wert im Hindernis ist Null
                     } else {
                         // Wenn Nachbar ein Hindernis ist, nimm den Wert der aktuellen Zelle (Reflektion)
-                        double nRight = obstacles[idx_right] ? x[idx_current] : x[idx_right];
-                        double nLeft = obstacles[idx_left] ? x[idx_current] : x[idx_left];
-                        double nBottom = obstacles[idx_bottom] ? x[idx_current] : x[idx_bottom];
-                        double nTop = obstacles[idx_top] ? x[idx_current] : x[idx_top];
+                        double nRight = obstacles[indexRight] ? x[indexCurrent] : x[indexRight];
+                        double nLeft = obstacles[indexLeft] ? x[indexCurrent] : x[indexLeft];
+                        double nBottom = obstacles[indexBottom] ? x[indexCurrent] : x[indexBottom];
+                        double nTop = obstacles[indexTop] ? x[indexCurrent] : x[indexTop];
 
-                        x[idx_current] = (x0[idx_current] + (nRight + nLeft + nBottom + nTop)) * 0.25;
+                        x[indexCurrent] = (x0[indexCurrent] + (nRight + nLeft + nBottom + nTop)) * 0.25;
                     }
 
                     // Alle Pointer rücken synchron um genau 1 Zelle weiter (Hardware-Prefetching bleibt aktiv)
-                    idx_current++;
-                    idx_left++;
-                    idx_right++;
-                    idx_top++;
-                    idx_bottom++;
+                    indexCurrent++;
+                    indexLeft++;
+                    indexRight++;
+                    indexTop++;
+                    indexBottom++;
                 }
             }
         }
