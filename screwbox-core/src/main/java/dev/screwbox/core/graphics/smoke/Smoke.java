@@ -25,7 +25,12 @@ public interface Smoke {
 
     Smoke render(double delta);
 
+    //TODO Smoke absorb(Vector position,  double amount);
+    //TODO Smoke setWind(Vector vector);
     Smoke addObstacle(Bounds bounds);
+
+    //TODO double densityAt(Vector)
+    //TODO Vector velocityAt(Vector)
 
     //TODO Smoke setOptions(SmokeOptions.styling(GREYSCALE));
 }
