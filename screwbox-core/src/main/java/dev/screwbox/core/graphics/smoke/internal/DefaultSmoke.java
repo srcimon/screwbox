@@ -86,8 +86,8 @@ public class DefaultSmoke implements Smoke {
     }
 
     private Offset toCell(final Vector position) {
-        var cellX = Math.floor((position.x() - worldAnchor.x()) / cellSize);
-        var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
+        final var cellX = Math.floor((position.x() - worldAnchor.x()) / cellSize);
+        final var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
         return Offset.at(cellX, cellY);
     }
 
