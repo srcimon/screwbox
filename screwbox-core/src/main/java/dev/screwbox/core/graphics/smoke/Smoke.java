@@ -9,13 +9,15 @@ import dev.screwbox.core.graphics.Color;
 //TODO finish up javadoc
 
 /**
- * Subsystem for creating {@link Smoke} effects.
+ * Add real-time, interactive smoke effects using fluid dynamics.
  *
  * @since 3.33.0
  */
 public interface Smoke {
 
     //TODO implement config.autoTurnOnSmoke
+
+    Smoke emit(Vector position, Vector velocity, double amount, Color color);
 
     Smoke emit(Vector position, double amount, Color color);
 

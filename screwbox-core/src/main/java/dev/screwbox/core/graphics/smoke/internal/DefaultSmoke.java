@@ -61,6 +61,13 @@ public class DefaultSmoke implements Smoke {
     static double maxVelocity = 20;
 
     @Override
+    public Smoke emit(final Vector position, final Vector velocity, final double amount, final Color color) {
+        emit(position, velocity, amount, color);
+        push(position, velocity);
+        return this;
+    }
+
+    @Override
     public Smoke emit(final Vector position, final double amount, final Color color) {
         Validate.zeroOrPositive(amount, "amount must be positive");
         var cell = toCell(position);
