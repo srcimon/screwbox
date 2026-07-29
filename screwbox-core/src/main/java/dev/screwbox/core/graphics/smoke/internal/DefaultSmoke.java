@@ -20,6 +20,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import static java.util.Objects.nonNull;
+
 //TODO add feature buble to webpage
 
 //TODO blog on smoke
@@ -149,13 +151,12 @@ public class DefaultSmoke implements Smoke {
 
     @Override
     public Smoke addObstacle(final Bounds bounds) {
-        //TODO check if within grid?
         obstacles.add(bounds);
         return this;
     }
 
     private void awaitEndOfSimulationTask() {
-        if (simulationTask != null) {
+        if (nonNull(simulationTask)) {
             try {
                 simulationTask.get();
             } catch (final InterruptedException | ExecutionException e) {
@@ -231,7 +232,7 @@ public class DefaultSmoke implements Smoke {
         // Hier erlauben wir die dynamische Größenänderung explizit!
         int resolution = (int) Math.round(boundsArea.width() / cellSize);
         simulation = new FluidSimulation(resolution);
-        if (lastAnchor != null) {
+        if (nonNull(lastAnchor)) {
             // 2. MATHEMATISCH KORREKTES DELTA BEI GRÖSSENÄNDERUNG:
             // Wir berechnen, wie viele Zellen die NEUE linke obere Ecke von der ALTEN linken oberen Ecke entfernt ist.
             // Das gleicht eine Expansion/Kontraktion des Gitters perfekt aus.
@@ -239,7 +240,7 @@ public class DefaultSmoke implements Smoke {
             int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / cellSize);
 
             // Wir übergeben die reinen Deltas direkt an die neue loadFrom-Methode
-            if (oldSimulation != null) {
+            if (nonNull(oldSimulation)) {
                 simulation.loadFrom(oldSimulation, deltaX, deltaY);//TODO load from densityInfo
             }
         }
