@@ -41,6 +41,10 @@ public class DefaultSmoke implements Smoke {
     private static int screenBorderCells = 32;
     private static double maxDensity = 4;
     private static double maxVelocity = 20;
+    private static double viscosity = 0.0000000004;
+    private static double diffusion = 0.000001;
+    private static int iterations = 2;
+    private static double fade = 0.04;
 
     //TODO support split screen!!!!!!!!!!!!!!!!!
     private final ViewportManager viewportManager;
@@ -124,8 +128,8 @@ public class DefaultSmoke implements Smoke {
             velocityChanges.clear();
 
             simulationTask = executor.submit(() -> {
-                simulation.step(delta, 0.0000000004, 0.000001, 2);
-                simulation.fade(delta * 0.04);
+                simulation.step(delta, viscosity, diffusion, iterations);
+                simulation.fade(delta * fade);
             });
 
 
