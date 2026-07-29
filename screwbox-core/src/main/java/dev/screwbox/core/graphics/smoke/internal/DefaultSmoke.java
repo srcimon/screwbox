@@ -75,7 +75,6 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke emit(final Vector position, final double amount, final Color color) {
         Validate.zeroOrPositive(amount, "amount must be positive");
-
         densityChanges.add(new DensityChange(position, amount, color));
         return this;
     }
@@ -86,10 +85,10 @@ public class DefaultSmoke implements Smoke {
         return this;
     }
 
-    private Offset toCell(final Vector position) {
-        final var cellX = Math.floor((position.x() - worldAnchor.x()) / cellSize);
-        final var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
-        return Offset.at(cellX, cellY);
+    @Override
+    public Smoke addObstacle(final Bounds bounds) {
+        obstacles.add(bounds);
+        return this;
     }
 
     @Override
@@ -148,10 +147,10 @@ public class DefaultSmoke implements Smoke {
         return this;
     }
 
-    @Override
-    public Smoke addObstacle(final Bounds bounds) {
-        obstacles.add(bounds);
-        return this;
+    private Offset toCell(final Vector position) {
+        final var cellX = Math.floor((position.x() - worldAnchor.x()) / cellSize);
+        final var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
+        return Offset.at(cellX, cellY);
     }
 
     private void awaitEndOfSimulationTask() {
