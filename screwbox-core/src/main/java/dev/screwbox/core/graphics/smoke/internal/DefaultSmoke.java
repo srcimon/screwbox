@@ -54,8 +54,8 @@ public class DefaultSmoke implements Smoke {
         var boundsArea = calculateBestBounds();
 
         // 1. Snapping wie gehabt, um Sub-Pixel-Zittern zu vermeiden
-        double snappedX = Math.round(boundsArea.origin().x() / cellSize) * cellSize;
-        double snappedY = Math.round(boundsArea.origin().y() / cellSize) * cellSize;
+        long snappedX = Math.round(boundsArea.origin().x() / cellSize) * cellSize;
+        long snappedY = Math.round(boundsArea.origin().y() / cellSize) * cellSize;
         worldAnchor = Vector.of(snappedX, snappedY);
 
         var oldSimulation = simulation;
@@ -77,7 +77,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     private Bounds calculateBestBounds() {
-        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand(screenBorderCells * cellSize);//TODO remove expand
+        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand((double)screenBorderCells * cellSize);
         var boundsArea = visibleArea.snapExpand(cellSize);
         return boundsArea.resize(
             Math.max(boundsArea.width(), boundsArea.height()),
@@ -237,6 +237,6 @@ public class DefaultSmoke implements Smoke {
     }
 
     private Bounds calculateFluidOnWorld() {
-        return Bounds.atOrigin(worldAnchor, cellSize * simulation.resolution(), cellSize * simulation.resolution());
+        return Bounds.atOrigin(worldAnchor, (double)cellSize * simulation.resolution(), (double)cellSize * simulation.resolution());
     }
 }
