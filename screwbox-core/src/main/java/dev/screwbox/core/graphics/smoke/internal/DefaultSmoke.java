@@ -77,7 +77,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     private Bounds calculateBestBounds() {
-        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand((double)screenBorderCells * cellSize);
+        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand((double) screenBorderCells * cellSize);
         var boundsArea = visibleArea.snapExpand(cellSize);
         return boundsArea.resize(
             Math.max(boundsArea.width(), boundsArea.height()),
@@ -86,9 +86,6 @@ public class DefaultSmoke implements Smoke {
 
     @Deprecated
     List<Runnable> tasks = new ArrayList<>();
-
-    @Deprecated
-    List<Runnable> obstacleTasks = new ArrayList<>();
 
     static double maxDensity = 4;
     static double maxVelocity = 20;
@@ -136,9 +133,17 @@ public class DefaultSmoke implements Smoke {
             awaitEndOfSimulationTask();
             simulation.clearObstacles();
 
-            for (var task : obstacleTasks) {//TODO get rid of task
-                task.run();
+            for (var obstacle : obstacles) {
+                var origin = toCell(obstacle.origin());
+                var max = toCell(obstacle.bottomRight());
+                for (int x = origin.x(); x < max.x(); x++) {
+                    for (int y = origin.y(); y < max.y(); y++) {
+                        simulation.setObstacle(x, y);
+                    }
+                }
             }
+            obstacles.clear();
+
             for (final var densityChange : densityChanges) {
                 simulation.addDensity(densityChange.cell, densityChange.amount, maxDensity, densityChange.color);
             }
@@ -147,7 +152,6 @@ public class DefaultSmoke implements Smoke {
                 task.run();
             }
             tasks.clear();
-            obstacleTasks.clear();
 
             simulationTask = executor.submit(() -> {
                 simulation.step(delta, 0.0000000004, 0.000001, 2);
@@ -170,17 +174,12 @@ public class DefaultSmoke implements Smoke {
         return this;
     }
 
+    private final List<Bounds> obstacles = new ArrayList<>();
+
     @Override
     public Smoke addObstacle(final Bounds bounds) {
-        obstacleTasks.add(() -> {
-            var origin = toCell(bounds.origin());
-            var max = toCell(bounds.bottomRight());
-            for (int x = origin.x(); x < max.x(); x++) {
-                for (int y = origin.y(); y < max.y(); y++) {
-                    simulation.setObstacle(x, y);
-                }
-            }
-        });
+        //TODO check if within grid?
+        obstacles.add(bounds);
         return this;
     }
 
@@ -237,6 +236,6 @@ public class DefaultSmoke implements Smoke {
     }
 
     private Bounds calculateFluidOnWorld() {
-        return Bounds.atOrigin(worldAnchor, (double)cellSize * simulation.resolution(), (double)cellSize * simulation.resolution());
+        return Bounds.atOrigin(worldAnchor, (double) cellSize * simulation.resolution(), (double) cellSize * simulation.resolution());
     }
 }
