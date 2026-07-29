@@ -97,14 +97,11 @@ public class DefaultSmoke implements Smoke {
             reassignGrid();
         }
         if (configuration.isSmokeEnabled()) {
-
-
-            //TODO get delta from update()
             imageWorldAnchor = worldAnchor;
             awaitEndOfSimulationTask();
             simulation.clearObstacles();
 
-            for (var obstacle : obstacles) {
+            for (final var obstacle : obstacles) {
                 var origin = toCell(obstacle.origin());
                 var max = toCell(obstacle.bottomRight());
                 for (int x = origin.x(); x < max.x(); x++) {
