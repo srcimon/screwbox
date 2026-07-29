@@ -161,20 +161,19 @@ public class FluidSimulation {
         return delta * diffuse * resolutionMinusTwo * resolutionMinusTwo;
     }
 
-    private void diffuseRGB(double diff, double dt, int iter) {
-        double a = calculateA(dt, diff);
+    private void diffuseRGB(double diffuse, double delta, int iterations) {
+        double a = calculateA(delta, diffuse);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
-        for (int k = 0; k < iter; k++) {
+        for (int iteration = 0; iteration < iterations; iteration++) {
             for (int j = 1; j < resolutionMinusOne; j++) {
-                int row = j * resolution;
-                int topRow = row - resolution;
-                int botRow = row + resolution;
+                final int row = j * resolution;
+                final int topRow = row - resolution;
+                final int botRow = row + resolution;
 
                 for (int i = 1; i < resolutionMinusOne; i++) {
                     int curr = i + row;
 
-                    // Wenn die aktuelle Zelle selbst ein Hindernis ist, überspringen oder nullen
                     if (obstacles[curr]) {
                         densityR0[curr] = 0;
                         densityG0[curr] = 0;
@@ -182,11 +181,10 @@ public class FluidSimulation {
                         continue;
                     }
 
-                    // Nachbarn prüfen: Wenn Nachbar ein Hindernis ist, aktuellen Wert spiegeln (kein Fluss)
-                    int left  = obstacles[curr - 1] ? curr : curr - 1;
-                    int right = obstacles[curr + 1] ? curr : curr + 1;
-                    int top   = obstacles[topRow + i] ? curr : topRow + i;
-                    int bot   = obstacles[botRow + i] ? curr : botRow + i;
+                    final int left  = obstacles[curr - 1] ? curr : curr - 1;
+                    final int right = obstacles[curr + 1] ? curr : curr + 1;
+                    final int top   = obstacles[topRow + i] ? curr : topRow + i;
+                    final int bot   = obstacles[botRow + i] ? curr : botRow + i;
 
                     densityR0[curr] = (densityR[curr] + a * (densityR0[right] + densityR0[left] + densityR0[bot] + densityR0[top])) * cRecip;
                     densityG0[curr] = (densityG[curr] + a * (densityG0[right] + densityG0[left] + densityG0[bot] + densityG0[top])) * cRecip;
