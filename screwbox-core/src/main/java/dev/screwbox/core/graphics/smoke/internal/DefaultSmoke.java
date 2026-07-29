@@ -84,9 +84,6 @@ public class DefaultSmoke implements Smoke {
             Math.max(boundsArea.width(), boundsArea.height()));
     }
 
-    @Deprecated
-    List<Runnable> tasks = new ArrayList<>();
-
     static double maxDensity = 4;
     static double maxVelocity = 20;
 
@@ -104,11 +101,13 @@ public class DefaultSmoke implements Smoke {
 
     }
 
+    private record VelocityChange(Offset cell, Vector velocity) {
+    }
 
     @Override
     public Smoke push(final Vector position, final Vector velocity) {
         var cell = toCell(position);
-        tasks.add(() -> simulation.addVelocity(cell, velocity, maxVelocity));
+        velocityChanges.add(new VelocityChange(cell, velocity));
         return this;
     }
 
@@ -119,6 +118,9 @@ public class DefaultSmoke implements Smoke {
     }
 
     Future<?> simulationTask;
+
+
+    private final List<VelocityChange> velocityChanges = new ArrayList<>();
 
     @Override
     public Smoke render(final double delta) {
@@ -148,10 +150,10 @@ public class DefaultSmoke implements Smoke {
                 simulation.addDensity(densityChange.cell, densityChange.amount, maxDensity, densityChange.color);
             }
             densityChanges.clear();
-            for (var task : tasks) {//TODO get rid of task
-                task.run();
+            for (final var velocityChange : velocityChanges) {
+                simulation.addVelocity(velocityChange.cell(), velocityChange.velocity(), maxVelocity);
             }
-            tasks.clear();
+            velocityChanges.clear();
 
             simulationTask = executor.submit(() -> {
                 simulation.step(delta, 0.0000000004, 0.000001, 2);
