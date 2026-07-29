@@ -194,7 +194,7 @@ public class FluidSimulation {
         }
     }
 
-    public void fade(double fade) {
+    public void fade(final double fade) {
         for (int i = 0; i < densityR.length; i++) {
             densityR[i] = Math.max(0, densityR[i] - fade);
             densityG[i] = Math.max(0, densityG[i] - fade);

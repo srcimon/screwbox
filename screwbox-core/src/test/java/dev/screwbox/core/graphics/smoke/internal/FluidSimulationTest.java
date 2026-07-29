@@ -100,6 +100,25 @@ class FluidSimulationTest {
         assertThat(state.densityRed(22, 16)).isZero();
     }
 
+    @Test
+    void fade_noDensity_leavesDensityUnchanged() {
+        simulation.fade(20);
+
+        assertTotalRedDensity(0);
+    }
+
+    @Test
+    void fade_cellHasDensity_reducesDensity() {
+        Offset cell = Offset.at(4, 4);
+        simulation.addDensity(cell, 2, 1000, Color.rgb(12, 31, 21));
+
+        simulation.fade(2);
+
+        assertThat(simulation.state().densityRed(cell.x(), cell.y())).isEqualTo(22.0);
+        assertThat(simulation.state().densityGreen(cell.x(), cell.y())).isEqualTo(60.0);
+        assertThat(simulation.state().densityBlue(cell.x(), cell.y())).isEqualTo(40.0);
+    }
+
     private void assertTotalRedDensity(double expectedDensity) {
         final var state = simulation.state();
         var sum = 0.0;
