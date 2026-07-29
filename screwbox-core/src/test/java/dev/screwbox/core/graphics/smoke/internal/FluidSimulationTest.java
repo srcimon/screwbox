@@ -1,13 +1,18 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.Set;
 
+import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
 
@@ -98,6 +103,38 @@ class FluidSimulationTest {
         assertThat(state.densityRed(20, 16)).isZero();
         assertThat(state.densityRed(21, 16)).isZero();
         assertThat(state.densityRed(22, 16)).isZero();
+    }
+
+    @Test
+    void step_movingSmokePresent_animatesSmoke() {
+        Offset redCell = Offset.at(8, 4);
+        simulation.addDensity(redCell, 20, 20, Color.RED);
+        simulation.addVelocity(redCell, Vector.x(10), 100);
+
+        Offset greenCell = Offset.at(2, 2);
+        simulation.addDensity(greenCell, 30, 30, Color.GREEN);
+        simulation.addVelocity(greenCell, Vector.$(5, 3), 100);
+
+        Offset blueCell = Offset.at(25, 20);
+        simulation.addDensity(blueCell, 40, 40, Color.BLUE);
+        simulation.addVelocity(blueCell, Vector.$(-20, -10), 100);
+
+        for (int i = 0; i < 10; i++) {
+            simulation.step(0.1, 0.0004, 0.0003, 3);
+        }
+
+        verifyIsSameImage(renderFluid(), "fluidsimulation/step_movingSmokePresent_animatesSmoke_1.png");
+
+        for (int i = 0; i < 30; i++) {
+            simulation.step(0.1, 0.000004, 0.00003, 3);
+        }
+
+        verifyIsSameImage(renderFluid(), "fluidsimulation/step_movingSmokePresent_animatesSmoke_2.png");
+
+    }
+
+    private Image renderFluid() {
+        return new SmokeRenderer().createImage(0, 1, Percent.max(), simulation.state(), new ScreenBounds(0, 0, 32, 32)).singleImage();
     }
 
     @Test
