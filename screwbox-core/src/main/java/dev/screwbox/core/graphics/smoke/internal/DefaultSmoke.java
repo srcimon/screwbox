@@ -34,18 +34,22 @@ public class DefaultSmoke implements Smoke {
 
     private static int upscale = 6;
     private static int blur = 4;
-
-    static Percent maxOpacity = Percent.of(1);
+    private static Percent maxOpacity = Percent.of(1);
+    private static int cellSize = 8;
+    private static int screenBorderCells = 32;
 
     //TODO support split screen!!!!!!!!!!!!!!!!!
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private final SmokeRenderer smokeRender;
     private final GraphicsConfiguration configuration;
-    private int cellSize = 8;
-    private int screenBorderCells = 32;
+
     private final List<Bounds> obstacles = new ArrayList<>();
     private final List<DensityChange> densityChanges = new ArrayList<>();
+    private final List<VelocityChange> velocityChanges = new ArrayList<>();
+
+
+    Future<?> simulationTask;
     private Vector worldAnchor = Vector.zero();
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
@@ -87,11 +91,6 @@ public class DefaultSmoke implements Smoke {
         var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
         return Offset.at(cellX, cellY);
     }
-
-    Future<?> simulationTask;
-
-
-    private final List<VelocityChange> velocityChanges = new ArrayList<>();
 
     @Override
     public Smoke render(final double delta) {
