@@ -43,7 +43,7 @@ public class SmokeRenderer {
             int x0 = (int) srcX;
 
             x0Arr[x] = Math.clamp(x0, 0, totalCells - 1);
-            x1Arr[x] = Math.clamp(x0 + 1, 0, totalCells - 1);
+            x1Arr[x] = Math.clamp(x0 + 1L, 0, totalCells - 1);
             tXArr[x] = srcX - x0;
         }
 
@@ -56,7 +56,7 @@ public class SmokeRenderer {
             int y0 = (int) srcY;
 
             int clampedY0 = Math.clamp(y0, 0, totalCells - 1);
-            int clampedY1 = Math.clamp(y0 + 1, 0, totalCells - 1);
+            int clampedY1 = Math.clamp(y0 + 1L, 0, totalCells - 1);
             float tY = srcY - y0;
             float invTY = 1.0f - tY;
 
@@ -72,7 +72,6 @@ public class SmokeRenderer {
                 float w01 = invTX * tY;
                 float w11 = tX * tY;
 
-                // 1. Clamping der float-Werte direkt auf 0.0 - 1.0
                 final float r = Math.clamp((float) (fluidSimulationState.densityRed(x0, clampedY0) * w00 +
                                                     fluidSimulationState.densityRed(x1, clampedY0) * w10 +
                                                     fluidSimulationState.densityRed(x0, clampedY1) * w01 +
