@@ -143,7 +143,7 @@ public class DefaultSmoke implements Smoke {
                 .scaled(scale));
             if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
                 reassignGrid();
-            }
+            } //TODO do not render empty images
         }
         return this;
     }
