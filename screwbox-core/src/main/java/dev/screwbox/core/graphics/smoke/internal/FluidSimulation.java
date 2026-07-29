@@ -181,10 +181,10 @@ public class FluidSimulation {
                         continue;
                     }
 
-                    final int left  = obstacles[curr - 1] ? curr : curr - 1;
+                    final int left = obstacles[curr - 1] ? curr : curr - 1;
                     final int right = obstacles[curr + 1] ? curr : curr + 1;
-                    final int top   = obstacles[topRow + i] ? curr : topRow + i;
-                    final int bot   = obstacles[botRow + i] ? curr : botRow + i;
+                    final int top = obstacles[topRow + i] ? curr : topRow + i;
+                    final int bot = obstacles[botRow + i] ? curr : botRow + i;
 
                     densityR0[curr] = (densityR[curr] + a * (densityR0[right] + densityR0[left] + densityR0[bot] + densityR0[top])) * cRecip;
                     densityG0[curr] = (densityG[curr] + a * (densityG0[right] + densityG0[left] + densityG0[bot] + densityG0[top])) * cRecip;
@@ -203,16 +203,14 @@ public class FluidSimulation {
     }
 
 
-    void linearSolve(final double[] x, final double[] x0, final int iterations) {
+    private void linearSolve(final double[] x, final double[] x0, final int iterations) {
         for (int k = 0; k < iterations; k++) {
-            linSolveInteration(x, x0);
+            linearSolveInteration(x, x0);
         }
     }
 
-    private void linSolveInteration(final double[] x, final double[] x0) {
+    private void linearSolveInteration(final double[] x, final double[] x0) {
         for (int j = 1; j < resolutionMinusOne; j++) {
-
-            // Pointer-Initialisierung für den Zeilenstart (i = 1)
             int indexCurrent = 1 + j * resolution;
             int indexLeft = indexCurrent - 1;
             int indexRight = indexCurrent + 1;
@@ -224,16 +222,13 @@ public class FluidSimulation {
                 if (obstacles[indexCurrent]) {
                     x[indexCurrent] = 0;
                 } else {
-                    // Wenn Nachbar ein Hindernis ist, nimm den Wert der aktuellen Zelle (Reflektion)
-                    double nRight = obstacles[indexRight] ? x[indexCurrent] : x[indexRight];
-                    double nLeft = obstacles[indexLeft] ? x[indexCurrent] : x[indexLeft];
-                    double nBottom = obstacles[indexBottom] ? x[indexCurrent] : x[indexBottom];
-                    double nTop = obstacles[indexTop] ? x[indexCurrent] : x[indexTop];
-
+                    final double nRight = obstacles[indexRight] ? x[indexCurrent] : x[indexRight];
+                    final double nLeft = obstacles[indexLeft] ? x[indexCurrent] : x[indexLeft];
+                    final double nBottom = obstacles[indexBottom] ? x[indexCurrent] : x[indexBottom];
+                    final double nTop = obstacles[indexTop] ? x[indexCurrent] : x[indexTop];
                     x[indexCurrent] = (x0[indexCurrent] + nRight + nLeft + nBottom + nTop) * 0.25;
                 }
 
-                // Alle Pointer rücken synchron um genau 1 Zelle weiter (Hardware-Prefetching bleibt aktiv)
                 indexCurrent++;
                 indexLeft++;
                 indexRight++;
@@ -254,7 +249,7 @@ public class FluidSimulation {
         projectVelocities(velocX, velocY, p);
     }
 
-    private void projectVelocities(final double[] velocX,final double[] velocY, final double[] p, final double[] div) {
+    private void projectVelocities(final double[] velocX, final double[] velocY, final double[] p, final double[] div) {
         for (int j = 1; j < resolutionMinusOne; j++) {
             for (int i = 1; i < resolutionMinusOne; i++) {
                 final int index = index(i, j);
@@ -282,7 +277,7 @@ public class FluidSimulation {
         }
     }
 
-    private void projectVelocities(final double[] velocX,final  double[] velocY,final  double[] p) {
+    private void projectVelocities(final double[] velocX, final double[] velocY, final double[] p) {
         for (int y = 1; y < resolutionMinusOne; y++) {
             for (int x = 1; x < resolutionMinusOne; x++) {
                 final int index = index(x, y);
@@ -327,10 +322,12 @@ public class FluidSimulation {
 
                 // Clamping direkt über Math.max/min (wird vom JIT oft in SIMD/Hardware-Flipped-Ops übersetzt)
                 double x = i - tdRes * velocX[ix];
-                if (x < 0.5) x = 0.5; else if (x > maxVal) x = maxVal;
+                if (x < 0.5) x = 0.5;
+                else if (x > maxVal) x = maxVal;
 
                 double y = jfloat - tdRes * velocY[ix];
-                if (y < 0.5) y = 0.5; else if (y > maxVal) y = maxVal;
+                if (y < 0.5) y = 0.5;
+                else if (y > maxVal) y = maxVal;
 
                 // Schnelles Abrunden durch direkten Cast (da x und y garantiert positiv sind)
                 final int i0i = (int) x;
