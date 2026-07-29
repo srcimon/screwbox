@@ -25,11 +25,11 @@ import java.util.concurrent.Future;
 //TODO blog on smoke
 public class DefaultSmoke implements Smoke {
 
-    private record DensityChange(Offset cell, double amount, Color color) {
+    private record DensityChange(Vector position, double amount, Color color) {
 
     }
 
-    private record VelocityChange(Offset cell, Vector velocity) {
+    private record VelocityChange(Vector position, Vector velocity) {
     }
 
     private static int upscale = 6;
@@ -52,7 +52,7 @@ public class DefaultSmoke implements Smoke {
     private final List<VelocityChange> velocityChanges = new ArrayList<>();
 
 
-    Future<?> simulationTask;
+    private Future<?> simulationTask;
     private Vector worldAnchor = Vector.zero();
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
@@ -64,7 +64,6 @@ public class DefaultSmoke implements Smoke {
         this.configuration = configuration;
     }
 
-
     @Override
     public Smoke emit(final Vector position, final Vector velocity, final double amount, final Color color) {
         emit(position, velocity, amount, color);
@@ -75,15 +74,14 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke emit(final Vector position, final double amount, final Color color) {
         Validate.zeroOrPositive(amount, "amount must be positive");
-        var cell = toCell(position);
-        densityChanges.add(new DensityChange(cell, amount, color));
+
+        densityChanges.add(new DensityChange(position, amount, color));
         return this;
     }
 
     @Override
     public Smoke push(final Vector position, final Vector velocity) {
-        var cell = toCell(position);
-        velocityChanges.add(new VelocityChange(cell, velocity));
+        velocityChanges.add(new VelocityChange(position, velocity));
         return this;
     }
 
@@ -118,11 +116,13 @@ public class DefaultSmoke implements Smoke {
             obstacles.clear();
 
             for (final var densityChange : densityChanges) {
-                simulation.addDensity(densityChange.cell, densityChange.amount, maxDensity, densityChange.color);
+                final var cell = toCell(densityChange.position());
+                simulation.addDensity(cell, densityChange.amount, maxDensity, densityChange.color);
             }
             densityChanges.clear();
             for (final var velocityChange : velocityChanges) {
-                simulation.addVelocity(velocityChange.cell(), velocityChange.velocity(), maxVelocity);
+                var cell = toCell(velocityChange.position());
+                simulation.addVelocity(cell, velocityChange.velocity(), maxVelocity);
             }
             velocityChanges.clear();
 
