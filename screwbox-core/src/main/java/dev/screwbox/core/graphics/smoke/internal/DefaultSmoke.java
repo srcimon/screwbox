@@ -39,7 +39,6 @@ public class DefaultSmoke implements Smoke {
     private static Percent maxOpacity = Percent.of(1);
     private static int cellSize = 8;
     private static int screenBorderCells = 32;
-
     private static double maxDensity = 4;
     private static double maxVelocity = 20;
 
@@ -59,7 +58,7 @@ public class DefaultSmoke implements Smoke {
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
 
-    public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, SmokeRenderer smokeRender) {
+    public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, final SmokeRenderer smokeRender) {
         this.viewportManager = viewportManager;
         this.executor = executor;
         this.smokeRender = smokeRender;
