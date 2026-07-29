@@ -38,6 +38,9 @@ public class DefaultSmoke implements Smoke {
     private static int cellSize = 8;
     private static int screenBorderCells = 32;
 
+    private static double maxDensity = 4;
+    private static double maxVelocity = 20;
+
     //TODO support split screen!!!!!!!!!!!!!!!!!
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
@@ -61,8 +64,6 @@ public class DefaultSmoke implements Smoke {
         this.configuration = configuration;
     }
 
-    static double maxDensity = 4;
-    static double maxVelocity = 20;
 
     @Override
     public Smoke emit(final Vector position, final Vector velocity, final double amount, final Color color) {
