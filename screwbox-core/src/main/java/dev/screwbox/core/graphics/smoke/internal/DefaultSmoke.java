@@ -24,19 +24,28 @@ import java.util.concurrent.Future;
 
 //TODO blog on smoke
 public class DefaultSmoke implements Smoke {
+
+    private record DensityChange(Offset cell, double amount, Color color) {
+
+    }
+
+    private record VelocityChange(Offset cell, Vector velocity) {
+    }
+
     private static int upscale = 6;
     private static int blur = 4;
 
     static Percent maxOpacity = Percent.of(1);
 
-    //TODO support split screen
+    //TODO support split screen!!!!!!!!!!!!!!!!!
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private final SmokeRenderer smokeRender;
     private final GraphicsConfiguration configuration;
     private int cellSize = 8;
     private int screenBorderCells = 32;
-
+    private final List<Bounds> obstacles = new ArrayList<>();
+    private final List<DensityChange> densityChanges = new ArrayList<>();
     private Vector worldAnchor = Vector.zero();
     private Vector imageWorldAnchor = Vector.zero();
     private FluidSimulation simulation;
@@ -48,42 +57,6 @@ public class DefaultSmoke implements Smoke {
         this.configuration = configuration;
     }
 
-    private void reassignGrid() {
-        awaitEndOfSimulationTask();
-        var lastAnchor = worldAnchor;
-        var boundsArea = calculateBestBounds();
-
-        // 1. Snapping wie gehabt, um Sub-Pixel-Zittern zu vermeiden
-        long snappedX = Math.round(boundsArea.origin().x() / cellSize) * cellSize;
-        long snappedY = Math.round(boundsArea.origin().y() / cellSize) * cellSize;
-        worldAnchor = Vector.of(snappedX, snappedY);
-
-        var oldSimulation = simulation;
-        // Hier erlauben wir die dynamische Größenänderung explizit!
-        int resolution = (int) Math.round(boundsArea.width() / cellSize);
-        simulation = new FluidSimulation(resolution);
-        if (lastAnchor != null) {
-            // 2. MATHEMATISCH KORREKTES DELTA BEI GRÖSSENÄNDERUNG:
-            // Wir berechnen, wie viele Zellen die NEUE linke obere Ecke von der ALTEN linken oberen Ecke entfernt ist.
-            // Das gleicht eine Expansion/Kontraktion des Gitters perfekt aus.
-            int deltaX = (int) Math.round((worldAnchor.x() - lastAnchor.x()) / cellSize);
-            int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / cellSize);
-
-            // Wir übergeben die reinen Deltas direkt an die neue loadFrom-Methode
-            if (oldSimulation != null) {
-                simulation.loadFrom(oldSimulation, deltaX, deltaY);//TODO load from densityInfo
-            }
-        }
-    }
-
-    private Bounds calculateBestBounds() {
-        Bounds visibleArea = viewportManager.defaultViewport().visibleArea().expand((double) screenBorderCells * cellSize);
-        var boundsArea = visibleArea.snapExpand(cellSize);
-        return boundsArea.resize(
-            Math.max(boundsArea.width(), boundsArea.height()),
-            Math.max(boundsArea.width(), boundsArea.height()));
-    }
-
     static double maxDensity = 4;
     static double maxVelocity = 20;
 
@@ -93,15 +66,6 @@ public class DefaultSmoke implements Smoke {
         var cell = toCell(position);
         densityChanges.add(new DensityChange(cell, amount, color));
         return this;
-    }
-
-    List<DensityChange> densityChanges = new ArrayList<>();
-
-    private record DensityChange(Offset cell, double amount, Color color) {
-
-    }
-
-    private record VelocityChange(Offset cell, Vector velocity) {
     }
 
     @Override
@@ -176,8 +140,6 @@ public class DefaultSmoke implements Smoke {
         return this;
     }
 
-    private final List<Bounds> obstacles = new ArrayList<>();
-
     @Override
     public Smoke addObstacle(final Bounds bounds) {
         //TODO check if within grid?
@@ -240,4 +202,40 @@ public class DefaultSmoke implements Smoke {
     private Bounds calculateFluidOnWorld() {
         return Bounds.atOrigin(worldAnchor, (double) cellSize * simulation.resolution(), (double) cellSize * simulation.resolution());
     }
+
+    private Bounds calculateBestBounds() {
+        final var bestBounds = viewportManager.defaultViewport().visibleArea().expand((double) screenBorderCells * cellSize).snapExpand(cellSize);
+        return bestBounds.resize(
+            Math.max(bestBounds.width(), bestBounds.height()),
+            Math.max(bestBounds.width(), bestBounds.height()));
+    }
+
+    private void reassignGrid() {
+        awaitEndOfSimulationTask();
+        var lastAnchor = worldAnchor;
+        var boundsArea = calculateBestBounds();
+
+        // 1. Snapping wie gehabt, um Sub-Pixel-Zittern zu vermeiden
+        long snappedX = Math.round(boundsArea.origin().x() / cellSize) * cellSize;
+        long snappedY = Math.round(boundsArea.origin().y() / cellSize) * cellSize;
+        worldAnchor = Vector.of(snappedX, snappedY);
+
+        var oldSimulation = simulation;
+        // Hier erlauben wir die dynamische Größenänderung explizit!
+        int resolution = (int) Math.round(boundsArea.width() / cellSize);
+        simulation = new FluidSimulation(resolution);
+        if (lastAnchor != null) {
+            // 2. MATHEMATISCH KORREKTES DELTA BEI GRÖSSENÄNDERUNG:
+            // Wir berechnen, wie viele Zellen die NEUE linke obere Ecke von der ALTEN linken oberen Ecke entfernt ist.
+            // Das gleicht eine Expansion/Kontraktion des Gitters perfekt aus.
+            int deltaX = (int) Math.round((worldAnchor.x() - lastAnchor.x()) / cellSize);
+            int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / cellSize);
+
+            // Wir übergeben die reinen Deltas direkt an die neue loadFrom-Methode
+            if (oldSimulation != null) {
+                simulation.loadFrom(oldSimulation, deltaX, deltaY);//TODO load from densityInfo
+            }
+        }
+    }
+
 }
