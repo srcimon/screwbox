@@ -23,7 +23,7 @@ import java.util.concurrent.Future;
 import static java.util.Objects.nonNull;
 
 //TODO add feature buble to webpage
-
+//TODO add package info files
 //TODO blog on smoke
 public class DefaultSmoke implements Smoke {
 
