@@ -79,6 +79,27 @@ class FluidSimulationTest {
         assertTotalRedDensity(50.0);
     }
 
+    @Test
+    void step_gridIsSplitIntoTwoHalfs_colorDoesNotDiffuseOverObstacles() {
+        for (int y = 0; y < 32; y++) {
+            simulation.setObstacle(20, y);
+        }
+        simulation.addDensity(Offset.at(19, 16), 100, 100, Color.RED);
+
+        for (int i = 0; i < 20; i++) {
+            simulation.step(0.1, 0.0004, 0.0003, 3);
+        }
+
+        FluidSimulationState state = simulation.state();
+        assertThat(state.densityRed(18, 16)).isNotZero();
+        assertThat(state.densityRed(19, 16)).isNotZero();
+        assertThat(state.densityRed(19, 15)).isNotZero();
+        assertThat(state.densityRed(19, 17)).isNotZero();
+        assertThat(state.densityRed(20, 16)).isZero();
+        assertThat(state.densityRed(21, 16)).isZero();
+        assertThat(state.densityRed(22, 16)).isZero();
+    }
+
     private void assertTotalRedDensity(double expectedDensity) {
         final var state = simulation.state();
         var sum = 0.0;

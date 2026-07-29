@@ -161,7 +161,7 @@ public class FluidSimulation {
         return delta * diffuse * resolutionMinusTwo * resolutionMinusTwo;
     }
 
-    void diffuseRGB(double diff, double dt, int iter) {
+    private void diffuseRGB(double diff, double dt, int iter) {
         double a = calculateA(dt, diff);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
@@ -171,31 +171,26 @@ public class FluidSimulation {
                 int topRow = row - resolution;
                 int botRow = row + resolution;
 
-                int i = 1;
-                // Verarbeitet R, G und B für 2 Zellen pro Schleifendurchlauf
-                for (; i < resolutionMinusTwo; i += 2) {
-                    int curr0 = i + row;
-                    int curr1 = curr0 + 1;
-                    int top0 = i + topRow;
-                    int top1 = top0 + 1;
-                    int bot0 = i + botRow;
-                    int bot1 = bot0 + 1;
-
-                    // Index i
-                    densityR0[curr0] = (densityR[curr0] + a * (densityR0[curr0 + 1] + densityR0[curr0 - 1] + densityR0[bot0] + densityR0[top0])) * cRecip;
-                    densityG0[curr0] = (densityG[curr0] + a * (densityG0[curr0 + 1] + densityG0[curr0 - 1] + densityG0[bot0] + densityG0[top0])) * cRecip;
-                    densityB0[curr0] = (densityB[curr0] + a * (densityB0[curr0 + 1] + densityB0[curr0 - 1] + densityB0[bot0] + densityB0[top0])) * cRecip;
-
-                    // Index i + 1
-                    densityR0[curr1] = (densityR[curr1] + a * (densityR0[curr1 + 1] + densityR0[curr1 - 1] + densityR0[bot1] + densityR0[top1])) * cRecip;
-                    densityG0[curr1] = (densityG[curr1] + a * (densityG0[curr1 + 1] + densityG0[curr1 - 1] + densityG0[bot1] + densityG0[top1])) * cRecip;
-                    densityB0[curr1] = (densityB[curr1] + a * (densityB0[curr1 + 1] + densityB0[curr1 - 1] + densityB0[bot1] + densityB0[top1])) * cRecip;
-                }
-                for (; i < resolutionMinusOne; i++) {
+                for (int i = 1; i < resolutionMinusOne; i++) {
                     int curr = i + row;
-                    densityR0[curr] = (densityR[curr] + a * (densityR0[curr + 1] + densityR0[curr - 1] + densityR0[i + botRow] + densityR0[i + topRow])) * cRecip;
-                    densityG0[curr] = (densityG[curr] + a * (densityG0[curr + 1] + densityG0[curr - 1] + densityG0[i + botRow] + densityG0[i + topRow])) * cRecip;
-                    densityB0[curr] = (densityB[curr] + a * (densityB0[curr + 1] + densityB0[curr - 1] + densityB0[i + botRow] + densityB0[i + topRow])) * cRecip;
+
+                    // Wenn die aktuelle Zelle selbst ein Hindernis ist, überspringen oder nullen
+                    if (obstacles[curr]) {
+                        densityR0[curr] = 0;
+                        densityG0[curr] = 0;
+                        densityB0[curr] = 0;
+                        continue;
+                    }
+
+                    // Nachbarn prüfen: Wenn Nachbar ein Hindernis ist, aktuellen Wert spiegeln (kein Fluss)
+                    int left  = obstacles[curr - 1] ? curr : curr - 1;
+                    int right = obstacles[curr + 1] ? curr : curr + 1;
+                    int top   = obstacles[topRow + i] ? curr : topRow + i;
+                    int bot   = obstacles[botRow + i] ? curr : botRow + i;
+
+                    densityR0[curr] = (densityR[curr] + a * (densityR0[right] + densityR0[left] + densityR0[bot] + densityR0[top])) * cRecip;
+                    densityG0[curr] = (densityG[curr] + a * (densityG0[right] + densityG0[left] + densityG0[bot] + densityG0[top])) * cRecip;
+                    densityB0[curr] = (densityB[curr] + a * (densityB0[right] + densityB0[left] + densityB0[bot] + densityB0[top])) * cRecip;
                 }
             }
         }
