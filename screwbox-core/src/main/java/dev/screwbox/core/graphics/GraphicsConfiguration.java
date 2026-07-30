@@ -49,6 +49,7 @@ public class GraphicsConfiguration {
     private int maxLightBounces = 2;
     private boolean isSmokeEnabled = false;
     private int smokeScale = 4;
+    private int smokeBlur = 2;
 
     public GraphicsConfiguration(final RenderingApi renderingApi) {
         this.renderingApi = renderingApi;
@@ -587,7 +588,6 @@ public class GraphicsConfiguration {
         return smokeCellPadding;
     }
 
-    private int smokeBlur = 2;
     private Percent smokeOpacity = Percent.of(1);
 
     private int smokeCellSize = 8;

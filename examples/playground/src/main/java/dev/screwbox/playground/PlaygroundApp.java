@@ -26,7 +26,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystem(new SmokeRenderSystem());
-screwBox.graphics().configuration().setSmokeEnabled(true);
+        screwBox.graphics().configuration().setSmokeEnabled(true);
         var map = TileMap.fromString("""
             
             ###       #   ##
