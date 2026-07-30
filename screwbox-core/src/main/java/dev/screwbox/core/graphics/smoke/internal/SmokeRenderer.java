@@ -92,23 +92,15 @@ public class SmokeRenderer {
 
 // 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
 
-                float steps = 3.0f;
-                float funA = Math.round((a / b1) * steps) / steps * b1;
+// 3. Premultiplied Alpha direkt im Float-Raum berechnen
+                int rPremult = (int) (r * a * 255.0f + 0.5f);
+                int gPremult = (int) (g * a * 255.0f + 0.5f);
+                int bPremult = (int) (b * a * 255.0f + 0.5f);
+                int aInt = (int) (a * 255.0f + 0.5f);
 
-// Only render if it clears the minimum threshold (sharp border)
-                if (funA < 0.1f) funA = 0.0f;
+// 4. Direktes Schreiben ohne Maskierungs-Fehler
+                pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
 
-// posterize the colors slightly for a flat shade look
-                float funR = Math.round(r * 2.0f) / 2.0f;
-                float funG = Math.round(g * 2.0f) / 2.0f;
-                float funB = Math.round(b * 2.0f) / 2.0f;
-
-                int rPremult = (int) (funR * funA * 255.0f + 0.5f);
-                int gPremult = (int) (funG * funA * 255.0f + 0.5f);
-                int bPremult = (int) (funB * funA * 255.0f + 0.5f);
-                int aInt = (int) (funA * 255.0f + 0.5f);
-
-                pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8);
 
             }
         }
