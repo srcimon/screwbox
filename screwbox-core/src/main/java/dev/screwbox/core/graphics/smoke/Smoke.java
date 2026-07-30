@@ -7,7 +7,7 @@ import dev.screwbox.core.graphics.Color;
 //TODO add to graphics guide
 //TODO changelog
 //TODO finish up javadoc
-
+//TODO add support for black smoke
 /**
  * Add real-time, interactive smoke effects using fluid dynamics.
  *
