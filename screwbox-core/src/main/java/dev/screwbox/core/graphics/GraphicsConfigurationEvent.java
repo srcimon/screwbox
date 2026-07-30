@@ -98,7 +98,15 @@ public class GraphicsConfigurationEvent extends EventObject {
          */
         LENS_FLARE_ENABLED,
 
+        /**
+         * {@link GraphicsConfiguration#isSmokeEnabled()} was changed.
+         */
         SMOKE_ENABLED,
+
+        /**
+         * {@link GraphicsConfiguration#smokeBlur()} was changed.
+         */
+        SMOKE_BLUR,
         /**
          * {@link GraphicsConfiguration#smokeScale()} was changed.
          */

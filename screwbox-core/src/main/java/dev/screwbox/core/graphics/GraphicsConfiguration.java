@@ -553,11 +553,28 @@ public class GraphicsConfiguration {
         }
     }
 
-    //TODO FIXUP BELOW!!!!!!
+    /**
+     * Sets the blur value for the smoke image. Default is 2. Setting blur to zero disables blurring.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeBlur(final int smokeBlur) {
+        Validate.range(smokeBlur, 0, 20, "smoke blur must be between 0 and 20");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_BLUR);
+        this.smokeBlur = smokeBlur;
+        return this;
+    }
+
+    /**
+     * Returns the blur value for the smoke image. Default is 2.
+     *
+     * @since 3.33.0
+     */
     public int smokeBlur() {
         return smokeBlur;
     }
 
+    //TODO FIXUP BELOW!!!!!!
     public Percent smokeOpacity() {
         return smokeOpacity;
     }

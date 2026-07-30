@@ -332,6 +332,21 @@ class GraphicsConfigurationTest {
         verifyEventPosted(SMOKE_ENABLED, times(1));
     }
 
+    @Test
+    void setSmokeBlur_outOfRange_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setSmokeBlur(40))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("smoke blur must be between 0 and 20 (actual value: 40)");
+    }
+
+    @Test
+    void setSmokeBlur_eight_setsBlurToEight() {
+        graphicsConfiguration.setSmokeBlur(8);
+
+        assertThat(graphicsConfiguration.smokeBlur()).isEqualTo(8);
+        verifyEventPosted(SMOKE_BLUR, times(1));
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));
