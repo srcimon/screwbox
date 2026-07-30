@@ -518,4 +518,31 @@ public class GraphicsConfiguration {
             listener.configurationChanged(event);
         }
     }
+
+
+
+
+
+
+
+
+//TODO FIXUP BELOW!!!!!!
+    private int smokeScale = 4;
+
+    public GraphicsConfiguration setSmokeScale(final int smokeScale) {
+        Validate.range(smokeScale, 1, 8, "smoke scale must be between 1 and 8");
+        this.smokeScale = smokeScale;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_SCALE);
+        return this;
+    }
+
+    public int smokeScale() {
+        return smokeScale;
+    }
+
+
+    private static int blur = 2;
+    private static Percent maxOpacity = Percent.of(1);
+    private static int cellSize = 8;
+    private static int screenBorderCells = 32;
 }

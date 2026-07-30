@@ -37,7 +37,6 @@ public class DefaultSmoke implements Smoke {
     private record VelocityChange(Vector position, Vector velocity) {
     }
 
-    private static int upscale = 4;
     private static int blur = 2;
     private static Percent maxOpacity = Percent.of(1);
     private static int cellSize = 8;
@@ -138,9 +137,9 @@ public class DefaultSmoke implements Smoke {
 
 
             var actuallyVisibleBounds = calculateActuallyVisibleBounds();
-            final var sprite = Asset.asset(() -> smokeRender.createImage(blur, upscale, maxOpacity, state, actuallyVisibleBounds));
+            final var sprite = Asset.asset(() -> smokeRender.createImage(blur, configuration.smokeScale(), maxOpacity, state, actuallyVisibleBounds));
             executor.submit(sprite::get);
-            final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
+            final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / configuration.smokeScale();
             final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewportManager.defaultViewport().camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewportManager.defaultViewport().camera().zoom()));
             viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
                 .scaled(scale));

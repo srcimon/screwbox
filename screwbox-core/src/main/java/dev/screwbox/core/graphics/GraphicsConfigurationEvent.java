@@ -96,7 +96,12 @@ public class GraphicsConfigurationEvent extends EventObject {
         /**
          * {@link GraphicsConfiguration#isLensFlareEnabled()} was changed.
          */
-        LENS_FLARE_ENABLED
+        LENS_FLARE_ENABLED,
+
+        /**
+         * {@link GraphicsConfiguration#smokeScale()} was changed.
+         */
+        SMOKE_SCALE
     }
 
     public GraphicsConfigurationEvent(final Object source, final ConfigurationProperty changedProperty) {
