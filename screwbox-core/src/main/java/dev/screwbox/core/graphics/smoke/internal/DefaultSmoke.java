@@ -68,7 +68,7 @@ public class DefaultSmoke implements Smoke {
 
     @Override
     public Smoke setOptions(final SmokeOptions options) {
-        this.options = Objects.requireNonNull(options, "options must not be null");//TODO test
+        this.options = Objects.requireNonNull(options, "options must not be null");
         return this;
     }
 

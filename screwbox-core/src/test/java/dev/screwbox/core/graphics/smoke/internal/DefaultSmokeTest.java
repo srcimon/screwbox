@@ -39,4 +39,11 @@ class DefaultSmokeTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("amount must be positive (actual value: -0.1)");
     }
+
+    @Test
+    void setOptions_optionsNull_throwsException() {
+        assertThatThrownBy(() -> smoke.setOptions(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("options must not be null");
+    }
 }

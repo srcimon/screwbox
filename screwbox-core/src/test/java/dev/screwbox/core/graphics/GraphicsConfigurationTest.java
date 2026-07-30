@@ -309,6 +309,19 @@ class GraphicsConfigurationTest {
         assertThat(graphicsConfiguration.isIndirectLightEnabled()).isTrue();
     }
 
+    @Test
+    void setSmokeScale_scaleZero_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setSmokeScale(0))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("smoke scale must be between 1 and 8 (actual value: 0)");
+    }
+
+    @Test
+    void setSmokeScale_scaleSix_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setSmokeScale(6);
+        assertThat(graphicsConfiguration.smokeScale()).isEqualTo(6);
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));
