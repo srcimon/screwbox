@@ -34,8 +34,8 @@ public class DefaultSmoke implements Smoke {
     private record VelocityChange(Vector position, Vector velocity) {
     }
 
-    private static int upscale = 6;
-    private static int blur = 4;
+    private static int upscale = 4;
+    private static int blur = 2;
     private static Percent maxOpacity = Percent.of(1);
     private static int cellSize = 8;
     private static int screenBorderCells = 32;
@@ -126,16 +126,16 @@ public class DefaultSmoke implements Smoke {
                 simulation.addVelocity(cell, velocityChange.velocity(), maxVelocity);
             }
             velocityChanges.clear();
-
+            final var state = simulation.state();
             simulationTask = executor.submit(() -> {
                 simulation.step(delta, viscosity, diffusion, iterations);
                 simulation.fade(delta * fade);
             });
 
 
-            FluidSimulationState fluidSimulationState = simulation.state();
+
             var actuallyVisibleBounds = calculateActuallyVisibleBounds();
-            final var sprite = Asset.asset(() -> smokeRender.createImage(blur, upscale, maxOpacity, fluidSimulationState, actuallyVisibleBounds));
+            final var sprite = Asset.asset(() -> smokeRender.createImage(blur, upscale, maxOpacity, state, actuallyVisibleBounds));
             executor.submit(sprite::get);
             final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / upscale;
             final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewportManager.defaultViewport().camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewportManager.defaultViewport().camera().zoom()));
