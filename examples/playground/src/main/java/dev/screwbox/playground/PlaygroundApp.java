@@ -44,13 +44,13 @@ public class PlaygroundApp {
         screwBox.environment().addSystem(x -> {
             x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(50,-30).multiply(screwBox.loop().delta() ));
-            x.graphics().smoke().emit(screwBox.mouse().position(),1 * screwBox.loop().delta(), color);
+            x.graphics().smoke().emit(screwBox.mouse().position(),1 * screwBox.loop().delta(), Color.BLACK);
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
             }
             x.graphics().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
-
+screwBox.graphics().configuration().setBackgroundColor(Color.ORANGE);
         screwBox.start();
     }
 

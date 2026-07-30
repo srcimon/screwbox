@@ -23,6 +23,9 @@ public class FluidSimulation {
     private final double[] densityB;
     private final double[] densityB0;
 
+    private final double[] densityA;
+    private final double[] densityA0;
+
     private final double[] velocityX;
     private final double[] velocityX0;
 
@@ -43,6 +46,8 @@ public class FluidSimulation {
         this.densityG0 = new double[cellCount];
         this.densityB = new double[cellCount];
         this.densityB0 = new double[cellCount];
+        this.densityA = new double[cellCount];
+        this.densityA0 = new double[cellCount];
         this.velocityX = new double[cellCount];
         this.velocityX0 = new double[cellCount];
         this.velocityY = new double[cellCount];
@@ -60,6 +65,7 @@ public class FluidSimulation {
             densityR[index] = Math.min(densityR[index] + (color.r() * amount), limit);
             densityG[index] = Math.min(densityG[index] + (color.g() * amount), limit);
             densityB[index] = Math.min(densityB[index] + (color.b() * amount), limit);
+            densityA[index] = Math.min(densityA[index] + (color.alpha() * amount), limit);
         }
     }
 
@@ -84,7 +90,7 @@ public class FluidSimulation {
 
     //TODO me dont like this
     public FluidSimulationState state() {
-        return new FluidSimulationState(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length));
+        return new FluidSimulationState(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length), Arrays.copyOf(densityA, densityA.length));
     }
 
     private int index(final int x, final int y) {
@@ -112,6 +118,7 @@ public class FluidSimulation {
         advect(densityR, densityR0, velocityX, velocityY, delta);
         advect(densityG, densityG0, velocityX, velocityY, delta);
         advect(densityB, densityB0, velocityX, velocityY, delta);
+        advect(densityA, densityA0, velocityX, velocityY, delta);
     }
 
     void diffuseVelocity(final double delta, final double diffuse, final int iterations) {
@@ -178,6 +185,7 @@ public class FluidSimulation {
                         densityR0[curr] = 0;
                         densityG0[curr] = 0;
                         densityB0[curr] = 0;
+                        densityA0[curr] = 0;
                         continue;
                     }
 
@@ -189,6 +197,7 @@ public class FluidSimulation {
                     densityR0[curr] = (densityR[curr] + a * (densityR0[right] + densityR0[left] + densityR0[bot] + densityR0[top])) * cRecip;
                     densityG0[curr] = (densityG[curr] + a * (densityG0[right] + densityG0[left] + densityG0[bot] + densityG0[top])) * cRecip;
                     densityB0[curr] = (densityB[curr] + a * (densityB0[right] + densityB0[left] + densityB0[bot] + densityB0[top])) * cRecip;
+                    densityA0[curr] = (densityA[curr] + a * (densityA0[right] + densityA0[left] + densityA0[bot] + densityA0[top])) * cRecip;
                 }
             }
         }
@@ -199,6 +208,7 @@ public class FluidSimulation {
             densityR[i] = Math.max(0, densityR[i] - fade);
             densityG[i] = Math.max(0, densityG[i] - fade);
             densityB[i] = Math.max(0, densityB[i] - fade);
+            densityA[i] = Math.max(0, densityA[i] - fade);
         }
     }
 
@@ -377,6 +387,8 @@ public class FluidSimulation {
 
                     densityB[ix] = oldSimulation.densityB[ixOld];
                     densityB0[ix] = oldSimulation.densityB0[ixOld];
+                    densityA[ix] = oldSimulation.densityA[ixOld];
+                    densityA0[ix] = oldSimulation.densityA0[ixOld];
 
                     velocityX[ix] = oldSimulation.velocityX[ixOld];
                     velocityX0[ix] = oldSimulation.velocityX0[ixOld];
@@ -426,11 +438,12 @@ public class FluidSimulation {
                 this.densityR[index] = r / 255.0;
                 this.densityG[index] = g / 255.0;
                 this.densityB[index] = b / 255.0;
-
+//TODO add alpha
                 // Zurücksetzen der vorherigen Zeitschritte
                 this.densityR0[index] = 0.0;
                 this.densityG0[index] = 0.0;
                 this.densityB0[index] = 0.0;
+//TODO add alpha
             }
         }
     }

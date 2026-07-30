@@ -85,15 +85,18 @@ public class SmokeRenderer {
                                                     fluidSimulationState.densityBlue(x0, clampedY1) * w01 +
                                                     fluidSimulationState.densityBlue(x1, clampedY1) * w11), 0.0f, 1.0f);
 
+                final float a = Math.clamp((float) (fluidSimulationState.densityAlpha(x0, clampedY0) * w00 +
+                                                    fluidSimulationState.densityAlpha(x1, clampedY0) * w10 +
+                                                    fluidSimulationState.densityAlpha(x0, clampedY1) * w01 +
+                                                    fluidSimulationState.densityAlpha(x1, clampedY1) * w11), 0.0f, 1.0f);
+
 // 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
-                float maxChannel = Math.max(r, Math.max(g, b));
-                float alpha = Math.min(maxChannel, b1 / 255.0f); // b1 muss normalisiert werden, falls es 0-255 ist
 
 // 3. Premultiplied Alpha direkt im Float-Raum berechnen
-                int rPremult = (int) (r * alpha * 255.0f + 0.5f);
-                int gPremult = (int) (g * alpha * 255.0f + 0.5f);
-                int bPremult = (int) (b * alpha * 255.0f + 0.5f);
-                int aInt = (int) (alpha * 255.0f + 0.5f);
+                int rPremult = (int) (r * a * 255.0f + 0.5f);
+                int gPremult = (int) (g * a * 255.0f + 0.5f);
+                int bPremult = (int) (b * a * 255.0f + 0.5f);
+                int aInt = (int) (a * 255.0f + 0.5f);
 
 // 4. Direktes Schreiben ohne Maskierungs-Fehler
                 pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
