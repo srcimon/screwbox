@@ -5,7 +5,7 @@ import dev.screwbox.core.Percent;
 public record SmokeOptions(double maxDensity, double maxVelocity, double viscosity, double diffusion, int iterations, Percent fade) {
 
     //TODO add validations
-    public static SmokeOptions normal() {
+    public static SmokeOptions vapor() {
         return new SmokeOptions(4, 20, 0.0000000004, 0.000001, 2,Percent.of(0.04));
     }
 

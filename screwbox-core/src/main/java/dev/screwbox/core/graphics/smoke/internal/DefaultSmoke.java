@@ -43,7 +43,7 @@ public class DefaultSmoke implements Smoke {
     private static int cellSize = 8;
     private static int screenBorderCells = 32;
 
-    private SmokeOptions options = SmokeOptions.normal();
+    private SmokeOptions options = SmokeOptions.vapor();
     //TODO support split screen!!!!!!!!!!!!!!!!!
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
