@@ -1,6 +1,6 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
-import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -13,8 +13,8 @@ public class SmokeRenderer {
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
-    public Sprite createImage(int blur, int upscale, Percent maxOpacity, FluidSimulationState fluidSimulationState, ScreenBounds actuallyVisibleBounds) {
-        float b1 = (float)maxOpacity.value();
+    public Sprite createImage(GraphicsConfiguration graphicsConfiguration, FluidSimulationState fluidSimulationState, ScreenBounds actuallyVisibleBounds) {
+        float b1 = (float)graphicsConfiguration.smokeOpacity().value();
         int totalCells = fluidSimulationState.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
@@ -24,8 +24,8 @@ public class SmokeRenderer {
         int viewHeightCells = actuallyVisibleBounds.height();
 
         // Zielgröße des neuen Bildes in Pixeln
-        int targetWidth = viewWidthCells * upscale;
-        int targetHeight = viewHeightCells * upscale;
+        int targetWidth = viewWidthCells * graphicsConfiguration.smokeScale();
+        int targetHeight = viewHeightCells * graphicsConfiguration.smokeScale();
 
         // Erstelle das Bild exakt in der benötigten Zielgröße (nicht mehr quadratisch blockiert)
         Size size = Size.of(targetWidth, targetHeight);
@@ -39,7 +39,7 @@ public class SmokeRenderer {
 
         for (int x = 0; x < targetWidth; x++) {
             // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
-            float srcX = startX + ((float) x / upscale);
+            float srcX = startX + ((float) x / graphicsConfiguration.smokeScale());
             int x0 = (int) srcX;
 
             x0Arr[x] = Math.clamp(x0, 0, totalCells - 1);
@@ -52,7 +52,7 @@ public class SmokeRenderer {
             int pixelIndex = y * targetWidth;
 
             // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
-            float srcY = startY + ((float) y / upscale);
+            float srcY = startY + ((float) y / graphicsConfiguration.smokeScale());
             int y0 = (int) srcY;
 
             int clampedY0 = Math.clamp(y0, 0, totalCells - 1);
@@ -105,8 +105,8 @@ public class SmokeRenderer {
             }
         }
 
-        if (blur > 0) {
-            ImageOperations.blurImage(image, blur);
+        if (graphicsConfiguration.smokeBlur() > 0) {
+            ImageOperations.blurImage(image, graphicsConfiguration.smokeBlur());
         }
 
         return Sprite.fromImage(image);

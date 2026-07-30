@@ -554,8 +554,25 @@ public class GraphicsConfiguration {
     }
 
     //TODO FIXUP BELOW!!!!!!
-    private static int blur = 2;
-    private static Percent maxOpacity = Percent.of(1);
-    private static int cellSize = 8;
-    private static int screenBorderCells = 32;
+    public int smokeBlur() {
+        return smokeBlur;
+    }
+
+    public Percent smokeOpacity() {
+        return smokeOpacity;
+    }
+
+    public int smokeCellSize() {
+        return smokeCellSize;
+    }
+
+    public int smokeCellPadding() {
+        return smokeCellPadding;
+    }
+
+    private int smokeBlur = 2;
+    private Percent smokeOpacity = Percent.of(1);
+
+    private int smokeCellSize = 8;
+    private int smokeCellPadding = 32;
 }

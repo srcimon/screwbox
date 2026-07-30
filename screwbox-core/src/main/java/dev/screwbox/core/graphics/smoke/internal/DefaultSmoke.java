@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
@@ -37,11 +36,6 @@ public class DefaultSmoke implements Smoke {
     private record VelocityChange(Vector position, Vector velocity) {
     }
 
-    private static int blur = 2;
-    private static Percent maxOpacity = Percent.of(1);
-    private static int cellSize = 8;
-    private static int screenBorderCells = 32;
-
     private SmokeOptions options = SmokeOptions.vapor();
     //TODO support split screen!!!!!!!!!!!!!!!!!
     private final ViewportManager viewportManager;
@@ -74,7 +68,7 @@ public class DefaultSmoke implements Smoke {
 
     @Override
     public Smoke emit(final Vector position, final Vector velocity, final double amount, final Color color) {
-        emit(position, velocity, amount, color);
+        emit(position, amount, color);
         push(position, velocity);
         return this;
     }
@@ -137,13 +131,14 @@ public class DefaultSmoke implements Smoke {
 
 
             var actuallyVisibleBounds = calculateActuallyVisibleBounds();
-            final var sprite = Asset.asset(() -> smokeRender.createImage(blur, configuration.smokeScale(), maxOpacity, state, actuallyVisibleBounds));
+            final var sprite = Asset.asset(() -> smokeRender.createImage(configuration, state, actuallyVisibleBounds));
             executor.submit(sprite::get);
+            int cellSize = configuration.smokeCellSize();
             final double scale = cellSize * viewportManager.defaultViewport().camera().zoom() / configuration.smokeScale();
             final Offset origin = viewportManager.defaultViewport().toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewportManager.defaultViewport().camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewportManager.defaultViewport().camera().zoom()));
             viewportManager.defaultViewport().canvas().drawSprite(sprite, origin, SpriteDrawOptions
                 .scaled(scale));
-            if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * screenBorderCells * 0.5))) {
+            if (!calculateFluidOnWorld().contains(viewportManager.defaultViewport().visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
                 reassignGrid();
             } //TODO do not render empty images
         }
@@ -151,8 +146,8 @@ public class DefaultSmoke implements Smoke {
     }
 
     private Offset toCell(final Vector position) {
-        final var cellX = Math.floor((position.x() - worldAnchor.x()) / cellSize);
-        final var cellY = Math.floor((position.y() - worldAnchor.y()) / cellSize);
+        final var cellX = Math.floor((position.x() - worldAnchor.x()) / configuration.smokeCellSize());
+        final var cellY = Math.floor((position.y() - worldAnchor.y()) / configuration.smokeCellSize());
         return Offset.at(cellX, cellY);
     }
 
@@ -184,10 +179,10 @@ public class DefaultSmoke implements Smoke {
         final double gridMaxY = viewMaxY - imageWorldAnchor.y();
 
         // 3. Bestimme die exakten Start- und End-Zellen (Abrunden/Aufrunden via Double)
-        int startCellX = (int) Math.floor(gridMinX / cellSize);
-        int startCellY = (int) Math.floor(gridMinY / cellSize);
-        int endCellX = (int) Math.ceil(gridMaxX / cellSize);
-        int endCellY = (int) Math.ceil(gridMaxY / cellSize);
+        int startCellX = (int) Math.floor(gridMinX / configuration.smokeCellSize());
+        int startCellY = (int) Math.floor(gridMinY / configuration.smokeCellSize());
+        int endCellX = (int) Math.ceil(gridMaxX / configuration.smokeCellSize());
+        int endCellY = (int) Math.ceil(gridMaxY / configuration.smokeCellSize());
 
         // 4. Füge den gewünschten Sicherheitsabstand (1 Zelle Puffer rundherum) hinzu
         startCellX = startCellX - 1;
@@ -209,11 +204,11 @@ public class DefaultSmoke implements Smoke {
     }
 
     private Bounds calculateFluidOnWorld() {
-        return Bounds.atOrigin(worldAnchor, (double) cellSize * simulation.resolution(), (double) cellSize * simulation.resolution());
+        return Bounds.atOrigin(worldAnchor, (double) configuration.smokeCellSize() * simulation.resolution(), (double) configuration.smokeCellSize() * simulation.resolution());
     }
 
     private Bounds calculateBestBounds() {
-        final var bestBounds = viewportManager.defaultViewport().visibleArea().expand((double) screenBorderCells * cellSize).snapExpand(cellSize);
+        final var bestBounds = viewportManager.defaultViewport().visibleArea().expand((double) configuration.smokeCellPadding() * configuration.smokeCellSize()).snapExpand(configuration.smokeCellSize());
         return bestBounds.resize(
             Math.max(bestBounds.width(), bestBounds.height()),
             Math.max(bestBounds.width(), bestBounds.height()));
@@ -223,7 +218,7 @@ public class DefaultSmoke implements Smoke {
         awaitEndOfSimulationTask();
         var lastAnchor = worldAnchor;
         var boundsArea = calculateBestBounds();
-
+        int cellSize = configuration.smokeCellSize();
         // 1. Snapping wie gehabt, um Sub-Pixel-Zittern zu vermeiden
         long snappedX = Math.round(boundsArea.origin().x() / cellSize) * cellSize;
         long snappedY = Math.round(boundsArea.origin().y() / cellSize) * cellSize;
