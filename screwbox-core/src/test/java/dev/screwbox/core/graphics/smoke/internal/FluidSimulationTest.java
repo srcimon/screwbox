@@ -28,7 +28,7 @@ class FluidSimulationTest {
 
     @Test
     void addDensity_outOfBounds_densityIsUnchanged() {
-        simulation.addDensity(Offset.at(-4, -1), 50, 100, Color.RED);
+        simulation.addDensity(Offset.at(-4, -1), 50, Color.RED);
 
         assertAllCellsHaveZeroDensity();
     }
@@ -36,7 +36,7 @@ class FluidSimulationTest {
     @Test
     void addDensity_cellIsObstacle_densityIsUnchanged() {
         simulation.setObstacle(4, 4);
-        simulation.addDensity(Offset.at(4, 4), 50, 100, Color.RED);
+        simulation.addDensity(Offset.at(4, 4), 50, Color.RED);
 
         assertAllCellsHaveZeroDensity();
     }
@@ -44,10 +44,10 @@ class FluidSimulationTest {
     @Test
     void addDensity_cellIsFree_densityIsUpdatedToLimit() {
         Offset cell = Offset.at(4, 4);
-        simulation.addDensity(cell, 120, 100, Color.RED);
+        simulation.addDensity(cell, 2, Color.RED);
 
         final var state = simulation.state();
-        assertThat(state.densityRed(cell.x(), cell.y())).isEqualTo(100);
+        assertThat(state.densityRed(cell.x(), cell.y())).isEqualTo(510);
         assertThat(state.densityGreen(cell.x(), cell.y())).isZero();
         assertThat(state.densityBlue(cell.x(), cell.y())).isZero();
     }
@@ -62,12 +62,12 @@ class FluidSimulationTest {
     @Test
     void step_densityIsSet_diffusesToNeighbours() {
         Offset cell = Offset.at(4, 4);
-        simulation.addDensity(cell, 50, 50, Color.ORANGE);
+        simulation.addDensity(cell, 0.5, Color.ORANGE);
 
 
         var state = simulation.state();
-        assertThat(state.densityRed(cell.x(), cell.y())).isEqualTo(49.99, offset(0.01));
-        assertThat(state.densityGreen(cell.x(), cell.y())).isEqualTo(49.99, offset(0.01));
+        assertThat(state.densityRed(cell.x(), cell.y())).isEqualTo(127.5, offset(0.01));
+        assertThat(state.densityGreen(cell.x(), cell.y())).isEqualTo(82.5, offset(0.01));
         assertThat(state.densityBlue(cell.x(), cell.y())).isZero();
 
         for (var neighbour : Set.of(cell.top(), cell.bottom(), cell.left(), cell.right())) {
@@ -77,7 +77,7 @@ class FluidSimulationTest {
             assertThat(state.densityAlpha(neighbour.x(), neighbour.y())).isZero();
         }
 
-        assertTotalRedDensity(50.0);
+        assertTotalRedDensity(127.5);
     }
 
     @Test
@@ -85,7 +85,7 @@ class FluidSimulationTest {
         for (int y = 0; y < 32; y++) {
             simulation.setObstacle(20, y);
         }
-        simulation.addDensity(Offset.at(19, 16), 100, 100, Color.RED);
+        simulation.addDensity(Offset.at(19, 16), 100, Color.RED);
 
         for (int i = 0; i < 20; i++) {
             simulation.step(0.1, 0.0004, 0.0003, 3);
@@ -111,7 +111,7 @@ class FluidSimulationTest {
     @Test
     void fade_cellHasDensity_reducesDensity() {
         Offset cell = Offset.at(4, 4);
-        simulation.addDensity(cell, 2, 1000, Color.rgb(12, 31, 21));
+        simulation.addDensity(cell, 2, Color.rgb(12, 31, 21));
 
         simulation.fade(2);
 

@@ -115,12 +115,12 @@ public class DefaultSmoke implements Smoke {
 
             for (final var densityChange : densityChanges) {
                 final var cell = toCell(densityChange.position());
-                simulation.addDensity(cell, densityChange.amount, options.maxDensity(), densityChange.color);
+                simulation.addDensity(cell, densityChange.amount, densityChange.color);
             }
             densityChanges.clear();
             for (final var velocityChange : velocityChanges) {
                 var cell = toCell(velocityChange.position());
-                simulation.addVelocity(cell, velocityChange.velocity(), options.maxVelocity());
+                simulation.addVelocity(cell, velocityChange.velocity());
             }
             velocityChanges.clear();
             final var state = simulation.state();

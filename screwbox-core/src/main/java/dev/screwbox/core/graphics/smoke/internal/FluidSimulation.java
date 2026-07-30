@@ -59,21 +59,21 @@ public class FluidSimulation {
         return resolution;
     }
 
-    public void addDensity(final Offset cell, final double amount, final double limit, Color color) {
+    public void addDensity(final Offset cell, final double amount, final Color color) {
         if (isInGrid(cell.x(), cell.y()) && isObstacle(cell)) {
             final int index = index(cell.x(), cell.y());
-            densityR[index] = Math.min(densityR[index] + (color.r() * amount), limit);
-            densityG[index] = Math.min(densityG[index] + (color.g() * amount), limit);
-            densityB[index] = Math.min(densityB[index] + (color.b() * amount), limit);
-            densityA[index] = Math.min(densityA[index] + (color.alpha() * amount), limit);
+            densityR[index] = densityR[index] + (color.r() * amount);
+            densityG[index] = densityG[index] + (color.g() * amount);
+            densityB[index] = densityB[index] + (color.b() * amount);
+            densityA[index] = densityA[index] + (color.alpha() * amount);
         }
     }
 
-    public void addVelocity(final Offset cell, final Vector velocity, final double limit) {
+    public void addVelocity(final Offset cell, final Vector velocity) {
         if (isInGrid(cell.x(), cell.y()) && isObstacle(cell)) {
             final int index = index(cell.x(), cell.y());
-            velocityX[index] = Math.min(limit, velocityX[index] + velocity.x());
-            velocityY[index] = Math.min(limit, velocityY[index] + velocity.y());
+            velocityX[index] = velocityX[index] + velocity.x();
+            velocityY[index] = velocityY[index] + velocity.y();
         }
     }
 
