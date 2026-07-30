@@ -28,7 +28,6 @@ public class GraphicsConfiguration {
      */
     public static final Size DEFAULT_RESOLUTION = Size.of(1280, 720);
 
-    private boolean isSmokeEnabled = true;//TODO finish up
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
     private final RenderingApi renderingApi;
     private Size resolution = DEFAULT_RESOLUTION;
@@ -48,6 +47,8 @@ public class GraphicsConfiguration {
     private Percent indirectLightIntensity = Percent.of(0.9);
     private float indirectLightDiameter = 16f;
     private int maxLightBounces = 2;
+    private boolean isSmokeEnabled = false;
+    private int smokeScale = 4;
 
     public GraphicsConfiguration(final RenderingApi renderingApi) {
         this.renderingApi = renderingApi;
@@ -504,12 +505,45 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Returns {@code true} if smoke is enabled.
+     * Enables or disables smoke rendering.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeEnabled(final boolean smokeEnabled) {
+        this.isSmokeEnabled = smokeEnabled;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_ENABLED);
+        return this;
+    }
+
+    /**
+     * Returns {@code true} if smoke rendering is enabled.
      *
      * @since 3.33.0
      */
     public boolean isSmokeEnabled() {
         return isSmokeEnabled;
+    }
+
+    /**
+     * Sets the scale of the smoke image. Increasing the scale might improve smoke quality but also lowers smoke
+     * performance. Default value is 4.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeScale(final int smokeScale) {
+        Validate.range(smokeScale, 1, 8, "smoke scale must be between 1 and 8");
+        this.smokeScale = smokeScale;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_SCALE);
+        return this;
+    }
+
+    /**
+     * Returns the scale of the smoke image. Default value is 4.
+     *
+     * @since 3.33.0
+     */
+    public int smokeScale() {
+        return smokeScale;
     }
 
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
@@ -519,28 +553,7 @@ public class GraphicsConfiguration {
         }
     }
 
-
-
-
-
-
-
-
-//TODO FIXUP BELOW!!!!!!
-    private int smokeScale = 4;
-
-    public GraphicsConfiguration setSmokeScale(final int smokeScale) {
-        Validate.range(smokeScale, 1, 8, "smoke scale must be between 1 and 8");
-        this.smokeScale = smokeScale;
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_SCALE);
-        return this;
-    }
-
-    public int smokeScale() {
-        return smokeScale;
-    }
-
-
+    //TODO FIXUP BELOW!!!!!!
     private static int blur = 2;
     private static Percent maxOpacity = Percent.of(1);
     private static int cellSize = 8;

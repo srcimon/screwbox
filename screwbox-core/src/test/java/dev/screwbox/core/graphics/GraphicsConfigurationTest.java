@@ -319,7 +319,17 @@ class GraphicsConfigurationTest {
     @Test
     void setSmokeScale_scaleSix_updatesOptionAndNotifiesListeners() {
         graphicsConfiguration.setSmokeScale(6);
+
         assertThat(graphicsConfiguration.smokeScale()).isEqualTo(6);
+        verifyEventPosted(SMOKE_SCALE, times(1));
+    }
+
+    @Test
+    void setSmokeEnabled_true_enablesSmokeAndNotifiesListeners() {
+        graphicsConfiguration.setSmokeEnabled(true);
+
+        assertThat(graphicsConfiguration.isSmokeEnabled()).isTrue();
+        verifyEventPosted(SMOKE_ENABLED, times(1));
     }
 
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
