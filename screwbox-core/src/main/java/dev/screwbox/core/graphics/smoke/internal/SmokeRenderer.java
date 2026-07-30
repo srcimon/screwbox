@@ -14,7 +14,7 @@ public class SmokeRenderer {
     //TODO only create image from visible cells
     //TODO do not render image when empty
     public Sprite createImage(int blur, int upscale, Percent maxOpacity, FluidSimulationState fluidSimulationState, ScreenBounds actuallyVisibleBounds) {
-        int b1 = maxOpacity.rangeValue(0, 255);
+        float b1 = (float)maxOpacity.value();
         int totalCells = fluidSimulationState.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
@@ -88,7 +88,7 @@ public class SmokeRenderer {
                 final float a = Math.clamp((float) (fluidSimulationState.densityAlpha(x0, clampedY0) * w00 +
                                                     fluidSimulationState.densityAlpha(x1, clampedY0) * w10 +
                                                     fluidSimulationState.densityAlpha(x0, clampedY1) * w01 +
-                                                    fluidSimulationState.densityAlpha(x1, clampedY1) * w11), 0.0f, 1.0f);
+                                                    fluidSimulationState.densityAlpha(x1, clampedY1) * w11), 0.0f, b1);
 
 // 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
 

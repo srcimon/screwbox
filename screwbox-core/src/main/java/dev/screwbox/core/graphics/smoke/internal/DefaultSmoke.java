@@ -12,10 +12,12 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.Smoke;
+import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -26,6 +28,7 @@ import static java.util.Objects.nonNull;
 //TODO add package info files
 //TODO blog on smoke
 public class DefaultSmoke implements Smoke {
+
 
     private record DensityChange(Vector position, double amount, Color color) {
 
@@ -39,13 +42,8 @@ public class DefaultSmoke implements Smoke {
     private static Percent maxOpacity = Percent.of(1);
     private static int cellSize = 8;
     private static int screenBorderCells = 32;
-    private static double maxDensity = 4;
-    private static double maxVelocity = 20;
-    private static double viscosity = 0.0000000004;
-    private static double diffusion = 0.000001;
-    private static int iterations = 2;
-    private static double fade = 0.04;
 
+    private SmokeOptions options = SmokeOptions.normal();
     //TODO support split screen!!!!!!!!!!!!!!!!!
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
@@ -67,6 +65,12 @@ public class DefaultSmoke implements Smoke {
         this.executor = executor;
         this.smokeRender = smokeRender;
         this.configuration = configuration;
+    }
+
+    @Override
+    public Smoke setOptions(final SmokeOptions options) {
+        this.options = Objects.requireNonNull(options, "options must not be null");//TODO test
+        return this;
     }
 
     @Override
@@ -118,20 +122,19 @@ public class DefaultSmoke implements Smoke {
 
             for (final var densityChange : densityChanges) {
                 final var cell = toCell(densityChange.position());
-                simulation.addDensity(cell, densityChange.amount, maxDensity, densityChange.color);
+                simulation.addDensity(cell, densityChange.amount, options.maxDensity(), densityChange.color);
             }
             densityChanges.clear();
             for (final var velocityChange : velocityChanges) {
                 var cell = toCell(velocityChange.position());
-                simulation.addVelocity(cell, velocityChange.velocity(), maxVelocity);
+                simulation.addVelocity(cell, velocityChange.velocity(), options.maxVelocity());
             }
             velocityChanges.clear();
             final var state = simulation.state();
             simulationTask = executor.submit(() -> {
-                simulation.step(delta, viscosity, diffusion, iterations);
-                simulation.fade(delta * fade);
+                simulation.step(delta, options.viscosity(), options.diffusion(), options.iterations());
+                simulation.fade(delta * options.fade().value());
             });
-
 
 
             var actuallyVisibleBounds = calculateActuallyVisibleBounds();
