@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
-//TODO Test alpha
+
 class FluidSimulationTest {
 
     FluidSimulation simulation;
@@ -74,6 +74,7 @@ class FluidSimulationTest {
             assertThat(state.densityRed(neighbour.x(), neighbour.y())).isEqualTo(0, offset(0.01));
             assertThat(state.densityGreen(neighbour.x(), neighbour.y())).isEqualTo(0, offset(0.01));
             assertThat(state.densityBlue(neighbour.x(), neighbour.y())).isZero();
+            assertThat(state.densityAlpha(neighbour.x(), neighbour.y())).isZero();
         }
 
         assertTotalRedDensity(50.0);
@@ -135,6 +136,7 @@ class FluidSimulationTest {
             assertThat(state.densityRed(cell.x(), cell.y())).isZero();
             assertThat(state.densityGreen(cell.x(), cell.y())).isZero();
             assertThat(state.densityBlue(cell.x(), cell.y())).isZero();
+            assertThat(state.densityAlpha(cell.x(), cell.y())).isZero();
         }
     }
 }
