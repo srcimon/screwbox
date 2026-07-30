@@ -92,15 +92,23 @@ public class SmokeRenderer {
 
 // 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
 
-// 3. Premultiplied Alpha direkt im Float-Raum berechnen
-                int rPremult = (int) (r * a * 255.0f + 0.5f);
-                int gPremult = (int) (g * a * 255.0f + 0.5f);
-                int bPremult = (int) (b * a * 255.0f + 0.5f);
-                int aInt = (int) (a * 255.0f + 0.5f);
+                float steps = 3.0f;
+                float funA = Math.round((a / b1) * steps) / steps * b1;
 
-// 4. Direktes Schreiben ohne Maskierungs-Fehler
-                pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
+// Only render if it clears the minimum threshold (sharp border)
+                if (funA < 0.1f) funA = 0.0f;
 
+// posterize the colors slightly for a flat shade look
+                float funR = Math.round(r * 2.0f) / 2.0f;
+                float funG = Math.round(g * 2.0f) / 2.0f;
+                float funB = Math.round(b * 2.0f) / 2.0f;
+
+                int rPremult = (int) (funR * funA * 255.0f + 0.5f);
+                int gPremult = (int) (funG * funA * 255.0f + 0.5f);
+                int bPremult = (int) (funB * funA * 255.0f + 0.5f);
+                int aInt = (int) (funA * 255.0f + 0.5f);
+
+                pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8);
 
             }
         }
@@ -111,4 +119,44 @@ public class SmokeRenderer {
 
         return Sprite.fromImage(image);
     }
+
+
+    //TODO fire renderer
+//    Keep your original r, g, b, a interpolation code above...
+//
+//    // Calculate a brightness/heat intensity based on density and alpha
+//    float intensity = (r + g + b) / 3.0f * (a / b1);
+//
+//    // Map intensity to a fire gradient
+//    float funR = Math.clamp(intensity * 2.5f, 0.0f, 1.0f);        // Red shows up early
+//    float funG = Math.clamp((intensity - 0.3f) * 2.0f, 0.0f, 1.0f); // Green comes in for orange/yellow
+//    float funB = Math.clamp((intensity - 0.7f) * 4.0f, 0.0f, 1.0f); // Blue appears only at the hottest core
+//
+//    // Boost alpha for a more energetic glow effect
+//    float funA = Math.clamp(intensity * 1.5f, 0.0f, b1);
+//
+//    int rPremult = (int) (funR * funA * 255.0f + 0.5f);
+//    int gPremult = (int) (funG * funA * 255.0f + 0.5f);
+//    int bPremult = (int) (funB * funA * 255.0f + 0.5f);
+//    int aInt = (int) (funA * 255.0f + 0.5f);
+//
+//    pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
+
+    //TODO night vision renderer
+//    // Keep your original r, g, b, a interpolation code above...
+//
+//    // Use the current alpha or density as a hue shifter
+//    float hue = (a / b1);
+//
+//    // Simple procedural RGB rainbow wheel
+//    float funR = (float) Math.sin(hue * 2.0 * Math.PI + 0.0) * 0.5f + 0.5f;
+//    float funG = (float) Math.sin(hue * 2.0 * Math.PI + 2.094) * 0.5f + 0.5f; // +120 degrees
+//    float funB = (float) Math.sin(hue * 2.0 * Math.PI + 4.188) * 0.5f + 0.5f; // +240 degrees
+//
+//    int rPremult = (int) (funR * a * 255.0f + 0.5f);
+//    int gPremult = (int) (funG * a * 255.0f + 0.5f);
+//    int bPremult = (int) (funB * a * 255.0f + 0.5f);
+//    int aInt = (int) (a * 255.0f + 0.5f);
+//
+//    pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
 }
