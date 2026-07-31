@@ -29,8 +29,8 @@ public class SmokeViewport {
     private final SmokeRenderer smokeRender;
 
     private Future<?> simulationTask;
-    private Vector worldAnchor = Vector.zero();
-    private Vector imageWorldAnchor = Vector.zero();
+    private Vector worldAnchor;
+    private Vector imageWorldAnchor;
     private FluidSimulation simulation;
 
     public SmokeViewport(ExecutorService executor, Viewport viewport, GraphicsConfiguration configuration, SmokeRenderer smokeRender) {
@@ -38,6 +38,8 @@ public class SmokeViewport {
         this.configuration = configuration;
         this.executor = executor;
         this.smokeRender = smokeRender;
+        this.worldAnchor = viewport.toWorld(viewport.canvas().offset());
+        this.imageWorldAnchor = viewport.toWorld(viewport.canvas().offset());
     }
 
     void render(SmokeOptions options, double delta, List<Bounds> obstacles, List<DensityChange> densityChanges, List<VelocityChange> velocityChanges) {
