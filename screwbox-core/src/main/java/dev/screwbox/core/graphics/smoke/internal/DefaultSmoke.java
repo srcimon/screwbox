@@ -85,8 +85,9 @@ public class DefaultSmoke implements Smoke {
             smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
             viewportId++;
         }
-        System.out.println(smokeViewports.size());
-        //TODO kill unused smokeviewports
+        while (smokeViewports.size() > viewportManager.viewports().size()) {
+            smokeViewports.removeLast();
+        }
 
         obstacles.clear();
         densityChanges.clear();
