@@ -13,9 +13,9 @@ public class SmokeRenderer {
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
-    public Sprite createImage(GraphicsConfiguration graphicsConfiguration, FluidSimulationState fluidSimulationState, ScreenBounds actuallyVisibleBounds) {
-        float b1 = (float)graphicsConfiguration.smokeOpacity().value();
-        int totalCells = fluidSimulationState.cells(); // Gesamtzahl der Zellen im Quellgitter
+    public Sprite createImage(GraphicsConfiguration graphicsConfiguration, FluidSimulationState state, ScreenBounds actuallyVisibleBounds) {
+        float b1 = (float) graphicsConfiguration.smokeOpacity().value();
+        int totalCells = state.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
         int startX = actuallyVisibleBounds.x();
@@ -72,23 +72,27 @@ public class SmokeRenderer {
                 float w01 = invTX * tY;
                 float w11 = tX * tY;
 
-                final float r = Math.clamp((float) (fluidSimulationState.densityRed(x0, clampedY0) * w00 +
-                                                    fluidSimulationState.densityRed(x1, clampedY0) * w10 +
-                                                    fluidSimulationState.densityRed(x0, clampedY1) * w01 +
-                                                    fluidSimulationState.densityRed(x1, clampedY1) * w11), 0.0f, 1.0f);
-                final float g = Math.clamp((float) (fluidSimulationState.densityGreen(x0, clampedY0) * w00 +
-                                                    fluidSimulationState.densityGreen(x1, clampedY0) * w10 +
-                                                    fluidSimulationState.densityGreen(x0, clampedY1) * w01 +
-                                                    fluidSimulationState.densityGreen(x1, clampedY1) * w11), 0.0f, 1.0f);
-                final float b = Math.clamp((float) (fluidSimulationState.densityBlue(x0, clampedY0) * w00 +
-                                                    fluidSimulationState.densityBlue(x1, clampedY0) * w10 +
-                                                    fluidSimulationState.densityBlue(x0, clampedY1) * w01 +
-                                                    fluidSimulationState.densityBlue(x1, clampedY1) * w11), 0.0f, 1.0f);
+                int index1 = state.calculateIndex(x0, clampedY0);
+                int index2 = state.calculateIndex(x1, clampedY0);
+                int index3 = state.calculateIndex(x0, clampedY1);
+                int index4 = state.calculateIndex(x1, clampedY1);
+                final float r = Math.clamp((float) (state.densityRed(index1) * w00 +
+                                                    state.densityRed(index2) * w10 +
+                                                    state.densityRed(index3) * w01 +
+                                                    state.densityRed(index4) * w11), 0.0f, 1.0f);
+                final float g = Math.clamp((float) (state.densityGreen(index1) * w00 +
+                                                    state.densityGreen(index2) * w10 +
+                                                    state.densityGreen(index3) * w01 +
+                                                    state.densityGreen(index4) * w11), 0.0f, 1.0f);
+                final float b = Math.clamp((float) (state.densityBlue(index1) * w00 +
+                                                    state.densityBlue(index2) * w10 +
+                                                    state.densityBlue(index3) * w01 +
+                                                    state.densityBlue(index4) * w11), 0.0f, 1.0f);
 
-                final float a = Math.clamp((float) (fluidSimulationState.densityAlpha(x0, clampedY0) * w00 +
-                                                    fluidSimulationState.densityAlpha(x1, clampedY0) * w10 +
-                                                    fluidSimulationState.densityAlpha(x0, clampedY1) * w01 +
-                                                    fluidSimulationState.densityAlpha(x1, clampedY1) * w11), 0.0f, b1);
+                final float a = Math.clamp((float) (state.densityAlpha(index1) * w00 +
+                                                    state.densityAlpha(index2) * w10 +
+                                                    state.densityAlpha(index3) * w01 +
+                                                    state.densityAlpha(index4) * w11), 0.0f, b1);
 
 // 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
 
