@@ -82,6 +82,8 @@ public class DefaultSmoke implements Smoke {
             viewportId++;
             smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
         }
+        System.out.println(smokeViewports.size());
+        //TODO kill unused smokeviewports
 
         obstacles.clear();
         densityChanges.clear();
@@ -97,7 +99,7 @@ public class DefaultSmoke implements Smoke {
             smokeViewport = new SmokeViewport(executor, viewport, configuration, smokeRender);
             smokeViewports.put(id, smokeViewport);
         }
-        //TODO kill unused smokeviewports
+
         return smokeViewport;
     }
 
