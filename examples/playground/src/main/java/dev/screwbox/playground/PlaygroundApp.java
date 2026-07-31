@@ -38,7 +38,6 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystem(new SmokeRenderSystem());
-        screwBox.graphics().configuration().setSmokeEnabled(true);
         var map = TileMap.fromString("""
             
             ###       #   ##
@@ -54,7 +53,7 @@ public class PlaygroundApp {
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32)))));
         screwBox.environment().addSystem(x -> {
-            x.graphics().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
+            x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(50, -30).multiply(screwBox.loop().delta()));
             x.graphics().smoke().emit(screwBox.mouse().position(), 1 * screwBox.loop().delta(), color);
             if (x.mouse().isPressedLeft()) {
@@ -78,11 +77,9 @@ public class PlaygroundApp {
             x.mouse().hoverViewport().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
         screwBox.environment().addSystem(Order.PREPARATION, x -> {
-            for(var v  : x.graphics().viewports()) {
-                v.canvas().fillWith(Color.ORANGE);
-            }
             x.graphics().world().drawCircle(x.mouse().position(), 4, OvalDrawOptions.filled(Color.BLACK));
         });
+
         screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         screwBox.start();
     }

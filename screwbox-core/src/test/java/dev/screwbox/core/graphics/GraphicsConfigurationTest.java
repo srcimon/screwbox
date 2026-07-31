@@ -390,6 +390,13 @@ class GraphicsConfigurationTest {
         verifyEventPosted(SMOKE_CELL_PADDING, times(1));
     }
 
+    @Test
+    void setSmokeAutoEnable_false_disablesAutoEnableAndNotifiesListeners() {
+        graphicsConfiguration.setAutoEnableSmoke(false);
+        assertThat(graphicsConfiguration.isAutoEnableSmoke()).isFalse();
+        verifyEventPosted(SMOKE_AUTO_ENABLE, times(1));
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

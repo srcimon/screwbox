@@ -53,6 +53,7 @@ public class GraphicsConfiguration {
     private Percent smokeOpacity = Percent.of(1);
     private int smokeCellSize = 8;
     private int smokeCellPadding = 32;
+    private boolean isAutoEnableSmoke = true;
 
     public GraphicsConfiguration(final RenderingApi renderingApi) {
         this.renderingApi = renderingApi;
@@ -640,6 +641,28 @@ public class GraphicsConfiguration {
         Validate.range(smokeCellPadding, 0, 128, "smoke cell padding must be between 0 and 128");
         this.smokeCellPadding = smokeCellPadding;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_CELL_PADDING);
+        return this;
+    }
+
+    /**
+     * Returns {@code true} if smoke will be automatically turned on when interacting with the smoke simulation.
+     * Default is {@code true}.
+     *
+     * @since 3.33.0
+     */
+    public boolean isAutoEnableSmoke() {
+        return isAutoEnableSmoke;
+    }
+
+    /**
+     * Enable or disable auto activation of smoke rendering will be automatically turned on when interacting with the smoke simulation.
+     * Default is {@code true}.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setAutoEnableSmoke(final boolean autoEnableSmoke) {
+        this.isAutoEnableSmoke = autoEnableSmoke;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_AUTO_ENABLE);
         return this;
     }
 }

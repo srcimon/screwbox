@@ -124,6 +124,11 @@ public class GraphicsConfigurationEvent extends EventObject {
         SMOKE_CELL_PADDING,
 
         /**
+         * {@link GraphicsConfiguration#isAutoEnableSmoke()} was changed.
+         */
+        SMOKE_AUTO_ENABLE,
+
+        /**
          * {@link GraphicsConfiguration#smokeScale()} was changed.
          */
         SMOKE_SCALE

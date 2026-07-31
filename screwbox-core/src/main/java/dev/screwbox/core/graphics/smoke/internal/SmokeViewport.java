@@ -46,7 +46,6 @@ public class SmokeViewport {
         if (simulation == null) {
             reassignGrid();
         }
-        if (configuration.isSmokeEnabled()) {//TODO move inside DefaultSmoke
             imageWorldAnchor = worldAnchor;
             awaitEndOfSimulationTask();
             simulation.clearObstacles();
@@ -88,7 +87,6 @@ public class SmokeViewport {
             if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
                 reassignGrid();
             } //TODO do not render empty images
-        }
     }
 
     private Offset toCell(final Vector position) {

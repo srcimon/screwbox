@@ -55,40 +55,47 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke emit(final Vector position, final double amount, final Color color) {
         Validate.zeroOrPositive(amount, "amount must be positive");
+        autoTurnOnSmoke();
         densityChanges.add(new DensityChange(position, amount, color));
         return this;
     }
 
     @Override
     public Smoke push(final Vector position, final Vector velocity) {
+        autoTurnOnSmoke();
         velocityChanges.add(new VelocityChange(position, velocity));
         return this;
     }
 
     @Override
     public Smoke addObstacle(final Bounds bounds) {
+        autoTurnOnSmoke();
         obstacles.add(bounds);
         return this;
     }
 
     @Override
     public Smoke render(final double delta) {
-        if (smokeViewports.size() != viewportManager.viewports().size()) {
-            smokeViewports.clear();
-            for (var viewport : viewportManager.viewports()) {
-                smokeViewports.add(new SmokeViewport(executor, viewport, configuration, smokeRender));
+        if (configuration.isSmokeEnabled()) {
+            if (smokeViewports.size() != viewportManager.viewports().size()) {
+                smokeViewports.clear();
+                for (var viewport : viewportManager.viewports()) {
+                    smokeViewports.add(new SmokeViewport(executor, viewport, configuration, smokeRender));
+                }
+            }
+            for (final var smokeViewport : smokeViewports) {
+                smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
             }
         }
-        for (final var smokeViewport : smokeViewports) {
-            smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
-        }
-
         obstacles.clear();
         densityChanges.clear();
         velocityChanges.clear();
-        //TODO move towards update?
-
         return this;
     }
 
+    private void autoTurnOnSmoke() {
+        if (!configuration.isSmokeEnabled() && configuration.isAutoEnableSmoke()) {
+            configuration.setSmokeEnabled(true);
+        }
+    }
 }
