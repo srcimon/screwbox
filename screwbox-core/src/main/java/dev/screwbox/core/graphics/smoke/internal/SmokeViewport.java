@@ -3,11 +3,14 @@ package dev.screwbox.core.graphics.smoke.internal;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.internal.DefaultWorld;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 
@@ -41,7 +44,7 @@ public class SmokeViewport {
         if (simulation == null) {
             reassignGrid();
         }
-        if (configuration.isSmokeEnabled()) {
+        if (configuration.isSmokeEnabled()) {//TODO move inside DefaultSmoke
             imageWorldAnchor = worldAnchor;
             awaitEndOfSimulationTask();
             simulation.clearObstacles();
