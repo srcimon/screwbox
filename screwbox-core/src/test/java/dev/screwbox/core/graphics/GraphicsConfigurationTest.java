@@ -376,6 +376,20 @@ class GraphicsConfigurationTest {
         verifyEventPosted(SMOKE_CELL_SIZE, times(1));
     }
 
+    @Test
+    void setSmokeCellPadding_outOfRange_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setSmokeCellPadding(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("smoke cell padding must be between 0 and 128 (actual value: -1)");
+    }
+
+    @Test
+    void setSmokeCellPadding_twenty_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setSmokeCellPadding(20);
+        assertThat(graphicsConfiguration.smokeCellPadding()).isEqualTo(20);
+        verifyEventPosted(SMOKE_CELL_PADDING, times(1));
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

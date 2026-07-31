@@ -50,6 +50,9 @@ public class GraphicsConfiguration {
     private boolean isSmokeEnabled = false;
     private int smokeScale = 4;
     private int smokeBlur = 2;
+    private Percent smokeOpacity = Percent.of(1);
+    private int smokeCellSize = 8;
+    private int smokeCellPadding = 32;
 
     public GraphicsConfiguration(final RenderingApi renderingApi) {
         this.renderingApi = renderingApi;
@@ -595,8 +598,6 @@ public class GraphicsConfiguration {
         return this;
     }
 
-    //TODO FIXUP BELOW!!!!!!
-
     /**
      * Returns the smoke cell size. Default is 8.
      *
@@ -620,12 +621,25 @@ public class GraphicsConfiguration {
         return this;
     }
 
+    /**
+     * Returns the smoke cell padding. Default is 32.
+     *
+     * @since 3.33.0
+     */
     public int smokeCellPadding() {
         return smokeCellPadding;
     }
 
-    private Percent smokeOpacity = Percent.of(1);
-
-    private int smokeCellSize = 8;
-    private int smokeCellPadding = 32;
+    /**
+     * Sets the smoke cell padding. The padding adds additional off-screen cells to simulate smoke even when off camera.
+     * Reduce to improve performance, especially when the camera is not moving at all. Default is 32.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeCellPadding(final int smokeCellPadding) {
+        Validate.range(smokeCellPadding, 0, 128, "smoke cell padding must be between 0 and 128");
+        this.smokeCellPadding = smokeCellPadding;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_CELL_PADDING);
+        return this;
+    }
 }

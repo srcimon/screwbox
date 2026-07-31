@@ -119,6 +119,11 @@ public class GraphicsConfigurationEvent extends EventObject {
         SMOKE_CELL_SIZE,
 
         /**
+         * {@link GraphicsConfiguration#smokeCellPadding()} was changed.
+         */
+        SMOKE_CELL_PADDING,
+
+        /**
          * {@link GraphicsConfiguration#smokeScale()} was changed.
          */
         SMOKE_SCALE
