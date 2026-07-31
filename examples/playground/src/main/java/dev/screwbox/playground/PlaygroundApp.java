@@ -75,14 +75,6 @@ public class PlaygroundApp {
             }
             x.mouse().hoverViewport().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
-        screwBox.environment().addSystem(Order.PREPARATION, x -> {
-            for(final var v : x.graphics().viewports()) {
-                v.canvas().fillWith(Color.ORANGE);
-            }
-            x.graphics().world().drawCircle(x.mouse().position(), 4, OvalDrawOptions.filled(Color.BLACK));
-
-        });
-
         screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         screwBox.start();
     }
