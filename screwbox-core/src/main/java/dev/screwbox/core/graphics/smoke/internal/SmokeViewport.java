@@ -84,6 +84,7 @@ public class SmokeViewport {
             final Offset origin = viewport.toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewport.camera().zoom()));
             viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
                 .scaled(scale));
+
             if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
                 reassignGrid();
             } //TODO do not render empty images
