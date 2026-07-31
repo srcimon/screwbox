@@ -4,16 +4,13 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
-import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
@@ -76,17 +73,14 @@ public class DefaultSmoke implements Smoke {
 
     @Override
     public Smoke render(final double delta) {
-        int viewportId = 0;
-        for (final var viewport : viewportManager.viewports()) {
-            if(smokeViewports.size() <= viewportId) {
+        if (smokeViewports.size() != viewportManager.viewports().size()) {
+            smokeViewports.clear();
+            for (var viewport : viewportManager.viewports()) {
                 smokeViewports.add(new SmokeViewport(executor, viewport, configuration, smokeRender));
             }
-            SmokeViewport smokeViewport = smokeViewports.get(viewportId);
-            smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
-            viewportId++;
         }
-        while (smokeViewports.size() > viewportManager.viewports().size()) {
-            smokeViewports.removeLast();
+        for (final var smokeViewport : smokeViewports) {
+            smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
         }
 
         obstacles.clear();

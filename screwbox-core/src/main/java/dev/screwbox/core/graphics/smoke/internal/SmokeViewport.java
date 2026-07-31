@@ -77,7 +77,6 @@ public class SmokeViewport {
                 simulation.fade(delta * options.fade().value());
             });
 
-
             var actuallyVisibleBounds = calculateActuallyVisibleBounds();
             final var sprite = Asset.asset(() -> smokeRender.createImage(configuration, state, actuallyVisibleBounds));
             executor.submit(sprite::get);

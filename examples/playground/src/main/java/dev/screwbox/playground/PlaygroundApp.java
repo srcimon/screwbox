@@ -74,7 +74,8 @@ public class PlaygroundApp {
                 ViewportLayout layout = ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
                 x.graphics().enableSplitScreenMode(viewports(x.graphics().viewports().size()).layout(layout));
             }
-            x.graphics().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
+
+            x.mouse().hoverViewport().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
         screwBox.environment().addSystem(Order.PREPARATION, x -> {
             for(var v  : x.graphics().viewports()) {
