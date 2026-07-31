@@ -616,7 +616,7 @@ public class GraphicsConfiguration {
      * @since 3.33.0
      */
     public GraphicsConfiguration setSmokeCellSize(final int smokeCellSize) {
-        Validate.range(smokeCellSize, 4, 32, "smoke cell size must be between 4 and 32");
+        Validate.range(smokeCellSize, 2, 32, "smoke cell size must be between 2 and 32");
         this.smokeCellSize = smokeCellSize;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_CELL_SIZE);
         return this;

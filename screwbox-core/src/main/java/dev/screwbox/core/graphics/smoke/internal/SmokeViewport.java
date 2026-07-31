@@ -26,7 +26,6 @@ public class SmokeViewport {
 
     private Future<?> simulationTask;
     private Vector worldAnchor;
-    private Vector imageWorldAnchor;
     private FluidSimulation simulation;
 
     public SmokeViewport(final ExecutorService executor, final GraphicsConfiguration configuration, final SmokeRenderer renderer) {
@@ -34,14 +33,12 @@ public class SmokeViewport {
         this.executor = executor;
         this.renderer = renderer;
         this.worldAnchor = Vector.zero();
-        this.imageWorldAnchor = Vector.zero();
     }
 
     void render(Viewport viewport, SmokeOptions options, double delta, List<Bounds> obstacles, List<DensityChange> densityChanges, List<VelocityChange> velocityChanges) {
         if (simulation == null) {
             reassignGrid(viewport);
         }
-        imageWorldAnchor = worldAnchor;
         awaitEndOfSimulationTask();
         simulation.clearObstacles();
 
@@ -76,7 +73,7 @@ public class SmokeViewport {
         executor.submit(sprite::get);
         int cellSize = configuration.smokeCellSize();
         final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();
-        final Offset origin = viewport.toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewport.camera().zoom()));
+        final Offset origin = viewport.toCanvas(worldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewport.camera().zoom()));
         viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale));
 
@@ -111,10 +108,10 @@ public class SmokeViewport {
         final double viewMaxY = viewMinY + visibleArea.height();
 
         // 2. Ermittle die Welt-Koordinaten relativ zum Ursprung des Gitters
-        final double gridMinX = viewMinX - imageWorldAnchor.x();
-        final double gridMinY = viewMinY - imageWorldAnchor.y();
-        final double gridMaxX = viewMaxX - imageWorldAnchor.x();
-        final double gridMaxY = viewMaxY - imageWorldAnchor.y();
+        final double gridMinX = viewMinX - worldAnchor.x();
+        final double gridMinY = viewMinY - worldAnchor.y();
+        final double gridMaxX = viewMaxX - worldAnchor.x();
+        final double gridMaxY = viewMaxY - worldAnchor.y();
 
         // 3. Bestimme die exakten Start- und End-Zellen (Abrunden/Aufrunden via Double)
         int startCellX = (int) Math.floor(gridMinX / configuration.smokeCellSize());

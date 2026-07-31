@@ -366,7 +366,7 @@ class GraphicsConfigurationTest {
     void setSmokeCellSize_outOfRange_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setSmokeCellSize(-1))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("smoke cell size must be between 4 and 32 (actual value: -1)");
+            .hasMessage("smoke cell size must be between 2 and 32 (actual value: -1)");
     }
 
     @Test
