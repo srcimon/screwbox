@@ -22,17 +22,17 @@ public class SmokeViewport {
 
     private final GraphicsConfiguration configuration;
     private final ExecutorService executor;
-    private final SmokeRenderer smokeRender;
+    private final SmokeRenderer renderer;
 
     private Future<?> simulationTask;
     private Vector worldAnchor;
     private Vector imageWorldAnchor;
     private FluidSimulation simulation;
 
-    public SmokeViewport(ExecutorService executor, GraphicsConfiguration configuration, SmokeRenderer smokeRender) {
+    public SmokeViewport(final ExecutorService executor, final GraphicsConfiguration configuration, final SmokeRenderer renderer) {
         this.configuration = configuration;
         this.executor = executor;
-        this.smokeRender = smokeRender;
+        this.renderer = renderer;
         this.worldAnchor = Vector.zero();
         this.imageWorldAnchor = Vector.zero();
     }
@@ -72,7 +72,7 @@ public class SmokeViewport {
         });
 
         var actuallyVisibleBounds = calculateActuallyVisibleBounds(viewport);
-        final var sprite = Asset.asset(() -> smokeRender.createImage(configuration, state, actuallyVisibleBounds));
+        final var sprite = Asset.asset(() -> renderer.createImage(configuration, state, actuallyVisibleBounds));
         executor.submit(sprite::get);
         int cellSize = configuration.smokeCellSize();
         final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();
