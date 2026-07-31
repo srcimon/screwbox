@@ -4,13 +4,16 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
@@ -30,7 +33,7 @@ public class DefaultSmoke implements Smoke {
     private final List<DensityChange> densityChanges = new ArrayList<>();
     private final List<VelocityChange> velocityChanges = new ArrayList<>();
 
-    private SmokeViewport smokeViewport;
+    private Map<Integer, SmokeViewport> smokeViewports = new HashMap<>();
 
     public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, final SmokeRenderer smokeRender) {
         this.viewportManager = viewportManager;
@@ -73,10 +76,12 @@ public class DefaultSmoke implements Smoke {
 
     @Override
     public Smoke render(final double delta) {
-        if (smokeViewport == null) {
-            smokeViewport = new SmokeViewport(executor, viewportManager.defaultViewport(), configuration, smokeRender);
+        int viewportId = 0;
+        for (final var viewport : viewportManager.viewports()) {
+            SmokeViewport smokeViewport = smokeVieportFor(viewportId, viewport);
+            viewportId++;
+            smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
         }
-        smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
 
         obstacles.clear();
         densityChanges.clear();
@@ -85,4 +90,15 @@ public class DefaultSmoke implements Smoke {
 
         return this;
     }
+
+    private SmokeViewport smokeVieportFor(int id, Viewport viewport) {
+        var smokeViewport = smokeViewports.get(id);
+        if (smokeViewport == null) {
+            smokeViewport = new SmokeViewport(executor, viewport, configuration, smokeRender);
+            smokeViewports.put(id, smokeViewport);
+        }
+        //TODO kill unused smokeviewports
+        return smokeViewport;
+    }
+
 }
