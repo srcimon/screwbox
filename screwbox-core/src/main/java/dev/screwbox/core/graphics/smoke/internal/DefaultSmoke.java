@@ -47,7 +47,6 @@ public class DefaultSmoke implements Smoke {
     private final List<DensityChange> densityChanges = new ArrayList<>();
     private final List<VelocityChange> velocityChanges = new ArrayList<>();
 
-
     private Future<?> simulationTask;
     private Vector worldAnchor = Vector.zero();
     private Vector imageWorldAnchor = Vector.zero();

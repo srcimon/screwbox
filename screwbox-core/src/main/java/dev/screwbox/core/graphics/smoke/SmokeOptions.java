@@ -6,7 +6,7 @@ public record SmokeOptions(double viscosity, double diffusion, int iterations, P
 
     //TODO add validations
     public static SmokeOptions vapor() {
-        return new SmokeOptions(0.0000000004, 0.000001, 2,Percent.of(0.04));
+        return new SmokeOptions(0.0000000004, 0.000001, 2, Percent.of(0.04));
     }
 
     public SmokeOptions diffusion(final double diffusion) {

@@ -347,6 +347,20 @@ class GraphicsConfigurationTest {
         verifyEventPosted(SMOKE_BLUR, times(1));
     }
 
+    @Test
+    void setSmokeOpacity_null_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setSmokeOpacity(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("smoke opacity must not be null");
+    }
+    @Test
+    void setSmokeOpacity_half_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setSmokeOpacity(Percent.half());
+
+        assertThat(graphicsConfiguration.smokeOpacity()).isEqualTo(Percent.half());
+        verifyEventPosted(SMOKE_OPACITY, times(1));
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

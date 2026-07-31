@@ -575,11 +575,27 @@ public class GraphicsConfiguration {
         return smokeBlur;
     }
 
-    //TODO FIXUP BELOW!!!!!!
+    /**
+     * Returns the smoke rendering opacity. Default is 100 percent.
+     *
+     * @since 3.33.0
+     */
     public Percent smokeOpacity() {
         return smokeOpacity;
     }
 
+    /**
+     * Sets the smoke rendering opacity. Default is 100 percent.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeOpacity(final Percent smokeOpacity) {
+        this.smokeOpacity = Objects.requireNonNull(smokeOpacity, "smoke opacity must not be null");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_OPACITY);
+        return this;
+    }
+
+    //TODO FIXUP BELOW!!!!!!
     public int smokeCellSize() {
         return smokeCellSize;
     }
