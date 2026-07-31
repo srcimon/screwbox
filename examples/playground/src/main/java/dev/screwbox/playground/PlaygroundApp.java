@@ -18,6 +18,7 @@ import dev.screwbox.core.graphics.ViewportLayout;
 import dev.screwbox.core.graphics.layouts.HorizontalLayout;
 import dev.screwbox.core.graphics.layouts.TableLayout;
 import dev.screwbox.core.graphics.layouts.VerticalLayout;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.ListUtil;
@@ -79,6 +80,7 @@ public class PlaygroundApp {
             for(var v  : x.graphics().viewports()) {
                 v.canvas().fillWith(Color.ORANGE);
             }
+            x.graphics().world().drawCircle(x.mouse().position(), 4, OvalDrawOptions.filled(Color.BLACK));
         });
         screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         screwBox.start();

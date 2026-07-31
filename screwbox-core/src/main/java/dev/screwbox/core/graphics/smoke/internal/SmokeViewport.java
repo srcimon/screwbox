@@ -78,7 +78,7 @@ public class SmokeViewport {
             executor.submit(sprite::get);
             int cellSize = configuration.smokeCellSize();
             final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();
-            final Offset origin = viewport.toCanvas(imageWorldAnchor).add(viewport.canvas().offset()).add((int) (actuallyVisibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewport.camera().zoom()));
+            final Offset origin = viewport.toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewport.camera().zoom()));
             viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
                 .scaled(scale));
             if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
