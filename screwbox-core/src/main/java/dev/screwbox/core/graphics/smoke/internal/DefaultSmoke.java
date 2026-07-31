@@ -36,7 +36,7 @@ public class DefaultSmoke implements Smoke {
     private record VelocityChange(Vector position, Vector velocity) {
     }
 
-    private SmokeOptions options = SmokeOptions.vapor();
+    private SmokeOptions options = SmokeOptions.vaporPreset();
     //TODO support split screen!!!!!!!!!!!!!!!!!
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
