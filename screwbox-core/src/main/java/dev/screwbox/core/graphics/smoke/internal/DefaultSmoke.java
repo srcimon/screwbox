@@ -33,7 +33,7 @@ public class DefaultSmoke implements Smoke {
     private final List<DensityChange> densityChanges = new ArrayList<>();
     private final List<VelocityChange> velocityChanges = new ArrayList<>();
 
-    private Map<Integer, SmokeViewport> smokeViewports = new HashMap<>();
+    private List<SmokeViewport> smokeViewports = new ArrayList<>();
 
     public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, final SmokeRenderer smokeRender) {
         this.viewportManager = viewportManager;
@@ -78,9 +78,12 @@ public class DefaultSmoke implements Smoke {
     public Smoke render(final double delta) {
         int viewportId = 0;
         for (final var viewport : viewportManager.viewports()) {
-            SmokeViewport smokeViewport = smokeVieportFor(viewportId, viewport);
-            viewportId++;
+            if(smokeViewports.size() <= viewportId) {
+                smokeViewports.add(new SmokeViewport(executor, viewport, configuration, smokeRender));
+            }
+            SmokeViewport smokeViewport = smokeViewports.get(viewportId);
             smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
+            viewportId++;
         }
         System.out.println(smokeViewports.size());
         //TODO kill unused smokeviewports
@@ -91,16 +94,6 @@ public class DefaultSmoke implements Smoke {
         //TODO move towards update?
 
         return this;
-    }
-
-    private SmokeViewport smokeVieportFor(int id, Viewport viewport) {
-        var smokeViewport = smokeViewports.get(id);
-        if (smokeViewport == null) {
-            smokeViewport = new SmokeViewport(executor, viewport, configuration, smokeRender);
-            smokeViewports.put(id, smokeViewport);
-        }
-
-        return smokeViewport;
     }
 
 }
