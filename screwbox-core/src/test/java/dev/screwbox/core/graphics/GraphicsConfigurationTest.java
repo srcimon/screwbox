@@ -353,12 +353,27 @@ class GraphicsConfigurationTest {
             .isInstanceOf(NullPointerException.class)
             .hasMessage("smoke opacity must not be null");
     }
+
     @Test
     void setSmokeOpacity_half_updatesOptionAndNotifiesListeners() {
         graphicsConfiguration.setSmokeOpacity(Percent.half());
 
         assertThat(graphicsConfiguration.smokeOpacity()).isEqualTo(Percent.half());
         verifyEventPosted(SMOKE_OPACITY, times(1));
+    }
+
+    @Test
+    void setSmokeCellSize_outOfRange_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setSmokeCellSize(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("smoke cell size must be between 4 and 32 (actual value: -1)");
+    }
+
+    @Test
+    void setSmokeCellSize_twenty_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setSmokeCellSize(20);
+        assertThat(graphicsConfiguration.smokeCellSize()).isEqualTo(20);
+        verifyEventPosted(SMOKE_CELL_SIZE, times(1));
     }
 
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {

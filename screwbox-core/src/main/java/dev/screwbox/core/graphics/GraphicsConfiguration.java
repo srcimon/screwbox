@@ -596,8 +596,28 @@ public class GraphicsConfiguration {
     }
 
     //TODO FIXUP BELOW!!!!!!
+
+    /**
+     * Returns the smoke cell size. Default is 8.
+     *
+     * @since 3.33.0
+     */
     public int smokeCellSize() {
         return smokeCellSize;
+    }
+
+    /**
+     * Sets the smoke cell size. Default is 8. Smaller cells create a more detailed smoke. Will have significant impact
+     * on the smoke rendering and simulation performance. It's recommended to reduce {@link #smokeScale()} when using
+     * lower cell sizes.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeCellSize(final int smokeCellSize) {
+        Validate.range(smokeCellSize, 4, 32, "smoke cell size must be between 4 and 32");
+        this.smokeCellSize = smokeCellSize;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_CELL_SIZE);
+        return this;
     }
 
     public int smokeCellPadding() {
