@@ -1,14 +1,12 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
-import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
@@ -79,14 +77,16 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke render(final double delta) {
         if (configuration.isSmokeEnabled()) {
-            if (smokeViewports.size() != viewportManager.viewports().size()) {
-                smokeViewports.clear();
-                for (var viewport : viewportManager.viewports()) {
-                    smokeViewports.add(new SmokeViewport(executor, viewport, configuration, smokeRender));
-                }
+            while (smokeViewports.size() < viewportManager.viewports().size()) {
+                smokeViewports.add(new SmokeViewport(executor, configuration, smokeRender));
             }
-            for (final var smokeViewport : smokeViewports) {
-                smokeViewport.render(options, delta, obstacles, densityChanges, velocityChanges);
+            while (smokeViewports.size() > viewportManager.viewports().size()) {
+                smokeViewports.removeLast();
+            }
+            int i = 0;
+            for (final var viewport : viewportManager.viewports()) {
+                smokeViewports.get(i).render(viewport, options, delta, obstacles, densityChanges, velocityChanges);
+                i++;
             }
         }
         obstacles.clear();
@@ -95,7 +95,6 @@ public class DefaultSmoke implements Smoke {
         return this;
     }
 
-    static Scheduler scheduler = Scheduler.withInterval(Duration.ofSeconds(5));
     private void autoTurnOnSmoke() {
         if (!configuration.isSmokeEnabled() && configuration.isAutoEnableSmoke()) {
             configuration.setSmokeEnabled(true);

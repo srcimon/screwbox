@@ -3,14 +3,11 @@ package dev.screwbox.core.graphics.smoke.internal;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
-import dev.screwbox.core.graphics.internal.DefaultWorld;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 
@@ -23,7 +20,6 @@ import static java.util.Objects.nonNull;
 
 public class SmokeViewport {
 
-    private final Viewport viewport;
     private final GraphicsConfiguration configuration;
     private final ExecutorService executor;
     private final SmokeRenderer smokeRender;
@@ -33,61 +29,60 @@ public class SmokeViewport {
     private Vector imageWorldAnchor;
     private FluidSimulation simulation;
 
-    public SmokeViewport(ExecutorService executor, Viewport viewport, GraphicsConfiguration configuration, SmokeRenderer smokeRender) {
-        this.viewport = viewport;
+    public SmokeViewport(ExecutorService executor, GraphicsConfiguration configuration, SmokeRenderer smokeRender) {
         this.configuration = configuration;
         this.executor = executor;
         this.smokeRender = smokeRender;
-        this.worldAnchor = viewport.toWorld(viewport.canvas().offset());
-        this.imageWorldAnchor = viewport.toWorld(viewport.canvas().offset());
+        this.worldAnchor = Vector.zero();
+        this.imageWorldAnchor = Vector.zero();
     }
 
-    void render(SmokeOptions options, double delta, List<Bounds> obstacles, List<DensityChange> densityChanges, List<VelocityChange> velocityChanges) {
+    void render(Viewport viewport, SmokeOptions options, double delta, List<Bounds> obstacles, List<DensityChange> densityChanges, List<VelocityChange> velocityChanges) {
         if (simulation == null) {
-            reassignGrid();
+            reassignGrid(viewport);
         }
-            imageWorldAnchor = worldAnchor;
-            awaitEndOfSimulationTask();
-            simulation.clearObstacles();
+        imageWorldAnchor = worldAnchor;
+        awaitEndOfSimulationTask();
+        simulation.clearObstacles();
 
-            for (final var obstacle : obstacles) {
-                var origin = toCell(obstacle.origin());
-                var max = toCell(obstacle.bottomRight());
-                for (int x = origin.x(); x < max.x(); x++) {
-                    for (int y = origin.y(); y < max.y(); y++) {
-                        simulation.setObstacle(x, y);
-                    }
+        for (final var obstacle : obstacles) {
+            var origin = toCell(obstacle.origin());
+            var max = toCell(obstacle.bottomRight());
+            for (int x = origin.x(); x < max.x(); x++) {
+                for (int y = origin.y(); y < max.y(); y++) {
+                    simulation.setObstacle(x, y);
                 }
             }
+        }
 
-            for (final var densityChange : densityChanges) {
-                final var cell = toCell(densityChange.position());
-                simulation.addDensity(cell, densityChange.amount(), densityChange.color());
-            }
+        for (final var densityChange : densityChanges) {
+            final var cell = toCell(densityChange.position());
+            simulation.addDensity(cell, densityChange.amount(), densityChange.color());
+        }
 
-            for (final var velocityChange : velocityChanges) {
-                var cell = toCell(velocityChange.position());
-                simulation.addVelocity(cell, velocityChange.velocity());
-            }
+        for (final var velocityChange : velocityChanges) {
+            var cell = toCell(velocityChange.position());
+            simulation.addVelocity(cell, velocityChange.velocity());
+        }
 
-            final var state = simulation.state();
-            simulationTask = executor.submit(() -> {
-                simulation.step(delta, options.viscosity(), options.diffusion(), options.iterations());
-                simulation.fade(delta * options.fade().value());
-            });
+        final var state = simulation.state();
+        simulationTask = executor.submit(() -> {
+            simulation.step(delta, options.viscosity(), options.diffusion(), options.iterations());
+            simulation.fade(delta * options.fade().value());
+        });
 
-            var actuallyVisibleBounds = calculateActuallyVisibleBounds();
-            final var sprite = Asset.asset(() -> smokeRender.createImage(configuration, state, actuallyVisibleBounds));
-            executor.submit(sprite::get);
-            int cellSize = configuration.smokeCellSize();
-            final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();
-            final Offset origin = viewport.toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewport.camera().zoom()));
-            viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
-                .scaled(scale));
+        var actuallyVisibleBounds = calculateActuallyVisibleBounds(viewport);
+        final var sprite = Asset.asset(() -> smokeRender.createImage(configuration, state, actuallyVisibleBounds));
+        executor.submit(sprite::get);
+        int cellSize = configuration.smokeCellSize();
+        final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();
+        final Offset origin = viewport.toCanvas(imageWorldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewport.camera().zoom()));
+        viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
+            .scaled(scale));
 
-            if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
-                reassignGrid();
-            } //TODO do not render empty images
+        if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
+            reassignGrid(viewport);
+        } //TODO do not render empty images
     }
 
     private Offset toCell(final Vector position) {
@@ -107,7 +102,7 @@ public class SmokeViewport {
         }
     }
 
-    private ScreenBounds calculateActuallyVisibleBounds() {
+    private ScreenBounds calculateActuallyVisibleBounds(Viewport viewport) {
         // 1. Berechne die sichtbare Welt-Fläche (unabhängig vom Zoom/Pixeln)
         final var visibleArea = viewport.visibleArea();
         final double viewMinX = visibleArea.minX();
@@ -150,17 +145,17 @@ public class SmokeViewport {
         return Bounds.atOrigin(worldAnchor, (double) configuration.smokeCellSize() * simulation.resolution(), (double) configuration.smokeCellSize() * simulation.resolution());
     }
 
-    private Bounds calculateBestBounds() {
+    private Bounds calculateBestBounds(Viewport viewport) {
         final var bestBounds = viewport.visibleArea().expand((double) configuration.smokeCellPadding() * configuration.smokeCellSize()).snapExpand(configuration.smokeCellSize());
         return bestBounds.resize(
             Math.max(bestBounds.width(), bestBounds.height()),
             Math.max(bestBounds.width(), bestBounds.height()));
     }
 
-    private void reassignGrid() {
+    private void reassignGrid(Viewport viewport) {
         awaitEndOfSimulationTask();
         var lastAnchor = worldAnchor;
-        var boundsArea = calculateBestBounds();
+        var boundsArea = calculateBestBounds(viewport);
         int cellSize = configuration.smokeCellSize();
         // 1. Snapping wie gehabt, um Sub-Pixel-Zittern zu vermeiden
         long snappedX = Math.round(boundsArea.origin().x() / cellSize) * cellSize;
