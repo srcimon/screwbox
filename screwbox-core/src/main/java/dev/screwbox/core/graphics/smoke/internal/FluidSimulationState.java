@@ -10,15 +10,15 @@ public record FluidSimulationState(int cells, double[] densityR, double[] densit
     }
 
     public double densityGreen(int index) {
-        return densityR[index];
+        return densityG[index];
     }
 
     public double densityBlue(int index) {
-        return densityR[index];
+        return densityB[index];
     }
 
     public double densityAlpha(int index) {
-        return densityR[index];
+        return densityA[index];
     }
 
     public double densityRed(int x, int y) {
