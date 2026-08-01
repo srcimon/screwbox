@@ -24,4 +24,6 @@ public record SmokeOptions(double viscosity, double diffusion, int iterations, P
     public SmokeOptions opacity(final Percent opacity) {
         return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade);
     }
+
+    //TODO baseVelocity
 }

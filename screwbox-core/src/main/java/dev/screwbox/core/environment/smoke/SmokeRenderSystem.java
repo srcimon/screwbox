@@ -15,6 +15,7 @@ import static dev.screwbox.core.environment.Order.PRESENTATION_SMOKE;
 //TODO OptimizeLightPerformanceSystem
 //TODO Smoke VortexComponent (Rotates smoke)
 //TODO Split into rendering and interaction system
+//TODO WindCompomnent
 @ExecutionOrder(PRESENTATION_SMOKE)
 public class SmokeRenderSystem implements EntitySystem {
 
@@ -36,7 +37,8 @@ public class SmokeRenderSystem implements EntitySystem {
 
         for (final var entity : engine.environment().fetchAll(EMITTERS)) {
             if (graphics.isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
-                smoke.emit(entity.position(), entity.get(SmokeEmitterComponent.class).velocity.multiply(engine.loop().delta()), entity.get(SmokeEmitterComponent.class).amount * engine.loop().delta(), entity.get(SmokeEmitterComponent.class).color);
+                final var emitter = entity.get(SmokeEmitterComponent.class);
+                smoke.emit(entity.position(), emitter.velocity.multiply(engine.loop().delta()), emitter.amount * engine.loop().delta(), emitter.color);
             }
         }
 //TODO split into SmokeConstantPusherComponent

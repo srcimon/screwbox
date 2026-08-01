@@ -23,6 +23,8 @@ public interface Smoke {
 
     Smoke push(Vector position, Vector velocity);
 
+    Smoke push(Vector position, Vector velocity, double limit);
+
     Smoke render(double delta);
 
     //TODO Smoke absorb(Vector position,  double amount);
