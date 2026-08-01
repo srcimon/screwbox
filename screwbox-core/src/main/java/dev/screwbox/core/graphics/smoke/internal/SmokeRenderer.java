@@ -6,6 +6,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.smoke.SmokeStyle;
 
+import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 public class SmokeRenderer {
@@ -13,7 +14,7 @@ public class SmokeRenderer {
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
-    public Sprite createImage(int scale, int blur, SmokeStyle style, FluidSimulationState state, ScreenBounds actuallyVisibleBounds) {
+    public BufferedImage createImage(int scale, SmokeStyle style, FluidSimulationState state, ScreenBounds actuallyVisibleBounds) {
         int totalCells = state.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
@@ -102,12 +103,6 @@ public class SmokeRenderer {
 
             }
         }
-
-        //TODO move outside render
-        if (blur > 0) {
-            ImageOperations.blurImage(image, blur);
-        }
-
-        return Sprite.fromImage(image);
+        return image;
     }
 }

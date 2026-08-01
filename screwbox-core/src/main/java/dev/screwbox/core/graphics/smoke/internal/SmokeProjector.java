@@ -7,7 +7,9 @@ import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 
@@ -35,7 +37,7 @@ public class SmokeProjector {
         this.worldAnchor = Vector.zero();
     }
 
-    public void render(Viewport viewport, SmokeOptions options, double delta) {
+    public void render(final Viewport viewport, final SmokeOptions options, final double delta) {
         final var state = simulation.state();
         simulationTask = executor.submit(() -> {
             simulation.step(delta, options.viscosity().value(), options.diffusion().value(), options.iterations());
@@ -47,7 +49,13 @@ public class SmokeProjector {
         });
 
         var actuallyVisibleBounds = calculateActuallyVisibleBounds(viewport);
-        final var sprite = Asset.asset(() -> renderer.createImage(configuration.smokeScale(), configuration.smokeBlur(), options.style(), state, actuallyVisibleBounds));
+        final var sprite = Asset.asset(() -> {
+            final var image = renderer.createImage(configuration.smokeScale(), options.style(), state, actuallyVisibleBounds);
+            if (configuration.smokeBlur() > 0) {
+                ImageOperations.blurImage(image, configuration.smokeBlur());
+            }
+            return Sprite.fromImage(image);
+        });
         executor.submit(sprite::get);
         int cellSize = configuration.smokeCellSize();
         final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();
@@ -58,7 +66,7 @@ public class SmokeProjector {
 
         if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
             reassignGrid(viewport, options.velocity());
-        } //TODO do not render empty images
+        }
     }
 
     public void applyVelocityZones(List<VelocityZone> velocityZones) {
