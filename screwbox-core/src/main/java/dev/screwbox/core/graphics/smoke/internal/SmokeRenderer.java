@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
-import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -14,7 +13,7 @@ public class SmokeRenderer {
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
-    public Sprite createImage(GraphicsConfiguration graphicsConfiguration, FluidSimulationState state, ScreenBounds actuallyVisibleBounds) {
+    public Sprite createImage(int scale, int blur, SmokeStyle style, FluidSimulationState state, ScreenBounds actuallyVisibleBounds) {
         int totalCells = state.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
@@ -24,8 +23,8 @@ public class SmokeRenderer {
         int viewHeightCells = actuallyVisibleBounds.height();
 
         // Zielgröße des neuen Bildes in Pixeln
-        int targetWidth = viewWidthCells * graphicsConfiguration.smokeScale();
-        int targetHeight = viewHeightCells * graphicsConfiguration.smokeScale();
+        int targetWidth = viewWidthCells * scale;
+        int targetHeight = viewHeightCells * scale;
 
         // Erstelle das Bild exakt in der benötigten Zielgröße (nicht mehr quadratisch blockiert)
         Size size = Size.of(targetWidth, targetHeight);
@@ -39,7 +38,7 @@ public class SmokeRenderer {
 
         for (int x = 0; x < targetWidth; x++) {
             // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
-            float srcX = startX + ((float) x / graphicsConfiguration.smokeScale());
+            float srcX = startX + ((float) x / scale);
             int x0 = (int) srcX;
 
             x0Arr[x] = Math.clamp(x0, 0, totalCells - 1);
@@ -52,7 +51,7 @@ public class SmokeRenderer {
             int pixelIndex = y * targetWidth;
 
             // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
-            float srcY = startY + ((float) y / graphicsConfiguration.smokeScale());
+            float srcY = startY + ((float) y / scale);
             int y0 = (int) srcY;
 
             int clampedY0 = Math.clamp(y0, 0, totalCells - 1);
@@ -98,77 +97,19 @@ public class SmokeRenderer {
 
 
 // 4. Direktes Schreiben ohne Maskierungs-Fehler
-                pixels[pixelIndex + x] = DEFAULT.apply(r, g, b, a);
+                pixels[pixelIndex + x] = style.apply(r, g, b, a);
 
 
             }
         }
 
-        if (graphicsConfiguration.smokeBlur() > 0) {
-            ImageOperations.blurImage(image, graphicsConfiguration.smokeBlur());
+        //TODO move outside render
+        if (blur > 0) {
+            ImageOperations.blurImage(image, blur);
         }
 
         return Sprite.fromImage(image);
     }
-
-    public static final SmokeStyle FROZEN_FROST = (r, g, b, a) -> {
-        float density = a;
-
-        // Schwellenwert: Sehr dünner Rauch wird weggeschnitten für kristalline Strukturen
-        if (density < 0.15f) {
-            return 0;
-        }
-
-        // Standard-Eisblau-Palette basierend auf der Dichte
-        float funR = Math.clamp(density * 0.4f, 0.0f, 1.0f);
-        float funG = Math.clamp(0.4f + density * 0.5f, 0.0f, 1.0f);
-        float funB = Math.clamp(0.7f + density * 0.3f, 0.0f, 1.0f);
-
-        // Je dichter der Rauch, desto strahlender (weißer) wird der Kern
-        if (density > 0.7f) {
-            funR = Math.clamp(funR + (density - 0.7f) * 2.0f, 0.0f, 1.0f);
-            funG = Math.clamp(funG + (density - 0.7f) * 2.0f, 0.0f, 1.0f);
-        }
-
-        int rPremult = (int) (funR * a * 255.0f + 0.5f);
-        int gPremult = (int) (funG * a * 255.0f + 0.5f);
-        int bPremult = (int) (funB * a * 255.0f + 0.5f);
-        int aInt = (int) (a * 255.0f + 0.5f);
-        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
-    };
-    public static final SmokeStyle DEFAULT = (r, g, b, a) -> {
-        int rPremult = (int) (r * a * 255.0f + 0.5f);
-        int gPremult = (int) (g * a * 255.0f + 0.5f);
-        int bPremult = (int) (b * a * 255.0f + 0.5f);
-        int aInt = (int) (a * 255.0f + 0.5f);
-        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
-    };
-
-    public static final SmokeStyle FIRE = (r, g, b, a) -> {
-        float intensity = (r + g + b) / 3.0f * (a );
-        float funR = Math.clamp(intensity * 2.5f, 0.0f, 1.0f);
-        float funG = Math.clamp((intensity - 0.3f) * 2.0f, 0.0f, 1.0f);
-        float funB = Math.clamp((intensity - 0.7f) * 4.0f, 0.0f, 1.0f);
-        float funA = Math.max(intensity * 1.5f, 0.0f);
-
-        int rPremult = (int) (funR * funA * 255.0f + 0.5f);
-        int gPremult = (int) (funG * funA * 255.0f + 0.5f);
-        int bPremult = (int) (funB * funA * 255.0f + 0.5f);
-        int aInt = (int) (funA * 255.0f + 0.5f);
-        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
-    };
-
-    public static final SmokeStyle HEAT_VISION = (r, g, b, a) -> {
-        float funR = (float) Math.sin((a) * 2.0 * Math.PI + 0.0) * 0.5f + 0.5f;
-        float funG = (float) Math.sin((a) * 2.0 * Math.PI + 2.094) * 0.5f + 0.5f;
-        float funB = (float) Math.sin((a) * 2.0 * Math.PI + 4.188) * 0.5f + 0.5f;
-
-        int rPremult = (int) (funR * a * 255.0f + 0.5f);
-        int gPremult = (int) (funG * a * 255.0f + 0.5f);
-        int bPremult = (int) (funB * a * 255.0f + 0.5f);
-        int aInt = (int) (a * 255.0f + 0.5f);
-        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
-    };
 
     public static final SmokeStyle COMIC = (r, g, b, a) -> {
         float maxChannel = Math.max(r, Math.max(g, b));

@@ -47,7 +47,7 @@ public class SmokeProjector {
         });
 
         var actuallyVisibleBounds = calculateActuallyVisibleBounds(viewport);
-        final var sprite = Asset.asset(() -> renderer.createImage(configuration, state, actuallyVisibleBounds));
+        final var sprite = Asset.asset(() -> renderer.createImage(configuration.smokeScale(), configuration.smokeBlur(), options.style(), state, actuallyVisibleBounds));
         executor.submit(sprite::get);
         int cellSize = configuration.smokeCellSize();
         final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();

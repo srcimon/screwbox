@@ -17,4 +17,11 @@ public interface SmokeStyle {
      * @return a packed integer representing the combined output color or effect state
      */
     int apply(float red, float green, float blue, float alpha);
+
+    /**
+     * Packs integer values of red, green, blue and alpha into the resulting rgb value.
+     */
+    default int packRgb(int red, int green, int blue, final int alpha) {
+        return (alpha << 24) | (red << 16) | (green << 8) | blue;
+    }
 }
