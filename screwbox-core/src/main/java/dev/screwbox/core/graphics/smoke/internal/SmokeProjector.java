@@ -41,7 +41,7 @@ public class SmokeProjector {
         final var state = simulation.state();
         simulationTask = executor.submit(() -> {
             simulation.step(delta, options.viscosity().value(), options.diffusion().value(), options.iterations());
-            simulation.fade(delta * options.fade().value());
+            simulation.fade(delta * options.fade());
             if (nonNull(options.velocity())) {
                 final Vector targetVelocity = options.velocity().divide(configuration.smokeCellSize());
                 simulation.fadeVelocity(targetVelocity, delta * options.velocityAdaption().value());

@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
  * @param velocityAdaption speed of the adaption to the default velocity of the smoke simulation
  * @param style            rendering style for drawing the smoke
  */
-public record SmokeOptions(Percent viscosity, Percent diffusion, int iterations, Percent opacity, Percent fade,
+public record SmokeOptions(Percent viscosity, Percent diffusion, int iterations, Percent opacity, double fade,
                            Vector velocity, Percent velocityAdaption, SmokeStyle style) {
 
 
@@ -28,27 +28,27 @@ public record SmokeOptions(Percent viscosity, Percent diffusion, int iterations,
      * any {@link #fade()}.
      */
     public static SmokeOptions noFade() {
-        return new SmokeOptions(Percent.zero());
+        return new SmokeOptions(0);
     }
 
     /**
      * Smoke that slowly fades away.
      */
     public static SmokeOptions slowFade() {
-        return new SmokeOptions(Percent.of(0.04));
+        return new SmokeOptions(0.04);
     }
 
     public SmokeOptions {
         requireNonNull(viscosity, "viscosity must not be null");
         requireNonNull(diffusion, "diffusion must not be null");
-        requireNonNull(fade, "fade must not be null");
         requireNonNull(opacity, "opacity must not be null");
         requireNonNull(velocityAdaption, "velocity adaption must not be null");
         requireNonNull(style, "style must not be null");
+        Validate.range(fade, 0, 10, "fade must be between 0 and 10");
         Validate.range(iterations, 1, 10, "iterations must be between 0 and 10");
     }
 
-    private SmokeOptions(final Percent fade) {
+    private SmokeOptions(final double fade) {
         this(Percent.of(0.0000000004), Percent.of(0.000001), 2, Percent.max(), fade, null, Percent.of(0.001), new OriginalColorSmokeStyle());
     }
 
@@ -69,7 +69,7 @@ public record SmokeOptions(Percent viscosity, Percent diffusion, int iterations,
     /**
      * Set the fade of the smoke.
      */
-    public SmokeOptions fade(final Percent fade) {
+    public SmokeOptions fade(final double fade) {
         return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, velocity, velocityAdaption, style);
     }
 
