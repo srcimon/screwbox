@@ -98,7 +98,14 @@ public class DefaultSmoke implements Smoke {
             }
             int viewportId = 0;
             for (final var viewport : viewportManager.viewports()) {
-                smokeViewports.get(viewportId).render(viewport, options, delta, obstacles, densityChanges, velocityChanges, fixedVelocityChanges);
+                SmokeViewport smokeViewport = smokeViewports.get(viewportId);
+                smokeViewport.adaptToViewport(viewport, options);
+                smokeViewport.applyObstacles(obstacles);
+                smokeViewport.applyDensityChanges(densityChanges);
+                smokeViewport.applyVelocityChanges(velocityChanges);
+                smokeViewport.applyFixedVelocityChanges(fixedVelocityChanges);
+                smokeViewport.render(viewport, options, delta);
+
                 viewportId++;
             }
         }

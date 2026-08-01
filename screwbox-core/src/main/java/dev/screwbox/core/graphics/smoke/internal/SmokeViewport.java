@@ -35,44 +35,7 @@ public class SmokeViewport {
         this.worldAnchor = Vector.zero();
     }
 
-    void render(Viewport viewport, SmokeOptions options, double delta, List<Bounds> obstacles, List<DensityChange> densityChanges, List<VelocityChange> velocityChanges,
-                List<FixedVelocityChange> fixedVelocityChanges) {
-        if (simulation == null) {
-            reassignGrid(viewport, options.baseVelocity());
-        }
-        awaitSimulationStep();
-        simulation.clearObstacles();
-
-        for (final var obstacle : obstacles) {
-            var origin = toCell(obstacle.origin());
-            var max = toCell(obstacle.bottomRight());
-            for (int x = origin.x(); x < max.x(); x++) {
-                for (int y = origin.y(); y < max.y(); y++) {
-                    simulation.setObstacle(x, y);
-                }
-            }
-        }
-
-        for (final var densityChange : densityChanges) {
-            final var cell = toCell(densityChange.position());
-            simulation.addDensity(cell, densityChange.amount(), densityChange.color());
-        }
-
-        for (final var velocityChange : velocityChanges) {
-            var cell = toCell(velocityChange.position());
-            simulation.addVelocity(cell, velocityChange.velocity());
-        }
-
-        for (final var fixedVelocityChange : fixedVelocityChanges) {
-            var origin = toCell(fixedVelocityChange.area().origin());
-            var max = toCell(fixedVelocityChange.area().bottomRight());
-            for (int x = origin.x(); x < max.x(); x++) {
-                for (int y = origin.y(); y < max.y(); y++) {
-                    simulation.setVelocity(x, y, fixedVelocityChange.velocity());
-                }
-            }
-        }
-
+    public void render(Viewport viewport, SmokeOptions options, double delta) {
         final var state = simulation.state();
         simulationTask = executor.submit(() -> {
             simulation.step(delta, options.viscosity(), options.diffusion(), options.iterations());
@@ -95,6 +58,53 @@ public class SmokeViewport {
         if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
             reassignGrid(viewport, options.baseVelocity());
         } //TODO do not render empty images
+    }
+
+    public void applyFixedVelocityChanges(List<FixedVelocityChange> fixedVelocityChanges) {
+        for (final var fixedVelocityChange : fixedVelocityChanges) {
+            var origin = toCell(fixedVelocityChange.area().origin());
+            var max = toCell(fixedVelocityChange.area().bottomRight());
+            for (int x = origin.x(); x < max.x(); x++) {
+                for (int y = origin.y(); y < max.y(); y++) {
+                    simulation.setVelocity(x, y, fixedVelocityChange.velocity());
+                }
+            }
+        }
+    }
+
+    public void applyVelocityChanges(List<VelocityChange> velocityChanges) {
+        for (final var velocityChange : velocityChanges) {
+            var cell = toCell(velocityChange.position());
+            simulation.addVelocity(cell, velocityChange.velocity());
+        }
+    }
+
+    public void applyDensityChanges(List<DensityChange> densityChanges) {
+        for (final var densityChange : densityChanges) {
+            final var cell = toCell(densityChange.position());
+            simulation.addDensity(cell, densityChange.amount(), densityChange.color());
+        }
+    }
+
+    public void applyObstacles(List<Bounds> obstacles) {
+        simulation.clearObstacles();
+
+        for (final var obstacle : obstacles) {
+            var origin = toCell(obstacle.origin());
+            var max = toCell(obstacle.bottomRight());
+            for (int x = origin.x(); x < max.x(); x++) {
+                for (int y = origin.y(); y < max.y(); y++) {
+                    simulation.setObstacle(x, y);
+                }
+            }
+        }
+    }
+
+    public void adaptToViewport(Viewport viewport, SmokeOptions options) {
+        if (simulation == null) {
+            reassignGrid(viewport, options.baseVelocity());
+        }
+        awaitSimulationStep();
     }
 
     private Offset toCell(final Vector position) {
