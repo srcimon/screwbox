@@ -40,6 +40,10 @@ public record SmokeOptions(double viscosity, double diffusion, int iterations, P
         return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, baseVelocity, baseVelocityAdaption, style);
     }
 
+    public SmokeOptions iterations(final int iterations) {
+        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, baseVelocity, baseVelocityAdaption, style);
+    }
+
     public SmokeOptions baseVelocity(final Vector baseVelocity) {
         return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, baseVelocity, baseVelocityAdaption, style);
     }
