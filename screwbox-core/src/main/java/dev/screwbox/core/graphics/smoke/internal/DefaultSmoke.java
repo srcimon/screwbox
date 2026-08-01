@@ -20,7 +20,6 @@ import java.util.concurrent.ExecutorService;
 public class DefaultSmoke implements Smoke {
 
     private SmokeOptions options = SmokeOptions.vaporPreset();
-    //TODO support split screen!!!!!!!!!!!!!!!!!
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private final SmokeRenderer smokeRender;
@@ -83,10 +82,10 @@ public class DefaultSmoke implements Smoke {
             while (smokeViewports.size() > viewportManager.viewports().size()) {
                 smokeViewports.removeLast();
             }
-            int i = 0;
+            int viewportId = 0;
             for (final var viewport : viewportManager.viewports()) {
-                smokeViewports.get(i).render(viewport, options, delta, obstacles, densityChanges, velocityChanges);
-                i++;
+                smokeViewports.get(viewportId).render(viewport, options, delta, obstacles, densityChanges, velocityChanges);
+                viewportId++;
             }
         }
         obstacles.clear();
