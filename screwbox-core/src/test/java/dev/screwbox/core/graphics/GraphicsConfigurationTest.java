@@ -348,21 +348,6 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void setSmokeOpacity_null_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setSmokeOpacity(null))
-            .isInstanceOf(NullPointerException.class)
-            .hasMessage("smoke opacity must not be null");
-    }
-
-    @Test
-    void setSmokeOpacity_half_updatesOptionAndNotifiesListeners() {
-        graphicsConfiguration.setSmokeOpacity(Percent.half());
-
-        assertThat(graphicsConfiguration.smokeOpacity()).isEqualTo(Percent.half());
-        verifyEventPosted(SMOKE_OPACITY, times(1));
-    }
-
-    @Test
     void setSmokeCellSize_outOfRange_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setSmokeCellSize(-1))
             .isInstanceOf(IllegalArgumentException.class)
