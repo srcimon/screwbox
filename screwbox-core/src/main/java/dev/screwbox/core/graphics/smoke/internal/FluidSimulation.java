@@ -225,10 +225,10 @@ public class FluidSimulation {
         }
     }
 
-    public void fadeVelocity(final Vector velocity, final double delta) {
+    public void fadeVelocity(final Vector targetVelocity, final double delta) {
         for (int i = 0; i < velocityX.length; i++) {
-            velocityX[i] = MathUtil.advance(velocityX[i], velocity.x(), delta);
-            velocityY[i] = MathUtil.advance(velocityY[i], velocity.y(), delta);
+            velocityX[i] = MathUtil.advance(velocityX[i], targetVelocity.x(), delta);
+            velocityY[i] = MathUtil.advance(velocityY[i], targetVelocity.y(), delta);
         }
     }
 
