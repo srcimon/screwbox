@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 //TODO blog on smoke
 public class DefaultSmoke implements Smoke {
 
-    private SmokeOptions options = SmokeOptions.vaporPreset();
+    private SmokeOptions options = SmokeOptions.noFade();
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private final SmokeRenderer smokeRender;

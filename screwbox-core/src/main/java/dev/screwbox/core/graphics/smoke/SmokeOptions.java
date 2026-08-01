@@ -7,9 +7,21 @@ import dev.screwbox.core.graphics.smoke.styles.OriginalColorSmokeStyle;
 public record SmokeOptions(double viscosity, double diffusion, int iterations, Percent opacity, Percent fade,
                            Vector baseVelocity, Percent baseVelocityAdaption, SmokeStyle style) {
 
-    //TODO add validations
-    public static SmokeOptions vaporPreset() {//TODO find better names and presets
-        return new SmokeOptions(0.0000000004, 0.000001, 2, Percent.max(), Percent.of(0.04), null, Percent.of(0.001), new OriginalColorSmokeStyle());
+
+    public static SmokeOptions noFade() {
+        return new SmokeOptions(Percent.zero());
+    }
+
+    public static SmokeOptions slowFade() {
+        return new SmokeOptions(Percent.of(0.04));
+    }
+
+    public SmokeOptions {
+        //TODO add validations
+    }
+
+    private SmokeOptions(Percent fade) {
+        this(0.0000000004, 0.000001, 2, Percent.max(), fade, null, Percent.of(0.001), new OriginalColorSmokeStyle());
     }
 
     public SmokeOptions diffusion(final double diffusion) {

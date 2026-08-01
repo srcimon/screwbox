@@ -18,10 +18,6 @@ import dev.screwbox.core.graphics.layouts.HorizontalLayout;
 import dev.screwbox.core.graphics.layouts.TableLayout;
 import dev.screwbox.core.graphics.layouts.VerticalLayout;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
-import dev.screwbox.core.graphics.smoke.styles.ComicSmokeStyle;
-import dev.screwbox.core.graphics.smoke.styles.FireSmokeStyle;
-import dev.screwbox.core.graphics.smoke.styles.FrostSmokeStyle;
-import dev.screwbox.core.graphics.smoke.styles.HeatVisionSmokeStyle;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.TileMap;
@@ -51,7 +47,7 @@ public class PlaygroundApp {
             
             """, Size.square(32));
 
-        screwBox.graphics().smoke().setOptions(SmokeOptions.vaporPreset().baseVelocity(Vector.y(-0.2)).style(new ComicSmokeStyle()));
+        screwBox.graphics().smoke().setOptions(SmokeOptions.slowFade().baseVelocity(Vector.y(-0.2)));
 
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
