@@ -35,7 +35,8 @@ public class SmokeViewport {
         this.worldAnchor = Vector.zero();
     }
 
-    void render(Viewport viewport, SmokeOptions options, double delta, List<Bounds> obstacles, List<DensityChange> densityChanges, List<VelocityChange> velocityChanges) {
+    void render(Viewport viewport, SmokeOptions options, double delta, List<Bounds> obstacles, List<DensityChange> densityChanges, List<VelocityChange> velocityChanges,
+                List<FixedVelocityChange> fixedVelocityChanges) {
         if (simulation == null) {
             reassignGrid(viewport);
         }
@@ -60,6 +61,16 @@ public class SmokeViewport {
         for (final var velocityChange : velocityChanges) {
             var cell = toCell(velocityChange.position());
             simulation.addVelocity(cell, velocityChange.velocity());
+        }
+
+        for (final var fixedVelocityChange : fixedVelocityChanges) {
+            var origin = toCell(fixedVelocityChange.area().origin());
+            var max = toCell(fixedVelocityChange.area().bottomRight());
+            for (int x = origin.x(); x < max.x(); x++) {
+                for (int y = origin.y(); y < max.y(); y++) {
+                    simulation.setVelocity(x, y, fixedVelocityChange.velocity());
+                }
+            }
         }
 
         final var state = simulation.state();

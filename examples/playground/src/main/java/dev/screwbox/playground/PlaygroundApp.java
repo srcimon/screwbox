@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
+import dev.screwbox.core.environment.smoke.WindComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.SplitScreenOptions;
@@ -40,14 +41,15 @@ public class PlaygroundApp {
             #         ## #### ###
                       #
                       #        ####           #####
-                      #        #  #           #   #
+            FFFFFFF   # #  #           #   #
                       #        #  #           #   ################
                       #        #  #           #
             
             """, Size.square(32));
 
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-            .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32)))));
+            .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
+            .assign('F', (source, idPool) -> new Entity().bounds(source.bounds()).add(new RenderComponent(Sprite.placeholder(Color.WHITE.opacity(0.2), Size.square(32)))).add(new WindComponent(Vector.y(-0.2)))));
         screwBox.environment().addSystem(x -> {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(50, -30).multiply(screwBox.loop().delta()));

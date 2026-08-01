@@ -28,6 +28,7 @@ public class DefaultSmoke implements Smoke {
     private final List<Bounds> obstacles = new ArrayList<>();
     private final List<DensityChange> densityChanges = new ArrayList<>();
     private final List<VelocityChange> velocityChanges = new ArrayList<>();
+    private final List<FixedVelocityChange> fixedVelocityChanges = new ArrayList<>();
 
     private List<SmokeViewport> smokeViewports = new ArrayList<>();
 
@@ -71,6 +72,15 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
+    public Smoke setVelocity(final Bounds area, final Vector velocity) {
+        autoTurnOnSmoke();
+        if (!velocity.isZero()) {
+            fixedVelocityChanges.add(new FixedVelocityChange(area, velocity));
+        }
+        return this;
+    }
+
+    @Override
     public Smoke addObstacle(final Bounds bounds) {
         autoTurnOnSmoke();
         obstacles.add(bounds);
@@ -88,13 +98,14 @@ public class DefaultSmoke implements Smoke {
             }
             int viewportId = 0;
             for (final var viewport : viewportManager.viewports()) {
-                smokeViewports.get(viewportId).render(viewport, options, delta, obstacles, densityChanges, velocityChanges);
+                smokeViewports.get(viewportId).render(viewport, options, delta, obstacles, densityChanges, velocityChanges, fixedVelocityChanges);
                 viewportId++;
             }
         }
         obstacles.clear();
         densityChanges.clear();
         velocityChanges.clear();
+        fixedVelocityChanges.clear();
         return this;
     }
 

@@ -77,8 +77,20 @@ public class FluidSimulation {
         }
     }
 
+    public void setVelocity(int x, int y, Vector velocity) {
+        if (isInGrid(x, y) && isObstacle(x, y)) {
+            final int index = index(x, y);
+            velocityX[index] = velocity.x();
+            velocityY[index] = velocity.y();
+        }
+    }
+
     private boolean isObstacle(final Offset cell) {
-        return !obstacles[index(cell.x(), cell.y())];
+        return isObstacle(cell.x(), cell.y());
+    }
+
+    private boolean isObstacle(final int x, int y) {
+        return !obstacles[index(x, y)];
     }
 
     private boolean isInGrid(final int x, final int y) {
@@ -447,5 +459,4 @@ public class FluidSimulation {
             }
         }
     }
-
 }

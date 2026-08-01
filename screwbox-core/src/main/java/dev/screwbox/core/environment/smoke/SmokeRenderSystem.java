@@ -22,6 +22,7 @@ public class SmokeRenderSystem implements EntitySystem {
     private static final Archetype OBSTACLES = Archetype.ofSpacial(SmokeObstacleComponent.class);
     private static final Archetype EMITTERS = Archetype.ofSpacial(SmokeEmitterComponent.class);
     private static final Archetype PUSHERS = Archetype.ofSpacial(SmokePusherComponent.class);
+    private static final Archetype WINDS = Archetype.ofSpacial(WindComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -41,6 +42,14 @@ public class SmokeRenderSystem implements EntitySystem {
                 smoke.emit(entity.position(), emitter.velocity.multiply(engine.loop().delta()), emitter.amount * engine.loop().delta(), emitter.color);
             }
         }
+
+        for (final var entity : engine.environment().fetchAll(WINDS)) {
+            if (graphics.isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
+                final var wind = entity.get(WindComponent.class);
+                smoke.setVelocity(entity.bounds(), wind.velocity);
+            }
+        }
+
 //TODO split into SmokeConstantPusherComponent
 
         for (final var entity : engine.environment().fetchAll(PUSHERS)) {
