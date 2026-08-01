@@ -109,11 +109,6 @@ public class GraphicsConfigurationEvent extends EventObject {
         SMOKE_BLUR,
 
         /**
-         * {@link GraphicsConfiguration#smokeOpacity()} was changed.
-         */
-        SMOKE_OPACITY,
-
-        /**
          * {@link GraphicsConfiguration#smokeCellSize()} was changed.
          */
         SMOKE_CELL_SIZE,

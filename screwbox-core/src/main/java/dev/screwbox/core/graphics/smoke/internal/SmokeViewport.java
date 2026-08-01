@@ -75,7 +75,8 @@ public class SmokeViewport {
         final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();
         final Offset origin = viewport.toCanvas(worldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewport.camera().zoom()));
         viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
-            .scaled(scale));
+            .scaled(scale)
+            .opacity(options.opacity()));
 
         if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
             reassignGrid(viewport);

@@ -5,6 +5,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.smoke.SmokeStyle;
 
 import java.awt.image.DataBufferInt;
 
@@ -14,7 +15,6 @@ public class SmokeRenderer {
     //TODO only create image from visible cells
     //TODO do not render image when empty
     public Sprite createImage(GraphicsConfiguration graphicsConfiguration, FluidSimulationState state, ScreenBounds actuallyVisibleBounds) {
-        float b1 = (float) graphicsConfiguration.smokeOpacity().value();
         int totalCells = state.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
@@ -92,13 +92,13 @@ public class SmokeRenderer {
                 final float a = Math.clamp((float) (state.densityAlpha(index1) * w00 +
                                                     state.densityAlpha(index2) * w10 +
                                                     state.densityAlpha(index3) * w01 +
-                                                    state.densityAlpha(index4) * w11), 0.0f, b1);
+                                                    state.densityAlpha(index4) * w11), 0.0f, 1.0f);
 
 // 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
 
 
 // 4. Direktes Schreiben ohne Maskierungs-Fehler
-                pixels[pixelIndex + x] = DEFAULT.apply(r, g, b, a, b1);
+                pixels[pixelIndex + x] = DEFAULT.apply(r, g, b, a);
 
 
             }
@@ -111,8 +111,8 @@ public class SmokeRenderer {
         return Sprite.fromImage(image);
     }
 
-    public static final SmokeStyle FROZEN_FROST = (r, g, b, a, maxOpacity) -> {
-        float density = a / maxOpacity;
+    public static final SmokeStyle FROZEN_FROST = (r, g, b, a) -> {
+        float density = a;
 
         // Schwellenwert: Sehr dünner Rauch wird weggeschnitten für kristalline Strukturen
         if (density < 0.15f) {
@@ -136,7 +136,7 @@ public class SmokeRenderer {
         int aInt = (int) (a * 255.0f + 0.5f);
         return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
     };
-    public static final SmokeStyle DEFAULT = (r, g, b, a, maxOpacity) -> {
+    public static final SmokeStyle DEFAULT = (r, g, b, a) -> {
         int rPremult = (int) (r * a * 255.0f + 0.5f);
         int gPremult = (int) (g * a * 255.0f + 0.5f);
         int bPremult = (int) (b * a * 255.0f + 0.5f);
@@ -144,12 +144,12 @@ public class SmokeRenderer {
         return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
     };
 
-    public static final SmokeStyle FIRE = (r, g, b, a, maxOpacity) -> {
-        float intensity = (r + g + b) / 3.0f * (a / maxOpacity);
+    public static final SmokeStyle FIRE = (r, g, b, a) -> {
+        float intensity = (r + g + b) / 3.0f * (a );
         float funR = Math.clamp(intensity * 2.5f, 0.0f, 1.0f);
         float funG = Math.clamp((intensity - 0.3f) * 2.0f, 0.0f, 1.0f);
         float funB = Math.clamp((intensity - 0.7f) * 4.0f, 0.0f, 1.0f);
-        float funA = Math.clamp(intensity * 1.5f, 0.0f, maxOpacity);
+        float funA = Math.max(intensity * 1.5f, 0.0f);
 
         int rPremult = (int) (funR * funA * 255.0f + 0.5f);
         int gPremult = (int) (funG * funA * 255.0f + 0.5f);
@@ -158,11 +158,10 @@ public class SmokeRenderer {
         return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
     };
 
-    public static final SmokeStyle HEAT_VISION = (r, g, b, a, maxOpacity) -> {
-        float hue = (a / maxOpacity);
-        float funR = (float) Math.sin(hue * 2.0 * Math.PI + 0.0) * 0.5f + 0.5f;
-        float funG = (float) Math.sin(hue * 2.0 * Math.PI + 2.094) * 0.5f + 0.5f;
-        float funB = (float) Math.sin(hue * 2.0 * Math.PI + 4.188) * 0.5f + 0.5f;
+    public static final SmokeStyle HEAT_VISION = (r, g, b, a) -> {
+        float funR = (float) Math.sin((a) * 2.0 * Math.PI + 0.0) * 0.5f + 0.5f;
+        float funG = (float) Math.sin((a) * 2.0 * Math.PI + 2.094) * 0.5f + 0.5f;
+        float funB = (float) Math.sin((a) * 2.0 * Math.PI + 4.188) * 0.5f + 0.5f;
 
         int rPremult = (int) (funR * a * 255.0f + 0.5f);
         int gPremult = (int) (funG * a * 255.0f + 0.5f);
@@ -171,7 +170,7 @@ public class SmokeRenderer {
         return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
     };
 
-    public static final SmokeStyle COMIC = (r, g, b, a, maxOpacity) -> {
+    public static final SmokeStyle COMIC = (r, g, b, a) -> {
         float maxChannel = Math.max(r, Math.max(g, b));
         float funR = (r == maxChannel) ? Math.clamp(r * 1.8f, 0.0f, 1.0f) : r * 0.3f;
         float funG = (g == maxChannel) ? Math.clamp(g * 1.8f, 0.0f, 1.0f) : g * 0.3f;

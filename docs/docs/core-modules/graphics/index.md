@@ -161,7 +161,6 @@ Options that can be specified:
 | isAutoEnableSmoke        | `true`     | configure auto activateion of smoke when using the smoke submodude                                              |
 | smokeScale               | `4`        | sets the scale of the smoke image                                                                               |
 | smokeBlur                | `2`        | sets the blur value for the smoke image                                                                         |
-| smokeOpacity             | `1.0`      | sets smoke rendering opacity                                                                                    |
 | smokeCellSize            | `8`        | sets the smoke cell size, smaller cells create better quality                                                   |
 | smokeCellPadding         | `8`        | sSets the smoke cell padding. Padding adds additional off-screen cells to simulate smoke even when off camera   |
 

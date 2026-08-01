@@ -50,7 +50,6 @@ public class GraphicsConfiguration {
     private boolean isSmokeEnabled = false;
     private int smokeScale = 4;
     private int smokeBlur = 2;
-    private Percent smokeOpacity = Percent.of(1);
     private int smokeCellSize = 8;
     private int smokeCellPadding = 32;
     private boolean isAutoEnableSmoke = true;
@@ -570,26 +569,6 @@ public class GraphicsConfiguration {
      */
     public int smokeBlur() {
         return smokeBlur;
-    }
-
-    /**
-     * Returns the smoke rendering opacity. Default is 100 percent.
-     *
-     * @since 3.33.0
-     */
-    public Percent smokeOpacity() {
-        return smokeOpacity;
-    }
-
-    /**
-     * Sets the smoke rendering opacity. Default is 100 percent.
-     *
-     * @since 3.33.0
-     */
-    public GraphicsConfiguration setSmokeOpacity(final Percent smokeOpacity) {
-        this.smokeOpacity = Objects.requireNonNull(smokeOpacity, "smoke opacity must not be null");
-        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_OPACITY);
-        return this;
     }
 
     /**
