@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.smoke.SmokeStyle;
 
@@ -14,14 +13,14 @@ public class SmokeRenderer {
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
-    public BufferedImage createImage(int scale, SmokeStyle style, FluidSimulationState state, ScreenBounds actuallyVisibleBounds) {
+    public BufferedImage createImage(final int scale, final SmokeStyle style, final FluidSimulationState state, final ScreenBounds visibleBounds) {
         int totalCells = state.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
-        int startX = actuallyVisibleBounds.x();
-        int startY = actuallyVisibleBounds.y();
-        int viewWidthCells = actuallyVisibleBounds.width();
-        int viewHeightCells = actuallyVisibleBounds.height();
+        int startX = visibleBounds.x();
+        int startY = visibleBounds.y();
+        int viewWidthCells = visibleBounds.width();
+        int viewHeightCells = visibleBounds.height();
 
         // Zielgröße des neuen Bildes in Pixeln
         int targetWidth = viewWidthCells * scale;
@@ -94,13 +93,7 @@ public class SmokeRenderer {
                                                     state.densityAlpha(index3) * w01 +
                                                     state.densityAlpha(index4) * w11), 0.0f, 1.0f);
 
-// 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
-
-
-// 4. Direktes Schreiben ohne Maskierungs-Fehler
                 pixels[pixelIndex + x] = style.apply(r, g, b, a);
-
-
             }
         }
         return image;

@@ -3,5 +3,5 @@ package dev.screwbox.core.graphics.smoke.internal;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 
-public record VelocityZone(Bounds area, Vector velocity) {
+record VelocityZone(Bounds area, Vector velocity) {
 }
