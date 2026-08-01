@@ -367,26 +367,27 @@ public class FluidSimulation {
                 final double t1 = y - j0i;
                 final double t0 = 1.0 - t1;
 
-                final int idx00 = index(i0i, j0i);
-                final int idx01 = index(i0i, j1i);
-                final int idx10 = index(i1i, j0i);
-                final int idx11 = index(i1i, j1i);
+                // PERFORMANCE-FIX 1: Indizes direkt berechnen (Inlining von index())
+                // Falls deine index-Methode "(y * resolution) + x" ist, passe das hier kurz an:
+                final int stride = resolution;
+                final int base0 = j0i * stride;
+                final int base1 = j1i * stride;
 
-                // FIX: Nutze 0.0 statt d0[ix] bei Hindernissen, um Feedback-Schleifen zu verhindern
-                double v00 = obstacles[idx00] ? 0.0 : d0[idx00];
-                double v01 = obstacles[idx01] ? 0.0 : d0[idx01];
-                double v10 = obstacles[idx10] ? 0.0 : d0[idx10];
-                double v11 = obstacles[idx11] ? 0.0 : d0[idx11];
+                final int idx00 = base0 + i0i;
+                final int idx10 = base0 + i1i;
+                final int idx01 = base1 + i0i;
+                final int idx11 = base1 + i1i;
 
-                // Bilineare Interpolation mit den bereinigten Werten
-                double interpolated = s0 * (t0 * v00 + t1 * v01) +
-                                      s1 * (t0 * v10 + t1 * v11);
+                // PERFORMANCE-FIX 2: Keine Verzweigungen (Branches), sondern Multiplikation mit 0 oder 1.
+                // Der JIT wandelt das in extrem schnelle, bedingungslose Befehle um.
+                final double m00 = obstacles[idx00] ? 0.0 : 1.0;
+                final double m01 = obstacles[idx01] ? 0.0 : 1.0;
+                final double m10 = obstacles[idx10] ? 0.0 : 1.0;
+                final double m11 = obstacles[idx11] ? 0.0 : 1.0;
 
-                // ZUSÄTZLICHE ABSICHERUNG: Das mathematische Maximum-Clamping.
-                // Der neue Wert DARF NICHT größer sein als der größte reale Nachbarwert.
-                double maxAllowed = Math.max(Math.max(v00, v01), Math.max(v10, v11));
-
-                d[ix] = Math.min(interpolated, maxAllowed);
+                // Die Interpolation filtert Hindernisse jetzt ohne d0[ix]-Feedback und ohne Math.min/max aus
+                d[ix] = s0 * (t0 * d0[idx00] * m00 + t1 * d0[idx01] * m01) +
+                        s1 * (t0 * d0[idx10] * m10 + t1 * d0[idx11] * m11);
             }
         }
     }
