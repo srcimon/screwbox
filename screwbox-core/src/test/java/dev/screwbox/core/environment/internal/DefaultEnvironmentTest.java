@@ -303,7 +303,8 @@ class DefaultEnvironmentTest {
 
     @Test
     void addOrReplaceSystem_systemPresentAndUpdatesBetween_replacesSystem() {
-        when(engine.keyboard()).thenReturn(mock(Keyboard.class));
+        Keyboard keyboard = mock(Keyboard.class);
+        when(engine.keyboard()).thenReturn(keyboard);
 
         QuitOnKeySystem oldSystem = new QuitOnKeySystem();
         QuitOnKeySystem newSystem = new QuitOnKeySystem();
