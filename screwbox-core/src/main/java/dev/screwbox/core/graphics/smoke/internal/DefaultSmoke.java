@@ -71,13 +71,6 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
-    public Smoke push(Vector position, Vector velocity, double limit) {
-        autoTurnOnSmoke();
-        if (!velocity.isZero()) velocityChanges.add(new VelocityChange(position, velocity));
-        return this;
-    }
-
-    @Override
     public Smoke addObstacle(final Bounds bounds) {
         autoTurnOnSmoke();
         obstacles.add(bounds);
