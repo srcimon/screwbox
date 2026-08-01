@@ -98,7 +98,7 @@ public class SmokeRenderer {
 
 
 // 4. Direktes Schreiben ohne Maskierungs-Fehler
-                pixels[pixelIndex + x] = DEFAULT.apply(r, g, b, a, b1);;
+                pixels[pixelIndex + x] = FROZEN_FROST.apply(r, g, b, a, b1);;
 
 
             }
@@ -111,7 +111,31 @@ public class SmokeRenderer {
         return Sprite.fromImage(image);
     }
 
+    public static final SmokeStyle FROZEN_FROST = (r, g, b, a, maxOpacity) -> {
+        float density = a / maxOpacity;
 
+        // Schwellenwert: Sehr dünner Rauch wird weggeschnitten für kristalline Strukturen
+        if (density < 0.15f) {
+            return 0;
+        }
+
+        // Standard-Eisblau-Palette basierend auf der Dichte
+        float funR = Math.clamp(density * 0.4f, 0.0f, 1.0f);
+        float funG = Math.clamp(0.4f + density * 0.5f, 0.0f, 1.0f);
+        float funB = Math.clamp(0.7f + density * 0.3f, 0.0f, 1.0f);
+
+        // Je dichter der Rauch, desto strahlender (weißer) wird der Kern
+        if (density > 0.7f) {
+            funR = Math.clamp(funR + (density - 0.7f) * 2.0f, 0.0f, 1.0f);
+            funG = Math.clamp(funG + (density - 0.7f) * 2.0f, 0.0f, 1.0f);
+        }
+
+        int rPremult = (int) (funR * a * 255.0f + 0.5f);
+        int gPremult = (int) (funG * a * 255.0f + 0.5f);
+        int bPremult = (int) (funB * a * 255.0f + 0.5f);
+        int aInt = (int) (a * 255.0f + 0.5f);
+        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
+    };
     public static final SmokeStyle DEFAULT = (r, g, b, a, maxOpacity) -> {
         int rPremult = (int) (r * a * 255.0f + 0.5f);
         int gPremult = (int) (g * a * 255.0f + 0.5f);
