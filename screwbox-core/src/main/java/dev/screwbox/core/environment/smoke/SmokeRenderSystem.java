@@ -14,6 +14,7 @@ import static dev.screwbox.core.environment.Order.PRESENTATION_SMOKE;
 //TODO document test
 //TODO OptimizeLightPerformanceSystem
 //TODO Smoke VortexComponent (Rotates smoke)
+//TODO Split into rendering and interaction system
 @ExecutionOrder(PRESENTATION_SMOKE)
 public class SmokeRenderSystem implements EntitySystem {
 

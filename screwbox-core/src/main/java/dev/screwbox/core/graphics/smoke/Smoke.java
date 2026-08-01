@@ -16,7 +16,6 @@ import dev.screwbox.core.graphics.Color;
 public interface Smoke {
 
     Smoke setOptions(SmokeOptions options);
-    //TODO implement config.autoTurnOnSmoke
 
     Smoke emit(Vector position, Vector velocity, double amount, Color color);
 
