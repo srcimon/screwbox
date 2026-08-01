@@ -15,14 +15,12 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 //TODO add feature buble to webpage
-//TODO add package info files
-//TODO blog on smoke
 public class DefaultSmoke implements Smoke {
 
     private SmokeOptions options = SmokeOptions.noFade();
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private final SmokeRenderer smokeRender;
+    private final SmokeRenderer renderer;
     private final GraphicsConfiguration configuration;
 
     private final List<Bounds> obstacles = new ArrayList<>();
@@ -32,10 +30,10 @@ public class DefaultSmoke implements Smoke {
 
     private List<SmokeProjector> smokeProjectors = new ArrayList<>();
 
-    public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, final SmokeRenderer smokeRender) {
+    public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, final SmokeRenderer renderer) {
         this.viewportManager = viewportManager;
         this.executor = executor;
-        this.smokeRender = smokeRender;
+        this.renderer = renderer;
         this.configuration = configuration;
     }
 
@@ -91,7 +89,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke render(final double delta) {
         if (configuration.isSmokeEnabled()) {
             while (smokeProjectors.size() < viewportManager.viewports().size()) {
-                smokeProjectors.add(new SmokeProjector(executor, configuration, smokeRender));
+                smokeProjectors.add(new SmokeProjector(executor, configuration, renderer));
             }
             while (smokeProjectors.size() > viewportManager.viewports().size()) {
                 smokeProjectors.removeLast();

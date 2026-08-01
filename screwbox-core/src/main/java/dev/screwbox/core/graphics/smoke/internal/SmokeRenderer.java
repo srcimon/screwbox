@@ -110,27 +110,4 @@ public class SmokeRenderer {
 
         return Sprite.fromImage(image);
     }
-
-    public static final SmokeStyle COMIC = (r, g, b, a) -> {
-        float maxChannel = Math.max(r, Math.max(g, b));
-        float funR = (r == maxChannel) ? Math.clamp(r * 1.8f, 0.0f, 1.0f) : r * 0.3f;
-        float funG = (g == maxChannel) ? Math.clamp(g * 1.8f, 0.0f, 1.0f) : g * 0.3f;
-        float funB = (b == maxChannel) ? Math.clamp(b * 1.8f, 0.0f, 1.0f) : b * 0.3f;
-
-        if (maxChannel > 0.8f) {
-            funR = Math.clamp(funR + 0.2f, 0.0f, 1.0f);
-            funG = Math.clamp(funG + 0.2f, 0.0f, 1.0f);
-            funB = Math.clamp(funB + 0.2f, 0.0f, 1.0f);
-        }
-
-        funR = Math.round(funR * 2.0f) / 2.0f;
-        funG = Math.round(funG * 2.0f) / 2.0f;
-        funB = Math.round(funB * 2.0f) / 2.0f;
-
-        int rPremult = (int) (funR * a * 255.0f + 0.5f);
-        int gPremult = (int) (funG * a * 255.0f + 0.5f);
-        int bPremult = (int) (funB * a * 255.0f + 0.5f);
-        int aInt = (int) (a * 255.0f + 0.5f);
-        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
-    };
 }
