@@ -96,14 +96,9 @@ public class SmokeRenderer {
 
 // 2. Alpha direkt aus der Dichte/Helligkeit bestimmen (0.0 - 1.0)
 
-// 3. Premultiplied Alpha direkt im Float-Raum berechnen
-                int rPremult = (int) (r * a * 255.0f + 0.5f);
-                int gPremult = (int) (g * a * 255.0f + 0.5f);
-                int bPremult = (int) (b * a * 255.0f + 0.5f);
-                int aInt = (int) (a * 255.0f + 0.5f);
 
 // 4. Direktes Schreiben ohne Maskierungs-Fehler
-                pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
+                pixels[pixelIndex + x] = DEFAULT.apply(r, g, b, a, b1);;
 
 
             }
@@ -116,6 +111,64 @@ public class SmokeRenderer {
         return Sprite.fromImage(image);
     }
 
+
+    public static final SmokeStyle DEFAULT = (r, g, b, a, maxOpacity) -> {
+        int rPremult = (int) (r * a * 255.0f + 0.5f);
+        int gPremult = (int) (g * a * 255.0f + 0.5f);
+        int bPremult = (int) (b * a * 255.0f + 0.5f);
+        int aInt = (int) (a * 255.0f + 0.5f);
+        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
+    };
+
+    public static final SmokeStyle FIRE = (r, g, b, a, maxOpacity) -> {
+        float intensity = (r + g + b) / 3.0f * (a / maxOpacity);
+        float funR = Math.clamp(intensity * 2.5f, 0.0f, 1.0f);
+        float funG = Math.clamp((intensity - 0.3f) * 2.0f, 0.0f, 1.0f);
+        float funB = Math.clamp((intensity - 0.7f) * 4.0f, 0.0f, 1.0f);
+        float funA = Math.clamp(intensity * 1.5f, 0.0f, maxOpacity);
+
+        int rPremult = (int) (funR * funA * 255.0f + 0.5f);
+        int gPremult = (int) (funG * funA * 255.0f + 0.5f);
+        int bPremult = (int) (funB * funA * 255.0f + 0.5f);
+        int aInt = (int) (funA * 255.0f + 0.5f);
+        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
+    };
+
+    public static final SmokeStyle HEAT_VISION = (r, g, b, a, maxOpacity) -> {
+        float hue = (a / maxOpacity);
+        float funR = (float) Math.sin(hue * 2.0 * Math.PI + 0.0) * 0.5f + 0.5f;
+        float funG = (float) Math.sin(hue * 2.0 * Math.PI + 2.094) * 0.5f + 0.5f;
+        float funB = (float) Math.sin(hue * 2.0 * Math.PI + 4.188) * 0.5f + 0.5f;
+
+        int rPremult = (int) (funR * a * 255.0f + 0.5f);
+        int gPremult = (int) (funG * a * 255.0f + 0.5f);
+        int bPremult = (int) (funB * a * 255.0f + 0.5f);
+        int aInt = (int) (a * 255.0f + 0.5f);
+        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
+    };
+
+    public static final SmokeStyle COMIC = (r, g, b, a, maxOpacity) -> {
+        float maxChannel = Math.max(r, Math.max(g, b));
+        float funR = (r == maxChannel) ? Math.clamp(r * 1.8f, 0.0f, 1.0f) : r * 0.3f;
+        float funG = (g == maxChannel) ? Math.clamp(g * 1.8f, 0.0f, 1.0f) : g * 0.3f;
+        float funB = (b == maxChannel) ? Math.clamp(b * 1.8f, 0.0f, 1.0f) : b * 0.3f;
+
+        if (maxChannel > 0.8f) {
+            funR = Math.clamp(funR + 0.2f, 0.0f, 1.0f);
+            funG = Math.clamp(funG + 0.2f, 0.0f, 1.0f);
+            funB = Math.clamp(funB + 0.2f, 0.0f, 1.0f);
+        }
+
+        funR = Math.round(funR * 2.0f) / 2.0f;
+        funG = Math.round(funG * 2.0f) / 2.0f;
+        funB = Math.round(funB * 2.0f) / 2.0f;
+
+        int rPremult = (int) (funR * a * 255.0f + 0.5f);
+        int gPremult = (int) (funG * a * 255.0f + 0.5f);
+        int bPremult = (int) (funB * a * 255.0f + 0.5f);
+        int aInt = (int) (a * 255.0f + 0.5f);
+        return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
+    };
 
     //TODO fire renderer
 //    Keep your original r, g, b, a interpolation code above...
