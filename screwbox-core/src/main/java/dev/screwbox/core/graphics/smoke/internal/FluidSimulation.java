@@ -61,7 +61,7 @@ public class FluidSimulation {
     }
 
     public void addDensity(final Offset cell, final double amount, final Color color) {
-        if (isInGrid(cell.x(), cell.y()) && isObstacle(cell)) {
+        if (isInGrid(cell.x(), cell.y()) && !isObstacle(cell)) {
             final int index = index(cell.x(), cell.y());
             densityR[index] = densityR[index] + (color.r() * amount);
             densityG[index] = densityG[index] + (color.g() * amount);
@@ -71,7 +71,7 @@ public class FluidSimulation {
     }
 
     public void addVelocity(final Offset cell, final Vector velocity) {
-        if (isInGrid(cell.x(), cell.y()) && isObstacle(cell)) {
+        if (isInGrid(cell.x(), cell.y()) && !isObstacle(cell)) {
             final int index = index(cell.x(), cell.y());
             velocityX[index] = velocityX[index] + velocity.x();
             velocityY[index] = velocityY[index] + velocity.y();
@@ -87,11 +87,11 @@ public class FluidSimulation {
     }
 
     private boolean isObstacle(final Offset cell) {
-        return isObstacle(cell.x(), cell.y());
+        return obstacles[index(cell.x(), cell.y())];
     }
 
     private boolean isObstacle(final int x, int y) {
-        return !obstacles[index(x, y)];
+        return obstacles[index(x, y)];
     }
 
     private boolean isInGrid(final int x, final int y) {
