@@ -339,7 +339,7 @@ public class FluidSimulation {
         final double maxVal = resolution - 1.5;
 
         for (int j = 1; j < resolutionMinusOne; j++) {
-            final double jfloat = j; // Cache außerhalb der inneren Schleife
+            final double jfloat = j;
 
             for (int i = 1; i < resolutionMinusOne; i++) {
                 final int ix = index(i, j);
@@ -349,7 +349,6 @@ public class FluidSimulation {
                     continue;
                 }
 
-                // Clamping direkt über Math.max/min (wird vom JIT oft in SIMD/Hardware-Flipped-Ops übersetzt)
                 double x = i - tdRes * velocX[ix];
                 if (x < 0.5) x = 0.5;
                 else if (x > maxVal) x = maxVal;
@@ -358,29 +357,36 @@ public class FluidSimulation {
                 if (y < 0.5) y = 0.5;
                 else if (y > maxVal) y = maxVal;
 
-                // Schnelles Abrunden durch direkten Cast (da x und y garantiert positiv sind)
                 final int i0i = (int) x;
                 final int j0i = (int) y;
                 final int i1i = i0i + 1;
                 final int j1i = j0i + 1;
 
-                // Interpolationsfaktoren berechnen
                 final double s1 = x - i0i;
                 final double s0 = 1.0 - s1;
                 final double t1 = y - j0i;
                 final double t0 = 1.0 - t1;
 
-                // Indizes der Nachbarn bestimmen
                 final int idx00 = index(i0i, j0i);
                 final int idx01 = index(i0i, j1i);
                 final int idx10 = index(i1i, j0i);
                 final int idx11 = index(i1i, j1i);
 
-                // Bilineare Interpolation mit konditionalem Hindernis-Fallback
-                d[ix] = s0 * (t0 * (obstacles[idx00] ? d0[ix] : d0[idx00]) +
-                              t1 * (obstacles[idx01] ? d0[ix] : d0[idx01])) +
-                        s1 * (t0 * (obstacles[idx10] ? d0[ix] : d0[idx10]) +
-                              t1 * (obstacles[idx11] ? d0[ix] : d0[idx11]));
+                // FIX: Nutze 0.0 statt d0[ix] bei Hindernissen, um Feedback-Schleifen zu verhindern
+                double v00 = obstacles[idx00] ? 0.0 : d0[idx00];
+                double v01 = obstacles[idx01] ? 0.0 : d0[idx01];
+                double v10 = obstacles[idx10] ? 0.0 : d0[idx10];
+                double v11 = obstacles[idx11] ? 0.0 : d0[idx11];
+
+                // Bilineare Interpolation mit den bereinigten Werten
+                double interpolated = s0 * (t0 * v00 + t1 * v01) +
+                                      s1 * (t0 * v10 + t1 * v11);
+
+                // ZUSÄTZLICHE ABSICHERUNG: Das mathematische Maximum-Clamping.
+                // Der neue Wert DARF NICHT größer sein als der größte reale Nachbarwert.
+                double maxAllowed = Math.max(Math.max(v00, v01), Math.max(v10, v11));
+
+                d[ix] = Math.min(interpolated, maxAllowed);
             }
         }
     }
