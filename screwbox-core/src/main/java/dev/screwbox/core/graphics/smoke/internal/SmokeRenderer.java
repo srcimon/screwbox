@@ -98,7 +98,7 @@ public class SmokeRenderer {
 
 
 // 4. Direktes Schreiben ohne Maskierungs-Fehler
-                pixels[pixelIndex + x] = FROZEN_FROST.apply(r, g, b, a, b1);;
+                pixels[pixelIndex + x] = DEFAULT.apply(r, g, b, a, b1);
 
 
             }
@@ -193,82 +193,4 @@ public class SmokeRenderer {
         int aInt = (int) (a * 255.0f + 0.5f);
         return (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
     };
-
-    //TODO fire renderer
-//    Keep your original r, g, b, a interpolation code above...
-//
-//    // Calculate a brightness/heat intensity based on density and alpha
-//    float intensity = (r + g + b) / 3.0f * (a / b1);
-//
-//    // Map intensity to a fire gradient
-//    float funR = Math.clamp(intensity * 2.5f, 0.0f, 1.0f);        // Red shows up early
-//    float funG = Math.clamp((intensity - 0.3f) * 2.0f, 0.0f, 1.0f); // Green comes in for orange/yellow
-//    float funB = Math.clamp((intensity - 0.7f) * 4.0f, 0.0f, 1.0f); // Blue appears only at the hottest core
-//
-//    // Boost alpha for a more energetic glow effect
-//    float funA = Math.clamp(intensity * 1.5f, 0.0f, b1);
-//
-//    int rPremult = (int) (funR * funA * 255.0f + 0.5f);
-//    int gPremult = (int) (funG * funA * 255.0f + 0.5f);
-//    int bPremult = (int) (funB * funA * 255.0f + 0.5f);
-//    int aInt = (int) (funA * 255.0f + 0.5f);
-//
-//    pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
-
-    //TODO night vision renderer
-//    // Keep your original r, g, b, a interpolation code above...
-//
-//    // Use the current alpha or density as a hue shifter
-//    float hue = (a / b1);
-//
-//    // Simple procedural RGB rainbow wheel
-//    float funR = (float) Math.sin(hue * 2.0 * Math.PI + 0.0) * 0.5f + 0.5f;
-//    float funG = (float) Math.sin(hue * 2.0 * Math.PI + 2.094) * 0.5f + 0.5f; // +120 degrees
-//    float funB = (float) Math.sin(hue * 2.0 * Math.PI + 4.188) * 0.5f + 0.5f; // +240 degrees
-//
-//    int rPremult = (int) (funR * a * 255.0f + 0.5f);
-//    int gPremult = (int) (funG * a * 255.0f + 0.5f);
-//    int bPremult = (int) (funB * a * 255.0f + 0.5f);
-//    int aInt = (int) (a * 255.0f + 0.5f);
-//
-//    pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
-
-    //TODO comic look
-//    float maxChannel = Math.max(r, Math.max(g, b));
-//
-//    // 1. Aggressively boost the dominant channel, dim the weaker ones
-//    float funR = (r == maxChannel) ? Math.clamp(r * 1.8f, 0.0f, 1.0f) : r * 0.3f;
-//    float funG = (g == maxChannel) ? Math.clamp(g * 1.8f, 0.0f, 1.0f) : g * 0.3f;
-//    float funB = (b == maxChannel) ? Math.clamp(b * 1.8f, 0.0f, 1.0f) : b * 0.3f;
-//
-//// 2. Add a solid glowing core for high concentration areas
-//if (maxChannel > 0.8f) {
-//        funR = Math.clamp(funR + 0.2f, 0.0f, 1.0f);
-//        funG = Math.clamp(funG + 0.2f, 0.0f, 1.0f);
-//        funB = Math.clamp(funB + 0.2f, 0.0f, 1.0f);
-//    }
-//
-//// 3. COMICAL EFFECT: Posterize colors into 3 distinct, flat steps
-//    funR = Math.round(funR * 2.0f) / 2.0f;
-//    funG = Math.round(funG * 2.0f) / 2.0f;
-//    funB = Math.round(funB * 2.0f) / 2.0f;
-//
-//    // 4. COMICAL EFFECT: Flatten alpha into sharp steps and clear thin edges
-//    float funA = a;
-//if (funA < 0.15f * b1) {
-//        funA = 0.0f;             // Sharp cut-off at the edges (no transparent fuzz)
-//    } else if (funA < 0.6f * b1) {
-//        funA = 0.5f * b1;        // Semi-transparent outer puff
-//    } else {
-//        funA = b1;               // Fully solid cartoon core
-//    }
-//
-//    // 5. Premultiplied Alpha calculation using the new comic colors & alpha
-//    int rPremult = (int) (funR * funA * 255.0f + 0.5f);
-//    int gPremult = (int) (funG * funA * 255.0f + 0.5f);
-//    int bPremult = (int) (funB * funA * 255.0f + 0.5f);
-//    int aInt = (int) (funA * 255.0f + 0.5f);
-//
-//// 6. Write to pixel array
-//    pixels[pixelIndex + x] = (aInt << 24) | (rPremult << 16) | (gPremult << 8) | bPremult;
 }
