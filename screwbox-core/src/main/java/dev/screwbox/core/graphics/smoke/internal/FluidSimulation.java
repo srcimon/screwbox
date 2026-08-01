@@ -5,7 +5,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.utils.MathUtil;
 
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 public class FluidSimulation {
@@ -296,10 +295,10 @@ public class FluidSimulation {
                 final int bot = index(i, j + 1);
 
                 // Wenn der Nachbar ein Hindernis ist, fließt dort nichts durch (Geschwindigkeit = 0)
-                double velocityLeft = obstacles[left] ? 0 : velocX[left];
-                double velocityRight = obstacles[right] ? 0 : velocX[right];
-                double velocityTop = obstacles[top] ? 0 : velocY[top];
-                double velocityBottom = obstacles[bot] ? 0 : velocY[bot];
+                double velocityLeft = velocX[left];
+                double velocityRight = velocX[right];
+                double velocityTop = velocY[top];
+                double velocityBottom = velocY[bot];
 
                 div[index] = -0.5 * physicalCellSize * (velocityRight - velocityLeft + velocityBottom - velocityTop);
                 p[index] = 0;
@@ -432,7 +431,7 @@ public class FluidSimulation {
     }
 
     public void fillVelocity(final Vector velocity) {
-        for(int i = 0; i < velocityX.length; i++) {
+        for (int i = 0; i < velocityX.length; i++) {
             velocityX[i] = velocity.x();
             velocityY[i] = velocity.y();
         }
