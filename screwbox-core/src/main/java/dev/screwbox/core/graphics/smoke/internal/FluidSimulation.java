@@ -431,43 +431,6 @@ public class FluidSimulation {
         Arrays.fill(obstacles, false);
     }
 
-    public void loadDensityFromImageTiled(BufferedImage img) {
-        int imgWidth = img.getWidth();
-        int imgHeight = img.getHeight();
-
-        for (int y = 0; y < resolution; y++) {
-            // Kachelung in Y-Richtung per Modulo
-            int imgY = y % imgHeight;
-
-            for (int x = 0; x < resolution; x++) {
-                // Kachelung in X-Richtung per Modulo
-                int imgX = x % imgWidth;
-
-                // 2D-zu-1D Index für die Simulations-Arrays
-                int index = x + y * resolution;
-
-                // Holt den kombinierten ARGB-Wert des Pixels
-                int rgb = img.getRGB(imgX, imgY);
-
-                // Bit-Shifting extrahiert die Kanäle (Wertebereich 0 bis 255)
-                int r = (rgb >> 16) & 0xFF;
-                int g = (rgb >> 8) & 0xFF;
-                int b = rgb & 0xFF;
-
-                // Normierung auf 0.0 - 1.0 für die Fluid-Simulation
-                this.densityR[index] = r / 255.0;
-                this.densityG[index] = g / 255.0;
-                this.densityB[index] = b / 255.0;
-//TODO add alpha
-                // Zurücksetzen der vorherigen Zeitschritte
-                this.densityR0[index] = 0.0;
-                this.densityG0[index] = 0.0;
-                this.densityB0[index] = 0.0;
-//TODO add alpha
-            }
-        }
-    }
-
     public void fillVelocity(final Vector velocity) {
         for(int i = 0; i < velocityX.length; i++) {
             velocityX[i] = velocity.x();
