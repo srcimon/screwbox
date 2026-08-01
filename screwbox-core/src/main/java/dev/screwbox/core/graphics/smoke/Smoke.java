@@ -7,8 +7,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Viewport;
 
 //TODO add to graphics guide
-//TODO changelog
-//TODO finish up javadoc
 
 /**
  * Add real-time, interactive smoke effects using fluid dynamics.
@@ -17,7 +15,9 @@ import dev.screwbox.core.graphics.Viewport;
  */
 public interface Smoke {
 
-    //TODO rename?
+    /**
+     * Customize smoke style and behavior.
+     */
     Smoke setOptions(SmokeOptions options);
 
     /**

@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Added dynamic interactive smoke using real-time fluid dynamics
 - Add relative position methods to `Offset`
 - `Grid` can now store any data not just booleans (#791)
 - More flexible `Grid` instantiation

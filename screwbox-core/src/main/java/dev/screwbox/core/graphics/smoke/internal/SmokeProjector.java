@@ -38,11 +38,11 @@ public class SmokeProjector {
     public void render(Viewport viewport, SmokeOptions options, double delta) {
         final var state = simulation.state();
         simulationTask = executor.submit(() -> {
-            simulation.step(delta, options.viscosity(), options.diffusion(), options.iterations());
+            simulation.step(delta, options.viscosity().value(), options.diffusion().value(), options.iterations());
             simulation.fade(delta * options.fade().value());
-            if (nonNull(options.baseVelocity())) {
-                final Vector targetVelocity = options.baseVelocity().divide(configuration.smokeCellSize());
-                simulation.fadeVelocity(targetVelocity, delta * options.baseVelocityAdaption().value());
+            if (nonNull(options.velocity())) {
+                final Vector targetVelocity = options.velocity().divide(configuration.smokeCellSize());
+                simulation.fadeVelocity(targetVelocity, delta * options.velocityAdaption().value());
             }
         });
 
@@ -57,7 +57,7 @@ public class SmokeProjector {
             .opacity(options.opacity()));
 
         if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
-            reassignGrid(viewport, options.baseVelocity());
+            reassignGrid(viewport, options.velocity());
         } //TODO do not render empty images
     }
 

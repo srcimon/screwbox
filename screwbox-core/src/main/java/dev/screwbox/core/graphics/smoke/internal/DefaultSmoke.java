@@ -99,7 +99,7 @@ public class DefaultSmoke implements Smoke {
             int viewportId = 0;
             for (final var viewport : viewportManager.viewports()) {
                 final var projector = smokeProjectors.get(viewportId);
-                projector.adaptToViewport(viewport, options.baseVelocity());
+                projector.adaptToViewport(viewport, options.velocity());
                 projector.applyObstacles(obstacles);
                 projector.applyDensityChanges(densityChanges);
                 projector.applyVelocityChanges(velocityChanges);
