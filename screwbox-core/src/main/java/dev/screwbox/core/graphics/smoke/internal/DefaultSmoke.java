@@ -55,14 +55,18 @@ public class DefaultSmoke implements Smoke {
     public Smoke emit(final Vector position, final double amount, final Color color) {
         Validate.zeroOrPositive(amount, "amount must be positive");
         autoTurnOnSmoke();
-        densityChanges.add(new DensityChange(position, amount, color));
+        if (amount > 0) {
+            densityChanges.add(new DensityChange(position, amount, color));
+        }
         return this;
     }
 
     @Override
     public Smoke push(final Vector position, final Vector velocity) {
         autoTurnOnSmoke();
-        velocityChanges.add(new VelocityChange(position, velocity));
+        if (!velocity.isZero()) {
+            velocityChanges.add(new VelocityChange(position, velocity));
+        }
         return this;
     }
 

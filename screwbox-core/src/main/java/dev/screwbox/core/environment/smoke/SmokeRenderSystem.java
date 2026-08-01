@@ -36,7 +36,7 @@ public class SmokeRenderSystem implements EntitySystem {
 
         for (final var entity : engine.environment().fetchAll(EMITTERS)) {
             if (graphics.isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
-                smoke.emit(entity.position(), entity.get(SmokeEmitterComponent.class).amount * engine.loop().delta(), entity.get(SmokeEmitterComponent.class).color);
+                smoke.emit(entity.position(), entity.get(SmokeEmitterComponent.class).velocity.multiply(engine.loop().delta()), entity.get(SmokeEmitterComponent.class).amount * engine.loop().delta(), entity.get(SmokeEmitterComponent.class).color);
             }
         }
 //TODO split into SmokeConstantPusherComponent
