@@ -28,9 +28,9 @@ public class DefaultSmoke implements Smoke {
     private final List<Bounds> obstacles = new ArrayList<>();
     private final List<DensityChange> densityChanges = new ArrayList<>();
     private final List<VelocityChange> velocityChanges = new ArrayList<>();
-    private final List<FixedVelocityChange> fixedVelocityChanges = new ArrayList<>();
+    private final List<VelocityZone> velocityZones = new ArrayList<>();
 
-    private List<SmokeViewport> smokeViewports = new ArrayList<>();
+    private List<SmokeProjector> smokeProjectors = new ArrayList<>();
 
     public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, final SmokeRenderer smokeRender) {
         this.viewportManager = viewportManager;
@@ -75,7 +75,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke setVelocity(final Bounds area, final Vector velocity) {
         autoTurnOnSmoke();
         if (!velocity.isZero()) {
-            fixedVelocityChanges.add(new FixedVelocityChange(area, velocity));
+            velocityZones.add(new VelocityZone(area, velocity));
         }
         return this;
     }
@@ -90,21 +90,21 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke render(final double delta) {
         if (configuration.isSmokeEnabled()) {
-            while (smokeViewports.size() < viewportManager.viewports().size()) {
-                smokeViewports.add(new SmokeViewport(executor, configuration, smokeRender));
+            while (smokeProjectors.size() < viewportManager.viewports().size()) {
+                smokeProjectors.add(new SmokeProjector(executor, configuration, smokeRender));
             }
-            while (smokeViewports.size() > viewportManager.viewports().size()) {
-                smokeViewports.removeLast();
+            while (smokeProjectors.size() > viewportManager.viewports().size()) {
+                smokeProjectors.removeLast();
             }
             int viewportId = 0;
             for (final var viewport : viewportManager.viewports()) {
-                SmokeViewport smokeViewport = smokeViewports.get(viewportId);
-                smokeViewport.adaptToViewport(viewport, options);
-                smokeViewport.applyObstacles(obstacles);
-                smokeViewport.applyDensityChanges(densityChanges);
-                smokeViewport.applyVelocityChanges(velocityChanges);
-                smokeViewport.applyFixedVelocityChanges(fixedVelocityChanges);
-                smokeViewport.render(viewport, options, delta);
+                final var projector = smokeProjectors.get(viewportId);
+                projector.adaptToViewport(viewport, options.baseVelocity());
+                projector.applyObstacles(obstacles);
+                projector.applyDensityChanges(densityChanges);
+                projector.applyVelocityChanges(velocityChanges);
+                projector.applyVelocityZones(velocityZones);
+                projector.render(viewport, options, delta);
 
                 viewportId++;
             }
@@ -112,7 +112,7 @@ public class DefaultSmoke implements Smoke {
         obstacles.clear();
         densityChanges.clear();
         velocityChanges.clear();
-        fixedVelocityChanges.clear();
+        velocityZones.clear();
         return this;
     }
 

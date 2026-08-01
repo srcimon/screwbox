@@ -18,7 +18,7 @@ import java.util.concurrent.Future;
 
 import static java.util.Objects.nonNull;
 
-public class SmokeViewport {
+public class SmokeProjector {
 
     private final GraphicsConfiguration configuration;
     private final ExecutorService executor;
@@ -28,7 +28,7 @@ public class SmokeViewport {
     private Vector worldAnchor;
     private FluidSimulation simulation;
 
-    public SmokeViewport(final ExecutorService executor, final GraphicsConfiguration configuration, final SmokeRenderer renderer) {
+    public SmokeProjector(final ExecutorService executor, final GraphicsConfiguration configuration, final SmokeRenderer renderer) {
         this.configuration = configuration;
         this.executor = executor;
         this.renderer = renderer;
@@ -60,8 +60,8 @@ public class SmokeViewport {
         } //TODO do not render empty images
     }
 
-    public void applyFixedVelocityChanges(List<FixedVelocityChange> fixedVelocityChanges) {
-        for (final var fixedVelocityChange : fixedVelocityChanges) {
+    public void applyVelocityZones(List<VelocityZone> velocityZones) {
+        for (final var fixedVelocityChange : velocityZones) {
             var origin = toCell(fixedVelocityChange.area().origin());
             var max = toCell(fixedVelocityChange.area().bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
@@ -100,9 +100,9 @@ public class SmokeViewport {
         }
     }
 
-    public void adaptToViewport(Viewport viewport, SmokeOptions options) {
+    public void adaptToViewport(Viewport viewport, Vector baseVelocity) {
         if (simulation == null) {
-            reassignGrid(viewport, options.baseVelocity());
+            reassignGrid(viewport, baseVelocity);
         }
         awaitSimulationStep();
     }
