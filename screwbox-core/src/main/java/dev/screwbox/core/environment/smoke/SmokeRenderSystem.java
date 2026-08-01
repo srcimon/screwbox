@@ -46,7 +46,7 @@ public class SmokeRenderSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(WINDS)) {
             if (graphics.isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
                 final var wind = entity.get(WindComponent.class);
-                smoke.setVelocity(entity.bounds(), wind.velocity);
+                smoke.pinVelocity(entity.bounds(), wind.velocity);
             }
         }
 

@@ -72,7 +72,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
-    public Smoke setVelocity(final Bounds area, final Vector velocity) {
+    public Smoke pinVelocity(final Bounds area, final Vector velocity) {
         autoTurnOnSmoke();
         if (!velocity.isZero()) {
             velocityZones.add(new VelocityZone(area, velocity));

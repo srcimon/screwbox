@@ -2,12 +2,14 @@ package dev.screwbox.core.graphics.smoke;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.smoke.SmokeRenderSystem;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Viewport;
 
 //TODO add to graphics guide
 //TODO changelog
 //TODO finish up javadoc
-//TODO add support for black smoke
+
 /**
  * Add real-time, interactive smoke effects using fluid dynamics.
  *
@@ -15,24 +17,41 @@ import dev.screwbox.core.graphics.Color;
  */
 public interface Smoke {
 
+    //TODO rename?
     Smoke setOptions(SmokeOptions options);
 
+    /**
+     * Emits smoke using the specified values. Also pushes the smoke using the specified velocity.
+     *
+     * @see #emit(Vector, Vector, double, Color)
+     * @see #push(Vector, Vector)
+     */
     Smoke emit(Vector position, Vector velocity, double amount, Color color);
 
+    /**
+     * Emits smoke using the specified values.
+     *
+     * @see #emit(Vector, Vector, double, Color)
+     */
     Smoke emit(Vector position, double amount, Color color);
 
+    /**
+     * Pushes the smoke in the specified direction.
+     */
     Smoke push(Vector position, Vector velocity);
 
-    Smoke setVelocity(Bounds area, Vector velocity);
+    /**
+     * Pins the velocity within the specified area to the specified value.
+     */
+    Smoke pinVelocity(Bounds area, Vector velocity);
 
+    /**
+     * Renders smoke on all {@link Viewport viewports}. Can be automated using the {@link SmokeRenderSystem}.
+     */
     Smoke render(double delta);
 
-    //TODO Smoke absorb(Vector position,  double amount);
-    //TODO Smoke setWind(Vector vector);
+    /**
+     * Adds an obstacle that resists smoke at the specified bounds.
+     */
     Smoke addObstacle(Bounds bounds);
-
-    //TODO double densityAt(Vector)
-    //TODO Vector velocityAt(Vector)
-
-    //TODO Smoke setOptions(SmokeOptions.styling(GREYSCALE));
 }
