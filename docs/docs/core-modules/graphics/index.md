@@ -157,6 +157,13 @@ Options that can be specified:
 | indirectLightDiameter    | `16`       | sets the diameter of indirect light rays.                                                                       |
 | maxLightBounces          | `2`        | specify the maximum number of consecutive bounces that light will make when hitting occluders                   |
 | renderingApi             | auto       | returns the specified rendering API. Read only property.                                                        |
+| isSmokeEnabled           | `false`    | enables or disables smoke rendering                                                                             |
+| isAutoEnableSmoke        | `true`     | configure auto activateion of smoke when using the smoke submodude                                              |
+| smokeScale               | `4`        | sets the scale of the smoke image                                                                               |
+| smokeBlur                | `2`        | sets the blur value for the smoke image                                                                         |
+| smokeOpacity             | `1.0`      | sets smoke rendering opacity                                                                                    |
+| smokeCellSize            | `8`        | sets the smoke cell size, smaller cells create better quality                                                   |
+| smokeCellPadding         | `8`        | sSets the smoke cell padding. Padding adds additional off-screen cells to simulate smoke even when off camera   |
 
 :::info
 Currently there is no way to preserve the configuration when quitting the game.

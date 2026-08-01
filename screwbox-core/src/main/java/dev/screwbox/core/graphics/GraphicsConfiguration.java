@@ -551,13 +551,6 @@ public class GraphicsConfiguration {
         return smokeScale;
     }
 
-    private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
-        final var event = new GraphicsConfigurationEvent(this, changedProperty);
-        for (final var listener : listeners) {
-            listener.configurationChanged(event);
-        }
-    }
-
     /**
      * Sets the blur value for the smoke image. Default is 2. Setting blur to zero disables blurring.
      *
@@ -655,7 +648,7 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Enable or disable auto activation of smoke rendering will be automatically turned on when interacting with the smoke simulation.
+     * Enable or disable auto activation of smoke. Rendering will be automatically turned on when interacting with the smoke simulation.
      * Default is {@code true}.
      *
      * @since 3.33.0
@@ -664,5 +657,12 @@ public class GraphicsConfiguration {
         this.isAutoEnableSmoke = autoEnableSmoke;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_AUTO_ENABLE);
         return this;
+    }
+
+    private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
+        final var event = new GraphicsConfigurationEvent(this, changedProperty);
+        for (final var listener : listeners) {
+            listener.configurationChanged(event);
+        }
     }
 }

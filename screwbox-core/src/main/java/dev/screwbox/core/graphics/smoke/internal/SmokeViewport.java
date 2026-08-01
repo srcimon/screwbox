@@ -39,7 +39,7 @@ public class SmokeViewport {
         if (simulation == null) {
             reassignGrid(viewport);
         }
-        awaitEndOfSimulationTask();
+        awaitSimulationStep();
         simulation.clearObstacles();
 
         for (final var obstacle : obstacles) {
@@ -88,7 +88,7 @@ public class SmokeViewport {
         return Offset.at(cellX, cellY);
     }
 
-    private void awaitEndOfSimulationTask() {
+    private void awaitSimulationStep() {
         if (nonNull(simulationTask)) {
             try {
                 simulationTask.get();
@@ -150,7 +150,7 @@ public class SmokeViewport {
     }
 
     private void reassignGrid(Viewport viewport) {
-        awaitEndOfSimulationTask();
+        awaitSimulationStep();
         var lastAnchor = worldAnchor;
         var boundsArea = calculateBestBounds(viewport);
         int cellSize = configuration.smokeCellSize();
