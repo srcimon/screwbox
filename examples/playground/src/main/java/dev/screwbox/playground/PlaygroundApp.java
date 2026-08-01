@@ -35,7 +35,6 @@ public class PlaygroundApp {
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem());
-
         var map = TileMap.fromString("""
             
             ###       #   ##
@@ -49,7 +48,6 @@ public class PlaygroundApp {
             """, Size.square(32));
 
         screwBox.graphics().smoke().setOptions(SmokeOptions.vaporPreset().baseVelocity(Vector.y(-0.2)));
-screwBox.graphics().configuration().setSmokeCellSize(8);
 
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
@@ -57,7 +55,7 @@ screwBox.graphics().configuration().setSmokeCellSize(8);
                 .add(new RenderComponent(Sprite.placeholder(Color.WHITE.opacity(0.2), Size.square(32)))).add(new WindComponent(Vector.y(2)))));
         screwBox.environment().addSystem(x -> {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
-            x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(800, 0).multiply(screwBox.loop().delta()));
+            x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(1800, 0).multiply(screwBox.loop().delta()));
             x.graphics().smoke().emit(screwBox.mouse().position(), 1 * screwBox.loop().delta(), color);
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
