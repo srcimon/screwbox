@@ -30,6 +30,7 @@ import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
+import dev.screwbox.core.environment.smoke.SmokeRenderSystem;
 import dev.screwbox.core.environment.softphysics.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
@@ -335,6 +336,14 @@ class DefaultEnvironmentTest {
         environment.removeSystemIfPresent(TweenOpacitySystem.class);
 
         assertThat(environment.systems()).isEmpty();
+    }
+
+    @Test
+    void enableSmoke_addsSmokeSystems() {
+        environment.enableSmoke();
+
+        assertThat(environment.systems()).hasSize(1)
+            .anyMatch(system -> system.getClass().equals(SmokeRenderSystem.class));
     }
 
     @Test
@@ -647,7 +656,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(66)
+        assertThat(environment.systems()).hasSize(67)
             .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

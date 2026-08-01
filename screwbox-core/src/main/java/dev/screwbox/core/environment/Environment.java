@@ -471,6 +471,13 @@ public interface Environment extends IdPool {
     Environment enableAudio();
 
     /**
+     * Adds system for rendering smoke
+     *
+     * @see dev.screwbox.core.environment.smoke.SmokeRenderSystem
+     */
+    Environment enableSmoke();
+
+    /**
      * Adds all systems including particle effects, tweening, logic, rendering, physics and light.
      *
      * @see #enableAi()
@@ -481,6 +488,7 @@ public interface Environment extends IdPool {
      * @see #enablePhysics()
      * @see #enableTweening()
      * @see #enableAudio()
+     * @see #enableSmoke()
      */
     Environment enableAllFeatures();
 

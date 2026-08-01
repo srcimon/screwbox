@@ -28,6 +28,7 @@ import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
 import dev.screwbox.core.environment.physics.*;
 import dev.screwbox.core.environment.rendering.*;
+import dev.screwbox.core.environment.smoke.SmokeRenderSystem;
 import dev.screwbox.core.environment.softphysics.*;
 import dev.screwbox.core.environment.tweening.TweenDestroySystem;
 import dev.screwbox.core.environment.tweening.TweenLightSystem;
@@ -137,6 +138,10 @@ public enum Feature {
     LIGHT(
         new LightRenderSystem(),
         new OptimizeLightPerformanceSystem()
+    ),
+
+    SMOKE(
+        new SmokeRenderSystem()
     ),
 
     PARTICLES(
