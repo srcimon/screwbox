@@ -188,7 +188,9 @@ public class SmokeProjector {
         // Hier erlauben wir die dynamische Größenänderung explizit!
         int resolution = (int) Math.round(boundsArea.width() / cellSize);
         simulation = new FluidSimulation(resolution);
-        simulation.fillVelocity(baseVelocity);
+        if(nonNull(baseVelocity)) {
+            simulation.fillVelocity(baseVelocity);
+        }
         if (nonNull(lastAnchor)) {
             // 2. MATHEMATISCH KORREKTES DELTA BEI GRÖSSENÄNDERUNG:
             // Wir berechnen, wie viele Zellen die NEUE linke obere Ecke von der ALTEN linken oberen Ecke entfernt ist.

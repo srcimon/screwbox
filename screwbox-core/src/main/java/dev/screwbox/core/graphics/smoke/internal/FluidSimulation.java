@@ -73,16 +73,16 @@ public class FluidSimulation {
     public void addVelocity(final Offset cell, final Vector velocity) {
         if (isInGrid(cell.x(), cell.y()) && isObstacle(cell)) {
             final int index = index(cell.x(), cell.y());
-            velocityX[index] = velocityX[index] + velocity.x();
-            velocityY[index] = velocityY[index] + velocity.y();
+            velocityX[index] = velocityX[index] + velocity.x() / resolution;
+            velocityY[index] = velocityY[index] + velocity.y() / resolution;
         }
     }
 
     public void setVelocity(int x, int y, Vector velocity) {
         if (isInGrid(x, y) && isObstacle(x, y)) {
             final int index = index(x, y);
-            velocityX[index] = velocity.x();
-            velocityY[index] = velocity.y();
+            velocityX[index] = velocity.x() / resolution;
+            velocityY[index] = velocity.y() / resolution;
         }
     }
 
@@ -226,9 +226,12 @@ public class FluidSimulation {
     }
 
     public void fadeVelocity(final Vector targetVelocity, final double delta) {
+        final double targetX = targetVelocity.x() / resolution;
+        final double targetY = targetVelocity.y() / resolution;
+
         for (int i = 0; i < velocityX.length; i++) {
-            velocityX[i] = MathUtil.advance(velocityX[i], targetVelocity.x(), delta);
-            velocityY[i] = MathUtil.advance(velocityY[i], targetVelocity.y(), delta);
+            velocityX[i] = MathUtil.advance(velocityX[i], targetX, delta);
+            velocityY[i] = MathUtil.advance(velocityY[i], targetY, delta);
         }
     }
 
@@ -469,9 +472,7 @@ public class FluidSimulation {
     }
 
     public void fillVelocity(final Vector velocity) {
-        for(int i = 0; i < velocityX.length; i++) {
-            velocityX[i] = velocity.x();
-            velocityY[i] = velocity.y();
-        }
+        Arrays.fill(velocityX, velocity.x() / resolution);
+        Arrays.fill(velocityY, velocity.y() / resolution);
     }
 }
