@@ -44,6 +44,11 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
+    public SmokeOptions options() {
+        return options;
+    }
+
+    @Override
     public Smoke emit(final Vector position, final Vector velocity, final double amount, final Color color) {
         emit(position, amount, color);
         push(position, velocity);

@@ -21,6 +21,11 @@ public interface Smoke {
     Smoke setOptions(SmokeOptions options);
 
     /**
+     * Returns the current smoke options used to customize smoke style and behavior.
+     */
+    SmokeOptions options();
+
+    /**
      * Emits smoke using the specified values. Also pushes the smoke using the specified velocity.
      *
      * @see #emit(Vector, Vector, double, Color)
