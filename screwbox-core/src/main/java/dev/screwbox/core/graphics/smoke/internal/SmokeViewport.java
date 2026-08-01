@@ -38,7 +38,7 @@ public class SmokeViewport {
     void render(Viewport viewport, SmokeOptions options, double delta, List<Bounds> obstacles, List<DensityChange> densityChanges, List<VelocityChange> velocityChanges,
                 List<FixedVelocityChange> fixedVelocityChanges) {
         if (simulation == null) {
-            reassignGrid(viewport);
+            reassignGrid(viewport, options.baseVelocity());
         }
         awaitSimulationStep();
         simulation.clearObstacles();
@@ -77,6 +77,9 @@ public class SmokeViewport {
         simulationTask = executor.submit(() -> {
             simulation.step(delta, options.viscosity(), options.diffusion(), options.iterations());
             simulation.fade(delta * options.fade().value());
+            if (nonNull(options.baseVelocity())) {
+                simulation.fadeVelocity(options.baseVelocity(), delta * options.baseVelocityAdaption().value());
+            }
         });
 
         var actuallyVisibleBounds = calculateActuallyVisibleBounds(viewport);
@@ -90,7 +93,7 @@ public class SmokeViewport {
             .opacity(options.opacity()));
 
         if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
-            reassignGrid(viewport);
+            reassignGrid(viewport, options.baseVelocity());
         } //TODO do not render empty images
     }
 
@@ -161,7 +164,7 @@ public class SmokeViewport {
             Math.max(bestBounds.width(), bestBounds.height()));
     }
 
-    private void reassignGrid(Viewport viewport) {
+    private void reassignGrid(Viewport viewport, Vector baseVelocity) {
         awaitSimulationStep();
         var lastAnchor = worldAnchor;
         var boundsArea = calculateBestBounds(viewport);
@@ -175,6 +178,7 @@ public class SmokeViewport {
         // Hier erlauben wir die dynamische Größenänderung explizit!
         int resolution = (int) Math.round(boundsArea.width() / cellSize);
         simulation = new FluidSimulation(resolution);
+        simulation.fillVelocity(baseVelocity);
         if (nonNull(lastAnchor)) {
             // 2. MATHEMATISCH KORREKTES DELTA BEI GRÖSSENÄNDERUNG:
             // Wir berechnen, wie viele Zellen die NEUE linke obere Ecke von der ALTEN linken oberen Ecke entfernt ist.

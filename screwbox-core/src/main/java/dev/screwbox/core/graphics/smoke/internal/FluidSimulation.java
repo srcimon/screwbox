@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.smoke.internal;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.utils.MathUtil;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -221,6 +222,13 @@ public class FluidSimulation {
             densityG[i] = Math.max(0, densityG[i] - fade);
             densityB[i] = Math.max(0, densityB[i] - fade);
             densityA[i] = Math.max(0, densityA[i] - fade);
+        }
+    }
+
+    public void fadeVelocity(final Vector velocity, final double delta) {
+        for (int i = 0; i < velocityX.length; i++) {
+            velocityX[i] = MathUtil.advance(velocityX[i], velocity.x(), delta);
+            velocityY[i] = MathUtil.advance(velocityY[i], velocity.y(), delta);
         }
     }
 
@@ -457,6 +465,13 @@ public class FluidSimulation {
                 this.densityB0[index] = 0.0;
 //TODO add alpha
             }
+        }
+    }
+
+    public void fillVelocity(final Vector velocity) {
+        for(int i = 0; i < velocityX.length; i++) {
+            velocityX[i] = velocity.x();
+            velocityY[i] = velocity.y();
         }
     }
 }
