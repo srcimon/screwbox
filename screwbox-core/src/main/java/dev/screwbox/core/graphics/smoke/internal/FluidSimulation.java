@@ -79,7 +79,7 @@ public class FluidSimulation {
     }
 
     public void setVelocity(int x, int y, Vector velocity) {
-        if (isInGrid(x, y) && isObstacle(x, y)) {
+        if (isInGrid(x, y) && !isObstacle(x, y)) {
             final int index = index(x, y);
             velocityX[index] = velocity.x();
             velocityY[index] = velocity.y();
