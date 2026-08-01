@@ -8,7 +8,6 @@ import dev.screwbox.core.mouse.Mouse;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.function.Consumer;
@@ -19,10 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @MockitoSettings
 class DefaultAchievementsTest {
@@ -148,7 +144,7 @@ class DefaultAchievementsTest {
 
     @Test
     void update_autoCompletedOnSecondUpdate_invokesReactionOnSecondUpdate() {
-        var mouse = Mockito.mock(Mouse.class);
+        var mouse = mock(Mouse.class);
         when(engine.mouse()).thenReturn(mouse);
 
         when(mouse.isPressedLeft()).thenReturn(true);
@@ -223,7 +219,7 @@ class DefaultAchievementsTest {
 
     @Test
     void setCompletionReaction_reactionNotNull_customizesReaction() {
-        Consumer<Achievement> customOnCompletion = Mockito.mock(Consumer.class);
+        Consumer<Achievement> customOnCompletion = mock(Consumer.class);
         achievements.setCompletionReaction(customOnCompletion);
 
         achievements.add(new MockAchievement());
