@@ -6,12 +6,14 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.graphics.smoke.Smoke;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_SMOKE;
 
-//TODO document test
-//TODO Smoke VortexComponent (Rotates smoke)
-//TODO Split into rendering and interaction system
+//TODO test
+/**
+ * Keeps entity components in sync with the smoke simulation and renders {@link Smoke}.
+ */
 @ExecutionOrder(PRESENTATION_SMOKE)
 public class SmokeRenderSystem implements EntitySystem {
 
@@ -26,12 +28,14 @@ public class SmokeRenderSystem implements EntitySystem {
         final var configuration = engine.graphics().configuration();
         final int renderingDistance = configuration.smokeCellPadding() * configuration.smokeCellSize();
 
+        // obstacles
         for (final var entity : engine.environment().fetchAll(OBSTACLES)) {
             if (engine.graphics().isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
                 smoke.addObstacle(entity.bounds());
             }
         }
 
+        // emitters
         for (final var entity : engine.environment().fetchAll(EMITTERS)) {
             if (engine.graphics().isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
                 final var emitter = entity.get(SmokeEmitterComponent.class);
@@ -39,6 +43,7 @@ public class SmokeRenderSystem implements EntitySystem {
             }
         }
 
+        // winds
         for (final var entity : engine.environment().fetchAll(WINDS)) {
             if (engine.graphics().isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
                 final var wind = entity.get(WindComponent.class);
@@ -46,8 +51,7 @@ public class SmokeRenderSystem implements EntitySystem {
             }
         }
 
-//TODO split into SmokeConstantPusherComponent
-
+        // interactors
         for (final var entity : engine.environment().fetchAll(INTERACTORS)) {
             if (engine.graphics().isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
                 var interaction = entity.get(SmokeInteractionComponent.class);

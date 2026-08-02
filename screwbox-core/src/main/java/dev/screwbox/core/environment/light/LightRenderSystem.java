@@ -26,7 +26,6 @@ public class LightRenderSystem implements EntitySystem {
     private static final Archetype BACKDROP_OCCLUDERS = Archetype.ofSpacial(BackdropOccluderComponent.class);
     private static final Archetype ORTHOGRAPHIC_WALL = Archetype.ofSpacial(OrthographicWallComponent.class);
 
-
     @Override
     public void update(final Engine engine) {
         final Light light = engine.graphics().light();
