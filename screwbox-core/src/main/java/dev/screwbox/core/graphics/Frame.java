@@ -221,6 +221,7 @@ public final class Frame implements Serializable, Sizeable {
             return false;
         }
         for (final var offset : size().all()) {
+            System.out.println("!!!!" + (colorAt(offset).offsetTo(other.colorAt(offset)).value()));
             if (colorAt(offset).offsetTo(other.colorAt(offset)).value() > maxOffset.value()) {
                 return false;
             }
