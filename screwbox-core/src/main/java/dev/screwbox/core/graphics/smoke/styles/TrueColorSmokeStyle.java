@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.smoke.styles;
 
 import dev.screwbox.core.graphics.smoke.SmokeStyle;
 
-public class OriginalColorSmokeStyle implements SmokeStyle {
+public class TrueColorSmokeStyle implements SmokeStyle {
 
     @Override
     public int apply(float red, float green, float blue, float alpha) {

@@ -50,7 +50,7 @@ public class SmokeProjector {
 
         final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
         final var sprite = Asset.asset(() -> {
-            final var image = renderer.createImage(state, visibleBounds, configuration.smokeScale(), options.style());
+            final var image = renderer.renderSmoke(state, visibleBounds, configuration.smokeScale(), options.style());
             if (configuration.smokeBlur() > 0) {
                 ImageOperations.blurImage(image, configuration.smokeBlur());
             }

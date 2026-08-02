@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.smoke;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.graphics.smoke.styles.OriginalColorSmokeStyle;
+import dev.screwbox.core.graphics.smoke.styles.TrueColorSmokeStyle;
 import dev.screwbox.core.utils.Validate;
 
 import static java.util.Objects.requireNonNull;
@@ -49,7 +49,7 @@ public record SmokeOptions(Percent viscosity, Percent diffusion, int iterations,
     }
 
     private SmokeOptions(final double fade) {
-        this(Percent.of(0.0000000004), Percent.of(0.000001), 2, Percent.max(), fade, null, Percent.of(0.001), new OriginalColorSmokeStyle());
+        this(Percent.of(0.0000000004), Percent.of(0.000001), 2, Percent.max(), fade, null, Percent.of(0.001), new TrueColorSmokeStyle());
     }
 
     /**

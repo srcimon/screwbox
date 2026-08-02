@@ -10,16 +10,16 @@ import java.awt.image.DataBufferInt;
 
 public class SmokeRenderer {
 
-    public BufferedImage createImage(final DensityData state, final ScreenBounds bounds, final int scale, final SmokeStyle style) {
+    public BufferedImage renderSmoke(final DensityData state, final ScreenBounds bounds, final int scale, final SmokeStyle style) {
         final int startX = bounds.x();
         final int startY = bounds.y();
         final int targetWidth = bounds.width() * scale;
         final int targetHeight = bounds.height() * scale;
 
         // Erstelle das Bild exakt in der benötigten Zielgröße (nicht mehr quadratisch blockiert)
-        Size size = Size.of(targetWidth, targetHeight);
-        var image = ImageOperations.createImage(size);
-        int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        final Size size = Size.of(targetWidth, targetHeight);
+        final var image = ImageOperations.createImage(size);
+        final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         // 1. Look-Up-Tabellen (LUT) für X-Achse vorbereiten (relativ zu startX)
         int[] x0Arr = new int[targetWidth];
