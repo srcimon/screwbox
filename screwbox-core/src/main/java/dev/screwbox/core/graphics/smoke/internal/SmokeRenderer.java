@@ -16,15 +16,10 @@ public class SmokeRenderer {
     public BufferedImage createImage(final int scale, final SmokeStyle style, final DensityData state, final ScreenBounds visibleBounds) {
         int totalCells = state.cells(); // Gesamtzahl der Zellen im Quellgitter
 
-        // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
-        int startX = visibleBounds.x();
-        int startY = visibleBounds.y();
-        int viewWidthCells = visibleBounds.width();
-        int viewHeightCells = visibleBounds.height();
-
-        // Zielgröße des neuen Bildes in Pixeln
-        int targetWidth = viewWidthCells * scale;
-        int targetHeight = viewHeightCells * scale;
+        final int startX = visibleBounds.x();
+        final int startY = visibleBounds.y();
+        final int targetWidth = visibleBounds.width() * scale;
+        final int targetHeight = visibleBounds.height() * scale;
 
         // Erstelle das Bild exakt in der benötigten Zielgröße (nicht mehr quadratisch blockiert)
         Size size = Size.of(targetWidth, targetHeight);
@@ -37,7 +32,6 @@ public class SmokeRenderer {
         float[] tXArr = new float[targetWidth];
 
         for (int x = 0; x < targetWidth; x++) {
-            // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
             float srcX = startX + ((float) x / scale);
             int x0 = (int) srcX;
 
@@ -46,11 +40,9 @@ public class SmokeRenderer {
             tXArr[x] = srcX - x0;
         }
 
-        // 2. Hauptschleife mit optimierter Interpolation über die Subimage-Pixel
         for (int y = 0; y < targetHeight; y++) {
             int pixelIndex = y * targetWidth;
 
-            // Berechne die Fließkomma-Zellposition innerhalb des Subimages und addiere den globalen Startversatz
             float srcY = startY + ((float) y / scale);
             int y0 = (int) srcY;
 
@@ -60,8 +52,6 @@ public class SmokeRenderer {
             float invTY = 1.0f - tY;
 
             for (int x = 0; x < targetWidth; x++) {
-                int x0 = x0Arr[x];
-                int x1 = x1Arr[x];
                 float tX = tXArr[x];
                 float invTX = 1.0f - tX;
 
@@ -71,31 +61,35 @@ public class SmokeRenderer {
                 float w01 = invTX * tY;
                 float w11 = tX * tY;
 
-                int index1 = state.calculateIndex(x0, clampedY0);
-                int index2 = state.calculateIndex(x1, clampedY0);
-                int index3 = state.calculateIndex(x0, clampedY1);
-                int index4 = state.calculateIndex(x1, clampedY1);
-                final float r = Math.clamp((float) (state.red(index1) * w00 +
-                                                    state.red(index2) * w10 +
-                                                    state.red(index3) * w01 +
-                                                    state.red(index4) * w11), 0.0f, 1.0f);
-                final float g = Math.clamp((float) (state.green(index1) * w00 +
-                                                    state.green(index2) * w10 +
-                                                    state.green(index3) * w01 +
-                                                    state.green(index4) * w11), 0.0f, 1.0f);
-                final float b = Math.clamp((float) (state.blue(index1) * w00 +
-                                                    state.blue(index2) * w10 +
-                                                    state.blue(index3) * w01 +
-                                                    state.blue(index4) * w11), 0.0f, 1.0f);
+                final int index1 = state.calculateIndex(x0Arr[x], clampedY0);
+                final int index2 = state.calculateIndex(x1Arr[x], clampedY0);
+                final int index3 = state.calculateIndex(x0Arr[x], clampedY1);
+                final int index4 = state.calculateIndex(x1Arr[x], clampedY1);
+                final float r = clampFloat(state.red(index1) * w00 +
+                                           state.red(index2) * w10 +
+                                           state.red(index3) * w01 +
+                                           state.red(index4) * w11);
+                final float g = clampFloat(state.green(index1) * w00 +
+                                           state.green(index2) * w10 +
+                                           state.green(index3) * w01 +
+                                           state.green(index4) * w11);
+                final float b = clampFloat(state.blue(index1) * w00 +
+                                           state.blue(index2) * w10 +
+                                           state.blue(index3) * w01 +
+                                           state.blue(index4) * w11);
 
-                final float a = Math.clamp((float) (state.alpha(index1) * w00 +
-                                                    state.alpha(index2) * w10 +
-                                                    state.alpha(index3) * w01 +
-                                                    state.alpha(index4) * w11), 0.0f, 1.0f);
+                final float a = clampFloat(state.alpha(index1) * w00 +
+                                           state.alpha(index2) * w10 +
+                                           state.alpha(index3) * w01 +
+                                           state.alpha(index4) * w11);
 
                 pixels[pixelIndex + x] = style.apply(r, g, b, a);
             }
         }
         return image;
+    }
+
+    private static float clampFloat(final double value) {
+        return Math.clamp((float) value, 0.0f, 1.0f);
     }
 }
