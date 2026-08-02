@@ -122,7 +122,7 @@ public class SmokeProjector {
         }
     }
 
-    public void adaptToViewport(Viewport viewport, Vector baseVelocity) {
+    public void adaptToViewport(final Viewport viewport, final Vector baseVelocity) {
         if (simulation == null) {
             reassignGrid(viewport, baseVelocity);
         }
@@ -171,14 +171,14 @@ public class SmokeProjector {
         return Bounds.atOrigin(worldAnchor, (double) configuration.smokeCellSize() * simulation.resolution(), (double) configuration.smokeCellSize() * simulation.resolution());
     }
 
-    private Bounds calculateBestBounds(Viewport viewport) {
+    private Bounds calculateBestBounds(final Viewport viewport) {
         final var bestBounds = viewport.visibleArea().expand((double) configuration.smokeCellPadding() * configuration.smokeCellSize()).snapExpand(configuration.smokeCellSize());
         return bestBounds.resize(
             Math.max(bestBounds.width(), bestBounds.height()),
             Math.max(bestBounds.width(), bestBounds.height()));
     }
 
-    private void reassignGrid(Viewport viewport, Vector baseVelocity) {
+    private void reassignGrid(final Viewport viewport, final Vector baseVelocity) {
         awaitSimulationStep();
         final var lastAnchor = worldAnchor;
         final var boundsArea = calculateBestBounds(viewport);
@@ -189,7 +189,9 @@ public class SmokeProjector {
         var oldSimulation = simulation;
         final int resolution = (int) Math.round(boundsArea.width() / configuration.smokeCellSize());
         simulation = new FluidSimulation(resolution);
-        simulation.fillVelocity(baseVelocity);
+        if (nonNull(baseVelocity)) {
+            simulation.fillVelocity(baseVelocity);
+        }
         if (nonNull(lastAnchor)) {
             final int deltaX = (int) Math.round((worldAnchor.x() - lastAnchor.x()) / configuration.smokeCellSize());
             final int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / configuration.smokeCellSize());

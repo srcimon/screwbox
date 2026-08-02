@@ -53,10 +53,10 @@ const FeatureList: FeatureItem[] = [
         readMore: '/docs/core-modules/audio',
     },
     {
-        title: 'Asset Management',
-        Svg: require('@site/static/img/features/assets.png').default,
-        description: "Lazy load larger game assets in the background without interrupting the game.",
-        readMore: '/docs/core-modules/assets',
+        title: "Real-Time Smoke",
+        Svg: require("@site/static/img/features/smoke.png").default,
+        description: "Simulate realistic smoke effects in real time using advanced fluid dynamics.",
+        readMore: "/docs/core-modules/graphics",
     },
     {
         title: 'Scenes',
@@ -98,6 +98,12 @@ const FeatureList: FeatureItem[] = [
         Svg: require('@site/static/img/features/shaders.png').default,
         description: "Add some cool animated and still shaders to make your game look more vibrant.",
         readMore: '/docs/core-modules/graphics',
+    },
+    {
+        title: 'Asset Management',
+        Svg: require('@site/static/img/features/assets.png').default,
+        description: "Lazy load larger game assets in the background without interrupting the game.",
+        readMore: '/docs/core-modules/assets',
     },
     {
         title: 'AI and controls',

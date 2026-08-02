@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
-//TODO add feature buble to webpage
 public class DefaultSmoke implements Smoke {
 
     private final ViewportManager viewportManager;
