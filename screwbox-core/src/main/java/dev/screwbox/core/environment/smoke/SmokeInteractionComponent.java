@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
-//TODO test
+
 /**
  * Lets physics entities interact with {@link Smoke}.
  *

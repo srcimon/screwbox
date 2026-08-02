@@ -30,7 +30,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final ViewportManager viewportManager;
     private final AttentionFocus attentionFocus;
     private final PostProcessing postProcessing;
-    private final DefaultSmoke smoke;
+    private final Smoke smoke;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -38,7 +38,7 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final ViewportManager viewportManager,
                            final PostProcessing postProcessing,
                            final DefaultLight light,//TODO bind only interface
-                           final DefaultSmoke smoke) {//TODO bind only interface
+                           final Smoke smoke) {
         this.configuration = configuration;
         this.screen = screen;
         this.renderPipeline = renderPipeline;

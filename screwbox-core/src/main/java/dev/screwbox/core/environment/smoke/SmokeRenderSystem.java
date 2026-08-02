@@ -10,8 +10,6 @@ import dev.screwbox.core.graphics.smoke.Smoke;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_SMOKE;
 
-//TODO test
-
 /**
  * Keeps entity components in sync with the smoke simulation and renders {@link Smoke}.
  */

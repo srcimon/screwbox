@@ -6,8 +6,6 @@ import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
 
-//TODO test
-
 /**
  * Applies constant velocity to {@link Smoke} within the entity bounds.
  *

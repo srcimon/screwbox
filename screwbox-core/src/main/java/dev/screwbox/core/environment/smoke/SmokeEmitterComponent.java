@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
 
-//TODO test
 /**
  * Constantly emits smoke from the entity.
  *
