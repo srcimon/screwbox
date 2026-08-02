@@ -364,6 +364,11 @@ Smoke is usually upscaled, blurred and then rendered on the screen.
 This allows even bigger cell sizes without compromising on graphics quality.
 :::
 
+:::warning
+Every viewport has its own smoke simulation attached to handle the cpu heaviness of the feature.
+This can lead to distinct smoke effects within split screen when viewing the same area.
+:::
+
 ## Post processing
 
 Post-processing allows you to apply one or more `PostProcessingFilter` to the entire screen or each split screen

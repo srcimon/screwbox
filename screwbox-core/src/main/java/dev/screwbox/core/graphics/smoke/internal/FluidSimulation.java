@@ -247,7 +247,6 @@ public class FluidSimulation {
             int indexBottom = indexCurrent + resolution;
 
             for (int i = 1; i < resolutionMinusOne; i++) {
-
                 if (obstacles[indexCurrent]) {
                     x[indexCurrent] = 0;
                 } else {
@@ -356,8 +355,6 @@ public class FluidSimulation {
                 final double t1 = y - j0i;
                 final double t0 = 1.0 - t1;
 
-                // PERFORMANCE-FIX 1: Indizes direkt berechnen (Inlining von index())
-                // Falls deine index-Methode "(y * resolution) + x" ist, passe das hier kurz an:
                 final int stride = resolution;
                 final int base0 = j0i * stride;
                 final int base1 = j1i * stride;
@@ -367,14 +364,11 @@ public class FluidSimulation {
                 final int idx01 = base1 + i0i;
                 final int idx11 = base1 + i1i;
 
-                // PERFORMANCE-FIX 2: Keine Verzweigungen (Branches), sondern Multiplikation mit 0 oder 1.
-                // Der JIT wandelt das in extrem schnelle, bedingungslose Befehle um.
                 final double m00 = obstacles[idx00] ? 0.0 : 1.0;
                 final double m01 = obstacles[idx01] ? 0.0 : 1.0;
                 final double m10 = obstacles[idx10] ? 0.0 : 1.0;
                 final double m11 = obstacles[idx11] ? 0.0 : 1.0;
 
-                // Die Interpolation filtert Hindernisse jetzt ohne d0[ix]-Feedback und ohne Math.min/max aus
                 d[ix] = s0 * (t0 * d0[idx00] * m00 + t1 * d0[idx01] * m01) +
                         s1 * (t0 * d0[idx10] * m10 + t1 * d0[idx11] * m11);
             }
@@ -391,9 +385,8 @@ public class FluidSimulation {
                 if (xOld >= 1 && xOld < oldSimulation.resolutionMinusOne &&
                     yOld >= 1 && yOld < oldSimulation.resolutionMinusOne) {
 
-                    // Nutze für jedes Objekt die jeweils eigene Index-Arithmetik!
-                    int ix = x + y * resolution; // Inlined für das neue Grid
-                    int ixOld = xOld + yOld * oldSimulation.resolution; // Nutzt oldSimulation.cells!
+                    int ix = x + y * resolution;
+                    int ixOld = xOld + yOld * oldSimulation.resolution;
 
                     densityR[ix] = oldSimulation.densityR[ixOld];
                     densityR0[ix] = oldSimulation.densityR0[ixOld];
