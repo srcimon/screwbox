@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.smoke;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.smoke.styles.FireSmokeStyle;
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +12,6 @@ class SmokeOptionsTest {
     @Test
     void newInstance_allFieldsCustomized_hasCorrectValues() {
         var options = SmokeOptions.noFade()
-            .velocity(Vector.y(-2))
-            .velocityAdaption(Percent.half())
             .diffusion(Percent.of(0.00004))
             .viscosity(Percent.of(0.001))
             .fade(0.01)
@@ -22,8 +19,6 @@ class SmokeOptionsTest {
             .style(new FireSmokeStyle());
 
 
-        assertThat(options.velocity()).isEqualTo(Vector.y(-2));
-        assertThat(options.velocityAdaption()).isEqualTo(Percent.half());
         assertThat(options.diffusion()).isEqualTo(Percent.of(0.00004));
         assertThat(options.viscosity()).isEqualTo(Percent.of(0.001));
         assertThat(options.iterations()).isEqualTo(3);
@@ -75,16 +70,6 @@ class SmokeOptionsTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("iterations must be between 0 and 10 (actual value: 40)");
     }
-
-    @Test
-    void velocityAdaption_null_throwsException() {
-        var options = SmokeOptions.noFade();
-
-        assertThatThrownBy(() -> options.velocityAdaption(null))
-            .isInstanceOf(NullPointerException.class)
-            .hasMessage("velocity adaption must not be null");
-    }
-
 
     @Test
     void style_null_throwsException() {

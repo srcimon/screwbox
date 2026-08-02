@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class SmokeProjector {
@@ -42,10 +43,6 @@ public class SmokeProjector {
         simulationTask = executor.submit(() -> {
             simulation.step(delta, options.viscosity().value(), options.diffusion().value(), options.iterations());
             simulation.fade(delta * options.fade());
-            if (nonNull(options.velocity())) {
-                final Vector targetVelocity = options.velocity().divide(configuration.smokeCellSize());
-                simulation.fadeVelocity(targetVelocity, delta * options.velocityAdaption().value());
-            }
         });
 
         final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
@@ -65,7 +62,7 @@ public class SmokeProjector {
             .opacity(options.opacity()));
 
         if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
-            reassignGrid(viewport, options.velocity());
+            reassignGrid(viewport);
         }
     }
 
@@ -122,9 +119,9 @@ public class SmokeProjector {
         }
     }
 
-    public void adaptToViewport(final Viewport viewport, final Vector baseVelocity) {
-        if (simulation == null) {
-            reassignGrid(viewport, baseVelocity);
+    public void adaptToViewport(final Viewport viewport) {
+        if (isNull(simulation)) {
+            reassignGrid(viewport);
         }
         awaitSimulationStep();
     }
@@ -178,7 +175,7 @@ public class SmokeProjector {
             Math.max(bestBounds.width(), bestBounds.height()));
     }
 
-    private void reassignGrid(final Viewport viewport, final Vector baseVelocity) {
+    private void reassignGrid(final Viewport viewport) {
         awaitSimulationStep();
         final var lastAnchor = worldAnchor;
         final var boundsArea = calculateBestBounds(viewport);
@@ -189,9 +186,6 @@ public class SmokeProjector {
         var oldSimulation = simulation;
         final int resolution = (int) Math.round(boundsArea.width() / configuration.smokeCellSize());
         simulation = new FluidSimulation(resolution);
-        if (nonNull(baseVelocity)) {
-            simulation.fillVelocity(baseVelocity);
-        }
         if (nonNull(lastAnchor)) {
             final int deltaX = (int) Math.round((worldAnchor.x() - lastAnchor.x()) / configuration.smokeCellSize());
             final int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / configuration.smokeCellSize());

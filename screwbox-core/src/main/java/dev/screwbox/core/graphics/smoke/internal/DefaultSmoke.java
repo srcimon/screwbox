@@ -30,7 +30,7 @@ public class DefaultSmoke implements Smoke {
     private final List<AreaVelocityChange> areaVelocityChanges = new ArrayList<>();
 
     private final List<SmokeProjector> smokeProjectors = new ArrayList<>();
-    private SmokeOptions options = SmokeOptions.noFade();
+    private SmokeOptions options = SmokeOptions.slowFade();
 
     public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, final SmokeRenderer renderer) {
         this.viewportManager = viewportManager;
@@ -114,7 +114,7 @@ public class DefaultSmoke implements Smoke {
             int viewportId = 0;
             for (final var viewport : viewportManager.viewports()) {
                 final var projector = smokeProjectors.get(viewportId);
-                projector.adaptToViewport(viewport, options.velocity());
+                projector.adaptToViewport(viewport);
                 projector.applyObstacles(obstacles);
                 projector.applyDensityChanges(densityChanges);
                 projector.applyVelocityChanges(velocityChanges);
@@ -134,7 +134,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     private boolean isWithinSmokeSimulation(Vector position) {
-        return attentionFocus.isWithinDistanceToVisibleArea(position, (double)configuration.smokeCellPadding() * configuration.smokeCellSize());
+        return attentionFocus.isWithinDistanceToVisibleArea(position, (double) configuration.smokeCellPadding() * configuration.smokeCellSize());
     }
 
     private void autoTurnOnSmoke() {
