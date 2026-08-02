@@ -1,6 +1,6 @@
 package dev.screwbox.core.environment.smoke;
 
-import dev.screwbox.core.Vector;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.smoke.Smoke;
 
@@ -17,13 +17,13 @@ public class SmokeInteractionComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Vector speed;
+    public Percent modifier = Percent.of(0.3);
 
     public SmokeInteractionComponent() {
 
     }
 
-    public SmokeInteractionComponent(Vector speed) {
-        this.speed = speed;
+    public SmokeInteractionComponent(final Percent modifier) {
+        this.modifier = modifier;
     }
 }

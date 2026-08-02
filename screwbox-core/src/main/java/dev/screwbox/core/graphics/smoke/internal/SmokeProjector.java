@@ -84,7 +84,8 @@ public class SmokeProjector {
     public void applyVelocityChanges(List<VelocityChange> velocityChanges) {
         for (final var velocityChange : velocityChanges) {
             var cell = toCell(velocityChange.position());
-            simulation.addVelocity(cell, velocityChange.velocity().divide(configuration.smokeCellSize()));
+            final Vector velocity = velocityChange.velocity().divide(configuration.smokeCellSize());
+            simulation.addVelocity(cell.x(), cell.y(), velocity);
         }
     }
 
@@ -92,6 +93,18 @@ public class SmokeProjector {
         for (final var densityChange : densityChanges) {
             final var cell = toCell(densityChange.position());
             simulation.addDensity(cell, densityChange.amount(), densityChange.color());
+        }
+    }
+
+    public void applyAreaVelocityChanges(final List<AreaVelocityChange> areaVelocityChanges) {
+        for (final var areaVelocityChange : areaVelocityChanges) {
+            var origin = toCell(areaVelocityChange.area().origin());
+            var max = toCell(areaVelocityChange.area().bottomRight());
+            for (int x = origin.x(); x < max.x(); x++) {
+                for (int y = origin.y(); y < max.y(); y++) {
+                    simulation.addVelocity(x, y, areaVelocityChange.velocity());
+                }
+            }
         }
     }
 

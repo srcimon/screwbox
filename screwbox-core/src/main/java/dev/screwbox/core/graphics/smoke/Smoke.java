@@ -41,14 +41,19 @@ public interface Smoke {
     Smoke emit(Vector position, double amount, Color color);
 
     /**
-     * Pushes the smoke in the specified direction.
+     * Pushes the smoke at the specified position in the specified direction.
      */
     Smoke push(Vector position, Vector velocity);
 
     /**
-     * Pins the velocity within the specified area to the specified value.
+     * Pushes the smoke at the specified {@link Bounds} in the specified direction.
      */
-    Smoke pinVelocity(Bounds area, Vector velocity);
+    Smoke push(Bounds bounds, Vector velocity);
+
+    /**
+     * Pins the velocity within the specified bounds to the specified value.
+     */
+    Smoke pinVelocity(Bounds bounds, Vector velocity);
 
     /**
      * Renders smoke on all {@link Viewport viewports}. Can be automated using the {@link SmokeRenderSystem}.
