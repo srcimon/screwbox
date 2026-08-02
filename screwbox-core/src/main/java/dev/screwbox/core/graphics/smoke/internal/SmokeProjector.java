@@ -38,7 +38,7 @@ public class SmokeProjector {
     }
 
     public void render(final Viewport viewport, final SmokeOptions options, final double delta) {
-        final var state = simulation.state();
+        final var state = simulation.densityData();
         simulationTask = executor.submit(() -> {
             simulation.step(delta, options.viscosity().value(), options.diffusion().value(), options.iterations());
             simulation.fade(delta * options.fade());

@@ -13,7 +13,7 @@ public class SmokeRenderer {
     //TODO only switch grid size when resolution changes
     //TODO only create image from visible cells
     //TODO do not render image when empty
-    public BufferedImage createImage(final int scale, final SmokeStyle style, final FluidSimulationState state, final ScreenBounds visibleBounds) {
+    public BufferedImage createImage(final int scale, final SmokeStyle style, final DensityData state, final ScreenBounds visibleBounds) {
         int totalCells = state.cells(); // Gesamtzahl der Zellen im Quellgitter
 
         // Extrahiere Subimage-Dimensionen in Zellen (Ausschnitt aus dem globalen Gitter)
@@ -75,23 +75,23 @@ public class SmokeRenderer {
                 int index2 = state.calculateIndex(x1, clampedY0);
                 int index3 = state.calculateIndex(x0, clampedY1);
                 int index4 = state.calculateIndex(x1, clampedY1);
-                final float r = Math.clamp((float) (state.densityRed(index1) * w00 +
-                                                    state.densityRed(index2) * w10 +
-                                                    state.densityRed(index3) * w01 +
-                                                    state.densityRed(index4) * w11), 0.0f, 1.0f);
-                final float g = Math.clamp((float) (state.densityGreen(index1) * w00 +
-                                                    state.densityGreen(index2) * w10 +
-                                                    state.densityGreen(index3) * w01 +
-                                                    state.densityGreen(index4) * w11), 0.0f, 1.0f);
-                final float b = Math.clamp((float) (state.densityBlue(index1) * w00 +
-                                                    state.densityBlue(index2) * w10 +
-                                                    state.densityBlue(index3) * w01 +
-                                                    state.densityBlue(index4) * w11), 0.0f, 1.0f);
+                final float r = Math.clamp((float) (state.red(index1) * w00 +
+                                                    state.red(index2) * w10 +
+                                                    state.red(index3) * w01 +
+                                                    state.red(index4) * w11), 0.0f, 1.0f);
+                final float g = Math.clamp((float) (state.green(index1) * w00 +
+                                                    state.green(index2) * w10 +
+                                                    state.green(index3) * w01 +
+                                                    state.green(index4) * w11), 0.0f, 1.0f);
+                final float b = Math.clamp((float) (state.blue(index1) * w00 +
+                                                    state.blue(index2) * w10 +
+                                                    state.blue(index3) * w01 +
+                                                    state.blue(index4) * w11), 0.0f, 1.0f);
 
-                final float a = Math.clamp((float) (state.densityAlpha(index1) * w00 +
-                                                    state.densityAlpha(index2) * w10 +
-                                                    state.densityAlpha(index3) * w01 +
-                                                    state.densityAlpha(index4) * w11), 0.0f, 1.0f);
+                final float a = Math.clamp((float) (state.alpha(index1) * w00 +
+                                                    state.alpha(index2) * w10 +
+                                                    state.alpha(index3) * w01 +
+                                                    state.alpha(index4) * w11), 0.0f, 1.0f);
 
                 pixels[pixelIndex + x] = style.apply(r, g, b, a);
             }

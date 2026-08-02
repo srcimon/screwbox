@@ -101,9 +101,8 @@ public class FluidSimulation {
                y < resolution();
     }
 
-    //TODO me dont like this
-    public FluidSimulationState state() {
-        return new FluidSimulationState(resolution, Arrays.copyOf(densityR, densityR.length), Arrays.copyOf(densityG, densityG.length), Arrays.copyOf(densityB, densityB.length), Arrays.copyOf(densityA, densityA.length));
+    public DensityData densityData() {
+        return new DensityData(resolution, densityR, densityG, densityB, densityA);
     }
 
     private int index(final int x, final int y) {
@@ -269,13 +268,8 @@ public class FluidSimulation {
     }
 
     void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
-        // 1. Schritt: Divergenz berechnen unter Berücksichtigung der Hindernisse
         projectVelocities(velocX, velocY, p, div);
-
-        // Berechnet das Druckfeld p basierend auf der Divergenz (lin_solve muss obstacles ebenfalls beachten!)
         linearSolve(p, div, iter);
-
-        // 2. Schritt: Geschwindigkeiten korrigieren (Druckgradient abziehen)
         projectVelocities(velocX, velocY, p);
     }
 
@@ -295,13 +289,7 @@ public class FluidSimulation {
                 final int top = index(i, j - 1);
                 final int bot = index(i, j + 1);
 
-                // Wenn der Nachbar ein Hindernis ist, fließt dort nichts durch (Geschwindigkeit = 0)
-                double velocityLeft = velocX[left];
-                double velocityRight = velocX[right];
-                double velocityTop = velocY[top];
-                double velocityBottom = velocY[bot];
-
-                div[index] = -0.5 * physicalCellSize * (velocityRight - velocityLeft + velocityBottom - velocityTop);
+                div[index] = -0.5 * physicalCellSize * (velocX[right] - velocX[left] + velocY[bot] - velocY[top]);
                 p[index] = 0;
             }
         }
