@@ -10,10 +10,10 @@ public interface SmokeStyle {
     /**
      * Applies the smoke style to the specified color components.
      *
-     * @param red   the red color component, normalized between 0.0f and 1.0f
-     * @param green the green color component, normalized between 0.0f and 1.0f
-     * @param blue  the blue color component, normalized between 0.0f and 1.0f
-     * @param alpha the alpha (opacity) component, ranging from 0.0f (fully transparent) to 1.0f (fully opaque)
+     * @param red   the red color component, normalized between 0.0 and 1.0
+     * @param green the green color component, normalized between 0.0 and 1.0
+     * @param blue  the blue color component, normalized between 0.0 and 1.0
+     * @param alpha the alpha (opacity) component, ranging from 0.0 (fully transparent) to 1.0 (fully opaque)
      * @return a packed integer representing the combined output color or effect state
      */
     int apply(float red, float green, float blue, float alpha);

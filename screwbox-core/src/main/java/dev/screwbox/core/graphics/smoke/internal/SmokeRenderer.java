@@ -9,17 +9,12 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 public class SmokeRenderer {
-    //TODO reuse bufferimage
-    //TODO only switch grid size when resolution changes
-    //TODO only create image from visible cells
-    //TODO do not render image when empty
-    public BufferedImage createImage(final int scale, final SmokeStyle style, final DensityData state, final ScreenBounds visibleBounds) {
-        int totalCells = state.cells(); // Gesamtzahl der Zellen im Quellgitter
 
-        final int startX = visibleBounds.x();
-        final int startY = visibleBounds.y();
-        final int targetWidth = visibleBounds.width() * scale;
-        final int targetHeight = visibleBounds.height() * scale;
+    public BufferedImage createImage(final DensityData state, final ScreenBounds bounds, final int scale, final SmokeStyle style) {
+        final int startX = bounds.x();
+        final int startY = bounds.y();
+        final int targetWidth = bounds.width() * scale;
+        final int targetHeight = bounds.height() * scale;
 
         // Erstelle das Bild exakt in der benötigten Zielgröße (nicht mehr quadratisch blockiert)
         Size size = Size.of(targetWidth, targetHeight);
@@ -35,8 +30,8 @@ public class SmokeRenderer {
             float srcX = startX + ((float) x / scale);
             int x0 = (int) srcX;
 
-            x0Arr[x] = Math.clamp(x0, 0, totalCells - 1);
-            x1Arr[x] = Math.clamp(x0 + 1L, 0, totalCells - 1);
+            x0Arr[x] = Math.clamp(x0, 0, state.cells() - 1);
+            x1Arr[x] = Math.clamp(x0 + 1L, 0, state.cells() - 1);
             tXArr[x] = srcX - x0;
         }
 
@@ -46,8 +41,8 @@ public class SmokeRenderer {
             float srcY = startY + ((float) y / scale);
             int y0 = (int) srcY;
 
-            int clampedY0 = Math.clamp(y0, 0, totalCells - 1);
-            int clampedY1 = Math.clamp(y0 + 1L, 0, totalCells - 1);
+            int clampedY0 = Math.clamp(y0, 0, state.cells() - 1);
+            int clampedY1 = Math.clamp(y0 + 1L, 0, state.cells() - 1);
             float tY = srcY - y0;
             float invTY = 1.0f - tY;
 
@@ -65,23 +60,23 @@ public class SmokeRenderer {
                 final int index2 = state.calculateIndex(x1Arr[x], clampedY0);
                 final int index3 = state.calculateIndex(x0Arr[x], clampedY1);
                 final int index4 = state.calculateIndex(x1Arr[x], clampedY1);
-                final float r = clampFloat(state.red(index1) * w00 +
-                                           state.red(index2) * w10 +
-                                           state.red(index3) * w01 +
-                                           state.red(index4) * w11);
-                final float g = clampFloat(state.green(index1) * w00 +
-                                           state.green(index2) * w10 +
-                                           state.green(index3) * w01 +
-                                           state.green(index4) * w11);
-                final float b = clampFloat(state.blue(index1) * w00 +
-                                           state.blue(index2) * w10 +
-                                           state.blue(index3) * w01 +
-                                           state.blue(index4) * w11);
+                final float r = clampRgb(state.red(index1) * w00 +
+                                         state.red(index2) * w10 +
+                                         state.red(index3) * w01 +
+                                         state.red(index4) * w11);
+                final float g = clampRgb(state.green(index1) * w00 +
+                                         state.green(index2) * w10 +
+                                         state.green(index3) * w01 +
+                                         state.green(index4) * w11);
+                final float b = clampRgb(state.blue(index1) * w00 +
+                                         state.blue(index2) * w10 +
+                                         state.blue(index3) * w01 +
+                                         state.blue(index4) * w11);
 
-                final float a = clampFloat(state.alpha(index1) * w00 +
-                                           state.alpha(index2) * w10 +
-                                           state.alpha(index3) * w01 +
-                                           state.alpha(index4) * w11);
+                final float a = clampRgb(state.alpha(index1) * w00 +
+                                         state.alpha(index2) * w10 +
+                                         state.alpha(index3) * w01 +
+                                         state.alpha(index4) * w11);
 
                 pixels[pixelIndex + x] = style.apply(r, g, b, a);
             }
@@ -89,7 +84,7 @@ public class SmokeRenderer {
         return image;
     }
 
-    private static float clampFloat(final double value) {
+    private static float clampRgb(final double value) {
         return Math.clamp((float) value, 0.0f, 1.0f);
     }
 }
