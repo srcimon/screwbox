@@ -6,8 +6,6 @@ import dev.screwbox.core.environment.smoke.SmokeRenderSystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Viewport;
 
-//TODO add to graphics guide
-
 /**
  * Add real-time, interactive smoke effects using fluid dynamics.
  *

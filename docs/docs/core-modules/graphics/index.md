@@ -339,12 +339,22 @@ Because this approach is CPU-heavy, large-scale simulation is not feasible.
 To maintain the illusion of a smoky world efficiently, the engine restricts the fluid simulation strictly to the visible screen area plus a small, off-screen boundary frame.
 This will lead to delete smoke that goes out on a certain threshold off-screen.
 
+![smoke.png](smoke.png)
+
 Smoke will automatically turn on when using the functions.
 Smoke can still be explicitly turned on and off using the `GraphicsConfiguration`.
 
 Smoke will only look good when smoke is emitted and pushed through the environment.
 To do soe use the methods the Smoke interface provides or add custom entities using the smoke ECS components like
 `SmokeEmitterComponent` or `SmokeObstacleComponent`.
+
+``` java
+// add horizontal velocity to the smoke at the mouse position
+graphics().smoke().push(screwBox.mouse().position(), Vector.x(500));
+
+// emit red smoke at the mouse position
+graphics().smoke().emit(screwBox.mouse().position(), 50, Color.RED);
+```
 
 :::info
 When having trouble with performance try to increase cell size of the smoke first.
