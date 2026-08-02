@@ -332,6 +332,28 @@ For example:
 - Add a `LensFlare` to the `GlowComponent` to create some basic reflections on the screen.
 - Leave indirect light enabled and tune it using the correspondig `GraphicsConfiguration` options.
 
+## Smoke
+
+ScrewBox uses real-time fluid dynamics to simulate smoke through a specialized grid that tracks color density and alpha values. 
+Because this approach is CPU-heavy, large-scale simulation is not feasible.
+To maintain the illusion of a smoky world efficiently, the engine restricts the fluid simulation strictly to the visible screen area plus a small, off-screen boundary frame.
+This will lead to delete smoke that goes out on a certain threshold off-screen.
+
+Smoke will automatically turn on when using the functions.
+Smoke can still be explicitly turned on and off using the `GraphicsConfiguration`.
+
+Smoke will only look good when smoke is emitted and pushed through the environment.
+To do soe use the methods the Smoke interface provides or add custom entities using the smoke ECS components like
+`SmokeEmitterComponent` or `SmokeObstacleComponent`.
+
+:::info
+When having trouble with performance try to increase cell size of the smoke first.
+Best cell size heavily depends on the most common camera zoom you are using in the game.
+Cell size will always reference game world size.
+Smoke is usually upscaled, blurred and then rendered on the screen.
+This allows even bigger cell sizes without compromising on graphics quality.
+:::
+
 ## Post processing
 
 Post-processing allows you to apply one or more `PostProcessingFilter` to the entire screen or each split screen
