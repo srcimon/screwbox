@@ -1,5 +1,5 @@
 ---
-title: Dynamic smoke
+title: Real-time smoke
 authors: [ srcimon ]
 tags: [ new-features ]
 ---
@@ -15,6 +15,8 @@ The system is currently used to create realistic, dynamic smoke effects.
 The fluid dynamic system I've come up with only simulates the content on and around the screen.
 This is due to the restriction cpu because I wanted to provide a real-time simulation which cannot handle bigger grids at the moment.
 
+Currently the system is able to emit multi colored smoke and put it into motion.
+Also smoke can be rendered using differen styles to match the game graphics. 
 
 More details are found int the [graphics documentation](/docs/core-modules/graphics#smoke).
 
