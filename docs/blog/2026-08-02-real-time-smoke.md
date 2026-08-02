@@ -4,6 +4,7 @@ authors: [ srcimon ]
 tags: [ new-features, milestones ]
 ---
 
+![occluders.png](../docs/core-modules/graphics/smoke.png)
 
 Hello my friends,
 
@@ -18,8 +19,6 @@ The system is currently used to create realistic, interactive smoke effects.
 The fluid dynamic system I've come up with only simulates the content on and around the screen and not the whole game world.
 This is due to the restriction cpu power because I wanted to provide a real-time simulation which cannot handle bigger grids at the moment.
 The latest version now provides a first look for this new feature which is still heavily under development and cleanup.
-
-![occluders.png](../docs/core-modules/graphics/smoke.png)
 
 Currently the system is able to emit multi colored smoke and put it into motion.
 Also smoke can get deflected by obstacles.
