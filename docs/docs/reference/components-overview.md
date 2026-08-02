@@ -192,3 +192,14 @@ To use these components call `environment.enableParticles()` first.
 | `ParticleComponent`        | Marks an entity as particle. Will be automatically added to all particles. |
 | `ParticleEmitterComponent` | Adds particle emission to an entity.                                       |
 | `ParticleBurstComponent`   | Used to automatically shutdown particle emitters after a timeout.          |
+
+## Smoke components
+
+To use these components call `environment.enableSmoke()` first.
+
+| Component                   | Description                                                  |
+|-----------------------------|--------------------------------------------------------------|
+| `SmokeEmitterComponent`     | Constantly emits smoke from the entity.                      |
+| `SmokeObstacleComponent`    | Blocks smoke on the entity bounds.                           |
+| `SmokeInteractionComponent` | Lets physics entities interact with smoke.                   |
+| `WindComponent`             | Applies constant velocity to smoke within the entity bounds. |

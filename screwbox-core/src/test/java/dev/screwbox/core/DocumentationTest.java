@@ -17,7 +17,6 @@ class DocumentationTest {
 
     private static final Cache<String, String> DOC_CONTENT_CACHE = new Cache<>();
 
-    @Disabled//TODO reanable
     @ParameterizedTest
     @MethodSource("dev.screwbox.core.test.TestSources#allComponentClasses")
     void verifyComponentIsListedInComponentsOverview(Class<?> componentClazz) {

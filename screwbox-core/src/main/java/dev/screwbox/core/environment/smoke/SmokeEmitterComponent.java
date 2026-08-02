@@ -3,10 +3,18 @@ package dev.screwbox.core.environment.smoke;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
 
 //TODO document test
+
+/**
+ * Constantly emits smoke from the entity.
+ *
+ * @see Smoke
+ * @since 3.33.0
+ */
 public class SmokeEmitterComponent implements Component {
 
     @Serial
