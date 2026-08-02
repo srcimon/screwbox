@@ -1,14 +1,22 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.smoke.styles.OriginalColorSmokeStyle;
 import dev.screwbox.core.test.TestUtil;
 import dev.screwbox.core.utils.FractalNoise;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SmokeRendererTest {
+
+    @BeforeEach
+    void setUp() {
+        System.setProperty("java.awt.headless", "true");
+    }
 
     @Test
     void xxx() {
@@ -25,6 +33,12 @@ class SmokeRendererTest {
         var data = simulation.densityData();
 //TODO cleanup
         var image = new SmokeRenderer().createImage(data, new ScreenBounds(Size.square(simulation.resolution())), 1, new OriginalColorSmokeStyle());
+//        Frame.fromImage(image).exportPng("demo.png");
         TestUtil.verifyIsSameImage(image, "smoke/demo.png");
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.clearProperty("java.awt.headless");
     }
 }
