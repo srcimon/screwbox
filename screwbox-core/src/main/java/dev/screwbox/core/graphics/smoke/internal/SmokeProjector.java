@@ -158,10 +158,10 @@ public class SmokeProjector {
         final double gridMaxY = viewMaxY - worldAnchor.y();
 
         final int maxCells = simulation.resolution();
-        final int startCellX = Math.clamp((int) Math.floor(gridMinX / configuration.smokeCellSize()) - 1, 0, maxCells - 1);
-        final int startCellY = Math.clamp((int) Math.floor(gridMinY / configuration.smokeCellSize()) - 1, 0, maxCells - 1);
-        final int endCellX = Math.clamp((int) Math.ceil(gridMaxX / configuration.smokeCellSize()) + 1, startCellX + 1, maxCells);
-        final int endCellY = Math.clamp((int) Math.ceil(gridMaxY / configuration.smokeCellSize()) + 1, startCellY + 1, maxCells);
+        final int startCellX = Math.clamp((int) Math.floor(gridMinX / configuration.smokeCellSize()) - 1L, 0, maxCells - 1);
+        final int startCellY = Math.clamp((int) Math.floor(gridMinY / configuration.smokeCellSize()) - 1L, 0, maxCells - 1);
+        final int endCellX = Math.clamp((int) Math.ceil(gridMaxX / configuration.smokeCellSize()) + 1L, startCellX + 1, maxCells);
+        final int endCellY = Math.clamp((int) Math.ceil(gridMaxY / configuration.smokeCellSize()) + 1L, startCellY + 1, maxCells);
 
         final Size size = Size.of(endCellX - startCellX, endCellY - startCellY);
         return new ScreenBounds(Offset.origin().add(startCellX, startCellY), size);
