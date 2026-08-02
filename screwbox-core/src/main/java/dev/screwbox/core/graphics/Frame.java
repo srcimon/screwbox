@@ -105,7 +105,7 @@ public final class Frame implements Serializable, Sizeable {
         Objects.requireNonNull(size, "size must not be null");
         return new Frame(ImageOperations.createImage(size));
     }
-    
+
     /**
      * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
      */
@@ -216,12 +216,11 @@ public final class Frame implements Serializable, Sizeable {
      *
      * @since 3.27.0
      */
-    public boolean hasIdenticalPixels(final Frame other, Percent maxOffset) {
+    public boolean hasIdenticalPixels(final Frame other, final Percent maxOffset) {
         if (!size().equals(other.size())) {
             return false;
         }
         for (final var offset : size().all()) {
-            System.out.println("!!!!" + (colorAt(offset).offsetTo(other.colorAt(offset)).value()));
             if (colorAt(offset).offsetTo(other.colorAt(offset)).value() > maxOffset.value()) {
                 return false;
             }
