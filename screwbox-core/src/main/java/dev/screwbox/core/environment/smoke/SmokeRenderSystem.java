@@ -11,6 +11,7 @@ import dev.screwbox.core.graphics.smoke.Smoke;
 import static dev.screwbox.core.environment.Order.PRESENTATION_SMOKE;
 
 //TODO test
+
 /**
  * Keeps entity components in sync with the smoke simulation and renders {@link Smoke}.
  */
@@ -25,39 +26,29 @@ public class SmokeRenderSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         final var smoke = engine.graphics().smoke();
-        final var configuration = engine.graphics().configuration();
-        final int renderingDistance = configuration.smokeCellPadding() * configuration.smokeCellSize();
 
         // obstacles
         for (final var entity : engine.environment().fetchAll(OBSTACLES)) {
-            if (engine.graphics().isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
-                smoke.addObstacle(entity.bounds());
-            }
+            smoke.addObstacle(entity.bounds());
         }
 
         // emitters
         for (final var entity : engine.environment().fetchAll(EMITTERS)) {
-            if (engine.graphics().isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
-                final var emitter = entity.get(SmokeEmitterComponent.class);
-                smoke.emit(entity.position(), emitter.velocity.multiply(engine.loop().delta()), emitter.amount * engine.loop().delta(), emitter.color);
-            }
+            final var emitter = entity.get(SmokeEmitterComponent.class);
+            smoke.emit(entity.position(), emitter.velocity.multiply(engine.loop().delta()), emitter.amount * engine.loop().delta(), emitter.color);
         }
 
         // winds
         for (final var entity : engine.environment().fetchAll(WINDS)) {
-            if (engine.graphics().isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
-                final var wind = entity.get(WindComponent.class);
-                smoke.pinVelocity(entity.bounds(), wind.velocity);
-            }
+            final var wind = entity.get(WindComponent.class);
+            smoke.pinVelocity(entity.bounds(), wind.velocity);
         }
 
         // interactors
         for (final var entity : engine.environment().fetchAll(INTERACTORS)) {
-            if (engine.graphics().isWithinDistanceToVisibleArea(entity.position(), renderingDistance)) {
-                var interaction = entity.get(SmokeInteractionComponent.class);
-                final Vector speed = entity.get(PhysicsComponent.class).velocity.multiply(interaction.modifier.value() * engine.loop().delta());
-                smoke.push(entity.position(), speed);
-            }
+            var interaction = entity.get(SmokeInteractionComponent.class);
+            final Vector speed = entity.get(PhysicsComponent.class).velocity.multiply(interaction.modifier.value() * engine.loop().delta());
+            smoke.push(entity.position(), speed);
         }
 
         smoke.render(engine.loop().delta());

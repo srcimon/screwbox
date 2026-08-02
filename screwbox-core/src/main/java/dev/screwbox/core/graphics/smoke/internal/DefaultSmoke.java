@@ -4,6 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.internal.AttentionFocus;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
@@ -22,6 +23,7 @@ public class DefaultSmoke implements Smoke {
     private final ExecutorService executor;
     private final SmokeRenderer renderer;
     private final GraphicsConfiguration configuration;
+    private final AttentionFocus attentionFocus;
 
     private final List<Bounds> obstacles = new ArrayList<>();
     private final List<DensityChange> densityChanges = new ArrayList<>();
@@ -36,6 +38,7 @@ public class DefaultSmoke implements Smoke {
         this.executor = executor;
         this.renderer = renderer;
         this.configuration = configuration;
+        this.attentionFocus = new AttentionFocus(viewportManager);
     }
 
     @Override
@@ -60,7 +63,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke emit(final Vector position, final double amount, final Color color) {
         Validate.zeroOrPositive(amount, "amount must be positive");
         autoTurnOnSmoke();
-        if (amount > 0) {
+        if (amount > 0 && isWithinSmokeSimulation(position)) {
             densityChanges.add(new DensityChange(position, amount, color));
         }
         return this;
@@ -69,7 +72,7 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke push(final Vector position, final Vector velocity) {
         autoTurnOnSmoke();
-        if (!velocity.isZero()) {
+        if (!velocity.isZero() && isWithinSmokeSimulation(position)) {
             velocityChanges.add(new VelocityChange(position, velocity));
         }
         return this;
@@ -129,6 +132,10 @@ public class DefaultSmoke implements Smoke {
         velocityZones.clear();
         areaVelocityChanges.clear();
         return this;
+    }
+
+    private boolean isWithinSmokeSimulation(Vector position) {
+        return attentionFocus.isWithinDistanceToVisibleArea(position, configuration.smokeCellPadding() * configuration.smokeCellSize());
     }
 
     private void autoTurnOnSmoke() {
