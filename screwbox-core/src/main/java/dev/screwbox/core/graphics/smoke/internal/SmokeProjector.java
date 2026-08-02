@@ -48,9 +48,9 @@ public class SmokeProjector {
             }
         });
 
-        var actuallyVisibleBounds = calculateActuallyVisibleBounds(viewport);
+        final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
         final var sprite = Asset.asset(() -> {
-            final var image = renderer.createImage(configuration.smokeScale(), options.style(), state, actuallyVisibleBounds);
+            final var image = renderer.createImage(configuration.smokeScale(), options.style(), state, visibleBounds);
             if (configuration.smokeBlur() > 0) {
                 ImageOperations.blurImage(image, configuration.smokeBlur());
             }
@@ -59,7 +59,7 @@ public class SmokeProjector {
         executor.submit(sprite::get);
         int cellSize = configuration.smokeCellSize();
         final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();
-        final Offset origin = viewport.toCanvas(worldAnchor).add((int) (actuallyVisibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (actuallyVisibleBounds.y() * cellSize * viewport.camera().zoom()));
+        final Offset origin = viewport.toCanvas(worldAnchor).add((int) (visibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (visibleBounds.y() * cellSize * viewport.camera().zoom()));
         viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
             .scaled(scale)
             .opacity(options.opacity()));
@@ -69,7 +69,7 @@ public class SmokeProjector {
         }
     }
 
-    public void applyVelocityZones(List<VelocityZone> velocityZones) {
+    public void applyVelocityZones(final List<VelocityZone> velocityZones) {
         for (final var velocityZone : velocityZones) {
             var origin = toCell(velocityZone.area().origin());
             var max = toCell(velocityZone.area().bottomRight());
@@ -81,7 +81,7 @@ public class SmokeProjector {
         }
     }
 
-    public void applyVelocityChanges(List<VelocityChange> velocityChanges) {
+    public void applyVelocityChanges(final List<VelocityChange> velocityChanges) {
         for (final var velocityChange : velocityChanges) {
             var cell = toCell(velocityChange.position());
             final Vector velocity = velocityChange.velocity().divide(configuration.smokeCellSize());
@@ -89,7 +89,7 @@ public class SmokeProjector {
         }
     }
 
-    public void applyDensityChanges(List<DensityChange> densityChanges) {
+    public void applyDensityChanges(final List<DensityChange> densityChanges) {
         for (final var densityChange : densityChanges) {
             final var cell = toCell(densityChange.position());
             simulation.addDensity(cell, densityChange.amount(), densityChange.color());
@@ -146,43 +146,25 @@ public class SmokeProjector {
         }
     }
 
-    private ScreenBounds calculateActuallyVisibleBounds(Viewport viewport) {
-        // 1. Berechne die sichtbare Welt-Fläche (unabhängig vom Zoom/Pixeln)
-        final var visibleArea = viewport.visibleArea();
+    private ScreenBounds calculateActuallyVisibleBounds(final Bounds visibleArea) {
         final double viewMinX = visibleArea.minX();
         final double viewMinY = visibleArea.minY();
         final double viewMaxX = viewMinX + visibleArea.width();
         final double viewMaxY = viewMinY + visibleArea.height();
 
-        // 2. Ermittle die Welt-Koordinaten relativ zum Ursprung des Gitters
         final double gridMinX = viewMinX - worldAnchor.x();
         final double gridMinY = viewMinY - worldAnchor.y();
         final double gridMaxX = viewMaxX - worldAnchor.x();
         final double gridMaxY = viewMaxY - worldAnchor.y();
 
-        // 3. Bestimme die exakten Start- und End-Zellen (Abrunden/Aufrunden via Double)
-        int startCellX = (int) Math.floor(gridMinX / configuration.smokeCellSize());
-        int startCellY = (int) Math.floor(gridMinY / configuration.smokeCellSize());
-        int endCellX = (int) Math.ceil(gridMaxX / configuration.smokeCellSize());
-        int endCellY = (int) Math.ceil(gridMaxY / configuration.smokeCellSize());
-
-        // 4. Füge den gewünschten Sicherheitsabstand (1 Zelle Puffer rundherum) hinzu
-        startCellX = startCellX - 1;
-        startCellY = startCellY - 1;
-        endCellX = endCellX + 1;
-        endCellY = endCellY + 1;
-
-        // 5. Striktes Clamping an die physikalischen Simulationsgrenzen
         final int maxCells = simulation.resolution();
-        startCellX = Math.clamp(startCellX, 0, maxCells - 1);
-        startCellY = Math.clamp(startCellY, 0, maxCells - 1);
-        endCellX = Math.clamp(endCellX, startCellX + 1, maxCells);
-        endCellY = Math.clamp(endCellY, startCellY + 1, maxCells);
+        final int startCellX = Math.clamp((int) Math.floor(gridMinX / configuration.smokeCellSize()) - 1, 0, maxCells - 1);
+        final int startCellY = Math.clamp((int) Math.floor(gridMinY / configuration.smokeCellSize()) - 1, 0, maxCells - 1);
+        final int endCellX = Math.clamp((int) Math.ceil(gridMaxX / configuration.smokeCellSize()) + 1, startCellX + 1, maxCells);
+        final int endCellY = Math.clamp((int) Math.ceil(gridMaxY / configuration.smokeCellSize()) + 1, startCellY + 1, maxCells);
 
-        int width = endCellX - startCellX;
-        int height = endCellY - startCellY;
-
-        return new ScreenBounds(Offset.origin().add(startCellX, startCellY), Size.of(width, height));
+        final Size size = Size.of(endCellX - startCellX, endCellY - startCellY);
+        return new ScreenBounds(Offset.origin().add(startCellX, startCellY), size);
     }
 
     private Bounds calculateFluidOnWorld() {
@@ -198,29 +180,22 @@ public class SmokeProjector {
 
     private void reassignGrid(Viewport viewport, Vector baseVelocity) {
         awaitSimulationStep();
-        var lastAnchor = worldAnchor;
-        var boundsArea = calculateBestBounds(viewport);
-        int cellSize = configuration.smokeCellSize();
-        // 1. Snapping wie gehabt, um Sub-Pixel-Zittern zu vermeiden
-        long snappedX = Math.round(boundsArea.origin().x() / cellSize) * cellSize;
-        long snappedY = Math.round(boundsArea.origin().y() / cellSize) * cellSize;
+        final var lastAnchor = worldAnchor;
+        final var boundsArea = calculateBestBounds(viewport);
+        final long snappedX = Math.round(boundsArea.origin().x() / configuration.smokeCellSize()) * configuration.smokeCellSize();
+        final long snappedY = Math.round(boundsArea.origin().y() / configuration.smokeCellSize()) * configuration.smokeCellSize();
         worldAnchor = Vector.of(snappedX, snappedY);
 
         var oldSimulation = simulation;
-        // Hier erlauben wir die dynamische Größenänderung explizit!
-        int resolution = (int) Math.round(boundsArea.width() / cellSize);
+        final int resolution = (int) Math.round(boundsArea.width() / configuration.smokeCellSize());
         simulation = new FluidSimulation(resolution);
         simulation.fillVelocity(baseVelocity);
         if (nonNull(lastAnchor)) {
-            // 2. MATHEMATISCH KORREKTES DELTA BEI GRÖSSENÄNDERUNG:
-            // Wir berechnen, wie viele Zellen die NEUE linke obere Ecke von der ALTEN linken oberen Ecke entfernt ist.
-            // Das gleicht eine Expansion/Kontraktion des Gitters perfekt aus.
-            int deltaX = (int) Math.round((worldAnchor.x() - lastAnchor.x()) / cellSize);
-            int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / cellSize);
+            final int deltaX = (int) Math.round((worldAnchor.x() - lastAnchor.x()) / configuration.smokeCellSize());
+            final int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / configuration.smokeCellSize());
 
-            // Wir übergeben die reinen Deltas direkt an die neue loadFrom-Methode
             if (nonNull(oldSimulation)) {
-                simulation.loadFrom(oldSimulation, deltaX, deltaY);//TODO load from densityInfo
+                simulation.loadFrom(oldSimulation, deltaX, deltaY);
             }
         }
     }
