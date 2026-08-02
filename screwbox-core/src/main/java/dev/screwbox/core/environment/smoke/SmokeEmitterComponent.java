@@ -7,8 +7,7 @@ import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
 
-//TODO document test
-
+//TODO test
 /**
  * Constantly emits smoke from the entity.
  *
@@ -20,16 +19,34 @@ public class SmokeEmitterComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Amount of smoke emitted per time.
+     */
     public double amount;
-    public Color color;
-    public Vector velocity = Vector.zero();
 
+    /**
+     * Color of emitted smoke.
+     */
+    public Color color;
+
+    /**
+     * Velocity of emit.
+     */
+    public Vector velocity;
+
+    /**
+     * Creates a new instance with default settings.
+     */
     public SmokeEmitterComponent() {
-        this(0, Color.WHITE);
+        this(1, Color.WHITE, Vector.zero());
     }
 
-    public SmokeEmitterComponent(double amount, Color color) {
+    /**
+     * Creates a new instance with specified settings.
+     */
+    public SmokeEmitterComponent(final double amount, final Color color, final Vector velocity) {
         this.amount = amount;
         this.color = color;
+        this.velocity = velocity;
     }
 }

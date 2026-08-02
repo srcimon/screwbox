@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
-//TODO document test
+//TODO test
 /**
  * Lets physics entities interact with {@link Smoke}.
  *
@@ -19,10 +19,16 @@ public class SmokeInteractionComponent implements Component {
 
     public Percent modifier = Percent.of(0.3);
 
+    /**
+     * Creates a new instance.
+     */
     public SmokeInteractionComponent() {
 
     }
 
+    /**
+     * Creates a new instance with specified modifier.
+     */
     public SmokeInteractionComponent(final Percent modifier) {
         this.modifier = modifier;
     }

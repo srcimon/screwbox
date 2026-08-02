@@ -6,8 +6,7 @@ import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
 
-//TODO document and test
-
+//TODO test
 
 /**
  * Applies constant velocity to {@link Smoke} within the entity bounds.
@@ -22,6 +21,9 @@ public class WindComponent implements Component {
 
     public Vector velocity;
 
+    /**
+     * Specifies the velocity of the wind.
+     */
     public WindComponent(final Vector velocity) {
         this.velocity = velocity;
     }

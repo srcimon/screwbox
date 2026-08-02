@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
+
 /**
  * Blocks smoke on the {@link Entity#bounds()}.
  *

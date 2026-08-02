@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import static dev.screwbox.core.environment.Order.PRESENTATION_SMOKE;
 
 //TODO document test
-//TODO OptimizeLightPerformanceSystem
 //TODO Smoke VortexComponent (Rotates smoke)
 //TODO Split into rendering and interaction system
 @ExecutionOrder(PRESENTATION_SMOKE)
