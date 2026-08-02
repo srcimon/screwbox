@@ -48,7 +48,7 @@ public class SmokeRenderSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(INTERACTORS)) {
             var interaction = entity.get(SmokeInteractionComponent.class);
             final Vector speed = entity.get(PhysicsComponent.class).velocity.multiply(interaction.modifier.value() * engine.loop().delta());
-            smoke.push(entity.position(), speed);
+            smoke.push(entity.bounds(), speed);
         }
 
         smoke.render(engine.loop().delta());
