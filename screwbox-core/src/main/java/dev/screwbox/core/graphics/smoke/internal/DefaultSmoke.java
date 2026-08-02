@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutorService;
 //TODO add feature buble to webpage
 public class DefaultSmoke implements Smoke {
 
-    private SmokeOptions options = SmokeOptions.noFade();
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private final SmokeRenderer renderer;
@@ -31,7 +30,8 @@ public class DefaultSmoke implements Smoke {
     private final List<VelocityZone> velocityZones = new ArrayList<>();
     private final List<AreaVelocityChange> areaVelocityChanges = new ArrayList<>();
 
-    private List<SmokeProjector> smokeProjectors = new ArrayList<>();
+    private final List<SmokeProjector> smokeProjectors = new ArrayList<>();
+    private SmokeOptions options = SmokeOptions.noFade();
 
     public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, final SmokeRenderer renderer) {
         this.viewportManager = viewportManager;
@@ -135,7 +135,7 @@ public class DefaultSmoke implements Smoke {
     }
 
     private boolean isWithinSmokeSimulation(Vector position) {
-        return attentionFocus.isWithinDistanceToVisibleArea(position, configuration.smokeCellPadding() * configuration.smokeCellSize());
+        return attentionFocus.isWithinDistanceToVisibleArea(position, (double)configuration.smokeCellPadding() * configuration.smokeCellSize());
     }
 
     private void autoTurnOnSmoke() {
