@@ -9,21 +9,19 @@ import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.graphics.light.Light;
-import dev.screwbox.core.graphics.light.internal.DefaultLight;
 import dev.screwbox.core.graphics.postprocessing.PostProcessing;
 import dev.screwbox.core.graphics.smoke.Smoke;
-import dev.screwbox.core.loop.internal.Updatable;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class DefaultGraphics implements Graphics, Updatable {
+public class DefaultGraphics implements Graphics {
 
     private final GraphicsConfiguration configuration;
     private final DefaultWorld world;
-    private final DefaultLight light;
+    private final Light light;
     private final DefaultScreen screen;
     private final RenderPipeline renderPipeline;
     private final ViewportManager viewportManager;
@@ -36,7 +34,7 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
                            final PostProcessing postProcessing,
-                           final DefaultLight light,
+                           final Light light,
                            final Smoke smoke) {
         this.configuration = configuration;
         this.screen = screen;
@@ -166,12 +164,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public boolean isVisible(final Bounds bounds) {
         return attentionFocus.isVisible(bounds);
-    }
-
-    @Override
-    public void update() {
-        screen.updateScreen();
-        light.update();
     }
 
     @Override

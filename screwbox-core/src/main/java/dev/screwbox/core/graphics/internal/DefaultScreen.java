@@ -68,7 +68,7 @@ public class DefaultScreen implements Screen, Updatable {
         this.graphicsDevice = graphicsDevice;
     }
 
-    public void updateScreen() {
+    private void updateScreen() {
         if (RenderingApi.METAL.equals(configuration.renderingApi())) {
             TOOLKIT.sync(); // needed to avoid frame drop which causes micro stuttering
         }
@@ -255,6 +255,7 @@ public class DefaultScreen implements Screen, Updatable {
             degrees += viewport.camera().swing().degrees();
         }
         this.shake = Angle.degrees(degrees);
+        updateScreen();
     }
 
     @Override

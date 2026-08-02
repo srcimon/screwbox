@@ -1,7 +1,9 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.graphics.Camera;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
@@ -9,6 +11,7 @@ import dev.screwbox.core.window.internal.WindowFrame;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
@@ -27,6 +30,9 @@ class DefaultScreenTest {
     @InjectMocks
     DefaultScreen screen;
 
+    @Spy
+    GraphicsConfiguration configuration = new GraphicsConfiguration(RenderingApi.METAL);
+
     @Mock
     GraphicsDevice graphicsDevice;
 
@@ -38,6 +44,12 @@ class DefaultScreenTest {
 
     @Mock
     ViewportManager viewportManager;
+
+    @Mock
+    Renderer renderer;
+
+    @Mock
+    DefaultCanvas canvas;
 
     @Test
     void position_returnsCanvasOffset() {
