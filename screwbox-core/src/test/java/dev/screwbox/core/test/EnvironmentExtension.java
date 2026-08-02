@@ -8,10 +8,11 @@ import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.graphics.Camera;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Graphics;
-import dev.screwbox.core.graphics.light.Light;
-import dev.screwbox.core.graphics.postprocessing.PostProcessing;
 import dev.screwbox.core.graphics.Screen;
 import dev.screwbox.core.graphics.World;
+import dev.screwbox.core.graphics.light.Light;
+import dev.screwbox.core.graphics.postprocessing.PostProcessing;
+import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.keyboard.Keyboard;
 import dev.screwbox.core.log.Log;
 import dev.screwbox.core.loop.Loop;
@@ -26,11 +27,11 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
-import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EnvironmentExtension implements Extension, BeforeEachCallback, ParameterResolver {
@@ -39,26 +40,27 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
 
     @Override
     public void beforeEach(final ExtensionContext context) {
-        final var gameLoop = Mockito.mock(Loop.class);
-        final var engine = Mockito.mock(Engine.class);
-        final var graphics = Mockito.mock(Graphics.class);
-        final var world = Mockito.mock(World.class);
-        final var log = Mockito.mock(Log.class);
-        final var navigation = Mockito.mock(Navigation.class);
-        final var keyboard = Mockito.mock(Keyboard.class);
-        final var particles = Mockito.mock(Particles.class);
-        final var canvas = Mockito.mock(Canvas.class);
-        final var postProcessing = Mockito.mock(PostProcessing.class);
-        final var window = Mockito.mock(Window.class);
-        final var screen = Mockito.mock(Screen.class);
-        final var camera = Mockito.mock(Camera.class);
-        final var scenes = Mockito.mock(Scenes.class);
-        final var mouse = Mockito.mock(Mouse.class);
-        final var light = Mockito.mock(Light.class);
-        final var audio = Mockito.mock(Audio.class);
-        final var async = Mockito.mock(Async.class);
-        final var ui = Mockito.mock(Ui.class);
-        final var audioConfiguration = Mockito.mock(AudioConfiguration.class);
+        final var gameLoop = mock(Loop.class);
+        final var engine = mock(Engine.class);
+        final var graphics = mock(Graphics.class);
+        final var world = mock(World.class);
+        final var log = mock(Log.class);
+        final var navigation = mock(Navigation.class);
+        final var keyboard = mock(Keyboard.class);
+        final var particles = mock(Particles.class);
+        final var canvas = mock(Canvas.class);
+        final var postProcessing = mock(PostProcessing.class);
+        final var window = mock(Window.class);
+        final var screen = mock(Screen.class);
+        final var camera = mock(Camera.class);
+        final var scenes = mock(Scenes.class);
+        final var mouse = mock(Mouse.class);
+        final var light = mock(Light.class);
+        final var smoke = mock(Smoke.class);
+        final var audio = mock(Audio.class);
+        final var async = mock(Async.class);
+        final var ui = mock(Ui.class);
+        final var audioConfiguration = mock(AudioConfiguration.class);
         final var entities = new DefaultEnvironment(engine);
 
         // resolve a real entity engine with many mocked subsystems
@@ -83,6 +85,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         when(graphics.canvas()).thenReturn(canvas);
         when(graphics.camera()).thenReturn(camera);
         when(graphics.light()).thenReturn(light);
+        when(graphics.smoke()).thenReturn(smoke);
         when(graphics.postProcessing()).thenReturn(postProcessing);
 
         // resolve test method parameters
@@ -93,6 +96,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         parameters.put(PostProcessing.class, postProcessing);
         parameters.put(Canvas.class, canvas);
         parameters.put(Light.class, light);
+        parameters.put(Smoke.class, smoke);
         parameters.put(Scenes.class, scenes);
         parameters.put(Async.class, async);
         parameters.put(Mouse.class, mouse);
