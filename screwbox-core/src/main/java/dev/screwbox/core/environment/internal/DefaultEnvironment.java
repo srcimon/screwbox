@@ -353,6 +353,11 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment enableSmoke() {
+        return enableFeature(Feature.SMOKE);
+    }
+
+    @Override
     public Environment enableAllFeatures() {
         for (final var feature : Feature.values()) {
             enableFeature(feature);

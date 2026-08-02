@@ -1,7 +1,9 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Angle;
+import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.graphics.Camera;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Viewport;
@@ -9,12 +11,14 @@ import dev.screwbox.core.window.internal.WindowFrame;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
 import java.util.List;
 
 import static dev.screwbox.core.Time.now;
+import static dev.screwbox.core.graphics.AspectRatio.WIDESCREEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
@@ -26,6 +30,12 @@ class DefaultScreenTest {
     @InjectMocks
     DefaultScreen screen;
 
+    @Spy
+    GraphicsConfiguration configuration = new GraphicsConfiguration(RenderingApi.METAL);
+
+    @Mock
+    GraphicsDevice graphicsDevice;
+
     @Mock
     WindowFrame frame;
 
@@ -35,6 +45,12 @@ class DefaultScreenTest {
     @Mock
     ViewportManager viewportManager;
 
+    @Mock
+    Renderer renderer;
+
+    @Mock
+    DefaultCanvas canvas;
+
     @Test
     void position_returnsCanvasOffset() {
         when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 198));
@@ -43,19 +59,17 @@ class DefaultScreenTest {
     }
 
     @Test
-    void takeScreenshot_windowNotOpened_throwsException() {
+    void takeScreenshot_frameNotVisible_throwsException() {
         assertThatThrownBy(() -> screen.takeScreenshot())
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("window must be opened first to create screenshot");
     }
 
     @Test
-    void takeScreenshot_windowIsNotAtZeroOffset_createsScreenshotFromWholeWindow() {
+    void takeScreenshot_frameIsVisible_createsScreenshot() {
         var screenshot = ImageOperations.createImage(Size.square(30));
         when(frame.isVisible()).thenReturn(true);
-        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
-        when(frame.getCanvasOffset()).thenReturn(Offset.at(40, 90));
-        when(robot.createScreenCapture(new Rectangle(40, 90, 640, 480))).thenReturn(screenshot);
+        when(frame.createScreenCapture()).thenReturn(screenshot);
 
         var result = screen.takeScreenshot();
 
@@ -223,5 +237,39 @@ class DefaultScreenTest {
     @Test
     void isFlippedVertical_noFlip_isFalse() {
         assertThat(screen.isFlippedVertical()).isFalse();
+    }
+
+    @Test
+    void supportedResolutions_threeDisplayModes_returnsReverseOrderedListOfDistinctModes() {
+        when(graphicsDevice.getDisplayModes()).thenReturn(List.of(
+                new DisplayMode(800, 600, 16, 60),
+                new DisplayMode(800, 600, 32, 60),
+                new DisplayMode(1024, 768, 32, 60))
+            .toArray(new DisplayMode[]{}));
+
+        List<Size> supportedResolutions = screen.supportedResolutions();
+
+        assertThat(supportedResolutions).containsExactly(Size.of(1024, 768), Size.of(800, 600));
+    }
+
+    @Test
+    void supportedResolutions_onlyWidescreen_returnsOnlyWidescreenResolutions() {
+        when(graphicsDevice.getDisplayModes()).thenReturn(List.of(
+                new DisplayMode(800, 600, 16, 60),
+                new DisplayMode(800, 600, 32, 60),
+                new DisplayMode(1600, 900, 32, 60),
+                new DisplayMode(1024, 768, 32, 60))
+            .toArray(new DisplayMode[]{}));
+
+        List<Size> supportedResolutions = screen.supportedResolutions(WIDESCREEN);
+
+        assertThat(supportedResolutions).containsExactly(Size.of(1600, 900));
+    }
+
+    @Test
+    void resolution_returnsResolutionFromGraphicsDevice() {
+        when(graphicsDevice.getDisplayMode()).thenReturn(new DisplayMode(640, 480, 32, 60));
+
+        assertThat(screen.resolution()).isEqualTo(Size.of(640, 480));
     }
 }

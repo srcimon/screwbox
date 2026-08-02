@@ -11,8 +11,8 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.AwtMapper;
-import dev.screwbox.core.graphics.postfilter.PostProcessingContext;
-import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
+import dev.screwbox.core.graphics.postprocessing.filter.PostProcessingContext;
+import dev.screwbox.core.graphics.postprocessing.filter.PostProcessingFilter;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;

@@ -214,7 +214,7 @@ class DefaultLoopTest {
     void setSpeed_speedTooHeight_throwsException() {
         assertThatThrownBy(() -> loop.setSpeed(11))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("speed cannot exceed 10.0 (actual value: 11.0)");
+                .hasMessage("speed must be between 0.1 and 10.0 (actual value: 11.0)");
     }
 
     private Updatable stopAfterOneFrameUpdatable() {

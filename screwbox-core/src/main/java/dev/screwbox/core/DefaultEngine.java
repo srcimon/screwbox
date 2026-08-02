@@ -20,8 +20,19 @@ import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
-import dev.screwbox.core.graphics.internal.*;
+import dev.screwbox.core.graphics.internal.AttentionFocus;
+import dev.screwbox.core.graphics.internal.DefaultCamera;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
+import dev.screwbox.core.graphics.internal.DefaultGraphics;
+import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
+import dev.screwbox.core.graphics.internal.DefaultScreen;
+import dev.screwbox.core.graphics.internal.DefaultViewport;
+import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
+import dev.screwbox.core.graphics.light.internal.DefaultLight;
+import dev.screwbox.core.graphics.smoke.internal.DefaultSmoke;
+import dev.screwbox.core.graphics.smoke.internal.SmokeRenderer;
 import dev.screwbox.core.keyboard.Keyboard;
 import dev.screwbox.core.keyboard.internal.DefaultKeyboard;
 import dev.screwbox.core.log.ConsoleLoggingAdapter;
@@ -63,7 +74,7 @@ class DefaultEngine implements Engine {
     private final DefaultKeyboard keyboard;
     private final DefaultScenes scenes;
     private final DefaultAudio audio;
-    private final DefaultNavigation physics;
+    private final DefaultNavigation navigation;
     private final DefaultMouse mouse;
     private final DefaultUi ui;
     private final DefaultLog log;
@@ -83,10 +94,11 @@ class DefaultEngine implements Engine {
             log.warn("Please run application with the following JVM option to add full MacOs support: {}", MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
 
+        final var robot = createRobot();
         final var configuration = new GraphicsConfiguration(renderingApi);
         final WindowFrame frame = MacOsSupport.isMacOs()
-            ? new MacOsWindowFrame(configuration.resolution())
-            : new WindowFrame(configuration.resolution());
+            ? new MacOsWindowFrame(robot, configuration.resolution())
+            : new WindowFrame(robot, configuration.resolution());
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -108,21 +120,22 @@ class DefaultEngine implements Engine {
         final DefaultCanvas screenCanvas = new DefaultCanvas(renderPipeline.renderer(), clip);
         final DefaultCamera camera = new DefaultCamera(screenCanvas);
         final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), renderPipeline);
-        final var robot = createRobot();
         final var postProcessing = new DefaultPostProcessing(configuration, viewportManager, ImageOperations::createVolatileImage);
-        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), robot, screenCanvas, viewportManager, configuration, postProcessing);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        final DefaultScreen screen = new DefaultScreen(frame, renderPipeline.renderer(), screenCanvas, viewportManager, configuration, postProcessing, graphicsDevice);
         mouse = new DefaultMouse(screen, viewportManager);
         final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
         window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline, cursorLockInSupport);
-        final DefaultLight light = new DefaultLight(configuration, viewportManager, executor);
+
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, executor, postProcessing);
 
-        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, renderPipeline, viewportManager, postProcessing);
+        final var light = new DefaultLight(configuration, viewportManager, executor);
+        final var smoke = new DefaultSmoke(viewportManager, configuration, executor, new SmokeRenderer());
+        graphics = new DefaultGraphics(configuration, screen, renderPipeline, viewportManager, postProcessing, light, smoke);
         particles = new DefaultParticles(scenes, new AttentionFocus(viewportManager));
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(new AttentionFocus(viewportManager), audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
@@ -130,8 +143,8 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         achievements = new DefaultAchievements(this, new NotifyOnAchievementCompletion(ui));
 
-        loop = new DefaultLoop(List.of(achievements, keyboard, graphics, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
-        physics = new DefaultNavigation(this);
+        loop = new DefaultLoop(List.of(achievements, keyboard, screen, light, postProcessing, scenes, viewportManager, ui, mouse, window, camera, particles, audio));
+        navigation = new DefaultNavigation(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
         frame.addWindowFocusListener(keyboard);
@@ -207,7 +220,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public Navigation navigation() {
-        return physics;
+        return navigation;
     }
 
     @Override

@@ -2,10 +2,10 @@ package dev.screwbox.vacuum.enemies.slime;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.particles.ParticleEmitterComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
@@ -21,26 +21,26 @@ import dev.screwbox.vacuum.enemies.SpawnPointComponent;
 public class Slime implements Blueprint<Entity> {
 
     private static final ParticleOptions PARTICLE_OPTIONS = ParticleOptions.unknownSource()
-            .sprite(SpriteBundle.DOT_YELLOW)
-            .randomStartScale(0.4, 0.8)
-            .randomLifespanSeconds(6, 7)
-            .ease(Ease.PLATEAU_OUT_SLOW)
-            .animateOpacity()
-            .relativeDrawOrder(-1);
+        .sprite(SpriteBundle.DOT_YELLOW)
+        .randomStartScale(0.4, 0.8)
+        .randomLifespanSeconds(6, 7)
+        .ease(Ease.PLATEAU_OUT_SLOW)
+        .animateOpacity()
+        .relativeDrawOrder(-1);
 
     @Override
     public Entity assembleFrom(Entity spawnPoint) {
         int drawOrder = spawnPoint.get(SpawnPointComponent.class).drawOrder;
         return new Entity().name("slime")
-                .add(new TransformComponent(spawnPoint.position(), 8, 8))
-                .add(new RenderComponent(SpriteBundle.SLIME_MOVING, drawOrder))
-                .add(new PhysicsComponent())
-                .add(new ColliderComponent())
-                .add(new EnemyComponent())
-                .add(new ParticleEmitterComponent(Duration.ofMillis(120), SpawnMode.POSITION, PARTICLE_OPTIONS
-                        .drawOrder(drawOrder)))
-                .add(new RunAtPlayerComponent())
-                .add(new OccluderComponent(false))
-                .add(new PathMovementComponent(40, 160));
+            .add(new TransformComponent(spawnPoint.position(), 8, 8))
+            .add(new RenderComponent(SpriteBundle.SLIME_MOVING, drawOrder))
+            .add(new PhysicsComponent())
+            .add(new ColliderComponent())
+            .add(new EnemyComponent())
+            .add(new ParticleEmitterComponent(Duration.ofMillis(120), SpawnMode.POSITION, PARTICLE_OPTIONS
+                .drawOrder(drawOrder)))
+            .add(new RunAtPlayerComponent())
+            .add(new OccluderComponent(false))
+            .add(new PathMovementComponent(40, 160));
     }
 }

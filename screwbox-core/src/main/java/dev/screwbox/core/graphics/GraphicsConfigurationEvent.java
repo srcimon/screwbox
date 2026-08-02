@@ -96,7 +96,37 @@ public class GraphicsConfigurationEvent extends EventObject {
         /**
          * {@link GraphicsConfiguration#isLensFlareEnabled()} was changed.
          */
-        LENS_FLARE_ENABLED
+        LENS_FLARE_ENABLED,
+
+        /**
+         * {@link GraphicsConfiguration#isSmokeEnabled()} was changed.
+         */
+        SMOKE_ENABLED,
+
+        /**
+         * {@link GraphicsConfiguration#smokeBlur()} was changed.
+         */
+        SMOKE_BLUR,
+
+        /**
+         * {@link GraphicsConfiguration#smokeCellSize()} was changed.
+         */
+        SMOKE_CELL_SIZE,
+
+        /**
+         * {@link GraphicsConfiguration#smokeCellPadding()} was changed.
+         */
+        SMOKE_CELL_PADDING,
+
+        /**
+         * {@link GraphicsConfiguration#isAutoEnableSmoke()} was changed.
+         */
+        SMOKE_AUTO_ENABLE,
+
+        /**
+         * {@link GraphicsConfiguration#smokeScale()} was changed.
+         */
+        SMOKE_SCALE
     }
 
     public GraphicsConfigurationEvent(final Object source, final ConfigurationProperty changedProperty) {

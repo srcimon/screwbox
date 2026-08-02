@@ -1,0 +1,239 @@
+package dev.screwbox.core.graphics.postprocessing.internal;
+
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.RenderingApi;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
+import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.internal.DefaultCamera;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
+import dev.screwbox.core.graphics.internal.DefaultPostProcessing;
+import dev.screwbox.core.graphics.internal.DefaultViewport;
+import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.internal.ViewportManager;
+import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
+import dev.screwbox.core.graphics.light.ShockwaveOptions;
+import dev.screwbox.core.graphics.postprocessing.filter.DeepSeaPostFilter;
+import dev.screwbox.core.graphics.postprocessing.filter.FacetEyePostFilter;
+import dev.screwbox.core.graphics.postprocessing.filter.FishEyePostFilter;
+import dev.screwbox.core.test.TestUtil;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.junit.jupiter.MockitoSettings;
+
+import static dev.screwbox.core.Vector.$;
+import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+@MockitoSettings
+class DefaultPostprocessingTest {
+
+    DefaultPostProcessing postProcessing;
+    GraphicsConfiguration configuration;
+
+    @BeforeEach
+    void setUp() {
+        configuration = new GraphicsConfiguration(RenderingApi.DIRECT_3D);
+        final var canvasBounds = new ScreenBounds(0, 0, 40, 40);
+        final var canvas = new DefaultCanvas(new DefaultRenderer(), canvasBounds);
+        final var defaultViewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
+        final var viewportManager = new ViewportManager(defaultViewport, null);
+        postProcessing = new DefaultPostProcessing(configuration, viewportManager, ImageOperations::createImage);
+    }
+
+    @Test
+    void shockwaveCount_shockwaveIsProcessed_shockwaveIsRemovedAndNotCountetAnymore() {
+        postProcessing
+            .triggerShockwave($(10, 40), ShockwaveOptions.radius(10).duration(Duration.ofMillis(1)))
+            .triggerShockwave($(50, 40), ShockwaveOptions.radius(80).duration(Duration.ofSeconds(2)));
+
+        assertThat(postProcessing.shockwaveCount()).isEqualTo(2);
+
+        TestUtil.await(() -> {
+            postProcessing.update();
+            return postProcessing.shockwaveCount() == 1;
+        }, Duration.oneSecond());
+
+        assertThat(postProcessing.shockwaveCount()).isEqualTo(1);
+    }
+
+    @Test
+    void isActive_transitionFilterPresent_isTrue() {
+        postProcessing.setTransitionFilter(new FacetEyePostFilter(40));
+        assertThat(postProcessing.isActive()).isTrue();
+    }
+
+    @Test
+    void isActive_effectFilterPresent_isTrue() {
+        postProcessing.addEffectFilter(new FacetEyePostFilter(40));
+        assertThat(postProcessing.isActive()).isTrue();
+    }
+
+    @Test
+    void isActive_noFilterAndShockwaves_isFalse() {
+        assertThat(postProcessing.isActive()).isFalse();
+    }
+
+    @Test
+    void isActive_shockwaveTriggered_isTrue() {
+        postProcessing.triggerShockwave($(40, 10), ShockwaveOptions.radius(20));
+        postProcessing.update();
+
+        assertThat(postProcessing.isActive()).isTrue();
+    }
+
+    @Test
+    void isActive_screenFilterPresent_isTrue() {
+        postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
+
+        assertThat(postProcessing.isActive()).isTrue();
+    }
+
+    @Test
+    void clearFilters_filterPresent_removesFilter() {
+        postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
+
+        postProcessing.clearFilters();
+
+        assertThat(postProcessing.isActive()).isFalse();
+        assertThat(postProcessing.filterCount()).isZero();
+    }
+
+    @Test
+    void addScreenFilter_increasesFilterCount_addsFilter() {
+        postProcessing.addScreenFilter(new FishEyePostFilter(16, 1.0));
+
+        assertThat(postProcessing.filterCount()).isOne();
+    }
+
+    @Test
+    void addViewportFilter_increasesFilterCount_addsFilter() {
+        postProcessing.addViewportFilter(new FishEyePostFilter(16, 1.0));
+
+        assertThat(postProcessing.filterCount()).isOne();
+    }
+
+    @Test
+    void addViewportFilter_filterNull_throwsException() {
+        assertThatThrownBy(() -> postProcessing.addViewportFilter(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("filter must not be null");
+    }
+
+    @Test
+    void addScreenFilterfilterNull_throwsException() {
+        assertThatThrownBy(() -> postProcessing.addScreenFilter(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("filter must not be null");
+    }
+
+    @Test
+    void addEffectFilter_filterNull_throwsException() {
+        assertThatThrownBy(() -> postProcessing.addEffectFilter(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("filter must not be null");
+    }
+
+    @Test
+    void removeFilter_filterPresent_removesFilter() {
+        postProcessing
+            .addScreenFilter(new FishEyePostFilter(16, 1.0))
+            .addViewportFilter(new FishEyePostFilter(16, 1.0))
+            .addViewportFilter(new DeepSeaPostFilter());
+
+        assertThat(postProcessing.filterCount()).isEqualTo(3);
+
+        postProcessing.removeFilter(FishEyePostFilter.class);
+        assertThat(postProcessing.filterCount()).isOne();
+    }
+
+    @Test
+    void applyEffects_filterAndNoShockwaves_appliesFilterOnTarget() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+        postProcessing.applyEffects(source, targetGraphics, new FishEyePostFilter(20, 0.2));
+
+        Frame result = Frame.fromImage(targetImage);
+        Frame input = Frame.fromImage(source);
+        assertThat(result.colors()).containsAll(input.colors());
+        assertThat(result.hasIdenticalPixels(input)).isFalse();
+    }
+
+    @Test
+    void applyEffects_noFiltersAndNoShockwaves_doesNotDrawUpponTarget() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+        postProcessing.applyEffects(source, targetGraphics, null);
+
+        Frame result = Frame.fromImage(targetImage);
+        assertThat(result.colors()).containsExactly(Color.TRANSPARENT);
+    }
+
+    @Test
+    void applyEffects_shockwaveTriggered_appliesShockwaveFilterOnTarget() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+
+        postProcessing.triggerShockwave($(4, 4), ShockwaveOptions.radius(20).intensity(83).duration(Duration.ofSeconds(20)));
+        postProcessing.update();
+        postProcessing.applyEffects(source, targetGraphics, null);
+
+        Frame result = Frame.fromImage(targetImage);
+        Frame input = Frame.fromImage(source);
+        assertThat(result.colors()).containsAll(input.colors());
+        assertThat(result.hasIdenticalPixels(input)).isFalse();
+    }
+
+    @Test
+    void applyEffects_multipleFilters_appliesAllFilters() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+
+        postProcessing.addScreenFilter(new FishEyePostFilter(16, -0.7));
+        postProcessing.addScreenFilter(new FishEyePostFilter(20, -0.4));
+        postProcessing.applyEffects(source, targetGraphics, null);
+
+        verifyIsSameImage(targetImage, "postfilter/applyEffects_multipleFilters_appliesAllFilters.png");
+    }
+
+    @Test
+    void applyEffects_imageIsResized_noException() {
+        var source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
+        var targetImage = ImageOperations.createEmptyImageOfSameSize(source);
+        var targetGraphics = targetImage.createGraphics();
+
+        postProcessing.addScreenFilter(new FacetEyePostFilter(8));
+        postProcessing.applyEffects(source, targetGraphics, null);
+
+        var secondSource = SpriteBundle.SHADER_PREVIEW.get().scaled(2).singleImage();
+        var secondTargetImage = ImageOperations.createEmptyImageOfSameSize(secondSource);
+        var secondTargetGraphics = secondTargetImage.createGraphics();
+
+        assertThatNoException().isThrownBy(() -> postProcessing.applyEffects(secondSource, secondTargetGraphics, null));
+    }
+
+    @Test
+    void shockwaveCellSize_defaultConfiguration_isTen() {
+        assertThat(postProcessing.shockwaveCellSize()).isEqualTo(10);
+    }
+
+    @Test
+    void shockwaveCellSize_reducedResoultion_reducedCellSize() {
+        configuration.setResolution(640, 480);
+        assertThat(postProcessing.shockwaveCellSize()).isEqualTo(6);
+    }
+
+    @Test
+    void shockwaveCellSize_reducedLimit_increasedCellSize() {
+        configuration.setShockwaveCellLimit(5_000);
+        assertThat(postProcessing.shockwaveCellSize()).isEqualTo(14);
+    }
+}

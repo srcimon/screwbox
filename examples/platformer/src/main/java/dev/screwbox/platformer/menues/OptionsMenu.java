@@ -61,7 +61,7 @@ public class OptionsMenu extends UiMenu {
         addItem("shader settings").onActivate(engine -> engine.ui().openMenu(new ShaderMenu()));
 
         addItem("change resolution").onActivate(engine -> {
-            List<Size> resolutions = engine.graphics().supportedResolutions();
+            List<Size> resolutions = engine.graphics().screen().supportedResolutions();
             Size resolution = engine.graphics().configuration().resolution();
             engine.ui().setLayout(new ScrollingUiLayout());
             engine.ui().openMenu(new ResolutionOptionMenu(resolutions, resolution));

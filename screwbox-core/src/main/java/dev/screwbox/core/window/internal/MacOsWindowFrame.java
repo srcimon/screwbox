@@ -12,8 +12,8 @@ public class MacOsWindowFrame extends WindowFrame {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public MacOsWindowFrame(final Size initialSize) {
-        super(initialSize);
+    public MacOsWindowFrame(final Robot robot, final Size initialSize) {
+        super(robot, initialSize);
     }
 
     @Override

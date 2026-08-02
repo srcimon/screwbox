@@ -309,6 +309,79 @@ class GraphicsConfigurationTest {
         assertThat(graphicsConfiguration.isIndirectLightEnabled()).isTrue();
     }
 
+    @Test
+    void setSmokeScale_scaleZero_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setSmokeScale(0))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("smoke scale must be between 1 and 8 (actual value: 0)");
+    }
+
+    @Test
+    void setSmokeScale_scaleSix_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setSmokeScale(6);
+
+        assertThat(graphicsConfiguration.smokeScale()).isEqualTo(6);
+        verifyEventPosted(SMOKE_SCALE, times(1));
+    }
+
+    @Test
+    void setSmokeEnabled_true_enablesSmokeAndNotifiesListeners() {
+        graphicsConfiguration.setSmokeEnabled(true);
+
+        assertThat(graphicsConfiguration.isSmokeEnabled()).isTrue();
+        verifyEventPosted(SMOKE_ENABLED, times(1));
+    }
+
+    @Test
+    void setSmokeBlur_outOfRange_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setSmokeBlur(40))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("smoke blur must be between 0 and 20 (actual value: 40)");
+    }
+
+    @Test
+    void setSmokeBlur_eight_setsBlurToEight() {
+        graphicsConfiguration.setSmokeBlur(8);
+
+        assertThat(graphicsConfiguration.smokeBlur()).isEqualTo(8);
+        verifyEventPosted(SMOKE_BLUR, times(1));
+    }
+
+    @Test
+    void setSmokeCellSize_outOfRange_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setSmokeCellSize(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("smoke cell size must be between 2 and 32 (actual value: -1)");
+    }
+
+    @Test
+    void setSmokeCellSize_twenty_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setSmokeCellSize(20);
+        assertThat(graphicsConfiguration.smokeCellSize()).isEqualTo(20);
+        verifyEventPosted(SMOKE_CELL_SIZE, times(1));
+    }
+
+    @Test
+    void setSmokeCellPadding_outOfRange_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setSmokeCellPadding(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("smoke cell padding must be between 0 and 128 (actual value: -1)");
+    }
+
+    @Test
+    void setSmokeCellPadding_twenty_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setSmokeCellPadding(20);
+        assertThat(graphicsConfiguration.smokeCellPadding()).isEqualTo(20);
+        verifyEventPosted(SMOKE_CELL_PADDING, times(1));
+    }
+
+    @Test
+    void setSmokeAutoEnable_false_disablesAutoEnableAndNotifiesListeners() {
+        graphicsConfiguration.setAutoEnableSmoke(false);
+        assertThat(graphicsConfiguration.isAutoEnableSmoke()).isFalse();
+        verifyEventPosted(SMOKE_AUTO_ENABLE, times(1));
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

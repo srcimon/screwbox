@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.RenderingApi;
+import dev.screwbox.core.graphics.light.Light;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.utils.Validate;
 
@@ -15,6 +16,8 @@ import static java.util.Objects.requireNonNull;
 /**
  * Configuration of major {@link Graphics} and rendering properties. Every change creates a
  * {@link GraphicsConfigurationEvent} that can be used to adjust to the new configuration.
+ *
+ * @see <a href="https://screwbox.dev/docs/core-modules/graphics/#configuration">Documentation</a>
  */
 public class GraphicsConfiguration {
 
@@ -44,6 +47,12 @@ public class GraphicsConfiguration {
     private Percent indirectLightIntensity = Percent.of(0.9);
     private float indirectLightDiameter = 16f;
     private int maxLightBounces = 2;
+    private boolean isSmokeEnabled = false;
+    private int smokeScale = 4;
+    private int smokeBlur = 2;
+    private int smokeCellSize = 8;
+    private int smokeCellPadding = 32;
+    private boolean isAutoEnableSmoke = true;
 
     public GraphicsConfiguration(final RenderingApi renderingApi) {
         this.renderingApi = renderingApi;
@@ -354,7 +363,7 @@ public class GraphicsConfiguration {
 
     /**
      * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
-     * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
+     * {@link Screen#supportedResolutions()} to get a list of all supported fullscreen resolutions.
      *
      * @param width  the width of the resolution to set
      * @param height the height of the resolution to set
@@ -366,7 +375,7 @@ public class GraphicsConfiguration {
 
     /**
      * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
-     * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
+     * {@link Screen#supportedResolutions()} to get a list of all supported fullscreen resolutions.
      */
     public GraphicsConfiguration setResolution(final Size resolution) {
         this.resolution = requireNonNull(resolution, "resolution must not be null");
@@ -497,6 +506,136 @@ public class GraphicsConfiguration {
      */
     public RenderingApi renderingApi() {
         return renderingApi;
+    }
+
+    /**
+     * Enables or disables smoke rendering.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeEnabled(final boolean smokeEnabled) {
+        this.isSmokeEnabled = smokeEnabled;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_ENABLED);
+        return this;
+    }
+
+    /**
+     * Returns {@code true} if smoke rendering is enabled.
+     *
+     * @since 3.33.0
+     */
+    public boolean isSmokeEnabled() {
+        return isSmokeEnabled;
+    }
+
+    /**
+     * Sets the scale of the smoke image. Increasing the scale might improve smoke quality but also lowers smoke
+     * performance. Default value is 4.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeScale(final int smokeScale) {
+        Validate.range(smokeScale, 1, 8, "smoke scale must be between 1 and 8");
+        this.smokeScale = smokeScale;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_SCALE);
+        return this;
+    }
+
+    /**
+     * Returns the scale of the smoke image. Default value is 4.
+     *
+     * @since 3.33.0
+     */
+    public int smokeScale() {
+        return smokeScale;
+    }
+
+    /**
+     * Sets the blur value for the smoke image. Default is 2. Setting blur to zero disables blurring.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeBlur(final int smokeBlur) {
+        Validate.range(smokeBlur, 0, 20, "smoke blur must be between 0 and 20");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_BLUR);
+        this.smokeBlur = smokeBlur;
+        return this;
+    }
+
+    /**
+     * Returns the blur value for the smoke image. Default is 2.
+     *
+     * @since 3.33.0
+     */
+    public int smokeBlur() {
+        return smokeBlur;
+    }
+
+    /**
+     * Returns the smoke cell size. Default is 8.
+     *
+     * @since 3.33.0
+     */
+    public int smokeCellSize() {
+        return smokeCellSize;
+    }
+
+    /**
+     * Sets the smoke cell size. Default is 8. Smaller cells create a more detailed smoke. Will have significant impact
+     * on the smoke rendering and simulation performance. It's recommended to reduce {@link #smokeScale()} when using
+     * lower cell sizes.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeCellSize(final int smokeCellSize) {
+        Validate.range(smokeCellSize, 2, 32, "smoke cell size must be between 2 and 32");
+        this.smokeCellSize = smokeCellSize;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_CELL_SIZE);
+        return this;
+    }
+
+    /**
+     * Returns the smoke cell padding. Default is 32.
+     *
+     * @since 3.33.0
+     */
+    public int smokeCellPadding() {
+        return smokeCellPadding;
+    }
+
+    /**
+     * Sets the smoke cell padding. The padding adds additional off-screen cells to simulate smoke even when off camera.
+     * Reduce to improve performance, especially when the camera is not moving at all. Default is 32.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setSmokeCellPadding(final int smokeCellPadding) {
+        Validate.range(smokeCellPadding, 0, 128, "smoke cell padding must be between 0 and 128");
+        this.smokeCellPadding = smokeCellPadding;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_CELL_PADDING);
+        return this;
+    }
+
+    /**
+     * Returns {@code true} if smoke will be automatically turned on when interacting with the smoke simulation.
+     * Default is {@code true}.
+     *
+     * @since 3.33.0
+     */
+    public boolean isAutoEnableSmoke() {
+        return isAutoEnableSmoke;
+    }
+
+    /**
+     * Enable or disable auto activation of smoke. Rendering will be automatically turned on when interacting with the smoke simulation.
+     * Default is {@code true}.
+     *
+     * @since 3.33.0
+     */
+    public GraphicsConfiguration setAutoEnableSmoke(final boolean autoEnableSmoke) {
+        this.isAutoEnableSmoke = autoEnableSmoke;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.SMOKE_AUTO_ENABLE);
+        return this;
     }
 
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {

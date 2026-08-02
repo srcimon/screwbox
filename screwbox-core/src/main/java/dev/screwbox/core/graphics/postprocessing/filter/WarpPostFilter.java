@@ -1,0 +1,51 @@
+package dev.screwbox.core.graphics.postprocessing.filter;
+
+import dev.screwbox.core.Percent;
+
+import java.awt.*;
+
+/**
+ * Applies a warp effect on the screen.
+ *
+ * @since 3.24.0
+ */
+public record WarpPostFilter(Percent strength) implements PostProcessingFilter {
+
+    private static final float[] DIST = {0.0f, 1.0f};
+    private static final Color[] COLORS = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 180)};
+
+    @Override
+    public void apply(final Image source, final Graphics2D target, final PostProcessingContext context) {
+        drawSourceImage(source, target, context);
+        final var area = context.bounds();
+        final double scale = context.resolutionScale();
+
+        for (int i = 1; i <= 3; i++) {
+            final double zoom = 1.0 + (i * 0.05 * scale);
+            final double alpha = strength.value() / i;
+
+            final int nw = (int) (area.width() * zoom);
+            final int nh = (int) (area.height() * zoom);
+
+            final int dx1 = area.x() + (area.width() - nw) / 2;
+            final int dy1 = area.y() + (area.height() - nh) / 2;
+            final int dx2 = dx1 + nw;
+            final int dy2 = dy1 + nh;
+
+            target.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) Math.clamp(alpha, 0, 1)));
+            target.drawImage(source, dx1, dy1, dx2, dy2, area.x(), area.y(), area.maxX(), area.maxY(), null);
+        }
+
+        target.setComposite(AlphaComposite.SrcOver);
+
+        final float radius = (float) (area.width() * 0.7);
+        target.setPaint(new RadialGradientPaint(
+            area.center().x(),
+            area.center().y(),
+            radius,
+            DIST,
+            COLORS));
+
+        target.fillRect(area.x(), area.y(), area.width(), area.height());
+    }
+}

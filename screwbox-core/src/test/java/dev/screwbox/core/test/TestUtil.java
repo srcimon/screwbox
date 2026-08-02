@@ -51,8 +51,8 @@ public final class TestUtil {
     }
 
     public static void verifyIsSameImage(final Image result, final String file) {
-        Frame resultFrame = Frame.fromImage(result);
-        Frame fileFrame = Frame.fromFile(file);
+        final Frame resultFrame = Frame.fromImage(result);
+        final Frame fileFrame = Frame.fromFile(file);
         assertThat(fileFrame.hasIdenticalPixels(resultFrame, Percent.of(0.1))).isTrue();
     }
 

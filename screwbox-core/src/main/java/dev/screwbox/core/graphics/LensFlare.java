@@ -5,6 +5,8 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.graphics.light.LensFlareBundle;
+import dev.screwbox.core.graphics.light.Light;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;

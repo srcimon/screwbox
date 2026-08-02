@@ -5,9 +5,11 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.graphics.postfilter.PostProcessingFilter;
+import dev.screwbox.core.graphics.light.Light;
+import dev.screwbox.core.graphics.postprocessing.PostProcessing;
+import dev.screwbox.core.graphics.postprocessing.filter.PostProcessingFilter;
+import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.loop.Loop;
-import dev.screwbox.core.window.Window;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,13 @@ import java.util.Optional;
  * @see <a href="https://screwbox.dev/docs/core-modules/graphics/">Documentation</a>
  */
 public interface Graphics extends Viewport {
+
+    /**
+     * Subsystem for creating {@link Smoke} effects.
+     *
+     * @since 3.33.0
+     */
+    Smoke smoke();
 
     /**
      * Returns the {@link Viewport} at the specified {@link Offset}.
@@ -121,26 +130,6 @@ public interface Graphics extends Viewport {
      * @since 3.24.0
      */
     PostProcessing postProcessing();
-
-    /**
-     * Returns a list of all supported resolutions.
-     *
-     * @see #supportedResolutions(AspectRatio)
-     */
-    List<Size> supportedResolutions();
-
-    /**
-     * Returns a list of all supported resolutions of the given {@link AspectRatio}.
-     *
-     * @see #supportedResolutions()
-     */
-    List<Size> supportedResolutions(AspectRatio ratio);
-
-    /**
-     * Returns the current screen resolution. The screen resolution can be different from the current {@link Window#size()}
-     * when {@link Window} is not in full screen mode.
-     */
-    Size resolution();
 
     /**
      * Returns a list of all font names that can were found on the current system.

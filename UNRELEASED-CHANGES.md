@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Added dynamic interactive smoke using real-time fluid dynamics
 - Add relative position methods to `Offset`
 - `Grid` can now store any data not just booleans (#791)
 - More flexible `Grid` instantiation
@@ -15,6 +16,9 @@
 
 - Removed unused Grid methods
 - Cleaned up `Grid` methods
+- Reorganized graphics package with subpackages
+- Moved methods for supported and current resolution from `Graphics` to `Screen`
+- Simplified `Graphics`, `Light` and `Screen` update
 
 ### 📦 Dependency updates
 
