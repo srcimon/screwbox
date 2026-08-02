@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.smoke.internal;
 
 import java.util.Arrays;
 
-public class DensityData {
+public class DensityInfo {
 
     private final int cells;
     private final double[] red;
@@ -10,7 +10,7 @@ public class DensityData {
     private final double[] blue;
     private final double[] alpha;
 
-    public DensityData(final int cells, final double[] red, final double[] green, final double[] blue, final double[] alpha) {
+    public DensityInfo(final int cells, final double[] red, final double[] green, final double[] blue, final double[] alpha) {
         this.cells = cells;
         this.red = Arrays.copyOf(red, red.length);
         this.green = Arrays.copyOf(green, green.length);

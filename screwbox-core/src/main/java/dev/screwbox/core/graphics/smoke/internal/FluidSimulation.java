@@ -101,8 +101,8 @@ public class FluidSimulation {
                y < resolution();
     }
 
-    public DensityData densityData() {
-        return new DensityData(resolution, densityR, densityG, densityB, densityA);
+    public DensityInfo densityData() {
+        return new DensityInfo(resolution, densityR, densityG, densityB, densityA);
     }
 
     private int index(final int x, final int y) {

@@ -91,7 +91,7 @@ class FluidSimulationTest {
             simulation.step(0.1, 0.0004, 0.0003, 3);
         }
 
-        DensityData state = simulation.densityData();
+        DensityInfo state = simulation.densityData();
         assertThat(state.red(18, 16)).isNotZero();
         assertThat(state.red(19, 16)).isNotZero();
         assertThat(state.red(19, 15)).isNotZero();

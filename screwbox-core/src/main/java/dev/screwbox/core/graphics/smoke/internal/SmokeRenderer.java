@@ -10,7 +10,7 @@ import java.awt.image.DataBufferInt;
 
 public class SmokeRenderer {
 
-    public BufferedImage renderSmoke(final DensityData state, final ScreenBounds bounds, final int scale, final SmokeStyle style) {
+    public BufferedImage renderSmoke(final DensityInfo densityInfo, final ScreenBounds bounds, final int scale, final SmokeStyle style) {
         final int startX = bounds.x();
         final int startY = bounds.y();
         final int targetWidth = bounds.width() * scale;
@@ -30,8 +30,8 @@ public class SmokeRenderer {
             float srcX = startX + ((float) x / scale);
             int x0 = (int) srcX;
 
-            x0Arr[x] = Math.clamp(x0, 0, state.cells() - 1);
-            x1Arr[x] = Math.clamp(x0 + 1L, 0, state.cells() - 1);
+            x0Arr[x] = Math.clamp(x0, 0, densityInfo.cells() - 1);
+            x1Arr[x] = Math.clamp(x0 + 1L, 0, densityInfo.cells() - 1);
             tXArr[x] = srcX - x0;
         }
 
@@ -41,8 +41,8 @@ public class SmokeRenderer {
             float srcY = startY + ((float) y / scale);
             int y0 = (int) srcY;
 
-            int clampedY0 = Math.clamp(y0, 0, state.cells() - 1);
-            int clampedY1 = Math.clamp(y0 + 1L, 0, state.cells() - 1);
+            int clampedY0 = Math.clamp(y0, 0, densityInfo.cells() - 1);
+            int clampedY1 = Math.clamp(y0 + 1L, 0, densityInfo.cells() - 1);
             float tY = srcY - y0;
             float invTY = 1.0f - tY;
 
@@ -56,27 +56,27 @@ public class SmokeRenderer {
                 float w01 = invTX * tY;
                 float w11 = tX * tY;
 
-                final int index1 = state.calculateIndex(x0Arr[x], clampedY0);
-                final int index2 = state.calculateIndex(x1Arr[x], clampedY0);
-                final int index3 = state.calculateIndex(x0Arr[x], clampedY1);
-                final int index4 = state.calculateIndex(x1Arr[x], clampedY1);
-                final float r = clampRgb(state.red(index1) * w00 +
-                                         state.red(index2) * w10 +
-                                         state.red(index3) * w01 +
-                                         state.red(index4) * w11);
-                final float g = clampRgb(state.green(index1) * w00 +
-                                         state.green(index2) * w10 +
-                                         state.green(index3) * w01 +
-                                         state.green(index4) * w11);
-                final float b = clampRgb(state.blue(index1) * w00 +
-                                         state.blue(index2) * w10 +
-                                         state.blue(index3) * w01 +
-                                         state.blue(index4) * w11);
+                final int index1 = densityInfo.calculateIndex(x0Arr[x], clampedY0);
+                final int index2 = densityInfo.calculateIndex(x1Arr[x], clampedY0);
+                final int index3 = densityInfo.calculateIndex(x0Arr[x], clampedY1);
+                final int index4 = densityInfo.calculateIndex(x1Arr[x], clampedY1);
+                final float r = clampRgb(densityInfo.red(index1) * w00 +
+                                         densityInfo.red(index2) * w10 +
+                                         densityInfo.red(index3) * w01 +
+                                         densityInfo.red(index4) * w11);
+                final float g = clampRgb(densityInfo.green(index1) * w00 +
+                                         densityInfo.green(index2) * w10 +
+                                         densityInfo.green(index3) * w01 +
+                                         densityInfo.green(index4) * w11);
+                final float b = clampRgb(densityInfo.blue(index1) * w00 +
+                                         densityInfo.blue(index2) * w10 +
+                                         densityInfo.blue(index3) * w01 +
+                                         densityInfo.blue(index4) * w11);
 
-                final float a = clampRgb(state.alpha(index1) * w00 +
-                                         state.alpha(index2) * w10 +
-                                         state.alpha(index3) * w01 +
-                                         state.alpha(index4) * w11);
+                final float a = clampRgb(densityInfo.alpha(index1) * w00 +
+                                         densityInfo.alpha(index2) * w10 +
+                                         densityInfo.alpha(index3) * w01 +
+                                         densityInfo.alpha(index4) * w11);
 
                 pixels[pixelIndex + x] = style.apply(r, g, b, a);
             }
