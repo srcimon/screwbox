@@ -12,7 +12,6 @@ import dev.screwbox.core.graphics.light.Light;
 import dev.screwbox.core.graphics.light.internal.DefaultLight;
 import dev.screwbox.core.graphics.postprocessing.PostProcessing;
 import dev.screwbox.core.graphics.smoke.Smoke;
-import dev.screwbox.core.graphics.smoke.internal.DefaultSmoke;
 import dev.screwbox.core.loop.internal.Updatable;
 
 import java.awt.*;
@@ -37,7 +36,7 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final RenderPipeline renderPipeline,
                            final ViewportManager viewportManager,
                            final PostProcessing postProcessing,
-                           final DefaultLight light,//TODO bind only interface
+                           final DefaultLight light,
                            final Smoke smoke) {
         this.configuration = configuration;
         this.screen = screen;
