@@ -33,6 +33,8 @@ public class FluidSimulation {
 
     private final boolean[] obstacles;
 
+    private boolean hasDensityCache = false;
+
     public FluidSimulation(final int resolution) {
         this.resolution = resolution;
         this.resolutionMinusTwo = resolution - 2;
@@ -59,17 +61,22 @@ public class FluidSimulation {
     }
 
     public boolean hasDensity() {
+        if (!hasDensityCache) {
+            return false;
+        }
         final int cellCount = resolution * resolution;
         for (int i = 0; i < cellCount; i++) {
             if (densityR[i] > 0 || densityG[i] > 0 || densityB[i] > 0 || densityA[i] > 0) {
                 return true;
             }
         }
+        hasDensityCache = false;
         return false;
     }
 
     public void addDensity(final Offset cell, final double amount, final Color color) {
         if (isInGrid(cell.x(), cell.y()) && !isObstacle(cell)) {
+            hasDensityCache = true;
             final int index = index(cell.x(), cell.y());
             densityR[index] = densityR[index] + (color.r() * amount);
             densityG[index] = densityG[index] + (color.g() * amount);
