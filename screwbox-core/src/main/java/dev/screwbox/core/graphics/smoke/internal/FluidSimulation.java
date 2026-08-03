@@ -58,6 +58,16 @@ public class FluidSimulation {
         return resolution;
     }
 
+    public boolean hasDensity() {
+        final int cellCount = resolution * resolution;
+        for (int i = 0; i < cellCount; i++) {
+            if (densityR[i] > 0 || densityG[i] > 0 || densityB[i] > 0 || densityA[i] > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addDensity(final Offset cell, final double amount, final Color color) {
         if (isInGrid(cell.x(), cell.y()) && !isObstacle(cell)) {
             final int index = index(cell.x(), cell.y());
@@ -179,7 +189,7 @@ public class FluidSimulation {
         return delta * diffuse * resolutionMinusTwo * resolutionMinusTwo;
     }
 
-    private void diffuseRGB(double diffuse, double delta, int iterations) {
+    private void diffuseRGB(final double diffuse, final double delta, final int iterations) {
         double a = calculateA(delta, diffuse);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 

@@ -54,8 +54,10 @@ public class PlaygroundApp {
                 .add(new RenderComponent(Sprite.placeholder(Color.WHITE.opacity(0.2), Size.square(32)))).add(new WindComponent(Vector.y(2)))));
         screwBox.environment().addSystem(x -> {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
-            x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(1000, 0).multiply(screwBox.loop().delta()));
-            x.graphics().smoke().emit(screwBox.mouse().position(), 0.75 * screwBox.loop().delta(), color);
+            if(x.mouse().isDownRight()) {
+                x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(1000, 0).multiply(screwBox.loop().delta()));
+                x.graphics().smoke().emit(screwBox.mouse().position(), 0.75 * screwBox.loop().delta(), color);
+            }
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
             }
