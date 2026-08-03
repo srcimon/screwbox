@@ -14,6 +14,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisabledOnOs({OS.MAC, OS.WINDOWS})// headless image is different from os compatible one
 class SmokeRendererTest {
@@ -22,6 +23,7 @@ class SmokeRendererTest {
 
     @BeforeEach
     void setup() {
+        System.setProperty("java.awt.headless", "true");
         final var simulation = new FluidSimulation(16);
         for (final var cell : Size.square(simulation.resolution()).all()) {
             simulation.addDensity(cell, 0.004, Color.rgb(
@@ -57,5 +59,15 @@ class SmokeRendererTest {
         var image = new SmokeRenderer().renderSmoke(densityInfo, new ScreenBounds(Size.square(16)), 1, new HeatVisionSmokeStyle());
 
         verifyIsSameImage(image, "smoke/renderSmoke_noScaleHeatVisionStyle_createsSmokeImage.png");
+    }
+
+    @Test
+    void renderSmoke_twice_returnsCachedImage() {
+        SmokeRenderer smokeRenderer = new SmokeRenderer();
+
+        var image = smokeRenderer.renderSmoke(densityInfo, new ScreenBounds(Size.square(16)), 1, new HeatVisionSmokeStyle());
+        var secondImage = smokeRenderer.renderSmoke(densityInfo, new ScreenBounds(Size.square(16)), 1, new HeatVisionSmokeStyle());
+
+        assertThat(image).isEqualTo(secondImage);
     }
 }
