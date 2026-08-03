@@ -409,11 +409,4 @@ public class FluidSimulation {
     public void clearObstacles() {
         Arrays.fill(obstacles, false);
     }
-
-    public void fillVelocity(final Vector velocity) {
-        for (int i = 0; i < velocityX.length; i++) {
-            velocityX[i] = velocity.x();
-            velocityY[i] = velocity.y();
-        }
-    }
 }
