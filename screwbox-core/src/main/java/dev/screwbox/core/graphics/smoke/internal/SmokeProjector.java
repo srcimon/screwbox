@@ -105,7 +105,7 @@ public class SmokeProjector {
         }
     }
 
-    public void applyObstacles(List<Bounds> obstacles) {
+    public void applyObstacles(final List<Bounds> obstacles) {
         simulation.clearObstacles();
 
         for (final var obstacle : obstacles) {
