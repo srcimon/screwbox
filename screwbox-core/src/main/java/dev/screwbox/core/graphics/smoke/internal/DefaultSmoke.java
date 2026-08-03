@@ -19,7 +19,6 @@ public class DefaultSmoke implements Smoke {
 
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private final SmokeRenderer renderer;
     private final GraphicsConfiguration configuration;
     private final AttentionFocus attentionFocus;
 
@@ -32,10 +31,9 @@ public class DefaultSmoke implements Smoke {
     private final List<SmokeProjector> smokeProjectors = new ArrayList<>();
     private SmokeOptions options = SmokeOptions.slowFade();
 
-    public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor, final SmokeRenderer renderer) {
+    public DefaultSmoke(final ViewportManager viewportManager, final GraphicsConfiguration configuration, final ExecutorService executor) {
         this.viewportManager = viewportManager;
         this.executor = executor;
-        this.renderer = renderer;
         this.configuration = configuration;
         this.attentionFocus = new AttentionFocus(viewportManager);
     }
@@ -106,7 +104,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke render(final double delta) {
         if (configuration.isSmokeEnabled()) {
             while (smokeProjectors.size() < viewportManager.viewports().size()) {
-                smokeProjectors.add(new SmokeProjector(executor, configuration, renderer));
+                smokeProjectors.add(new SmokeProjector(executor, configuration, new SmokeRenderer()));
             }
             while (smokeProjectors.size() > viewportManager.viewports().size()) {
                 smokeProjectors.removeLast();

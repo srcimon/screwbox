@@ -10,18 +10,22 @@ import java.awt.image.DataBufferInt;
 
 public class SmokeRenderer {
 
+    private BufferedImage cacheImage;
+    private Size cacheImageSize;
+
     public BufferedImage renderSmoke(final DensityInfo densityInfo, final ScreenBounds bounds, final int scale, final SmokeStyle style) {
         final int startX = bounds.x();
         final int startY = bounds.y();
         final int targetWidth = bounds.width() * scale;
         final int targetHeight = bounds.height() * scale;
 
-        // Erstelle das Bild exakt in der benötigten Zielgröße (nicht mehr quadratisch blockiert)
         final Size size = Size.of(targetWidth, targetHeight);
-        final var image = ImageOperations.createImage(size);
-        final int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        if (!size.equals(cacheImageSize)) {
+            cacheImage = ImageOperations.createImage(size);
+            cacheImageSize = size;
+        }
+        final int[] pixels = ((DataBufferInt) cacheImage.getRaster().getDataBuffer()).getData();
 
-        // 1. Look-Up-Tabellen (LUT) für X-Achse vorbereiten (relativ zu startX)
         int[] x0Arr = new int[targetWidth];
         int[] x1Arr = new int[targetWidth];
         float[] tXArr = new float[targetWidth];
@@ -50,7 +54,6 @@ public class SmokeRenderer {
                 float tX = tXArr[x];
                 float invTX = 1.0f - tX;
 
-                // Gewichtungen vorab berechnen
                 float w00 = invTX * invTY;
                 float w10 = tX * invTY;
                 float w01 = invTX * tY;
@@ -81,7 +84,7 @@ public class SmokeRenderer {
                 pixels[pixelIndex + x] = style.apply(r, g, b, a);
             }
         }
-        return image;
+        return cacheImage;
     }
 
     private static float clampRgb(final double value) {
