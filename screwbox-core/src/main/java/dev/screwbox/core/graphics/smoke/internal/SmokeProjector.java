@@ -95,8 +95,8 @@ public class SmokeProjector {
 
     public void applyAreaVelocityChanges(final List<AreaVelocityChange> areaVelocityChanges) {
         for (final var areaVelocityChange : areaVelocityChanges) {
-            var origin = toCell(areaVelocityChange.area().origin());
-            var max = toCell(areaVelocityChange.area().bottomRight());
+            final var origin = toCell(areaVelocityChange.area().origin());
+            final var max = toCell(areaVelocityChange.area().bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
                     simulation.addVelocity(x, y, areaVelocityChange.velocity());
@@ -109,8 +109,8 @@ public class SmokeProjector {
         simulation.clearObstacles();
 
         for (final var obstacle : obstacles) {
-            var origin = toCell(obstacle.origin());
-            var max = toCell(obstacle.bottomRight());
+            final var origin = toCell(obstacle.origin());
+            final var max = toCell(obstacle.bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
                     simulation.setObstacle(x, y);

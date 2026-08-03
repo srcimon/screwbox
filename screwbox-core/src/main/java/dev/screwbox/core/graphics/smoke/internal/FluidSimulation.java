@@ -132,17 +132,17 @@ public class FluidSimulation {
         // clean that up
         project(velocityX, velocityY, velocityX0, velocityY0, iterations);
 
-        // DIFFUSION FIX 2: Alle drei Farbkanäle zusammen diffundieren (3-in-1 Pass)
+        // diffuse all colors
         diffuseRGB(diffusion, delta, iterations);
 
-        // 2. Advect all three color channels using the solved velocities
+        // advect all three color channels using the solved velocities
         advect(densityR, densityR0, velocityX, velocityY, delta);
         advect(densityG, densityG0, velocityX, velocityY, delta);
         advect(densityB, densityB0, velocityX, velocityY, delta);
         advect(densityA, densityA0, velocityX, velocityY, delta);
     }
 
-    void diffuseVelocity(final double delta, final double diffuse, final int iterations) {
+    private void diffuseVelocity(final double delta, final double diffuse, final int iterations) {
         final double a = calculateA(delta, diffuse);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
