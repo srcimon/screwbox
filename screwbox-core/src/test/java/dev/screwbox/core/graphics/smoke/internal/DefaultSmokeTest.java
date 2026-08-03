@@ -29,9 +29,6 @@ class DefaultSmokeTest {
     @Mock
     ExecutorService executor;
 
-    @Mock
-    SmokeRenderer renderer;
-
     @Spy
     GraphicsConfiguration configuration = new GraphicsConfiguration(RenderingApi.OPEN_GL);
 
