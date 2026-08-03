@@ -23,7 +23,6 @@ class SmokeRendererTest {
 
     @BeforeEach
     void setup() {
-        System.setProperty("java.awt.headless", "true");
         final var simulation = new FluidSimulation(16);
         for (final var cell : Size.square(simulation.resolution()).all()) {
             simulation.addDensity(cell, 0.004, Color.rgb(
