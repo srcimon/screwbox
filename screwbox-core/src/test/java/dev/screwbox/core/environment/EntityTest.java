@@ -7,7 +7,6 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.Optional;
 
@@ -17,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
@@ -49,7 +49,7 @@ class EntityTest {
 
     @Test
     void add_componentClassNotPresent_notifiesListeners() {
-        var listener = Mockito.mock(EntityListener.class);
+        var listener = mock(EntityListener.class);
         entity.registerListener(listener);
 
         entity.add(new PhysicsComponent());
@@ -115,7 +115,7 @@ class EntityTest {
 
     @Test
     void remove_componentPresent_notifiesListeners() {
-        var listener = Mockito.mock(EntityListener.class);
+        var listener = mock(EntityListener.class);
         entity.registerListener(listener);
         entity.add(new PhysicsComponent());
 
@@ -283,7 +283,7 @@ class EntityTest {
 
     @Test
     void addOrReplace_componentAlreadyPresent_replacesComponentAndDoesntRaiseEvent() {
-        var listener = Mockito.mock(EntityListener.class);
+        var listener = mock(EntityListener.class);
 
         entity.add(new TransformComponent(40, 40, 40, 40));
 
@@ -297,7 +297,7 @@ class EntityTest {
 
     @Test
     void addOrReplace_componentIsNew_addsComponentAndRaisesEvent() {
-        var listener = Mockito.mock(EntityListener.class);
+        var listener = mock(EntityListener.class);
         entity.registerListener(listener);
 
         entity.addOrReplace(new TransformComponent(10, 10, 10, 10));
