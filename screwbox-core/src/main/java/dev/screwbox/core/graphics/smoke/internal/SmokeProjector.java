@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.smoke.internal;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -12,6 +13,7 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
+import dev.screwbox.core.utils.Latch;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -25,16 +27,28 @@ public class SmokeProjector {
 
     private final GraphicsConfiguration configuration;
     private final ExecutorService executor;
-    private final SmokeRenderer renderer;
+    private final Latch<SmokeRenderer> renderer;
 
     private Future<?> simulationTask;
     private Vector worldAnchor;
     private FluidSimulation simulation;
 
-    public SmokeProjector(final ExecutorService executor, final GraphicsConfiguration configuration, final SmokeRenderer renderer) {
+    public record VelocityZone(Bounds area, Vector velocity) {
+    }
+
+    public record VelocityChange(Vector position, Vector velocity) {
+    }
+
+    public record DensityChange(Vector position, double amount, Color color) {
+    }
+
+    public record AreaVelocityChange(Bounds area, Vector velocity) {
+    }
+
+    public SmokeProjector(final ExecutorService executor, final GraphicsConfiguration configuration) {
         this.configuration = configuration;
         this.executor = executor;
-        this.renderer = renderer;
+        this.renderer = Latch.of(new SmokeRenderer(), new SmokeRenderer());
         this.worldAnchor = Vector.zero();
     }
 
@@ -48,7 +62,8 @@ public class SmokeProjector {
 
             final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
             final var sprite = Asset.asset(() -> {
-                final var image = renderer.renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
+                final var image = renderer.active().renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
+                renderer.toggle();
                 if (configuration.smokeBlur() > 0) {
                     ImageOperations.blurImage(image, configuration.smokeBlur());
                 }

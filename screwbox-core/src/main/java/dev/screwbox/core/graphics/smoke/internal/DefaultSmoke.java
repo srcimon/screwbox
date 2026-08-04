@@ -23,10 +23,10 @@ public class DefaultSmoke implements Smoke {
     private final AttentionFocus attentionFocus;
 
     private final List<Bounds> obstacles = new ArrayList<>();
-    private final List<DensityChange> densityChanges = new ArrayList<>();
-    private final List<VelocityChange> velocityChanges = new ArrayList<>();
-    private final List<VelocityZone> velocityZones = new ArrayList<>();
-    private final List<AreaVelocityChange> areaVelocityChanges = new ArrayList<>();
+    private final List<SmokeProjector.DensityChange> densityChanges = new ArrayList<>();
+    private final List<SmokeProjector.VelocityChange> velocityChanges = new ArrayList<>();
+    private final List<SmokeProjector.VelocityZone> velocityZones = new ArrayList<>();
+    private final List<SmokeProjector.AreaVelocityChange> areaVelocityChanges = new ArrayList<>();
 
     private final List<SmokeProjector> smokeProjectors = new ArrayList<>();
     private SmokeOptions options = SmokeOptions.slowFade();
@@ -61,7 +61,7 @@ public class DefaultSmoke implements Smoke {
         Validate.zeroOrPositive(amount, "amount must be positive");
         autoTurnOnSmoke();
         if (amount > 0 && isWithinSmokeSimulation(position)) {
-            densityChanges.add(new DensityChange(position, amount, color));
+            densityChanges.add(new SmokeProjector.DensityChange(position, amount, color));
         }
         return this;
     }
@@ -70,7 +70,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke push(final Vector position, final Vector velocity) {
         autoTurnOnSmoke();
         if (!velocity.isZero() && isWithinSmokeSimulation(position)) {
-            velocityChanges.add(new VelocityChange(position, velocity));
+            velocityChanges.add(new SmokeProjector.VelocityChange(position, velocity));
         }
         return this;
     }
@@ -79,7 +79,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke push(final Bounds bounds, final Vector velocity) {
         autoTurnOnSmoke();
         if (!velocity.isZero()) {
-            areaVelocityChanges.add(new AreaVelocityChange(bounds, velocity));
+            areaVelocityChanges.add(new SmokeProjector.AreaVelocityChange(bounds, velocity));
         }
         return this;
     }
@@ -88,7 +88,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke pinVelocity(final Bounds bounds, final Vector velocity) {
         autoTurnOnSmoke();
         if (!velocity.isZero()) {
-            velocityZones.add(new VelocityZone(bounds, velocity));
+            velocityZones.add(new SmokeProjector.VelocityZone(bounds, velocity));
         }
         return this;
     }
@@ -104,7 +104,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke render(final double delta) {
         if (configuration.isSmokeEnabled()) {
             while (smokeProjectors.size() < viewportManager.viewports().size()) {
-                smokeProjectors.add(new SmokeProjector(executor, configuration, new SmokeRenderer()));
+                smokeProjectors.add(new SmokeProjector(executor, configuration));
             }
             while (smokeProjectors.size() > viewportManager.viewports().size()) {
                 smokeProjectors.removeLast();

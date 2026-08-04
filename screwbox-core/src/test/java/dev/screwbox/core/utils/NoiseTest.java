@@ -1,6 +1,5 @@
 package dev.screwbox.core.utils;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
