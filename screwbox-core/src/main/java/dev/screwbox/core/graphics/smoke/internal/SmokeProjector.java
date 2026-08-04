@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.smoke.internal;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -31,6 +32,18 @@ public class SmokeProjector {
     private Future<?> simulationTask;
     private Vector worldAnchor;
     private FluidSimulation simulation;
+
+    public record VelocityZone(Bounds area, Vector velocity) {
+    }
+
+    public record VelocityChange(Vector position, Vector velocity) {
+    }
+
+    public record DensityChange(Vector position, double amount, Color color) {
+    }
+
+    public record AreaVelocityChange(Bounds area, Vector velocity) {
+    }
 
     public SmokeProjector(final ExecutorService executor, final GraphicsConfiguration configuration) {
         this.configuration = configuration;
