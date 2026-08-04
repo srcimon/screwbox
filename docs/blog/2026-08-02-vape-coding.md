@@ -1,5 +1,5 @@
 ---
-title: Real-time smoke
+title: Vape-Coding
 authors: [ srcimon ]
 tags: [ new-features, milestones ]
 ---
