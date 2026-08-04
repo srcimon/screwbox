@@ -1,7 +1,7 @@
 # Overview
 
-ScrewBox currently provides just one additional module ([Tiled Editor](./tiled-editor)).
-Maybe there will be other modules in the future.
+ScrewBox currently provides just one plugin module ([Tiled Editor](./tiled-editor)).
+Maybe there will be other plugin modules in the future.
 Splitting dependencies is considered good practice to reduce resource allocations such as memory usage, bundle sizes,
 and build times.
 
@@ -10,6 +10,7 @@ This ensures using compatible versions of the ScrewBox libraries.
 The Maven setup for a project using Tiled Editor support might look like this example:
 
 ``` xml
+<!-- optional dependency management -->
 <dependencyManagement>
     <dependencies>
         <dependency>
@@ -23,6 +24,7 @@ The Maven setup for a project using Tiled Editor support might look like this ex
 </dependencyManagement>
 
 <dependencies>
+    <!-- needed for all ScrewBox games -->
     <dependency>
         <groupId>dev.screwbox</groupId>
         <artifactId>screwbox-core</artifactId>
