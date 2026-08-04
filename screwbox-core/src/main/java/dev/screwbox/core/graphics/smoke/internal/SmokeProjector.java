@@ -12,6 +12,7 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
+import dev.screwbox.core.utils.Latch;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -25,16 +26,16 @@ public class SmokeProjector {
 
     private final GraphicsConfiguration configuration;
     private final ExecutorService executor;
-    private final SmokeRenderer renderer;
+    private final Latch<SmokeRenderer> renderer;
 
     private Future<?> simulationTask;
     private Vector worldAnchor;
     private FluidSimulation simulation;
 
-    public SmokeProjector(final ExecutorService executor, final GraphicsConfiguration configuration, final SmokeRenderer renderer) {
+    public SmokeProjector(final ExecutorService executor, final GraphicsConfiguration configuration) {
         this.configuration = configuration;
         this.executor = executor;
-        this.renderer = renderer;
+        this.renderer = Latch.of(new SmokeRenderer(), new SmokeRenderer());
         this.worldAnchor = Vector.zero();
     }
 
@@ -48,7 +49,8 @@ public class SmokeProjector {
 
             final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
             final var sprite = Asset.asset(() -> {
-                final var image = renderer.renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
+                final var image = renderer.active().renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
+                renderer.toggle();
                 if (configuration.smokeBlur() > 0) {
                     ImageOperations.blurImage(image, configuration.smokeBlur());
                 }

@@ -104,7 +104,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke render(final double delta) {
         if (configuration.isSmokeEnabled()) {
             while (smokeProjectors.size() < viewportManager.viewports().size()) {
-                smokeProjectors.add(new SmokeProjector(executor, configuration, new SmokeRenderer()));
+                smokeProjectors.add(new SmokeProjector(executor, configuration));
             }
             while (smokeProjectors.size() > viewportManager.viewports().size()) {
                 smokeProjectors.removeLast();
