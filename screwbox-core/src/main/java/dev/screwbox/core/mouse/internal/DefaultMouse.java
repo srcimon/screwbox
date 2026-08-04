@@ -115,6 +115,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void mouseDragged(final MouseEvent e) {
+        final var mouseButton = MAPPINGS.get(e.getButton());
+        downButtons.add(mouseButton);
         updateMousePosition(e);
     }
 

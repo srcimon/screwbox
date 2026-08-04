@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed state for mouse button when down, leaving and re-entering the game window
 
 ### 🧽 Cleanup & refactoring
 
