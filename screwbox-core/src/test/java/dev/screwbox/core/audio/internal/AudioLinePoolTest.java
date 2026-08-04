@@ -38,8 +38,12 @@ class AudioLinePoolTest {
 
     @Test
     void prepareLine_maxLinesReached_removesOldLine() {
+        SourceDataLine line1 = mock(SourceDataLine.class);
+        SourceDataLine line2 = mock(SourceDataLine.class);
+        SourceDataLine line3 = mock(SourceDataLine.class);
+
         when(audioAdapter.createSourceLine(STEREO_FORMAT))
-                .thenReturn(mock(SourceDataLine.class), mock(SourceDataLine.class), mock(SourceDataLine.class));
+            .thenReturn(line1, line2, line3);
 
         audioLinePool.prepareLine(STEREO_FORMAT);
         audioLinePool.prepareLine(STEREO_FORMAT);
@@ -50,7 +54,8 @@ class AudioLinePoolTest {
 
     @Test
     void prepareLine_noLinesYet_createsLine() {
-        when(audioAdapter.createSourceLine(STEREO_FORMAT)).thenReturn(mock(SourceDataLine.class));
+        SourceDataLine line = mock(SourceDataLine.class);
+        when(audioAdapter.createSourceLine(STEREO_FORMAT)).thenReturn(line);
 
         audioLinePool.prepareLine(STEREO_FORMAT);
 
@@ -102,8 +107,8 @@ class AudioLinePoolTest {
         audioLinePool.acquireLine(MONO_FORMAT);
         audioLinePool.acquireLine(MONO_FORMAT);
         assertThatThrownBy(() -> audioLinePool.acquireLine(MONO_FORMAT))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("audio line pool has reached max capacity of 2 lines");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("audio line pool has reached max capacity of 2 lines");
     }
 
     @Test

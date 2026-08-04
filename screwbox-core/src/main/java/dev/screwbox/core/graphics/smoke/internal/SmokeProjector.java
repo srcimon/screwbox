@@ -39,29 +39,29 @@ public class SmokeProjector {
     }
 
     public void render(final Viewport viewport, final SmokeOptions options, final double delta) {
-        final var state = simulation.densityData();
-        simulationTask = executor.submit(() -> {
-            simulation.step(delta, options.viscosity().value(), options.diffusion().value(), options.iterations());
-            simulation.fade(delta * options.fade());
-        });
+        final var densityData = simulation.densityData();
+        if (simulation.hasDensity()) {
+            simulationTask = executor.submit(() -> {
+                simulation.step(delta, options.viscosity().value(), options.diffusion().value(), options.iterations());
+                simulation.fade(delta * options.fade());
+            });
 
-        final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
-        final var sprite = Asset.asset(() -> {
-            final var image = renderer.renderSmoke(state, visibleBounds, configuration.smokeScale(), options.style());
-            if (configuration.smokeBlur() > 0) {
-                ImageOperations.blurImage(image, configuration.smokeBlur());
-            }
-            return Sprite.fromImage(image);
-        });
-        executor.submit(sprite::get);
-        int cellSize = configuration.smokeCellSize();
-        final double scale = cellSize * viewport.camera().zoom() / configuration.smokeScale();
-        final Offset origin = viewport.toCanvas(worldAnchor).add((int) (visibleBounds.x() * cellSize * viewport.camera().zoom()), (int) (visibleBounds.y() * cellSize * viewport.camera().zoom()));
-        viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
-            .scaled(scale)
-            .opacity(options.opacity()));
-
-        if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(cellSize * configuration.smokeCellPadding() * 0.5))) {
+            final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
+            final var sprite = Asset.asset(() -> {
+                final var image = renderer.renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
+                if (configuration.smokeBlur() > 0) {
+                    ImageOperations.blurImage(image, configuration.smokeBlur());
+                }
+                return Sprite.fromImage(image);
+            });
+            executor.submit(sprite::get);
+            final double scale = configuration.smokeCellSize() * viewport.camera().zoom() / configuration.smokeScale();
+            final Offset origin = viewport.toCanvas(worldAnchor).add((int) (visibleBounds.x() * configuration.smokeCellSize() * viewport.camera().zoom()), (int) (visibleBounds.y() * configuration.smokeCellSize() * viewport.camera().zoom()));
+            viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
+                .scaled(scale)
+                .opacity(options.opacity()));
+        }
+        if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(configuration.smokeCellSize() * configuration.smokeCellPadding() * 0.5))) {
             reassignGrid(viewport);
         }
     }
@@ -95,8 +95,8 @@ public class SmokeProjector {
 
     public void applyAreaVelocityChanges(final List<AreaVelocityChange> areaVelocityChanges) {
         for (final var areaVelocityChange : areaVelocityChanges) {
-            var origin = toCell(areaVelocityChange.area().origin());
-            var max = toCell(areaVelocityChange.area().bottomRight());
+            final var origin = toCell(areaVelocityChange.area().origin());
+            final var max = toCell(areaVelocityChange.area().bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
                     simulation.addVelocity(x, y, areaVelocityChange.velocity());
@@ -109,8 +109,8 @@ public class SmokeProjector {
         simulation.clearObstacles();
 
         for (final var obstacle : obstacles) {
-            var origin = toCell(obstacle.origin());
-            var max = toCell(obstacle.bottomRight());
+            final var origin = toCell(obstacle.origin());
+            final var max = toCell(obstacle.bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
                     simulation.setObstacle(x, y);

@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
@@ -120,6 +121,38 @@ class FluidSimulationTest {
         assertThat(simulation.densityData().blue(cell.x(), cell.y())).isEqualTo(40.0);
     }
 
+    @Test
+    void hasDensity_noDensity_isFalse() {
+        assertThat(simulation.hasDensity()).isFalse();
+    }
+
+    @Test
+    void hasDensity_redPresent_isTrue() {
+        simulation.addDensity(Offset.at(4, 4), 1, Color.rgb(1, 0, 0, Percent.zero()));
+
+        assertThat(simulation.hasDensity()).isTrue();
+    }
+
+    @Test
+    void hasDensity_greenPresent_isTrue() {
+        simulation.addDensity(Offset.at(4, 4), 1, Color.rgb(0, 1, 0, Percent.zero()));
+
+        assertThat(simulation.hasDensity()).isTrue();
+    }
+
+    @Test
+    void hasDensity_bluePresent_isTrue() {
+        simulation.addDensity(Offset.at(4, 4), 1, Color.rgb(0, 0, 1, Percent.zero()));
+
+        assertThat(simulation.hasDensity()).isTrue();
+    }
+
+    @Test
+    void hasDensity_alphaPresent_isTrue() {
+        simulation.addDensity(Offset.at(4, 4), 1, Color.rgb(0, 0, 0, Percent.of(0.1)));
+
+        assertThat(simulation.hasDensity()).isTrue();
+    }
     private void assertTotalRedDensity(double expectedDensity) {
         final var state = simulation.densityData();
         var sum = 0.0;

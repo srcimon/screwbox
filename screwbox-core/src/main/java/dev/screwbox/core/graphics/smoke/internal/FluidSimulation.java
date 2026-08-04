@@ -33,6 +33,8 @@ public class FluidSimulation {
 
     private final boolean[] obstacles;
 
+    private boolean hasDensityCache = false;
+
     public FluidSimulation(final int resolution) {
         this.resolution = resolution;
         this.resolutionMinusTwo = resolution - 2;
@@ -58,8 +60,23 @@ public class FluidSimulation {
         return resolution;
     }
 
+    public boolean hasDensity() {
+        if (!hasDensityCache) {
+            return false;
+        }
+        final int cellCount = resolution * resolution;
+        for (int i = 0; i < cellCount; i++) {
+            if (densityR[i] > 0 || densityG[i] > 0 || densityB[i] > 0 || densityA[i] > 0) {
+                return true;
+            }
+        }
+        hasDensityCache = false;
+        return false;
+    }
+
     public void addDensity(final Offset cell, final double amount, final Color color) {
         if (isInGrid(cell.x(), cell.y()) && !isObstacle(cell)) {
+            hasDensityCache = true;
             final int index = index(cell.x(), cell.y());
             densityR[index] = densityR[index] + (color.r() * amount);
             densityG[index] = densityG[index] + (color.g() * amount);
@@ -122,17 +139,17 @@ public class FluidSimulation {
         // clean that up
         project(velocityX, velocityY, velocityX0, velocityY0, iterations);
 
-        // DIFFUSION FIX 2: Alle drei Farbkanäle zusammen diffundieren (3-in-1 Pass)
+        // diffuse all colors
         diffuseRGB(diffusion, delta, iterations);
 
-        // 2. Advect all three color channels using the solved velocities
+        // advect all three color channels using the solved velocities
         advect(densityR, densityR0, velocityX, velocityY, delta);
         advect(densityG, densityG0, velocityX, velocityY, delta);
         advect(densityB, densityB0, velocityX, velocityY, delta);
         advect(densityA, densityA0, velocityX, velocityY, delta);
     }
 
-    void diffuseVelocity(final double delta, final double diffuse, final int iterations) {
+    private void diffuseVelocity(final double delta, final double diffuse, final int iterations) {
         final double a = calculateA(delta, diffuse);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
@@ -179,7 +196,7 @@ public class FluidSimulation {
         return delta * diffuse * resolutionMinusTwo * resolutionMinusTwo;
     }
 
-    private void diffuseRGB(double diffuse, double delta, int iterations) {
+    private void diffuseRGB(final double diffuse, final double delta, final int iterations) {
         double a = calculateA(delta, diffuse);
         double cRecip = 1.0 / (1.0 + 4.0 * a);
 
@@ -408,12 +425,5 @@ public class FluidSimulation {
 
     public void clearObstacles() {
         Arrays.fill(obstacles, false);
-    }
-
-    public void fillVelocity(final Vector velocity) {
-        for (int i = 0; i < velocityX.length; i++) {
-            velocityX[i] = velocity.x();
-            velocityY[i] = velocity.y();
-        }
     }
 }

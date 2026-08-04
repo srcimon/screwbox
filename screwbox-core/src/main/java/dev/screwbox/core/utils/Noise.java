@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 
 public class Noise implements Serializable {
 
@@ -21,10 +22,12 @@ public class Noise implements Serializable {
     private double targetValue = RANDOM.nextDouble(-1, 1);
 
     public static Noise fixedInterval(final Duration interval) {
+        requireNonNull(interval, "interval must not be null");
         return new Noise(interval, interval);
     }
 
     public static Noise variableInterval(final Duration interval) {
+        requireNonNull(interval, "interval must not be null");
         final long nanoDeviation = Math.round(interval.nanos() * Percent.half().value());
         final Duration minDeviation = Duration.ofNanos(-1 * nanoDeviation);
         final Duration maxDeviation = Duration.ofNanos(nanoDeviation);
