@@ -33,7 +33,7 @@ public class FluidSimulation {
 
     private final boolean[] obstacles;
 
-    private boolean hasDensityCache = false;
+    private boolean hasDensityCache = true;
 
     public FluidSimulation(final int resolution) {
         this.resolution = resolution;
