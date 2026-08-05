@@ -1,7 +1,14 @@
 package dev.screwbox.core.graphics.smoke.styles;
 
+import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.graphics.smoke.SmokeStyle;
 
+/**
+ * A heat vision like {@link SmokeStyle}.
+ *
+ * @see SmokeOptions
+ * @since 3.33.0
+ */
 public class HeatVisionSmokeStyle implements SmokeStyle {
 
     @Override

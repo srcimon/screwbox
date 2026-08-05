@@ -1,8 +1,16 @@
 package dev.screwbox.core.graphics.smoke.styles;
 
+import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.graphics.smoke.SmokeStyle;
 
+/**
+ * A cyberpunkt like {@link SmokeStyle}.
+ *
+ * @see SmokeOptions
+ * @since 3.34.0
+ */
 public class NettrunnerSmokeStyle implements SmokeStyle {
+
     @Override
     public int apply(float red, float green, float blue, float alpha) {
         if (alpha < 0.10f) { // hard edges
