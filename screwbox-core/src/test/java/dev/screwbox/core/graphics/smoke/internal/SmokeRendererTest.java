@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.smoke.styles.ComicSmokeStyle;
