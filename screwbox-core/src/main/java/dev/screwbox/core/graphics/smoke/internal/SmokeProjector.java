@@ -14,6 +14,7 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.utils.Latch;
+import dev.screwbox.core.utils.TrippleLatch;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -27,7 +28,7 @@ public class SmokeProjector {
 
     private final GraphicsConfiguration configuration;
     private final ExecutorService executor;
-    private final Latch<SmokeRenderer> renderer;
+    private final TrippleLatch<SmokeRenderer> renderer;
 
     private Future<?> simulationTask;
     private Vector worldAnchor;
@@ -48,7 +49,7 @@ public class SmokeProjector {
     public SmokeProjector(final ExecutorService executor, final GraphicsConfiguration configuration) {
         this.configuration = configuration;
         this.executor = executor;
-        this.renderer = Latch.of(new SmokeRenderer(), new SmokeRenderer());
+        this.renderer = TrippleLatch.of(new SmokeRenderer(), new SmokeRenderer(), new SmokeRenderer());
         this.worldAnchor = Vector.zero();
     }
 
