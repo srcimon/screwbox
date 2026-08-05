@@ -18,6 +18,7 @@ import dev.screwbox.core.graphics.layouts.HorizontalLayout;
 import dev.screwbox.core.graphics.layouts.TableLayout;
 import dev.screwbox.core.graphics.layouts.VerticalLayout;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
+import dev.screwbox.core.graphics.smoke.styles.NettrunnerSmokeStyle;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.TileMap;
@@ -31,7 +32,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
-        screwBox.loop().unlockFps();
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem());
@@ -56,7 +56,7 @@ public class PlaygroundApp {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             if(x.mouse().isDownRight()) {
                 x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(1000, 0).multiply(screwBox.loop().delta()));
-                x.graphics().smoke().emit(screwBox.mouse().position(), 0.75 * screwBox.loop().delta(), color);
+                x.graphics().smoke().emit(screwBox.mouse().position(), 0.4 * screwBox.loop().delta(), color);
             }
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();

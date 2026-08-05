@@ -61,23 +61,21 @@ public class SmokeProjector {
             });
 
             final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
+            final SmokeRenderer activeRenderer = renderer.active();
             final var sprite = Asset.asset(() -> {
-                final var image = renderer.active().renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
-                renderer.toggle();
+                final var image = activeRenderer.renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
                 if (configuration.smokeBlur() > 0) {
                     ImageOperations.blurImage(image, configuration.smokeBlur());
                 }
                 return Sprite.fromImage(image);
             });
+            renderer.toggle();
             executor.submit(sprite::get);
             final double scale = configuration.smokeCellSize() * viewport.camera().zoom() / configuration.smokeScale();
             final Offset origin = viewport.toCanvas(worldAnchor).add((int) (visibleBounds.x() * configuration.smokeCellSize() * viewport.camera().zoom()), (int) (visibleBounds.y() * configuration.smokeCellSize() * viewport.camera().zoom()));
             viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
                 .scaled(scale)
                 .opacity(options.opacity()));
-        }
-        if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(configuration.smokeCellSize() * configuration.smokeCellPadding() * 0.5))) {
-            reassignGrid(viewport);
         }
     }
 
@@ -135,20 +133,7 @@ public class SmokeProjector {
     }
 
     public void adaptToViewport(final Viewport viewport) {
-        if (isNull(simulation)) {
-            reassignGrid(viewport);
-        }
-        awaitSimulationStep();
-    }
-
-    private Offset toCell(final Vector position) {
-        final var cellX = Math.floor((position.x() - worldAnchor.x()) / configuration.smokeCellSize());
-        final var cellY = Math.floor((position.y() - worldAnchor.y()) / configuration.smokeCellSize());
-        return Offset.at(cellX, cellY);
-    }
-
-    private void awaitSimulationStep() {
-        if (nonNull(simulationTask)) {
+        if (nonNull(simulation) && nonNull(simulationTask)) {
             try {
                 simulationTask.get();
             } catch (final InterruptedException | ExecutionException e) {
@@ -156,6 +141,16 @@ public class SmokeProjector {
                 throw new IllegalStateException("error updating fluid simulation", e);
             }
         }
+        final Bounds coverArea = viewport.visibleArea().expand(configuration.smokeCellSize() * configuration.smokeCellPadding() * 0.5);
+        if (isNull(simulation) || !calculateFluidOnWorld().contains(coverArea)) {
+            reassignGrid(viewport);
+        }
+    }
+
+    private Offset toCell(final Vector position) {
+        final var cellX = Math.floor((position.x() - worldAnchor.x()) / configuration.smokeCellSize());
+        final var cellY = Math.floor((position.y() - worldAnchor.y()) / configuration.smokeCellSize());
+        return Offset.at(cellX, cellY);
     }
 
     private ScreenBounds calculateActuallyVisibleBounds(final Bounds visibleArea) {
@@ -191,7 +186,6 @@ public class SmokeProjector {
     }
 
     private void reassignGrid(final Viewport viewport) {
-        awaitSimulationStep();
         final var lastAnchor = worldAnchor;
         final var boundsArea = calculateBestBounds(viewport);
         final long snappedX = Math.round(boundsArea.origin().x() / configuration.smokeCellSize()) * configuration.smokeCellSize();

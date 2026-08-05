@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `NettrunnerSmokeStyle` and refined `FireSmokeStyle`
 
 ### 🪛 Bug Fixes
 
