@@ -77,9 +77,6 @@ public class SmokeProjector {
                 .scaled(scale)
                 .opacity(options.opacity()));
         }
-        if (!calculateFluidOnWorld().contains(viewport.visibleArea().expand(configuration.smokeCellSize() * configuration.smokeCellPadding() * 0.5))) {
-            reassignGrid(viewport);
-        }
     }
 
     public void applyVelocityZones(final List<VelocityZone> velocityZones) {
@@ -136,7 +133,8 @@ public class SmokeProjector {
     }
 
     public void adaptToViewport(final Viewport viewport) {
-        if (isNull(simulation)) {
+        final Bounds coverArea = viewport.visibleArea().expand(configuration.smokeCellSize() * configuration.smokeCellPadding() * 0.5);
+        if (isNull(simulation) || !calculateFluidOnWorld().contains(coverArea)) {
             reassignGrid(viewport);
         }
         awaitSimulationStep();
