@@ -13,7 +13,7 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
-import dev.screwbox.core.utils.TrippleLatch;
+import dev.screwbox.core.utils.Latch;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -27,7 +27,7 @@ public class SmokeProjector {
 
     private final GraphicsConfiguration configuration;
     private final ExecutorService executor;
-    private final TrippleLatch<SmokeRenderer> renderer;
+    private final Latch<SmokeRenderer> renderer;
 
     private Future<?> simulationTask;
     private Vector worldAnchor;
@@ -48,7 +48,7 @@ public class SmokeProjector {
     public SmokeProjector(final ExecutorService executor, final GraphicsConfiguration configuration) {
         this.configuration = configuration;
         this.executor = executor;
-        this.renderer = TrippleLatch.of(new SmokeRenderer(), new SmokeRenderer(), new SmokeRenderer());
+        this.renderer = Latch.of(new SmokeRenderer(), new SmokeRenderer());
         this.worldAnchor = Vector.zero();
     }
 
@@ -61,14 +61,15 @@ public class SmokeProjector {
             });
 
             final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
+            final SmokeRenderer activeRenderer = renderer.active();
             final var sprite = Asset.asset(() -> {
-                final var image = renderer.active().renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
-                renderer.toggle();
+                final var image = activeRenderer.renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
                 if (configuration.smokeBlur() > 0) {
                     ImageOperations.blurImage(image, configuration.smokeBlur());
                 }
                 return Sprite.fromImage(image);
             });
+            renderer.toggle();
             executor.submit(sprite::get);
             final double scale = configuration.smokeCellSize() * viewport.camera().zoom() / configuration.smokeScale();
             final Offset origin = viewport.toCanvas(worldAnchor).add((int) (visibleBounds.x() * configuration.smokeCellSize() * viewport.camera().zoom()), (int) (visibleBounds.y() * configuration.smokeCellSize() * viewport.camera().zoom()));
