@@ -32,7 +32,6 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
-        screwBox.loop().unlockFps();
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem());
@@ -48,7 +47,7 @@ public class PlaygroundApp {
             
             """, Size.square(32));
 
-        screwBox.graphics().smoke().setOptions(SmokeOptions.slowFade().style(new NettrunnerSmokeStyle()));
+        screwBox.graphics().smoke().setOptions(SmokeOptions.slowFade());
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
             .assign('W', (source, idPool) -> new Entity().bounds(source.bounds())
@@ -57,7 +56,7 @@ public class PlaygroundApp {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             if(x.mouse().isDownRight()) {
                 x.graphics().smoke().push(screwBox.mouse().position(), Vector.$(1000, 0).multiply(screwBox.loop().delta()));
-                x.graphics().smoke().emit(screwBox.mouse().position(), 0.75 * screwBox.loop().delta(), color);
+                x.graphics().smoke().emit(screwBox.mouse().position(), 0.4 * screwBox.loop().delta(), color);
             }
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
