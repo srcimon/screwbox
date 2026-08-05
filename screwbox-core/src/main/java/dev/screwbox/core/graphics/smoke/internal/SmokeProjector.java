@@ -13,7 +13,6 @@ import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
-import dev.screwbox.core.utils.Latch;
 import dev.screwbox.core.utils.TrippleLatch;
 
 import java.util.List;
