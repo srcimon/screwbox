@@ -133,21 +133,7 @@ public class SmokeProjector {
     }
 
     public void adaptToViewport(final Viewport viewport) {
-        final Bounds coverArea = viewport.visibleArea().expand(configuration.smokeCellSize() * configuration.smokeCellPadding() * 0.5);
-        if (isNull(simulation) || !calculateFluidOnWorld().contains(coverArea)) {
-            reassignGrid(viewport);
-        }
-        awaitSimulationStep();
-    }
-
-    private Offset toCell(final Vector position) {
-        final var cellX = Math.floor((position.x() - worldAnchor.x()) / configuration.smokeCellSize());
-        final var cellY = Math.floor((position.y() - worldAnchor.y()) / configuration.smokeCellSize());
-        return Offset.at(cellX, cellY);
-    }
-
-    private void awaitSimulationStep() {
-        if (nonNull(simulationTask)) {
+        if (nonNull(simulation) && nonNull(simulationTask)) {
             try {
                 simulationTask.get();
             } catch (final InterruptedException | ExecutionException e) {
@@ -155,6 +141,16 @@ public class SmokeProjector {
                 throw new IllegalStateException("error updating fluid simulation", e);
             }
         }
+        final Bounds coverArea = viewport.visibleArea().expand(configuration.smokeCellSize() * configuration.smokeCellPadding() * 0.5);
+        if (isNull(simulation) || !calculateFluidOnWorld().contains(coverArea)) {
+            reassignGrid(viewport);
+        }
+    }
+
+    private Offset toCell(final Vector position) {
+        final var cellX = Math.floor((position.x() - worldAnchor.x()) / configuration.smokeCellSize());
+        final var cellY = Math.floor((position.y() - worldAnchor.y()) / configuration.smokeCellSize());
+        return Offset.at(cellX, cellY);
     }
 
     private ScreenBounds calculateActuallyVisibleBounds(final Bounds visibleArea) {
@@ -190,7 +186,6 @@ public class SmokeProjector {
     }
 
     private void reassignGrid(final Viewport viewport) {
-        awaitSimulationStep();
         final var lastAnchor = worldAnchor;
         final var boundsArea = calculateBestBounds(viewport);
         final long snappedX = Math.round(boundsArea.origin().x() / configuration.smokeCellSize()) * configuration.smokeCellSize();
