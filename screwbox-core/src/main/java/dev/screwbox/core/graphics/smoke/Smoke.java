@@ -49,7 +49,9 @@ public interface Smoke {
     Smoke push(Bounds bounds, Vector velocity);
 
     /**
-     *ASmoothly adjusts the current velocity toward the target velocity within the specified limits.
+     * Smoothly adjusts the current velocity toward the target velocity within the specified limits.
+     *
+     * @since 3.34.0
      */
     Smoke approachTargetVelocity(Bounds bounds, Vector velocity, double adjustmentSpeed);
 
