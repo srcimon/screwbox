@@ -25,7 +25,7 @@ public class DefaultSmoke implements Smoke {
     private final List<Bounds> obstacles = new ArrayList<>();
     private final List<SmokeProjector.DensityChange> densityChanges = new ArrayList<>();
     private final List<SmokeProjector.VelocityChange> velocityChanges = new ArrayList<>();
-    private final List<SmokeProjector.VelocityZone> velocityZones = new ArrayList<>();
+    private final List<SmokeProjector.VelocityZoneChange> velocityZoneChanges = new ArrayList<>();
     private final List<SmokeProjector.AreaVelocityChange> areaVelocityChanges = new ArrayList<>();
 
     private final List<SmokeProjector> smokeProjectors = new ArrayList<>();
@@ -85,10 +85,10 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
-    public Smoke pinVelocity(final Bounds bounds, final Vector velocity) {
+    public Smoke approachTargetVelocity(final Bounds bounds, final Vector velocity, final double adjustmentSpeed) {
         autoTurnOnSmoke();
         if (!velocity.isZero()) {
-            velocityZones.add(new SmokeProjector.VelocityZone(bounds, velocity));
+            velocityZoneChanges.add(new SmokeProjector.VelocityZoneChange(bounds, velocity, adjustmentSpeed));
         }
         return this;
     }
@@ -117,7 +117,7 @@ public class DefaultSmoke implements Smoke {
                 projector.applyDensityChanges(densityChanges);
                 projector.applyVelocityChanges(velocityChanges);
                 projector.applyAreaVelocityChanges(areaVelocityChanges);
-                projector.applyVelocityZones(velocityZones);
+                projector.applyVelocityZones(velocityZoneChanges);
                 projector.render(viewport, options, delta);
 
                 viewportId++;
@@ -126,7 +126,7 @@ public class DefaultSmoke implements Smoke {
         obstacles.clear();
         densityChanges.clear();
         velocityChanges.clear();
-        velocityZones.clear();
+        velocityZoneChanges.clear();
         areaVelocityChanges.clear();
         return this;
     }

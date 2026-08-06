@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `NettrunnerSmokeStyle` and refined `FireSmokeStyle`
+- Wind smoothly adjusts velocity instead of enforcing it (#1059)
 
 ### 🪛 Bug Fixes
 
@@ -10,6 +11,7 @@
 
 - Resuse smoke rendering images for reduced GC overhead (#1047)
 - Skip smoke processing when no smoke present for massive performance gain (#1055)
+- Replaced `Smoke.pinVelocity(...)` with `.approachTargetVelocity(...)`
 
 ### 📦 Dependency updates
 

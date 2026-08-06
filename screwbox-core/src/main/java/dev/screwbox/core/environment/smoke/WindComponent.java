@@ -17,7 +17,17 @@ public class WindComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Target velocity of the wind.
+     */
     public Vector velocity;
+
+    /**
+     * Velocity of adjustment between smoke velocity and target velocity.
+     *
+     * @since 3.34.0
+     */
+    public double adjustmentSpeed = 1.0;
 
     /**
      * Specifies the velocity of the wind.

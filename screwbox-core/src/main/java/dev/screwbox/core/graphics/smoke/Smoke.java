@@ -49,9 +49,11 @@ public interface Smoke {
     Smoke push(Bounds bounds, Vector velocity);
 
     /**
-     * Pins the velocity within the specified bounds to the specified value.
+     * Smoothly adjusts the current velocity toward the target velocity within the specified limits.
+     *
+     * @since 3.34.0
      */
-    Smoke pinVelocity(Bounds bounds, Vector velocity);
+    Smoke approachTargetVelocity(Bounds bounds, Vector velocity, double adjustmentSpeed);
 
     /**
      * Renders smoke on all {@link Viewport viewports}. Can be automated using the {@link SmokeRenderSystem}.
