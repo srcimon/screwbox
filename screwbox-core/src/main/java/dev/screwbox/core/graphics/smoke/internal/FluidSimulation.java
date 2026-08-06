@@ -86,6 +86,11 @@ public class FluidSimulation {
         }
     }
 
+    public Vector velocityAt(final int x, final int y) {
+        int index = index(x, y);
+        return Vector.of(velocityX[index], velocityY[index]);
+    }
+
     public void addVelocity(final int x, final int y, final Vector velocity) {
         if (isInGrid(x, y) && !isObstacle(x, y)) {
             final int index = index(x, y);
@@ -98,8 +103,8 @@ public class FluidSimulation {
     public void advanceVelocity(final int x, final int y, final Vector velocity, final double delta) {
         if (isInGrid(x, y) && !isObstacle(x, y)) {
             final int index = index(x, y);
-            velocityX[index] = MathUtil.advance(velocityX[index],  velocity.x(), delta);
-            velocityY[index] = MathUtil.advance(velocityY[index],  velocity.y(), delta);
+            velocityX[index] = MathUtil.advance(velocityX[index], velocity.x(), delta);
+            velocityY[index] = MathUtil.advance(velocityY[index], velocity.y(), delta);
         }
     }
 

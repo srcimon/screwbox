@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
@@ -153,6 +154,18 @@ class FluidSimulationTest {
 
         assertThat(simulation.hasDensity()).isTrue();
     }
+
+    @Test
+    void advanceVelocity_noVelocity_smoothlyAdjustsVelocity() {
+        simulation.advanceVelocity(4, 9, Vector.of(10, 20), 0.5);
+
+        assertThat(simulation.velocityAt(4, 9)).isEqualTo(Vector.of(0.5, 0.5));
+
+        simulation.advanceVelocity(4, 9, Vector.of(10, 20), 50);
+
+        assertThat(simulation.velocityAt(4, 9)).isEqualTo(Vector.of(10, 20));
+    }
+
     private void assertTotalRedDensity(double expectedDensity) {
         final var state = simulation.densityData();
         var sum = 0.0;
