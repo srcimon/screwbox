@@ -36,7 +36,7 @@ class SmokeRenderSystemTest {
 
         environment.update();
 
-        verify(smoke).pinVelocity($$(0, 0, 16, 16), Vector.x(50));
+        verify(smoke).approachTargetVelocity($$(0, 0, 16, 16), Vector.x(50), 0.1);
         verify(smoke).addObstacle($$(100, 50, 16, 16));
         verify(smoke).emit($(28, 28), Vector.y(-1), 1.0, Color.RED);
         verify(smoke).push($$(40, 40, 16, 16), Vector.y(0.5));

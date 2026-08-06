@@ -39,7 +39,7 @@ public class SmokeRenderSystem implements EntitySystem {
         // winds
         for (final var entity : engine.environment().fetchAll(WINDS)) {
             final var wind = entity.get(WindComponent.class);
-            smoke.pinVelocity(entity.bounds(), wind.velocity);
+            smoke.approachTargetVelocity(entity.bounds(), wind.velocity, wind.adjustmentSpeed * engine.loop().delta());
         }
 
         // interactors

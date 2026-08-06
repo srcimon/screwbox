@@ -47,7 +47,7 @@ public class PlaygroundApp {
             
             """, Size.square(32));
 
-        screwBox.graphics().smoke().setOptions(SmokeOptions.slowFade());
+        screwBox.graphics().smoke().setOptions(SmokeOptions.slowFade().style(new NettrunnerSmokeStyle()));
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
             .assign('W', (source, idPool) -> new Entity().bounds(source.bounds())

@@ -33,7 +33,7 @@ public class SmokeProjector {
     private Vector worldAnchor;
     private FluidSimulation simulation;
 
-    public record VelocityZone(Bounds area, Vector velocity) {
+    public record VelocityZoneChange(Bounds area, Vector velocity, double adjustmentSpeed) {
     }
 
     public record VelocityChange(Vector position, Vector velocity) {
@@ -79,13 +79,13 @@ public class SmokeProjector {
         }
     }
 
-    public void applyVelocityZones(final List<VelocityZone> velocityZones, final double delta) {
-        for (final var velocityZone : velocityZones) {
-            var origin = toCell(velocityZone.area().origin());
-            var max = toCell(velocityZone.area().bottomRight());
+    public void applyVelocityZones(final List<VelocityZoneChange> velocityZoneChanges) {
+        for (final var change : velocityZoneChanges) {
+            var origin = toCell(change.area().origin());
+            var max = toCell(change.area().bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
-                    simulation.advanceVelocity(x, y, velocityZone.velocity().divide(configuration.smokeCellSize()), delta);
+                    simulation.advanceVelocity(x, y, change.velocity().divide(configuration.smokeCellSize()), change.adjustmentSpeed);
                 }
             }
         }
