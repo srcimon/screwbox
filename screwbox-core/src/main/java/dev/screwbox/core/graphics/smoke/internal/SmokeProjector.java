@@ -79,13 +79,13 @@ public class SmokeProjector {
         }
     }
 
-    public void applyVelocityZones(final List<VelocityZone> velocityZones) {
+    public void applyVelocityZones(final List<VelocityZone> velocityZones, final double delta) {
         for (final var velocityZone : velocityZones) {
             var origin = toCell(velocityZone.area().origin());
             var max = toCell(velocityZone.area().bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
-                    simulation.setVelocity(x, y, velocityZone.velocity().divide(configuration.smokeCellSize()));
+                    simulation.advanceVelocity(x, y, velocityZone.velocity().divide(configuration.smokeCellSize()), delta);
                 }
             }
         }

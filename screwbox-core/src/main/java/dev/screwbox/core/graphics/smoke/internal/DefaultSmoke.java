@@ -117,7 +117,7 @@ public class DefaultSmoke implements Smoke {
                 projector.applyDensityChanges(densityChanges);
                 projector.applyVelocityChanges(velocityChanges);
                 projector.applyAreaVelocityChanges(areaVelocityChanges);
-                projector.applyVelocityZones(velocityZones);
+                projector.applyVelocityZones(velocityZones, delta);
                 projector.render(viewport, options, delta);
 
                 viewportId++;

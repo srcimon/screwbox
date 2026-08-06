@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.smoke.internal;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.utils.MathUtil;
 
 import java.util.Arrays;
 
@@ -94,11 +95,11 @@ public class FluidSimulation {
     }
 
 
-    public void setVelocity(int x, int y, Vector velocity) {
+    public void advanceVelocity(final int x, final int y, final Vector velocity, final double delta) {
         if (isInGrid(x, y) && !isObstacle(x, y)) {
             final int index = index(x, y);
-            velocityX[index] = velocity.x();
-            velocityY[index] = velocity.y();
+            velocityX[index] = MathUtil.advance(velocityX[index],  velocity.x(), delta);
+            velocityY[index] = MathUtil.advance(velocityY[index],  velocity.y(), delta);
         }
     }
 
