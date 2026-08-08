@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.utils.MathUtil;
 
 import java.util.Arrays;
@@ -99,8 +98,6 @@ public class FluidSimulation {
         }
     }
 
-    //TODO call all inner with index
-    //TODO no Offset expose
     public void advanceVelocity(final int x, final int y, final Vector velocity, final double delta) {
         final int index = index(x, y);
         if (isInGrid(x, y) && !isObstacle(index)) {
