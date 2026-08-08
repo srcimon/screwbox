@@ -67,7 +67,13 @@ public interface Smoke {
      */
     Smoke addObstacle(Bounds bounds);
 
-    Optional<Vector> velocityAt(Vector position);
+    /**
+     * Returns the velocity at the specified position. Will be {@link Vector#zero()} when position is currenty not covered by smoke
+     * simulation (e.g. when out of {@link Viewport}.
+     *
+     * @since 3.34.0
+     */
+    Vector velocityAt(Vector position);
 
-    //TODO densityAt(Vector position);
+    //TODO Color densityAt(Vector position);
 }

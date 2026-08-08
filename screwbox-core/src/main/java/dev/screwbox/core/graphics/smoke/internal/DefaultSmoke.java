@@ -104,14 +104,14 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
-    public Optional<Vector> velocityAt(final Vector position) {
+    public Vector velocityAt(final Vector position) {
         for (final var projector : smokeProjectors) {
             final var velocity = projector.velocityAt(position);
             if (nonNull(velocity)) {
-                return Optional.of(velocity);
+                return velocity;
             }
         }
-        return Optional.empty();
+        return Vector.zero();
     }
 
     @Override

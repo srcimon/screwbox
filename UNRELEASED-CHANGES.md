@@ -2,6 +2,7 @@
 
 - Added `NettrunnerSmokeStyle` and refined `FireSmokeStyle`
 - Wind smoothly adjusts velocity instead of enforcing it (#1059)
+- Read smoke velocity and density at specified position (#1053)
 
 ### 🪛 Bug Fixes
 
