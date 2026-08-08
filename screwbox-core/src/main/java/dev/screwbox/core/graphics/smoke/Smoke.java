@@ -64,4 +64,6 @@ public interface Smoke {
      * Adds an obstacle that resists smoke at the specified bounds.
      */
     Smoke addObstacle(Bounds bounds);
+
+    Vector velocityAt(Vector position);
 }

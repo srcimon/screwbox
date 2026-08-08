@@ -101,6 +101,17 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
+    public Vector velocityAt(final Vector position) {
+        for(final var projector : smokeProjectors) {
+            var velocity = projector.velocityAt(position);
+            if(velocity != null) {
+                return velocity;
+            }
+        }
+        return Vector.zero();
+    }
+
+    @Override
     public Smoke render(final double delta) {
         if (configuration.isSmokeEnabled()) {
             while (smokeProjectors.size() < viewportManager.viewports().size()) {

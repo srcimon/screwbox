@@ -87,6 +87,9 @@ public class FluidSimulation {
     }
 
     public Vector velocityAt(final int x, final int y) {
+        if(!isInGrid(x, y)) {
+        return null;
+        }
         int index = index(x, y);
         return Vector.of(velocityX[index], velocityY[index]);
     }
