@@ -66,4 +66,6 @@ public interface Smoke {
     Smoke addObstacle(Bounds bounds);
 
     Vector velocityAt(Vector position);
+
+    //TODO densityAt(Vector position);
 }
