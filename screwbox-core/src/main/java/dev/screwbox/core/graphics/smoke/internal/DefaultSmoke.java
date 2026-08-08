@@ -13,7 +13,10 @@ import dev.screwbox.core.utils.Validate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
+
+import static java.util.Objects.nonNull;
 
 public class DefaultSmoke implements Smoke {
 
@@ -101,14 +104,14 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
-    public Vector velocityAt(final Vector position) {
-        for(final var projector : smokeProjectors) {
-            var velocity = projector.velocityAt(position);
-            if(velocity != null) {
-                return velocity;
+    public Optional<Vector> velocityAt(final Vector position) {
+        for (final var projector : smokeProjectors) {
+            final var velocity = projector.velocityAt(position);
+            if (nonNull(velocity)) {
+                return Optional.of(velocity);
             }
         }
-        return Vector.zero();
+        return Optional.empty();
     }
 
     @Override

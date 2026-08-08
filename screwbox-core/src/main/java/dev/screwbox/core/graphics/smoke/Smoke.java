@@ -6,6 +6,8 @@ import dev.screwbox.core.environment.smoke.SmokeRenderSystem;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Viewport;
 
+import java.util.Optional;
+
 /**
  * Add real-time, interactive smoke effects using fluid dynamics.
  *
@@ -65,7 +67,7 @@ public interface Smoke {
      */
     Smoke addObstacle(Bounds bounds);
 
-    Vector velocityAt(Vector position);
+    Optional<Vector> velocityAt(Vector position);
 
     //TODO densityAt(Vector position);
 }

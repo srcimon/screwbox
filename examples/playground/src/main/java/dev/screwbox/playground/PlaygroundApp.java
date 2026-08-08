@@ -61,7 +61,7 @@ public class PlaygroundApp {
                 .add(new RenderComponent(Sprite.placeholder(Color.WHITE.opacity(0.2), Size.square(32)))).add(new WindComponent(Vector.y(2)))));
         screwBox.environment().addSystem(x -> {
             x.environment().fetchAllHaving(PhysicsComponent.class).forEach(p -> {
-                p.get(PhysicsComponent.class).velocity = x.graphics().smoke().velocityAt(p.position());
+                p.get(PhysicsComponent.class).velocity = x.graphics().smoke().velocityAt(p.position()).orElse(Vector.zero());
             });
         });
         screwBox.environment().addSystem(x -> {
