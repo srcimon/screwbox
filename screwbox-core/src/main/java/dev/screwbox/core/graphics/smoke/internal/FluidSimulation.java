@@ -86,8 +86,8 @@ public class FluidSimulation {
         }
     }
 
-    public Vector velocityAt(final Offset cell) {
-        final int index = index(cell);
+    public Vector velocityAt(final int x, int y) {
+        final int index = index(x, y);
         return Vector.of(velocityX[index], velocityY[index]);
     }
 
@@ -122,10 +122,6 @@ public class FluidSimulation {
 
     public DensityInfo densityData() {
         return new DensityInfo(resolution, densityR, densityG, densityB, densityA);
-    }
-
-    private int index(final Offset cell) {
-        return index(cell.x(), cell.y());
     }
 
     private int index(final int x, final int y) {

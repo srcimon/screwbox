@@ -134,9 +134,11 @@ public class SmokeProjector {
 
     public Vector velocityAt(final Vector position) {
         final var cell = toCell(position);
-        return isNull(simulation) || !simulation.isInGrid(cell.x(), cell.y())
-            ? null
-            : simulation.velocityAt(cell).multiply(simulation.resolution() * configuration.smokeCellSize());
+        if (isNull(simulation) || !simulation.isInGrid(cell.x(), cell.y())) {
+            return null;
+        }
+        final Vector simulationVelocity = simulation.velocityAt(cell.x(), cell.y());
+        return simulationVelocity.multiply(simulation.resolution() * configuration.smokeCellSize());
     }
 
     public void adaptToViewport(final Viewport viewport) {
