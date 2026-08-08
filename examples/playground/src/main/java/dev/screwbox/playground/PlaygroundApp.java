@@ -65,7 +65,7 @@ public class PlaygroundApp {
                 //TODO wind visualization system
                 //TODO advance
                 //TODO create system
-                p.get(PhysicsComponent.class).velocity = x.graphics().smoke().velocityAt(p.position());
+                p.get(PhysicsComponent.class).velocity = p.get(PhysicsComponent.class).velocity.advance(x.graphics().smoke().velocityAt(p.position()), x.loop().delta()*100);
             });
         });
         screwBox.environment().addSystem(x -> {
