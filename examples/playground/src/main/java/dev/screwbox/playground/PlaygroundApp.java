@@ -48,8 +48,6 @@ public class PlaygroundApp {
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
             .assign('W', (source, idPool) -> new Entity().bounds(source.bounds())
                 .add(new RenderComponent(Sprite.placeholder(Color.WHITE.opacity(0.2), Size.square(32)))).add(new WindComponent(Vector.y(2)))));
-        //TODO GridBackground Debug system
-        //TODO wind visualization system
         screwBox.environment().addSystem(x -> {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             if (x.mouse().isDownRight()) {
