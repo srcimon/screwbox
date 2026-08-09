@@ -24,6 +24,4 @@ public class WindForceSystem implements EntitySystem {
             physics.velocity = physics.velocity.advance(smokeVelocity, engine.loop().delta(config.adjustmentVelocity));
         }
     }
-    //TODO GridBackground Debug system
-    //TODO wind visualization system
 }
