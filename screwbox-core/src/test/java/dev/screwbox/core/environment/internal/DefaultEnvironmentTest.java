@@ -343,7 +343,7 @@ class DefaultEnvironmentTest {
     void enableSmoke_addsSmokeSystems() {
         environment.enableSmoke();
 
-        assertThat(environment.systems()).hasSize(1)
+        assertThat(environment.systems()).hasSize(2)
             .anyMatch(system -> system.getClass().equals(SmokeRenderSystem.class));
     }
 
@@ -657,7 +657,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(67)
+        assertThat(environment.systems()).hasSize(68)
             .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

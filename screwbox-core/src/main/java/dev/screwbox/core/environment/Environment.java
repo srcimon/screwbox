@@ -474,6 +474,7 @@ public interface Environment extends IdPool {
      * Adds system for rendering smoke
      *
      * @see dev.screwbox.core.environment.smoke.SmokeRenderSystem
+     * @see dev.screwbox.core.environment.smoke.WindForceSystem
      */
     Environment enableSmoke();
 

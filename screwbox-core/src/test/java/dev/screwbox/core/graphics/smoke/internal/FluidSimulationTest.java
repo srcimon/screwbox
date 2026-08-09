@@ -30,7 +30,7 @@ class FluidSimulationTest {
 
     @Test
     void addDensity_outOfBounds_densityIsUnchanged() {
-        simulation.addDensity(Offset.at(-4, -1), 50, Color.RED);
+        simulation.addDensity(-4, -1, 50, Color.RED);
 
         assertAllCellsHaveZeroDensity();
     }
@@ -38,20 +38,19 @@ class FluidSimulationTest {
     @Test
     void addDensity_cellIsObstacle_densityIsUnchanged() {
         simulation.setObstacle(4, 4);
-        simulation.addDensity(Offset.at(4, 4), 50, Color.RED);
+        simulation.addDensity(4, 4, 50, Color.RED);
 
         assertAllCellsHaveZeroDensity();
     }
 
     @Test
     void addDensity_cellIsFree_densityIsUpdatedToLimit() {
-        Offset cell = Offset.at(4, 4);
-        simulation.addDensity(cell, 2, Color.RED);
+        simulation.addDensity(4, 4, 2, Color.RED);
 
         final var state = simulation.densityData();
-        assertThat(state.red(cell.x(), cell.y())).isEqualTo(510);
-        assertThat(state.green(cell.x(), cell.y())).isZero();
-        assertThat(state.blue(cell.x(), cell.y())).isZero();
+        assertThat(state.red(4, 4)).isEqualTo(510);
+        assertThat(state.green(4, 4)).isZero();
+        assertThat(state.blue(4, 4)).isZero();
     }
 
     @Test
@@ -64,11 +63,11 @@ class FluidSimulationTest {
     @Test
     void step_densityIsSet_diffusesToNeighbours() {
         Offset cell = Offset.at(4, 4);
-        simulation.addDensity(cell, 0.5, Color.ORANGE);
+        simulation.addDensity(cell.x(), cell.y(), 0.5, Color.ORANGE);
 
 
         var state = simulation.densityData();
-        assertThat(state.red(cell.x(), cell.y())).isEqualTo(127.5, offset(0.01));
+        assertThat(state.red(cell.x(), 4)).isEqualTo(127.5, offset(0.01));
         assertThat(state.green(cell.x(), cell.y())).isEqualTo(82.5, offset(0.01));
         assertThat(state.blue(cell.x(), cell.y())).isZero();
 
@@ -87,7 +86,7 @@ class FluidSimulationTest {
         for (int y = 0; y < 32; y++) {
             simulation.setObstacle(20, y);
         }
-        simulation.addDensity(Offset.at(19, 16), 100, Color.RED);
+        simulation.addDensity(19, 16, 100, Color.RED);
 
         for (int i = 0; i < 20; i++) {
             simulation.step(0.1, 0.0004, 0.0003, 3);
@@ -112,14 +111,13 @@ class FluidSimulationTest {
 
     @Test
     void fade_cellHasDensity_reducesDensity() {
-        Offset cell = Offset.at(4, 4);
-        simulation.addDensity(cell, 2, Color.rgb(12, 31, 21));
+        simulation.addDensity(4, 9, 2, Color.rgb(12, 31, 21));
 
         simulation.fade(2);
 
-        assertThat(simulation.densityData().red(cell.x(), cell.y())).isEqualTo(22.0);
-        assertThat(simulation.densityData().green(cell.x(), cell.y())).isEqualTo(60.0);
-        assertThat(simulation.densityData().blue(cell.x(), cell.y())).isEqualTo(40.0);
+        assertThat(simulation.densityData().red(4, 9)).isEqualTo(22.0);
+        assertThat(simulation.densityData().green(4, 9)).isEqualTo(60.0);
+        assertThat(simulation.densityData().blue(4, 9)).isEqualTo(40.0);
     }
 
     @Test
@@ -129,28 +127,28 @@ class FluidSimulationTest {
 
     @Test
     void hasDensity_redPresent_isTrue() {
-        simulation.addDensity(Offset.at(4, 4), 1, Color.rgb(1, 0, 0, Percent.zero()));
+        simulation.addDensity(4, 4, 1, Color.rgb(1, 0, 0, Percent.zero()));
 
         assertThat(simulation.hasDensity()).isTrue();
     }
 
     @Test
     void hasDensity_greenPresent_isTrue() {
-        simulation.addDensity(Offset.at(4, 4), 1, Color.rgb(0, 1, 0, Percent.zero()));
+        simulation.addDensity(4, 4, 1, Color.rgb(0, 1, 0, Percent.zero()));
 
         assertThat(simulation.hasDensity()).isTrue();
     }
 
     @Test
     void hasDensity_bluePresent_isTrue() {
-        simulation.addDensity(Offset.at(4, 4), 1, Color.rgb(0, 0, 1, Percent.zero()));
+        simulation.addDensity(4, 4, 1, Color.rgb(0, 0, 1, Percent.zero()));
 
         assertThat(simulation.hasDensity()).isTrue();
     }
 
     @Test
     void hasDensity_alphaPresent_isTrue() {
-        simulation.addDensity(Offset.at(4, 4), 1, Color.rgb(0, 0, 0, Percent.of(0.1)));
+        simulation.addDensity(4, 4, 1, Color.rgb(0, 0, 0, Percent.of(0.1)));
 
         assertThat(simulation.hasDensity()).isTrue();
     }

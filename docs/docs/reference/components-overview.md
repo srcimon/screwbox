@@ -203,3 +203,4 @@ To use these components call `environment.enableSmoke()` first.
 | `SmokeObstacleComponent`    | Blocks smoke on the entity bounds.                           |
 | `SmokeInteractionComponent` | Lets physics entities interact with smoke.                   |
 | `WindComponent`             | Applies constant velocity to smoke within the entity bounds. |
+| `WindForceComponent`        | Applies wind velocity to physics entities                    |
