@@ -64,4 +64,12 @@ public interface Smoke {
      * Adds an obstacle that resists smoke at the specified bounds.
      */
     Smoke addObstacle(Bounds bounds);
+
+    /**
+     * Returns the velocity at the specified position. Will be {@link Vector#zero()} when position is currenty not covered by smoke
+     * simulation (e.g. when out of {@link Viewport}.
+     *
+     * @since 3.34.0
+     */
+    Vector velocityAt(Vector position);
 }

@@ -2,6 +2,8 @@
 
 - Added `NettrunnerSmokeStyle` and refined `FireSmokeStyle`
 - Wind smoothly adjusts velocity instead of enforcing it (#1059)
+- Read smoke velocity and density at specified position (#1053)
+- Apply wind force to physics entities using `WindForceComponent`
 
 ### 🪛 Bug Fixes
 
@@ -12,6 +14,7 @@
 - Resuse smoke rendering images for reduced GC overhead (#1047)
 - Replaced `Smoke.pinVelocity(...)` with `.approachTargetVelocity(...)`
 - Skip smoke processing when no smoke present for massive performance gain (#1055)
+- Renamed `TailwindForceComponent`
 
 ### 📦 Dependency updates
 

@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
+import static java.util.Objects.nonNull;
+
 public class DefaultSmoke implements Smoke {
 
     private final ViewportManager viewportManager;
@@ -98,6 +100,17 @@ public class DefaultSmoke implements Smoke {
         autoTurnOnSmoke();
         obstacles.add(bounds);
         return this;
+    }
+
+    @Override
+    public Vector velocityAt(final Vector position) {
+        for (final var projector : smokeProjectors) {
+            final var velocity = projector.velocityAt(position);
+            if (nonNull(velocity)) {
+                return velocity;
+            }
+        }
+        return Vector.zero();
     }
 
     @Override

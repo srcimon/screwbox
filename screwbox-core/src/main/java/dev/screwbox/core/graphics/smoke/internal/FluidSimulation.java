@@ -2,7 +2,6 @@ package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.utils.MathUtil;
 
 import java.util.Arrays;
@@ -75,10 +74,10 @@ public class FluidSimulation {
         return false;
     }
 
-    public void addDensity(final Offset cell, final double amount, final Color color) {
-        if (isInGrid(cell.x(), cell.y()) && !isObstacle(cell)) {
+    public void addDensity(final int x, int y, final double amount, final Color color) {
+        final int index = index(x, y);
+        if (isInGrid(x, y) && !isObstacle(index)) {
             hasDensityCache = true;
-            final int index = index(cell.x(), cell.y());
             densityR[index] = densityR[index] + (color.r() * amount);
             densityG[index] = densityG[index] + (color.g() * amount);
             densityB[index] = densityB[index] + (color.b() * amount);
@@ -86,37 +85,32 @@ public class FluidSimulation {
         }
     }
 
-    public Vector velocityAt(final int x, final int y) {
-        int index = index(x, y);
+    public Vector velocityAt(final int x, int y) {
+        final int index = index(x, y);
         return Vector.of(velocityX[index], velocityY[index]);
     }
 
     public void addVelocity(final int x, final int y, final Vector velocity) {
-        if (isInGrid(x, y) && !isObstacle(x, y)) {
-            final int index = index(x, y);
+        final int index = index(x, y);
+        if (isInGrid(x, y) && !isObstacle(index)) {
             velocityX[index] = velocityX[index] + velocity.x();
             velocityY[index] = velocityY[index] + velocity.y();
         }
     }
 
-
     public void advanceVelocity(final int x, final int y, final Vector velocity, final double delta) {
-        if (isInGrid(x, y) && !isObstacle(x, y)) {
-            final int index = index(x, y);
+        final int index = index(x, y);
+        if (isInGrid(x, y) && !isObstacle(index)) {
             velocityX[index] = MathUtil.advance(velocityX[index], velocity.x(), delta);
             velocityY[index] = MathUtil.advance(velocityY[index], velocity.y(), delta);
         }
     }
 
-    private boolean isObstacle(final Offset cell) {
-        return obstacles[index(cell.x(), cell.y())];
+    private boolean isObstacle(final int index) {
+        return obstacles[index];
     }
 
-    private boolean isObstacle(final int x, int y) {
-        return obstacles[index(x, y)];
-    }
-
-    private boolean isInGrid(final int x, final int y) {
+    public boolean isInGrid(final int x, final int y) {
         return x > 0 &&
                y > 0 &&
                x < resolution() &&

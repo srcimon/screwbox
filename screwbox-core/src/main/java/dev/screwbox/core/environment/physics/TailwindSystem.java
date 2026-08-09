@@ -12,7 +12,7 @@ import static java.util.Objects.isNull;
 public class TailwindSystem implements EntitySystem {
 
     private static final Archetype SOURCES = Archetype.ofSpacial(TailwindComponent.class);
-    private static final Archetype RECEIVERS = Archetype.ofSpacial(TailwindPropelledComponent.class, PhysicsComponent.class);
+    private static final Archetype RECEIVERS = Archetype.ofSpacial(TailwindForceComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
