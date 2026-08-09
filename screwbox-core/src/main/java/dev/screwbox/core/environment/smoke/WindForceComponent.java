@@ -11,7 +11,7 @@ import java.io.Serial;
  *
  * @since 3.34.0
  */
-public class WindForceComponent implements Component {//TODO rename tailwind
+public class WindForceComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
