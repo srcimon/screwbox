@@ -232,7 +232,7 @@ public final class Color implements Serializable {
     private static int parseHex(final String hex) {
         try {
             return Integer.valueOf(hex, 16);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new IllegalArgumentException("hex value contains non hexadecimal value: " + hex, e);
         }
     }
