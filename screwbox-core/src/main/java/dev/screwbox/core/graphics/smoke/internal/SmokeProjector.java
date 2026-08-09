@@ -138,7 +138,7 @@ public class SmokeProjector {
             return null;
         }
         final Vector simulationVelocity = simulation.velocityAt(cell.x(), cell.y());
-        return simulationVelocity.multiply(simulation.resolution() * configuration.smokeCellSize());
+        return simulationVelocity.multiply((double)simulation.resolution() * configuration.smokeCellSize());
     }
 
     public void adaptToViewport(final Viewport viewport) {
