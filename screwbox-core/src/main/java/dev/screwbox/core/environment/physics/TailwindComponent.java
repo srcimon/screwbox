@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.Component;
 import java.io.Serial;
 
 /**
- * Apply acceleration on nearby physics entities that contain {@link TailwindPropelledComponent}.
+ * Apply acceleration on nearby physics entities that contain {@link TailwindForceComponent}.
  *
  * @since 3.15.0
  */

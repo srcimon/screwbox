@@ -21,7 +21,7 @@ class TailwindSystemTest {
         Entity leaf = new Entity().name("leaf")
                 .add(new TransformComponent())
                 .add(new PhysicsComponent())
-                .add(new TailwindPropelledComponent());
+                .add(new TailwindForceComponent());
 
         environment
                 .addSystem(new TailwindSystem())
@@ -38,7 +38,7 @@ class TailwindSystemTest {
         Entity leaf = new Entity().name("leaf")
                 .add(new TransformComponent(0, 0, 16, 16))
                 .add(new PhysicsComponent())
-                .add(new TailwindPropelledComponent());
+                .add(new TailwindForceComponent());
 
         Entity car = new Entity().name("car")
                 .add(new TransformComponent(10, 0, 16, 16))

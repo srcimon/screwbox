@@ -14,6 +14,7 @@
 - Resuse smoke rendering images for reduced GC overhead (#1047)
 - Replaced `Smoke.pinVelocity(...)` with `.approachTargetVelocity(...)`
 - Skip smoke processing when no smoke present for massive performance gain (#1055)
+- Renamed `TailwindForceComponent`
 
 ### 📦 Dependency updates
 

@@ -92,20 +92,20 @@ To utilize these components, first call `environment.enableLogic()`.
 
 To utilize these components, first call `environment.enablePhysics()`.
 
-| Component                    | Description                                                                                 |
-|------------------------------|---------------------------------------------------------------------------------------------|
-| `PhysicsComponent`           | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions.   |
-| `CollisionSensorComponent`   | Detects collisions with physics.                                                            |
-| `ColliderComponent`          | Prevents physic entities from intersecting.                                                 |
-| `AttachmentComponent`        | Attaches an entity to another.                                                              |
-| `CollisionDetailsComponent`  | Collects detailed information on collisions detected by `CollisionSensorComponent`.         |
-| `StaticColliderComponent`    | Optimizes performance when added to entities with `ColliderComponent` that will not move.   |
-| `GravityComponent`           | A singleton component that specifies gravity value for the game world.                      |
-| `CursorAttachmentComponent`  | Attaches the entity to the mouse cursor.                                                    |
-| `TailwindComponent`          | Transmits entity motion on other nearby entities that contains `TailwindPropelledComponent` |
-| `TailwindPropelledComponent` | Receive acceleration by other nearby entities that contain `TailwindComponent`              |
-| `MagnetComponent`            | Attracts or repels physic entities.                                                         |
-| `ChaoticMovementComponent`   | Adds a random chaotic movement to physics entities.                                         |
+| Component                   | Description                                                                               |
+|-----------------------------|-------------------------------------------------------------------------------------------|
+| `PhysicsComponent`          | Adds physics behaviour to an entity. Applies friction and movement and avoids collisions. |
+| `CollisionSensorComponent`  | Detects collisions with physics.                                                          |
+| `ColliderComponent`         | Prevents physic entities from intersecting.                                               |
+| `AttachmentComponent`       | Attaches an entity to another.                                                            |
+| `CollisionDetailsComponent` | Collects detailed information on collisions detected by `CollisionSensorComponent`.       |
+| `StaticColliderComponent`   | Optimizes performance when added to entities with `ColliderComponent` that will not move. |
+| `GravityComponent`          | A singleton component that specifies gravity value for the game world.                    |
+| `CursorAttachmentComponent` | Attaches the entity to the mouse cursor.                                                  |
+| `TailwindComponent`         | Transmits entity motion on other nearby entities that contains `TailwindForceComponent`   |
+| `TailwindForceComponent`    | Receive acceleration by other nearby entities that contain `TailwindComponent`            |
+| `MagnetComponent`           | Attracts or repels physic entities.                                                       |
+| `ChaoticMovementComponent`  | Adds a random chaotic movement to physics entities.                                       |
 
 ## Soft physics components
 

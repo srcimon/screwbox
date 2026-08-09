@@ -9,7 +9,7 @@ import java.io.Serial;
  *
  * @since 3.15.0
  */
-public class TailwindPropelledComponent implements Component {
+public class TailwindForceComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
