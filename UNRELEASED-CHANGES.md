@@ -1,25 +1,15 @@
 ### 🚀 Features & improvements
 
-- Added `NettrunnerSmokeStyle` and refined `FireSmokeStyle`
-- Wind smoothly adjusts velocity instead of enforcing it (#1059)
-- Read smoke velocity and density at specified position (#1053)
-- Apply wind force to physics entities using `WindForceComponent`
+- ...
 
 ### 🪛 Bug Fixes
 
-- Fixed state for mouse button when down, leaving and re-entering the game window
+- ...
 
 ### 🧽 Cleanup & refactoring
 
-- Resuse smoke rendering images for reduced GC overhead (#1047)
-- Replaced `Smoke.pinVelocity(...)` with `.approachTargetVelocity(...)`
-- Skip smoke processing when no smoke present for massive performance gain (#1055)
-- Renamed `TailwindForceComponent`
+- ...
 
 ### 📦 Dependency updates
 
-- Bump JUnit to 6.1.3
-- Bump frontend-maven-plugin to 2.0.2
-- Bump maven-jar-plugin to 3.5.1
-- Bump jacoco-maven-plugin to 0.8.15
-- Bump central-publishing-maven-plugin 0.10.0
+- ...
