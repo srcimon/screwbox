@@ -110,7 +110,6 @@ public class DefaultAchievements implements Achievements, Updatable {
 
     @Override
     public void update() {
-
         final boolean mustRefreshAbsoluteAchievements = lazyUpdateScheduler.isTick();
 
         for (final var activeAchievement : new ArrayList<>(activeAchievements)) {
