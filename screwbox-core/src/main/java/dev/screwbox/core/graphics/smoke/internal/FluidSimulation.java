@@ -384,7 +384,7 @@ public class FluidSimulation {
     }
 
     public void loadFrom(final FluidSimulation oldSimulation, final int deltaX, final int deltaY) {
-        final double resolutionFactor = oldSimulation.resolution / (double) resolution;
+        final double resolutionFactor = (double) resolution / (double) oldSimulation.resolution;
         for (int x = 1; x < resolutionMinusOne; x++) {
             for (int y = 1; y < resolutionMinusOne; y++) {
 
@@ -416,7 +416,6 @@ public class FluidSimulation {
                 }
             }
         }
-        System.out.println(resolutionFactor);
     }
 
     public void setObstacle(final int x, final int y) {
