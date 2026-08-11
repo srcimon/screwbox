@@ -384,6 +384,7 @@ public class FluidSimulation {
     }
 
     public void loadFrom(final FluidSimulation oldSimulation, final int deltaX, final int deltaY) {
+        final double resolutionFactor = oldSimulation.resolution / (double) resolution;
         for (int x = 1; x < resolutionMinusOne; x++) {
             for (int y = 1; y < resolutionMinusOne; y++) {
 
@@ -406,15 +407,16 @@ public class FluidSimulation {
                     densityA[ix] = oldSimulation.densityA[ixOld];
                     densityA0[ix] = oldSimulation.densityA0[ixOld];
 
-                    velocityX[ix] = oldSimulation.velocityX[ixOld];
-                    velocityX0[ix] = oldSimulation.velocityX0[ixOld];
-                    velocityY[ix] = oldSimulation.velocityY[ixOld];
-                    velocityY0[ix] = oldSimulation.velocityY0[ixOld];
+                    velocityX[ix] = oldSimulation.velocityX[ixOld] * resolutionFactor;
+                    velocityX0[ix] = oldSimulation.velocityX0[ixOld] * resolutionFactor;
+                    velocityY[ix] = oldSimulation.velocityY[ixOld] * resolutionFactor;
+                    velocityY0[ix] = oldSimulation.velocityY0[ixOld] * resolutionFactor;
 
                     obstacles[ix] = oldSimulation.obstacles[ixOld];
                 }
             }
         }
+        System.out.println(resolutionFactor);
     }
 
     public void setObstacle(final int x, final int y) {
