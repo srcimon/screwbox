@@ -1,6 +1,5 @@
 package dev.screwbox.core.environment.smoke;
 
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
@@ -32,14 +31,14 @@ class SmokeRenderSystemTest {
             .addEntity(new Entity("wind").bounds($$(0, 0, 16, 16)).add(new WindComponent(Vector.x(50))))
             .addEntity(new Entity("obstacle").bounds($$(100, 50, 16, 16)).add(new SmokeObstacleComponent()))
             .addEntity(new Entity("emitter").bounds($$(20, 20, 16, 16)).add(new SmokeEmitterComponent(10, Color.RED, Vector.y(-10))))
-            .addEntity(new Entity("interactor").bounds($$(40, 40, 16, 16)).add(new SmokeInteractionComponent(Percent.half())).add(new PhysicsComponent(Vector.y(10))));
+            .addEntity(new Entity("interactor").bounds($$(40, 40, 16, 16)).add(new SmokeInteractionComponent(50)).add(new PhysicsComponent(Vector.y(10))));
 
         environment.update();
 
         verify(smoke).approachTargetVelocity($$(0, 0, 16, 16), Vector.x(50), 0.1);
         verify(smoke).addObstacle($$(100, 50, 16, 16));
         verify(smoke).emit($(28, 28), Vector.y(-1), 1.0, Color.RED);
-        verify(smoke).push($$(40, 40, 16, 16), Vector.y(0.5));
+        verify(smoke).push($$(40, 40, 16, 16), Vector.y(50));
         verify(smoke).render(0.1);
     }
 }
