@@ -8,12 +8,9 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.physics.GravityComponent;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
 import dev.screwbox.core.environment.smoke.WindComponent;
-import dev.screwbox.core.environment.smoke.WindForceComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -43,11 +40,8 @@ public class PlaygroundApp {
                        #        #  #           #
             
             """, Size.square(32));
-        screwBox.environment().addEntity(new Entity().add(new GravityComponent(Vector.y(500))));
         screwBox.graphics().smoke().setOptions(SmokeOptions.slowFade());
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-            .assign('G', (source, idPool) -> new Entity().bounds(Bounds.atPosition(source.position(), 16, 16)).add(new WindForceComponent())
-                .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, 16))).add(new PhysicsComponent()))
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new ColliderComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
             .assign('W', (source, idPool) -> new Entity().bounds(source.bounds())
                 .add(new RenderComponent(Sprite.placeholder(Color.WHITE.opacity(0.2), Size.square(32)))).add(new WindComponent(Vector.y(500)))));
