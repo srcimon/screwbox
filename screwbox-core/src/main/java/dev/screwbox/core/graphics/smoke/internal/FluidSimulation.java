@@ -78,10 +78,10 @@ public class FluidSimulation {
         final int index = index(x, y);
         if (isInGrid(x, y) && !isObstacle(index)) {
             hasDensityCache = true;
-            densityR[index] = densityR[index] + (color.r() * amount);
-            densityG[index] = densityG[index] + (color.g() * amount);
-            densityB[index] = densityB[index] + (color.b() * amount);
-            densityA[index] = densityA[index] + (color.alpha() * amount);
+            densityR[index] += color.r() * amount;
+            densityG[index] += color.g() * amount;
+            densityB[index] += color.b() * amount;
+            densityA[index] += color.alpha() * amount;
         }
     }
 
