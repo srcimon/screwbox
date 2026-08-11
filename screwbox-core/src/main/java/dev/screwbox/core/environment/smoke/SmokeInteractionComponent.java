@@ -16,7 +16,7 @@ public class SmokeInteractionComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public double modifier = 100;
+    public double modifier = 50;
 
     /**
      * Creates a new instance.
