@@ -78,10 +78,10 @@ public class FluidSimulation {
         final int index = index(x, y);
         if (isInGrid(x, y) && !isObstacle(index)) {
             hasDensityCache = true;
-            densityR[index] = densityR[index] + (color.r() * amount);
-            densityG[index] = densityG[index] + (color.g() * amount);
-            densityB[index] = densityB[index] + (color.b() * amount);
-            densityA[index] = densityA[index] + (color.alpha() * amount);
+            densityR[index] += color.r() * amount;
+            densityG[index] += color.g() * amount;
+            densityB[index] += color.b() * amount;
+            densityA[index] += color.alpha() * amount;
         }
     }
 
@@ -93,8 +93,8 @@ public class FluidSimulation {
     public void addVelocity(final int x, final int y, final Vector velocity) {
         final int index = index(x, y);
         if (isInGrid(x, y) && !isObstacle(index)) {
-            velocityX[index] = velocityX[index] + velocity.x();
-            velocityY[index] = velocityY[index] + velocity.y();
+            velocityX[index] += velocity.x();
+            velocityY[index] += velocity.y();
         }
     }
 
@@ -383,7 +383,8 @@ public class FluidSimulation {
         }
     }
 
-    public void loadFrom(FluidSimulation oldSimulation, int deltaX, int deltaY) {
+    public void loadFrom(final FluidSimulation oldSimulation, final int deltaX, final int deltaY) {
+        final double resolutionFactor = (double) resolution / (double) oldSimulation.resolution;
         for (int x = 1; x < resolutionMinusOne; x++) {
             for (int y = 1; y < resolutionMinusOne; y++) {
 
@@ -406,10 +407,10 @@ public class FluidSimulation {
                     densityA[ix] = oldSimulation.densityA[ixOld];
                     densityA0[ix] = oldSimulation.densityA0[ixOld];
 
-                    velocityX[ix] = oldSimulation.velocityX[ixOld];
-                    velocityX0[ix] = oldSimulation.velocityX0[ixOld];
-                    velocityY[ix] = oldSimulation.velocityY[ixOld];
-                    velocityY0[ix] = oldSimulation.velocityY0[ixOld];
+                    velocityX[ix] = oldSimulation.velocityX[ixOld] * resolutionFactor;
+                    velocityX0[ix] = oldSimulation.velocityX0[ixOld] * resolutionFactor;
+                    velocityY[ix] = oldSimulation.velocityY[ixOld] * resolutionFactor;
+                    velocityY0[ix] = oldSimulation.velocityY0[ixOld] * resolutionFactor;
 
                     obstacles[ix] = oldSimulation.obstacles[ixOld];
                 }

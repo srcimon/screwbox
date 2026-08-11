@@ -1,6 +1,5 @@
 package dev.screwbox.core.environment.smoke;
 
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.smoke.Smoke;
 
@@ -17,7 +16,7 @@ public class SmokeInteractionComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Percent modifier = Percent.of(0.3);
+    public double modifier = 50;
 
     /**
      * Creates a new instance.
@@ -29,7 +28,7 @@ public class SmokeInteractionComponent implements Component {
     /**
      * Creates a new instance with specified modifier.
      */
-    public SmokeInteractionComponent(final Percent modifier) {
+    public SmokeInteractionComponent(final double modifier) {
         this.modifier = modifier;
     }
 }

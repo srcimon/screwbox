@@ -62,7 +62,7 @@ public class DefaultSmoke implements Smoke {
     public Smoke emit(final Vector position, final double amount, final Color color) {
         Validate.zeroOrPositive(amount, "amount must be positive");
         autoTurnOnSmoke();
-        if (amount > 0 && isWithinSmokeSimulation(position)) {
+        if (amount > 0) {
             densityChanges.add(new SmokeProjector.DensityChange(position, amount, color));
         }
         return this;
@@ -71,7 +71,7 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke push(final Vector position, final Vector velocity) {
         autoTurnOnSmoke();
-        if (!velocity.isZero() && isWithinSmokeSimulation(position)) {
+        if (!velocity.isZero()) {
             velocityChanges.add(new SmokeProjector.VelocityChange(position, velocity));
         }
         return this;
@@ -142,10 +142,6 @@ public class DefaultSmoke implements Smoke {
         velocityZoneChanges.clear();
         areaVelocityChanges.clear();
         return this;
-    }
-
-    private boolean isWithinSmokeSimulation(Vector position) {
-        return attentionFocus.isWithinDistanceToVisibleArea(position, (double) configuration.smokeCellPadding() * configuration.smokeCellSize());
     }
 
     private void autoTurnOnSmoke() {
