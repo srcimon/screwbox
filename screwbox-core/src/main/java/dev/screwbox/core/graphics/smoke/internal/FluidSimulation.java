@@ -93,8 +93,8 @@ public class FluidSimulation {
     public void addVelocity(final int x, final int y, final Vector velocity) {
         final int index = index(x, y);
         if (isInGrid(x, y) && !isObstacle(index)) {
-            velocityX[index] = velocityX[index] + velocity.x();
-            velocityY[index] = velocityY[index] + velocity.y();
+            velocityX[index] += velocity.x();
+            velocityY[index] += velocity.y();
         }
     }
 
