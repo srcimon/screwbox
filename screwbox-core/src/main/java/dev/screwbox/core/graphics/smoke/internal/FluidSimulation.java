@@ -383,7 +383,7 @@ public class FluidSimulation {
         }
     }
 
-    public void loadFrom(FluidSimulation oldSimulation, int deltaX, int deltaY) {
+    public void loadFrom(final FluidSimulation oldSimulation, final int deltaX, final int deltaY) {
         for (int x = 1; x < resolutionMinusOne; x++) {
             for (int y = 1; y < resolutionMinusOne; y++) {
 

@@ -81,11 +81,12 @@ public class SmokeProjector {
 
     public void applyVelocityZones(final List<VelocityZoneChange> velocityZoneChanges) {
         for (final var change : velocityZoneChanges) {
+            final Vector velocity = toSimulationVelocity(change.velocity());
             final var origin = toCell(change.area().origin());
             final var max = toCell(change.area().bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
-                    simulation.advanceVelocity(x, y, toSimulationVelocity(change.velocity()), change.adjustmentSpeed);
+                    simulation.advanceVelocity(x, y, velocity, change.adjustmentSpeed);
                 }
             }
         }
