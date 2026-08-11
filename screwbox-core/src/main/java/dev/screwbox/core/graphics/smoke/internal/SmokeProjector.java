@@ -85,7 +85,7 @@ public class SmokeProjector {
             final var max = toCell(change.area().bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
-                    simulation.advanceVelocity(x, y, change.velocity().divide(configuration.smokeCellSize()), change.adjustmentSpeed);
+                    simulation.advanceVelocity(x, y, toSimulationVelocity(change.velocity()), change.adjustmentSpeed);
                 }
             }
         }
@@ -94,14 +94,14 @@ public class SmokeProjector {
     public void applyVelocityChanges(final List<VelocityChange> velocityChanges) {
         for (final var velocityChange : velocityChanges) {
             final var cell = toCell(velocityChange.position());
-            final Vector velocity = velocityChange.velocity().divide(configuration.smokeCellSize());
+            final Vector velocity = toSimulationVelocity(velocityChange.velocity());
             simulation.addVelocity(cell.x(), cell.y(), velocity);
         }
     }
 
     public void applyAreaVelocityChanges(final List<AreaVelocityChange> areaVelocityChanges) {
         for (final var areaVelocityChange : areaVelocityChanges) {
-            final Vector velocity = areaVelocityChange.velocity().divide(configuration.smokeCellSize());
+            final Vector velocity = toSimulationVelocity(areaVelocityChange.velocity());
             final var origin = toCell(areaVelocityChange.area().origin());
             final var max = toCell(areaVelocityChange.area().bottomRight());
             for (int x = origin.x(); x < max.x(); x++) {
@@ -117,6 +117,14 @@ public class SmokeProjector {
             final var cell = toCell(densityChange.position());
             simulation.addDensity(cell.x(), cell.y(), densityChange.amount(), densityChange.color());
         }
+    }
+
+    private Vector toSimulationVelocity(Vector velocity) {
+        return velocity.divide((double) simulation.resolution() * configuration.smokeCellSize());
+    }
+
+    private Vector toWorldVelocity(final Vector simulationVelocity) {
+        return simulationVelocity.multiply((double) simulation.resolution() * configuration.smokeCellSize());
     }
 
     public void applyObstacles(final List<Bounds> obstacles) {
@@ -139,8 +147,9 @@ public class SmokeProjector {
             return null;
         }
         final Vector simulationVelocity = simulation.velocityAt(cell.x(), cell.y());
-        return simulationVelocity.multiply((double) simulation.resolution() * configuration.smokeCellSize());
+        return toWorldVelocity(simulationVelocity);
     }
+
 
     public void adaptToViewport(final Viewport viewport) {
         if (nonNull(simulation) && nonNull(simulationTask)) {
