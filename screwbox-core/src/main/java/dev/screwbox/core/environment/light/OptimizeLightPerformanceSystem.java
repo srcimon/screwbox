@@ -17,8 +17,8 @@ import static dev.screwbox.core.environment.Order.OPTIMIZATION;
 @ExecutionOrder(OPTIMIZATION)
 public class OptimizeLightPerformanceSystem implements EntitySystem {
 
-    private static final Archetype COMBINABLES = Archetype.of(
-        StaticOccluderComponent.class, OccluderComponent.class, TransformComponent.class);
+    private static final Archetype COMBINABLES = Archetype.ofSpacial(
+        StaticOccluderComponent.class, OccluderComponent.class);
 
     @Override
     public void update(final Engine engine) {
