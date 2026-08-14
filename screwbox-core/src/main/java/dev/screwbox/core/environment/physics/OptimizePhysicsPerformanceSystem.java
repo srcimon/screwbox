@@ -6,19 +6,20 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
-import dev.screwbox.core.utils.internal.CollisionCheck;
 import dev.screwbox.core.utils.GeometryUtil;
+import dev.screwbox.core.utils.internal.CollisionCheck;
 
 import java.util.List;
 import java.util.Optional;
 
-@ExecutionOrder(Order.OPTIMIZATION)
+import static dev.screwbox.core.environment.Order.OPTIMIZATION;
+
+@ExecutionOrder(OPTIMIZATION)
 public class OptimizePhysicsPerformanceSystem implements EntitySystem {
 
-    private static final Archetype COMBINABLES = Archetype.of(
-            StaticColliderComponent.class, ColliderComponent.class, TransformComponent.class);
+    private static final Archetype COMBINABLES = Archetype.ofSpacial(
+        StaticColliderComponent.class, ColliderComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -44,8 +45,8 @@ public class OptimizePhysicsPerformanceSystem implements EntitySystem {
         final ColliderComponent colliderCollider = check.colliderComponent();
         final ColliderComponent bodyCollider = check.physics().get(ColliderComponent.class);
         if (!bodyCollider.bounce.equals(colliderCollider.bounce)
-                || bodyCollider.friction != colliderCollider.friction
-                || bodyCollider.isOneWay != colliderCollider.isOneWay) {
+            || bodyCollider.friction != colliderCollider.friction
+            || bodyCollider.isOneWay != colliderCollider.isOneWay) {
             return false;
         }
 
@@ -54,12 +55,12 @@ public class OptimizePhysicsPerformanceSystem implements EntitySystem {
             return false;
         }
         final ColliderComponent colliderComponent = new ColliderComponent(bodyCollider.friction,
-                bodyCollider.bounce);
+            bodyCollider.bounce);
         colliderComponent.isOneWay = colliderCollider.isOneWay;
         final Entity newEntity = new Entity().add(
-                colliderComponent,
-                new StaticColliderComponent(),
-                new TransformComponent(combined.get()));
+            colliderComponent,
+            new StaticColliderComponent(),
+            new TransformComponent(combined.get()));
 
         engine.environment().addEntity(newEntity);
 
