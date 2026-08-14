@@ -22,7 +22,7 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
         final List<Entity> combinables = engine.environment().fetchAll(COMBINABLES);
         for (final var entity : combinables) {
             for (final var peer : combinables) {
-                final var baked = EntityBakery.tryToBake(entity, peer, OccluderComponent.class);
+                final var baked = EntityBakery.tryBake(entity, peer, OccluderComponent.class);
                 if (baked.isPresent()) {
                     entity.remove(StaticOccluderComponent.class);
                     peer.remove(StaticOccluderComponent.class);

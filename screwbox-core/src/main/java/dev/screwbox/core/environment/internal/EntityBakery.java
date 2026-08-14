@@ -12,7 +12,7 @@ import java.util.Optional;
 public class EntityBakery {
 
     //TODO move into entity
-    public static Optional<Entity> tryToBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
+    public static Optional<Entity> tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
         if (entity == peer) {
             return Optional.empty();
         }

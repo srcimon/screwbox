@@ -22,7 +22,7 @@ public class OptimizePhysicsPerformanceSystem implements EntitySystem {
         final List<Entity> combinables = engine.environment().fetchAll(COMBINABLES);
         for (final var entity : combinables) {
             for (final var peer : combinables) {
-                final var baked = EntityBakery.tryToBake(entity, peer, ColliderComponent.class);
+                final var baked = EntityBakery.tryBake(entity, peer, ColliderComponent.class);
                 if (baked.isPresent()) {
                     entity.remove(StaticColliderComponent.class);
                     peer.remove(StaticColliderComponent.class);
