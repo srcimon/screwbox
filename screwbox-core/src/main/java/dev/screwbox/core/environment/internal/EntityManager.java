@@ -158,9 +158,6 @@ public class EntityManager implements EntityListener {
         // at this point all colliders have been combined
         for (final var entity : candidates) {
             entity.remove(identifier);
-            if (entity.componentCount() == 1) {
-                removeEntity(entity);
-            }
         }
     }
 
@@ -173,6 +170,12 @@ public class EntityManager implements EntityListener {
                     var old = entity.get(identifier);
                     entity.remove(identifier);
                     peer.remove(identifier);
+                    if(entity.componentCount() == 1) {
+                        removeEntity(entity);
+                    }
+                    if(peer.componentCount() == 1) {
+                        removeEntity(peer);
+                    }
                     baked.get().add(old);
                     addEntity(baked.get());
                     return false;
