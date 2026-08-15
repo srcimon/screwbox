@@ -254,7 +254,7 @@ public final class TileMap<T> {
         this.mapSize = mapSize;
         for (final var entry : directory.entrySet()) {
             final var mask = AutoTile.createMask(entry.getKey(),
-                    location -> entry.getValue().equals(directory.get(location)));
+                location -> entry.getValue().equals(directory.get(location)));
             tiles.add(new Tile<>(tileSize, entry.getKey().x(), entry.getKey().y(), entry.getValue(), mask));
 
         }
@@ -284,9 +284,9 @@ public final class TileMap<T> {
      */
     public Optional<Tile<T>> tileAt(final int x, final int y) {
         return tiles.stream()
-                .filter(tile -> tile.column() == x)
-                .filter(tile -> tile.row() == y)
-                .findFirst();
+            .filter(tile -> tile.column() == x)
+            .filter(tile -> tile.row() == y)
+            .findFirst();
     }
 
     /**
@@ -335,7 +335,7 @@ public final class TileMap<T> {
         while (!blocks.isEmpty()) {
             final Block<T> current = blocks.getFirst();
 
-            tryCombine(current).ifPresentOrElse(combined -> {
+            tryMerge(current).ifPresentOrElse(combined -> {
                 blocks.add(new Block<>(ListUtil.combine(current.tiles(), combined.tiles())));
                 blocks.remove(combined);
             }, () -> survivorBlocks.add(current));
@@ -345,9 +345,9 @@ public final class TileMap<T> {
         blocks.addAll(survivorBlocks);
     }
 
-    private Optional<Block<T>> tryCombine(final Block<T> current) {
+    private Optional<Block<T>> tryMerge(final Block<T> current) {
         for (final var other : blocks) {
-            if (other.value().equals(current.value()) && GeometryUtil.tryToCombine(current.bounds(), other.bounds()).isPresent()) {
+            if (other.value().equals(current.value()) && current.bounds().tryMerge(other.bounds()).isPresent()) {
                 return Optional.of(other);
             }
         }

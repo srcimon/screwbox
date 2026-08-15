@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Compare objects by public field values.
 
 ### 🪛 Bug Fixes
 
@@ -10,7 +10,8 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Replaced `GeometryUtil` with `Bounds.tryMerge(Bounds)`
+- Simplyfied `OptimizePhysicsPerformanceSystem` and `OptimizeLightPerformanceSystem`
 
 ### 📦 Dependency updates
 

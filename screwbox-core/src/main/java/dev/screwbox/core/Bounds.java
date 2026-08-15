@@ -431,4 +431,36 @@ public final class Bounds implements Serializable {
             ? this
             : resize(width() * scale, height() * scale);
     }
+
+    /**
+     * Tries to merge both {@link Bounds} to a single new {@link Bounds}. Will be empty when {@link Bounds} do not
+     * align.
+     *
+     * @since 3.35.0
+     */
+    public Optional<Bounds> tryMerge(final Bounds other) {
+        final boolean sameVerticalLevel = other.height() == height() && other.maxY() == maxY();
+        if (sameVerticalLevel) {
+            final boolean horizontallyNextToEachOther = other.maxX() == minX() || other.minX() == maxX();
+            if (horizontallyNextToEachOther) {
+                return Optional.of(Bounds.atOrigin(
+                    Math.min(minX(), other.minX()),
+                    other.minY(),
+                    width() + other.width(),
+                    other.height()));
+            }
+        } else {
+            final boolean verticallyNextToEachOther = other.maxY() == minY() || other.minY() == maxY();
+            final boolean sameHorizontalLevel = other.width() == width() && other.maxX() == maxX();
+            if (sameHorizontalLevel && verticallyNextToEachOther) {
+                return Optional.of(Bounds.atOrigin(
+                    other.minX(),
+                    Math.min(minY(), other.minY()),
+                    other.width(),
+                    height() + other.height()));
+            }
+        }
+        return Optional.empty();
+    }
+
 }

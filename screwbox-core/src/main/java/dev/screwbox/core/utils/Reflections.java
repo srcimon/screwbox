@@ -3,11 +3,13 @@ package dev.screwbox.core.utils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.zip.ZipFile;
 
@@ -77,6 +79,29 @@ public final class Reflections {
             })
             .findFirst()
             .map(constructor -> (Constructor<T>) constructor);
+    }
+
+    /**
+     * Checks if both objects are equal by comparing public field values. Both objects must have same type to match.
+     *
+     * @since 3.35.0
+     */
+    public static boolean areEqualComparingFieldValues(final Object first, final Object second) {
+        if (first.getClass() != second.getClass()) {
+            return false;
+        }
+        final Field[] publicFields = first.getClass().getFields();
+
+        try {
+            for (final var field : publicFields) {
+                if (!Objects.equals(field.get(first), field.get(second))) {
+                    return false;
+                }
+            }
+        } catch (final IllegalAccessException e) {
+            throw new IllegalStateException("could not compare objects by public fields", e);
+        }
+        return true;
     }
 
     private static <T> Optional<Constructor<T>> tryGetDefaultConstructor(final Class<T> clazz) {
