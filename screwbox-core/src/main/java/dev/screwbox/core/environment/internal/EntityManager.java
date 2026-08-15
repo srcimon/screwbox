@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.internal;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
@@ -8,12 +9,14 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntityEvent;
 import dev.screwbox.core.environment.EntityListener;
 import dev.screwbox.core.environment.physics.StaticColliderComponent;
+import dev.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
@@ -165,7 +168,7 @@ public class EntityManager implements EntityListener {
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
         for (final var entity : candidates) {
             for (final var peer : candidates) {
-                final var baked = EntityBakery.tryBake(entity, peer, bake);
+                final var baked = tryBake(entity, peer, bake);
                 if (baked.isPresent()) {
                     var old = entity.get(identifier);
                     entity.remove(identifier);
@@ -177,5 +180,26 @@ public class EntityManager implements EntityListener {
             }
         }
         return true;
+    }
+
+    private static Optional<Entity> tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
+        if (entity == peer) {
+            return Optional.empty();
+        }
+        final var entityComponent = entity.get(componentClass);
+        final var peerComponent = peer.get(componentClass);
+        boolean areEqual = Reflections.areEqualComparingFieldValues(entityComponent, peerComponent);
+
+        if (!areEqual) {
+            return Optional.empty();
+        }
+        final Optional<Bounds> result = entity.bounds().tryMerge(peer.bounds());
+        if (result.isPresent()) {
+            var bakeResult = new Entity().bounds(result.get()).add(entity.get(componentClass));
+            entity.remove(componentClass);
+            peer.remove(componentClass);
+            return Optional.of(bakeResult);
+        }
+        return Optional.empty();
     }
 }
