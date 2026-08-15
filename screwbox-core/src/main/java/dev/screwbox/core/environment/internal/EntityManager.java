@@ -164,6 +164,7 @@ public class EntityManager implements EntityListener {
     }
 //TODO improve speed by not querying env
     private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
+        //TODO exclude candidates as soon as one is processed
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
         for (final var entity : candidates) {
             for (final var peer : candidates) {
