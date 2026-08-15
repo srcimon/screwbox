@@ -28,7 +28,7 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem());
         var map = TileMap.fromString("""
             
-             ###       #   ##    
+             ###       #   ##
              #         ## #### ###   
                        # 
             

@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Compare objects by public field values.
 
 ### 🪛 Bug Fixes
 
