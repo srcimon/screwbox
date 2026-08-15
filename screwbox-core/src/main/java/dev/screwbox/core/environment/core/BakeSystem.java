@@ -19,6 +19,13 @@ public class BakeSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final List<Entity> candiatates = engine.environment().fetchAll(BAKE_CANDIDATES);
+        for(final var candiate : candiatates) {
+            for(final var component : candiate.getAll()) {
+                if (CanBeBaked.class.isAssignableFrom(component.getClass())) {
+                    System.out.println("DO");
+                }
+            }
+        }
     }
 
 //    @Override

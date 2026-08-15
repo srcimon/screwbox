@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
+import dev.screwbox.core.environment.core.BakeSystem;
 import dev.screwbox.core.environment.fluids.DiveSystem;
 import dev.screwbox.core.environment.fluids.FloatRotationSystem;
 import dev.screwbox.core.environment.fluids.FloatSystem;
@@ -45,6 +46,7 @@ import java.util.List;
 public enum Feature {
 
     AI(
+        new BakeSystem(),//TODO bs remove here
         new PatrolMovementSystem(),
         new PathMovementSystem(),
         new TargetLockSystem(),
