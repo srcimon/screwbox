@@ -10,7 +10,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Replaced `GeometryUtil` with `Bounds.tryMerge(Bounds)`
 
 ### 📦 Dependency updates
 

@@ -377,4 +377,34 @@ class BoundsTest {
         var bounds = Bounds.atOrigin(40, 10, 30, 10);
         assertThat(bounds.scale(2.0)).isEqualTo(Bounds.atOrigin(25, 5, 60, 20));
     }
+
+    @Test
+    void tryMerge_notAligned_returnsEmptyOptional() {
+        Bounds wall = Bounds.atOrigin(0, 0, 10, 10);
+        Bounds door = Bounds.atOrigin(20, 0, 20, 10);
+
+        Optional<Bounds> result = wall.tryMerge(door);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void tryMerge_alignedWithSameHeight_returnsCombined() {
+        Bounds wall = Bounds.atOrigin(0, 0, 10, 10);
+        Bounds door = Bounds.atOrigin(10, 0, 20, 10);
+
+        Optional<Bounds> result = wall.tryMerge(door);
+
+        assertThat(result).isEqualTo(Optional.of(Bounds.atOrigin(0, 0, 30, 10)));
+    }
+
+    @Test
+    void tryMerge_alignedWithSameWith_returnsCombined() {
+        Bounds wall = Bounds.atOrigin(0, 15, 20, 15);
+        Bounds door = Bounds.atOrigin(0, 0, 20, 15);
+
+        Optional<Bounds> result = wall.tryMerge(door);
+
+        assertThat(result).isEqualTo(Optional.of(Bounds.atOrigin(0, 0, 20, 30)));
+    }
 }

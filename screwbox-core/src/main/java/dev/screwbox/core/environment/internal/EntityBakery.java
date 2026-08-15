@@ -3,7 +3,6 @@ package dev.screwbox.core.environment.internal;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.utils.GeometryUtil;
 import dev.screwbox.core.utils.Reflections;
 
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class EntityBakery {
         if (!areEqual) {
             return Optional.empty();
         }
-        Optional<Bounds> result = GeometryUtil.tryToCombine(entity.bounds(), peer.bounds());//TODO move inside Bounds
+        final Optional<Bounds> result = entity.bounds().tryMerge(peer.bounds());
         if (result.isPresent()) {
             var bakeResult = new Entity().bounds(result.get()).add(entity.get(componentClass));
             entity.remove(componentClass);
