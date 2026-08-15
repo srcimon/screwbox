@@ -1,5 +1,7 @@
 package dev.screwbox.core.environment.internal;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
@@ -139,12 +141,17 @@ public class EntityManager implements EntityListener {
     }
 
     public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
+        var all = entitiesMatching(Archetype.ofSpacial(identifier, bake));
+        if(all.isEmpty()) {
+            return;
+        }
         boolean done = false;
         while (!done) {
             done = bakeStep(identifier, bake);
             pickUpChanges();
         }
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
+
         // at this point all colliders have been combined
         for (final var entity : candidates) {
             entity.remove(identifier);
@@ -162,7 +169,7 @@ public class EntityManager implements EntityListener {
                 if (baked.isPresent()) {
                     var old = entity.get(identifier);
                     entity.remove(identifier);
-                    peer.remove(StaticColliderComponent.class);
+                    peer.remove(identifier);
                     baked.get().add(old);
                     addEntity(baked.get());
                     return false;
