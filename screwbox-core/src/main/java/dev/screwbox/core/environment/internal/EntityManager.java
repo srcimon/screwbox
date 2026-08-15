@@ -165,17 +165,19 @@ public class EntityManager implements EntityListener {
     //TODO improve speed by not querying env
     private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
-        final java.util.Set<Entity> skipped = new java.util.HashSet<>();
-        // Listen für die verzögerte Ausführung (verhindert ConcurrentModificationException)
         final java.util.List<Entity> toRemove = new java.util.ArrayList<>();
         final java.util.List<Entity> toAdd = new java.util.ArrayList<>();
         boolean done = true;
 
-        for (final var entity : candidates) {
-            if (skipped.contains(entity)) continue;
+        int size = candidates.size();
+        for (int i = 0; i < size; i++) {
+            final var entity = candidates.get(i);
+            if (toRemove.contains(entity)) continue;
 
-            for (final var peer : candidates) {
-                if (skipped.contains(peer)) continue;
+            // Startet bei i + 1: Verhindert Selbstvergleich & doppelte Paar-Prüfungen vollständig
+            for (int j = i + 1; j < size; j++) {
+                final var peer = candidates.get(j);
+                if (toRemove.contains(peer)) continue;
 
                 final var baked = tryBake(entity, peer, bake);
                 if (baked != null) {
@@ -183,29 +185,22 @@ public class EntityManager implements EntityListener {
                     entity.remove(identifier);
                     peer.remove(identifier);
 
-                    // Nicht sofort löschen, sondern für später merken
-                    if (entity.componentCount() == 1) {
-                        toRemove.add(entity);
-                    }
-                    if (peer.componentCount() == 1) {
-                        toRemove.add(peer);
-                    }
+                    toRemove.add(entity);
+                    toRemove.add(peer);
 
                     baked.add(old);
-                    toAdd.add(baked); // Für später merken
-
-                    skipped.add(entity);
-                    skipped.add(peer);
+                    toAdd.add(baked);
 
                     done = false;
-                    break;
+                    break; // Nächste entity im äußeren Loop prüfen
                 }
             }
         }
 
-        // ECS-Mutationen sicher außerhalb der Iterations-Schleifen ausführen
         for (var entity : toRemove) {
-            removeEntity(entity);
+            if (entity.componentCount() == 1) {
+                removeEntity(entity);
+            }
         }
         for (var entity : toAdd) {
             addEntity(entity);
@@ -215,9 +210,6 @@ public class EntityManager implements EntityListener {
     }
 
     private static Entity tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
-        if (entity == peer) {
-            return null;
-        }
         final var entityComponent = entity.get(componentClass);
         final var peerComponent = peer.get(componentClass);
         boolean areEqual = Reflections.areEqualComparingFieldValues(entityComponent, peerComponent);
