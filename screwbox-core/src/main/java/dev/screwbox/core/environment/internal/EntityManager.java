@@ -159,7 +159,7 @@ public class EntityManager implements EntityListener {
         for (final var entity : candidates) {
             entity.remove(identifier);
         }
-        System.out.println(Duration.since(t).nanos());
+        System.out.println(Duration.since(t).milliseconds());
     }
 
     //TODO improve speed by not querying env
@@ -212,18 +212,19 @@ public class EntityManager implements EntityListener {
     private static Entity tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
         final var entityComponent = entity.get(componentClass);
         final var peerComponent = peer.get(componentClass);
+        final Optional<Bounds> result = entity.bounds().tryMerge(peer.bounds());
+        if(!result.isPresent()) {
+            return null;
+        }
         boolean areEqual = Reflections.areEqualComparingFieldValues(entityComponent, peerComponent);
 
         if (!areEqual) {
             return null;
         }
-        final Optional<Bounds> result = entity.bounds().tryMerge(peer.bounds());
-        if (result.isPresent()) {
-            var bakeResult = new Entity().bounds(result.get()).add(entity.get(componentClass));
-            entity.remove(componentClass);
-            peer.remove(componentClass);
-            return bakeResult;
-        }
-        return null;
+
+        var bakeResult = new Entity().bounds(result.get()).add(entity.get(componentClass));
+        entity.remove(componentClass);
+        peer.remove(componentClass);
+        return bakeResult;
     }
 }
