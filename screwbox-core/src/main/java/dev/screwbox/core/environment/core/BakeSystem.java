@@ -2,8 +2,11 @@ package dev.screwbox.core.environment.core;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
+
+import java.util.List;
 
 import static dev.screwbox.core.environment.Order.OPTIMIZATION;
 
@@ -14,8 +17,8 @@ public class BakeSystem implements EntitySystem {
 
 
     @Override
-    public void update(Engine engine) {
-
+    public void update(final Engine engine) {
+        final List<Entity> candiatates = engine.environment().fetchAll(BAKE_CANDIDATES);
     }
 
 //    @Override
