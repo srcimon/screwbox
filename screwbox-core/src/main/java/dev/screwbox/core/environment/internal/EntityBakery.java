@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public class EntityBakery {
 
-    //TODO move into entity
     public static Optional<Entity> tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
         if (entity == peer) {
             return Optional.empty();
@@ -17,8 +16,6 @@ public class EntityBakery {
         final var entityComponent = entity.get(componentClass);
         final var peerComponent = peer.get(componentClass);
         boolean areEqual = Reflections.areEqualComparingFieldValues(entityComponent, peerComponent);
-
-        //TODO test for non null components
 
         if (!areEqual) {
             return Optional.empty();
