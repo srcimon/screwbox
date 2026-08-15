@@ -1,9 +1,11 @@
 package dev.screwbox.core.environment.internal;
 
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntityEvent;
 import dev.screwbox.core.environment.EntityListener;
+import dev.screwbox.core.environment.physics.StaticColliderComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -134,5 +136,39 @@ public class EntityManager implements EntityListener {
 
     public boolean idIsPresent(final int id) {
         return entitiesById.containsKey(id);
+    }
+
+    public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
+        boolean done = false;
+        while (!done) {
+            done = bakeStep(identifier, bake);
+            pickUpChanges();
+        }
+        final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
+        // at this point all colliders have been combined
+        for (final var entity : candidates) {
+            entity.remove(identifier);
+            if (entity.componentCount() == 1) {
+                removeEntity(entity);
+            }
+        }
+    }
+
+    private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
+        final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
+        for (final var entity : candidates) {
+            for (final var peer : candidates) {
+                final var baked = EntityBakery.tryBake(entity, peer, bake);
+                if (baked.isPresent()) {
+                    var old = entity.get(identifier);
+                    entity.remove(identifier);
+                    peer.remove(StaticColliderComponent.class);
+                    baked.get().add(old);
+                    addEntity(baked.get());
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

@@ -380,6 +380,12 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
+        entityManager.bake(identifier, bake);
+        return this;
+    }
+
+    @Override
     public int allocateId() {
         idIndex++;
         ensureIdIsUniqueAndWithinValidRange();
