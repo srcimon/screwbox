@@ -8,7 +8,6 @@ import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntityEvent;
 import dev.screwbox.core.environment.EntityListener;
-import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
@@ -146,7 +145,7 @@ public class EntityManager implements EntityListener {
     public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
         Time t = Time.now();
         var all = entitiesMatching(Archetype.ofSpacial(identifier, bake));
-        if(all.isEmpty()) {
+        if (all.isEmpty()) {
             return;
         }
         boolean done = false;
@@ -162,30 +161,57 @@ public class EntityManager implements EntityListener {
         }
         System.out.println(Duration.since(t).nanos());
     }
-//TODO improve speed by not querying env
+
+    //TODO improve speed by not querying env
     private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
-        //TODO exclude candidates as soon as one is processed
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
+        final java.util.Set<Entity> skipped = new java.util.HashSet<>();
+        // Listen für die verzögerte Ausführung (verhindert ConcurrentModificationException)
+        final java.util.List<Entity> toRemove = new java.util.ArrayList<>();
+        final java.util.List<Entity> toAdd = new java.util.ArrayList<>();
+        boolean done = true;
+
         for (final var entity : candidates) {
+            if (skipped.contains(entity)) continue;
+
             for (final var peer : candidates) {
+                if (skipped.contains(peer)) continue;
+
                 final var baked = tryBake(entity, peer, bake);
                 if (baked != null) {
                     var old = entity.get(identifier);
                     entity.remove(identifier);
                     peer.remove(identifier);
-                    if(entity.componentCount() == 1) {
-                        removeEntity(entity);
+
+                    // Nicht sofort löschen, sondern für später merken
+                    if (entity.componentCount() == 1) {
+                        toRemove.add(entity);
                     }
-                    if(peer.componentCount() == 1) {
-                        removeEntity(peer);
+                    if (peer.componentCount() == 1) {
+                        toRemove.add(peer);
                     }
+
                     baked.add(old);
-                    addEntity(baked);
-                    return false;
+                    toAdd.add(baked); // Für später merken
+
+                    skipped.add(entity);
+                    skipped.add(peer);
+
+                    done = false;
+                    break;
                 }
             }
         }
-        return true;
+
+        // ECS-Mutationen sicher außerhalb der Iterations-Schleifen ausführen
+        for (var entity : toRemove) {
+            removeEntity(entity);
+        }
+        for (var entity : toAdd) {
+            addEntity(entity);
+        }
+
+        return done;
     }
 
     private static Entity tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
