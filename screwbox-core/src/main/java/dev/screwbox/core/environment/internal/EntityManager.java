@@ -144,6 +144,7 @@ public class EntityManager implements EntityListener {
     }
 
     public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
+        Time t = Time.now();
         var all = entitiesMatching(Archetype.ofSpacial(identifier, bake));
         if(all.isEmpty()) {
             return;
@@ -159,6 +160,7 @@ public class EntityManager implements EntityListener {
         for (final var entity : candidates) {
             entity.remove(identifier);
         }
+        System.out.println(Duration.since(t).nanos());
     }
 //TODO improve speed by not querying env
     private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
@@ -166,7 +168,7 @@ public class EntityManager implements EntityListener {
         for (final var entity : candidates) {
             for (final var peer : candidates) {
                 final var baked = tryBake(entity, peer, bake);
-                if (baked.isPresent()) {
+                if (baked != null) {
                     var old = entity.get(identifier);
                     entity.remove(identifier);
                     peer.remove(identifier);
@@ -176,8 +178,8 @@ public class EntityManager implements EntityListener {
                     if(peer.componentCount() == 1) {
                         removeEntity(peer);
                     }
-                    baked.get().add(old);
-                    addEntity(baked.get());
+                    baked.add(old);
+                    addEntity(baked);
                     return false;
                 }
             }
@@ -185,24 +187,24 @@ public class EntityManager implements EntityListener {
         return true;
     }
 
-    private static Optional<Entity> tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
+    private static Entity tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
         if (entity == peer) {
-            return Optional.empty();
+            return null;
         }
         final var entityComponent = entity.get(componentClass);
         final var peerComponent = peer.get(componentClass);
         boolean areEqual = Reflections.areEqualComparingFieldValues(entityComponent, peerComponent);
 
         if (!areEqual) {
-            return Optional.empty();
+            return null;
         }
         final Optional<Bounds> result = entity.bounds().tryMerge(peer.bounds());
         if (result.isPresent()) {
             var bakeResult = new Entity().bounds(result.get()).add(entity.get(componentClass));
             entity.remove(componentClass);
             peer.remove(componentClass);
-            return Optional.of(bakeResult);
+            return bakeResult;
         }
-        return Optional.empty();
+        return null;
     }
 }
