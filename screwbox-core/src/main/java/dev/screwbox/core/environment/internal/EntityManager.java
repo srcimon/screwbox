@@ -160,7 +160,7 @@ public class EntityManager implements EntityListener {
             entity.remove(identifier);
         }
     }
-
+//TODO improve speed by not querying env
     private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
         for (final var entity : candidates) {
