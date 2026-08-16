@@ -37,7 +37,7 @@ public class DefaultScenes implements Scenes, Updatable {
     public DefaultScenes(final Engine engine, final Executor executor, final DefaultPostProcessing postProcessing) {
         this.engine = engine;
         this.executor = executor;
-        add(new DefaultScene());
+        this.sceneData.put(DefaultScene.class, createSceneData(new DefaultScene()));
         this.activeScene = sceneData.get(DefaultScene.class);
         setLoadingScene(new DefaultLoadingScene());
         this.postProcessing = postProcessing;
@@ -194,5 +194,11 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneData createSceneData(final Scene scene) {
         final var sceneEnvironment = new DefaultEnvironment(engine);
         return new SceneData(scene, sceneEnvironment);
+    }
+
+    public void start() {
+        if(activeScene.isSameAs(DefaultScene.class)) {
+            activeScene.initialize();
+        }
     }
 }
