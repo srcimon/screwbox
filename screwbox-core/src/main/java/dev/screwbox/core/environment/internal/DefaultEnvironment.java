@@ -391,15 +391,12 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
-    //TODO is not CALLED WHEN USING DEFAULT SCENE
     @Override
     public Environment runAutoBake() {
-        Time t = Time.now();
         //TODO do not bake loading scene
         //TODO Find another way of calling bake
         bake(StaticColliderComponent.class, ColliderComponent.class);
         bake(StaticOccluderComponent.class, OccluderComponent.class);
-        System.out.println("BAKED " + Duration.since(t).nanos());
         return this;
     }
 
