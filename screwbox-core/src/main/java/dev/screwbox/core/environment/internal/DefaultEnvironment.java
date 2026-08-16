@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.environment.core.CanBeBaked;
+import dev.screwbox.core.environment.core.Bakeable;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.utils.Reflections;
@@ -390,10 +390,7 @@ public class DefaultEnvironment implements Environment {
     //TODO remove StaticColliderComponent and StaticOccluderComponent from docs!
     @Override
     public Environment bakeStaticEntities() {
-        //TODO do not bake loading scene
-        //TODO Find another way of calling bake
-        //TODO bake SmokeObstacleComponent
-        var bakeableComponetClasses = entities().stream().flatMap(e -> e.getComponentClasses().stream()).distinct().filter(c -> c.isAnnotationPresent(CanBeBaked.class)).toList();
+        var bakeableComponetClasses = entities().stream().flatMap(e -> e.getComponentClasses().stream()).distinct().filter(c -> c.isAnnotationPresent(Bakeable.class)).toList();
         for(final var componentClass : bakeableComponetClasses) {
             System.out.println("baking " + componentClass.getSimpleName());
             bake(StaticBoundsComponent.class, componentClass);

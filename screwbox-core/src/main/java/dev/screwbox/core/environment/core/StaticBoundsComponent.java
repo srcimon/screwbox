@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 
 /**
- * Marks an {@link Entity} as static. Will be used by {@link Environment#bakeStaticEntities()} to merge all {@link Component components} marked as {@link CanBeBaked}.
+ * Marks an {@link Entity} as static. Will be used by {@link Environment#bakeStaticEntities()} to merge all {@link Component components} marked as {@link Bakeable}.
  *
  * @since 3.35.0
  */

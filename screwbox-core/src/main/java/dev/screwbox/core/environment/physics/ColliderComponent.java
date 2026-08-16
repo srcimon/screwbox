@@ -2,11 +2,11 @@ package dev.screwbox.core.environment.physics;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
-import dev.screwbox.core.environment.core.CanBeBaked;
+import dev.screwbox.core.environment.core.Bakeable;
 
 import java.io.Serial;
 
-@CanBeBaked
+@Bakeable
 public class ColliderComponent implements Component {
 
     @Serial
