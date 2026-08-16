@@ -15,6 +15,7 @@ class SmokeOptionsTest {
             .diffusion(Percent.of(0.00004))
             .viscosity(Percent.of(0.001))
             .fade(0.01)
+            .draworder(19)
             .iterations(3)
             .style(new FireSmokeStyle());
 
@@ -23,6 +24,7 @@ class SmokeOptionsTest {
         assertThat(options.viscosity()).isEqualTo(Percent.of(0.001));
         assertThat(options.iterations()).isEqualTo(3);
         assertThat(options.fade()).isEqualTo(0.01);
+        assertThat(options.drawOrder()).isEqualTo(19);
         assertThat(options.style()).isInstanceOf(FireSmokeStyle.class);
     }
 
