@@ -143,6 +143,11 @@ public class EntityManager implements EntityListener {
     }
 
     public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         var all = entitiesMatching(Archetype.ofSpacial(identifier, bake));
         if (all.isEmpty()) {
             return;

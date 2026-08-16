@@ -21,6 +21,8 @@ class SceneData {
 
     void initialize() {
         scene.populate(environment);
+        //TODO do not bake loading scene
+        //TODO Find another way of calling bake
         Time t = Time.now();
         environment.bake(StaticColliderComponent.class, ColliderComponent.class);
         environment.bake(StaticOccluderComponent.class, OccluderComponent.class);
