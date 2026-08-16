@@ -172,7 +172,6 @@ class DefaultEngine implements Engine {
         }
         log.info("'{}' started using engine version {}", name, version());
         try {
-            scenes.start();
             window.open();
             loop.start();
         } catch (final RuntimeException e) {

@@ -33,6 +33,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private boolean hasChangedToTargetScene = true;
     private SceneTransition defaultTransition = SceneTransition.custom();
     private Time switchTime = Time.now();
+    private boolean defaultSceneInitStarted = false;
 
     public DefaultScenes(final Engine engine, final Executor executor, final DefaultPostProcessing postProcessing) {
         this.engine = engine;
@@ -154,6 +155,10 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
+        if (!defaultSceneInitStarted && activeScene.isSameAs(DefaultScene.class)) {
+            activeScene.initialize();
+            defaultSceneInitStarted = true;
+        }
         final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
         sceneToUpdate.environment().update();
 
@@ -196,9 +201,4 @@ public class DefaultScenes implements Scenes, Updatable {
         return new SceneData(scene, sceneEnvironment);
     }
 
-    public void start() {
-        if(activeScene.isSameAs(DefaultScene.class)) {
-            activeScene.initialize();
-        }
-    }
 }
