@@ -4,13 +4,13 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 
+@ExecutionOrder(Order.DEBUG_OVERLAY)
 public class DebugGridSystem implements EntitySystem {
 
     private int cellSize;
@@ -37,8 +37,8 @@ public class DebugGridSystem implements EntitySystem {
         var area2 = engine.graphics().visibleArea().snapExpand(majorLineSize);
         for (double y = area2.minY(); y < area2.maxY(); y += majorLineSize) {
             for (double x = area2.minX(); x < area2.maxX(); x += majorLineSize) {
-                engine.graphics().world().drawText(Vector.of(x,y), "%s".formatted(x), textOptions);
-                engine.graphics().world().drawText(Vector.of(x,y+20 / engine.graphics().camera().zoom()), "%s".formatted(y), textOptions);
+                engine.graphics().world().drawText(Vector.of(x, y), "%s".formatted(x), textOptions);
+                engine.graphics().world().drawText(Vector.of(x, y + 20 / engine.graphics().camera().zoom()), "%s".formatted(y), textOptions);
                 engine.graphics().world().drawRectangle(Bounds.atOrigin(x, y, majorLineSize, majorLineSize), RectangleDrawOptions.outline(lineColor).strokeWidth(3));
             }
         }
