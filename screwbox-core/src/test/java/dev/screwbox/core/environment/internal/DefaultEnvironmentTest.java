@@ -759,7 +759,7 @@ class DefaultEnvironmentTest {
         environment.bake(StaticBoundsComponent.class, OccluderComponent.class);
 
         var shadowCasters = environment.fetchAll(Archetype.of(OccluderComponent.class));
-        var bounds = shadowCasters.getFirst().get(TransformComponent.class).bounds;
+        var bounds = shadowCasters.getFirst().bounds();
         assertThat(shadowCasters).hasSize(1);
         assertThat(bounds).isEqualTo(atOrigin(0, 0, 60, 20));
         assertThat(environment.entityCount()).isEqualTo(4L);
@@ -787,7 +787,7 @@ class DefaultEnvironmentTest {
         environment.bake(StaticBoundsComponent.class, ColliderComponent.class);
 
         var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
-        var bounds = colliders.getFirst().get(TransformComponent.class).bounds;
+        var bounds = colliders.getFirst().bounds();
         assertThat(colliders).hasSize(1);
         assertThat(bounds).isEqualTo(atOrigin(0, 0, 60, 20));
     }
@@ -814,7 +814,7 @@ class DefaultEnvironmentTest {
         environment.bake(StaticBoundsComponent.class, ColliderComponent.class);
 
         var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
-        var bounds = colliders.getFirst().get(TransformComponent.class).bounds;
+        var bounds = colliders.getFirst().bounds();
         assertThat(colliders).hasSize(1);
         assertThat(bounds).isEqualTo(atOrigin(0, 0, 20, 60));
     }
@@ -840,10 +840,37 @@ class DefaultEnvironmentTest {
 
         environment.bake(StaticBoundsComponent.class, ColliderComponent.class);
 
-        environment.update();
-
         var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
         assertThat(colliders).hasSize(3);
+    }
+
+    @Test
+    void bakeStaticEntities_alignedBakeableEntitiesPresent_mergesEntities() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 20, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 40, 20, 20)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bakeStaticEntities();
+
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
+
+        var bounds = colliders.getFirst().bounds();
+        assertThat(colliders).hasSize(1);
+        assertThat(bounds).isEqualTo(atOrigin(0, 0, 20, 60));
+        assertThat(environment.entityCount()).isEqualTo(4);
     }
 
     @AfterEach
