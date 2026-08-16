@@ -15,13 +15,16 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
+import dev.screwbox.core.environment.core.Bakeable;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
+import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.LightRenderSystem;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
@@ -58,6 +61,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static dev.screwbox.core.Bounds.$$;
+import static dev.screwbox.core.Bounds.atOrigin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -732,6 +736,34 @@ class DefaultEnvironmentTest {
         assertThat(environment.entities()).hasSize(2)
             .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
             .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
+    }
+
+    @Test
+    void bake_threeAligningEntities_bindsEntitiesTogether() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new OccluderComponent(),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new OccluderComponent(),
+            new TransformComponent(atOrigin(20, 0, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new OccluderComponent(),
+            new TransformComponent(atOrigin(40, 0, 20, 20)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bake(StaticBoundsComponent.class, OccluderComponent.class);
+
+        var shadowCasters = environment.fetchAll(Archetype.of(OccluderComponent.class));
+        var bounds = shadowCasters.getFirst().get(TransformComponent.class).bounds;
+        assertThat(shadowCasters).hasSize(1);
+        assertThat(bounds).isEqualTo(atOrigin(0, 0, 60, 20));
+        assertThat(environment.entityCount()).isEqualTo(4L);
     }
 
     @AfterEach

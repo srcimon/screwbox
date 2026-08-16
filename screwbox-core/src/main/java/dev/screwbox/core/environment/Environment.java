@@ -510,6 +510,7 @@ public interface Environment extends IdPool {
     /**
      * Bakes {@link Entity entities} marked with the specified identifier component. Pulls the bake component out of
      * aligning original entities to improve performance. Can be automated using the {@link Bakeable} annotation.
+     * Baked {@link Entity entities} are tagged "bake-result".
      *
      * @since 3.35.0
      */
@@ -518,7 +519,7 @@ public interface Environment extends IdPool {
     /**
      * Bakes aligning {@link Entity entities} marked with a {@link StaticBoundsComponent} together to improve performance.
      * Will process all components that are marked using the {@link Bakeable} annotation. Will be called when initializing
-     * a {@link Scene}.
+     * a {@link Scene}. Baked {@link Entity entities} are tagged "bake-result".
      *
      * @since 3.35.0
      */

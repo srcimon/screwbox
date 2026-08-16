@@ -184,7 +184,7 @@ public class EntityManager implements EntityListener {
         }
 
         for (var entity : toRemove) {
-            if (entity.componentCount() == 2) {
+            if (entity.componentCount() == 2 && entity.hasTag("bake-result")) {
                 removeEntity(entity);
             }
         }

@@ -382,7 +382,8 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment bake(Class<? extends Component> identifier, Class<? extends Component> bakeComponent) {
+    public Environment bake(final Class<? extends Component> identifier, final Class<? extends Component> bakeComponent) {
+        Validate.isFalse(() -> identifier.equals(bakeComponent), "identifier must be not be same than bake component");//TODO test
         entityManager.bake(identifier, bakeComponent);
         return this;
     }
@@ -391,8 +392,7 @@ public class DefaultEnvironment implements Environment {
     @Override
     public Environment bakeStaticEntities() {
         var bakeableComponetClasses = entities().stream().flatMap(e -> e.getComponentClasses().stream()).distinct().filter(c -> c.isAnnotationPresent(Bakeable.class)).toList();
-        for(final var componentClass : bakeableComponetClasses) {
-            System.out.println("baking " + componentClass.getSimpleName());
+        for (final var componentClass : bakeableComponetClasses) {
             bake(StaticBoundsComponent.class, componentClass);
         }
 //TODO return number of baked entities?
