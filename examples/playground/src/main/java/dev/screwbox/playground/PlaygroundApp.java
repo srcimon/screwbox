@@ -61,6 +61,7 @@ public class PlaygroundApp {
             }
             x.mouse().hoverViewport().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
+        screwBox.environment().addSystem(new DebugGridSystem(32, 256));
         screwBox.start();
     }
 }
