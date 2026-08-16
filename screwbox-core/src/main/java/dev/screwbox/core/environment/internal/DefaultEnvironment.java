@@ -391,6 +391,7 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
+    //TODO is not CALLED WHEN USING DEFAULT SCENE
     @Override
     public Environment runAutoBake() {
         Time t = Time.now();
