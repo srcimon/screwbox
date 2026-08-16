@@ -395,6 +395,7 @@ public class DefaultEnvironment implements Environment {
     public Environment runAutoBake() {
         //TODO do not bake loading scene
         //TODO Find another way of calling bake
+        //TODO bake SmokeObstacleComponent
         bake(StaticColliderComponent.class, ColliderComponent.class);
         bake(StaticOccluderComponent.class, OccluderComponent.class);
         return this;
