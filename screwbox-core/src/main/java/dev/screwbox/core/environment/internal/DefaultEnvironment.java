@@ -388,14 +388,17 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
-    //TODO remove StaticColliderComponent and StaticOccluderComponent from docs!
     @Override
     public Environment bakeStaticEntities() {
-        var bakeableComponetClasses = entities().stream().flatMap(e -> e.getComponentClasses().stream()).distinct().filter(c -> c.isAnnotationPresent(Bakeable.class)).toList();
+        final var bakeableComponetClasses = entities().stream()
+            .flatMap(entity -> entity.getComponentClasses().stream())
+            .distinct()
+            .filter(componentClazz -> componentClazz.isAnnotationPresent(Bakeable.class))
+            .toList();
+
         for (final var componentClass : bakeableComponetClasses) {
             bake(StaticBoundsComponent.class, componentClass);
         }
-//TODO return number of baked entities?
         return this;
     }
 
