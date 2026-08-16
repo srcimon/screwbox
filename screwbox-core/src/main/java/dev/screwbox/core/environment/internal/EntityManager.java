@@ -213,7 +213,7 @@ public class EntityManager implements EntityListener {
         final var entityComponent = entity.get(componentClass);
         final var peerComponent = peer.get(componentClass);
         final Optional<Bounds> result = entity.bounds().tryMerge(peer.bounds());
-        if(!result.isPresent()) {
+        if(result.isEmpty()) {
             return null;
         }
         boolean areEqual = Reflections.areEqualComparingFieldValues(entityComponent, peerComponent);
