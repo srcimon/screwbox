@@ -5,7 +5,6 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
@@ -66,7 +65,7 @@ public class GameScene implements Scene {
                     .add(new CameraBoundsComponent())
                     .add(new NavigationRegionComponent())))
 
-            .importSource(ImportOptions.indexedSources(map.objects(), GameObject::name)
+            .importSource(indexedSources(map.objects(), GameObject::name)
                 .assign("deathpit", new DeathPit())
                 .assign("player", new Player())
                 .assign("spawnpoint", new SpawnPoint())
