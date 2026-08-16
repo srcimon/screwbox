@@ -382,8 +382,8 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
-        entityManager.bake(identifier, bake);
+    public Environment bake(Class<? extends Component> identifier, Class<? extends Component> bakeComponent) {
+        entityManager.bake(identifier, bakeComponent);
         return this;
     }
 

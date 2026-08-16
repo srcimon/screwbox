@@ -8,6 +8,8 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
+import dev.screwbox.core.environment.core.Bakeable;
+import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.fluids.DiveSystem;
 import dev.screwbox.core.environment.fluids.FloatRotationSystem;
 import dev.screwbox.core.environment.fluids.FloatSystem;
@@ -505,10 +507,20 @@ public interface Environment extends IdPool {
      */
     int currentDrawOrder();
 
-    //TODO document
-    //TODO rename second parameter
-    Environment bake(Class<? extends Component> identifier, Class<? extends Component> bake);
+    /**
+     * Bakes {@link Entity entities} marked with the specified identifier component. Pulls the bake component out of
+     * aligning original entities to improve performance. Can be automated using the {@link Bakeable} annotation.
+     *
+     * @since 3.35.0
+     */
+    Environment bake(Class<? extends Component> identifier, Class<? extends Component> bakeComponent);
 
-    //TODO document
+    /**
+     * Bakes aligning {@link Entity entities} marked with a {@link StaticBoundsComponent} together to improve performance.
+     * Will process all components that are marked using the {@link Bakeable} annotation. Will be called when initializing
+     * a {@link Scene}.
+     *
+     * @since 3.35.0
+     */
     Environment bakeStaticEntities();
 }
