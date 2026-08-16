@@ -4,7 +4,6 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
-import dev.screwbox.core.graphics.internal.AttentionFocus;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.smoke.Smoke;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
@@ -22,7 +21,6 @@ public class DefaultSmoke implements Smoke {
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
     private final GraphicsConfiguration configuration;
-    private final AttentionFocus attentionFocus;
 
     private final List<Bounds> obstacles = new ArrayList<>();
     private final List<SmokeProjector.DensityChange> densityChanges = new ArrayList<>();
@@ -37,7 +35,6 @@ public class DefaultSmoke implements Smoke {
         this.viewportManager = viewportManager;
         this.executor = executor;
         this.configuration = configuration;
-        this.attentionFocus = new AttentionFocus(viewportManager);
     }
 
     @Override
