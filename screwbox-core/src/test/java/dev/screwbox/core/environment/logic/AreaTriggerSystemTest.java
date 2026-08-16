@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,12 +18,12 @@ class AreaTriggerSystemTest {
     @Test
     void update_updatesTriggerStatusOfCollidedTriggers(DefaultEnvironment environment) {
         Entity deathTrap = new Entity().add(
-                new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
-                new TriggerAreaComponent(Archetype.of(StaticColliderComponent.class)));
+            new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
+            new TriggerAreaComponent(Archetype.of(PhysicsComponent.class)));
 
         Entity sheepDeterminedToDie = new Entity().add(
-                new TransformComponent(Bounds.atOrigin(10, 10, 20, 20)),
-                new StaticColliderComponent());
+            new TransformComponent(Bounds.atOrigin(10, 10, 20, 20)),
+            new PhysicsComponent());
 
         environment.addEntities(deathTrap, sheepDeterminedToDie);
         environment.addSystem(new AreaTriggerSystem());
@@ -35,12 +36,12 @@ class AreaTriggerSystemTest {
     @Test
     void update_doesntUpdateStatusOfNonCollidedTriggers(DefaultEnvironment environment) {
         Entity deathTrap = new Entity().add(
-                new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
-                new TriggerAreaComponent(Archetype.of(StaticColliderComponent.class)));
+            new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
+            new TriggerAreaComponent(Archetype.of(PhysicsComponent.class)));
 
         Entity birdWatchingSheepDie = new Entity().add(
-                new TransformComponent(Bounds.atOrigin(10, 200, 20, 20)),
-                new StaticColliderComponent());
+            new TransformComponent(Bounds.atOrigin(10, 200, 20, 20)),
+            new PhysicsComponent());
 
         environment.addEntities(deathTrap, birdWatchingSheepDie);
         environment.addSystem(new AreaTriggerSystem());

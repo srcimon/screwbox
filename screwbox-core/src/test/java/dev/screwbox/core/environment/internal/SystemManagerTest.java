@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.internal;
 
 import dev.screwbox.core.environment.physics.CollisionSensorSystem;
+import dev.screwbox.core.environment.rendering.RenderSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,10 +41,10 @@ class SystemManagerTest {
 
     @Test
     void addSystem_systemPriorityIsHigherThanExistingSystems_addsSystemToStart() {
+        systemManager.addSystem(new RenderSystem());
         systemManager.addSystem(new CollisionSensorSystem());
-        systemManager.addSystem(new OptimizePhysicsPerformanceSystem());
 
-        assertThat(systemManager.allSystems().getFirst()).isInstanceOf(OptimizePhysicsPerformanceSystem.class);
+        assertThat(systemManager.allSystems().getFirst()).isInstanceOf(CollisionSensorSystem.class);
     }
 
     @Test

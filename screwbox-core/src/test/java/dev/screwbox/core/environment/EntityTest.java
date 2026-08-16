@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -155,7 +156,7 @@ class EntityTest {
 
     @Test
     void toString_returnsEntityInformation() {
-        assertThat(new Entity(124).tag("important").tag("special").name("Player").add(new PhysicsComponent(), new StaticColliderComponent()))
+        assertThat(new Entity(124).tag("important").tag("special").name("Player").add(new PhysicsComponent(), new StaticBoundsComponent()))
             .hasToString("Entity[id='124', name='Player', tags=important, special, components=2]");
 
         assertThat(new Entity().name("Player").add(new PhysicsComponent()))
