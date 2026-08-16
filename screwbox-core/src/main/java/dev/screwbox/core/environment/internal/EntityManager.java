@@ -143,13 +143,13 @@ public class EntityManager implements EntityListener {
     public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
         boolean done = false;
         while (!done) {
-            done = bakeStep(identifier, bake);
+            done = runBakeIteration(identifier, bake);
             pickUpChanges();
         }
     }
 
-    private boolean bakeStep(final Class<? extends Component> identifier, final Class<? extends Component> bake) {
-        final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
+    private boolean runBakeIteration(final Class<? extends Component> identifier, final Class<? extends Component> bakeComponent) {
+        final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bakeComponent));
         final List<Entity> processedEntities = new ArrayList<>();
         final List<Entity> toAdd = new ArrayList<>();
         boolean done = true;
@@ -163,7 +163,7 @@ public class EntityManager implements EntityListener {
                 final var peer = candidates.get(j);
                 if (processedEntities.contains(peer)) continue;
 
-                final var baked = tryBake(entity, peer, bake);
+                final var baked = tryBake(entity, peer, bakeComponent);
                 if (baked != null) {
                     var old = entity.get(identifier);
                     processedEntities.add(entity);
