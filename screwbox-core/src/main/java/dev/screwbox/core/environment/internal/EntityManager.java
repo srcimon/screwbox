@@ -178,6 +178,11 @@ public class EntityManager implements EntityListener {
             }
         }
 
+        applyBakeUpdates(processedEntities, toAdd);
+        return toAdd.isEmpty();
+    }
+
+    private void applyBakeUpdates(final List<Entity> processedEntities, final List<Entity> toAdd) {
         for (final var entity : processedEntities) {
             if (entity.componentCount() == 2 && entity.hasTag("bake-result")) {
                 removeEntity(entity);
@@ -186,7 +191,6 @@ public class EntityManager implements EntityListener {
         for (final var entity : toAdd) {
             addEntity(entity);
         }
-        return toAdd.isEmpty();
     }
 
     private static Entity tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
