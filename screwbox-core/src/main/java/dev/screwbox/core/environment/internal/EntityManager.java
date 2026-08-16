@@ -177,8 +177,8 @@ public class EntityManager implements EntityListener {
                 final var baked = tryBake(entity, peer, bake);
                 if (baked != null) {
                     var old = entity.get(identifier);
-                    entity.remove(identifier);
-                    peer.remove(identifier);
+                    entity.remove(identifier);//TODO potentially can skip that / fix removing empty ones then
+                    peer.remove(identifier);//TODO potentially can skip that / fix removing empty ones then
 
                     toRemove.add(entity);
                     toRemove.add(peer);
