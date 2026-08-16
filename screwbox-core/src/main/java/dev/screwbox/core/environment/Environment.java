@@ -8,6 +8,8 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
+import dev.screwbox.core.environment.core.Bakeable;
+import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.fluids.DiveSystem;
 import dev.screwbox.core.environment.fluids.FloatRotationSystem;
 import dev.screwbox.core.environment.fluids.FloatSystem;
@@ -19,7 +21,6 @@ import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.LightRenderSystem;
-import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
@@ -32,7 +33,6 @@ import dev.screwbox.core.environment.physics.CollisionSensorSystem;
 import dev.screwbox.core.environment.physics.CursorAttachmentSystem;
 import dev.screwbox.core.environment.physics.GravitySystem;
 import dev.screwbox.core.environment.physics.MagnetSystem;
-import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import dev.screwbox.core.environment.physics.PhysicsSystem;
 import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.rendering.*;
@@ -346,7 +346,6 @@ public interface Environment extends IdPool {
      * @see TailwindSystem
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
-     * @see OptimizePhysicsPerformanceSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem
      */
@@ -434,7 +433,6 @@ public interface Environment extends IdPool {
      * Adds systems for light rendering. Enables light rendering in the {@link Environment}.
      *
      * @see LightRenderSystem
-     * @see OptimizeLightPerformanceSystem
      */
     Environment enableLight();
 
@@ -509,4 +507,21 @@ public interface Environment extends IdPool {
      */
     int currentDrawOrder();
 
+    /**
+     * Bakes {@link Entity entities} marked with the specified identifier component. Pulls the bake component out of
+     * aligning original entities to improve performance. Can be automated using the {@link Bakeable} annotation.
+     * Baked {@link Entity entities} are tagged "bake-result".
+     *
+     * @since 3.35.0
+     */
+    Environment bake(Class<? extends Component> identifier, Class<? extends Component> bakeComponent);
+
+    /**
+     * Bakes aligning {@link Entity entities} marked with a {@link StaticBoundsComponent} together to improve performance.
+     * Will process all components that are marked using the {@link Bakeable} annotation. Will be called when initializing
+     * a {@link Scene}. Baked {@link Entity entities} are tagged "bake-result".
+     *
+     * @since 3.35.0
+     */
+    Environment bakeStaticEntities();
 }

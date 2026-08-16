@@ -15,6 +15,7 @@ class SceneData {
 
     void initialize() {
         scene.populate(environment);
+        environment.bakeStaticEntities();
         isInitialized = true;
     }
 

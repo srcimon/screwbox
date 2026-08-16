@@ -2,9 +2,9 @@ package dev.screwbox.core;
 
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import org.junit.jupiter.api.Test;
 
@@ -42,9 +42,9 @@ class ArchetypeTest {
         var archetype = Archetype.of(PhysicsComponent.class, TransformComponent.class);
 
         Entity entity = new Entity()
-                .add(new StaticColliderComponent())
-                .add(new PhysicsComponent())
-                .add(new TransformComponent(Bounds.atPosition(0, 0, 0, 0)));
+            .add(new StaticBoundsComponent())
+            .add(new PhysicsComponent())
+            .add(new TransformComponent(Bounds.atPosition(0, 0, 0, 0)));
 
         assertThat(archetype.matches(entity)).isTrue();
     }

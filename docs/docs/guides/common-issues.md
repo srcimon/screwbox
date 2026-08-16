@@ -42,7 +42,11 @@ There can be a lot of reasons for bad performance:
 
 - **Many colliders**
   Collision detection with many physics objects can be speed up by reducing the number of colliders.
-  To automate add the `StaticColliderComponent` to all colliders that cannot move.
+  To automate add the `StaticBoundsComponent` to all colliders that cannot move. 
+  This also works with other components as well.
+  So always mark entities that don't move and change size with the `StaticBoundsComponent`.
+  The impact can be quite heavy.
+
 
 ## Error messages in console
 

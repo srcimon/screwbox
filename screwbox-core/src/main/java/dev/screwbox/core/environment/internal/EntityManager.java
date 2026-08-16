@@ -1,15 +1,19 @@
 package dev.screwbox.core.environment.internal;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Archetype;
+import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntityEvent;
 import dev.screwbox.core.environment.EntityListener;
+import dev.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
@@ -134,5 +138,79 @@ public class EntityManager implements EntityListener {
 
     public boolean idIsPresent(final int id) {
         return entitiesById.containsKey(id);
+    }
+
+    public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
+        boolean done = false;
+        while (!done) {
+            done = runBakeIteration(identifier, bake);
+            pickUpChanges();
+        }
+    }
+
+    private boolean runBakeIteration(final Class<? extends Component> identifier, final Class<? extends Component> bakeComponent) {
+        final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bakeComponent));
+        final List<Entity> processedEntities = new ArrayList<>();
+        final List<Entity> toAdd = new ArrayList<>();
+
+        for (int i = 0; i < candidates.size(); i++) {
+            final var entity = candidates.get(i);
+
+            if (!processedEntities.contains(entity)) {
+                for (int j = i + 1; j < candidates.size(); j++) {
+                    final var peer = candidates.get(j);
+
+                    if (!processedEntities.contains(peer)) {
+                        final var baked = tryBake(entity, peer, bakeComponent);
+
+                        if (baked != null) {
+                            final var old = entity.get(identifier);
+                            processedEntities.add(entity);
+                            processedEntities.add(peer);
+
+                            baked.add(old);
+                            toAdd.add(baked);
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        applyBakeUpdates(processedEntities, toAdd);
+        return toAdd.isEmpty();
+    }
+
+    private void applyBakeUpdates(final List<Entity> processedEntities, final List<Entity> toAdd) {
+        for (final var entity : processedEntities) {
+            if (entity.componentCount() == 2 && entity.hasTag("bake-result")) {
+                removeEntity(entity);
+            }
+        }
+        for (final var entity : toAdd) {
+            addEntity(entity);
+        }
+    }
+
+    private static Entity tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
+        final var entityComponent = entity.get(componentClass);
+        final var peerComponent = peer.get(componentClass);
+        final Optional<Bounds> result = entity.bounds().tryMerge(peer.bounds());
+        if (result.isEmpty()) {
+            return null;
+        }
+
+        if (Reflections.areEqualComparingFieldValues(entityComponent, peerComponent)) {
+            final var bakeResult = new Entity()
+                .bounds(result.get())
+                .add(entity.get(componentClass))
+                .tag("bake-result");
+
+            entity.remove(componentClass);
+            peer.remove(componentClass);
+            return bakeResult;
+        }
+        return null;
     }
 }

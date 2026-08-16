@@ -19,9 +19,10 @@ Otherwise this is the recommended way to go.
 
 ## Common Components
 
-| Component            | Description                                                                             |
-|----------------------|-----------------------------------------------------------------------------------------|
-| `TransformComponent` | Most common component. Specifies size and position of the entity within the game world. |
+| Component               | Description                                                                             |
+|-------------------------|-----------------------------------------------------------------------------------------|
+| `TransformComponent`    | Most common component. Specifies size and position of the entity within the game world. |
+| `StaticBoundsComponent` | Marks entities as static. Enables performance optimization for bakeable components.     |
 
 ## AI components
 
@@ -99,7 +100,6 @@ To utilize these components, first call `environment.enablePhysics()`.
 | `ColliderComponent`         | Prevents physic entities from intersecting.                                               |
 | `AttachmentComponent`       | Attaches an entity to another.                                                            |
 | `CollisionDetailsComponent` | Collects detailed information on collisions detected by `CollisionSensorComponent`.       |
-| `StaticColliderComponent`   | Optimizes performance when added to entities with `ColliderComponent` that will not move. |
 | `GravityComponent`          | A singleton component that specifies gravity value for the game world.                    |
 | `CursorAttachmentComponent` | Attaches the entity to the mouse cursor.                                                  |
 | `TailwindComponent`         | Transmits entity motion on other nearby entities that contains `TailwindForceComponent`   |
@@ -181,7 +181,6 @@ To use these components call `environment.enableLight()` first.
 | `OrthographicWallComponent` | Marks entity as orthographic wall that will only be illuminated from below and cast shadows. |
 | `OccluderComponent`         | Adds shadow casting from the entity bounds.                                                  |
 | `BackdropOccluderComponent` | Adds backdrop shadow casting from the entity bounds.                                         |
-| `StaticOccluderComponent`   | Optimizes performance by combining occluder components that won't move.                      |
 
 ## Particle components
 

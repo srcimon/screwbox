@@ -103,6 +103,17 @@ A more detailed list of all components will be added to this documentation.
 For now you can get an overview of all components in the
 [JavaDoc](https://javadoc.io/doc/dev.screwbox/screwbox-core/latest/io/github/srcimon/screwbox/core/environment/package-summary.html).
 
+## Baking mechanism
+
+ScrewBox optimizes the performance of critical systems like collision detection using a baking mechanism.
+The baking mechanism pulls components that are marked with the `@Bakeable` annotation out of aligning entities
+and pushes them into a new entity.
+This mechanism can improve performance a lot.
+E.g. ten ground tiles containing a `RenderComponent` and `ColliderComponent` next to each other will be baked into a single new entity.
+The rendering system will still process the original entities.
+But the phyiscs system will only process the new collider entity.
+Baking will only be applied to entities marked as static using the `StaticBoundsComponent`.
+
 ## Final words on design decisions
 
 - **public properties** You will note that all components prepacked with ScrewBox have public properties without getters

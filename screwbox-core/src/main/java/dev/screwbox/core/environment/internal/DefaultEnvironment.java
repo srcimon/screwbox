@@ -7,6 +7,8 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.environment.core.Bakeable;
+import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
@@ -50,8 +52,8 @@ public class DefaultEnvironment implements Environment {
             throw new IllegalStateException("singleton has been found multiple times: " + searchItem);
         }
         return entities.size() == 1
-                ? Optional.of(entities.getFirst())
-                : Optional.empty();
+            ? Optional.of(entities.getFirst())
+            : Optional.empty();
     }
 
     @Override
@@ -377,6 +379,27 @@ public class DefaultEnvironment implements Environment {
     @Override
     public int currentDrawOrder() {
         return systemManager.currentDrawOrder();
+    }
+
+    @Override
+    public Environment bake(final Class<? extends Component> identifier, final Class<? extends Component> bakeComponent) {
+        Validate.isFalse(() -> identifier.equals(bakeComponent), "identifier must be not be same than bake component");
+        entityManager.bake(identifier, bakeComponent);
+        return this;
+    }
+
+    @Override
+    public Environment bakeStaticEntities() {
+        final var bakeableComponetClasses = entities().stream()
+            .flatMap(entity -> entity.getComponentClasses().stream())
+            .distinct()
+            .filter(componentClazz -> componentClazz.isAnnotationPresent(Bakeable.class))
+            .toList();
+
+        for (final var componentClass : bakeableComponetClasses) {
+            bake(StaticBoundsComponent.class, componentClass);
+        }
+        return this;
     }
 
     @Override

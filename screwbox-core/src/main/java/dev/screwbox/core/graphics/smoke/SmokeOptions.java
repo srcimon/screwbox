@@ -15,9 +15,10 @@ import static java.util.Objects.requireNonNull;
  * @param opacity    opacity of the smoke
  * @param fade       speed of the smoke dissapearing
  * @param style      rendering style for drawing the smoke
+ * @param drawOrder  rendering order of the smoke
  */
 public record SmokeOptions(Percent viscosity, Percent diffusion, int iterations, Percent opacity, double fade,
-                           SmokeStyle style) {
+                           SmokeStyle style, int drawOrder) {
 
 
     /**
@@ -45,48 +46,57 @@ public record SmokeOptions(Percent viscosity, Percent diffusion, int iterations,
     }
 
     private SmokeOptions(final double fade) {
-        this(Percent.of(0.0000000004), Percent.of(0.000001), 2, Percent.max(), fade, new TrueColorSmokeStyle());
+        this(Percent.of(0.0000000004), Percent.of(0.000001), 2, Percent.max(), fade, new TrueColorSmokeStyle(), 0);
     }
 
     /**
      * Set the diffusion rate of the smoke.
      */
     public SmokeOptions diffusion(final Percent diffusion) {
-        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style);
+        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style, drawOrder);
     }
 
     /**
      * Set the viscosity of the smoke.
      */
     public SmokeOptions viscosity(final Percent viscosity) {
-        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style);
+        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style, drawOrder);
     }
 
     /**
      * Set the fade of the smoke.
      */
     public SmokeOptions fade(final double fade) {
-        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style);
+        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style, drawOrder);
     }
 
     /**
      * Set the opacity of the smoke rendering.
      */
     public SmokeOptions opacity(final Percent opacity) {
-        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style);
+        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style, drawOrder);
     }
 
     /**
      * Set the number of iterations used to calculate behavior. Has heavy performance impact.
      */
     public SmokeOptions iterations(final int iterations) {
-        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style);
+        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style, drawOrder);
     }
 
     /**
      * Sets the rendering stlye of the smoke.
      */
     public SmokeOptions style(final SmokeStyle style) {
-        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style);
+        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style, drawOrder);
+    }
+
+    /**
+     * Sets the draw order of the smoke.
+     *
+     * @since 3.35.0
+     */
+    public SmokeOptions drawOrder(final int drawOrder) {
+        return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style, drawOrder);
     }
 }

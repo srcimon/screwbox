@@ -75,6 +75,7 @@ public class SmokeProjector {
             final Offset origin = viewport.toCanvas(worldAnchor).add((int) (visibleBounds.x() * configuration.smokeCellSize() * viewport.camera().zoom()), (int) (visibleBounds.y() * configuration.smokeCellSize() * viewport.camera().zoom()));
             viewport.canvas().drawSprite(sprite, origin, SpriteDrawOptions
                 .scaled(scale)
+                .drawOrder(options.drawOrder())
                 .opacity(options.opacity()));
         }
     }

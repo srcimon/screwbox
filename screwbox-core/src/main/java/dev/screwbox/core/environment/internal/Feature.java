@@ -20,13 +20,20 @@ import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.fluids.FluidTurbulenceSystem;
 import dev.screwbox.core.environment.light.LightRenderSystem;
-import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
 import dev.screwbox.core.environment.particles.ParticleBurstSystem;
 import dev.screwbox.core.environment.particles.ParticleEmitterSystem;
-import dev.screwbox.core.environment.physics.*;
+import dev.screwbox.core.environment.physics.AttachmentSystem;
+import dev.screwbox.core.environment.physics.ChaoticMovementSystem;
+import dev.screwbox.core.environment.physics.CollisionDetailsSystem;
+import dev.screwbox.core.environment.physics.CollisionSensorSystem;
+import dev.screwbox.core.environment.physics.CursorAttachmentSystem;
+import dev.screwbox.core.environment.physics.GravitySystem;
+import dev.screwbox.core.environment.physics.MagnetSystem;
+import dev.screwbox.core.environment.physics.PhysicsSystem;
+import dev.screwbox.core.environment.physics.TailwindSystem;
 import dev.screwbox.core.environment.rendering.*;
 import dev.screwbox.core.environment.smoke.SmokeRenderSystem;
 import dev.screwbox.core.environment.smoke.WindForceSystem;
@@ -107,7 +114,6 @@ public enum Feature {
         new GravitySystem(),
         new CursorAttachmentSystem(),
         new MagnetSystem(),
-        new OptimizePhysicsPerformanceSystem(),
         new PhysicsSystem(),
         new TailwindSystem(),
         new ChaoticMovementSystem()
@@ -137,8 +143,7 @@ public enum Feature {
     ),
 
     LIGHT(
-        new LightRenderSystem(),
-        new OptimizeLightPerformanceSystem()
+        new LightRenderSystem()
     ),
 
     SMOKE(

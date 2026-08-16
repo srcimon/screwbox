@@ -17,12 +17,13 @@ import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
+import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.fluids.FluidRenderSystem;
 import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.LightRenderSystem;
-import dev.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
@@ -59,6 +60,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static dev.screwbox.core.Bounds.$$;
+import static dev.screwbox.core.Bounds.atOrigin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -440,12 +442,11 @@ class DefaultEnvironmentTest {
     void enablePhysics_addsPhysicsSystems() {
         environment.enablePhysics();
 
-        assertThat(environment.systems()).hasSize(10)
+        assertThat(environment.systems()).hasSize(9)
             .anyMatch(system -> system.getClass().equals(GravitySystem.class))
             .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
             .anyMatch(system -> system.getClass().equals(TailwindSystem.class))
             .anyMatch(system -> system.getClass().equals(MagnetSystem.class))
-            .anyMatch(system -> system.getClass().equals(OptimizePhysicsPerformanceSystem.class))
             .anyMatch(system -> system.getClass().equals(CursorAttachmentSystem.class))
             .anyMatch(system -> system.getClass().equals(ChaoticMovementSystem.class))
             .anyMatch(system -> system.getClass().equals(PhysicsSystem.class))
@@ -483,9 +484,8 @@ class DefaultEnvironmentTest {
     void enableLight_addsLightSystems() {
         environment.enableLight();
 
-        assertThat(environment.systems()).hasSize(2)
-            .anyMatch(system -> system.getClass().equals(LightRenderSystem.class))
-            .anyMatch(system -> system.getClass().equals(OptimizeLightPerformanceSystem.class));
+        assertThat(environment.systems()).hasSize(1)
+            .anyMatch(system -> system.getClass().equals(LightRenderSystem.class));
     }
 
     @Test
@@ -657,7 +657,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(68)
+        assertThat(environment.systems()).hasSize(66)
             .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 
@@ -735,6 +735,149 @@ class DefaultEnvironmentTest {
         assertThat(environment.entities()).hasSize(2)
             .anyMatch(entity -> entity.name().orElseThrow().equals("first"))
             .anyMatch(entity -> entity.name().orElseThrow().equals("second"));
+    }
+
+    @Test
+    void bake_threeAligningEntities_merged() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new OccluderComponent(),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new OccluderComponent(),
+            new TransformComponent(atOrigin(20, 0, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new OccluderComponent(),
+            new TransformComponent(atOrigin(40, 0, 20, 20)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bake(StaticBoundsComponent.class, OccluderComponent.class);
+
+        var shadowCasters = environment.fetchAll(Archetype.of(OccluderComponent.class));
+        var bounds = shadowCasters.getFirst().bounds();
+        assertThat(shadowCasters).hasSize(1);
+        assertThat(bounds).isEqualTo(atOrigin(0, 0, 60, 20));
+        assertThat(environment.entityCount()).isEqualTo(4L);
+    }
+
+    @Test
+    void bake_threeHorizontallyAlignedColliders_merged() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(20, 0, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(40, 0, 20, 20)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bake(StaticBoundsComponent.class, ColliderComponent.class);
+
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
+        var bounds = colliders.getFirst().bounds();
+        assertThat(colliders).hasSize(1);
+        assertThat(bounds).isEqualTo(atOrigin(0, 0, 60, 20));
+    }
+
+    @Test
+    void bake_threeVerticallyAlignedEntities_merged() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 20, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 40, 20, 20)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bake(StaticBoundsComponent.class, ColliderComponent.class);
+
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
+        var bounds = colliders.getFirst().bounds();
+        assertThat(colliders).hasSize(1);
+        assertThat(bounds).isEqualTo(atOrigin(0, 0, 20, 60));
+    }
+
+    @Test
+    void bake_distinctColliders_notMerged() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(4),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(2),
+            new TransformComponent(atOrigin(20, 0, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(40, 0, 20, 30)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bake(StaticBoundsComponent.class, ColliderComponent.class);
+
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
+        assertThat(colliders).hasSize(3);
+    }
+
+    @Test
+    void bakeStaticEntities_alignedBakeableEntitiesPresent_mergesEntities() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 20, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 40, 20, 20)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bakeStaticEntities();
+
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
+
+        var bounds = colliders.getFirst().bounds();
+        assertThat(colliders).hasSize(1);
+        assertThat(bounds).isEqualTo(atOrigin(0, 0, 20, 60));
+        assertThat(environment.entityCount()).isEqualTo(4);
+    }
+
+    @Test
+    void bake_identifierMatchesBakeComponent_throwsException() {
+        assertThatThrownBy(() -> environment.bake(StaticBoundsComponent.class, StaticBoundsComponent.class))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("identifier must be not be same than bake component");
     }
 
     @AfterEach
