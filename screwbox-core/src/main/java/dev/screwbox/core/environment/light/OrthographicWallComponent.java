@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.light;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.Bakeable;
 
 import java.io.Serial;
 
@@ -11,6 +12,7 @@ import java.io.Serial;
  *
  * @since 2.9.0
  */
+@Bakeable
 public class OrthographicWallComponent implements Component {
 
     @Serial

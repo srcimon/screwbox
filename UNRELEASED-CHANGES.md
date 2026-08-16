@@ -3,7 +3,7 @@
 - Updated entity baking mechanism now works with any component marked using `@Bakeable` annotation (#1072)
 - Smoother scene starts because baking was shifted into scene initialization
 - Reduced savegame file size and ecs load by removing intermediate bake results (#1073)
-- Enabled baking of `SmokeObstacleComponent` to improve smoke performance
+- Enabled baking for `ReflectionComponent`, `WindComponent`, `SmokeObstacleComponent` and `OrthographicWallComponent`
 - Compare objects by public field values
 - Configure smoke draw order
 

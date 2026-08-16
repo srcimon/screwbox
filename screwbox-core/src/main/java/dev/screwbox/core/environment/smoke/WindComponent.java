@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.smoke;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.environment.core.Bakeable;
 import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
@@ -12,6 +13,7 @@ import java.io.Serial;
  * @see Smoke
  * @since 3.33.0
  */
+@Bakeable
 public class WindComponent implements Component {
 
     @Serial

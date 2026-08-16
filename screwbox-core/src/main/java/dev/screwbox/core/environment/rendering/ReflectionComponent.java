@@ -3,6 +3,7 @@ package dev.screwbox.core.environment.rendering;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.Bakeable;
 import dev.screwbox.core.graphics.Sprite;
 
 import java.io.Serial;
@@ -12,6 +13,7 @@ import java.io.Serial;
  * which are above the refection area having a draw order below the specified value. Gets processed by
  * {@link ReflectionRenderSystem}.
  */
+@Bakeable
 public class ReflectionComponent implements Component {
 
     @Serial
