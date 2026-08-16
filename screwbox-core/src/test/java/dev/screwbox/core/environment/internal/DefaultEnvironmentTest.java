@@ -15,7 +15,6 @@ import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
 import dev.screwbox.core.environment.controls.LeftRightControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
-import dev.screwbox.core.environment.core.Bakeable;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
@@ -739,7 +738,7 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void bake_threeAligningEntities_bindsEntitiesTogether() {
+    void bake_threeAligningEntities_merged() {
         Entity brickA = new Entity().add(
             new StaticBoundsComponent(),
             new OccluderComponent(),
@@ -764,6 +763,87 @@ class DefaultEnvironmentTest {
         assertThat(shadowCasters).hasSize(1);
         assertThat(bounds).isEqualTo(atOrigin(0, 0, 60, 20));
         assertThat(environment.entityCount()).isEqualTo(4L);
+    }
+
+    @Test
+    void bake_threeHorizontallyAlignedColliders_merged() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(20, 0, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(40, 0, 20, 20)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bake(StaticBoundsComponent.class, ColliderComponent.class);
+
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
+        var bounds = colliders.getFirst().get(TransformComponent.class).bounds;
+        assertThat(colliders).hasSize(1);
+        assertThat(bounds).isEqualTo(atOrigin(0, 0, 60, 20));
+    }
+
+    @Test
+    void bake_threeVerticallyAlignedEntities_merged() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 20, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(0, 40, 20, 20)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bake(StaticBoundsComponent.class, ColliderComponent.class);
+
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
+        var bounds = colliders.getFirst().get(TransformComponent.class).bounds;
+        assertThat(colliders).hasSize(1);
+        assertThat(bounds).isEqualTo(atOrigin(0, 0, 20, 60));
+    }
+
+    @Test
+    void bake_distinctColliders_notMerged() {
+        Entity brickA = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(4),
+            new TransformComponent(atOrigin(0, 0, 20, 20)));
+
+        Entity brickB = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(2),
+            new TransformComponent(atOrigin(20, 0, 20, 20)));
+
+        Entity brickC = new Entity().add(
+            new StaticBoundsComponent(),
+            new ColliderComponent(),
+            new TransformComponent(atOrigin(40, 0, 20, 30)));
+
+        environment.addEntities(brickA, brickB, brickC);
+
+        environment.bake(StaticBoundsComponent.class, ColliderComponent.class);
+
+        environment.update();
+
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
+        assertThat(colliders).hasSize(3);
     }
 
     @AfterEach
