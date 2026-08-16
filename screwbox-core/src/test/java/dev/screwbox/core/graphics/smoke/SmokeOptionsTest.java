@@ -15,7 +15,7 @@ class SmokeOptionsTest {
             .diffusion(Percent.of(0.00004))
             .viscosity(Percent.of(0.001))
             .fade(0.01)
-            .draworder(19)
+            .drawOrder(19)
             .iterations(3)
             .style(new FireSmokeStyle());
 

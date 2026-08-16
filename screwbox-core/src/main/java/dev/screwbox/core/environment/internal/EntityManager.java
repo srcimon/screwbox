@@ -178,12 +178,12 @@ public class EntityManager implements EntityListener {
             }
         }
 
-        for (var entity : toRemove) {
+        for (final var entity : toRemove) {
             if (entity.componentCount() == 2 && entity.hasTag("bake-result")) {
                 removeEntity(entity);
             }
         }
-        for (var entity : toAdd) {
+        for (final var entity : toAdd) {
             addEntity(entity);
         }
 
@@ -197,15 +197,17 @@ public class EntityManager implements EntityListener {
         if (result.isEmpty()) {
             return null;
         }
-        boolean areEqual = Reflections.areEqualComparingFieldValues(entityComponent, peerComponent);
 
-        if (!areEqual) {
-            return null;
+        if (Reflections.areEqualComparingFieldValues(entityComponent, peerComponent)) {
+            final var bakeResult = new Entity()
+                .bounds(result.get())
+                .add(entity.get(componentClass))
+                .tag("bake-result");
+
+            entity.remove(componentClass);
+            peer.remove(componentClass);
+            return bakeResult;
         }
-
-        var bakeResult = new Entity().bounds(result.get()).add(entity.get(componentClass)).tag("bake-result");
-        entity.remove(componentClass);
-        peer.remove(componentClass);
-        return bakeResult;
+        return null;
     }
 }

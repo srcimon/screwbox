@@ -96,7 +96,7 @@ public record SmokeOptions(Percent viscosity, Percent diffusion, int iterations,
      *
      * @since 3.35.0
      */
-    public SmokeOptions draworder(final int drawOrder) {
+    public SmokeOptions drawOrder(final int drawOrder) {
         return new SmokeOptions(viscosity, diffusion, iterations, opacity, fade, style, drawOrder);
     }
 }
