@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Compare objects by public field values.
+- Reduced savegame file size and engine load by removing intermediate bake results
 
 ### 🪛 Bug Fixes
 

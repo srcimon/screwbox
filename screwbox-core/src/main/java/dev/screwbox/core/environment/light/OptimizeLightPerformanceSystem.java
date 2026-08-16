@@ -11,6 +11,6 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        engine.environment().bake(StaticOccluderComponent.class, OccluderComponent.class);
+     //TODO remove system entirely   engine.environment().bake(StaticOccluderComponent.class, OccluderComponent.class);
     }
 }

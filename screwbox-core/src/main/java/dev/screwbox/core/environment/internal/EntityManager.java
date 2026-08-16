@@ -143,7 +143,6 @@ public class EntityManager implements EntityListener {
     }
 
     public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
-        Time t = Time.now();
         var all = entitiesMatching(Archetype.ofSpacial(identifier, bake));
         if (all.isEmpty()) {
             return;
@@ -159,7 +158,6 @@ public class EntityManager implements EntityListener {
         for (final var entity : candidates) {
             entity.remove(identifier);
         }
-        System.out.println(Duration.since(t).milliseconds());
     }
 
     private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {

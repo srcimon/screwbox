@@ -11,6 +11,6 @@ public class OptimizePhysicsPerformanceSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        engine.environment().bake(StaticColliderComponent.class, ColliderComponent.class);
+        //TODO remove system entirely engine.environment().bake(StaticColliderComponent.class, ColliderComponent.class);
     }
 }

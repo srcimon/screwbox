@@ -1,6 +1,12 @@
 package dev.screwbox.core.scenes.internal;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
+import dev.screwbox.core.environment.light.OccluderComponent;
+import dev.screwbox.core.environment.light.StaticOccluderComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.scenes.Scene;
 
 class SceneData {
@@ -15,6 +21,10 @@ class SceneData {
 
     void initialize() {
         scene.populate(environment);
+        Time t = Time.now();
+        environment.bake(StaticColliderComponent.class, ColliderComponent.class);
+        environment.bake(StaticOccluderComponent.class, OccluderComponent.class);
+        System.out.println("BAKED " + Duration.since(t).milliseconds());
         isInitialized = true;
     }
 
