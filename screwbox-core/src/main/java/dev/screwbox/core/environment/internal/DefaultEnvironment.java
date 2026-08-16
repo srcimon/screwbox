@@ -1,8 +1,6 @@
 package dev.screwbox.core.environment.internal;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
@@ -56,8 +54,8 @@ public class DefaultEnvironment implements Environment {
             throw new IllegalStateException("singleton has been found multiple times: " + searchItem);
         }
         return entities.size() == 1
-                ? Optional.of(entities.getFirst())
-                : Optional.empty();
+            ? Optional.of(entities.getFirst())
+            : Optional.empty();
     }
 
     @Override
