@@ -383,7 +383,7 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public Environment bake(final Class<? extends Component> identifier, final Class<? extends Component> bakeComponent) {
-        Validate.isFalse(() -> identifier.equals(bakeComponent), "identifier must be not be same than bake component");//TODO test
+        Validate.isFalse(() -> identifier.equals(bakeComponent), "identifier must be not be same than bake component");
         entityManager.bake(identifier, bakeComponent);
         return this;
     }

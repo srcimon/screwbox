@@ -873,6 +873,13 @@ class DefaultEnvironmentTest {
         assertThat(environment.entityCount()).isEqualTo(4);
     }
 
+    @Test
+    void bake_identifierMatchesBakeComponent_throwsException() {
+        assertThatThrownBy(() -> environment.bake(StaticBoundsComponent.class, StaticBoundsComponent.class))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("identifier must be not be same than bake component");
+    }
+
     @AfterEach
     void afterEach() throws IOException {
         if (Files.exists(SAVEGAME)) {
