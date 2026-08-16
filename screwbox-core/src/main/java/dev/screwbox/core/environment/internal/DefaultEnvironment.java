@@ -1,6 +1,8 @@
 package dev.screwbox.core.environment.internal;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
@@ -8,6 +10,10 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.light.OccluderComponent;
+import dev.screwbox.core.environment.light.StaticOccluderComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import dev.screwbox.core.utils.Reflections;
 import dev.screwbox.core.utils.Validate;
 
@@ -382,6 +388,17 @@ public class DefaultEnvironment implements Environment {
     @Override
     public Environment bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
         entityManager.bake(identifier, bake);
+        return this;
+    }
+
+    @Override
+    public Environment runAutoBake() {
+        Time t = Time.now();
+        //TODO do not bake loading scene
+        //TODO Find another way of calling bake
+        bake(StaticColliderComponent.class, ColliderComponent.class);
+        bake(StaticOccluderComponent.class, OccluderComponent.class);
+        System.out.println("BAKED " + Duration.since(t).nanos());
         return this;
     }
 
