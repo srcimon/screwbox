@@ -219,7 +219,7 @@ public class EntityManager implements EntityListener {
             return null;
         }
 
-        var bakeResult = new Entity().bounds(result.get()).add(entity.get(componentClass));
+        var bakeResult = new Entity().bounds(result.get()).add(entity.get(componentClass)).tag("bake-result");
         entity.remove(componentClass);
         peer.remove(componentClass);
         return bakeResult;
