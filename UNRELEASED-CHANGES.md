@@ -1,8 +1,9 @@
 ### 🚀 Features & improvements
 
 - Compare objects by public field values.
-- Moved entity baking from dedicated systems into scene initialization to avoid volatile scene starts
-- Reduced savegame file size and ecs load by removing intermediate bake results
+- Updated entity baking mechanism now works with any component marked using `@Bakeable` annotation (#1072)
+- Smoother scene starts because baking now happens within scene initialisation
+- Reduced savegame file size and ecs load by removing intermediate bake results (#1073)
 - Enabled baking of `SmokeObstacleComponent` to improve smoke performance
 
 ### 🪛 Bug Fixes

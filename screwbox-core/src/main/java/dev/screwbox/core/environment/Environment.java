@@ -344,7 +344,6 @@ public interface Environment extends IdPool {
      * @see TailwindSystem
      * @see CursorAttachmentSystem
      * @see CollisionDetailsSystem
-     * @see OptimizePhysicsPerformanceSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem
      */
@@ -432,7 +431,6 @@ public interface Environment extends IdPool {
      * Adds systems for light rendering. Enables light rendering in the {@link Environment}.
      *
      * @see LightRenderSystem
-     * @see OptimizeLightPerformanceSystem
      */
     Environment enableLight();
 
