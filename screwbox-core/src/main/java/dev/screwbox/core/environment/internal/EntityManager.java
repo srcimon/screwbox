@@ -1,8 +1,6 @@
 package dev.screwbox.core.environment.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
@@ -160,8 +158,8 @@ public class EntityManager implements EntityListener {
 
     private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
-        final java.util.List<Entity> toRemove = new java.util.ArrayList<>();
-        final java.util.List<Entity> toAdd = new java.util.ArrayList<>();
+        final List<Entity> toRemove = new java.util.ArrayList<>();
+        final List<Entity> toAdd = new java.util.ArrayList<>();
         boolean done = true;
 
         int size = candidates.size();
@@ -208,7 +206,7 @@ public class EntityManager implements EntityListener {
         final var entityComponent = entity.get(componentClass);
         final var peerComponent = peer.get(componentClass);
         final Optional<Bounds> result = entity.bounds().tryMerge(peer.bounds());
-        if(result.isEmpty()) {
+        if (result.isEmpty()) {
             return null;
         }
         boolean areEqual = Reflections.areEqualComparingFieldValues(entityComponent, peerComponent);
