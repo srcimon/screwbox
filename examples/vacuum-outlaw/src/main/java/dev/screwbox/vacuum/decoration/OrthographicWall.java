@@ -5,7 +5,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.OrthographicWallComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
-import dev.screwbox.core.environment.light.StaticOccluderComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.tiled.GameObject;

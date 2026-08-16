@@ -4,7 +4,6 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.physics.StaticColliderComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

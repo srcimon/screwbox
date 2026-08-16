@@ -1,7 +1,6 @@
 package dev.screwbox.core.environment.internal;
 
 import dev.screwbox.core.environment.physics.CollisionSensorSystem;
-import dev.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
