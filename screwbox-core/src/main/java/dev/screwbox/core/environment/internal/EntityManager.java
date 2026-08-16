@@ -162,7 +162,6 @@ public class EntityManager implements EntityListener {
         System.out.println(Duration.since(t).milliseconds());
     }
 
-    //TODO improve speed by not querying env
     private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
         final java.util.List<Entity> toRemove = new java.util.ArrayList<>();
