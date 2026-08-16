@@ -143,8 +143,8 @@ public class EntityManager implements EntityListener {
     }
 
     public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
-        var all = entitiesMatching(Archetype.ofSpacial(identifier, bake));
-        if (all.isEmpty()) {
+        var candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
+        if (candidates.isEmpty()) {
             return;
         }
         boolean done = false;
@@ -152,8 +152,6 @@ public class EntityManager implements EntityListener {
             done = bakeStep(identifier, bake);
             pickUpChanges();
         }
-        final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
-
         // at this point all colliders have been combined
         for (final var entity : candidates) {
             entity.remove(identifier);
