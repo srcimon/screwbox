@@ -158,15 +158,14 @@ public class EntityManager implements EntityListener {
             final var entity = candidates.get(i);
 
             if (!processedEntities.contains(entity)) {
-                boolean bakedFound = false;
-                for (int j = i + 1; j < candidates.size() && !bakedFound; j++) {
+                for (int j = i + 1; j < candidates.size(); j++) {
                     final var peer = candidates.get(j);
 
                     if (!processedEntities.contains(peer)) {
                         final var baked = tryBake(entity, peer, bakeComponent);
 
                         if (baked != null) {
-                            var old = entity.get(identifier);
+                            final var old = entity.get(identifier);
                             processedEntities.add(entity);
                             processedEntities.add(peer);
 
@@ -174,7 +173,7 @@ public class EntityManager implements EntityListener {
                             toAdd.add(baked);
 
                             done = false;
-                            bakedFound = true;
+                            break;
                         }
                     }
                 }
