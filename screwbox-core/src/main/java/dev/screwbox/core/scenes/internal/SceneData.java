@@ -15,7 +15,6 @@ class SceneData {
 
     void initialize() {
         scene.populate(environment);
-        System.out.println("Autobake " + this.scene.getClass().getSimpleName());
         environment.bakeStaticEntities();
         isInitialized = true;
     }
