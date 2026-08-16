@@ -150,16 +150,12 @@ public class EntityManager implements EntityListener {
             done = bakeStep(identifier, bake);
             pickUpChanges();
         }
-        // at this point all colliders have been combined
-        for (final var entity : candidates) {
-            entity.remove(identifier);
-        }
     }
 
     private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
-        final List<Entity> toRemove = new java.util.ArrayList<>();
-        final List<Entity> toAdd = new java.util.ArrayList<>();
+        final List<Entity> toRemove = new ArrayList<>();
+        final List<Entity> toAdd = new ArrayList<>();
         boolean done = true;
 
         int size = candidates.size();
@@ -175,9 +171,6 @@ public class EntityManager implements EntityListener {
                 final var baked = tryBake(entity, peer, bake);
                 if (baked != null) {
                     var old = entity.get(identifier);
-                    entity.remove(identifier);//TODO potentially can skip that / fix removing empty ones then
-                    peer.remove(identifier);//TODO potentially can skip that / fix removing empty ones then
-
                     toRemove.add(entity);
                     toRemove.add(peer);
 
@@ -191,7 +184,7 @@ public class EntityManager implements EntityListener {
         }
 
         for (var entity : toRemove) {
-            if (entity.componentCount() == 1) {
+            if (entity.componentCount() == 2) {
                 removeEntity(entity);
             }
         }

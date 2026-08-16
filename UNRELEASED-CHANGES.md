@@ -1,7 +1,8 @@
 ### 🚀 Features & improvements
 
 - Compare objects by public field values.
-- Reduced savegame file size and engine load by removing intermediate bake results
+- Moved entity baking from dedicated systems into scene initialization to avoid volatile scene starts
+- Reduced savegame file size and ecs load by removing intermediate bake results
 
 ### 🪛 Bug Fixes
 
