@@ -154,26 +154,29 @@ public class EntityManager implements EntityListener {
         final List<Entity> toAdd = new ArrayList<>();
         boolean done = true;
 
-        int size = candidates.size();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < candidates.size(); i++) {
             final var entity = candidates.get(i);
-            if (processedEntities.contains(entity)) continue;
 
-            for (int j = i + 1; j < size; j++) {
-                final var peer = candidates.get(j);
-                if (processedEntities.contains(peer)) continue;
+            if (!processedEntities.contains(entity)) {
+                boolean bakedFound = false;
+                for (int j = i + 1; j < candidates.size() && !bakedFound; j++) {
+                    final var peer = candidates.get(j);
 
-                final var baked = tryBake(entity, peer, bakeComponent);
-                if (baked != null) {
-                    var old = entity.get(identifier);
-                    processedEntities.add(entity);
-                    processedEntities.add(peer);
+                    if (!processedEntities.contains(peer)) {
+                        final var baked = tryBake(entity, peer, bakeComponent);
 
-                    baked.add(old);
-                    toAdd.add(baked);
+                        if (baked != null) {
+                            var old = entity.get(identifier);
+                            processedEntities.add(entity);
+                            processedEntities.add(peer);
 
-                    done = false;
-                    break;
+                            baked.add(old);
+                            toAdd.add(baked);
+
+                            done = false;
+                            bakedFound = true;
+                        }
+                    }
                 }
             }
         }
@@ -186,7 +189,6 @@ public class EntityManager implements EntityListener {
         for (final var entity : toAdd) {
             addEntity(entity);
         }
-
         return done;
     }
 
