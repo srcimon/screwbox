@@ -509,7 +509,10 @@ public interface Environment extends IdPool {
      */
     int currentDrawOrder();
 
+    //TODO document
+    //TODO rename second parameter
     Environment bake(Class<? extends Component> identifier, Class<? extends Component> bake);
 
-    Environment runAutoBake();
+    //TODO document
+    Environment bakeStaticEntities();
 }

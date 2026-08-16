@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.smoke;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.CanBeBaked;
 import dev.screwbox.core.graphics.smoke.Smoke;
 
 import java.io.Serial;
@@ -12,6 +13,7 @@ import java.io.Serial;
  * @see Smoke
  * @since 3.33.0
  */
+@CanBeBaked
 public class SmokeObstacleComponent implements Component {
 
     @Serial

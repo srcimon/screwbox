@@ -3,9 +3,11 @@ package dev.screwbox.core.environment.light;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.CanBeBaked;
 
 import java.io.Serial;
 
+@CanBeBaked
 public class OccluderComponent implements Component {
 
     @Serial

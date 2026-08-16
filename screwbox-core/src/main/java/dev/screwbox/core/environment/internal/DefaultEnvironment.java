@@ -390,7 +390,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment runAutoBake() {
+    public Environment bakeStaticEntities() {
         //TODO do not bake loading scene
         //TODO Find another way of calling bake
         //TODO bake SmokeObstacleComponent
