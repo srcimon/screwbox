@@ -141,10 +141,6 @@ public class EntityManager implements EntityListener {
     }
 
     public void bake(Class<? extends Component> identifier, Class<? extends Component> bake) {
-        var candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
-        if (candidates.isEmpty()) {
-            return;
-        }
         boolean done = false;
         while (!done) {
             done = bakeStep(identifier, bake);
@@ -152,7 +148,7 @@ public class EntityManager implements EntityListener {
         }
     }
 
-    private boolean bakeStep(Class<? extends Component> identifier, Class<? extends Component> bake) {
+    private boolean bakeStep(final Class<? extends Component> identifier, final Class<? extends Component> bake) {
         final List<Entity> candidates = entitiesMatching(Archetype.ofSpacial(identifier, bake));
         final List<Entity> toRemove = new ArrayList<>();
         final List<Entity> toAdd = new ArrayList<>();
@@ -163,7 +159,6 @@ public class EntityManager implements EntityListener {
             final var entity = candidates.get(i);
             if (toRemove.contains(entity)) continue;
 
-            // Startet bei i + 1: Verhindert Selbstvergleich & doppelte Paar-Prüfungen vollständig
             for (int j = i + 1; j < size; j++) {
                 final var peer = candidates.get(j);
                 if (toRemove.contains(peer)) continue;
@@ -178,7 +173,7 @@ public class EntityManager implements EntityListener {
                     toAdd.add(baked);
 
                     done = false;
-                    break; // Nächste entity im äußeren Loop prüfen
+                    break;
                 }
             }
         }
