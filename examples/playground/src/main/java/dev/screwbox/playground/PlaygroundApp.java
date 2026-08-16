@@ -16,6 +16,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
+import dev.screwbox.core.graphics.smoke.styles.OilSmokeStyle;
 import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
