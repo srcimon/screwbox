@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.smoke.styles.FireSmokeStyle;
 import dev.screwbox.core.graphics.smoke.styles.FrostSmokeStyle;
 import dev.screwbox.core.graphics.smoke.styles.HeatVisionSmokeStyle;
 import dev.screwbox.core.graphics.smoke.styles.NettrunnerSmokeStyle;
+import dev.screwbox.core.graphics.smoke.styles.OilSmokeStyle;
 import dev.screwbox.core.graphics.smoke.styles.TrueColorSmokeStyle;
 import dev.screwbox.core.utils.FractalNoise;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,7 +76,7 @@ class SmokeRendererTest {
 
     @Test
     void renderSmoke_noScaleOilStyle_createsSmokeImage() {
-        var image = new SmokeRenderer().renderSmoke(densityInfo, new ScreenBounds(Size.square(16)), 1, new NettrunnerSmokeStyle());
+        var image = new SmokeRenderer().renderSmoke(densityInfo, new ScreenBounds(Size.square(16)), 1, new OilSmokeStyle());
         verifyIsSameImage(image, "smoke/renderSmoke_noScaleOilStyle_createsSmokeImage.png");
     }
 
