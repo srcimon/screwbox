@@ -16,14 +16,16 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
+import dev.screwbox.core.graphics.smoke.styles.OilSmokeStyle;
 import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
 
 
+    static Color color = Color.WHITE;
+
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem());
@@ -41,7 +43,7 @@ public class PlaygroundApp {
                        #        #  #           #
             
             """, Size.square(32));
-        screwBox.graphics().smoke().setOptions(SmokeOptions.slowFade());
+        screwBox.graphics().smoke().setOptions(SmokeOptions.noFade().style(new OilSmokeStyle()));
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new StaticBoundsComponent()).add(new ColliderComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
             .assign('W', (source, idPool) -> new Entity().bounds(source.bounds()).add(new StaticBoundsComponent())
@@ -50,10 +52,14 @@ public class PlaygroundApp {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             if (x.mouse().isDownRight()) {
                 x.graphics().smoke().push(Bounds.atPosition(screwBox.mouse().position(), 32, 32), Vector.x(8000).multiply(screwBox.loop().delta()));
-                x.graphics().smoke().emit(screwBox.mouse().position(), 0.8 * screwBox.loop().delta(), Color.WHITE);
+                x.graphics().smoke().emit(screwBox.mouse().position(), 0.8 * screwBox.loop().delta(), color);
+            }
+            if (x.mouse().isPressedLeft()) {
+                color = Color.random();
             }
             x.mouse().hoverViewport().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
+        screwBox.environment().addSystem(new DebugGridSystem(16, 256));
         screwBox.start();
     }
 }

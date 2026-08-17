@@ -6,6 +6,7 @@
 - Enabled baking for `ReflectionComponent`, `WindComponent`, `SmokeObstacleComponent` and `OrthographicWallComponent`
 - Compare objects by public field values
 - Configure smoke draw order
+- Added `OilSmokeStyle`
 
 ### 🪛 Bug Fixes
 
