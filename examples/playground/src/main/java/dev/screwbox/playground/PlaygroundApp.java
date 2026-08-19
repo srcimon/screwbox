@@ -29,7 +29,8 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-        screwBox.graphics().configuration().setSmokeCellSize(32).setSmokeBlur(0).setSmokeScale(1);
+        screwBox.graphics().configuration().setSmokeCellSize(32).setSmokeBlur(4).setSmokeScale(2);
+
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem());

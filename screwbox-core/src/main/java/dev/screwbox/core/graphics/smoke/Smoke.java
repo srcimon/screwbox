@@ -74,6 +74,4 @@ public interface Smoke {
     Vector velocityAt(Vector position);
 
     Color densityAt(Vector position);
-
-    Color colorAt(Vector position);
 }
