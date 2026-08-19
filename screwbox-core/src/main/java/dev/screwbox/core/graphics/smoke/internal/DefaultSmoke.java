@@ -111,6 +111,24 @@ public class DefaultSmoke implements Smoke {
     }
 
     @Override
+    public Color densityAt(final Vector position) {
+        for (final var projector : smokeProjectors) {
+            final var density = projector.densityAt(position);
+            if (nonNull(density)) {
+                return density;
+            }
+        }
+        return Color.TRANSPARENT;
+    }
+
+    @Override
+    public Color colorAt(Vector position) {
+        final var density = densityAt(position);
+        final var styleRgb = options.style().apply(density.r()/255f, density.g()/255f, density.b()/255f, density.alpha());
+        return Color.rgb(styleRgb);
+    }
+
+    @Override
     public Smoke render(final double delta) {
         if (configuration.isSmokeEnabled()) {
             while (smokeProjectors.size() < viewportManager.viewports().size()) {

@@ -143,6 +143,14 @@ public class SmokeProjector {
         }
     }
 
+    public Color densityAt(Vector position) {
+        final var cell = toCell(position);
+        if (isNull(simulation) || !simulation.isInGrid(cell.x(), cell.y())) {
+            return null;
+        }
+        return simulation.densityAt(cell.x(), cell.y());
+    }
+
     public Vector velocityAt(final Vector position) {
         final var cell = toCell(position);
         if (isNull(simulation) || !simulation.isInGrid(cell.x(), cell.y())) {
