@@ -5,7 +5,6 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
@@ -16,10 +15,7 @@ import dev.screwbox.core.environment.smoke.WindComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
-import dev.screwbox.core.graphics.smoke.styles.HeatVisionSmokeStyle;
-import dev.screwbox.core.graphics.smoke.styles.OilSmokeStyle;
 import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
@@ -29,7 +25,7 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-        screwBox.graphics().configuration().setSmokeCellSize(8).setSmokeBlur(4).setSmokeScale(2);
+        screwBox.graphics().configuration().setSmokeCellSize(8).setSmokeBlur(3).setSmokeScale(8);
 
         screwBox.environment()
             .enableAllFeatures()
@@ -37,7 +33,7 @@ public class PlaygroundApp {
         var map = TileMap.fromString("""
             
              ###       #   ##
-             #         ## #### ###   
+             #         ## #### ###
                        # 
             
             
@@ -56,16 +52,12 @@ public class PlaygroundApp {
         screwBox.environment().addSystem(x -> {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             if (x.mouse().isDownRight()) {
-                x.graphics().smoke().push(Bounds.atPosition(screwBox.mouse().position(), 32, 32), Vector.x(800).multiply(screwBox.loop().delta()));
+                x.graphics().smoke().push(Bounds.atPosition(screwBox.mouse().position(), 32, 32), Vector.x(8000).multiply(screwBox.loop().delta()));
                 x.graphics().smoke().emit(screwBox.mouse().position(), 0.8 * screwBox.loop().delta(), color);
             }
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
             }
-            Color color1 = x.graphics().smoke().densityAt(x.mouse().position());
-            x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 24, 48), RectangleDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-            x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 48, 48), RectangleDrawOptions.filled(color1).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-            x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 48, 48), RectangleDrawOptions.outline(Color.RED).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             x.mouse().hoverViewport().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
         screwBox.environment().addSystem(new DebugGridSystem(16, 256));
