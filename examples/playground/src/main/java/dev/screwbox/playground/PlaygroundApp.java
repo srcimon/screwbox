@@ -29,7 +29,7 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-        screwBox.graphics().configuration().setSmokeCellSize(32).setSmokeBlur(4).setSmokeScale(2);
+        screwBox.graphics().configuration().setSmokeCellSize(8).setSmokeBlur(4).setSmokeScale(2);
 
         screwBox.environment()
             .enableAllFeatures()
@@ -63,7 +63,7 @@ public class PlaygroundApp {
                 color = Color.random();
             }
             Color color1 = x.graphics().smoke().densityAt(x.mouse().position());
-//            x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 48, 48), RectangleDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 24, 48), RectangleDrawOptions.filled(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 48, 48), RectangleDrawOptions.filled(color1).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 48, 48), RectangleDrawOptions.outline(Color.RED).strokeWidth(2).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             x.mouse().hoverViewport().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
