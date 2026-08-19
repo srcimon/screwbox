@@ -62,4 +62,10 @@ class DefaultSmokeTest {
             .isInstanceOf(NullPointerException.class)
             .hasMessage("options must not be null");
     }
+
+    @Test
+    void densityAt_currentlyNoSmoke_isTransparent() {
+        var density = smoke.densityAt($(40, 10));
+        assertThat(density).isEqualTo(Color.TRANSPARENT);
+    }
 }

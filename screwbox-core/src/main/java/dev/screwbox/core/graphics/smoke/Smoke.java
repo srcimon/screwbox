@@ -72,4 +72,12 @@ public interface Smoke {
      * @since 3.34.0
      */
     Vector velocityAt(Vector position);
+
+    /**
+     * Returns the density {@link Color} at the specified position. The density {@link Color} may differ from the rendering {@link Color}
+     * because it represents the actual fluid simulation value and is not affected by {@link SmokeStyle} and blurring.
+     *
+     * @since 3.35.0
+     */
+    Color densityAt(Vector position);
 }

@@ -164,6 +164,18 @@ class FluidSimulationTest {
         assertThat(simulation.velocityAt(4, 9)).isEqualTo(Vector.of(10, 20));
     }
 
+    @Test
+    void densityAt_fullBlownRed_isRed() {
+        simulation.addDensity(4, 9, 2.0, Color.RED);
+
+        assertThat(simulation.densityAt(4, 9)).isEqualTo(Color.RED);
+    }
+
+    @Test
+    void densityAt_noDensity_isTransparent() {
+        assertThat(simulation.densityAt(4, 9)).isEqualTo(Color.TRANSPARENT);
+    }
+
     private void assertTotalRedDensity(double expectedDensity) {
         final var state = simulation.densityData();
         var sum = 0.0;

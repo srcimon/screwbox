@@ -16,7 +16,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
-import dev.screwbox.core.graphics.smoke.styles.OilSmokeStyle;
 import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
@@ -26,13 +25,15 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
+        screwBox.graphics().configuration().setSmokeCellSize(8).setSmokeBlur(3).setSmokeScale(8);
+
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem());
         var map = TileMap.fromString("""
             
              ###       #   ##
-             #         ## #### ###   
+             #         ## #### ###
                        # 
             
             
@@ -43,7 +44,7 @@ public class PlaygroundApp {
                        #        #  #           #
             
             """, Size.square(32));
-        screwBox.graphics().smoke().setOptions(SmokeOptions.noFade().style(new OilSmokeStyle()));
+        screwBox.graphics().smoke().setOptions(SmokeOptions.noFade());
         screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
             .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new StaticBoundsComponent()).add(new ColliderComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
             .assign('W', (source, idPool) -> new Entity().bounds(source.bounds()).add(new StaticBoundsComponent())

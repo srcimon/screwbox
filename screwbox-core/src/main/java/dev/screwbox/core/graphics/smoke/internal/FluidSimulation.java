@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.MathUtil;
@@ -83,6 +84,15 @@ public class FluidSimulation {
             densityB[index] += color.b() * amount;
             densityA[index] += color.alpha() * amount;
         }
+    }
+
+    public Color densityAt(final int x, final int y) {
+        final int index = index(x, y);
+        return Color.rgb(
+            Color.clampRgbRange((int) densityR[index] * 255),
+            Color.clampRgbRange((int) densityG[index] * 255),
+            Color.clampRgbRange((int) densityB[index] * 255),
+            Percent.of(densityA[index]));
     }
 
     public Vector velocityAt(final int x, int y) {
