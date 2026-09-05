@@ -12,4 +12,5 @@
 
 ### 📦 Dependency updates
 
-- Bump Maven-Surefire-Plugin to 3.6.0
+- Bump maven-surefire-plugin to 3.6.0
+- Bump Node dependencies
