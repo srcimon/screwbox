@@ -16,6 +16,11 @@ import static org.assertj.core.data.Percentage.withPercentage;
 class VectorTest {
 
     @Test
+    void random_range_returnsVectorWithLenghtInRange() {
+        assertThat(Vector.random(10, 20).length()).isBetween(10.0, 20.0);
+    }
+
+    @Test
     void random_twoCalls_returnsDifferentVectors() {
         assertThat(Vector.random(20)).isNotEqualTo(Vector.random(20));
     }
