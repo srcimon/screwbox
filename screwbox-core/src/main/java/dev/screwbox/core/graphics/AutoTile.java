@@ -150,7 +150,7 @@ public class AutoTile implements Serializable, Sizeable {
             final int index = Integer.parseInt(entry.getKey());
             final int x = Integer.parseInt(coordinates[0]) * size.width();
             final int y = Integer.parseInt(coordinates[1]) * size.height();
-            tileset.put(index, new Sprite(frame.extractArea(Offset.at(x, y), size)));
+            tileset.put(index, new Sprite(frame.extract(Offset.at(x, y), size)));
         }
     }
 

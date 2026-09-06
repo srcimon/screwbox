@@ -90,21 +90,21 @@ class FrameTest {
 
     @ParameterizedTest
     @CsvSource({"-1,1,4,4", "100,1,4,4", "4,-2,5,20", "4,4,13,1", "4,0,14,30"})
-    void extractArea_outOfBounds_throwsException(int x, int y, int width, int height) {
+    void extract_outOfBounds_throwsException(int x, int y, int width, int height) {
         Offset offset = Offset.at(x, y);
         Size size = Size.of(width, height);
 
-        assertThatThrownBy(() -> frame.extractArea(offset, size))
+        assertThatThrownBy(() -> frame.extract(offset, size))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("specified area is out off frame bounds");
     }
 
     @Test
-    void extractArea_inBounds_returnsExtractArea() {
+    void extract_inBounds_returnsExtractArea() {
         Offset offset = Offset.at(4, 8);
         Size size = Size.of(2, 7);
 
-        Frame result = frame.extractArea(offset, size);
+        Frame result = frame.extract(offset, size);
 
         assertThat(result.size()).isEqualTo(size);
         assertThat(result.colorAt(origin())).isEqualTo(frame.colorAt(offset));

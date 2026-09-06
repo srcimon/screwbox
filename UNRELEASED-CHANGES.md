@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `Frame.extract(...)`
 
 ### 📦 Dependency updates
 
