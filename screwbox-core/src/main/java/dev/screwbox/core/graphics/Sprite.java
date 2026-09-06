@@ -112,7 +112,7 @@ public class Sprite implements Serializable, Sizeable {
      */
     public static Sprite pixel(final Color color) {
         final var image = ImageOperations.createImage(Size.square(1));
-        image.setRGB(0, 0, AwtMapper.toAwtColor(color).getRGB());
+        image.setRGB(0, 0, color.rgb());
         return Sprite.fromImage(image);
     }
 
@@ -304,7 +304,7 @@ public class Sprite implements Serializable, Sizeable {
      */
     public Sprite addBorder(final int width, final Color color) {
         final List<Frame> adjustedFrames = new ArrayList<>();
-        for (final var frame : this.frames) {
+        for (final var frame : frames) {
             adjustedFrames.add(frame.addBorder(width, color));
         }
         return new Sprite(adjustedFrames);
