@@ -109,7 +109,7 @@ public final class Frame implements Serializable, Sizeable {
     /**
      * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
      */
-    public Frame extractArea(final Offset offset, final Size size) {
+    public Frame extract(final Offset offset, final Size size) {
         Validate.isTrue(() -> isAreaWithinFrame(offset, size), "specified area is out off frame bounds");
         final var image = ImageOperations.cloneImage(image(), size());
         final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());
@@ -198,7 +198,7 @@ public final class Frame implements Serializable, Sizeable {
         final var offset = Offset.at(minX, 0);
         final var target = Offset.at(maxX + 1, height());
         final var size = Size.definedBy(offset, target);
-        return extractArea(offset, size);
+        return extract(offset, size);
     }
 
     /**

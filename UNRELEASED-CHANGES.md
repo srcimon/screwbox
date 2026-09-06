@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Create vectors with random direction and length
 
 ### 🪛 Bug Fixes
 
@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `Frame.extract(...)`
 
 ### 📦 Dependency updates
 

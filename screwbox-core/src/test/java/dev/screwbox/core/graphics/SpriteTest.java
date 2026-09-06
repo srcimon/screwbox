@@ -304,7 +304,6 @@ class SpriteTest {
             .hasMessage("color must not be null");
     }
 
-
     @Test
     void exportGif_fileNameEndsWithGif_exportsFile(@TempDir Path tempDir) {
         Path exportPath = tempDir.resolve("demo.gif");

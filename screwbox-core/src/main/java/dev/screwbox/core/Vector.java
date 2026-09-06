@@ -229,10 +229,20 @@ public final class Vector implements Serializable {
     }
 
     /**
-     * Returns a new {@link Vector} with random direction an the given length.
+     * Returns a new {@link Vector} with random direction an the specified length.
      */
     public static Vector random(final double length) {
         return Vector.of(RANDOM.nextDouble(-1, 1), RANDOM.nextDouble(-1, 1)).length(length);
+    }
+
+    /**
+     * Returns a new {@link Vector} with random direction within the specified length range.
+     *
+     * @since 3.36.0
+     */
+    public static Vector random(final double minLength, final double maxLength) {
+        final double length = RANDOM.nextDouble(minLength, maxLength);
+        return random(length);
     }
 
     /**
