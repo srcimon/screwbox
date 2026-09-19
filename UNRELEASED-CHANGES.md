@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `Frame.extract(...)`
+- Optimized assets to reduce overall engine file size by 270 kb
 
 ### 📦 Dependency updates
 
