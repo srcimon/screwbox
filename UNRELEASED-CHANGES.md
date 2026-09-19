@@ -13,6 +13,7 @@
 - 80kb
 - 10kb
 - 41kb
+- 59kb
 
 ### 📦 Dependency updates
 
