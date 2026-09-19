@@ -12,6 +12,7 @@
 - Optimized assets to reduce overall engine file size:
 - 80kb
 - 10kb
+- 41kb
 
 ### 📦 Dependency updates
 
