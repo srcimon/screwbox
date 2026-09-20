@@ -2,7 +2,6 @@ package dev.screwbox.gameoflife.sidebar;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Canvas;
-import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.ui.UiDesign;
 

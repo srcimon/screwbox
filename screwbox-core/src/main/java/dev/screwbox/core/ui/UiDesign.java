@@ -8,10 +8,19 @@ import dev.screwbox.core.graphics.Canvas;
  * @see Ui#setDesign(UiDesign)
  */
 public interface UiDesign {
-//TODO finish javadoc
+
+    /**
+     * Renders a selectable menu item.
+     */
     void renderSelectableItem(String label, Canvas canvas);
 
+    /**
+     * Renders a selected menu item.
+     */
     void renderSelectedItem(String label, Canvas canvas);
 
+    /**
+     * Renders an inactive menu item.
+     */
     void renderInactiveItem(String label, Canvas canvas);
 }

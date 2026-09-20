@@ -6,7 +6,6 @@ import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.Audio;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
-import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.loop.Loop;
