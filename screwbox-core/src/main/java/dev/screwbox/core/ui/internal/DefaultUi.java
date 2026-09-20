@@ -48,6 +48,9 @@ public class DefaultUi implements Ui, Updatable {
     private Supplier<Sound> notificationSound = SoundBundle.NOTIFY;
     private OpenMenu openMenu = new OpenMenu(null, null);
 
+    private final List<DefaultNotification> notifications = new ArrayList<>();
+    private Duration notificationTimeout = Duration.ofSeconds(8);
+
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
@@ -56,9 +59,6 @@ public class DefaultUi implements Ui, Updatable {
         this.scenes = scenes;
         this.canvas = canvas;
     }
-
-    private final List<DefaultNotification> notifications = new ArrayList<>();
-    private Duration notificationTimeout = Duration.ofSeconds(8);
 
     @Override
     public Ui showNotification(final NotificationDetails notification) {
