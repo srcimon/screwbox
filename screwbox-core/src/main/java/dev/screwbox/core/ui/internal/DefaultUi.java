@@ -40,7 +40,7 @@ public class DefaultUi implements Ui, Updatable {
     private final DefaultScenes scenes;
     private final Canvas canvas;
 
-    private UiDesign renderer = new SimpleUiDesign();
+    private UiDesign design = new SimpleUiDesign();
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayout layout = new SimpleUiLayout();
     private NotificationDesign notificationDesign = new SpinningIconNotificationDesign();
@@ -152,7 +152,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui setDesign(final UiDesign design) {
-        this.renderer = design;
+        this.design = design;
         return this;
     }
 
@@ -188,13 +188,13 @@ public class DefaultUi implements Ui, Updatable {
         for (final var item : menu.items()) {
             final var bounds = layout.layout(item, menu, canvas.bounds());
             if (canvas.isVisible(bounds)) {
-                String label = item.label(engine);
+                final String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {
-                    renderer.renderSelectedItem(label, bounds, canvas);
+                    design.renderSelectedItem(label, bounds, canvas);
                 } else if (menu.isActive(item, engine)) {
-                    renderer.renderSelectableItem(label, bounds, canvas);
+                    design.renderSelectableItem(label, bounds, canvas);
                 } else {
-                    renderer.renderInactiveItem(label, bounds, canvas);
+                    design.renderInactiveItem(label, bounds, canvas);
                 }
             }
         }
