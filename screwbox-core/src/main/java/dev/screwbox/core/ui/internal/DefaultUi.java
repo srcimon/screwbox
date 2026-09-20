@@ -133,7 +133,7 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     @Override
-    public Ui setNotificationLayout(NotificationLayout layout) {
+    public Ui setNotificationLayout(final NotificationLayout layout) {
         notificationLayout = Objects.requireNonNull(layout, "layout must not be null");
         return this;
     }
@@ -145,7 +145,7 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     @Override
-    public Ui setNotificationSound(Supplier<Sound> sound) {
+    public Ui setNotificationSound(final Supplier<Sound> sound) {
         notificationSound = sound;
         return this;
     }
