@@ -77,13 +77,17 @@ public class FluidSimulation {
 
     public void addDensity(final int x, int y, final double amount, final Color color) {
         final int index = index(x, y);
-        if (isInGrid(x, y) && !isObstacle(index)) {
+        if (isInGrid(x, y) && isFree(index)) {
             hasDensityCache = true;
             densityR[index] += color.r() * amount;
             densityG[index] += color.g() * amount;
             densityB[index] += color.b() * amount;
             densityA[index] += color.alpha() * amount;
         }
+    }
+
+    private boolean isFree(final int index) {
+        return !obstacles[index];
     }
 
     public Color densityAt(final int x, final int y) {
@@ -102,7 +106,7 @@ public class FluidSimulation {
 
     public void addVelocity(final int x, final int y, final Vector velocity) {
         final int index = index(x, y);
-        if (isInGrid(x, y) && !isObstacle(index)) {
+        if (isInGrid(x, y) && isFree(index)) {
             velocityX[index] += velocity.x();
             velocityY[index] += velocity.y();
         }
@@ -110,14 +114,10 @@ public class FluidSimulation {
 
     public void advanceVelocity(final int x, final int y, final Vector velocity, final double delta) {
         final int index = index(x, y);
-        if (isInGrid(x, y) && !isObstacle(index)) {
+        if (isInGrid(x, y) && isFree(index)) {
             velocityX[index] = MathUtil.advance(velocityX[index], velocity.x(), delta);
             velocityY[index] = MathUtil.advance(velocityY[index], velocity.y(), delta);
         }
-    }
-
-    private boolean isObstacle(final int index) {
-        return obstacles[index];
     }
 
     public boolean isInGrid(final int x, final int y) {
