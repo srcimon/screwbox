@@ -33,7 +33,7 @@ public class StandbyProxyRenderer implements Renderer {
     }
 
     public void toggleOnOff() {
-        this.renderer.toggle();
+        renderer.toggle();
     }
 
     /**
