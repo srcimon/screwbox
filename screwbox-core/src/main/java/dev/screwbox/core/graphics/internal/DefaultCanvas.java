@@ -30,11 +30,6 @@ public class DefaultCanvas implements Canvas {
         updateClip(clip);
     }
 
-    //TODO wanted?
-    public Renderer renderer() {
-        return renderer;
-    }
-
     public void updateClip(final ScreenBounds clip) {
         this.clip = clip;
         this.offset = clip.offset();

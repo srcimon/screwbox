@@ -66,7 +66,7 @@ public class DefaultUi implements Ui, Updatable {
         final Time now = engine.loop().time();
         notifications.add(new DefaultNotification(notification, now));
         notification.sound().ifPresentOrElse(sound -> engine.audio().playSound(sound),
-                () -> Optional.ofNullable(notificationSound).ifPresent(defaultSound -> engine.audio().playSound(defaultSound)));
+            () -> Optional.ofNullable(notificationSound).ifPresent(defaultSound -> engine.audio().playSound(defaultSound)));
         return this;
     }
 
@@ -187,7 +187,6 @@ public class DefaultUi implements Ui, Updatable {
         }
         for (final var item : menu.items()) {
             final var bounds = layout.layout(item, menu, canvas.bounds());
-            final var subCanvas = new DefaultCanvas(canvas.renderer(), bounds);
             if (canvas.isVisible(bounds)) {
                 final String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {
