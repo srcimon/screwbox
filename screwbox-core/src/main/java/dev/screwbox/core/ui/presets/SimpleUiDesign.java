@@ -3,11 +3,13 @@ package dev.screwbox.core.ui.presets;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.ui.UiDesign;
 
 import static dev.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static dev.screwbox.core.graphics.Color.GREY;
+import static dev.screwbox.core.graphics.Color.RED;
 import static dev.screwbox.core.graphics.Color.WHITE;
 import static dev.screwbox.core.graphics.Color.YELLOW;
 import static dev.screwbox.core.graphics.options.TextDrawOptions.font;
@@ -30,18 +32,18 @@ public class SimpleUiDesign implements UiDesign {
         .styleFont(1 , BOLDZILLA.customColorAsset(GREY));
 
     @Override
-    public void renderSelectableItem(String label, ScreenBounds bounds, Canvas canvas) {
-        canvas.drawText(bounds.center(), label, SELECTABLE);
+    public void renderSelectableItem(String label, Canvas canvas) {
+        canvas.drawText(canvas.size().center(), label, SELECTABLE);
     }
 
     @Override
-    public void renderSelectedItem(String label, ScreenBounds bounds, Canvas canvas) {
-        canvas.drawText(bounds.center(), label, SELECTED);
+    public void renderSelectedItem(String label, Canvas canvas) {
+        canvas.drawText(canvas.size().center(), label, SELECTED);
     }
 
     @Override
-    public void renderInactiveItem(String label, ScreenBounds bounds, Canvas canvas) {
-        canvas.drawText(bounds.center(), label, INACTIVE);
+    public void renderInactiveItem(String label, Canvas canvas) {
+        canvas.drawText(canvas.size().center(), label, INACTIVE);
     }
 
 }

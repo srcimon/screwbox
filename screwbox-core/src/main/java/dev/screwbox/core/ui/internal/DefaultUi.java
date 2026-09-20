@@ -186,15 +186,16 @@ public class DefaultUi implements Ui, Updatable {
             return this;
         }
         for (final var item : menu.items()) {
-            final var bounds = layout.layout(item, menu, canvas.bounds());
-            if (canvas.isVisible(bounds)) {
+            final var itemBounds = layout.layout(item, menu, canvas.bounds());
+            final var itemCanvas = new DefaultCanvas(canvas.renderer(), itemBounds);
+            if (canvas.isVisible(itemBounds)) {
                 final String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {
-                    design.renderSelectedItem(label, bounds, canvas);
+                    design.renderSelectedItem(label, itemCanvas);
                 } else if (menu.isActive(item, engine)) {
-                    design.renderSelectableItem(label, bounds, canvas);
+                    design.renderSelectableItem(label, itemCanvas);
                 } else {
-                    design.renderInactiveItem(label, bounds, canvas);
+                    design.renderInactiveItem(label, itemCanvas);
                 }
             }
         }

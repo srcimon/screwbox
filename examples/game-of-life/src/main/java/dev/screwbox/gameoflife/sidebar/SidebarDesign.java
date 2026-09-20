@@ -22,23 +22,23 @@ public class SidebarDesign implements UiDesign {
     private static final SystemTextDrawOptions OPTIONS = SystemTextDrawOptions.systemFont("Arial", 18).bold();
 
     @Override
-    public void renderSelectableItem(String label, ScreenBounds bounds, Canvas canvas) {
+    public void renderSelectableItem(String label, Canvas canvas) {
         if (opacity.hasValue()) {
-            canvas.drawText(at(bounds.x(), bounds.center().y()), label, OPTIONS.color(WHITE.opacity(opacity)));
+            canvas.drawText(at(canvas.bounds().x(), canvas.size().center().y()), label, OPTIONS.color(WHITE.opacity(opacity)));
         }
     }
 
     @Override
-    public void renderSelectedItem(String label, ScreenBounds bounds, Canvas canvas) {
+    public void renderSelectedItem(String label, Canvas canvas) {
         if (opacity.hasValue()) {
-            canvas.drawText(at(bounds.x(), bounds.center().y()), label, OPTIONS.color(RED.opacity(opacity)));
+            canvas.drawText(at(canvas.bounds().x(), canvas.size().center().y()), label, OPTIONS.color(RED.opacity(opacity)));
         }
     }
 
     @Override
-    public void renderInactiveItem(String label, ScreenBounds bounds, Canvas canvas) {
+    public void renderInactiveItem(String label, Canvas canvas) {
         if (opacity.hasValue()) {
-            canvas.drawText(at(bounds.x(), bounds.center().y()), label, OPTIONS.color(GREY.opacity(opacity)));
+            canvas.drawText(at(canvas.bounds().x(), canvas.size().center().y()), label, OPTIONS.color(GREY.opacity(opacity)));
         }
     }
 
