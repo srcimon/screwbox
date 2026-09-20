@@ -190,11 +190,11 @@ public class FluidSimulation {
 
         final double nLeft = obstacles[left] ? -velocityX0[index] : velocityX0[left];
         final double nRight = obstacles[right] ? -velocityX0[index] : velocityX0[right];
-        final double nTop = obstacles[top] ? velocityX0[index] : velocityX0[top];
-        final double nBot = obstacles[bottom] ? velocityX0[index] : velocityX0[bottom];
+        final double nTop = velocityX0[obstacles[top] ? index : top];
+        final double nBot = velocityX0[obstacles[bottom] ? index : bottom];
 
-        final double nLeftY = obstacles[left] ? velocityY0[index] : velocityY0[left];
-        final double nRightY = obstacles[right] ? velocityY0[index] : velocityY0[right];
+        final double nLeftY = velocityY0[obstacles[left] ? index : left];
+        final double nRightY = velocityY0[obstacles[right] ? index : right];
         final double nTopY = obstacles[top] ? -velocityY0[index] : velocityY0[top];
         final double nBotY = obstacles[bottom] ? -velocityY0[index] : velocityY0[bottom];
 
@@ -345,7 +345,6 @@ public class FluidSimulation {
         final double maxVal = resolution - 1.5;
 
         for (int j = 1; j < resolutionMinusOne; j++) {
-            final double jfloat = j;
 
             for (int i = 1; i < resolutionMinusOne; i++) {
                 final int ix = index(i, j);
@@ -359,7 +358,7 @@ public class FluidSimulation {
                 if (x < 0.5) x = 0.5;
                 else if (x > maxVal) x = maxVal;
 
-                double y = jfloat - tdRes * velocY[ix];
+                double y = (double) j - tdRes * velocY[ix];
                 if (y < 0.5) y = 0.5;
                 else if (y > maxVal) y = maxVal;
 
