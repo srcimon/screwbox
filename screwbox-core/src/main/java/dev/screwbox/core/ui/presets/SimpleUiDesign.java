@@ -29,12 +29,12 @@ public class SimpleUiDesign implements UiDesign {
         .styleFont(1, BOLDZILLA.customColorAsset(GREY));
 
     @Override
-    public void renderSelectableItem(String label, Canvas canvas) {
+    public void renderSelectableItem(final String label, final Canvas canvas) {
         canvas.drawText(canvas.size().center(), label, SELECTABLE);
     }
 
     @Override
-    public void renderSelectedItem(String label, Canvas canvas) {
+    public void renderSelectedItem(final String label, final Canvas canvas) {
         canvas.drawText(canvas.size().center(), label, SELECTED);
     }
 
