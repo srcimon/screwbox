@@ -5,21 +5,21 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
-import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.ui.Notification;
+import dev.screwbox.core.ui.NotificationDesign;
 import dev.screwbox.core.ui.NotificationDetails;
 import dev.screwbox.core.ui.NotificationLayout;
-import dev.screwbox.core.ui.NotificationDesign;
 import dev.screwbox.core.ui.Ui;
+import dev.screwbox.core.ui.UiDesign;
 import dev.screwbox.core.ui.UiInteractor;
 import dev.screwbox.core.ui.UiLayout;
 import dev.screwbox.core.ui.UiMenu;
-import dev.screwbox.core.ui.UiDesign;
 import dev.screwbox.core.ui.presets.KeyboardInteractor;
-import dev.screwbox.core.ui.presets.SimpleUiLayout;
 import dev.screwbox.core.ui.presets.SimpleUiDesign;
+import dev.screwbox.core.ui.presets.SimpleUiLayout;
 import dev.screwbox.core.ui.presets.SpinningIconNotificationDesign;
 import dev.screwbox.core.ui.presets.TopLeftNotificationLayout;
 
@@ -38,7 +38,7 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
-    private final Canvas canvas;
+    private final DefaultCanvas canvas;
 
     private UiDesign design = new SimpleUiDesign();
     private UiInteractor interactor = new KeyboardInteractor();
@@ -51,7 +51,7 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, final DefaultScenes scenes, final Canvas canvas) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes, final DefaultCanvas canvas) {
         this.engine = engine;
         this.scenes = scenes;
         this.canvas = canvas;
