@@ -17,7 +17,6 @@ public interface Canvas extends Sizeable {
     /**
      * Returns the left upper edge of the {@link Canvas}.
      */
-
     Offset offset();
 
     /**

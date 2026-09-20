@@ -6,8 +6,8 @@ import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.Audio;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
-import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.ui.NotificationDesign;
@@ -42,7 +42,7 @@ class DefaultUiTest {
     DefaultUi ui;
 
     @Mock
-    Canvas canvas;
+    DefaultCanvas canvas;
 
     @Mock
     Engine engine;
@@ -74,11 +74,11 @@ class DefaultUiTest {
     @BeforeEach
     void beforeEach() {
         ui
-                .setInteractor(interactor)
-                .setLayout(layout)
-                .setDesign(design)
-                .setNotificationLayout(notificationLayout)
-                .setNotificationDesign(notificationDesign);
+            .setInteractor(interactor)
+            .setLayout(layout)
+            .setDesign(design)
+            .setNotificationLayout(notificationLayout)
+            .setNotificationDesign(notificationDesign);
     }
 
     @Test
@@ -87,9 +87,9 @@ class DefaultUiTest {
 
         verify(interactor, never()).interactWith(any(), any(), any());
         verify(layout, never()).layout(any(), any(), any());
-        verify(design, never()).renderInactiveItem(any(), any(), any());
-        verify(design, never()).renderSelectableItem(any(), any(), any());
-        verify(design, never()).renderSelectedItem(any(), any(), any());
+        verify(design, never()).renderInactiveItem(any(), any());
+        verify(design, never()).renderSelectableItem(any(), any());
+        verify(design, never()).renderSelectedItem(any(), any());
     }
 
     @Test
@@ -99,7 +99,7 @@ class DefaultUiTest {
 
         UiMenu menu = new UiMenu();
         menu.addItem("some button").activeCondition(e -> activated.active())
-                .onActivate(e -> activated.toggle());
+            .onActivate(e -> activated.toggle());
         menu.addItem("some button");
 
         ui.openMenu(menu);
@@ -141,8 +141,8 @@ class DefaultUiTest {
     @Test
     void openPreviousMenu_noPreviousMenu_throwsException() {
         assertThatThrownBy(() -> ui.openPreviousMenu())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("there is no previous menu to navigate back to");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("there is no previous menu to navigate back to");
     }
 
     @Test
@@ -177,8 +177,8 @@ class DefaultUiTest {
     @Test
     void showNotification_notificationNull_throwsException() {
         assertThatThrownBy(() -> ui.showNotification(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("notification must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("notification must not be null");
     }
 
     @Test
@@ -220,9 +220,9 @@ class DefaultUiTest {
         ui.showNotification(NotificationDetails.text("second"));
 
         assertThat(ui.notifications()).hasSize(2)
-                .isUnmodifiable().first()
-                .matches(notification -> Duration.between(before, notification.timeCreated()).isLessThan(Duration.ofMillis(250)))
-                .matches(notification -> notification.text().equals("first"));
+            .isUnmodifiable().first()
+            .matches(notification -> Duration.between(before, notification.timeCreated()).isLessThan(Duration.ofMillis(250)))
+            .matches(notification -> notification.text().equals("first"));
     }
 
     @Test
@@ -256,22 +256,22 @@ class DefaultUiTest {
     @Test
     void setNotificationTimeout_timeoutNull_throwsException() {
         assertThatThrownBy(() -> ui.setNotificationTimeout(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("timeout must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("timeout must not be null");
     }
 
     @Test
     void setNotificationRenderer_designNull_throwsExceptions() {
         assertThatThrownBy(() -> ui.setNotificationDesign(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("design must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("design must not be null");
     }
 
     @Test
     void setNotificationLayout_layoutNull_throwsExceptions() {
         assertThatThrownBy(() -> ui.setNotificationLayout(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("layout must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("layout must not be null");
     }
 
     @Test

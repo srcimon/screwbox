@@ -199,13 +199,14 @@ public class Percent implements Serializable {
      * @since 3.30.0
      */
     public Percent step(final double value) {
-        double newValue = (this.value + value) % MAX_VALUE;
+        final double uncappedNewValue = this.value + value;
+        double newValue = uncappedNewValue % MAX_VALUE;
         if (newValue < 0) {
             newValue += MAX_VALUE;
         }
 
-        return newValue == MIN_VALUE && value > 0 && this.value + value >= MAX_VALUE
-            ? Percent.of(MAX_VALUE)
+        return newValue == MIN_VALUE && value > 0 && uncappedNewValue >= MAX_VALUE
+            ? Percent.max()
             : Percent.of(newValue);
     }
 }

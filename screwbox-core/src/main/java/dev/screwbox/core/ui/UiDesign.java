@@ -1,13 +1,26 @@
 package dev.screwbox.core.ui;
 
 import dev.screwbox.core.graphics.Canvas;
-import dev.screwbox.core.graphics.ScreenBounds;
 
+/**
+ * Specifies the design of ui menues.
+ *
+ * @see Ui#setDesign(UiDesign)
+ */
 public interface UiDesign {
 
-    void renderSelectableItem(String label, ScreenBounds bounds, Canvas canvas);
+    /**
+     * Renders a selectable menu item.
+     */
+    void renderSelectableItem(String label, Canvas canvas);
 
-    void renderSelectedItem(String label, ScreenBounds bounds, Canvas canvas);
+    /**
+     * Renders a selected menu item.
+     */
+    void renderSelectedItem(String label, Canvas canvas);
 
-    void renderInactiveItem(String label, ScreenBounds bounds, Canvas canvas);
+    /**
+     * Renders an inactive menu item.
+     */
+    void renderInactiveItem(String label, Canvas canvas);
 }

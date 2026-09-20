@@ -5,21 +5,21 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
-import dev.screwbox.core.graphics.Canvas;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.ui.Notification;
+import dev.screwbox.core.ui.NotificationDesign;
 import dev.screwbox.core.ui.NotificationDetails;
 import dev.screwbox.core.ui.NotificationLayout;
-import dev.screwbox.core.ui.NotificationDesign;
 import dev.screwbox.core.ui.Ui;
+import dev.screwbox.core.ui.UiDesign;
 import dev.screwbox.core.ui.UiInteractor;
 import dev.screwbox.core.ui.UiLayout;
 import dev.screwbox.core.ui.UiMenu;
-import dev.screwbox.core.ui.UiDesign;
 import dev.screwbox.core.ui.presets.KeyboardInteractor;
-import dev.screwbox.core.ui.presets.SimpleUiLayout;
 import dev.screwbox.core.ui.presets.SimpleUiDesign;
+import dev.screwbox.core.ui.presets.SimpleUiLayout;
 import dev.screwbox.core.ui.presets.SpinningIconNotificationDesign;
 import dev.screwbox.core.ui.presets.TopLeftNotificationLayout;
 
@@ -38,9 +38,9 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
-    private final Canvas canvas;
+    private final DefaultCanvas canvas;
 
-    private UiDesign renderer = new SimpleUiDesign();
+    private UiDesign design = new SimpleUiDesign();
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayout layout = new SimpleUiLayout();
     private NotificationDesign notificationDesign = new SpinningIconNotificationDesign();
@@ -48,17 +48,17 @@ public class DefaultUi implements Ui, Updatable {
     private Supplier<Sound> notificationSound = SoundBundle.NOTIFY;
     private OpenMenu openMenu = new OpenMenu(null, null);
 
+    private final List<DefaultNotification> notifications = new ArrayList<>();
+    private Duration notificationTimeout = Duration.ofSeconds(8);
+
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, final DefaultScenes scenes, final Canvas canvas) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes, final DefaultCanvas canvas) {
         this.engine = engine;
         this.scenes = scenes;
         this.canvas = canvas;
     }
-
-    private final List<DefaultNotification> notifications = new ArrayList<>();
-    private Duration notificationTimeout = Duration.ofSeconds(8);
 
     @Override
     public Ui showNotification(final NotificationDetails notification) {
@@ -66,7 +66,7 @@ public class DefaultUi implements Ui, Updatable {
         final Time now = engine.loop().time();
         notifications.add(new DefaultNotification(notification, now));
         notification.sound().ifPresentOrElse(sound -> engine.audio().playSound(sound),
-                () -> Optional.ofNullable(notificationSound).ifPresent(defaultSound -> engine.audio().playSound(defaultSound)));
+            () -> Optional.ofNullable(notificationSound).ifPresent(defaultSound -> engine.audio().playSound(defaultSound)));
         return this;
     }
 
@@ -152,7 +152,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui setDesign(final UiDesign design) {
-        this.renderer = design;
+        this.design = design;
         return this;
     }
 
@@ -186,15 +186,16 @@ public class DefaultUi implements Ui, Updatable {
             return this;
         }
         for (final var item : menu.items()) {
-            final var bounds = layout.layout(item, menu, canvas.bounds());
-            if (canvas.isVisible(bounds)) {
-                String label = item.label(engine);
+            final var itemBounds = layout.layout(item, menu, canvas.bounds());
+            final var itemCanvas = new DefaultCanvas(canvas.renderer(), itemBounds);
+            if (canvas.isVisible(itemBounds)) {
+                final String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {
-                    renderer.renderSelectedItem(label, bounds, canvas);
+                    design.renderSelectedItem(label, itemCanvas);
                 } else if (menu.isActive(item, engine)) {
-                    renderer.renderSelectableItem(label, bounds, canvas);
+                    design.renderSelectableItem(label, itemCanvas);
                 } else {
-                    renderer.renderInactiveItem(label, bounds, canvas);
+                    design.renderInactiveItem(label, itemCanvas);
                 }
             }
         }
