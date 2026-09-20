@@ -8,6 +8,7 @@ import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.loop.Loop;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.ui.NotificationDesign;
@@ -42,7 +43,7 @@ class DefaultUiTest {
     DefaultUi ui;
 
     @Mock
-    Canvas canvas;
+    DefaultCanvas canvas;
 
     @Mock
     Engine engine;
