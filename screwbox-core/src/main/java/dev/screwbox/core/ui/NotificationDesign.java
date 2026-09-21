@@ -15,8 +15,7 @@ public interface NotificationDesign {
      * Renders the {@link Notification} on the {@link Canvas}.
      *
      * @param notification {@link Notification} to render
-     * @param bounds       {@link ScreenBounds} calculated by {@link NotificationLayout}
      * @param canvas       {@link Canvas} for drawing onto
      */
-    void render(Notification notification, ScreenBounds bounds, Canvas canvas);
+    void render(Notification notification,  Canvas canvas);
 }

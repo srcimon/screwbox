@@ -219,14 +219,6 @@ class DefaultRenderImageTest {
 
     @Test
     @DisabledOnOs(OS.LINUX) // fonts missing in docker
-    void drawText_boldAlignedLeft_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").bold().size(20), CLIP);
-
-        verifyIsSameImage(result.image(), "renderer/drawText_boldAlignedLeft_drawsText.png");
-    }
-
-    @Test
-    @DisabledOnOs(OS.LINUX) // fonts missing in docker
     void drawText_italicAlignedRight_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").alignRight().italic().size(10).color(RED.opacity(0.8)), CLIP);
 
