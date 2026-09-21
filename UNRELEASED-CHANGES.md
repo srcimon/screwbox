@@ -10,7 +10,7 @@
 
 - Renamed `Frame.extract(...)`
 - Optimized assets to reduce overall engine file size by 270 kb
-- Simplyfied `UiDesign` by replacing bounds with canvas bounds
+- Simplyfied `UiDesign` and `NotificationDesign` by replacing bounds with canvas bounds
 
 ### 📦 Dependency updates
 

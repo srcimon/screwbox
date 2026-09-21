@@ -30,6 +30,8 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -286,6 +288,7 @@ class DefaultUiTest {
     void renderNotifications_twoNotifications_rendersBothAfterLayout() {
         when(loop.time()).thenReturn(Time.now(), Time.now().addSeconds(10));
         when(engine.loop()).thenReturn(loop);
+
         ui.setNotificationSound(null);
 
         ui.setNotificationLayout((index, notification, canvasBounds) -> new ScreenBounds(index, 0, 100, 100));
@@ -295,7 +298,7 @@ class DefaultUiTest {
 
         ui.renderNotifications();
 
-        verify(notificationDesign).render(ui.notifications().getFirst(), new ScreenBounds(0, 0, 100, 100), canvas);
-        verify(notificationDesign).render(ui.notifications().getLast(), new ScreenBounds(1, 0, 100, 100), canvas);
+        verify(notificationDesign).render(eq(ui.notifications().getFirst()), argThat(canvas -> canvas.width() == 100));
+        verify(notificationDesign).render(eq(ui.notifications().getLast()), argThat(canvas -> canvas.height() == 100));
     }
 }

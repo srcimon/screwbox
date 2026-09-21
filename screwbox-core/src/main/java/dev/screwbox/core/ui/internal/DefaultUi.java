@@ -75,7 +75,8 @@ public class DefaultUi implements Ui, Updatable {
         int index = 0;
         for (final var notification : notifications) {
             final var notificationBounds = notificationLayout.layout(index, notification, canvas.bounds());
-            notificationDesign.render(notification, notificationBounds, canvas);
+            final var notificationCanvas = new DefaultCanvas(canvas.renderer(), notificationBounds);
+            notificationDesign.render(notification, notificationCanvas);
             index++;
         }
         return this;
