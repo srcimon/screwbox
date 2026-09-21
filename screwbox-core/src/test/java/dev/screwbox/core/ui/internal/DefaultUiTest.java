@@ -298,7 +298,7 @@ class DefaultUiTest {
 
         ui.renderNotifications();
 
-        verify(notificationDesign).render(eq(ui.notifications().getFirst()), argThat(canvas -> canvas.width() == 100));
-        verify(notificationDesign).render(eq(ui.notifications().getLast()), argThat(canvas -> canvas.height() == 100));
+        verify(notificationDesign).render(eq(ui.notifications().getFirst()), argThat(notificationCanvas -> notificationCanvas.width() == 100));
+        verify(notificationDesign).render(eq(ui.notifications().getLast()), argThat(notificationCanvas -> notificationCanvas.height() == 100));
     }
 }
