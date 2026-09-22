@@ -4,6 +4,7 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
@@ -15,6 +16,7 @@ import dev.screwbox.core.environment.smoke.WindComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.utils.TileMap;
 
@@ -29,7 +31,10 @@ public class PlaygroundApp {
 
         screwBox.environment()
             .enableAllFeatures()
-            .addSystem(new LogFpsSystem());
+            .addSystem(new LogFpsSystem())
+            .addSystem(engine -> {
+                engine.graphics().canvas().drawText(engine.mouse().offset(), "This is an example text using a serif font.", TextDrawOptions.font(FontBundle.ARCADE_SERIF).scale(4).charactersPerLine(20));
+            });
         var map = TileMap.fromString("""
             
              ###       #   ##
