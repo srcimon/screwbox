@@ -24,7 +24,7 @@ public class DebugGridSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         var bgColor = engine.graphics().configuration().backgroundColor();
-        Color lineColor = bgColor.invert().opacity(0.1);
+        Color lineColor = bgColor.invert().opacity(0.03);
         var area = engine.graphics().visibleArea().snapExpand(cellSize);
 
         for (double y = area.minY(); y < area.maxY(); y += cellSize) {
@@ -33,12 +33,12 @@ public class DebugGridSystem implements EntitySystem {
             }
         }
 
-        SystemTextDrawOptions textOptions = SystemTextDrawOptions.systemFont("Arial").bold().size(14).color(lineColor.opacity(0.7));
+        SystemTextDrawOptions textOptions = SystemTextDrawOptions.systemFont("Arial").bold().alignCenter().size(14).color(lineColor.opacity(0.7));
         var area2 = engine.graphics().visibleArea().snapExpand(majorLineSize);
         for (double y = area2.minY(); y < area2.maxY(); y += majorLineSize) {
             for (double x = area2.minX(); x < area2.maxX(); x += majorLineSize) {
-                engine.graphics().world().drawText(Vector.of(x, y), "%s".formatted(x), textOptions);
-                engine.graphics().world().drawText(Vector.of(x, y + 20 / engine.graphics().camera().zoom()), "%s".formatted(y), textOptions);
+                engine.graphics().world().drawText(Vector.of(x, y), "x: %s".formatted((int)x), textOptions);
+                engine.graphics().world().drawText(Vector.of(x, y + 20 / engine.graphics().camera().zoom()), "y: %s".formatted((int)y), textOptions);
                 engine.graphics().world().drawRectangle(Bounds.atOrigin(x, y, majorLineSize, majorLineSize), RectangleDrawOptions.outline(lineColor).strokeWidth(3));
             }
         }

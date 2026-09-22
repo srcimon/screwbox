@@ -19,6 +19,10 @@ import static dev.screwbox.core.graphics.Color.WHITE;
  */
 public enum FontBundle implements AssetBundle<Pixelfont> {
 
+    //TODO add test
+    ARCADE_SERIF(Asset.asset(() -> loadFontCropped("assets/pixelfonts/ARCADE_SERIF.png", Size.square(8),
+        'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd'))),
+
     BOLDZILLA(Asset.asset(() -> loadFont("assets/pixelfonts/BOLDZILLA.png", Size.square(8),
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
         'V', 'W', 'X', 'Y', 'Z',
