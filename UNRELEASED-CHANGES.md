@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Added pixelfont `ARCADE_SERIF`
 - Create vectors with random direction and length
 
 ### 🪛 Bug Fixes
