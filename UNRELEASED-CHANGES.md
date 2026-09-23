@@ -16,5 +16,6 @@
 
 ### 📦 Dependency updates
 
+- Bump Mockito to 5.24.0
 - Bump maven-surefire-plugin to 3.6.0
 - Bump Node dependencies
