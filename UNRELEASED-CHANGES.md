@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `Frame.extract(...)`
+- Renamed `FontBundle.color(...)` and `.colorAsset(...)`
 - Optimized assets to reduce overall engine file size by 270 kb
 - Simplyfied `UiDesign` and `NotificationDesign` by replacing bounds with canvas bounds
 

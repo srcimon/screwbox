@@ -16,17 +16,17 @@ public class SimpleUiDesign implements UiDesign {
     private static final TextDrawOptions SELECTABLE = font(BOLDZILLA)
         .scale(2)
         .alignCenter()
-        .styleFont(1, BOLDZILLA.customColorAsset(GREY));
+        .styleFont(1, BOLDZILLA.colorAsset(GREY));
 
-    private static final TextDrawOptions SELECTED = font(BOLDZILLA.customColorAsset(YELLOW))
+    private static final TextDrawOptions SELECTED = font(BOLDZILLA.colorAsset(YELLOW))
         .scale(2.5)
         .alignCenter()
-        .styleFont(1, BOLDZILLA.customColorAsset(Color.hex("#fff77a")));
+        .styleFont(1, BOLDZILLA.colorAsset(Color.hex("#fff77a")));
 
-    private static final TextDrawOptions INACTIVE = font(BOLDZILLA.customColorAsset(WHITE.opacity(0.2)))
+    private static final TextDrawOptions INACTIVE = font(BOLDZILLA.colorAsset(WHITE.opacity(0.2)))
         .scale(2)
         .alignCenter()
-        .styleFont(1, BOLDZILLA.customColorAsset(GREY));
+        .styleFont(1, BOLDZILLA.colorAsset(GREY));
 
     @Override
     public void renderSelectableItem(final String label, final Canvas canvas) {
