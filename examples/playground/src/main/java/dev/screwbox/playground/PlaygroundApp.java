@@ -33,7 +33,7 @@ public class PlaygroundApp {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystem(engine -> {
-                engine.graphics().canvas().drawText(engine.mouse().offset(), "This is an example text using a serif font.", TextDrawOptions.font(FontBundle.ARCADE_SERIF).scale(4).charactersPerLine(20));
+                engine.graphics().canvas().drawText(engine.mouse().offset(), "The quick brown fox jumps over the lazy dog. Franz jagt im komplett verwahrlosten Taxi quaer durch Bayern.", TextDrawOptions.font(FontBundle.ARCADE_SERIF).scale(4).charactersPerLine(20));
             });
         var map = TileMap.fromString("""
             
