@@ -19,6 +19,13 @@ import static dev.screwbox.core.graphics.Color.WHITE;
  */
 public enum FontBundle implements AssetBundle<Pixelfont> {
 
+    ARCADE_SERIF(Asset.asset(() -> loadFontCropped("assets/pixelfonts/ARCADE_SERIF.png", Size.square(8),
+        'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k',
+        'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v',
+        'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z',
+        '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+        ' ', '.', ',', ':', '!', '?', '-', '(', ')', '[', ']'))),
+
     BOLDZILLA(Asset.asset(() -> loadFont("assets/pixelfonts/BOLDZILLA.png", Size.square(8),
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
         'V', 'W', 'X', 'Y', 'Z',
@@ -42,15 +49,15 @@ public enum FontBundle implements AssetBundle<Pixelfont> {
     /**
      * Returns a colored {@link Asset} version of the {@link Pixelfont}.
      */
-    public Asset<Pixelfont> customColorAsset(final Color color) {
+    public Asset<Pixelfont> colorAsset(final Color color) {
         return cache.getOrElse(color, () -> Asset.asset(() -> asset.get().replaceColor(WHITE, color)));
     }
 
     /**
      * Returns a colored version of the {@link Pixelfont}.
      */
-    public Pixelfont customColor(final Color color) {
-        return customColorAsset(color).get();
+    public Pixelfont color(final Color color) {
+        return colorAsset(color).get();
     }
 
     @Override

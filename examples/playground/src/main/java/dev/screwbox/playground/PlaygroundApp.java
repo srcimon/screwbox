@@ -30,6 +30,7 @@ public class PlaygroundApp {
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem());
+
         var map = TileMap.fromString("""
             
              ###       #   ##
