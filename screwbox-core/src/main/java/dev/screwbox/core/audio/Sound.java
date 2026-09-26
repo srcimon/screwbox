@@ -24,7 +24,7 @@ public final class Sound implements Serializable {
      * The source format of the sound data.
      */
     public enum SourceFormat {
-        MINI_STEREO,
+        MIDI_STEREO,
         MIDI_MONO,
         WAV_STEREO,
         WAV_MONO
@@ -78,7 +78,7 @@ public final class Sound implements Serializable {
                 && content[0] == 0x4D && content[1] == 0x54 && content[2] == 0x68 && content[3] == 0x64;
 
         if (startsWithMidiHeader) {
-            return isMono ? SourceFormat.MINI_STEREO : SourceFormat.MIDI_MONO;
+            return isMono ? SourceFormat.MIDI_STEREO : SourceFormat.MIDI_MONO;
         }
         return isMono ? SourceFormat.WAV_MONO : SourceFormat.WAV_STEREO;
     }

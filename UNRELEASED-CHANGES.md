@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed typo in `Sound.SourceFormat` (#1094) (🙏 @OlliL)
 
 ### 🧽 Cleanup & refactoring
 
