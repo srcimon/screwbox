@@ -135,8 +135,20 @@ public interface Ui {
     List<Notification> notifications();
 
     //TODO all
+
+    /**
+     * Returns the {@link UiMenuItem} at the current screen position. Will be empty if there is none at the position
+     * or no menu is currently {@link #isMenuOpen() open}.
+     *
+     * @since 3.37.0
+     */
     Optional<UiMenuItem> findMenuItem(final Offset offset);
 
     //TODO all
+    /**
+     * Returns {@code true} if a menu is currently open.
+     *
+     * @since 3.37.0
+     */
     boolean isMenuOpen();
 }
