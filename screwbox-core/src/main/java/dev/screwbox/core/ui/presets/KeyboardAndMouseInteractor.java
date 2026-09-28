@@ -7,14 +7,14 @@ public class KeyboardAndMouseInteractor extends KeyboardInteractor {
 
     @Override
     public void interactWith(final UiMenu menu, final Engine engine) {
-        engine.ui().findMenuItem(engine.mouse().offset()).ifPresent(menuItem -> {
-            if (menuItem.isActive(engine)) {
+        engine.ui().findMenuItem(engine.mouse().offset())
+            .filter(menuItem -> menuItem.isActive(engine))
+            .ifPresent(menuItem -> {
                 menu.selectItem(menuItem);
                 if (engine.mouse().isPressedLeft()) {
                     menuItem.trigger(engine);
                 }
-            }
-        });
+            });
         super.interactWith(menu, engine);
     }
 
