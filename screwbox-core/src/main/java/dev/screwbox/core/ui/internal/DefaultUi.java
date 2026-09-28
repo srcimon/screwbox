@@ -84,7 +84,7 @@ public class DefaultUi implements Ui, Updatable {
     public Optional<UiMenuItem> findMenuItem(final Offset offset) {
         if (isMenuOpen()) {
             for (final var item : openMenu.menu.items()) {
-                final var menuItemBounds = layout.layout(item, openMenu.menu, engine.graphics().canvas().bounds());
+                final var menuItemBounds = layout.layout(item, openMenu.menu, canvas.bounds());
                 if (menuItemBounds.contains(offset)) {
                     return Optional.of(item);
 

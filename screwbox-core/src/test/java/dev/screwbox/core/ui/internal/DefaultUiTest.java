@@ -6,6 +6,7 @@ import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.Audio;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.loop.Loop;
@@ -44,9 +45,6 @@ class DefaultUiTest {
     DefaultUi ui;
 
     @Mock
-    DefaultCanvas canvas;
-
-    @Mock
     Engine engine;
 
     @Mock
@@ -66,6 +64,9 @@ class DefaultUiTest {
 
     @Mock
     NotificationLayout notificationLayout;
+
+    @Mock
+    DefaultCanvas canvas;
 
     @Mock
     Loop loop;
@@ -301,4 +302,41 @@ class DefaultUiTest {
         verify(notificationDesign).render(eq(ui.notifications().getFirst()), argThat(notificationCanvas -> notificationCanvas.width() == 100));
         verify(notificationDesign).render(eq(ui.notifications().getLast()), argThat(notificationCanvas -> notificationCanvas.height() == 100));
     }
+
+    @Test
+    void isMenuOpen_noneOpen_isFalse() {
+        assertThat(ui.isMenuOpen()).isFalse();
+    }
+
+    @Test
+    void isMenuOpen_menuIsOpen_isTrue() {
+        ui.openMenu(new UiMenu());
+
+        assertThat(ui.isMenuOpen()).isTrue();
+    }
+
+    @Test
+    void findMenuItem_noMenuOpen_isEmpty() {
+        assertThat(ui.findMenuItem(Offset.at(10, 10))).isEmpty();
+    }
+
+    @Test
+    void findMenuItem_noItemAtPosition_isEmpty() {
+        ui.setLayout((item, menu, bounds) -> new ScreenBounds(50, 500, 100, 100));
+        ui.openMenu(uiMenu -> uiMenu.addItem("test"));
+
+        assertThat(ui.findMenuItem(Offset.at(10, 10))).isEmpty();
+    }
+
+    @Test
+    void findMenuItem_itemAtPosition_returnsItem() {
+        UiMenu uiMenu = new UiMenu();
+        uiMenu.addItem("first");
+        uiMenu.addItem("second");
+        ui.setLayout((item, menu, bounds) -> new ScreenBounds(menu.itemIndex(item) * 50, 0, 25, 25));
+        ui.openMenu(uiMenu);
+
+        assertThat(ui.findMenuItem(Offset.at(55, 10)).map(item -> item.label(null))).contains("second");
+    }
+
 }
