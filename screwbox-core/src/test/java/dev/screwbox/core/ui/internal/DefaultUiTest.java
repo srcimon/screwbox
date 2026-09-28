@@ -87,7 +87,7 @@ class DefaultUiTest {
     void update_noMenu_noInteractionOrRendering() {
         ui.update();
 
-        verify(interactor, never()).interactWith(any(), any(), any());
+        verify(interactor, never()).interactWith(any(), any());
         verify(layout, never()).layout(any(), any(), any());
         verify(design, never()).renderInactiveItem(any(), any());
         verify(design, never()).renderSelectableItem(any(), any());
@@ -123,7 +123,7 @@ class DefaultUiTest {
 
         ui.update();
 
-        verify(interactor).interactWith(menu, layout, engine);
+        verify(interactor).interactWith(menu, engine);
     }
 
     @Test
