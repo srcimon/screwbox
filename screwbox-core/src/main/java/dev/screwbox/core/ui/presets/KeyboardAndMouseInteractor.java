@@ -7,16 +7,15 @@ import dev.screwbox.core.ui.UiMenu;
 public class KeyboardAndMouseInteractor extends KeyboardInteractor {
 
     @Override
-    public void interactWith(final UiMenu menu, final UiLayout layout, final Engine engine) {
-        for (final var item : menu.items()) {
-            final var menuItemBounds = layout.layout(item, menu, engine.graphics().canvas().bounds());
-            if (menuItemBounds.contains(engine.mouse().offset()) && item.isActive(engine)) {
-                menu.selectItem(item);
+    public void interactWith(final UiMenu menu, final UiLayout layout, final Engine engine) {//TODO remove UiLayout from interface
+        engine.ui().findMenuItem(engine.mouse().offset()).ifPresent(menuItem -> {
+            if(menuItem.isActive(engine)) {
+                menu.selectItem(menuItem);
                 if (engine.mouse().isPressedLeft()) {
-                    item.trigger(engine);
+                    menuItem.trigger(engine);
                 }
             }
-        }
+        });
         super.interactWith(menu, layout, engine);
     }
 

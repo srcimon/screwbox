@@ -5,6 +5,7 @@ import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.rendering.RenderNotificationsSystem;
 import dev.screwbox.core.environment.rendering.RenderUiSystem;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Screen;
 
 import java.util.List;
@@ -132,4 +133,10 @@ public interface Ui {
      * @since 2.8.0
      */
     List<Notification> notifications();
+
+    //TODO all
+    Optional<UiMenuItem> findMenuItem(final Offset offset);
+
+    //TODO all
+    boolean isMenuOpen();
 }
