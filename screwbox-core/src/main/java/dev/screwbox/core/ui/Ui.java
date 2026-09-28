@@ -5,6 +5,7 @@ import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.rendering.RenderNotificationsSystem;
 import dev.screwbox.core.environment.rendering.RenderUiSystem;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Screen;
 
 import java.util.List;
@@ -132,4 +133,19 @@ public interface Ui {
      * @since 2.8.0
      */
     List<Notification> notifications();
+
+    /**
+     * Returns the {@link UiMenuItem} at the current screen position. Will be empty if there is none at the position
+     * or no menu is currently {@link #isMenuOpen() open}.
+     *
+     * @since 3.37.0
+     */
+    Optional<UiMenuItem> findMenuItem(final Offset offset);
+
+    /**
+     * Returns {@code true} if a menu is currently open.
+     *
+     * @since 3.37.0
+     */
+    boolean isMenuOpen();
 }

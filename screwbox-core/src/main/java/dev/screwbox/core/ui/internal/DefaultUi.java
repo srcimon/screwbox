@@ -5,18 +5,11 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.scenes.internal.DefaultScenes;
-import dev.screwbox.core.ui.Notification;
-import dev.screwbox.core.ui.NotificationDesign;
-import dev.screwbox.core.ui.NotificationDetails;
-import dev.screwbox.core.ui.NotificationLayout;
-import dev.screwbox.core.ui.Ui;
-import dev.screwbox.core.ui.UiDesign;
-import dev.screwbox.core.ui.UiInteractor;
-import dev.screwbox.core.ui.UiLayout;
-import dev.screwbox.core.ui.UiMenu;
+import dev.screwbox.core.ui.*;
 import dev.screwbox.core.ui.presets.KeyboardInteractor;
 import dev.screwbox.core.ui.presets.SimpleUiDesign;
 import dev.screwbox.core.ui.presets.SimpleUiLayout;
@@ -88,6 +81,25 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     @Override
+    public Optional<UiMenuItem> findMenuItem(final Offset offset) {
+        if (isMenuOpen()) {
+            for (final var item : openMenu.menu.items()) {
+                final var menuItemBounds = layout.layout(item, openMenu.menu, canvas.bounds());
+                if (menuItemBounds.contains(offset)) {
+                    return Optional.of(item);
+
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean isMenuOpen() {
+        return Objects.nonNull(openMenu.menu);
+    }
+
+    @Override
     public Ui openMenu(final UiMenu menu) {
         openMenu = new OpenMenu(menu, openMenu);
         return this;
@@ -95,7 +107,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui openMenu(final Consumer<UiMenu> menu) {
-        UiMenu newMenu = new UiMenu();
+        final UiMenu newMenu = new UiMenu();
         menu.accept(newMenu);
         openMenu(newMenu);
         return this;
@@ -114,7 +126,7 @@ public class DefaultUi implements Ui, Updatable {
     public void update() {
         final var menu = openMenu.menu;
         if (nonNull(menu) && !scenes.isShowingLoadingScene()) {
-            interactor.interactWith(menu, layout, engine);
+            interactor.interactWith(menu, engine);
             if (!menu.isActive(menu.selectedItem(), engine)) {
                 menu.nextItem(engine);
             }
