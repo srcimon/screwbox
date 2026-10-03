@@ -128,14 +128,14 @@ public class ParticleOptions implements Serializable {
      * Sets multiple {@link Sprite}s that are randomly used for particle entities.
      */
     public ParticleOptions sprites(List<Sprite> sprites) {
-        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).freshInstance());
+        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.pickRandom(sprites).freshInstance());
     }
 
     /**
      * Sets multiple {@link Sprite}s that are randomly used for particle entities.
      */
     public ParticleOptions sprites(Sprite... sprites) {
-        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).freshInstance());
+        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.pickRandom(sprites).freshInstance());
     }
 
     /**
@@ -143,7 +143,7 @@ public class ParticleOptions implements Serializable {
      */
     @SafeVarargs
     public final ParticleOptions sprites(Supplier<Sprite>... sprites) {
-        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).get());
+        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.pickRandom(sprites).get());
     }
 
     /**

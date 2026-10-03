@@ -41,26 +41,26 @@ class ListUtilTest {
     }
 
     @Test
-    void randomFrom_listIsEmpty_returnsNull() {
+    void pickRandom_listIsEmpty_returnsNull() {
         var strings = new ArrayList<>();
 
-        var result = ListUtil.randomFrom(strings);
+        var result = ListUtil.pickRandom(strings);
 
         assertThat(result).isNull();
     }
 
     @Test
-    void randomFrom_listHasEntries_returnsEntry() {
+    void pickRandom_listHasEntries_returnsEntry() {
         var strings = List.of("one", "two", "three");
 
-        var result = ListUtil.randomFrom(strings);
+        var result = ListUtil.pickRandom(strings);
 
         assertThat(result).isIn("one", "two", "three");
     }
 
     @Test
-    void randomFrom_multipleItemsGiven_returnsEntry() {
-        var result = ListUtil.randomFrom("one", "two", "three");
+    void pickRandom_multipleItemsGiven_returnsEntry() {
+        var result = ListUtil.pickRandom("one", "two", "three");
 
         assertThat(result).isIn("one", "two", "three");
     }

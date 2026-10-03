@@ -33,7 +33,7 @@ public class ToggleSplitscreenSystem implements EntitySystem {
                 randomizeAllCameras(engine);
             }
         } else if (engine.keyboard().isPressed(Key.U)) {
-            ViewportLayout layout = ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
+            ViewportLayout layout = ListUtil.pickRandom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
             engine.graphics().enableSplitScreenMode(viewports(engine.graphics().viewports().size()).layout(layout));
             randomizeAllCameras(engine);
         }
@@ -44,7 +44,7 @@ public class ToggleSplitscreenSystem implements EntitySystem {
         final var exitingEntities = engine.environment().fetchAll(Archetype.ofSpacial());
         for (var viewport : engine.graphics().viewports()) {
             if (!viewport.equals(engine.graphics().primaryViewport())) {
-                Vector cameraMovement = ListUtil.randomFrom(exitingEntities).position().subtract(viewport.camera().position());
+                Vector cameraMovement = ListUtil.pickRandom(exitingEntities).position().subtract(viewport.camera().position());
                 viewport.camera().moveWithinVisualBounds(cameraMovement, configuration.bounds());
             }
         }

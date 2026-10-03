@@ -58,7 +58,7 @@ public class FluidEffectsSystem implements EntitySystem {
 
                 // Sound
                 if (!effects.sounds.isEmpty() && !engine.audio().hasActivePlaybacksMatching(alreadyPlayingWaterSoundsNear(effects, physicsEntity.position()))) {
-                    engine.audio().playSound(ListUtil.randomFrom(effects.sounds), SoundOptions.playOnce()
+                    engine.audio().playSound(ListUtil.pickRandom(effects.sounds), SoundOptions.playOnce()
                             .randomness(effects.randomness)
                             .position(physicsEntity.position()));
                 }

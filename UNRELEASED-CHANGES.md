@@ -10,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Removed `Layout` parameter from `UiInteractor`
+- Renamed `ListUtil.pickRandom(List)`
 
 ### 📦 Dependency updates
 

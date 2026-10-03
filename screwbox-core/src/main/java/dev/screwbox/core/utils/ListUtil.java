@@ -63,14 +63,14 @@ public class ListUtil {
      * Returns a random item from the specified items.
      */
     @SafeVarargs
-    public static <T> T randomFrom(final T... items) {
-        return randomFrom(List.of(items));
+    public static <T> T pickRandom(final T... items) {
+        return pickRandom(List.of(items));
     }
 
     /**
      * Returns a random item from the specified list.
      */
-    public static <T> T randomFrom(final List<T> list) {
+    public static <T> T pickRandom(final List<T> list) {
         if (list.isEmpty()) {
             return null;
         }
