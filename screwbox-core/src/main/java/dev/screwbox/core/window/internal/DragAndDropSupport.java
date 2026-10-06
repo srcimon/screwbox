@@ -38,7 +38,7 @@ public class DragAndDropSupport extends DropTargetAdapter {
             if (dataFlavor.isFlavorJavaFileListType()) {
                 try {
                     final Offset position = Offset.at(event.getLocation().x, event.getLocation().y);
-                    List<File> files = (List<File>) transferable.getTransferData(dataFlavor);
+                    final List<File> files = (List<File>) transferable.getTransferData(dataFlavor);
                     onFilesDroppedOnWindow.accept(files, position);
                 } catch (UnsupportedFlavorException | IOException e) {
                     throw new IllegalStateException("drop failed", e);

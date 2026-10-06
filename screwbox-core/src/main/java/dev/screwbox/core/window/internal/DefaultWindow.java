@@ -50,7 +50,7 @@ public class DefaultWindow implements Window, Updatable {
         this.configuration = configuration;
         this.renderPipeline = renderPipeline;
         this.cursorLockInSupport = cursorLockInSupport;
-        new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position)));
+        new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position)));//TODO move outside
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(FULLSCREEN, RESOLUTION).contains(event.changedProperty());
             if (mustReopen && frame.isVisible()) {

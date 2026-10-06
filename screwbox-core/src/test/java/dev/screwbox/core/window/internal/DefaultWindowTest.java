@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -16,6 +17,9 @@ import static org.mockito.Mockito.when;
 @MockitoSettings
 class DefaultWindowTest {
 
+    static {
+        System.setProperty("java.awt.headless", "true");
+    }
     @InjectMocks
     DefaultWindow window;
 
@@ -42,6 +46,13 @@ class DefaultWindowTest {
 
         verify(renderPipeline).toggleOnOff();
         verifyNoInteractions(graphicsDevice);
+    }
+
+    @Test
+    void enableCursorLock_negativePadding_throwsException() {
+        assertThatThrownBy(() -> window.enableCursorLock(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("padding must be in range 2 to 64 (actual value: -1)");
     }
 
 }
