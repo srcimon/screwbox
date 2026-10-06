@@ -22,10 +22,12 @@ public class Noise implements Serializable {
     private double targetValue = RANDOM.nextDouble(-1, 1);
 
     public static Noise fixedInterval(final Duration interval) {
+        requireNonNull(interval, "interval must not be null");
         return new Noise(interval, interval);
     }
 
     public static Noise variableInterval(final Duration interval) {
+        requireNonNull(interval, "interval must not be null");
         final long nanoDeviation = Math.round(interval.nanos() * Percent.half().value());
         final Duration minDeviation = Duration.ofNanos(-1 * nanoDeviation);
         final Duration maxDeviation = Duration.ofNanos(nanoDeviation);
@@ -33,8 +35,8 @@ public class Noise implements Serializable {
     }
 
     private Noise(final Duration minInterval, final Duration maxInterval) {
-        this.minInterval = requireNonNull(minInterval, "interval must not be null");
-        this.maxInterval = requireNonNull(maxInterval, "interval must not be null");
+        this.minInterval = minInterval;
+        this.maxInterval = maxInterval;
     }
 
     public double value(final Time time) {
