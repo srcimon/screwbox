@@ -3,7 +3,6 @@ package dev.screwbox.core.window.internal;
 import dev.screwbox.core.graphics.Offset;
 
 import java.awt.*;
-import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -21,11 +20,11 @@ public class DragAndDropSupport extends DropTargetAdapter {
 
     public DragAndDropSupport(final Frame frame, final BiConsumer<List<File>, Offset> onFilesDroppedOnWindow) {
         try {
-            DropTarget dropTarget = new DropTarget();
+            final var dropTarget = new DropTarget();
             frame.setDropTarget(dropTarget);
             dropTarget.addDropTargetListener(this);
-        } catch (TooManyListenersException e) {
-            throw new IllegalStateException("Could not register DropTargetListener", e);
+        } catch (final TooManyListenersException e) {
+            throw new IllegalStateException("could not register DropTargetListener", e);
         }
         this.onFilesDroppedOnWindow = onFilesDroppedOnWindow;
     }
@@ -33,14 +32,14 @@ public class DragAndDropSupport extends DropTargetAdapter {
     @Override
     public void drop(final DropTargetDropEvent event) {
         event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-        Transferable transferable = event.getTransferable();
+        final var transferable = event.getTransferable();
         for (final var dataFlavor : transferable.getTransferDataFlavors()) {
             if (dataFlavor.isFlavorJavaFileListType()) {
                 try {
                     final Offset position = Offset.at(event.getLocation().x, event.getLocation().y);
-                    List<File> files = (List<File>) transferable.getTransferData(dataFlavor);
+                    final List<File> files = (List<File>) transferable.getTransferData(dataFlavor);
                     onFilesDroppedOnWindow.accept(files, position);
-                } catch (UnsupportedFlavorException | IOException e) {
+                } catch (final UnsupportedFlavorException | IOException e) {
                     throw new IllegalStateException("drop failed", e);
                 }
             }

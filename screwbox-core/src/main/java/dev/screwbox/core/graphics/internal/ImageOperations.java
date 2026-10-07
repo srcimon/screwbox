@@ -203,10 +203,10 @@ public final class ImageOperations {
                 final int over = in[y + Math.min(width - 1, x + radius + 1) * height];
                 final int below = in[y + Math.max(0, x - radius) * height];
 
-                sumAlpha += Color.alphaValue(over) - Color.alphaValue(below);
-                sumRed += Color.redValue(over) - Color.redValue(below);
-                sumGreen += Color.greenValue(over) - Color.greenValue(below);
-                sumBlue += Color.blueValue(over) - Color.blueValue(below);
+                sumAlpha += (float) Color.alphaValue(over) - (float) Color.alphaValue(below);
+                sumRed += (float) Color.redValue(over) - (float) Color.redValue(below);
+                sumGreen += (float) Color.greenValue(over) - (float) Color.greenValue(below);
+                sumBlue += (float) Color.blueValue(over) - (float) Color.blueValue(below);
             }
         }
     }

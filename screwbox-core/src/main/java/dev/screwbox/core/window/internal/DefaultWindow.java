@@ -15,13 +15,14 @@ import dev.screwbox.core.window.MouseCursor;
 import dev.screwbox.core.window.Window;
 
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import static dev.screwbox.core.Duration.oneSecond;
-import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.FULLSCREEN;
+import static dev.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static java.util.Objects.nonNull;
 
 public class DefaultWindow implements Window, Updatable {
@@ -50,7 +51,6 @@ public class DefaultWindow implements Window, Updatable {
         this.configuration = configuration;
         this.renderPipeline = renderPipeline;
         this.cursorLockInSupport = cursorLockInSupport;
-        new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position)));
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(FULLSCREEN, RESOLUTION).contains(event.changedProperty());
             if (mustReopen && frame.isVisible()) {
@@ -244,6 +244,10 @@ public class DefaultWindow implements Window, Updatable {
         }
     }
 
+    public void onFileDrop(final List<File> files, final Offset position) {
+        filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position));
+    }
+
     private Supplier<Cursor> cursorFrom(final MouseCursor cursor) {
         if (MouseCursor.DEFAULT == cursor) {
             return Cursor::getDefaultCursor;
@@ -262,6 +266,6 @@ public class DefaultWindow implements Window, Updatable {
 
     private Supplier<Cursor> createCustomCursor(final Sprite sprite) {
         return () -> Toolkit.getDefaultToolkit().createCustomCursor(sprite.singleImage(), new Point(0, 0),
-                "custom cursor");
+            "custom cursor");
     }
 }
