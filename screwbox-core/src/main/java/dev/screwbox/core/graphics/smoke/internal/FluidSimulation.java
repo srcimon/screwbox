@@ -123,8 +123,8 @@ public class FluidSimulation {
     public boolean isInGrid(final int x, final int y) {
         return x > 0 &&
                y > 0 &&
-               x < resolution() &&
-               y < resolution();
+               x < resolution &&
+               y < resolution;
     }
 
     public DensityInfo densityData() {
@@ -207,8 +207,8 @@ public class FluidSimulation {
     }
 
     private void diffuseRGB(final double diffuse, final double delta, final int iterations) {
-        double a = calculateA(delta, diffuse);
-        double cRecip = 1.0 / (1.0 + 4.0 * a);
+        final double a = calculateA(delta, diffuse);
+        final double cRecip = 1.0 / (1.0 + 4.0 * a);
 
         for (int iteration = 0; iteration < iterations; iteration++) {
             for (int j = 1; j < resolutionMinusOne; j++) {
@@ -284,7 +284,7 @@ public class FluidSimulation {
         }
     }
 
-    void project(double[] velocX, double[] velocY, double[] p, double[] div, int iter) {
+    private void project(final double[] velocX, final double[] velocY, final double[] p, final double[] div, final int iter) {
         projectVelocities(velocX, velocY, p, div);
         linearSolve(p, div, iter);
         projectVelocities(velocX, velocY, p);
@@ -340,12 +340,11 @@ public class FluidSimulation {
         }
     }
 
-    private void advect(double[] d, double[] d0, double[] velocX, double[] velocY, double dt) {
+    private void advect(final double[] d, final double[] d0, final double[] velocX, final double[] velocY, final double dt) {
         final double tdRes = dt * resolutionMinusTwo;
         final double maxVal = resolution - 1.5;
 
         for (int j = 1; j < resolutionMinusOne; j++) {
-
             for (int i = 1; i < resolutionMinusOne; i++) {
                 final int ix = index(i, j);
 
@@ -355,12 +354,18 @@ public class FluidSimulation {
                 }
 
                 double x = i - tdRes * velocX[ix];
-                if (x < 0.5) x = 0.5;
-                else if (x > maxVal) x = maxVal;
+                if (x < 0.5) {
+                    x = 0.5;
+                } else if (x > maxVal) {
+                    x = maxVal;
+                }
 
                 double y = (double) j - tdRes * velocY[ix];
-                if (y < 0.5) y = 0.5;
-                else if (y > maxVal) y = maxVal;
+                if (y < 0.5) {
+                    y = 0.5;
+                } else if (y > maxVal) {
+                    y = maxVal;
+                }
 
                 final int i0i = (int) x;
                 final int j0i = (int) y;
@@ -372,9 +377,8 @@ public class FluidSimulation {
                 final double t1 = y - j0i;
                 final double t0 = 1.0 - t1;
 
-                final int stride = resolution;
-                final int base0 = j0i * stride;
-                final int base1 = j1i * stride;
+                final int base0 = j0i * resolution;
+                final int base1 = j1i * resolution;
 
                 final int idx00 = base0 + i0i;
                 final int idx10 = base0 + i1i;

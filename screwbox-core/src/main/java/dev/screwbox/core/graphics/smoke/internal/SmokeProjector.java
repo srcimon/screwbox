@@ -221,15 +221,15 @@ public class SmokeProjector {
         final long snappedY = Math.round(boundsArea.origin().y() / configuration.smokeCellSize()) * configuration.smokeCellSize();
         worldAnchor = Vector.of(snappedX, snappedY);
 
-        var oldSimulation = simulation;
+        final var previousSimulation = simulation;
         final int resolution = (int) Math.round(boundsArea.width() / configuration.smokeCellSize());
         simulation = new FluidSimulation(resolution);
         if (nonNull(lastAnchor)) {
             final int deltaX = (int) Math.round((worldAnchor.x() - lastAnchor.x()) / configuration.smokeCellSize());
             final int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / configuration.smokeCellSize());
 
-            if (nonNull(oldSimulation)) {
-                simulation.loadFrom(oldSimulation, deltaX, deltaY);
+            if (nonNull(previousSimulation)) {
+                simulation.loadFrom(previousSimulation, deltaX, deltaY);
             }
         }
     }
