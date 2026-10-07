@@ -3,7 +3,6 @@ package dev.screwbox.core.window.internal;
 import dev.screwbox.core.graphics.Offset;
 
 import java.awt.*;
-import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -33,7 +32,7 @@ public class DragAndDropSupport extends DropTargetAdapter {
     @Override
     public void drop(final DropTargetDropEvent event) {
         event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-        Transferable transferable = event.getTransferable();
+        final var transferable = event.getTransferable();
         for (final var dataFlavor : transferable.getTransferDataFlavors()) {
             if (dataFlavor.isFlavorJavaFileListType()) {
                 try {
