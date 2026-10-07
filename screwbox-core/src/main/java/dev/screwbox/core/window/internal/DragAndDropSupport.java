@@ -21,10 +21,10 @@ public class DragAndDropSupport extends DropTargetAdapter {
 
     public DragAndDropSupport(final Frame frame, final BiConsumer<List<File>, Offset> onFilesDroppedOnWindow) {
         try {
-            DropTarget dropTarget = new DropTarget();
+            final DropTarget dropTarget = new DropTarget();
             frame.setDropTarget(dropTarget);
             dropTarget.addDropTargetListener(this);
-        } catch (TooManyListenersException e) {
+        } catch (final TooManyListenersException e) {
             throw new IllegalStateException("Could not register DropTargetListener", e);
         }
         this.onFilesDroppedOnWindow = onFilesDroppedOnWindow;
@@ -40,7 +40,7 @@ public class DragAndDropSupport extends DropTargetAdapter {
                     final Offset position = Offset.at(event.getLocation().x, event.getLocation().y);
                     final List<File> files = (List<File>) transferable.getTransferData(dataFlavor);
                     onFilesDroppedOnWindow.accept(files, position);
-                } catch (UnsupportedFlavorException | IOException e) {
+                } catch (final UnsupportedFlavorException | IOException e) {
                     throw new IllegalStateException("drop failed", e);
                 }
             }
