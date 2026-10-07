@@ -21,11 +21,11 @@ public class DragAndDropSupport extends DropTargetAdapter {
 
     public DragAndDropSupport(final Frame frame, final BiConsumer<List<File>, Offset> onFilesDroppedOnWindow) {
         try {
-            final DropTarget dropTarget = new DropTarget();
+            final var dropTarget = new DropTarget();
             frame.setDropTarget(dropTarget);
             dropTarget.addDropTargetListener(this);
         } catch (final TooManyListenersException e) {
-            throw new IllegalStateException("Could not register DropTargetListener", e);
+            throw new IllegalStateException("could not register DropTargetListener", e);
         }
         this.onFilesDroppedOnWindow = onFilesDroppedOnWindow;
     }
