@@ -17,9 +17,6 @@ import static org.mockito.Mockito.when;
 @MockitoSettings
 class DefaultWindowTest {
 
-    static {
-        System.setProperty("java.awt.headless", "true");
-    }
     @InjectMocks
     DefaultWindow window;
 

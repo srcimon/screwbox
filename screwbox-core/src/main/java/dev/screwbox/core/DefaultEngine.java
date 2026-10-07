@@ -50,9 +50,11 @@ import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.ui.internal.DefaultUi;
 import dev.screwbox.core.utils.internal.MacOsSupport;
+import dev.screwbox.core.window.FilesDroppedOnWindow;
 import dev.screwbox.core.window.Window;
 import dev.screwbox.core.window.internal.CursorLockInSupport;
 import dev.screwbox.core.window.internal.DefaultWindow;
+import dev.screwbox.core.window.internal.DragAndDropSupport;
 import dev.screwbox.core.window.internal.InitializeFontDrawingTask;
 import dev.screwbox.core.window.internal.MacOsWindowFrame;
 import dev.screwbox.core.window.internal.WindowFrame;
@@ -125,7 +127,7 @@ class DefaultEngine implements Engine {
         mouse = new DefaultMouse(screen, viewportManager);
         final var cursorLockInSupport = new CursorLockInSupport(robot, mouse);
         window = new DefaultWindow(frame, configuration, graphicsDevice, renderPipeline, cursorLockInSupport);
-
+        new DragAndDropSupport(frame, window::onFileDrop);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
