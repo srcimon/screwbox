@@ -63,7 +63,7 @@ const config: Config = {
           autoCollapseCategories: false,
         },
     },
-    image: 'img/screenshot.png',
+    image: 'img/bubbles.png',
     navbar: {
       title: 'ScrewBox',
       logo: {
