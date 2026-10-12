@@ -61,7 +61,7 @@ class SmokeProjectorTest {
             new SmokeProjector.DensityChange(Vector.zero(), 0.01, Color.RED)
         ));
 
-        assertThat(smokeProjector.densityAt(Vector.zero())).isEqualTo(Color.RED);//TODO found bug?
+        assertThat(smokeProjector.densityAt(Vector.zero())).isEqualTo(Color.RED.opacity(0.01));//TODO found bug?
     }
 
     //TODO move to test utils and check where to reuse
