@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisabledOnOs({OS.MAC, OS.WINDOWS})// headless image is different from os compatible one
 class SmokeRendererTest {
-
+//TODO fix images
     DensityInfo densityInfo;
 
     @BeforeEach
