@@ -82,7 +82,7 @@ public class FluidSimulation {
             densityR[index] += color.r() * amount;
             densityG[index] += color.g() * amount;
             densityB[index] += color.b() * amount;
-            densityA[index] += color.alpha() * amount;
+            densityA[index] += color.opacity().value() * amount;
         }
     }
 
