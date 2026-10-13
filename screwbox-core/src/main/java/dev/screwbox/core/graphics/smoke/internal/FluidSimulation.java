@@ -268,10 +268,10 @@ public class FluidSimulation {
                 if (obstacles[indexCurrent]) {
                     x[indexCurrent] = 0;
                 } else {
-                    final double nRight = obstacles[indexRight] ? x[indexCurrent] : x[indexRight];
-                    final double nLeft = obstacles[indexLeft] ? x[indexCurrent] : x[indexLeft];
-                    final double nBottom = obstacles[indexBottom] ? x[indexCurrent] : x[indexBottom];
-                    final double nTop = obstacles[indexTop] ? x[indexCurrent] : x[indexTop];
+                    final double nRight = x[obstacles[indexRight] ? indexCurrent : indexRight];
+                    final double nLeft = x[obstacles[indexLeft] ? indexCurrent : indexLeft];
+                    final double nBottom = x[obstacles[indexBottom] ? indexCurrent : indexBottom];
+                    final double nTop = x[obstacles[indexTop] ? indexCurrent : indexTop];
                     x[indexCurrent] = (x0[indexCurrent] + nRight + nLeft + nBottom + nTop) * 0.25;
                 }
 
@@ -329,10 +329,10 @@ public class FluidSimulation {
                 final int bot = index(x, y + 1);
 
                 // mirror pressure
-                final double pressureLeft = obstacles[left] ? p[index] : p[left];
-                final double pressureRight = obstacles[right] ? p[index] : p[right];
-                final double pressureTop = obstacles[top] ? p[index] : p[top];
-                final double pressureBottom = obstacles[bot] ? p[index] : p[bot];
+                final double pressureLeft = p[obstacles[left] ? index : left];
+                final double pressureRight = p[obstacles[right] ? index : right];
+                final double pressureTop = p[obstacles[top] ? index : top];
+                final double pressureBottom = p[obstacles[bot] ? index : bot];
 
                 velocX[index] -= 0.5 * (pressureRight - pressureLeft) / physicalCellSize;
                 velocY[index] -= 0.5 * (pressureBottom - pressureTop) / physicalCellSize;
@@ -360,7 +360,7 @@ public class FluidSimulation {
                     x = maxVal;
                 }
 
-                double y = (double) j - tdRes * velocY[ix];
+                double y = j - tdRes * velocY[ix];
                 if (y < 0.5) {
                     y = 0.5;
                 } else if (y > maxVal) {

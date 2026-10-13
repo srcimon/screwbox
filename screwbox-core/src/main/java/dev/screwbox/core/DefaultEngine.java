@@ -50,7 +50,6 @@ import dev.screwbox.core.scenes.internal.DefaultScenes;
 import dev.screwbox.core.ui.Ui;
 import dev.screwbox.core.ui.internal.DefaultUi;
 import dev.screwbox.core.utils.internal.MacOsSupport;
-import dev.screwbox.core.window.FilesDroppedOnWindow;
 import dev.screwbox.core.window.Window;
 import dev.screwbox.core.window.internal.CursorLockInSupport;
 import dev.screwbox.core.window.internal.DefaultWindow;

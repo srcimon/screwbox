@@ -259,7 +259,7 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     @Override
-    public java.util.List<Size> supportedResolutions() {
+    public List<Size> supportedResolutions() {
         return stream(graphicsDevice.getDisplayModes())
             .map(DefaultScreen::toDimension)
             .distinct()

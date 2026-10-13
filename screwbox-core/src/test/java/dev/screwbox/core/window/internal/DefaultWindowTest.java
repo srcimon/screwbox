@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -50,6 +51,21 @@ class DefaultWindowTest {
         assertThatThrownBy(() -> window.enableCursorLock(-1))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("padding must be in range 2 to 64 (actual value: -1)");
+    }
+
+    @Test
+    void isCursorLockEnabled_cursorLockEnabled_returnsTrue() {
+        window.enableCursorLock(10);
+
+        assertThat(window.isCursorLockEnabled()).isTrue();
+    }
+
+    @Test
+    void isCursorLockEnabled_cursorLockEnabledAndDisabled_returnsFalse() {
+        window.enableCursorLock(4);
+        window.disableCursorLock();
+
+        assertThat(window.isCursorLockEnabled()).isTrue();
     }
 
 }

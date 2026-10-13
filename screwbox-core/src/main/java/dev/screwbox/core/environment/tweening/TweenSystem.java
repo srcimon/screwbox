@@ -38,9 +38,9 @@ public class TweenSystem implements EntitySystem {
 
     private static Percent calculateProgressOfTween(final Time now, final TweenComponent tween) {
         final var elapsedDuration = Duration.between(now, tween.startTime);
-        return tween.reverse
-                ? Percent.of(1.0 - 1.0 * elapsedDuration.nanos() / tween.duration.nanos())
-                : Percent.of(1.0 * elapsedDuration.nanos() / tween.duration.nanos());
+        return Percent.of(tween.reverse
+            ? 1.0 - 1.0 * elapsedDuration.nanos() / tween.duration.nanos()
+            : 1.0 * elapsedDuration.nanos() / tween.duration.nanos());
     }
 
     private static boolean tweenHasReachedEnd(final TweenComponent tween) {

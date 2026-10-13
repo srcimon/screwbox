@@ -69,7 +69,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window disableCursorLock() {
-        this.cursorLockPadding = 0;
+        cursorLockPadding = 0;
         return this;
     }
 

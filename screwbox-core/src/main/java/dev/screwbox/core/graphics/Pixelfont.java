@@ -105,9 +105,11 @@ public class Pixelfont implements Serializable {
         if (nonNull(sprite)) {
             return Optional.of(sprite);
         }
-        return Optional.ofNullable(isUpperCase(character)
-                ? characters.get(toLowerCase(character))
-                : characters.get(toUpperCase(character)));
+        final Sprite result = characters.get(isUpperCase(character)
+            ? toLowerCase(character)
+            : toUpperCase(character));
+
+        return Optional.ofNullable(result);
     }
 
     /**
