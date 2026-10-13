@@ -76,11 +76,11 @@
 
         <!-- this use of Thread.sleep is intentional -->
         <sonar.issue.ignore.multicriteria.e11.ruleKey>java:S2925</sonar.issue.ignore.multicriteria.e11.ruleKey>
-        <sonar.issue.ignore.multicriteria.e11.resourceKey>TestSupport.java</sonar.issue.ignore.multicriteria.e11.resourceKey>
+        <sonar.issue.ignore.multicriteria.e11.resourceKey>**/TestSupport.java</sonar.issue.ignore.multicriteria.e11.resourceKey>
 
         <!-- sonar false positive bug detected -->
         <sonar.issue.ignore.multicriteria.e12.ruleKey>javabugs:S2259</sonar.issue.ignore.multicriteria.e12.ruleKey>
-        <sonar.issue.ignore.multicriteria.e12.resourceKey>Noise.java</sonar.issue.ignore.multicriteria.e12.resourceKey>
+        <sonar.issue.ignore.multicriteria.e12.resourceKey>**/Noise.java</sonar.issue.ignore.multicriteria.e12.resourceKey>
     </properties>
 
     <dependencyManagement>
