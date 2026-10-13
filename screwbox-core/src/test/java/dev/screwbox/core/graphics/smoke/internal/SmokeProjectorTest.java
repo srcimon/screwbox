@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
@@ -45,8 +46,7 @@ class SmokeProjectorTest {
 
     @Test
     void applyDensityChanges_addRedDensity_addsRedDensityOnlyAtSpecifiedPosition() {
-        var viewport = TestSupport.createInMemoryViewport(Size.square(30));
-        smokeProjector.adaptToViewport(viewport);
+        smokeProjector.adaptToViewport(TestSupport.createInMemoryViewport(Size.square(30)));
         smokeProjector.applyDensityChanges(List.of(
             new SmokeProjector.DensityChange(Vector.zero(), 0.01, Color.RED)
         ));
@@ -55,7 +55,29 @@ class SmokeProjectorTest {
         assertThat(smokeProjector.densityAt(Vector.$(10, 0))).isEqualTo(Color.TRANSPARENT);
     }
 
-    //TODO Reference ticket for more smoke tests
+    @Test
+    void applyVelocityChanges_multipleChangesAtSameCell_changesAddUp() {
+        smokeProjector.adaptToViewport(TestSupport.createInMemoryViewport(Size.square(30)));
+
+        smokeProjector.applyVelocityChanges(List.of(
+            new SmokeProjector.VelocityChange(Vector.zero(), Vector.y(14)),
+            new SmokeProjector.VelocityChange(Vector.zero(), Vector.x(10))
+        ));
+
+        assertThat(smokeProjector.velocityAt(Vector.zero())).isEqualTo(Vector.$(10, 14));
+    }
+
+    @Test
+    void applyAreaVelocityChanges_multipleChangesAtSameCell_changesAddUp() {
+        smokeProjector.adaptToViewport(TestSupport.createInMemoryViewport(Size.square(30)));
+
+        smokeProjector.applyAreaVelocityChanges(List.of(
+            new SmokeProjector.AreaVelocityChange(Bounds.atPosition(0,0,32,32), Vector.y(14)),
+            new SmokeProjector.AreaVelocityChange(Bounds.atPosition(0,0,32,32), Vector.x(10))
+        ));
+
+        assertThat(smokeProjector.velocityAt(Vector.zero())).isEqualTo(Vector.$(10, 14));
+    }
 
     @AfterEach
     void tearDown() {
