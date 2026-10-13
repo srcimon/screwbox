@@ -54,7 +54,7 @@ public class PlaygroundApp {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             if (x.mouse().isDownRight()) {
                 x.graphics().smoke().push(Bounds.atPosition(screwBox.mouse().position(), 32, 32), Vector.x(8000).multiply(screwBox.loop().delta()));
-                x.graphics().smoke().emit(screwBox.mouse().position(), 0.8 * screwBox.loop().delta(), color);
+                x.graphics().smoke().emit(screwBox.mouse().position(), 255 * 0.8 * screwBox.loop().delta(), color);
             }
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();

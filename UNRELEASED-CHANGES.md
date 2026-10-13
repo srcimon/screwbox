@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- Fixed exagerated density when adding smoke
+- Fixed wrong smoke density color
 
 ### 🧽 Cleanup & refactoring
 

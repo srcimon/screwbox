@@ -48,7 +48,7 @@ class FluidSimulationTest {
         simulation.addDensity(4, 4, 2, Color.RED);
 
         final var state = simulation.densityData();
-        assertThat(state.red(4, 4)).isEqualTo(510);
+        assertThat(state.red(4, 4)).isEqualTo(2.0);
         assertThat(state.green(4, 4)).isZero();
         assertThat(state.blue(4, 4)).isZero();
     }
@@ -63,12 +63,12 @@ class FluidSimulationTest {
     @Test
     void step_densityIsSet_diffusesToNeighbours() {
         Offset cell = Offset.at(4, 4);
-        simulation.addDensity(cell.x(), cell.y(), 0.5, Color.ORANGE);
+        simulation.addDensity(cell.x(), cell.y(), 128, Color.ORANGE);
 
 
         var state = simulation.densityData();
-        assertThat(state.red(cell.x(), 4)).isEqualTo(127.5, offset(0.01));
-        assertThat(state.green(cell.x(), cell.y())).isEqualTo(82.5, offset(0.01));
+        assertThat(state.red(cell.x(), 4)).isEqualTo(128.0, offset(0.01));
+        assertThat(state.green(cell.x(), cell.y())).isEqualTo(82.8, offset(0.1));
         assertThat(state.blue(cell.x(), cell.y())).isZero();
 
         for (var neighbour : Set.of(cell.top(), cell.bottom(), cell.left(), cell.right())) {
@@ -78,7 +78,7 @@ class FluidSimulationTest {
             assertThat(state.alpha(neighbour.x(), neighbour.y())).isZero();
         }
 
-        assertTotalRedDensity(127.5);
+        assertTotalRedDensity(128.0);
     }
 
     @Test
@@ -111,13 +111,13 @@ class FluidSimulationTest {
 
     @Test
     void fade_cellHasDensity_reducesDensity() {
-        simulation.addDensity(4, 9, 2, Color.rgb(12, 31, 21));
+        simulation.addDensity(4, 9, 512, Color.rgb(12, 31, 21));
 
         simulation.fade(2);
 
-        assertThat(simulation.densityData().red(4, 9)).isEqualTo(22.0);
-        assertThat(simulation.densityData().green(4, 9)).isEqualTo(60.0);
-        assertThat(simulation.densityData().blue(4, 9)).isEqualTo(40.0);
+        assertThat(simulation.densityData().red(4, 9)).isEqualTo(22.0, offset(0.3));
+        assertThat(simulation.densityData().green(4, 9)).isEqualTo(60.0, offset(0.3));
+        assertThat(simulation.densityData().blue(4, 9)).isEqualTo(40.0, offset(0.3));
     }
 
     @Test
