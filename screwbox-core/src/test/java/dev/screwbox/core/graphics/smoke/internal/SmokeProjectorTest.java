@@ -51,7 +51,7 @@ class SmokeProjectorTest {
             new SmokeProjector.DensityChange(Vector.zero(), 0.01, Color.RED)
         ));
 
-        assertThat(smokeProjector.densityAt(Vector.zero())).isEqualTo(Color.RED.opacity(0.01));
+        assertThat(smokeProjector.densityAt(Vector.zero())).isEqualTo(Color.RED);
         assertThat(smokeProjector.densityAt(Vector.$(10, 0))).isEqualTo(Color.TRANSPARENT);
     }
 

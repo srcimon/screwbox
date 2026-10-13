@@ -82,7 +82,7 @@ public class FluidSimulation {
             densityR[index] += color.r() * amount;
             densityG[index] += color.g() * amount;
             densityB[index] += color.b() * amount;
-            densityA[index] += color.opacity().value() * amount;
+            densityA[index] += color.alpha() * amount;
         }
     }
 
@@ -93,9 +93,9 @@ public class FluidSimulation {
     public Color densityAt(final int x, final int y) {
         final int index = index(x, y);
         return Color.rgb(
-            Color.clampRgbRange((int) densityR[index] * 255),
-            Color.clampRgbRange((int) densityG[index] * 255),
-            Color.clampRgbRange((int) densityB[index] * 255),
+            Color.clampRgbRange((int) (densityR[index] * 255)),
+            Color.clampRgbRange((int) (densityG[index] * 255)),
+            Color.clampRgbRange((int) (densityB[index] * 255)),
             Percent.of(densityA[index]));
     }
 
