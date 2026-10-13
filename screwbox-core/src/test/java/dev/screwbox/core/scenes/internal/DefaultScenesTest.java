@@ -16,8 +16,8 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static dev.screwbox.core.test.TestUtil.await;
-import static dev.screwbox.core.test.TestUtil.shutdown;
+import static dev.screwbox.core.test.TestSupport.await;
+import static dev.screwbox.core.test.TestSupport.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;

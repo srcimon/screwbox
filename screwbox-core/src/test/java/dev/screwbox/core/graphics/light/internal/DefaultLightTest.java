@@ -14,7 +14,7 @@ import dev.screwbox.core.graphics.internal.DefaultViewport;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.graphics.light.ShadowOptions;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -163,6 +163,6 @@ class DefaultLightTest {
 
     @AfterEach
     void tearDown() {
-        TestUtil.shutdown(executor);
+        TestSupport.shutdown(executor);
     }
 }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 
-import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 
 class SilhouetteShaderTest {
 

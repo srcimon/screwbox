@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
-import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisabledOnOs({OS.MAC, OS.WINDOWS})// headless image is different from os compatible one
@@ -24,11 +24,15 @@ class SmokeRendererTest {
 
     DensityInfo densityInfo;
 
+    static {
+        System.setProperty("java.awt.headless", "true");
+    }
+
     @BeforeEach
     void setup() {
         final var simulation = new FluidSimulation(16);
         for (final var cell : Size.square(simulation.resolution()).all()) {
-            simulation.addDensity(cell.x(), cell.y(), 0.004, Color.rgb(
+            simulation.addDensity(cell.x(), cell.y(), 0.8, Color.rgb(
                 FractalNoise.generateFractalNoise(15.0, 13213L, cell).rangeValue(0, 255),
                 FractalNoise.generateFractalNoise(15.0, 14513L, cell).rangeValue(0, 255),
                 FractalNoise.generateFractalNoise(15.0, 63413L, cell).rangeValue(0, 255),

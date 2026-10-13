@@ -5,12 +5,13 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed exagerated density when adding smoke
 
 ### 🧽 Cleanup & refactoring
 
 - Removed `Layout` parameter from `UiInteractor`
 - Renamed `ListUtil.pickRandom(List)`
+- Added tests for `SmokeProjector` (#1057)
 
 ### 📦 Dependency updates
 

@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.shader;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Frame;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -18,7 +18,7 @@ class MotionShaderTest {
     @Test
     void apply_halfProcessed_appliesPixelRelocation() {
         var result = new MotionShader(1, 2).apply(SOURCE, Percent.half());
-        TestUtil.verifyIsSameImage(result, "shader/apply_halfProcessed_appliesPixelRelocation.png");
+        TestSupport.verifyIsSameImage(result, "shader/apply_halfProcessed_appliesPixelRelocation.png");
     }
 
     @ParameterizedTest

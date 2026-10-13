@@ -2,7 +2,7 @@ package dev.screwbox.core.scenes.animations;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,6 +22,6 @@ class GridShredderAnimationTest extends AnimationTest {
         var animation = new GridShredderAnimation(Size.of(20, 20));
         animation.apply(source, target, new AnimationContext(size, Percent.of(0.3), 1.0));
 
-        TestUtil.verifyIsSameImage(targetImage, "animations/testGridShredderAnimation.png");
+        TestSupport.verifyIsSameImage(targetImage, "animations/testGridShredderAnimation.png");
     }
 }

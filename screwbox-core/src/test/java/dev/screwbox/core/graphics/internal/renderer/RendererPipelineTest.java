@@ -10,7 +10,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static dev.screwbox.core.test.TestUtil.await;
+import static dev.screwbox.core.test.TestSupport.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -65,6 +65,6 @@ class RendererPipelineTest {
 
     @AfterEach
     void tearDown() {
-        TestUtil.shutdown(executorService);
+        TestSupport.shutdown(executorService);
     }
 }

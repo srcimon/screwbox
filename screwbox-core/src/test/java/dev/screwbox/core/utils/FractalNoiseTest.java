@@ -5,7 +5,7 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 
-import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;

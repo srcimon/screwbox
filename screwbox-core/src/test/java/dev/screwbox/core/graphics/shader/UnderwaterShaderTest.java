@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.shader;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
@@ -17,7 +17,7 @@ class UnderwaterShaderTest {
 
         var result = new UnderwaterShader(10, 4).apply(image, Percent.half());
 
-        TestUtil.verifyIsSameImage(result, "shader/apply_someDistortion_createsUnderwaterEffect.png");
+        TestSupport.verifyIsSameImage(result, "shader/apply_someDistortion_createsUnderwaterEffect.png");
     }
 
     @Test

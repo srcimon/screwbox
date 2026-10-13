@@ -2,7 +2,7 @@ package dev.screwbox.core.audio.internal;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.audio.AudioConfiguration;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 
 import static dev.screwbox.core.Duration.ofMillis;
 import static dev.screwbox.core.Duration.ofSeconds;
-import static dev.screwbox.core.test.TestUtil.await;
+import static dev.screwbox.core.test.TestSupport.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -70,9 +70,9 @@ class MicrophoneMonitorTest {
         when(audioAdapter.createTargetLine(any())).thenReturn(targetDataLine);
         configuration.setMicrophoneIdleTimeout(Duration.ofMillis(200));
         microphoneMonitor.level();
-        TestUtil.sleep(Duration.ofMillis(100));
+        TestSupport.sleep(Duration.ofMillis(100));
         microphoneMonitor.level();
-        TestUtil.sleep(Duration.ofMillis(150));
+        TestSupport.sleep(Duration.ofMillis(150));
         assertThat(microphoneMonitor.isActive()).isTrue();
         await(() -> !microphoneMonitor.isActive(), ofMillis(200));
     }
@@ -105,6 +105,6 @@ class MicrophoneMonitorTest {
 
     @AfterEach
     void tearDown() {
-        TestUtil.shutdown(executor);
+        TestSupport.shutdown(executor);
     }
 }

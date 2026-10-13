@@ -39,7 +39,7 @@ import static dev.screwbox.core.graphics.options.LineDrawOptions.color;
 import static dev.screwbox.core.graphics.options.RectangleDrawOptions.fading;
 import static dev.screwbox.core.graphics.options.RectangleDrawOptions.filled;
 import static dev.screwbox.core.graphics.options.RectangleDrawOptions.outline;
-import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 
 @MockitoSettings
 class DefaultRenderImageTest {

@@ -13,7 +13,7 @@ import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,7 +67,7 @@ class OrderingAsyncRendererTest {
         orderingAsyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW), CLIP);
         orderingAsyncRenderer.updateContext(null);
 
-        TestUtil.await(() -> orderingAsyncRenderer.renderTaskCount() == 2, Duration.ofMillis(100));
+        TestSupport.await(() -> orderingAsyncRenderer.renderTaskCount() == 2, Duration.ofMillis(100));
         assertThat(orderingAsyncRenderer.renderTaskCount()).isEqualTo(2);
     }
 
