@@ -217,7 +217,7 @@ public class FluidSimulation {
                 final int botRow = row + resolution;
 
                 for (int i = 1; i < resolutionMinusOne; i++) {
-                    int curr = i + row;
+                    final int curr = i + row;
 
                     if (obstacles[curr]) {
                         densityR0[curr] = 0;
@@ -353,19 +353,8 @@ public class FluidSimulation {
                     continue;
                 }
 
-                double x = i - tdRes * velocX[ix];
-                if (x < 0.5) {
-                    x = 0.5;
-                } else if (x > maxVal) {
-                    x = maxVal;
-                }
-
-                double y = j - tdRes * velocY[ix];
-                if (y < 0.5) {
-                    y = 0.5;
-                } else if (y > maxVal) {
-                    y = maxVal;
-                }
+                final double x = Math.clamp(i - tdRes * velocX[ix], 0.5, maxVal);
+                final double y = Math.clamp(j - tdRes * velocY[ix], 0.5, maxVal);
 
                 final int i0i = (int) x;
                 final int j0i = (int) y;
