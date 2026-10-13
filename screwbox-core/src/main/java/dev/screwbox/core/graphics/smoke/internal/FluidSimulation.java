@@ -329,10 +329,10 @@ public class FluidSimulation {
                 final int bot = index(x, y + 1);
 
                 // mirror pressure
-                final double pressureLeft = obstacles[left] ? p[index] : p[left];
-                final double pressureRight = obstacles[right] ? p[index] : p[right];
-                final double pressureTop = obstacles[top] ? p[index] : p[top];
-                final double pressureBottom = obstacles[bot] ? p[index] : p[bot];
+                final double pressureLeft = p[obstacles[left] ? index : left];
+                final double pressureRight = p[obstacles[right] ? index : right];
+                final double pressureTop = p[obstacles[top] ? index : top];
+                final double pressureBottom = p[obstacles[bot] ? index : bot];
 
                 velocX[index] -= 0.5 * (pressureRight - pressureLeft) / physicalCellSize;
                 velocY[index] -= 0.5 * (pressureBottom - pressureTop) / physicalCellSize;
