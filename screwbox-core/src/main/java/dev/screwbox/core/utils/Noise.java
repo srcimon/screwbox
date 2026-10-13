@@ -12,7 +12,6 @@ import static java.util.Objects.requireNonNull;
 
 public class Noise implements Serializable {
 
-    private static final String NULL_MESSAGE = "interval must not be null";
     private static final Random RANDOM = new Random();
 
     private final Duration minInterval;
@@ -23,11 +22,12 @@ public class Noise implements Serializable {
     private double targetValue = RANDOM.nextDouble(-1, 1);
 
     public static Noise fixedInterval(final Duration interval) {
+        requireNonNull(interval, "interval must not be null");
         return new Noise(interval, interval);
     }
 
     public static Noise variableInterval(final Duration interval) {
-        requireNonNull(interval, NULL_MESSAGE);
+        requireNonNull(interval, "interval must not be null");
         final long nanoDeviation = Math.round(interval.nanos() * Percent.half().value());
         final Duration minDeviation = Duration.ofNanos(-1 * nanoDeviation);
         final Duration maxDeviation = Duration.ofNanos(nanoDeviation);
@@ -35,8 +35,8 @@ public class Noise implements Serializable {
     }
 
     private Noise(final Duration minInterval, final Duration maxInterval) {
-        this.minInterval =  requireNonNull(minInterval, NULL_MESSAGE);
-        this.maxInterval =  requireNonNull(maxInterval, NULL_MESSAGE);
+        this.minInterval =  minInterval;
+        this.maxInterval =  maxInterval;
     }
 
     public double value(final Time time) {
