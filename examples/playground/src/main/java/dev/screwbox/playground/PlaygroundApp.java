@@ -56,6 +56,8 @@ public class PlaygroundApp {
         screwBox.environment().addSystem(x -> {
             x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
             x.graphics().world().drawText(x.mouse().position(), "DENSITY " + x.graphics().smoke().densityAt(x.mouse().position()), SystemTextDrawOptions.systemFont("Arial", 20).bold().color(Color.BLUE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 32, 32), RectangleDrawOptions.filled(x.graphics().smoke().densityAt(x.mouse().position())).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+            x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 32, 32), RectangleDrawOptions.outline(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             if (x.mouse().isDownRight()) {
                 x.graphics().smoke().push(Bounds.atPosition(screwBox.mouse().position(), 32, 32), Vector.x(8000).multiply(screwBox.loop().delta()));
                 x.graphics().smoke().emit(screwBox.mouse().position(), 0.8 * screwBox.loop().delta(), color);
