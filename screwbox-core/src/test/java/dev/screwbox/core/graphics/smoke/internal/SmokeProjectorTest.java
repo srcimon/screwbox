@@ -51,7 +51,7 @@ class SmokeProjectorTest {
             new SmokeProjector.DensityChange(Vector.zero(), 0.01, Color.RED)
         ));
 
-        assertThat(smokeProjector.densityAt(Vector.zero())).isEqualTo(Color.RED);
+        assertThat(smokeProjector.densityAt(Vector.zero())).isEqualTo(Color.rgb(2, 0, 0));
         assertThat(smokeProjector.densityAt(Vector.$(10, 0))).isEqualTo(Color.TRANSPARENT);
     }
 
@@ -72,8 +72,8 @@ class SmokeProjectorTest {
         smokeProjector.adaptToViewport(TestSupport.createInMemoryViewport(Size.square(30)));
 
         smokeProjector.applyAreaVelocityChanges(List.of(
-            new SmokeProjector.AreaVelocityChange(Bounds.atPosition(0,0,32,32), Vector.y(14)),
-            new SmokeProjector.AreaVelocityChange(Bounds.atPosition(0,0,32,32), Vector.x(10))
+            new SmokeProjector.AreaVelocityChange(Bounds.atPosition(0, 0, 32, 32), Vector.y(14)),
+            new SmokeProjector.AreaVelocityChange(Bounds.atPosition(0, 0, 32, 32), Vector.x(10))
         ));
 
         assertThat(smokeProjector.velocityAt(Vector.zero())).isEqualTo(Vector.$(10, 14));

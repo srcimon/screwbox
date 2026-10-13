@@ -79,10 +79,10 @@ public class FluidSimulation {
         final int index = index(x, y);
         if (isInGrid(x, y) && isFree(index)) {
             hasDensityCache = true;
-            densityR[index] += color.r() * amount;
-            densityG[index] += color.g() * amount;
-            densityB[index] += color.b() * amount;
-            densityA[index] += color.alpha() * amount;
+            densityR[index] += color.r() / 255.0 * amount;
+            densityG[index] += color.g() / 255.0 * amount;
+            densityB[index] += color.b() / 255.0 * amount;
+            densityA[index] += color.opacity().value() * amount;
         }
     }
 
@@ -93,10 +93,10 @@ public class FluidSimulation {
     public Color densityAt(final int x, final int y) {
         final int index = index(x, y);
         return Color.rgb(
-            Color.clampRgbRange((int) (densityR[index] * 255)),
-            Color.clampRgbRange((int) (densityG[index] * 255)),
-            Color.clampRgbRange((int) (densityB[index] * 255)),
-            Percent.of(densityA[index]));
+            Color.clampRgbRange((int) (densityR[index] * 255.0)),
+            Color.clampRgbRange((int) (densityG[index] * 255.0)),
+            Color.clampRgbRange((int) (densityB[index] * 255.0)),
+            Percent.of(densityA[index] * 255.0));
     }
 
     public Vector velocityAt(final int x, int y) {

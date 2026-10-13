@@ -60,13 +60,14 @@ public class PlaygroundApp {
             x.graphics().world().drawRectangle(Bounds.atPosition(x.mouse().position(), 32, 32), RectangleDrawOptions.outline(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
             if (x.mouse().isDownRight()) {
                 x.graphics().smoke().push(Bounds.atPosition(screwBox.mouse().position(), 32, 32), Vector.x(8000).multiply(screwBox.loop().delta()));
-                x.graphics().smoke().emit(screwBox.mouse().position(), 0.8 * screwBox.loop().delta(), color);
+                x.graphics().smoke().emit(screwBox.mouse().position(), 255*0.8 * screwBox.loop().delta(), color);
             }
             if (x.mouse().isPressedLeft()) {
                 color = Color.random();
             }
             x.mouse().hoverViewport().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
         });
+        screwBox.graphics().configuration().setBackgroundColor(Color.WHITE);
         screwBox.environment().addSystem(new DebugGridSystem(16, 256));
         screwBox.start();
     }
