@@ -268,10 +268,10 @@ public class FluidSimulation {
                 if (obstacles[indexCurrent]) {
                     x[indexCurrent] = 0;
                 } else {
-                    final double nRight = obstacles[indexRight] ? x[indexCurrent] : x[indexRight];
-                    final double nLeft = obstacles[indexLeft] ? x[indexCurrent] : x[indexLeft];
-                    final double nBottom = obstacles[indexBottom] ? x[indexCurrent] : x[indexBottom];
-                    final double nTop = obstacles[indexTop] ? x[indexCurrent] : x[indexTop];
+                    final double nRight = x[obstacles[indexRight] ? indexCurrent : indexRight];
+                    final double nLeft = x[obstacles[indexLeft] ? indexCurrent : indexLeft];
+                    final double nBottom = x[obstacles[indexBottom] ? indexCurrent : indexBottom];
+                    final double nTop = x[obstacles[indexTop] ? indexCurrent : indexTop];
                     x[indexCurrent] = (x0[indexCurrent] + nRight + nLeft + nBottom + nTop) * 0.25;
                 }
 
