@@ -96,7 +96,7 @@ public class FluidSimulation {
             Color.clampRgbRange((int) (densityR[index] * 255.0)),
             Color.clampRgbRange((int) (densityG[index] * 255.0)),
             Color.clampRgbRange((int) (densityB[index] * 255.0)),
-            Percent.of(densityA[index] * 255.0));
+            Percent.of(densityA[index]));
     }
 
     public Vector velocityAt(final int x, int y) {
