@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
@@ -51,7 +52,7 @@ class SmokeProjectorTest {
             new SmokeProjector.DensityChange(Vector.zero(), 0.01, Color.RED)
         ));
 
-        assertThat(smokeProjector.densityAt(Vector.zero())).isEqualTo(Color.rgb(2, 0, 0));
+        assertThat(smokeProjector.densityAt(Vector.zero())).isEqualTo(Color.rgb(2, 0, 0, Percent.of(0.01)));
         assertThat(smokeProjector.densityAt(Vector.$(10, 0))).isEqualTo(Color.TRANSPARENT);
     }
 
