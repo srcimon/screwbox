@@ -360,7 +360,7 @@ public class FluidSimulation {
                     x = maxVal;
                 }
 
-                double y = (double) j - tdRes * velocY[ix];
+                double y = j - tdRes * velocY[ix];
                 if (y < 0.5) {
                     y = 0.5;
                 } else if (y > maxVal) {
