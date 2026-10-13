@@ -2,7 +2,7 @@ package dev.screwbox.core.graphics.internal.filter;
 
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.internal.ImageOperations;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;
@@ -31,6 +31,6 @@ class BlurImageFilterTest {
 
         var result = new BlurImageFilter(2).apply(sourceImage);
 
-        TestUtil.verifyIsSameImage(result, "filter/apply_validSourceImage_returnsBlurredResult.png");
+        TestSupport.verifyIsSameImage(result, "filter/apply_validSourceImage_returnsBlurredResult.png");
     }
 }

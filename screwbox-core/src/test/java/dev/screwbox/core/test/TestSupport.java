@@ -4,6 +4,15 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Frame;
+import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.internal.DefaultCamera;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
+import dev.screwbox.core.graphics.internal.DefaultViewport;
+import dev.screwbox.core.graphics.internal.ImageOperations;
+import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
+import dev.screwbox.core.graphics.internal.renderer.FirewallRenderer;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
@@ -19,9 +28,9 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class TestUtil {
+public final class TestSupport {
 
-    private TestUtil() {
+    private TestSupport() {
     }
 
     public static void shutdown(final ExecutorService executor) {
@@ -61,6 +70,14 @@ public final class TestUtil {
         for (int i = 0; i < count; i++) {
             runnable.run();
         }
+    }
+
+    public static Viewport createInMemoryViewport(final Size size) {
+        var image = ImageOperations.createImage(size);
+        final var render = new DefaultRenderer();
+        render.updateContext(image::createGraphics);
+        var canvas = new DefaultCanvas(new FirewallRenderer(render), new ScreenBounds(size));
+        return new DefaultViewport(canvas, new DefaultCamera(canvas));
     }
 
     public static <T extends Serializable> T roundTripSerialization(final T pbject) {

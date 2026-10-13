@@ -5,7 +5,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
 import org.junit.jupiter.api.Test;
 
-import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 
 class WarpPostFilterTest extends PostFilterTest {
 

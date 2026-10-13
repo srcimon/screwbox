@@ -1,7 +1,7 @@
 package dev.screwbox.core;
 
 import dev.screwbox.core.graphics.Offset;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -38,7 +38,7 @@ class AngleTest {
 
         for (int i = 0; i < 4; i++) {
             randomAngles.add(Angle.random());
-            TestUtil.sleep(Duration.ofMillis(100));
+            TestSupport.sleep(Duration.ofMillis(100));
         }
         assertThat(randomAngles).hasSizeGreaterThanOrEqualTo(2);
     }

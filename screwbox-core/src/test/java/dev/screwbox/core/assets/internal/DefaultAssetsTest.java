@@ -6,7 +6,7 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.async.Async;
 import dev.screwbox.core.async.internal.DefaultAsync;
 import dev.screwbox.core.log.Log;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -126,7 +126,7 @@ class DefaultAssetsTest {
     void preparePackageAsync_afterAwaitingFinish_allAssetsArePrepared() {
         assets.preparePackageAsync("dev.screwbox.core.assets.internal");
 
-        TestUtil.await(() -> !assets.isPreparing(), Duration.ofSeconds(2));
+        TestSupport.await(() -> !assets.isPreparing(), Duration.ofSeconds(2));
 
         assertThat(ASSET_A.isLoaded()).isTrue();
         assertThat(ASSET_B.isLoaded()).isTrue();
@@ -164,7 +164,7 @@ class DefaultAssetsTest {
 
     @AfterEach
     void tearDown() {
-        TestUtil.shutdown(executor);
+        TestSupport.shutdown(executor);
         ASSET_A.unload();
         ASSET_B.unload();
         ASSET_C.unload();

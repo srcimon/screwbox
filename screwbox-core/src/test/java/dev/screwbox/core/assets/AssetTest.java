@@ -2,7 +2,7 @@ package dev.screwbox.core.assets;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Time;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class AssetTest {
     void load_calledMultipleTimesInParallel_loadsOnlyOnce() {
         Asset<String> dontLoadMeTwice = Asset.asset(() -> {
             counter++;
-            TestUtil.sleep(Duration.ofMillis(250));
+            TestSupport.sleep(Duration.ofMillis(250));
             return "test";
         });
         executor.execute(dontLoadMeTwice::load);
@@ -106,6 +106,6 @@ class AssetTest {
 
     @AfterEach
     void tearDown() {
-        TestUtil.shutdown(executor);
+        TestSupport.shutdown(executor);
     }
 }

@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
-import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisabledOnOs({OS.MAC, OS.WINDOWS})// headless image is different from os compatible one

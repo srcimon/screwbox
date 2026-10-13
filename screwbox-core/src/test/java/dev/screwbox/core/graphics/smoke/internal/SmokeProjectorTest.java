@@ -3,18 +3,9 @@ package dev.screwbox.core.graphics.smoke.internal;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Graphics;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
-import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.internal.DefaultCamera;
-import dev.screwbox.core.graphics.internal.DefaultCanvas;
-import dev.screwbox.core.graphics.internal.DefaultViewport;
-import dev.screwbox.core.graphics.internal.ImageOperations;
-import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.internal.renderer.FirewallRenderer;
-import dev.screwbox.core.test.TestUtil;
-import org.jspecify.annotations.NonNull;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,8 +45,7 @@ class SmokeProjectorTest {
 
     @Test
     void applyDensityChanges_addRedDensity_addsRedDensityOnlyAtSpecifiedPosition() {
-
-        var viewport = fakeViewport();
+        var viewport = TestSupport.createInMemoryViewport(Size.square(30));
         smokeProjector.adaptToViewport(viewport);
         smokeProjector.applyDensityChanges(List.of(
             new SmokeProjector.DensityChange(Vector.zero(), 0.01, Color.RED)
@@ -66,17 +56,9 @@ class SmokeProjectorTest {
     }
 
     //TODO Reference ticket for more smoke tests
-    //TODO move to test utils and check where to reuse
-    private static DefaultViewport fakeViewport() {
-        var image = ImageOperations.createImage(Size.square(30));
-        final var render = new DefaultRenderer();
-        render.updateContext(image::createGraphics);
-        var canvas = new DefaultCanvas(new FirewallRenderer(render), new ScreenBounds(Size.square(30)));
-        return new DefaultViewport(canvas, new DefaultCamera(canvas));
-    }
 
     @AfterEach
     void tearDown() {
-        TestUtil.shutdown(executor);
+        TestSupport.shutdown(executor);
     }
 }

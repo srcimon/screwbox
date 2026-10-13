@@ -3,7 +3,7 @@ package dev.screwbox.core.graphics;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -313,7 +313,7 @@ class FrameTest {
 
     @Test
     void testSerialization() {
-        var afterRoundTrip = TestUtil.roundTripSerialization(frame);
+        var afterRoundTrip = TestSupport.roundTripSerialization(frame);
 
         assertThat(frame.hasIdenticalPixels(afterRoundTrip)).isTrue();
         assertThat(frame.duration()).isEqualTo(afterRoundTrip.duration());

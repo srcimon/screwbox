@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static dev.screwbox.core.Duration.ofMillis;
-import static dev.screwbox.core.test.TestUtil.sleep;
+import static dev.screwbox.core.test.TestSupport.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

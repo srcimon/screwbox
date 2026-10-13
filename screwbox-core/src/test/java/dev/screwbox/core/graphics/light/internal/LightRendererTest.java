@@ -18,7 +18,7 @@ import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.graphics.internal.DefaultViewport;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.light.ShadowOptions;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -262,7 +262,7 @@ class LightRendererTest {
 
     @AfterEach
     void tearDown() {
-        TestUtil.shutdown(executor);
+        TestSupport.shutdown(executor);
     }
 
     private void verifyIsIdenticalWithReferenceImage(Asset<Sprite> sprite, String fileName) {

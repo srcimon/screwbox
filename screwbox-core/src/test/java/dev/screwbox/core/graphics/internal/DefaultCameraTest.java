@@ -3,7 +3,7 @@ package dev.screwbox.core.graphics.internal;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.options.CameraShakeOptions;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -110,7 +110,7 @@ class DefaultCameraTest {
     @Test
     void isShaking_shakeHasEnded_isFalse() {
         camera.shake(lastingForDuration(ofMillis(10)));
-        TestUtil.sleep(ofMillis(20));
+        TestSupport.sleep(ofMillis(20));
 
         camera.update();
 

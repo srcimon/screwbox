@@ -1,7 +1,7 @@
 package dev.screwbox.core.async.internal;
 
 import dev.screwbox.core.Duration;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class DefaultAsyncTest {
 
     @Test
     void taskCount_oneTask_isOne() {
-        async.run("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
+        async.run("myContext", () -> TestSupport.sleep(SLEEP_DURATION));
         assertThat(async.taskCount()).isOne();
     }
 
@@ -57,7 +57,7 @@ class DefaultAsyncTest {
 
     @Test
     void run_contextNull_exception() {
-        assertThatThrownBy(() -> async.run(null, () -> TestUtil.sleep(SLEEP_DURATION)))
+        assertThatThrownBy(() -> async.run(null, () -> TestSupport.sleep(SLEEP_DURATION)))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("context must not be null");
     }
@@ -71,28 +71,28 @@ class DefaultAsyncTest {
 
     @Test
     void hasActiveTasks_hasTasksInSameContext_isTrue() {
-        async.run("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
+        async.run("myContext", () -> TestSupport.sleep(SLEEP_DURATION));
         assertThat(async.hasActiveTasks("myContext")).isTrue();
     }
 
     @Test
     void hasActiveTasks_hasTasksInAnotherContext_isFalse() {
-        async.run("another Context", () -> TestUtil.sleep(SLEEP_DURATION));
+        async.run("another Context", () -> TestSupport.sleep(SLEEP_DURATION));
         assertThat(async.hasActiveTasks("myContext")).isFalse();
     }
 
     @Test
     void hasActiveTasks_taskCompleted_isFalse() {
-        async.run("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
+        async.run("myContext", () -> TestSupport.sleep(SLEEP_DURATION));
 
-        TestUtil.await(() -> !async.hasActiveTasks("myContext"), Duration.oneSecond());
+        TestSupport.await(() -> !async.hasActiveTasks("myContext"), Duration.oneSecond());
 
         assertThat(async.hasActiveTasks("myContext")).isFalse();
     }
 
     @Test
     void runExclusive_taskAlreadyRunning_noSecondExecution() {
-        async.run("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
+        async.run("myContext", () -> TestSupport.sleep(SLEEP_DURATION));
 
         assertThatNoException().isThrownBy(() -> async.runExclusive("myContext", () -> {
             throw new IllegalStateException("I would crash if i would start");
@@ -101,7 +101,7 @@ class DefaultAsyncTest {
 
     @Test
     void runExclusive_isOnlyTaskInContext_startsTask() {
-        async.runExclusive("myContext", () -> TestUtil.sleep(SLEEP_DURATION));
+        async.runExclusive("myContext", () -> TestSupport.sleep(SLEEP_DURATION));
 
         boolean hasActiveTasks = async.hasActiveTasks("myContext");
         assertThat(hasActiveTasks).isTrue();
@@ -109,7 +109,7 @@ class DefaultAsyncTest {
 
     @AfterEach
     void afterEach() {
-        TestUtil.shutdown(executor);
+        TestSupport.shutdown(executor);
     }
 
 }

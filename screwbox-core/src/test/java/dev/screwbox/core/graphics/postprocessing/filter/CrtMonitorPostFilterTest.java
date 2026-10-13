@@ -4,7 +4,7 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.graphics.Color;
 import org.junit.jupiter.api.Test;
 
-import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 
 class CrtMonitorPostFilterTest extends PostFilterTest {
 

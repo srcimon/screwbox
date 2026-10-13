@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

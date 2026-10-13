@@ -18,13 +18,13 @@ import dev.screwbox.core.graphics.light.ShockwaveOptions;
 import dev.screwbox.core.graphics.postprocessing.filter.DeepSeaPostFilter;
 import dev.screwbox.core.graphics.postprocessing.filter.FacetEyePostFilter;
 import dev.screwbox.core.graphics.postprocessing.filter.FishEyePostFilter;
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import static dev.screwbox.core.Vector.$;
-import static dev.screwbox.core.test.TestUtil.verifyIsSameImage;
+import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -53,7 +53,7 @@ class DefaultPostprocessingTest {
 
         assertThat(postProcessing.shockwaveCount()).isEqualTo(2);
 
-        TestUtil.await(() -> {
+        TestSupport.await(() -> {
             postProcessing.update();
             return postProcessing.shockwaveCount() == 1;
         }, Duration.oneSecond());

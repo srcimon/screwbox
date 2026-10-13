@@ -1,6 +1,6 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.test.TestUtil;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -287,7 +287,7 @@ class PolygonTest {
         var isClosedBefore = polygon.isClosed();
         var centerBefore = polygon.center();
 
-        var afterSerialization = TestUtil.roundTripSerialization(polygon);
+        var afterSerialization = TestSupport.roundTripSerialization(polygon);
 
         assertThat(afterSerialization.nodes()).isEqualTo(nodesBefore);
         assertThat(afterSerialization.definitionNotes()).isEqualTo(definitionNodesBefore);
