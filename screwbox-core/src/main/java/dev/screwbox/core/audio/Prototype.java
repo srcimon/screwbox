@@ -80,7 +80,7 @@ public class Prototype {
                 double sampleValue = rawValue * envelope * volumeModifier;
 
                 // Hard-Clipping Schutz
-                sampleValue = Math.max(-1.0, Math.min(1.0, sampleValue));
+                sampleValue = Math.clamp(sampleValue, -1.0, 1.0);
 
                 buffer.putShort((short) (sampleValue * 32767.0));
             }

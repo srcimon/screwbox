@@ -1,6 +1,7 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Time;
@@ -49,7 +50,9 @@ public class PlaygroundApp {
             if(engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
                 timeout = Time.now().addSeconds(2);
+                Time t = Time.now();
                 var mumble = Prototype.generateMumbleWavByteArray(text, 200, Prototype.WaveType.TRIANGLE, 0.035);
+                System.out.println(Duration.since(t).milliseconds());
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);
             }
