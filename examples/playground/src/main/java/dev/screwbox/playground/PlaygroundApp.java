@@ -27,7 +27,7 @@ public class PlaygroundApp {
 
         screwBox.environment().addSystem(engine -> {
             if(engine.mouse().isPressedLeft()) {
-                var mumble = Prototype.generateMumbleWavByteArray(20, 80.0, Prototype.WaveType.SQUARE);
+                var mumble = Prototype.generateMumbleWavByteArray("This is a really nice example for an artifical noise!", 300, Prototype.WaveType.SINE);
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);
             }
