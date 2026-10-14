@@ -141,10 +141,6 @@ public class Prototype {
         double targetVowelShift = 1.0;
         double currentVowelShift = 1.0;
 
-        // --- FIX FÜR HOCHFREQUENTES ZISCHELN: Koeffizienten für 2-Stufen-Tiefpass ---
-        double noiseLP1 = 0.0;
-        double noiseLP2 = 0.0;
-
         // ---------------------------------------------------------------------
         // 2. AUDIO-GENERIERUNG (Seidenweicher Frequenzverlauf)
         // ---------------------------------------------------------------------
@@ -154,8 +150,8 @@ public class Prototype {
             int currentSamplesPerBlip = blipLengths[i];
 
             // Filter zurücksetzen, um Signalstau zu vermeiden
-            noiseLP1 = 0.0;
-            noiseLP2 = 0.0;
+           double noiseLP1 = 0.0;
+            double noiseLP2 = 0.0;
 
             double randomPitchOffset = (random.nextDouble() * 0.24) - 0.12;
             double targetFrequency = baseFreq * (1.0 + randomPitchOffset);
@@ -195,7 +191,7 @@ public class Prototype {
 
                 } else if ("SZFCXCHKSST".contains(String.valueOf(c))) {
                     // --- INTEGRATION DES NEUEN STEILEN AKUSTIK-FILTERS ---
-                    double rawNoise = (random.nextDouble() * 2.0 - 1.0) * 0.002; // Signalstärke gedrosselt
+                    double rawNoise = (random.nextDouble() * 2.0 - 1.0) * 0.02; // Signalstärke gedrosselt //TODO config value
 
                     // Stufe 1 dampft die scharfen Ecken des Randoms ein (60% Trägheit)
                     noiseLP1 = (noiseLP1 * 0.60) + (rawNoise * 0.40);

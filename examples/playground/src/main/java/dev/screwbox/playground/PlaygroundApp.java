@@ -18,6 +18,7 @@ import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
 import dev.screwbox.core.environment.smoke.WindComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
@@ -43,12 +44,12 @@ public class PlaygroundApp {
                 text=null;
             }
             if(text != null) {
-                engine.graphics().canvas().drawText(engine.graphics().canvas().center(), text, TextDrawOptions.font(FontBundle.ARCADE_SERIF).scale(3).alignCenter());
+                engine.graphics().canvas().drawText(engine.graphics().canvas().center(), text, TextDrawOptions.font(FontBundle.ARCADE_SERIF).scale(3).alignCenter().shader(ShaderBundle.NEON));
             }
             if(engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
                 timeout = Time.now().addSeconds(2);
-                var mumble = Prototype.generateMumbleWavByteArray(text, 80, Prototype.WaveType.SQUARE, 0.035);
+                var mumble = Prototype.generateMumbleWavByteArray(text, 100, Prototype.WaveType.SINE, 0.025);
 //                var mumble = Prototype.generateMumbleWavByteArray(30, 300, Prototype.WaveType.TRIANGLE);
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);
