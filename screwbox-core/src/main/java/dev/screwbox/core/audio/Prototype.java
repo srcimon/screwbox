@@ -142,7 +142,7 @@ public class Prototype {
 
     private static double synthesizePhoneme(char c, double angle, double time, int totalSamples, int currentSample, WaveType waveType, double[] filterState) {
         if (isVowel(c)) {
-            return Math.tanh(generateBaseWave(angle, waveType) * 1.4) * VOWEL_VOLUME_GAIN;
+            return fastTanh(generateBaseWave(angle, waveType) * 1.4) * VOWEL_VOLUME_GAIN;
         }
 
         if (isFrikative(c)) {
@@ -162,7 +162,7 @@ public class Prototype {
 
         if (c != ' ') { // Nasale und liquide Reibelaut-Klasse (M, N, L...)
             double nasalWave = MathUtil.fastSin(angle * 0.55);
-            return Math.tanh(nasalWave * 1.1) * NASAL_VOLUME_GAIN;
+            return fastTanh(nasalWave * 1.1) * NASAL_VOLUME_GAIN;
         }
 
         return 0.0; // Standardstille für Leerzeichen
@@ -178,10 +178,15 @@ public class Prototype {
         return 1.0;
     }
 
+    //TODO Math util
+    private static double fastTanh(double x) {
+        return x / (1.0 + Math.abs(x));
+    }
+
     private static double generateBaseWave(double angle, WaveType waveType) {
         return switch (waveType) {
             case SINE     -> MathUtil.fastSin(angle);
-            case SQUARE   -> Math.tanh(MathUtil.fastSin(angle) * 3.0) * 0.8; // Aufgelöstes TODO: Analog geformte Kurve statt clippender Kante
+            case SQUARE   -> fastTanh(MathUtil.fastSin(angle) * 3.0) * 0.8; // Aufgelöstes TODO: Analog geformte Kurve statt clippender Kante
             case TRIANGLE -> (Math.abs((angle % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
         };
     }
