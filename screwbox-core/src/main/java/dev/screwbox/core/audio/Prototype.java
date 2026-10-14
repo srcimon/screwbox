@@ -83,23 +83,14 @@ public class Prototype {
             double volumeModifier = isPause ? 0.0 : (0.8 + random.nextDouble() * 0.2);
 
             if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
-                switch (c) {
-                    case 'A':
-                        targetVowelShift = 1.0;
-                        break;
-                    case 'E':
-                        targetVowelShift = 1.3;
-                        break;
-                    case 'I':
-                        targetVowelShift = 1.6;
-                        break;
-                    case 'O':
-                        targetVowelShift = 0.8;
-                        break;
-                    case 'U':
-                        targetVowelShift = 0.6;
-                        break;
-                }
+                targetVowelShift = switch (c) {
+                    case 'A' -> 1.0;
+                    case 'E' -> 1.3;
+                    case 'I' -> 1.6;
+                    case 'O' -> 0.8;
+                    case 'U' -> 0.6;
+                    default -> targetVowelShift;
+                };
             } else if ("MNNLRW".contains(String.valueOf(c))) {
                 targetVowelShift = 0.7;
             }
@@ -169,18 +160,14 @@ public class Prototype {
         return outputBuffer;
     }
 
-    private static double generateBaseWave(double angle, WaveType waveType) {
-        switch (waveType) {
-            case SINE:
-                return Math.sin(angle);
-            case SQUARE:
+    private static double generateBaseWave(double angle, WaveType waveType) {//TODO EASE
+        return switch (waveType) {
+            case SINE -> Math.sin(angle);
+            case SQUARE ->
                 // Nutzt eine sanft komprimierte Sinuswelle statt einer harten Kante
-                return Math.tanh(Math.sin(angle) * 3.0) * 0.8;
-            case TRIANGLE:
-                return (Math.abs((angle % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
-            default:
-                return 0.0;
-        }
+                Math.tanh(Math.sin(angle) * 3.0) * 0.8;
+            case TRIANGLE -> (Math.abs((angle % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
+        };
     }
 
 }

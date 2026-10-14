@@ -36,7 +36,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
-        List<String > texts = List.of("I am your friend", "Hello my little friend", "Hey, whats going on?", "Are you okay", "I want to go to the doctor", "Aliens are attacking", "My cat is fat");
+        List<String > texts = List.of("I am your friend", "Hello my little friend", "Hey, whats going on?", "Are you okay", "I want to go to the doctor", "Aliens are attacking", "My cat is fat", "Debo is the best girlfriend", "My belly is sooo full!!!!");
 
 
         screwBox.environment().addSystem(engine -> {
@@ -44,12 +44,12 @@ public class PlaygroundApp {
                 text=null;
             }
             if(text != null) {
-                engine.graphics().canvas().drawText(engine.graphics().canvas().center(), text, TextDrawOptions.font(FontBundle.ARCADE_SERIF).scale(3).alignCenter().shader(ShaderBundle.NEON));
+                engine.graphics().canvas().drawText(engine.graphics().canvas().center(), text, TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(3).alignCenter().shader(ShaderBundle.NEON));
             }
             if(engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
                 timeout = Time.now().addSeconds(2);
-                var mumble = Prototype.generateMumbleWavByteArray(text, 100, Prototype.WaveType.SINE, 0.025);
+                var mumble = Prototype.generateMumbleWavByteArray(text, 200, Prototype.WaveType.TRIANGLE, 0.035);
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);
             }
