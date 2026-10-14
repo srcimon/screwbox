@@ -50,7 +50,6 @@ public class PlaygroundApp {
                 text = ListUtil.pickRandom(texts);
                 timeout = Time.now().addSeconds(2);
                 var mumble = Prototype.generateMumbleWavByteArray(text, 100, Prototype.WaveType.SINE, 0.025);
-//                var mumble = Prototype.generateMumbleWavByteArray(30, 300, Prototype.WaveType.TRIANGLE);
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);
             }
