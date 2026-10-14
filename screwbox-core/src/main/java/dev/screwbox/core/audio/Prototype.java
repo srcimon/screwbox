@@ -98,27 +98,19 @@ public class Prototype {
         int textLength = text.length();
 
         // ---------------------------------------------------------------------
-        // 1. ANPASSBARE GESCHWINDIGKEIT & TIMING BERECHNUNG
+        // 1. TIMING- UND GESCHWINDIGKEITS-BERECHNUNG
         // ---------------------------------------------------------------------
-        // Ändere diesen Wert, um die Grundgeschwindigkeit global zu steuern:
         int baseSamplesPerBlip = (int) (SAMPLE_RATE * baseBlipDurationSeconds);
 
-        // Arrays für die dynamischen Längen pro Buchstabe vorab berechnen
         int[] blipLengths = new int[textLength];
         int totalSamples = 0;
 
-        // Erster Durchlauf: Berechne exakte Längen, um das TODO zu fixen
         for (int i = 0; i < textLength; i++) {
             char c = text.charAt(i);
-
-            // Zufällige Längen-Variation (+/- 25% Abweichung pro Buchstabe für natürliche Dynamik)
-            double speedModifier = 0.75 + (random.nextDouble() * 0.5);
-
-            // Plosive (P, T, K, B, D, G) müssen extrem kurz sein, um nicht zu rauschen
+            double speedModifier = 0.8 + (random.nextDouble() * 0.4);
             if ("PTKBDG".contains(String.valueOf(c))) {
-                speedModifier *= 0.3;
+                speedModifier *= 0.35;
             }
-
             int currentSamplesPerBlip = (int) (baseSamplesPerBlip * speedModifier);
             blipLengths[i] = currentSamplesPerBlip;
             totalSamples += currentSamplesPerBlip;
@@ -128,96 +120,109 @@ public class Prototype {
         int totalFileSize = 44 + dataSize;
         byte[] outputBuffer = new byte[totalFileSize];
 
-        // WAV-Header erfordern strikt LITTLE_ENDIAN
         ByteBuffer buffer = ByteBuffer.wrap(outputBuffer).order(ByteOrder.LITTLE_ENDIAN);
 
+        // WAV-Header schreiben
+        buffer.put("RIFF".getBytes());
+        buffer.putInt(totalFileSize - 8);
+        buffer.put("WAVE".getBytes());
+        buffer.put("fmt ".getBytes());
+        buffer.putInt(16);
+        buffer.putShort((short) 1);
+        buffer.putShort((short) CHANNELS);
+        buffer.putInt(SAMPLE_RATE);
+        buffer.putInt(SAMPLE_RATE * CHANNELS * (BITS_PER_SAMPLE / 8));
+        buffer.putShort((short) (CHANNELS * (BITS_PER_SAMPLE / 8)));
+        buffer.putShort((short) BITS_PER_SAMPLE);
+        buffer.put("data".getBytes());
+        buffer.putInt(dataSize);
+
+        // Variablen für fließende Vokal-Übergänge
+        double targetVowelShift = 1.0;
+        double currentVowelShift = 1.0;
+
+        // --- FIX FÜR HOCHFREQUENTES ZISCHELN: Koeffizienten für 2-Stufen-Tiefpass ---
+        double noiseLP1 = 0.0;
+        double noiseLP2 = 0.0;
+
         // ---------------------------------------------------------------------
-        // 2. SCHREIBE DEN RIFF-WAV HEADER (Die Format-Informationen)
-        // ---------------------------------------------------------------------
-        buffer.put("RIFF".getBytes());                      // ChunkID
-        buffer.putInt(totalFileSize - 8);                   // ChunkSize
-        buffer.put("WAVE".getBytes());                      // Format
-
-        buffer.put("fmt ".getBytes());                      // Subchunk1ID
-        buffer.putInt(16);                                  // Subchunk1Size (16 für PCM)
-        buffer.putShort((short) 1);                         // AudioFormat (1 = unkomprimiertes PCM)
-        buffer.putShort((short) CHANNELS);                  // NumChannels
-        buffer.putInt(SAMPLE_RATE);                         // SampleRate
-        buffer.putInt(SAMPLE_RATE * CHANNELS * (BITS_PER_SAMPLE / 8)); // ByteRate
-        buffer.putShort((short) (CHANNELS * (BITS_PER_SAMPLE / 8)));   // BlockAlign
-        buffer.putShort((short) BITS_PER_SAMPLE);           // BitsPerSample
-
-        buffer.put("data".getBytes());                      // Subchunk2ID
-        buffer.putInt(dataSize);                            // Subchunk2Size
-
-        // Zwei Filter-Stufen, um das unangenehme Rauschen weich zu bügeln
-        double noiseFilterLP1 = 0.0;
-        double noiseFilterLP2 = 0.0;
-
-        // ---------------------------------------------------------------------
-        // 3. RETRO AUDIO-DATA SAMPLES GENERIEREN
+        // 2. AUDIO-GENERIERUNG (Seidenweicher Frequenzverlauf)
         // ---------------------------------------------------------------------
         for (int i = 0; i < textLength; i++) {
             char c = text.charAt(i);
             boolean isSpace = (c == ' ');
-            int currentSamplesPerBlip = blipLengths[i]; // Nutzt die exakt berechnete Länge
+            int currentSamplesPerBlip = blipLengths[i];
 
-            double randomPitchOffset = (random.nextDouble() * 0.7) - 0.35;
+            // Filter zurücksetzen, um Signalstau zu vermeiden
+            noiseLP1 = 0.0;
+            noiseLP2 = 0.0;
+
+            double randomPitchOffset = (random.nextDouble() * 0.24) - 0.12;
             double targetFrequency = baseFreq * (1.0 + randomPitchOffset);
 
-            boolean isPause = random.nextInt(8) == 0 || isSpace;
-            double volumeModifier = isPause ? 0.0 : (0.7 + random.nextDouble() * 0.3);
+            boolean isPause = random.nextInt(10) == 0 || isSpace;
+            double volumeModifier = isPause ? 0.0 : (0.8 + random.nextDouble() * 0.2);
+
+            if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
+                switch (c) {
+                    case 'A': targetVowelShift = 1.0; break;
+                    case 'E': targetVowelShift = 1.3; break;
+                    case 'I': targetVowelShift = 1.6; break;
+                    case 'O': targetVowelShift = 0.8; break;
+                    case 'U': targetVowelShift = 0.6; break;
+                }
+            } else if ("MNNLRW".contains(String.valueOf(c))) {
+                targetVowelShift = 0.7;
+            }
 
             for (int s = 0; s < currentSamplesPerBlip; s++) {
                 double time = (double) s / SAMPLE_RATE;
 
-                // Sanftes Phasen-Chaos für den unperfekten analogen Charakter
-                double phaseChaos = (random.nextDouble() * 0.06 - 0.03);
-                double angle = 2.0 * Math.PI * targetFrequency * time + phaseChaos;
+                currentVowelShift = (currentVowelShift * 0.97) + (targetVowelShift * 0.03);
+
+                double vibrato = Math.sin(2.0 * Math.PI * 5.2 * time) * 0.012
+                                 + Math.cos(2.0 * Math.PI * 8.7 * time) * 0.007;
+
+                double currentFreq = targetFrequency * currentVowelShift * (1.0 + vibrato);
+                double angle = 2.0 * Math.PI * currentFreq * time;
 
                 double rawValue = 0.0;
 
                 if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
-                    // --- KLASSE 1: VOKALE (Weich & Tonal) ---
-                    double vowelShift = 1.0;
-                    switch (c) {
-                        case 'A': vowelShift = 1.2; break;
-                        case 'E': vowelShift = 1.7; break;
-                        case 'I': vowelShift = 2.3; break;
-                        case 'O': vowelShift = 0.8; break;
-                        case 'U': vowelShift = 0.6; break;
-                    }
-                    double vAngle = angle * vowelShift;
-                    rawValue = generateBaseWave(vAngle, waveType, random);
+                    // VOKALE
+                    double baseWave = generateBaseWave(angle, waveType);
+                    rawValue = Math.tanh(baseWave * 1.4) * 0.85;
 
                 } else if ("SZFCXCHKSST".contains(String.valueOf(c))) {
-                    // --- KLASSE 2: FRIKATIVE (Extrem gedämpftes, angenehmes Pusten) ---
-                    double rawNoise = (random.nextDouble() * 2.0 - 1.0) * 0.18; // Lautstärke stark reduziert
+                    // --- INTEGRATION DES NEUEN STEILEN AKUSTIK-FILTERS ---
+                    double rawNoise = (random.nextDouble() * 2.0 - 1.0) * 0.002; // Signalstärke gedrosselt
 
-                    // Kaskadierter 2-Stufen-Tiefpass-Filter (schneidet die schmerzhaften Höhen ab)
-                    noiseFilterLP1 = (noiseFilterLP1 * 0.8) + (rawNoise * 0.2);
-                    noiseFilterLP2 = (noiseFilterLP2 * 0.8) + (noiseFilterLP1 * 0.2);
-                    rawValue = noiseFilterLP2;
+                    // Stufe 1 dampft die scharfen Ecken des Randoms ein (60% Trägheit)
+                    noiseLP1 = (noiseLP1 * 0.60) + (rawNoise * 0.40);
+                    // Stufe 2 glättet das Signal final (92% Trägheit) -> Macht ein dunkleres, weiches "Pusten"
+                    noiseLP2 = (noiseLP2 * 0.92) + (noiseLP1 * 0.08);
+
+                    rawValue = noiseLP2;
 
                 } else if ("PTKBDG".contains(String.valueOf(c))) {
-                    // --- KLASSE 3: PLOSIVE (Sanfter, runder Klick) ---
-                    if (s < currentSamplesPerBlip * 0.25) {
-                        rawValue = Math.sin(2.0 * Math.PI * 90.0 * time) * 0.5;
+                    // PLOSIVE
+                    if (s < currentSamplesPerBlip * 0.12) {
+                        rawValue = Math.sin(2.0 * Math.PI * 65.0 * time) * Math.exp(-s / 120.0) * 0.5;
                     } else {
                         rawValue = 0.0;
                     }
 
                 } else if (!isSpace) {
-                    // --- KLASSE 4: NASALE (M, N, L...) ---
-                    double nasalAngle = angle * 0.5;
-                    rawValue = generateBaseWave(nasalAngle, waveType, random) * 0.5;
+                    // NASALE
+                    double nasalWave = Math.sin(angle * 0.55);
+                    rawValue = Math.tanh(nasalWave * 1.1) * 0.45;
                 }
 
-                // Knackschutz Hüllkurve – dynamisch skaliert auf die aktuelle Blip-Länge
+                // Knackschutz Hüllkurve
                 double envelope = 1.0;
                 int decayThreshold = (int) (currentSamplesPerBlip * 0.65);
-                if (s < 120) {
-                    envelope = s / 120.0;
+                if (s < 140) {
+                    envelope = s / 140.0;
                 } else if (s > decayThreshold) {
                     envelope = 1.0 - ((double) (s - decayThreshold) / (currentSamplesPerBlip - decayThreshold));
                 }
@@ -234,15 +239,15 @@ public class Prototype {
 
         return outputBuffer;
     }
-
-    private static double generateBaseWave(double angle, WaveType waveType, Random random) {
+    private static double generateBaseWave(double angle, WaveType waveType) {
         switch (waveType) {
             case SINE:     return Math.sin(angle);
             case SQUARE:
-                double dutyCycle = 0.35 + (Math.sin(angle * 0.3) * 0.15); // Dynamische Pulsbreite
-                return (angle % (2 * Math.PI) < (2 * Math.PI * dutyCycle)) ? 1.0 : -1.0;
+                // Nutzt eine sanft komprimierte Sinuswelle statt einer harten Kante
+                return Math.tanh(Math.sin(angle) * 3.0) * 0.8;
             case TRIANGLE: return (Math.abs((angle % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
             default:       return 0.0;
         }
     }
+
 }
