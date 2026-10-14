@@ -1,5 +1,7 @@
 package dev.screwbox.core.audio;
 
+import dev.screwbox.core.utils.MathUtil;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Random;
@@ -132,8 +134,8 @@ public class Prototype {
     }
 
     private static double calculateVocalAngle(double time, double targetFrequency, double vowelShift) {
-        double vibrato = Math.sin(2.0 * Math.PI * 5.2 * time) * 0.012
-                         + Math.cos(2.0 * Math.PI * 8.7 * time) * 0.007;
+        double vibrato = MathUtil.fastSin(2.0 * Math.PI * 5.2 * time) * 0.012
+                         + MathUtil.fastCos(2.0 * Math.PI * 8.7 * time) * 0.007;
         double currentFreq = targetFrequency * vowelShift * (1.0 + vibrato);
         return 2.0 * Math.PI * currentFreq * time;
     }
@@ -153,13 +155,13 @@ public class Prototype {
 
         if (isPlosive(c)) {
             if (currentSample < totalSamples * 0.12) {
-                return Math.sin(2.0 * Math.PI * 65.0 * time) * Math.exp(-currentSample / 120.0) * PLOSIVE_VOLUME_GAIN;
+                return MathUtil.fastSin(2.0 * Math.PI * 65.0 * time) * Math.exp(-currentSample / 120.0) * PLOSIVE_VOLUME_GAIN;
             }
             return 0.0;
         }
 
         if (c != ' ') { // Nasale und liquide Reibelaut-Klasse (M, N, L...)
-            double nasalWave = Math.sin(angle * 0.55);
+            double nasalWave = MathUtil.fastSin(angle * 0.55);
             return Math.tanh(nasalWave * 1.1) * NASAL_VOLUME_GAIN;
         }
 
@@ -178,8 +180,8 @@ public class Prototype {
 
     private static double generateBaseWave(double angle, WaveType waveType) {
         return switch (waveType) {
-            case SINE     -> Math.sin(angle);
-            case SQUARE   -> Math.tanh(Math.sin(angle) * 3.0) * 0.8; // Aufgelöstes TODO: Analog geformte Kurve statt clippender Kante
+            case SINE     -> MathUtil.fastSin(angle);
+            case SQUARE   -> Math.tanh(MathUtil.fastSin(angle) * 3.0) * 0.8; // Aufgelöstes TODO: Analog geformte Kurve statt clippender Kante
             case TRIANGLE -> (Math.abs((angle % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
         };
     }
