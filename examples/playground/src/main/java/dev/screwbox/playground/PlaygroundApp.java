@@ -7,6 +7,7 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.FontBundle;
+import dev.screwbox.core.audio.HumanPrototype;
 import dev.screwbox.core.audio.Prototype;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.environment.Entity;
@@ -51,7 +52,8 @@ public class PlaygroundApp {
                 text = ListUtil.pickRandom(texts);
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
-                var mumble = Prototype.generateMumbleWavByteArray(text, 200, Prototype.WaveType.TRIANGLE, 0.035);
+//                var mumble = Prototype.generateMumbleWavByteArray(text, 100, Prototype.WaveType.SINE, 0.085);
+                var mumble = HumanPrototype.generateMumbleWavByteArray(text, 600, Prototype.WaveType.SINE, 0.065);
                 System.out.println(Duration.since(t).milliseconds());
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);
