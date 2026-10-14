@@ -53,7 +53,7 @@ public class PlaygroundApp {
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
 //                var mumble = Prototype.generateMumbleWavByteArray(text, 100, Prototype.WaveType.SINE, 0.085);
-                var mumble = HumanPrototype.generateMumbleWavByteArray(text, 600, Prototype.WaveType.SINE, 0.065);
+                var mumble = HumanPrototype.generateMumbleWavByteArray(text, 200, HumanPrototype.WaveType.SINE, 0.065);
                 System.out.println(Duration.since(t).milliseconds());
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);
