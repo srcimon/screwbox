@@ -125,72 +125,67 @@ public class Prototype {
         buffer.put("data".getBytes());                      // Subchunk2ID
         buffer.putInt(dataSize);                            // Subchunk2Size
 
+        double noiseFilterLP = 0.0;
         // ---------------------------------------------------------------------
         // 2. RETRO AUDIO-DATA SAMPLES GENERIEREN
         // ---------------------------------------------------------------------
         for (int i = 0; i < text.length(); i++) {
             char c = text.toUpperCase().charAt(i);
-
-            // 1. ÜBERSPRINGEN: Wenn es kein Vokal und kein Leerzeichen ist, direkt weitergehen
-            boolean isVowel = (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');
             boolean isSpace = (c == ' ');
 
-            if (!isVowel && !isSpace) {
-                continue; // Springt sofort zum nächsten Buchstaben, erzeugt KEINE Pause/Zeitverlust
-            }
-
-            // 2. Dein originaler, wilder Pitch-Wechsel (+/- 35%) für das lebendige Rattern
             double randomPitchOffset = (random.nextDouble() * 0.7) - 0.35;
             double targetFrequency = baseFreq * (1.0 + randomPitchOffset);
 
-            // Pausen-Wahrscheinlichkeit nur für echte Leerzeichen oder dezenten Zufall
             boolean isPause = random.nextInt(8) == 0 || isSpace;
             double volumeModifier = isPause ? 0.0 : (0.7 + random.nextDouble() * 0.3);
 
             for (int s = 0; s < samplesPerBlip; s++) {
                 double time = (double) s / SAMPLE_RATE;
-                double angle = 2.0 * Math.PI * targetFrequency * time;
+
+                // Sanfteres Phasen-Chaos (halbiert für weniger digitale Artefakte)
+                double phaseChaos = (random.nextDouble() * 0.08 - 0.04);
+                double angle = 2.0 * Math.PI * targetFrequency * time + phaseChaos;
+
                 double rawValue = 0.0;
 
-                // 3. INDIVIDUELLE VOKAL-CHARAKTERISTIK (Nur noch Vokale kommen hier an)
-                double v1 = 0.0, v2 = 0.0;
+                if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
+                    // --- KLASSE 1: VOKALE (Weich & Tonal) ---
+                    double vowelShift = 1.0;
+                    switch (c) {
+                        case 'A': vowelShift = 1.2; break;
+                        case 'E': vowelShift = 1.8; break;
+                        case 'I': vowelShift = 2.5; break; // Nicht mehr ganz so extrem scharf
+                        case 'O': vowelShift = 0.8; break;
+                        case 'U': vowelShift = 0.6; break;
+                    }
+                    double vAngle = angle * vowelShift;
+                    rawValue = generateBaseWave(vAngle, waveType, random);
 
-                switch (c) {
-                    case 'A': // Breit, offen
-                        v1 = Math.sin(angle * 1.5);
-                        v2 = Math.sin(angle * 2.5);
-                        rawValue = (Math.sin(angle) * 0.4) + (v1 * 0.4) + (v2 * 0.2);
-                        break;
-                    case 'E': // Hell, spitz
-                        v1 = Math.sin(angle * 2.0);
-                        v2 = Math.sin(angle * 4.0);
-                        rawValue = (Math.sin(angle) * 0.3) + (v1 * 0.5) + (v2 * 0.2);
-                        break;
-                    case 'I': // Hoch, nasal
-                        v1 = Math.sin(angle * 3.5);
-                        v2 = Math.sin(angle * 5.0);
-                        rawValue = (Math.sin(angle) * 0.2) + (v1 * 0.5) + (v2 * 0.3);
-                        break;
-                    case 'O': // Tief, hohl
-                        v1 = Math.sin(angle * 1.2);
-                        v2 = Math.sin(angle * 1.8);
-                        rawValue = (Math.sin(angle) * 0.6) + (v1 * 0.3) + (v2 * 0.1);
-                        break;
-                    case 'U': // Dumpf, dunkel
-                        v1 = Math.sin(angle * 1.1);
-                        rawValue = (Math.sin(angle) * 0.7) + (v1 * 0.3);
-                        break;
+                } else if ("SZFCXCHKSST".contains(String.valueOf(c))) {
+                    // --- KLASSE 2: FRIKATIVE (Jetzt mit weichem Low-Pass-Filter!) ---
+                    double rawNoise = (random.nextDouble() * 2.0 - 1.0) * 0.35; // Lautstärke halbiert
+
+                    // Tiefpass-Filter: Lässt das Rauschen "hauchend" statt stechend klingen
+                    noiseFilterLP = (noiseFilterLP * 0.85) + (rawNoise * 0.15);
+                    rawValue = noiseFilterLP;
+
+                } else if ("PTKBDG".contains(String.valueOf(c))) {
+                    // --- KLASSE 3: PLOSIVE (Sanfterer Klick-Ansatz) ---
+                    if (s < samplesPerBlip * 0.10) {
+                        // Ein sinusbasierter "Pop" statt reinem Rausch-Kratzen
+                        rawValue = Math.sin(2.0 * Math.PI * 120.0 * time) * 0.6;
+                    } else {
+                        rawValue = 0.0;
+                    }
+
+                } else if (!isSpace) {
+                    // --- KLASSE 4: NASALE (M, N, L...) ---
+                    // Sehr weicher, dumpfer Sound
+                    double nasalAngle = angle * 0.5;
+                    rawValue = generateBaseWave(nasalAngle, waveType, random) * 0.6;
                 }
 
-                // Chiptune-Mutter (SQUARE / TRIANGLE Formung)
-                if (waveType == WaveType.SQUARE) {
-                    rawValue = rawValue >= 0 ? 1.0 : -1.0;
-                } else if (waveType == WaveType.TRIANGLE) {
-                    double normalizedAngle = (rawValue + 1.0) * Math.PI;
-                    rawValue = (Math.abs((normalizedAngle % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
-                }
-
-                // Knackschutz Hüllkurve (Exakt dein Original)
+                // Knackschutz Hüllkurve
                 double envelope = 1.0;
                 int decayThreshold = (int) (samplesPerBlip * 0.7);
                 if (s < 100) envelope = s / 100.0;
@@ -198,7 +193,6 @@ public class Prototype {
 
                 double sampleValue = rawValue * envelope * volumeModifier;
 
-                // Hard Clipping-Schutz
                 if (sampleValue > 1.0) sampleValue = 1.0;
                 if (sampleValue < -1.0) sampleValue = -1.0;
 
@@ -208,5 +202,16 @@ public class Prototype {
         }
 
         return outputBuffer;
+    }
+
+    private static double generateBaseWave(double angle, WaveType waveType, Random random) {
+        switch (waveType) {
+            case SINE:     return Math.sin(angle);
+            case SQUARE:
+                double dutyCycle = 0.35 + (Math.sin(angle * 0.3) * 0.15); // Dynamische Pulsbreite
+                return (angle % (2 * Math.PI) < (2 * Math.PI * dutyCycle)) ? 1.0 : -1.0;
+            case TRIANGLE: return (Math.abs((angle % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
+            default:       return 0.0;
+        }
     }
 }
