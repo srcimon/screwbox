@@ -50,8 +50,6 @@ public class Prototype {
         // 0.25 ist der Sweet-Spot für eine klare, aber absolut kratzfreie Stimme.
         public double lowPassCutoff = 0.25;
 
-        // Balance-Wert: 0.0 = Komplett Links, 0.5 = Mitte (Standard), 1.0 = Komplett Rechts
-        public double stereoPan = 0.5;
     }
 
     private static class SoundContext {
@@ -101,9 +99,6 @@ public class Prototype {
         double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character);
         double volumeModifier = calculateSegmentVolume(character);
 
-        // Equal-Power Panning Koeffizienten für konstante Lautstärkewahrnehmung
-        double leftGain = Math.sqrt(1.0 - config.stereoPan);
-        double rightGain = Math.sqrt(config.stereoPan);
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Übergänge verlangsamt (0.001 statt 0.003), um Knackser bei Vokalwechseln zu eliminieren
@@ -127,8 +122,8 @@ public class Prototype {
             double finalSampleValue = context.filterState;
 
             // Kanäle trennen und Stereo-Lautstärke anwenden
-            short pcmSampleLeft = (short) (finalSampleValue * leftGain * 32767.0);
-            short pcmSampleRight = (short) (finalSampleValue * rightGain * 32767.0);
+            short pcmSampleLeft = (short) (finalSampleValue  * 32767.0);
+            short pcmSampleRight = (short) (finalSampleValue  * 32767.0);
 
             try {
                 // Linker Kanal (Zuerst)
