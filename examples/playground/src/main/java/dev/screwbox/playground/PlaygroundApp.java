@@ -42,10 +42,10 @@ public class PlaygroundApp {
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
                 Prototype.VoiceOptions config = new Prototype.VoiceOptions();
-                config.baseFreq = 220.0;
-                config.baseBlipDuration = 0.06;
+                config.baseFreq = 320.0;
+                config.baseBlipDuration = 0.04;
 
-                config.pitchRandomness = 0.20;       // Etwas reduziert für stabilere Intonation
+                config.pitchRandomness = 0.30;       // Etwas reduziert für stabilere Intonation
                 config.speedRandomness = 0.10;
 
                 // Sanftes Vibrato ohne extreme Ausschläge

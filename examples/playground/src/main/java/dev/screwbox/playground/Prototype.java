@@ -46,7 +46,7 @@ public class Prototype {
 
         // Filter-Koeffizient: 1.0 = ungefiltert, 0.1 = extrem dumpf/warm.
         // 0.25 ist der Sweet-Spot für eine klare, aber absolut kratzfreie Stimme.
-        public double lowPassCutoff = 0.25;
+        public double lowPassCutoff = 0.15;
 
     }
 
