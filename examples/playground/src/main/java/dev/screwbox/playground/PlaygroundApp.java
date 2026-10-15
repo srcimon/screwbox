@@ -47,7 +47,7 @@ public class PlaygroundApp {
                 config.speedRandomness = 0.20;
 
                 // Sanftes Vibrato ohne extreme Ausschläge
-                config.vibratoSpeed = 1.0;
+                config.vibratoSpeed = 5.0;
                 config.vibratoDepth = 0.015;
 
                 // Pausenkonfiguration

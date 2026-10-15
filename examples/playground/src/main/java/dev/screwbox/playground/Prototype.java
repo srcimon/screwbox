@@ -105,7 +105,8 @@ public class Prototype {
             try {
                 dos.writeByte(pcmSample & 0xFF);
                 dos.writeByte((pcmSample >> 8) & 0xFF);
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
 
             context.totalSamplesWritten++;
         }
@@ -190,10 +191,34 @@ public class Prototype {
         };
     }
 
-    private static boolean isVowel(char c) { return "AEIOUÄÖÜ".contains(String.valueOf(c)); }
-    private static boolean isPlosive(char c) { return "PTKBDG".contains(String.valueOf(c)); }
-    private static boolean isNasal(char c) { return "MNLWR".contains(String.valueOf(c)); }
-    private static boolean isPunctuation(char c) { return ".,!?;:-".contains(String.valueOf(c)); }
+    private static boolean isVowel(char c) {
+        return switch (c) {
+            case 'A', 'E', 'I', 'O', 'U', 'Ä', 'Ö', 'Ü' -> true;
+            default -> false;
+        };
+    }
+
+    private static boolean isPlosive(char c) {
+        return switch (c) {
+            case 'P', 'T', 'K', 'B', 'D', 'G' -> true;
+            default -> false;
+        };
+    }
+
+    private static boolean isNasal(char c) {
+        return switch (c) {
+            case 'M', 'N', 'L', 'W', 'R' -> true;
+            default -> false;
+        };
+    }
+
+    private static boolean isPunctuation(char c) {
+        return switch (c) {
+            case '.', ',', '!', '?', ';', ':', '-' -> true;
+            default -> false;
+        };
+    }
+
 
     private static void writeWavHeader(ByteBuffer buffer, int dataSize) {
         buffer.put("RIFF".getBytes());
