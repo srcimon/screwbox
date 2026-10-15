@@ -24,6 +24,8 @@ public class PlaygroundApp {
             "I am your friend. But i am also okay with it.",
             "My cat is so fat, it cannot swim in the ocean.",
             "Lets have a party.",
+            "Do you want to be my friend?",
+            "Is this your house?",
             "Can I ask you a question? It's about life and death."
         );
 
@@ -40,15 +42,15 @@ public class PlaygroundApp {
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
                 Prototype.VoiceOptions config = new Prototype.VoiceOptions();
-                config.baseFreq = 220.0;
-                config.baseBlipDuration = 0.06;
+                config.baseFreq = 180.0;
+                config.baseBlipDuration = 0.05;
 
-                config.pitchRandomness = 0.20;       // Etwas reduziert für stabilere Intonation
+                config.pitchRandomness = 0.40;       // Etwas reduziert für stabilere Intonation
                 config.speedRandomness = 0.20;
 
                 // Sanftes Vibrato ohne extreme Ausschläge
                 config.vibratoSpeed = 5.0;
-                config.vibratoDepth = 0.015;
+                config.vibratoDepth = 0.15;
 
                 // Pausenkonfiguration
                 config.sentencePause = 0.20;

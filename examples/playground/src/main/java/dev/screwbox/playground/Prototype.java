@@ -62,16 +62,16 @@ public class Prototype {
         }
     }
 
-    public static Sound createMumbleSound(String text, VoiceOptions options) {
+    public static Sound createMumbleSound(final String text, final VoiceOptions options) {
         String sanitizedText = text.toUpperCase();
 
-        try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+        try(final var baos = new ByteArrayOutputStream()) {
             DataOutputStream dos = new DataOutputStream(baos);
 
-            var context = new SoundContext(options.baseFreq);
+            var soundContext = new SoundContext(options.baseFreq);
 
             for (char character : sanitizedText.toCharArray()) {
-                addSampleForChaacter(options, character, context, dos);
+                addSampleForChaacter(options, character, soundContext, dos);
             }
 
             byte[] audioData = baos.toByteArray();
