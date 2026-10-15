@@ -59,7 +59,9 @@ public class PlaygroundApp {
                 config.vowelGain = 0.70;
                 config.nasalGain = 0.40;
                 config.plosiveGain = 0.30;
-                var mumble = Prototype.generateMumbleWavByteArray(text, Prototype.WaveType.SQUARE, config);
+                config.waveType = Prototype.WaveType.SINE;
+
+                var mumble = Prototype.generateMumbleWavByteArray(text, config);
                 System.out.println(Duration.since(t).milliseconds());
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);

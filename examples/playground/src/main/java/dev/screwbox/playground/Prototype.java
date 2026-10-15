@@ -36,6 +36,8 @@ public class Prototype {
         public double commaPause = 0.22;
         public double wordPause = 0.15;
 
+        public WaveType waveType;
+
         public double vowelGain = 0.75;
         public double nasalGain = 0.40;
         public double plosiveGain = 0.35;
@@ -45,39 +47,40 @@ public class Prototype {
         double runningPhase = 0.0;
         double currentPitch;
         double currentVowelShift = 1.0;
-        int totalSamplesWritten = 0; // Ersetzt buffer.position() für zeitbasierte Effekte
+        int totalSamplesWritten = 0;
 
         public SoundContext(double startPitch) {
             currentPitch = startPitch;
         }
     }
 
-    public static byte[] generateMumbleWavByteArray(String text, WaveType waveType, VoiceConfig config) {
+    public static byte[] generateMumbleWavByteArray(String text,  VoiceConfig config) {
         String sanitizedText = text.toUpperCase();
 
         // Dynamischer Stream statt festem ByteBuffer
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(baos);
+        try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            DataOutputStream dos = new DataOutputStream(baos);
 
-        var context = new SoundContext(config.baseFreq);
+            var context = new SoundContext(config.baseFreq);
 
-        for (char character : sanitizedText.toCharArray()) {
-            addSampleForChaacter(waveType, config, character, context, dos);
+            for (char character : sanitizedText.toCharArray()) {
+                addSampleForChaacter(config, character, context, dos);
+            }
+
+            // Ergebnis-Array holen und den echten WAV-Header davor klatschen
+            byte[] audioData = baos.toByteArray();
+            byte[] finalWav = new byte[WAV_HEADER_SIZE + audioData.length];
+
+            ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
+            writeWavHeader(headerBuffer, audioData.length);
+            System.arraycopy(audioData, 0, finalWav, WAV_HEADER_SIZE, audioData.length);
+            return finalWav;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        // Ergebnis-Array holen und den echten WAV-Header davor klatschen
-        byte[] audioData = baos.toByteArray();
-        byte[] finalWav = new byte[WAV_HEADER_SIZE + audioData.length];
-
-        ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
-        writeWavHeader(headerBuffer, audioData.length);
-
-        System.arraycopy(audioData, 0, finalWav, WAV_HEADER_SIZE, audioData.length);
-        return finalWav;
     }
 
-    private static void addSampleForChaacter(WaveType waveType, VoiceConfig config, char character, SoundContext context, DataOutputStream dos) {
-        // Jedes Zeichen berechnet seine Länge direkt JETZT
+    private static void addSampleForChaacter( VoiceConfig config, char character, SoundContext context, DataOutputStream dos) {
         int currentSamplesPerBlip = calculateSingleBlipLength(character, config);
         boolean isPunctuation = isPunctuation(character);
 
@@ -96,7 +99,7 @@ public class Prototype {
 
             context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / SAMPLE_RATE) % (2.0 * Math.PI);
 
-            double rawValue = synthesizePhoneme(character, context.runningPhase, currentSamplesPerBlip, s, waveType, config);
+            double rawValue = synthesizePhoneme(character, context.runningPhase, currentSamplesPerBlip, s, config);
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
             double sampleValue = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
 
@@ -155,9 +158,9 @@ public class Prototype {
         return (0.85 + random.nextDouble() * 0.15);
     }
 
-    private static double synthesizePhoneme(char c, double phase, int totalSamples, int currentSample, WaveType waveType, VoiceConfig config) {
+    private static double synthesizePhoneme(char c, double phase, int totalSamples, int currentSample, VoiceConfig config) {
         if (isPunctuation(c) || c == ' ') return 0.0;
-        if (isVowel(c)) return fastTanh(generateBaseWave(phase, waveType) * 1.2) * config.vowelGain;
+        if (isVowel(c)) return fastTanh(generateBaseWave(phase, config.waveType) * 1.2) * config.vowelGain;
 
         if (isPlosive(c)) {
             if (currentSample < totalSamples * 0.15) {
