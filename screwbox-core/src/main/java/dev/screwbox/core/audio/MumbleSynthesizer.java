@@ -2,23 +2,22 @@ package dev.screwbox.core.audio;
 
 import dev.screwbox.core.utils.MathUtil;
 
+import javax.sound.sampled.AudioFormat;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Random;
 
 public class MumbleSynthesizer {
 
-    private static final int SAMPLE_RATE = 44100;
-    private static final int BITS_PER_SAMPLE = 16;
-    private static final int CHANNELS = 2; // Stereo
+    private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
 
     private final static Random random = new Random();
 
-    private static final int BYTES_PER_SAMPLE = BITS_PER_SAMPLE / 8;
     private static final int WAV_HEADER_SIZE = 44;
 
     public enum WaveType {
@@ -80,15 +79,12 @@ public class MumbleSynthesizer {
             }
             dos.flush();
 
-            // 2. Das zugrundeliegende, exakt dimensionierte Array direkt aus dem Stream holen
-            // (baos.toByteArray() würde hier wieder eine Kopie erstellen, daher nutzen wir baos.toByteArray() NICHT,
-            // sondern holen uns das fertige Array direkt)
             byte[] finalWav = baos.toByteArray();
             int audioDataLength = finalWav.length - WAV_HEADER_SIZE;
 
             // 3. Den Header nachträglich direkt im finalen Array korrigieren
             ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
-            writeWavHeader(headerBuffer, audioDataLength);
+            writeWavHeader(headerBuffer, audioDataLength, AUDIO_FORMAT);
 
             return Sound.fromSoundData(finalWav);
         } catch (IOException e) {
@@ -113,11 +109,11 @@ public class MumbleSynthesizer {
 
             // Wichtig: Da wir zwei Stereo-Frames pro Loop schreiben, entspricht globalTime weiterhin
             // den geschriebenen Samples dividiert durch die Sample-Rate
-            double globalTime = (double) context.totalSamplesWritten / SAMPLE_RATE;
+            double globalTime = (double) context.totalSamplesWritten / AUDIO_FORMAT.getSampleRate();
             double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
             double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.25) * (1.0 + vibrato), 40.0, 400.0);
 
-            context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / SAMPLE_RATE) % (2.0 * Math.PI);
+            context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI);
 
             double rawValue = synthesizePhoneme(character, context.runningPhase, currentSamplesPerBlip, s, config);
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
@@ -147,11 +143,11 @@ public class MumbleSynthesizer {
     }
 
     private static int calculateSingleBlipLength(char c, VoiceOptions config) {
-        if (c == '.' || c == '!' || c == '?') return (int) (SAMPLE_RATE * config.sentencePause);
-        if (c == ',' || c == ';' || c == ':') return (int) (SAMPLE_RATE * config.commaPause);
-        if (c == ' ' || c == '-') return (int) (SAMPLE_RATE * config.wordPause);
+        if (c == '.' || c == '!' || c == '?') return (int) (AUDIO_FORMAT.getSampleRate() * config.sentencePause);
+        if (c == ',' || c == ';' || c == ':') return (int) (AUDIO_FORMAT.getSampleRate() * config.commaPause);
+        if (c == ' ' || c == '-') return (int) (AUDIO_FORMAT.getSampleRate() * config.wordPause);
 
-        int baseSamplesPerBlip = (int) (SAMPLE_RATE * config.baseBlipDuration);
+        int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * config.baseBlipDuration);
         double deviation = (random.nextDouble() * 2.0 - 1.0) * config.speedRandomness;
         double speedModifier = 1.0 + deviation;
 
@@ -183,52 +179,30 @@ public class MumbleSynthesizer {
         return (0.85 + random.nextDouble() * 0.15);
     }
 
+    private record FormantMult(double f1, double f2) {}
+    private static final FormantMult DEFAULT_MULT = new FormantMult(1.0, 2.0);
+    private static final Map<Character, FormantMult> VOWEL_MAP = Map.of(
+        'A', new FormantMult(2.0, 3.5),
+        'E', new FormantMult(1.5, 4.0),
+        'I', new FormantMult(1.2, 4.5),
+        'O', new FormantMult(1.4, 2.4),
+        'U', new FormantMult(1.1, 1.8),
+        'Ä', new FormantMult(1.8, 4.0),
+        'Ö', new FormantMult(1.5, 3.2),
+        'Ü', new FormantMult(1.2, 3.5)
+    );
     private static double synthesizePhoneme(char c, double phase, int totalSamples, int currentSample, VoiceOptions config) {
         if (isPunctuation(c) || c == ' ') return 0.0;
 
         if (isVowel(c)) {
             double baseWave = generateBaseWave(phase, config.waveType);
 
-            double f1Mult = 1.0;
-            double f2Mult = switch (c) {
-                case 'A' -> {
-                    f1Mult = 2.0;
-                    yield 3.5;
-                }
-                case 'E' -> {
-                    f1Mult = 1.5;
-                    yield 4.0;
-                }
-                case 'I' -> {
-                    f1Mult = 1.2;
-                    yield 4.5;
-                }
-                case 'O' -> {
-                    f1Mult = 1.4;
-                    yield 2.4;
-                }
-                case 'U' -> {
-                    f1Mult = 1.1;
-                    yield 1.8;
-                }
-                case 'Ä' -> {
-                    f1Mult = 1.8;
-                    yield 4.0;
-                }
-                case 'Ö' -> {
-                    f1Mult = 1.5;
-                    yield 3.2;
-                }
-                case 'Ü' -> {
-                    f1Mult = 1.2;
-                    yield 3.5;
-                }
-                default -> 2.0;
-            };
+            // Schneller Lookup statt komplexem Switch mit Seiteneffekten
+            FormantMult mult = VOWEL_MAP.getOrDefault(c, DEFAULT_MULT);
 
             // Harmonische Obertöne sehr subtil beimischen (Verhindert Klingeln im Ohr)
-            double formant1 = MathUtil.fastSin(phase * f1Mult) * 0.25;
-            double formant2 = MathUtil.fastSin(phase * f2Mult) * 0.10;
+            double formant1 = MathUtil.fastSin(phase * mult.f1()) * 0.25;
+            double formant2 = MathUtil.fastSin(phase * mult.f2()) * 0.10;
 
             return Math.sin((baseWave + formant1 + formant2) * 0.8) * config.vowelGain;
         }
@@ -291,19 +265,28 @@ public class MumbleSynthesizer {
             default -> false;
         };
     }
+    private static void writeWavHeader(ByteBuffer buffer, int audioDataLength, AudioFormat format) {
+        // 1. Berechnungen basierend auf dem AudioFormat
+        int channels = format.getChannels();
+        int sampleRate = (int) format.getSampleRate();
+        int bitsPerSample = format.getSampleSizeInBits();
+        int bytesPerSample = bitsPerSample / 8;
 
-    private static void writeWavHeader(ByteBuffer buffer, int audioDataLength) {
+        int byteRate = sampleRate * channels * bytesPerSample;
+        short blockAlign = (short) (channels * bytesPerSample);
+
+        // 2. WAV-Header schreiben
         buffer.put("RIFF".getBytes(StandardCharsets.US_ASCII));
-        buffer.putInt(WAV_HEADER_SIZE - 8 + audioDataLength);
+        buffer.putInt(44 - 8 + audioDataLength); // 44 ist die Standard-WAV-Header-Größe
         buffer.put("WAVE".getBytes(StandardCharsets.US_ASCII));
         buffer.put("fmt ".getBytes(StandardCharsets.US_ASCII));
-        buffer.putInt(16); // Subchunk1Size
-        buffer.putShort((short) 1); // AudioFormat (PCM)
-        buffer.putShort((short) CHANNELS); // Stereo
-        buffer.putInt(SAMPLE_RATE);
-        buffer.putInt(SAMPLE_RATE * CHANNELS * BYTES_PER_SAMPLE); // ByteRate
-        buffer.putShort((short) (CHANNELS * BYTES_PER_SAMPLE)); // BlockAlign
-        buffer.putShort((short) BITS_PER_SAMPLE);
+        buffer.putInt(16); // Subchunk1Size für PCM
+        buffer.putShort((short) 1); // AudioFormat (1 = unkomprimiertes PCM)
+        buffer.putShort((short) channels);
+        buffer.putInt(sampleRate);
+        buffer.putInt(byteRate);
+        buffer.putShort(blockAlign);
+        buffer.putShort((short) bitsPerSample);
         buffer.put("data".getBytes(StandardCharsets.US_ASCII));
         buffer.putInt(audioDataLength);
     }

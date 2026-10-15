@@ -20,7 +20,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
-        List<String > texts = List.of(
+        List<String> texts = List.of(
             "I am your friend. But i am also okay with it.",
             "My cat is so fat, it cannot swim in the ocean.",
             "Lets have a party.",
@@ -31,21 +31,21 @@ public class PlaygroundApp {
 
 
         screwBox.environment().addSystem(engine -> {
-            if(Time.now().isAfter(timeout)) {
-                text=null;
+            if (Time.now().isAfter(timeout)) {
+                text = null;
             }
-            if(text != null) {
+            if (text != null) {
                 engine.graphics().canvas().drawText(engine.graphics().canvas().center(), text, TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(3).alignCenter().shader(ShaderBundle.NEON));
             }
-            if(engine.mouse().isPressedLeft()) {
+            if (engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
                 MumbleSynthesizer.VoiceOptions config = new MumbleSynthesizer.VoiceOptions();
-                config.baseFreq = 320.0;
-                config.baseBlipDuration = 0.04;
+                config.baseFreq = 260.0;
+                config.baseBlipDuration = 0.05;
 
-                config.pitchRandomness = 0.30;       // Etwas reduziert für stabilere Intonation
+                config.pitchRandomness = 0.6;       // Etwas reduziert für stabilere Intonation
                 config.speedRandomness = 0.10;
 
                 // Sanftes Vibrato ohne extreme Ausschläge
@@ -53,7 +53,7 @@ public class PlaygroundApp {
                 config.vibratoDepth = 0.15;
 
                 // Pausenkonfiguration
-                config.sentencePause = 0.20;
+                config.sentencePause = 0.25;
                 config.commaPause = 0.12;
                 config.wordPause = 0.08;
 
@@ -61,7 +61,7 @@ public class PlaygroundApp {
                 config.vowelGain = 0.70;
                 config.nasalGain = 0.40;
                 config.plosiveGain = 0.30;
-                config.waveType = MumbleSynthesizer.WaveType.SQUARE;
+                config.waveType = MumbleSynthesizer.WaveType.SINE;
 
                 var mumble = MumbleSynthesizer.synthesizeMumbleSpeech(text, config);
                 System.out.println(Duration.since(t).milliseconds());
