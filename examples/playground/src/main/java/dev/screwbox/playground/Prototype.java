@@ -1,7 +1,5 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Duration;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.utils.MathUtil;
 
@@ -69,7 +67,7 @@ public class Prototype {
     public static Sound createMumbleSound(final String text, final VoiceOptions options) {
         String sanitizedText = text.toUpperCase();
 
-        try(final var baos = new ByteArrayOutputStream()) {
+        try (final var baos = new ByteArrayOutputStream()) {
             DataOutputStream dos = new DataOutputStream(baos);
 
             var soundContext = new SoundContext(options.baseFreq);
@@ -122,8 +120,8 @@ public class Prototype {
             double finalSampleValue = context.filterState;
 
             // Kanäle trennen und Stereo-Lautstärke anwenden
-            short pcmSampleLeft = (short) (finalSampleValue  * 32767.0);
-            short pcmSampleRight = (short) (finalSampleValue  * 32767.0);
+            short pcmSampleLeft = (short) (finalSampleValue * 32767.0);
+            short pcmSampleRight = (short) (finalSampleValue * 32767.0);
 
             try {
                 // Linker Kanal (Zuerst)
@@ -133,7 +131,8 @@ public class Prototype {
                 // Rechter Kanal (Danach)
                 dos.writeByte(pcmSampleRight & 0xFF);
                 dos.writeByte((pcmSampleRight >> 8) & 0xFF);
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
 
             context.totalSamplesWritten++;
         }
@@ -156,7 +155,11 @@ public class Prototype {
 
     private static double determineTargetVowelShift(char c, double fallbackValue) {
         return switch (c) {
-            case 'A' -> 0.95; case 'E' -> 1.02; case 'I' -> 1.08; case 'O' -> 0.88; case 'U' -> 0.78;
+            case 'A' -> 0.95;
+            case 'E' -> 1.02;
+            case 'I' -> 1.08;
+            case 'O' -> 0.88;
+            case 'U' -> 0.78;
             default -> isNasal(c) ? 0.85 : fallbackValue;
         };
     }
@@ -283,7 +286,7 @@ public class Prototype {
 
     private static void writeWavHeader(ByteBuffer buffer, int audioDataLength) {
         buffer.put("RIFF".getBytes(StandardCharsets.US_ASCII));
-        buffer.putInt(36 + audioDataLength);
+        buffer.putInt(WAV_HEADER_SIZE - 8 + audioDataLength);
         buffer.put("WAVE".getBytes(StandardCharsets.US_ASCII));
         buffer.put("fmt ".getBytes(StandardCharsets.US_ASCII));
         buffer.putInt(16); // Subchunk1Size
