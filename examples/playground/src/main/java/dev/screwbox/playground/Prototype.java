@@ -164,18 +164,41 @@ public class Prototype {
             double baseWave = generateBaseWave(phase, config.waveType);
 
             double f1Mult = 1.0;
-            double f2Mult = 2.0;
-
-            switch (c) {
-                case 'A': f1Mult = 2.0; f2Mult = 3.5; break;
-                case 'E': f1Mult = 1.5; f2Mult = 4.0; break;
-                case 'I': f1Mult = 1.2; f2Mult = 4.5; break; // Weiter abgesenkt für maximale Samtheit
-                case 'O': f1Mult = 1.4; f2Mult = 2.4; break;
-                case 'U': f1Mult = 1.1; f2Mult = 1.8; break;
-                case 'Ä': f1Mult = 1.8; f2Mult = 4.0; break;
-                case 'Ö': f1Mult = 1.5; f2Mult = 3.2; break;
-                case 'Ü': f1Mult = 1.2; f2Mult = 3.5; break;
-            }
+            double f2Mult = switch (c) {
+                case 'A' -> {
+                    f1Mult = 2.0;
+                    yield 3.5;
+                }
+                case 'E' -> {
+                    f1Mult = 1.5;
+                    yield 4.0;
+                }
+                case 'I' -> {
+                    f1Mult = 1.2;
+                    yield 4.5;
+                }
+                case 'O' -> {
+                    f1Mult = 1.4;
+                    yield 2.4;
+                }
+                case 'U' -> {
+                    f1Mult = 1.1;
+                    yield 1.8;
+                }
+                case 'Ä' -> {
+                    f1Mult = 1.8;
+                    yield 4.0;
+                }
+                case 'Ö' -> {
+                    f1Mult = 1.5;
+                    yield 3.2;
+                }
+                case 'Ü' -> {
+                    f1Mult = 1.2;
+                    yield 3.5;
+                }
+                default -> 2.0;
+            };
 
             // Harmonische Obertöne sehr subtil beimischen (Verhindert Klingeln im Ohr)
             double formant1 = MathUtil.fastSin(phase * f1Mult) * 0.25;
