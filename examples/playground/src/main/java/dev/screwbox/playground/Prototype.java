@@ -61,41 +61,8 @@ public class Prototype {
 
         var context = new SoundContext(config.baseFreq);
 
-        for (int i = 0; i < sanitizedText.length(); i++) {
-            char character = sanitizedText.charAt(i);
-
-            // Jedes Zeichen berechnet seine Länge direkt JETZT
-            int currentSamplesPerBlip = calculateSingleBlipLength(character, config);
-            boolean isPunctuation = isPunctuation(character);
-
-            double targetVowelShift = determineTargetVowelShift(character, context.currentVowelShift);
-            double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character);
-            double volumeModifier = calculateSegmentVolume(character);
-
-            for (int s = 0; s < currentSamplesPerBlip; s++) {
-                context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.003;
-                context.currentPitch += (targetFrequency - context.currentPitch) * 0.002;
-
-                // Globale Zeitberechnung über die absolut geschriebenen Samples
-                double globalTime = (double) context.totalSamplesWritten / SAMPLE_RATE;
-                double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
-                double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.3) * (1.0 + vibrato), 40.0, 400.0);
-
-                context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / SAMPLE_RATE) % (2.0 * Math.PI);
-
-                double rawValue = synthesizePhoneme(character, context.runningPhase, currentSamplesPerBlip, s, waveType, config);
-                double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
-                double sampleValue = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
-
-                // Im Little-Endian Format in den Stream schreiben
-                short pcmSample = (short) (sampleValue * 32767.0);
-                try {
-                    dos.writeByte(pcmSample & 0xFF);
-                    dos.writeByte((pcmSample >> 8) & 0xFF);
-                } catch (IOException ignored) {}
-
-                context.totalSamplesWritten++;
-            }
+        for (char character : sanitizedText.toCharArray()) {
+            addSampleForChaacter(waveType, config, character, context, dos);
         }
 
         // Ergebnis-Array holen und den echten WAV-Header davor klatschen
@@ -107,6 +74,41 @@ public class Prototype {
 
         System.arraycopy(audioData, 0, finalWav, WAV_HEADER_SIZE, audioData.length);
         return finalWav;
+    }
+
+    private static void addSampleForChaacter(WaveType waveType, VoiceConfig config, char character, SoundContext context, DataOutputStream dos) {
+        // Jedes Zeichen berechnet seine Länge direkt JETZT
+        int currentSamplesPerBlip = calculateSingleBlipLength(character, config);
+        boolean isPunctuation = isPunctuation(character);
+
+        double targetVowelShift = determineTargetVowelShift(character, context.currentVowelShift);
+        double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character);
+        double volumeModifier = calculateSegmentVolume(character);
+
+        for (int s = 0; s < currentSamplesPerBlip; s++) {
+            context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.003;
+            context.currentPitch += (targetFrequency - context.currentPitch) * 0.002;
+
+            // Globale Zeitberechnung über die absolut geschriebenen Samples
+            double globalTime = (double) context.totalSamplesWritten / SAMPLE_RATE;
+            double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
+            double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.3) * (1.0 + vibrato), 40.0, 400.0);
+
+            context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / SAMPLE_RATE) % (2.0 * Math.PI);
+
+            double rawValue = synthesizePhoneme(character, context.runningPhase, currentSamplesPerBlip, s, waveType, config);
+            double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
+            double sampleValue = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
+
+            // Im Little-Endian Format in den Stream schreiben
+            short pcmSample = (short) (sampleValue * 32767.0);
+            try {
+                dos.writeByte(pcmSample & 0xFF);
+                dos.writeByte((pcmSample >> 8) & 0xFF);
+            } catch (IOException ignored) {}
+
+            context.totalSamplesWritten++;
+        }
     }
 
     // Isoliert die Längenberechnung für genau EIN Zeichen
