@@ -42,6 +42,16 @@ public class Prototype {
         public double nasalGain = 0.40;
         public double plosiveGain = 0.35;
     }
+    
+    private static class SoundContext {
+        double runningPhase = 0.0; // Die aktuelle Position innerhalb einer einzelnen Schallwelle (von \(0\) bis \(2\pi\), also eine volle Drehung im Kreis).
+        double currentPitch ; // Was es ist: Die tatsächliche, aktuelle Grundfrequenz (in Hertz) des Synthesizers zu jedem exakten Sample-Zeitpunkt. Sie startet bei deiner Basis-Frequenz (config.baseFreq).
+        double currentVowelShift = 1.0; // Was es ist: Ein Modifikator (Startwert 1.0), der bestimmt, wie stark sich der Klangcharakter (die "Klangfarbe" oder Formanten) durch Vokale verschiebt.
+        
+        public SoundContext(double startPitch ) {
+            currentPitch = startPitch;
+        }
+    }
 
     public static byte[] generateMumbleWavByteArray(String text, WaveType waveType, VoiceConfig config) {
         String sanitizedText = text.toUpperCase();
@@ -51,33 +61,32 @@ public class Prototype {
         ByteBuffer buffer = ByteBuffer.wrap(new byte[WAV_HEADER_SIZE + dataSize]).order(ByteOrder.LITTLE_ENDIAN);
         writeWavHeader(buffer, dataSize);
 
-        double runningPhase = 0.0; // Die aktuelle Position innerhalb einer einzelnen Schallwelle (von \(0\) bis \(2\pi\), also eine volle Drehung im Kreis).
-        double currentPitch = config.baseFreq; // Was es ist: Die tatsächliche, aktuelle Grundfrequenz (in Hertz) des Synthesizers zu jedem exakten Sample-Zeitpunkt. Sie startet bei deiner Basis-Frequenz (config.baseFreq).
-        double currentVowelShift = 1.0; // Was es ist: Ein Modifikator (Startwert 1.0), der bestimmt, wie stark sich der Klangcharakter (die "Klangfarbe" oder Formanten) durch Vokale verschiebt.
+     
+        var context = new SoundContext(config.baseFreq);
 
         for (int i = 0; i < sanitizedText.length(); i++) {
             char character = sanitizedText.charAt(i);
             int currentSamplesPerBlip = blipLengths[i];
             boolean isPunctuation = isPunctuation(character);
 
-            double targetVowelShift = determineTargetVowelShift(character, currentVowelShift);
+            double targetVowelShift = determineTargetVowelShift(character, context.currentVowelShift);
             double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character);
             double volumeModifier = calculateSegmentVolume(character);
 
             for (int s = 0; s < currentSamplesPerBlip; s++) {
-                currentVowelShift += (targetVowelShift - currentVowelShift) * 0.003;
-                currentPitch += (targetFrequency - currentPitch) * 0.002;
+                context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.003;
+                context.currentPitch += (targetFrequency - context.currentPitch) * 0.002;
 
                 // Vibrato & Frequenzberechnung kompakt zusammengefasst
                 double globalTime = (double) buffer.position() / (BYTES_PER_SAMPLE * SAMPLE_RATE);
                 double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
-                double instantFreq = Math.clamp(currentPitch * (1.0 + (currentVowelShift - 1.0) * 0.3) * (1.0 + vibrato), 40.0, 400.0);
+                double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.3) * (1.0 + vibrato), 40.0, 400.0);
 
                 // Phase inkrementieren und per Modulo begrenzen
-                runningPhase = (runningPhase + (2.0 * Math.PI * instantFreq) / SAMPLE_RATE) % (2.0 * Math.PI);
+                context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / SAMPLE_RATE) % (2.0 * Math.PI);
 
                 // Synthese, Hüllkurve und Buffering in 3 knackigen Zeilen
-                double rawValue = synthesizePhoneme(character, runningPhase, currentSamplesPerBlip, s, waveType, config);
+                double rawValue = synthesizePhoneme(character, context.runningPhase, currentSamplesPerBlip, s, waveType, config);
                 double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
                 double sampleValue = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
 

@@ -40,8 +40,8 @@ public class PlaygroundApp {
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
                 Prototype.VoiceConfig config = new Prototype.VoiceConfig();
-                config.baseFreq = 180.0;
-                config.baseBlipDuration = 0.05;
+                config.baseFreq = 280.0;
+                config.baseBlipDuration = 0.03;
 
                 config.pitchRandomness = 0.10;       // Etwas reduziert für stabilere Intonation
                 config.speedRandomness = 0.20;
