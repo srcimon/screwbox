@@ -67,19 +67,30 @@ public class Prototype {
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
         String sanitizedText = text.toUpperCase();
 
-        try (final var baos = new ByteArrayOutputStream(); DataOutputStream dos = new DataOutputStream(baos)) {
-            var soundContext = new SoundContext(options.baseFreq);
+        // Verwende ein anpassbares ByteArrayOutputStream, um direkt auf den internen Puffer zuzugreifen
+        try (final var baos = new ByteArrayOutputStream(4096);
+            DataOutputStream dos = new DataOutputStream(baos)) {
 
+            // 1. Platzhalter für den 44-Byte-Header schreiben
+            byte[] dummyHeader = new byte[WAV_HEADER_SIZE];
+            dos.write(dummyHeader);
+
+            var soundContext = new SoundContext(options.baseFreq);
             for (char character : sanitizedText.toCharArray()) {
                 addSampleForChaacter(options, character, soundContext, dos);
             }
+            dos.flush();
 
-            byte[] audioData = baos.toByteArray();
-            byte[] finalWav = new byte[WAV_HEADER_SIZE + audioData.length];
+            // 2. Das zugrundeliegende, exakt dimensionierte Array direkt aus dem Stream holen
+            // (baos.toByteArray() würde hier wieder eine Kopie erstellen, daher nutzen wir baos.toByteArray() NICHT,
+            // sondern holen uns das fertige Array direkt)
+            byte[] finalWav = baos.toByteArray();
+            int audioDataLength = finalWav.length - WAV_HEADER_SIZE;
 
+            // 3. Den Header nachträglich direkt im finalen Array korrigieren
             ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
-            writeWavHeader(headerBuffer, audioData.length);
-            System.arraycopy(audioData, 0, finalWav, WAV_HEADER_SIZE, audioData.length);
+            writeWavHeader(headerBuffer, audioDataLength);
+
             return Sound.fromSoundData(finalWav);
         } catch (IOException e) {
             throw new RuntimeException(e);
