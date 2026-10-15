@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.FontBundle;
+import dev.screwbox.core.audio.MumbleSynthesizer;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
@@ -40,7 +41,7 @@ public class PlaygroundApp {
                 text = ListUtil.pickRandom(texts);
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
-                Prototype.VoiceOptions config = new Prototype.VoiceOptions();
+                MumbleSynthesizer.VoiceOptions config = new MumbleSynthesizer.VoiceOptions();
                 config.baseFreq = 320.0;
                 config.baseBlipDuration = 0.04;
 
@@ -60,9 +61,9 @@ public class PlaygroundApp {
                 config.vowelGain = 0.70;
                 config.nasalGain = 0.40;
                 config.plosiveGain = 0.30;
-                config.waveType = Prototype.WaveType.SQUARE;
+                config.waveType = MumbleSynthesizer.WaveType.SQUARE;
 
-                var mumble = Prototype.synthesizeMumbleSpeech(text, config);
+                var mumble = MumbleSynthesizer.synthesizeMumbleSpeech(text, config);
                 System.out.println(Duration.since(t).milliseconds());
                 engine.audio().playSound(mumble);
             }

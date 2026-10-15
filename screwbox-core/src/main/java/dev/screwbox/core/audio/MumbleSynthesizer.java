@@ -1,6 +1,5 @@
-package dev.screwbox.playground;
+package dev.screwbox.core.audio;
 
-import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.utils.MathUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -11,7 +10,7 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
-public class Prototype {
+public class MumbleSynthesizer {
 
     private static final int SAMPLE_RATE = 44100;
     private static final int BITS_PER_SAMPLE = 16;
@@ -38,7 +37,7 @@ public class Prototype {
         public double commaPause = 0.22;
         public double wordPause = 0.15;
 
-        public WaveType waveType;
+        public WaveType waveType = WaveType.SINE;
 
         public double vowelGain = 0.75;
         public double nasalGain = 0.40;
