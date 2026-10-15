@@ -42,6 +42,10 @@ public class Prototype {
         public double vowelGain = 0.75;
         public double nasalGain = 0.40;
         public double plosiveGain = 0.35;
+
+        // Filter-Koeffizient: 1.0 = ungefiltert, 0.1 = extrem dumpf/warm.
+        // 0.25 ist der Sweet-Spot für eine klare, aber absolut kratzfreie Stimme.
+        public double lowPassCutoff = 0.25;
     }
 
     private static class SoundContext {
@@ -49,6 +53,9 @@ public class Prototype {
         double currentPitch;
         double currentVowelShift = 1.0;
         int totalSamplesWritten = 0;
+
+        // Zustandsspeicher für den Tiefpassfilter
+        double filterState = 0.0;
 
         public SoundContext(double startPitch) {
             currentPitch = startPitch;
@@ -58,7 +65,7 @@ public class Prototype {
     public static Sound createMumbleSound(String text, VoiceOptions options) {
         String sanitizedText = text.toUpperCase();
 
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+        try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             DataOutputStream dos = new DataOutputStream(baos);
 
             var context = new SoundContext(options.baseFreq);
@@ -84,29 +91,34 @@ public class Prototype {
         boolean isPunctuation = isPunctuation(character);
 
         double targetVowelShift = determineTargetVowelShift(character, context.currentVowelShift);
+        // Stark geglättete Pitch-Änderungen pro Segment, um Frequenzsprünge zu mindern
         double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character);
         double volumeModifier = calculateSegmentVolume(character);
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
-            context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.003;
-            context.currentPitch += (targetFrequency - context.currentPitch) * 0.002;
+            // Übergänge verlangsamt (0.001 statt 0.003), um Knackser bei Vokalwechseln zu eliminieren
+            context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.001;
+            context.currentPitch += (targetFrequency - context.currentPitch) * 0.001;
 
             double globalTime = (double) context.totalSamplesWritten / SAMPLE_RATE;
             double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
-            double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.3) * (1.0 + vibrato), 40.0, 400.0);
+            double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.25) * (1.0 + vibrato), 40.0, 400.0);
 
             context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / SAMPLE_RATE) % (2.0 * Math.PI);
 
             double rawValue = synthesizePhoneme(character, context.runningPhase, currentSamplesPerBlip, s, config);
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
-            double sampleValue = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
+            double preFilteredSample = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
 
-            short pcmSample = (short) (sampleValue * 32767.0);
+            // TIEFPASSFILTER (One-Pole IIR Filter): Glättet das Signal in Echtzeit
+            context.filterState += config.lowPassCutoff * (preFilteredSample - context.filterState);
+            double finalSampleValue = context.filterState;
+
+            short pcmSample = (short) (finalSampleValue * 32767.0);
             try {
                 dos.writeByte(pcmSample & 0xFF);
                 dos.writeByte((pcmSample >> 8) & 0xFF);
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
 
             context.totalSamplesWritten++;
         }
@@ -129,11 +141,7 @@ public class Prototype {
 
     private static double determineTargetVowelShift(char c, double fallbackValue) {
         return switch (c) {
-            case 'A' -> 0.95;
-            case 'E' -> 1.05;
-            case 'I' -> 1.15;
-            case 'O' -> 0.85;
-            case 'U' -> 0.75;
+            case 'A' -> 0.95; case 'E' -> 1.02; case 'I' -> 1.08; case 'O' -> 0.88; case 'U' -> 0.78;
             default -> isNasal(c) ? 0.85 : fallbackValue;
         };
     }
@@ -159,65 +167,40 @@ public class Prototype {
             double f2Mult = 2.0;
 
             switch (c) {
-                case 'A':
-                    f1Mult = 2.5;
-                    f2Mult = 4.0;
-                    break;
-                case 'E':
-                    f1Mult = 1.8;
-                    f2Mult = 5.0;
-                    break; // Leicht gesenkt gegen Fiepen
-                case 'I':
-                    f1Mult = 1.2;
-                    f2Mult = 6.0;
-                    break; // Stark gesenkt, um Schärfe zu nehmen
-                case 'O':
-                    f1Mult = 1.6;
-                    f2Mult = 2.8;
-                    break;
-                case 'U':
-                    f1Mult = 1.1;
-                    f2Mult = 2.0;
-                    break;
-                case 'Ä':
-                    f1Mult = 2.2;
-                    f2Mult = 5.0;
-                    break;
-                case 'Ö':
-                    f1Mult = 1.7;
-                    f2Mult = 4.0;
-                    break;
-                case 'Ü':
-                    f1Mult = 1.2;
-                    f2Mult = 4.5;
-                    break;
+                case 'A': f1Mult = 2.0; f2Mult = 3.5; break;
+                case 'E': f1Mult = 1.5; f2Mult = 4.0; break;
+                case 'I': f1Mult = 1.2; f2Mult = 4.5; break; // Weiter abgesenkt für maximale Samtheit
+                case 'O': f1Mult = 1.4; f2Mult = 2.4; break;
+                case 'U': f1Mult = 1.1; f2Mult = 1.8; break;
+                case 'Ä': f1Mult = 1.8; f2Mult = 4.0; break;
+                case 'Ö': f1Mult = 1.5; f2Mult = 3.2; break;
+                case 'Ü': f1Mult = 1.2; f2Mult = 3.5; break;
             }
 
-            // Obertongewichtung reduziert für ein runderes Klangbild
-            double formant1 = MathUtil.fastSin(phase * f1Mult) * 0.35;
-            double formant2 = MathUtil.fastSin(phase * f2Mult) * 0.15;
+            // Harmonische Obertöne sehr subtil beimischen (Verhindert Klingeln im Ohr)
+            double formant1 = MathUtil.fastSin(phase * f1Mult) * 0.25;
+            double formant2 = MathUtil.fastSin(phase * f2Mult) * 0.10;
 
-            // WEICHE SATURATION: Math.sin glättet Spitzen perfekt ab, statt sie abzuschneiden (Kein Kratzen!)
-            return Math.sin((baseWave + formant1 + formant2) * 0.9) * config.vowelGain;
+            return Math.sin((baseWave + formant1 + formant2) * 0.8) * config.vowelGain;
         }
 
         if (isPlosive(c)) {
-            if (currentSample < totalSamples * 0.12) {
-                // Frequenz gedämpft für einen runderen Pop-Laut
-                return MathUtil.fastSin(phase * 0.12) * Math.exp(-currentSample / 90.0) * config.plosiveGain;
+            if (currentSample < totalSamples * 0.10) {
+                // Sehr tiefer, sanfter Pop-Laut ohne Klickgeräusch
+                return MathUtil.fastSin(phase * 0.08) * Math.exp(-currentSample / 120.0) * config.plosiveGain;
             }
             return 0.0;
         }
 
         if (isNasal(c)) {
-            // Auch hier Sinus statt Tanh für samtweiches Summen
             return MathUtil.fastSin(phase * 0.5) * config.nasalGain;
         }
         return 0.0;
     }
 
     private static double applyClickProtectionEnvelope(int sampleIndex, int totalSamples) {
-        int fadeSamples = Math.min(160, totalSamples / 10);
+        // Größeres Fade-Fenster (12% statt 10%), um die Zeichen extrem sanft ineinander übergehen zu lassen
+        int fadeSamples = Math.min(220, totalSamples / 8);
         if (sampleIndex < fadeSamples) return sampleIndex / (double) fadeSamples;
         if (sampleIndex > totalSamples - fadeSamples) return (totalSamples - sampleIndex) / (double) fadeSamples;
         return 1.0;
@@ -226,8 +209,8 @@ public class Prototype {
     private static double generateBaseWave(double phase, WaveType waveType) {
         return switch (waveType) {
             case SINE -> MathUtil.fastSin(phase);
-            // Glatte Rechteckwelle mittels Sinus-Kompression (Oberschwingungen werden sanft abgerundet)
-            case SQUARE -> Math.sin(MathUtil.fastSin(phase) * 1.5) * 0.8;
+            // Ultra-weiche Annäherung einer Dreieckswelle für wärmeren Sound
+            case SQUARE -> Math.sin(MathUtil.fastSin(phase) * 1.2) * 0.8;
             case TRIANGLE -> (Math.abs((phase % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
         };
     }
