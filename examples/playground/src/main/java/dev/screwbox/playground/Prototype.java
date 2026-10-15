@@ -56,12 +56,11 @@ public class Prototype {
         ByteBuffer buffer = ByteBuffer.wrap(outputBuffer).order(ByteOrder.LITTLE_ENDIAN);
         writeWavHeader(buffer, dataSize);
 
-        // Langzeit-Zustände über den gesamten Text hinweg (Menschlicher Fluss)
-        double runningPhase = 0.0;           // Verhindert Phasen-Sprünge komplett
-        double currentPitch = config.baseFreq; // Gleitende Tonhöhe
-        double currentVowelShift = 1.0;      // Gleitende Formanten
+        // Langzeit-Zustände
+        double runningPhase = 0.0;
+        double currentPitch = config.baseFreq;
+        double currentVowelShift = 1.0;
 
-        // Filter-Speicher für das Rauschen
         double[] noiseFilterState = new double[2];
 
         for (int i = 0; i < sanitizedText.length(); i++) {
@@ -75,18 +74,26 @@ public class Prototype {
             double volumeModifier = calculateSegmentVolume(character);
 
             for (int s = 0; s < currentSamplesPerBlip; s++) {
-                // 1. Organische Übergänge (Portamento) statt harter Sprünge
+                // Organische Übergänge
                 currentVowelShift += (targetVowelShift - currentVowelShift) * 0.003;
                 currentPitch += (targetFrequency - currentPitch) * 0.002;
 
-                // Globaler Zeitstempel nur für das langsame Vibrato
+                // Vibrato über die globale Sample-Position berechnen
                 double globalTime = (double) buffer.position() / (BYTES_PER_SAMPLE * SAMPLE_RATE);
                 double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
 
-                // Momentane Frequenz inklusive Modifikatoren
-                double instantFreq = currentPitch * currentVowelShift * (1.0 + vibrato);
+                // Frequenzberechnung mit sanfterem Shift
+                double instantFreq = currentPitch * (1.0 + (currentVowelShift - 1.0) * 0.3) * (1.0 + vibrato);
 
-                // 2. Kontinuierliche Phase fortschreiben (Kein Zurücksetzen auf 0!)
+                // FEHLERBEHEBUNG: Schützt vor Aliasing / Fieptönen über 400Hz (Menschliche Stimme deckeln)
+                if (instantFreq > 400.0) {
+                    instantFreq = 400.0;
+                }
+                if (instantFreq < 40.0) {
+                    instantFreq = 40.0;
+                }
+
+                // Fortlaufende Phase fortschreiben
                 runningPhase += (2.0 * Math.PI * instantFreq) / SAMPLE_RATE;
                 if (runningPhase > 2.0 * Math.PI) {
                     runningPhase -= 2.0 * Math.PI;
@@ -95,7 +102,7 @@ public class Prototype {
                 // Signal-Synthese
                 double rawValue = synthesizePhoneme(character, runningPhase, currentSamplesPerBlip, s, waveType, noiseFilterState, config);
 
-                // Ein-/Ausblenden NUR am Anfang/Ende echter Sätze, nicht hart zwischen jedem Buchstaben
+                // Hüllkurve anwenden
                 double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
                 double sampleValue = rawValue * envelope * volumeModifier;
 
@@ -139,23 +146,21 @@ public class Prototype {
     private static double determineTargetVowelShift(char c, double fallbackValue) {
         if (isVowel(c)) {
             return switch (c) {
-                case 'A' -> 0.9;
-                case 'E' -> 1.15;
-                case 'I' -> 1.4;
-                case 'O' -> 0.8;
-                case 'U' -> 0.65;
+                case 'A' -> 0.95; // Weichere, komprimierte Shifts gegen extreme Tonhöhen-Sprünge
+                case 'E' -> 1.05;
+                case 'I' -> 1.15; // Zuvor 1.4 (Verursachte das extreme Fiepen!)
+                case 'O' -> 0.85;
+                case 'U' -> 0.75;
                 default  -> fallbackValue;
             };
         } else if (isNasal(c)) {
-            return 0.75;
+            return 0.85;
         }
         return fallbackValue;
     }
 
     private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, char c) {
         if (isPunctuation(c) || c == ' ') return baseFreq;
-
-        // Natürliche Sprachmelodie: Fragen gehen am Ende hoch, Aussagen runter (Simuliert durch leichte Varianz)
         double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * pitchRandomness;
         return baseFreq * (1.0 + randomPitchOffset);
     }
@@ -173,7 +178,7 @@ public class Prototype {
         }
 
         if (isVowel(c)) {
-            return fastTanh(generateBaseWave(phase, waveType) * 1.3) * config.vowelGain;
+            return fastTanh(generateBaseWave(phase, waveType) * 1.2) * config.vowelGain;
         }
 
         if (isFrikative(c)) {
@@ -184,15 +189,14 @@ public class Prototype {
         }
 
         if (isPlosive(c)) {
-            // Plosive nutzen die fortlaufende Phase für einen dumpfen Pop-Laut
             if (currentSample < totalSamples * 0.15) {
-                return MathUtil.fastSin(phase * 0.2) * Math.exp(-currentSample / 80.0) * config.plosiveGain;
+                return MathUtil.fastSin(phase * 0.15) * Math.exp(-currentSample / 80.0) * config.plosiveGain;
             }
             return 0.0;
         }
 
         if (isNasal(c)) {
-            double nasalWave = MathUtil.fastSin(phase * 0.6); // Weicherer, tieferer Oberton für M/N
+            double nasalWave = MathUtil.fastSin(phase * 0.5);
             return fastTanh(nasalWave * 1.0) * config.nasalGain;
         }
 
@@ -216,7 +220,7 @@ public class Prototype {
     private static double generateBaseWave(double phase, WaveType waveType) {
         return switch (waveType) {
             case SINE     -> MathUtil.fastSin(phase);
-            case SQUARE   -> fastTanh(MathUtil.fastSin(phase) * 2.5) * 0.75;
+            case SQUARE   -> fastTanh(MathUtil.fastSin(phase) * 2.0) * 0.75;
             case TRIANGLE -> (Math.abs((phase % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
         };
     }

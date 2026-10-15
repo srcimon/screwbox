@@ -40,15 +40,15 @@ public class PlaygroundApp {
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
                 Prototype.VoiceConfig config = new Prototype.VoiceConfig();
-                config.baseFreq = 110.0;             // Grundtonhöhe (z.B. 110Hz Mann, 200Hz Frau)
-                config.baseBlipDuration = 0.08;      // Sprechgeschwindigkeit
+                config.baseFreq = 260.0;
+                config.baseBlipDuration = 0.04;
 
-                config.pitchRandomness = 0.15;       // Natürliche Mikro-Schwankung der Tonhöhe
-                config.speedRandomness = 0.25;       // Natürliche Schwankung des Sprechtempos
+                config.pitchRandomness = 0.10;       // Etwas reduziert für stabilere Intonation
+                config.speedRandomness = 0.20;
 
-                // Menschliches Vibrato (Muskel-Instabilität)
-                config.vibratoSpeed = 5.5;           // Zitter-Geschwindigkeit in Hz
-                config.vibratoDepth = 0.025;         // Zitter-Stärke
+                // Sanftes Vibrato ohne extreme Ausschläge
+                config.vibratoSpeed = 5.0;
+                config.vibratoDepth = 0.015;
 
                 // Pausenkonfiguration
                 config.sentencePause = 0.45;
@@ -56,11 +56,11 @@ public class PlaygroundApp {
                 config.wordPause = 0.15;
 
                 // Mischpult
-                config.noiseGain = 0.015;            // Stark gedämpftes, weiches Rauschen
-                config.vowelGain = 0.75;
+                config.noiseGain = 0.012;            // Rauschen weiter gesenkt gegen Zischeln
+                config.vowelGain = 0.70;
                 config.nasalGain = 0.40;
-                config.plosiveGain = 0.35;
-                var mumble = Prototype.generateMumbleWavByteArray(text, Prototype.WaveType.SQUARE, config);
+                config.plosiveGain = 0.30;
+                var mumble = Prototype.generateMumbleWavByteArray(text, Prototype.WaveType.SINE, config);
                 System.out.println(Duration.since(t).milliseconds());
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);
