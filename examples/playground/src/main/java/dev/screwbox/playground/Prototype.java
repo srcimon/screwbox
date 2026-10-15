@@ -1,4 +1,4 @@
-package dev.screwbox.core.audio;
+package dev.screwbox.playground;
 
 import dev.screwbox.core.utils.MathUtil;
 
