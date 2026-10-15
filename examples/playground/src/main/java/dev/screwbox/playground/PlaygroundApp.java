@@ -51,7 +51,7 @@ public class PlaygroundApp {
                 config.vibratoDepth = 0.015;
 
                 // Pausenkonfiguration
-                config.sentencePause = 0.45;
+                config.sentencePause = 0.30;
                 config.commaPause = 0.22;
                 config.wordPause = 0.15;
 
