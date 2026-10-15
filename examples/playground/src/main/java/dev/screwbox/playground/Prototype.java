@@ -195,10 +195,6 @@ public class Prototype {
         return "AEIOUÄÖÜ".contains(String.valueOf(c));
     }
 
-    private static boolean isFrikative(char c) {
-        return "SZFCXCHKSST".contains(String.valueOf(c));
-    }
-
     private static boolean isPlosive(char c) {
         return "PTKBDG".contains(String.valueOf(c));
     }
