@@ -51,9 +51,9 @@ public class Prototype {
         ByteBuffer buffer = ByteBuffer.wrap(new byte[WAV_HEADER_SIZE + dataSize]).order(ByteOrder.LITTLE_ENDIAN);
         writeWavHeader(buffer, dataSize);
 
-        double runningPhase = 0.0;
-        double currentPitch = config.baseFreq;
-        double currentVowelShift = 1.0;
+        double runningPhase = 0.0; // Die aktuelle Position innerhalb einer einzelnen Schallwelle (von \(0\) bis \(2\pi\), also eine volle Drehung im Kreis).
+        double currentPitch = config.baseFreq; // Was es ist: Die tatsächliche, aktuelle Grundfrequenz (in Hertz) des Synthesizers zu jedem exakten Sample-Zeitpunkt. Sie startet bei deiner Basis-Frequenz (config.baseFreq).
+        double currentVowelShift = 1.0; // Was es ist: Ein Modifikator (Startwert 1.0), der bestimmt, wie stark sich der Klangcharakter (die "Klangfarbe" oder Formanten) durch Vokale verschiebt.
 
         for (int i = 0; i < sanitizedText.length(); i++) {
             char character = sanitizedText.charAt(i);
