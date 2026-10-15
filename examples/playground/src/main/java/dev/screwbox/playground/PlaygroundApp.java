@@ -40,14 +40,14 @@ public class PlaygroundApp {
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
                 Prototype.VoiceConfig config = new Prototype.VoiceConfig();
-                config.baseFreq = 120.0;
-                config.baseBlipDuration = 0.08;
+                config.baseFreq = 180.0;
+                config.baseBlipDuration = 0.05;
 
                 config.pitchRandomness = 0.10;       // Etwas reduziert für stabilere Intonation
                 config.speedRandomness = 0.20;
 
                 // Sanftes Vibrato ohne extreme Ausschläge
-                config.vibratoSpeed = 5.0;
+                config.vibratoSpeed = 1.0;
                 config.vibratoDepth = 0.015;
 
                 // Pausenkonfiguration
