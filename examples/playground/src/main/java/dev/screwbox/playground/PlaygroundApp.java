@@ -39,7 +39,7 @@ public class PlaygroundApp {
                 text = ListUtil.pickRandom(texts);
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
-                Prototype.VoiceConfig config = new Prototype.VoiceConfig();
+                Prototype.VoiceOptions config = new Prototype.VoiceOptions();
                 config.baseFreq = 180.0;
                 config.baseBlipDuration = 0.06;
 
@@ -61,10 +61,9 @@ public class PlaygroundApp {
                 config.plosiveGain = 0.30;
                 config.waveType = Prototype.WaveType.SINE;
 
-                var mumble = Prototype.generateMumbleWavByteArray(text, config);
+                var mumble = Prototype.createMumbleSound(text, config);
                 System.out.println(Duration.since(t).milliseconds());
-                var mumbleSound = Sound.fromSoundData(mumble);
-                engine.audio().playSound(mumbleSound);
+                engine.audio().playSound(mumble);
             }
         });
 

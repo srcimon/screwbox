@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.utils.MathUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -24,7 +25,7 @@ public class Prototype {
         SINE, SQUARE, TRIANGLE
     }
 
-    public static class VoiceConfig {
+    public static class VoiceOptions {
         public double baseFreq = 110.0;
         public double baseBlipDuration = 0.08;
         public double pitchRandomness = 0.15;
@@ -54,17 +55,17 @@ public class Prototype {
         }
     }
 
-    public static byte[] generateMumbleWavByteArray(String text,  VoiceConfig config) {
+    public static Sound createMumbleSound(String text, VoiceOptions options) {
         String sanitizedText = text.toUpperCase();
 
         // Dynamischer Stream statt festem ByteBuffer
         try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             DataOutputStream dos = new DataOutputStream(baos);
 
-            var context = new SoundContext(config.baseFreq);
+            var context = new SoundContext(options.baseFreq);
 
             for (char character : sanitizedText.toCharArray()) {
-                addSampleForChaacter(config, character, context, dos);
+                addSampleForChaacter(options, character, context, dos);
             }
 
             // Ergebnis-Array holen und den echten WAV-Header davor klatschen
@@ -74,13 +75,13 @@ public class Prototype {
             ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
             writeWavHeader(headerBuffer, audioData.length);
             System.arraycopy(audioData, 0, finalWav, WAV_HEADER_SIZE, audioData.length);
-            return finalWav;
+            return Sound.fromSoundData(finalWav);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static void addSampleForChaacter( VoiceConfig config, char character, SoundContext context, DataOutputStream dos) {
+    private static void addSampleForChaacter(VoiceOptions config, char character, SoundContext context, DataOutputStream dos) {
         int currentSamplesPerBlip = calculateSingleBlipLength(character, config);
         boolean isPunctuation = isPunctuation(character);
 
@@ -116,7 +117,7 @@ public class Prototype {
     }
 
     // Isoliert die Längenberechnung für genau EIN Zeichen
-    private static int calculateSingleBlipLength(char c, VoiceConfig config) {
+    private static int calculateSingleBlipLength(char c, VoiceOptions config) {
         if (".!?".contains(String.valueOf(c))) return (int) (SAMPLE_RATE * config.sentencePause);
         if (",;:".contains(String.valueOf(c))) return (int) (SAMPLE_RATE * config.commaPause);
         if (c == ' ' || c == '-') return (int) (SAMPLE_RATE * config.wordPause);
@@ -158,7 +159,7 @@ public class Prototype {
         return (0.85 + random.nextDouble() * 0.15);
     }
 
-    private static double synthesizePhoneme(char c, double phase, int totalSamples, int currentSample, VoiceConfig config) {
+    private static double synthesizePhoneme(char c, double phase, int totalSamples, int currentSample, VoiceOptions config) {
         if (isPunctuation(c) || c == ' ') return 0.0;
         if (isVowel(c)) return fastTanh(generateBaseWave(phase, config.waveType) * 1.2) * config.vowelGain;
 
