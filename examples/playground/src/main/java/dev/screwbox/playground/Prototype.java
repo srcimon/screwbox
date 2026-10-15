@@ -64,12 +64,10 @@ public class Prototype {
         }
     }
 
-    public static Sound createMumbleSound(final String text, final VoiceOptions options) {
+    public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
         String sanitizedText = text.toUpperCase();
 
-        try (final var baos = new ByteArrayOutputStream()) {
-            DataOutputStream dos = new DataOutputStream(baos);
-
+        try (final var baos = new ByteArrayOutputStream(); DataOutputStream dos = new DataOutputStream(baos)) {
             var soundContext = new SoundContext(options.baseFreq);
 
             for (char character : sanitizedText.toCharArray()) {

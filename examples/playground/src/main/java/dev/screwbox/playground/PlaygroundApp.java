@@ -5,7 +5,6 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.FontBundle;
-import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
@@ -63,7 +62,7 @@ public class PlaygroundApp {
                 config.plosiveGain = 0.30;
                 config.waveType = Prototype.WaveType.SQUARE;
 
-                var mumble = Prototype.createMumbleSound(text, config);
+                var mumble = Prototype.synthesizeMumbleSpeech(text, config);
                 System.out.println(Duration.since(t).milliseconds());
                 engine.audio().playSound(mumble);
             }
