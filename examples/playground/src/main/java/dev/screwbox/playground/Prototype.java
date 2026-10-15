@@ -1,5 +1,7 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.utils.MathUtil;
 
@@ -80,7 +82,10 @@ public class Prototype {
             ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
             writeWavHeader(headerBuffer, audioData.length);
             System.arraycopy(audioData, 0, finalWav, WAV_HEADER_SIZE, audioData.length);
-            return Sound.fromSoundData(finalWav);
+            Time t = Time.now();
+            Sound sound = Sound.fromSoundData(finalWav);
+            System.out.println("SOUND CREATION: " + Duration.since(t).milliseconds());
+            return sound;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
