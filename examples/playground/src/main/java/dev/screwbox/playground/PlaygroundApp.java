@@ -42,10 +42,10 @@ public class PlaygroundApp {
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
                 Prototype.VoiceOptions config = new Prototype.VoiceOptions();
-                config.baseFreq = 180.0;
-                config.baseBlipDuration = 0.05;
+                config.baseFreq = 150.0;
+                config.baseBlipDuration = 0.08;
 
-                config.pitchRandomness = 0.40;       // Etwas reduziert für stabilere Intonation
+                config.pitchRandomness = 0.80;       // Etwas reduziert für stabilere Intonation
                 config.speedRandomness = 0.20;
 
                 // Sanftes Vibrato ohne extreme Ausschläge
@@ -61,7 +61,7 @@ public class PlaygroundApp {
                 config.vowelGain = 0.70;
                 config.nasalGain = 0.40;
                 config.plosiveGain = 0.30;
-                config.waveType = Prototype.WaveType.TRIANGLE;
+                config.waveType = Prototype.WaveType.SINE;
 
                 var mumble = Prototype.createMumbleSound(text, config);
                 System.out.println(Duration.since(t).milliseconds());

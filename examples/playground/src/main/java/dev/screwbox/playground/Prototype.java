@@ -86,10 +86,7 @@ public class Prototype {
             ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
             writeWavHeader(headerBuffer, audioData.length);
             System.arraycopy(audioData, 0, finalWav, WAV_HEADER_SIZE, audioData.length);
-            Time t = Time.now();
-            Sound sound = Sound.fromSoundData(finalWav);
-            System.out.println("SOUND CREATION: " + Duration.since(t).milliseconds());
-            return sound;
+            return Sound.fromSoundData(finalWav);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
