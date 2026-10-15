@@ -51,12 +51,12 @@ public class PlaygroundApp {
                 config.vibratoDepth = 0.015;
 
                 // Pausenkonfiguration
-                config.sentencePause = 0.30;
-                config.commaPause = 0.22;
-                config.wordPause = 0.15;
+                config.sentencePause = 0.20;
+                config.commaPause = 0.12;
+                config.wordPause = 0.08;
 
                 // Mischpult
-                config.noiseGain = 0.012;            // Rauschen weiter gesenkt gegen Zischeln
+                config.noiseGain = 0.02;            // Rauschen weiter gesenkt gegen Zischeln
                 config.vowelGain = 0.70;
                 config.nasalGain = 0.40;
                 config.plosiveGain = 0.30;

@@ -46,27 +46,18 @@ public class Prototype {
 
     public static byte[] generateMumbleWavByteArray(String text, WaveType waveType, VoiceConfig config) {
         String sanitizedText = text.toUpperCase();
-
         int[] blipLengths = calculateBlipLengths(sanitizedText, config);
-        int totalSamples = java.util.stream.IntStream.of(blipLengths).sum();
+        int dataSize = java.util.stream.IntStream.of(blipLengths).sum() * CHANNELS * BYTES_PER_SAMPLE;
 
-        int dataSize = totalSamples * CHANNELS * BYTES_PER_SAMPLE;
-        byte[] outputBuffer = new byte[WAV_HEADER_SIZE + dataSize];
-
-        ByteBuffer buffer = ByteBuffer.wrap(outputBuffer).order(ByteOrder.LITTLE_ENDIAN);
+        ByteBuffer buffer = ByteBuffer.wrap(new byte[WAV_HEADER_SIZE + dataSize]).order(ByteOrder.LITTLE_ENDIAN);
         writeWavHeader(buffer, dataSize);
 
-        // Langzeit-Zustände
-        double runningPhase = 0.0;
-        double currentPitch = config.baseFreq;
-        double currentVowelShift = 1.0;
-
+        double runningPhase = 0.0, currentPitch = config.baseFreq, currentVowelShift = 1.0;
         double[] noiseFilterState = new double[2];
 
         for (int i = 0; i < sanitizedText.length(); i++) {
             char character = sanitizedText.charAt(i);
             int currentSamplesPerBlip = blipLengths[i];
-
             boolean isPunctuation = isPunctuation(character);
 
             double targetVowelShift = determineTargetVowelShift(character, currentVowelShift);
@@ -74,44 +65,26 @@ public class Prototype {
             double volumeModifier = calculateSegmentVolume(character);
 
             for (int s = 0; s < currentSamplesPerBlip; s++) {
-                // Organische Übergänge
                 currentVowelShift += (targetVowelShift - currentVowelShift) * 0.003;
                 currentPitch += (targetFrequency - currentPitch) * 0.002;
 
-                // Vibrato über die globale Sample-Position berechnen
+                // Vibrato & Frequenzberechnung kompakt zusammengefasst
                 double globalTime = (double) buffer.position() / (BYTES_PER_SAMPLE * SAMPLE_RATE);
                 double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
+                double instantFreq = Math.clamp(currentPitch * (1.0 + (currentVowelShift - 1.0) * 0.3) * (1.0 + vibrato), 40.0, 400.0);
 
-                // Frequenzberechnung mit sanfterem Shift
-                double instantFreq = currentPitch * (1.0 + (currentVowelShift - 1.0) * 0.3) * (1.0 + vibrato);
+                // Phase inkrementieren und per Modulo begrenzen
+                runningPhase = (runningPhase + (2.0 * Math.PI * instantFreq) / SAMPLE_RATE) % (2.0 * Math.PI);
 
-                // FEHLERBEHEBUNG: Schützt vor Aliasing / Fieptönen über 400Hz (Menschliche Stimme deckeln)
-                if (instantFreq > 400.0) {
-                    instantFreq = 400.0;
-                }
-                if (instantFreq < 40.0) {
-                    instantFreq = 40.0;
-                }
-
-                // Fortlaufende Phase fortschreiben
-                runningPhase += (2.0 * Math.PI * instantFreq) / SAMPLE_RATE;
-                if (runningPhase > 2.0 * Math.PI) {
-                    runningPhase -= 2.0 * Math.PI;
-                }
-
-                // Signal-Synthese
+                // Synthese, Hüllkurve und Buffering in 3 knackigen Zeilen
                 double rawValue = synthesizePhoneme(character, runningPhase, currentSamplesPerBlip, s, waveType, noiseFilterState, config);
-
-                // Hüllkurve anwenden
                 double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
-                double sampleValue = rawValue * envelope * volumeModifier;
+                double sampleValue = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
 
-                sampleValue = Math.clamp(sampleValue, -1.0, 1.0);
                 buffer.putShort((short) (sampleValue * 32767.0));
             }
         }
-
-        return outputBuffer;
+        return buffer.array();
     }
 
     private static int[] calculateBlipLengths(String text, VoiceConfig config) {
