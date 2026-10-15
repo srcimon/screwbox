@@ -10,13 +10,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 public class Prototype {
 
     private static final int SAMPLE_RATE = 44100;
     private static final int BITS_PER_SAMPLE = 16;
-    private static final int CHANNELS = 1; // Mono
+    private static final int CHANNELS = 2; // Stereo
 
     private final static Random random = new Random();
 
@@ -48,6 +49,9 @@ public class Prototype {
         // Filter-Koeffizient: 1.0 = ungefiltert, 0.1 = extrem dumpf/warm.
         // 0.25 ist der Sweet-Spot für eine klare, aber absolut kratzfreie Stimme.
         public double lowPassCutoff = 0.25;
+
+        // Balance-Wert: 0.0 = Komplett Links, 0.5 = Mitte (Standard), 1.0 = Komplett Rechts
+        public double stereoPan = 0.5;
     }
 
     private static class SoundContext {
@@ -100,11 +104,17 @@ public class Prototype {
         double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character);
         double volumeModifier = calculateSegmentVolume(character);
 
+        // Equal-Power Panning Koeffizienten für konstante Lautstärkewahrnehmung
+        double leftGain = Math.sqrt(1.0 - config.stereoPan);
+        double rightGain = Math.sqrt(config.stereoPan);
+
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Übergänge verlangsamt (0.001 statt 0.003), um Knackser bei Vokalwechseln zu eliminieren
             context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.001;
             context.currentPitch += (targetFrequency - context.currentPitch) * 0.001;
 
+            // Wichtig: Da wir zwei Stereo-Frames pro Loop schreiben, entspricht globalTime weiterhin
+            // den geschriebenen Samples dividiert durch die Sample-Rate
             double globalTime = (double) context.totalSamplesWritten / SAMPLE_RATE;
             double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
             double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.25) * (1.0 + vibrato), 40.0, 400.0);
@@ -119,10 +129,18 @@ public class Prototype {
             context.filterState += config.lowPassCutoff * (preFilteredSample - context.filterState);
             double finalSampleValue = context.filterState;
 
-            short pcmSample = (short) (finalSampleValue * 32767.0);
+            // Kanäle trennen und Stereo-Lautstärke anwenden
+            short pcmSampleLeft = (short) (finalSampleValue * leftGain * 32767.0);
+            short pcmSampleRight = (short) (finalSampleValue * rightGain * 32767.0);
+
             try {
-                dos.writeByte(pcmSample & 0xFF);
-                dos.writeByte((pcmSample >> 8) & 0xFF);
+                // Linker Kanal (Zuerst)
+                dos.writeByte(pcmSampleLeft & 0xFF);
+                dos.writeByte((pcmSampleLeft >> 8) & 0xFF);
+
+                // Rechter Kanal (Danach)
+                dos.writeByte(pcmSampleRight & 0xFF);
+                dos.writeByte((pcmSampleRight >> 8) & 0xFF);
             } catch (IOException ignored) {}
 
             context.totalSamplesWritten++;
@@ -271,19 +289,19 @@ public class Prototype {
         };
     }
 
-    private static void writeWavHeader(ByteBuffer buffer, int dataSize) {
-        buffer.put("RIFF".getBytes());
-        buffer.putInt(WAV_HEADER_SIZE + dataSize - 8);
-        buffer.put("WAVE".getBytes());
-        buffer.put("fmt ".getBytes());
-        buffer.putInt(16);
-        buffer.putShort((short) 1);
-        buffer.putShort((short) CHANNELS);
+    private static void writeWavHeader(ByteBuffer buffer, int audioDataLength) {
+        buffer.put("RIFF".getBytes(StandardCharsets.US_ASCII));
+        buffer.putInt(36 + audioDataLength);
+        buffer.put("WAVE".getBytes(StandardCharsets.US_ASCII));
+        buffer.put("fmt ".getBytes(StandardCharsets.US_ASCII));
+        buffer.putInt(16); // Subchunk1Size
+        buffer.putShort((short) 1); // AudioFormat (PCM)
+        buffer.putShort((short) CHANNELS); // Stereo
         buffer.putInt(SAMPLE_RATE);
-        buffer.putInt(SAMPLE_RATE * CHANNELS * BYTES_PER_SAMPLE);
-        buffer.putShort((short) (CHANNELS * BYTES_PER_SAMPLE));
+        buffer.putInt(SAMPLE_RATE * CHANNELS * BYTES_PER_SAMPLE); // ByteRate
+        buffer.putShort((short) (CHANNELS * BYTES_PER_SAMPLE)); // BlockAlign
         buffer.putShort((short) BITS_PER_SAMPLE);
-        buffer.put("data".getBytes());
-        buffer.putInt(dataSize);
+        buffer.put("data".getBytes(StandardCharsets.US_ASCII));
+        buffer.putInt(audioDataLength);
     }
 }
