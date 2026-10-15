@@ -58,8 +58,7 @@ public class Prototype {
     public static Sound createMumbleSound(String text, VoiceOptions options) {
         String sanitizedText = text.toUpperCase();
 
-        // Dynamischer Stream statt festem ByteBuffer
-        try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             DataOutputStream dos = new DataOutputStream(baos);
 
             var context = new SoundContext(options.baseFreq);
@@ -68,7 +67,6 @@ public class Prototype {
                 addSampleForChaacter(options, character, context, dos);
             }
 
-            // Ergebnis-Array holen und den echten WAV-Header davor klatschen
             byte[] audioData = baos.toByteArray();
             byte[] finalWav = new byte[WAV_HEADER_SIZE + audioData.length];
 
@@ -93,7 +91,6 @@ public class Prototype {
             context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.003;
             context.currentPitch += (targetFrequency - context.currentPitch) * 0.002;
 
-            // Globale Zeitberechnung über die absolut geschriebenen Samples
             double globalTime = (double) context.totalSamplesWritten / SAMPLE_RATE;
             double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
             double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.3) * (1.0 + vibrato), 40.0, 400.0);
@@ -104,7 +101,6 @@ public class Prototype {
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
             double sampleValue = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
 
-            // Im Little-Endian Format in den Stream schreiben
             short pcmSample = (short) (sampleValue * 32767.0);
             try {
                 dos.writeByte(pcmSample & 0xFF);
@@ -116,10 +112,9 @@ public class Prototype {
         }
     }
 
-    // Isoliert die Längenberechnung für genau EIN Zeichen
     private static int calculateSingleBlipLength(char c, VoiceOptions config) {
-        if (".!?".contains(String.valueOf(c))) return (int) (SAMPLE_RATE * config.sentencePause);
-        if (",;:".contains(String.valueOf(c))) return (int) (SAMPLE_RATE * config.commaPause);
+        if (c == '.' || c == '!' || c == '?') return (int) (SAMPLE_RATE * config.sentencePause);
+        if (c == ',' || c == ';' || c == ':') return (int) (SAMPLE_RATE * config.commaPause);
         if (c == ' ' || c == '-') return (int) (SAMPLE_RATE * config.wordPause);
 
         int baseSamplesPerBlip = (int) (SAMPLE_RATE * config.baseBlipDuration);
@@ -133,19 +128,14 @@ public class Prototype {
     }
 
     private static double determineTargetVowelShift(char c, double fallbackValue) {
-        if (isVowel(c)) {
-            return switch (c) {
-                case 'A' -> 0.95;
-                case 'E' -> 1.05;
-                case 'I' -> 1.15;
-                case 'O' -> 0.85;
-                case 'U' -> 0.75;
-                default -> fallbackValue;
-            };
-        } else if (isNasal(c)) {
-            return 0.85;
-        }
-        return fallbackValue;
+        return switch (c) {
+            case 'A' -> 0.95;
+            case 'E' -> 1.05;
+            case 'I' -> 1.15;
+            case 'O' -> 0.85;
+            case 'U' -> 0.75;
+            default -> isNasal(c) ? 0.85 : fallbackValue;
+        };
     }
 
     private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, char c) {
@@ -161,17 +151,67 @@ public class Prototype {
 
     private static double synthesizePhoneme(char c, double phase, int totalSamples, int currentSample, VoiceOptions config) {
         if (isPunctuation(c) || c == ' ') return 0.0;
-        if (isVowel(c)) return fastTanh(generateBaseWave(phase, config.waveType) * 1.2) * config.vowelGain;
+
+        if (isVowel(c)) {
+            double baseWave = generateBaseWave(phase, config.waveType);
+
+            double f1Mult = 1.0;
+            double f2Mult = 2.0;
+
+            switch (c) {
+                case 'A':
+                    f1Mult = 2.5;
+                    f2Mult = 4.0;
+                    break;
+                case 'E':
+                    f1Mult = 1.8;
+                    f2Mult = 5.0;
+                    break; // Leicht gesenkt gegen Fiepen
+                case 'I':
+                    f1Mult = 1.2;
+                    f2Mult = 6.0;
+                    break; // Stark gesenkt, um Schärfe zu nehmen
+                case 'O':
+                    f1Mult = 1.6;
+                    f2Mult = 2.8;
+                    break;
+                case 'U':
+                    f1Mult = 1.1;
+                    f2Mult = 2.0;
+                    break;
+                case 'Ä':
+                    f1Mult = 2.2;
+                    f2Mult = 5.0;
+                    break;
+                case 'Ö':
+                    f1Mult = 1.7;
+                    f2Mult = 4.0;
+                    break;
+                case 'Ü':
+                    f1Mult = 1.2;
+                    f2Mult = 4.5;
+                    break;
+            }
+
+            // Obertongewichtung reduziert für ein runderes Klangbild
+            double formant1 = MathUtil.fastSin(phase * f1Mult) * 0.35;
+            double formant2 = MathUtil.fastSin(phase * f2Mult) * 0.15;
+
+            // WEICHE SATURATION: Math.sin glättet Spitzen perfekt ab, statt sie abzuschneiden (Kein Kratzen!)
+            return Math.sin((baseWave + formant1 + formant2) * 0.9) * config.vowelGain;
+        }
 
         if (isPlosive(c)) {
-            if (currentSample < totalSamples * 0.15) {
-                return MathUtil.fastSin(phase * 0.15) * Math.exp(-currentSample / 80.0) * config.plosiveGain;
+            if (currentSample < totalSamples * 0.12) {
+                // Frequenz gedämpft für einen runderen Pop-Laut
+                return MathUtil.fastSin(phase * 0.12) * Math.exp(-currentSample / 90.0) * config.plosiveGain;
             }
             return 0.0;
         }
 
         if (isNasal(c)) {
-            return fastTanh(MathUtil.fastSin(phase * 0.5)) * config.nasalGain;
+            // Auch hier Sinus statt Tanh für samtweiches Summen
+            return MathUtil.fastSin(phase * 0.5) * config.nasalGain;
         }
         return 0.0;
     }
@@ -183,14 +223,11 @@ public class Prototype {
         return 1.0;
     }
 
-    private static double fastTanh(double x) {
-        return x / (1.0 + Math.abs(x));
-    }
-
     private static double generateBaseWave(double phase, WaveType waveType) {
         return switch (waveType) {
             case SINE -> MathUtil.fastSin(phase);
-            case SQUARE -> fastTanh(MathUtil.fastSin(phase) * 2.0) * 0.75;
+            // Glatte Rechteckwelle mittels Sinus-Kompression (Oberschwingungen werden sanft abgerundet)
+            case SQUARE -> Math.sin(MathUtil.fastSin(phase) * 1.5) * 0.8;
             case TRIANGLE -> (Math.abs((phase % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
         };
     }
@@ -223,7 +260,6 @@ public class Prototype {
         };
     }
 
-
     private static void writeWavHeader(ByteBuffer buffer, int dataSize) {
         buffer.put("RIFF".getBytes());
         buffer.putInt(WAV_HEADER_SIZE + dataSize - 8);
@@ -239,5 +275,4 @@ public class Prototype {
         buffer.put("data".getBytes());
         buffer.putInt(dataSize);
     }
-
 }
