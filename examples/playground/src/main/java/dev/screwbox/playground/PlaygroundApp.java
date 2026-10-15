@@ -56,11 +56,10 @@ public class PlaygroundApp {
                 config.wordPause = 0.08;
 
                 // Mischpult
-                config.noiseGain = 0.02;            // Rauschen weiter gesenkt gegen Zischeln
                 config.vowelGain = 0.70;
                 config.nasalGain = 0.40;
                 config.plosiveGain = 0.30;
-                var mumble = Prototype.generateMumbleWavByteArray(text, Prototype.WaveType.SINE, config);
+                var mumble = Prototype.generateMumbleWavByteArray(text, Prototype.WaveType.SQUARE, config);
                 System.out.println(Duration.since(t).milliseconds());
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);

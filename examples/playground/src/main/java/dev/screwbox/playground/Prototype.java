@@ -38,7 +38,6 @@ public class Prototype {
         public double wordPause = 0.15;
 
         // Mischpult
-        public double noiseGain = 0.015;            // Stark gedämpftes, weiches Rauschen
         public double vowelGain = 0.75;
         public double nasalGain = 0.40;
         public double plosiveGain = 0.35;
@@ -52,8 +51,9 @@ public class Prototype {
         ByteBuffer buffer = ByteBuffer.wrap(new byte[WAV_HEADER_SIZE + dataSize]).order(ByteOrder.LITTLE_ENDIAN);
         writeWavHeader(buffer, dataSize);
 
-        double runningPhase = 0.0, currentPitch = config.baseFreq, currentVowelShift = 1.0;
-        double[] noiseFilterState = new double[2];
+        double runningPhase = 0.0;
+        double currentPitch = config.baseFreq;
+        double currentVowelShift = 1.0;
 
         for (int i = 0; i < sanitizedText.length(); i++) {
             char character = sanitizedText.charAt(i);
@@ -77,7 +77,7 @@ public class Prototype {
                 runningPhase = (runningPhase + (2.0 * Math.PI * instantFreq) / SAMPLE_RATE) % (2.0 * Math.PI);
 
                 // Synthese, Hüllkurve und Buffering in 3 knackigen Zeilen
-                double rawValue = synthesizePhoneme(character, runningPhase, currentSamplesPerBlip, s, waveType, noiseFilterState, config);
+                double rawValue = synthesizePhoneme(character, runningPhase, currentSamplesPerBlip, s, waveType, config);
                 double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
                 double sampleValue = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
 
@@ -124,7 +124,7 @@ public class Prototype {
                 case 'I' -> 1.15; // Zuvor 1.4 (Verursachte das extreme Fiepen!)
                 case 'O' -> 0.85;
                 case 'U' -> 0.75;
-                default  -> fallbackValue;
+                default -> fallbackValue;
             };
         } else if (isNasal(c)) {
             return 0.85;
@@ -145,20 +145,13 @@ public class Prototype {
         return (0.85 + random.nextDouble() * 0.15);
     }
 
-    private static double synthesizePhoneme(char c, double phase, int totalSamples, int currentSample, WaveType waveType, double[] filterState, VoiceConfig config) {
+    private static double synthesizePhoneme(char c, double phase, int totalSamples, int currentSample, WaveType waveType, VoiceConfig config) {
         if (isPunctuation(c) || c == ' ') {
             return 0.0;
         }
 
         if (isVowel(c)) {
             return fastTanh(generateBaseWave(phase, waveType) * 1.2) * config.vowelGain;
-        }
-
-        if (isFrikative(c)) {
-            double rawNoise = (random.nextDouble() * 2.0 - 1.0) * config.noiseGain;
-            filterState[0] = (filterState[0] * 0.70) + (rawNoise * 0.30);
-            filterState[1] = (filterState[1] * 0.90) + (filterState[0] * 0.10);
-            return filterState[1];
         }
 
         if (isPlosive(c)) {
@@ -170,7 +163,7 @@ public class Prototype {
 
         if (isNasal(c)) {
             double nasalWave = MathUtil.fastSin(phase * 0.5);
-            return fastTanh(nasalWave * 1.0) * config.nasalGain;
+            return fastTanh(nasalWave) * config.nasalGain;
         }
 
         return 0.0;
@@ -192,17 +185,31 @@ public class Prototype {
 
     private static double generateBaseWave(double phase, WaveType waveType) {
         return switch (waveType) {
-            case SINE     -> MathUtil.fastSin(phase);
-            case SQUARE   -> fastTanh(MathUtil.fastSin(phase) * 2.0) * 0.75;
+            case SINE -> MathUtil.fastSin(phase);
+            case SQUARE -> fastTanh(MathUtil.fastSin(phase) * 2.0) * 0.75;
             case TRIANGLE -> (Math.abs((phase % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
         };
     }
 
-    private static boolean isVowel(char c) { return "AEIOUÄÖÜ".contains(String.valueOf(c)); }
-    private static boolean isFrikative(char c) { return "SZFCXCHKSST".contains(String.valueOf(c)); }
-    private static boolean isPlosive(char c) { return "PTKBDG".contains(String.valueOf(c)); }
-    private static boolean isNasal(char c) { return "MNLWR".contains(String.valueOf(c)); }
-    private static boolean isPunctuation(char c) { return ".,!?;:-".contains(String.valueOf(c)); }
+    private static boolean isVowel(char c) {
+        return "AEIOUÄÖÜ".contains(String.valueOf(c));
+    }
+
+    private static boolean isFrikative(char c) {
+        return "SZFCXCHKSST".contains(String.valueOf(c));
+    }
+
+    private static boolean isPlosive(char c) {
+        return "PTKBDG".contains(String.valueOf(c));
+    }
+
+    private static boolean isNasal(char c) {
+        return "MNLWR".contains(String.valueOf(c));
+    }
+
+    private static boolean isPunctuation(char c) {
+        return ".,!?;:-".contains(String.valueOf(c));
+    }
 
     private static void writeWavHeader(ByteBuffer buffer, int dataSize) {
         buffer.put("RIFF".getBytes());
