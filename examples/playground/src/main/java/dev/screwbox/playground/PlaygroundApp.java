@@ -20,7 +20,12 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
-        List<String > texts = List.of("I am your friend. But i am also okay with it");
+        List<String > texts = List.of(
+            "I am your friend. But i am also okay with it.",
+            "My cat is so fat, it cannot swim in the ocean.",
+            "Lets have a party.",
+            "Can I ask you a question? It's about life and death."
+        );
 
 
         screwBox.environment().addSystem(engine -> {
@@ -34,7 +39,28 @@ public class PlaygroundApp {
                 text = ListUtil.pickRandom(texts);
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
-                var mumble = Prototype.generateMumbleWavByteArray(text, 350, Prototype.WaveType.SINE, 0.015);
+                Prototype.VoiceConfig config = new Prototype.VoiceConfig();
+                config.baseFreq = 110.0;             // Grundtonhöhe (z.B. 110Hz Mann, 200Hz Frau)
+                config.baseBlipDuration = 0.08;      // Sprechgeschwindigkeit
+
+                config.pitchRandomness = 0.15;       // Natürliche Mikro-Schwankung der Tonhöhe
+                config.speedRandomness = 0.25;       // Natürliche Schwankung des Sprechtempos
+
+                // Menschliches Vibrato (Muskel-Instabilität)
+                config.vibratoSpeed = 5.5;           // Zitter-Geschwindigkeit in Hz
+                config.vibratoDepth = 0.025;         // Zitter-Stärke
+
+                // Pausenkonfiguration
+                config.sentencePause = 0.45;
+                config.commaPause = 0.22;
+                config.wordPause = 0.15;
+
+                // Mischpult
+                config.noiseGain = 0.015;            // Stark gedämpftes, weiches Rauschen
+                config.vowelGain = 0.75;
+                config.nasalGain = 0.40;
+                config.plosiveGain = 0.35;
+                var mumble = Prototype.generateMumbleWavByteArray(text, Prototype.WaveType.SQUARE, config);
                 System.out.println(Duration.since(t).milliseconds());
                 var mumbleSound = Sound.fromSoundData(mumble);
                 engine.audio().playSound(mumbleSound);
