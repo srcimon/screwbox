@@ -230,15 +230,6 @@ public class MumbleSynthesizer {
     }
 
     private static double synthesizePhoneme(CharConfig config, double phase, VoiceOptions options) {
-        if (CharacterType.PUCTUATION == config.type()) {
-            return 0.0;
-        }
-        if (CharacterType.SPACE == config.type()) {
-            return 0.0;
-        }
-        if (CharacterType.PLOSIVE == config.type()) {
-            return 0.0;
-        }
         if (CharacterType.NASAL == config.type()) {
             return MathUtil.fastSin(phase * 0.5) * options.nasalGain;
         }
@@ -250,9 +241,6 @@ public class MumbleSynthesizer {
                 case SQUARE -> MathUtil.fastSin(MathUtil.fastSin(phase) * 1.2) * 0.8;
                 case TRIANGLE -> (Math.abs((phase % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
             };
-
-            // Schneller Lookup statt komplexem Switch mit Seiteneffekten
-
             // Harmonische Obertöne sehr subtil beimischen (Verhindert Klingeln im Ohr)
             double formant1 = MathUtil.fastSin(phase * config.wovelHeight()) * 0.25;
             double formant2 = MathUtil.fastSin(phase * config.wovelBackness()) * 0.10;
