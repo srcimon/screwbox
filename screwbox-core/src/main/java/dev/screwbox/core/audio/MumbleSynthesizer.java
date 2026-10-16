@@ -170,7 +170,7 @@ public class MumbleSynthesizer {
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
         double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
-        double targetFrequency = calculateSegmentFrequency(options.baseFreq, options.pitchRandomness, config) * (1.0 + intonation);
+        double targetFrequency = calculateSegmentFrequency(options, config) * (1.0 + intonation);
 
         double segmentVolume = calculateSegmentVolume(config);
 
@@ -245,12 +245,12 @@ public class MumbleSynthesizer {
         return (int) (baseSamplesPerBlip * speedModifier);
     }
 
-    private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, SynthConfig config) {
+    private static double calculateSegmentFrequency(VoiceOptions options, SynthConfig config) {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
-            return baseFreq;
+            return options.baseFreq;
         }
-        double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * pitchRandomness;
-        return baseFreq * (1.0 + randomPitchOffset);
+        double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * options.pitchRandomness;
+        return options.baseFreq * (1.0 + randomPitchOffset);
     }
 
     private static double calculateSegmentVolume(SynthConfig config) {
