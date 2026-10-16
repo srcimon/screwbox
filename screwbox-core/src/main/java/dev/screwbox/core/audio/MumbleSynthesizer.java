@@ -11,6 +11,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.BiFunction;
 
 import static java.util.Map.entry;
 
@@ -19,42 +20,42 @@ public class MumbleSynthesizer {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
     private static final Random random = new Random();
 
-    private record SynthConfig(CharacterType type, Double targetWovelShift, Double wovelHeight, Double wovelBackness) {//TODO wovelHeight and wovelBackness used?
+    private record SynthConfig(CharacterType type, Double targetWovelShift, BiFunction<Double, VoiceOptions, Double> phonemeCalculation) {
 //TODO add constructor without wovelconfig
     }
 
     private static final Map<Character, SynthConfig> SYNTH_CONFIG = Map.ofEntries(
-        entry('A', new SynthConfig(CharacterType.VOWEL, 0.92, 2.0, 3.5)),
-        entry('E', new SynthConfig(CharacterType.VOWEL, 1.05, 1.5, 4.0)),
-        entry('I', new SynthConfig(CharacterType.VOWEL, 1.12, 1.2, 4.5)),
-        entry('O', new SynthConfig(CharacterType.VOWEL, 0.85, 1.4, 2.4)),
-        entry('U', new SynthConfig(CharacterType.VOWEL, 0.75, 1.1, 1.8)),
-        entry('Ä', new SynthConfig(CharacterType.VOWEL, 0.92, 1.8, 4.0)),
-        entry('Ö', new SynthConfig(CharacterType.VOWEL, 0.85, 1.5, 3.2)),
-        entry('Ü', new SynthConfig(CharacterType.VOWEL, 1.12, 1.2, 3.5)),
+        entry('A', new SynthConfig(CharacterType.VOWEL, 0.92, new WovelPhonemeCalculation(2.0, 3.5))),//TODO MOVE CONFIG INSIDE
+        entry('E', new SynthConfig(CharacterType.VOWEL, 1.05,  new WovelPhonemeCalculation(1.5, 4.0))),
+        entry('I', new SynthConfig(CharacterType.VOWEL, 1.12,  new WovelPhonemeCalculation(1.2, 4.5))),
+        entry('O', new SynthConfig(CharacterType.VOWEL, 0.85,  new WovelPhonemeCalculation(1.4, 2.4))),
+        entry('U', new SynthConfig(CharacterType.VOWEL, 0.75,  new WovelPhonemeCalculation(1.1, 1.8))),
+        entry('Ä', new SynthConfig(CharacterType.VOWEL, 0.92,  new WovelPhonemeCalculation(1.8, 4.0))),
+        entry('Ö', new SynthConfig(CharacterType.VOWEL, 0.85,  new WovelPhonemeCalculation(1.5, 3.2))),
+        entry('Ü', new SynthConfig(CharacterType.VOWEL, 1.12,  new WovelPhonemeCalculation(1.2, 3.5))),
 
-        entry('P', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('T', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('K', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('B', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('D', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('G', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('P', new SynthConfig(CharacterType.PLOSIVE, null,  new DefaultPhonemeCalculation())),
+        entry('T', new SynthConfig(CharacterType.PLOSIVE, null,  new DefaultPhonemeCalculation())),
+        entry('K', new SynthConfig(CharacterType.PLOSIVE, null,  new DefaultPhonemeCalculation())),
+        entry('B', new SynthConfig(CharacterType.PLOSIVE, null,  new DefaultPhonemeCalculation())),
+        entry('D', new SynthConfig(CharacterType.PLOSIVE, null,  new DefaultPhonemeCalculation())),
+        entry('G', new SynthConfig(CharacterType.PLOSIVE, null,  new DefaultPhonemeCalculation())),
 
-        entry('M', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
-        entry('N', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
-        entry('L', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
-        entry('W', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
-        entry('R', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('M', new SynthConfig(CharacterType.NASAL, 0.88, new NasalPhonemeCalculation())),
+        entry('N', new SynthConfig(CharacterType.NASAL, 0.88, new NasalPhonemeCalculation())),
+        entry('L', new SynthConfig(CharacterType.NASAL, 0.88, new NasalPhonemeCalculation())),
+        entry('W', new SynthConfig(CharacterType.NASAL, 0.88, new NasalPhonemeCalculation())),
+        entry('R', new SynthConfig(CharacterType.NASAL, 0.88, new NasalPhonemeCalculation())),
 
-        entry('.', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry(',', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry('!', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry('?', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry(';', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry(':', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry('-', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry('.', new SynthConfig(CharacterType.PUCTUATION, null, new DefaultPhonemeCalculation())),
+        entry(',', new SynthConfig(CharacterType.PUCTUATION, null, new DefaultPhonemeCalculation())),
+        entry('!', new SynthConfig(CharacterType.PUCTUATION, null, new DefaultPhonemeCalculation())),
+        entry('?', new SynthConfig(CharacterType.PUCTUATION, null, new DefaultPhonemeCalculation())),
+        entry(';', new SynthConfig(CharacterType.PUCTUATION, null, new DefaultPhonemeCalculation())),
+        entry(':', new SynthConfig(CharacterType.PUCTUATION, null, new DefaultPhonemeCalculation())),
+        entry('-', new SynthConfig(CharacterType.PUCTUATION, null, new DefaultPhonemeCalculation())),
 
-        entry(' ', new SynthConfig(CharacterType.SPACE, null, null, null))
+        entry(' ', new SynthConfig(CharacterType.SPACE, null, new DefaultPhonemeCalculation()))
     );
 
     public enum WaveType {SINE, SQUARE, TRIANGLE}
@@ -115,7 +116,7 @@ public class MumbleSynthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var type = SYNTH_CONFIG.getOrDefault(character, new SynthConfig(CharacterType.UNKNOWM, null, null, null));
+                var type = SYNTH_CONFIG.getOrDefault(character, new SynthConfig(CharacterType.UNKNOWM, null, new DefaultPhonemeCalculation()));
 
                 // Berechnung der globalen Text-Position für die Satzmelodie (0.0 bis 1.0)
                 double textProgress = (double) i / chars.length;
@@ -165,7 +166,7 @@ public class MumbleSynthesizer {
             context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI);
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
-            double rawValue = synthesizePhoneme(config, context.runningPhase, options);
+            double rawValue = config.phonemeCalculation().apply(context.runningPhase, options);
             double envelope = CharacterType.PUCTUATION == config.type() ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
@@ -224,12 +225,26 @@ public class MumbleSynthesizer {
         return (0.85 + random.nextDouble() * 0.15);
     }
 
-    private static double synthesizePhoneme(SynthConfig config, double phase, VoiceOptions options) {
-        if (CharacterType.NASAL == config.type()) {
+    private static class DefaultPhonemeCalculation implements BiFunction<Double, VoiceOptions, Double> {
+
+        @Override
+        public Double apply(Double aDouble, VoiceOptions voiceOptions) {
+            return 0.0;
+        }
+    }
+
+    private static class NasalPhonemeCalculation implements BiFunction<Double, VoiceOptions, Double> {
+
+        @Override
+        public Double apply(Double phase, VoiceOptions options) {
             return MathUtil.fastSin(phase * 0.5) * options.nasalGain;
         }
+    }
 
-        if (CharacterType.VOWEL == config.type()) {
+    private record WovelPhonemeCalculation(double wovelHeight, double wovelBackness) implements BiFunction<Double, VoiceOptions, Double> {
+
+        @Override
+        public Double apply(Double phase, VoiceOptions options) {
             double baseWave = switch (options.waveType) {
                 case SINE -> MathUtil.fastSin(phase);
                 // Ultra-weiche Annäherung einer Dreieckswelle für wärmeren Sound
@@ -237,14 +252,11 @@ public class MumbleSynthesizer {
                 case TRIANGLE -> (Math.abs((phase % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
             };
             // Harmonische Obertöne sehr subtil beimischen (Verhindert Klingeln im Ohr)
-            double formant1 = MathUtil.fastSin(phase * config.wovelHeight()) * 0.25;
-            double formant2 = MathUtil.fastSin(phase * config.wovelBackness()) * 0.10;
+            double formant1 = MathUtil.fastSin(phase * wovelHeight) * 0.25;
+            double formant2 = MathUtil.fastSin(phase * wovelBackness) * 0.10;
 
             return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * options.vowelGain;
         }
-
-
-        return 0.0;
     }
 
 
