@@ -289,26 +289,20 @@ public class MumbleSynthesizer {
     }
 
     private static void writeWavHeader(ByteBuffer buffer, int audioDataLength) {
-        // 1. Berechnungen basierend auf dem AudioFormat
-        int channels = AUDIO_FORMAT.getChannels();
         int sampleRate = (int) AUDIO_FORMAT.getSampleRate();
         int bitsPerSample = AUDIO_FORMAT.getSampleSizeInBits();
         int bytesPerSample = bitsPerSample / 8;
 
-        int byteRate = sampleRate * channels * bytesPerSample;
-        short blockAlign = (short) (channels * bytesPerSample);
-
-        // 2. WAV-Header schreiben
         buffer.put("RIFF".getBytes(StandardCharsets.US_ASCII));
         buffer.putInt(44 - 8 + audioDataLength); // 44 ist die Standard-WAV-Header-Größe
         buffer.put("WAVE".getBytes(StandardCharsets.US_ASCII));
         buffer.put("fmt ".getBytes(StandardCharsets.US_ASCII));
         buffer.putInt(16); // Subchunk1Size für PCM
         buffer.putShort((short) 1); // AudioFormat (1 = unkomprimiertes PCM)
-        buffer.putShort((short) channels);
+        buffer.putShort((short) AUDIO_FORMAT.getChannels());
         buffer.putInt(sampleRate);
-        buffer.putInt(byteRate);
-        buffer.putShort(blockAlign);
+        buffer.putInt(sampleRate * AUDIO_FORMAT.getChannels() * bytesPerSample);
+        buffer.putShort((short) (AUDIO_FORMAT.getChannels() * bytesPerSample));
         buffer.putShort((short) bitsPerSample);
         buffer.put("data".getBytes(StandardCharsets.US_ASCII));
         buffer.putInt(audioDataLength);
