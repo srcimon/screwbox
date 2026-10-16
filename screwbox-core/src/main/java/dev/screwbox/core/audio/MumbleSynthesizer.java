@@ -12,6 +12,8 @@ import java.nio.ByteOrder;
 import java.util.Map;
 import java.util.Random;
 
+import static java.util.Map.entry;
+
 public class MumbleSynthesizer {
 
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
@@ -21,40 +23,40 @@ public class MumbleSynthesizer {
 
     }
 
-    private static final Map<Character, CharConfig> TYPE_MAP = Map.ofEntries(
-        Map.entry('A', new CharConfig(CharacterType.VOWEL, 0.92)),
-        Map.entry('E', new CharConfig(CharacterType.VOWEL, 1.05)),
-        Map.entry('I', new CharConfig(CharacterType.VOWEL, 1.12)),
-        Map.entry('O', new CharConfig(CharacterType.VOWEL, 0.85)),
-        Map.entry('U', new CharConfig(CharacterType.VOWEL, 0.75)),
-        Map.entry('Ä', new CharConfig(CharacterType.VOWEL, 0.92)),
-        Map.entry('Ö', new CharConfig(CharacterType.VOWEL, 0.85)),
-        Map.entry('Ü', new CharConfig(CharacterType.VOWEL, 1.12)),
+    private static final Map<Character, CharConfig> CHARACTER_CONFIGS = Map.ofEntries(
+        entry('A', new CharConfig(CharacterType.VOWEL, 0.92)),
+        entry('E', new CharConfig(CharacterType.VOWEL, 1.05)),
+        entry('I', new CharConfig(CharacterType.VOWEL, 1.12)),
+        entry('O', new CharConfig(CharacterType.VOWEL, 0.85)),
+        entry('U', new CharConfig(CharacterType.VOWEL, 0.75)),
+        entry('Ä', new CharConfig(CharacterType.VOWEL, 0.92)),
+        entry('Ö', new CharConfig(CharacterType.VOWEL, 0.85)),
+        entry('Ü', new CharConfig(CharacterType.VOWEL, 1.12)),
 
-        Map.entry('P', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('T', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('K', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('B', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('D', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('G', new CharConfig(CharacterType.PLOSIVE, null)),
+        entry('P', new CharConfig(CharacterType.PLOSIVE, null)),
+        entry('T', new CharConfig(CharacterType.PLOSIVE, null)),
+        entry('K', new CharConfig(CharacterType.PLOSIVE, null)),
+        entry('B', new CharConfig(CharacterType.PLOSIVE, null)),
+        entry('D', new CharConfig(CharacterType.PLOSIVE, null)),
+        entry('G', new CharConfig(CharacterType.PLOSIVE, null)),
 
-        Map.entry('M', new CharConfig(CharacterType.NASAL, 0.88)),
-        Map.entry('N', new CharConfig(CharacterType.NASAL, 0.88)),
-        Map.entry('L', new CharConfig(CharacterType.NASAL, 0.88)),
-        Map.entry('W', new CharConfig(CharacterType.NASAL, 0.88)),
-        Map.entry('R', new CharConfig(CharacterType.NASAL, 0.88)),
+        entry('M', new CharConfig(CharacterType.NASAL, 0.88)),
+        entry('N', new CharConfig(CharacterType.NASAL, 0.88)),
+        entry('L', new CharConfig(CharacterType.NASAL, 0.88)),
+        entry('W', new CharConfig(CharacterType.NASAL, 0.88)),
+        entry('R', new CharConfig(CharacterType.NASAL, 0.88)),
 
-        Map.entry('.', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry(',', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry('!', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry('?', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry(';', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry(':', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry('-', new CharConfig(CharacterType.PUCTUATION, null))
+        entry('.', new CharConfig(CharacterType.PUCTUATION, null)),
+        entry(',', new CharConfig(CharacterType.PUCTUATION, null)),
+        entry('!', new CharConfig(CharacterType.PUCTUATION, null)),
+        entry('?', new CharConfig(CharacterType.PUCTUATION, null)),
+        entry(';', new CharConfig(CharacterType.PUCTUATION, null)),
+        entry(':', new CharConfig(CharacterType.PUCTUATION, null)),
+        entry('-', new CharConfig(CharacterType.PUCTUATION, null))
     );
 
     private static CharConfig fetchConfig(char c) {
-        return TYPE_MAP.getOrDefault(c, new CharConfig(CharacterType.UNKNOWM, null));
+        return CHARACTER_CONFIGS.getOrDefault(c, new CharConfig(CharacterType.UNKNOWM, null));
     }
 
     public enum WaveType {SINE, SQUARE, TRIANGLE}
