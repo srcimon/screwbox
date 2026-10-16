@@ -12,6 +12,7 @@ import java.nio.ByteOrder;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static java.util.Map.entry;
 
@@ -20,7 +21,7 @@ public class MumbleSynthesizer {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
     private static final Random random = new Random();
 
-    private record SynthConfig(CharacterType type, Double targetWovelShift,
+    private record SynthConfig(CharacterType type, Function<SoundContext, Double> targetWovelShift,
                                BiFunction<Double, VoiceOptions, Double> phonemeCalculation) {
 //TODO add constructor without wovelconfig
     }
@@ -48,37 +49,37 @@ public class MumbleSynthesizer {
     }
 
     private static final Map<Character, SynthConfig> SYNTH_CONFIG = Map.ofEntries(
-        entry('A', new SynthConfig(CharacterType.VOWEL, 0.92, new WovelPhoneme(2.0, 3.5))),//TODO MOVE CONFIG INSIDE
-        entry('E', new SynthConfig(CharacterType.VOWEL, 1.05, new WovelPhoneme(1.5, 4.0))),
-        entry('I', new SynthConfig(CharacterType.VOWEL, 1.12, new WovelPhoneme(1.2, 4.5))),
-        entry('O', new SynthConfig(CharacterType.VOWEL, 0.85, new WovelPhoneme(1.4, 2.4))),
-        entry('U', new SynthConfig(CharacterType.VOWEL, 0.75, new WovelPhoneme(1.1, 1.8))),
-        entry('Ä', new SynthConfig(CharacterType.VOWEL, 0.92, new WovelPhoneme(1.8, 4.0))),
-        entry('Ö', new SynthConfig(CharacterType.VOWEL, 0.85, new WovelPhoneme(1.5, 3.2))),
-        entry('Ü', new SynthConfig(CharacterType.VOWEL, 1.12, new WovelPhoneme(1.2, 3.5))),
+        entry('A', new SynthConfig(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(2.0, 3.5))),//TODO MOVE CONFIG INSIDE
+        entry('E', new SynthConfig(CharacterType.VOWEL, (context) -> 1.05, new WovelPhoneme(1.5, 4.0))),
+        entry('I', new SynthConfig(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 4.5))),
+        entry('O', new SynthConfig(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.4, 2.4))),
+        entry('U', new SynthConfig(CharacterType.VOWEL, (context) -> 0.75, new WovelPhoneme(1.1, 1.8))),
+        entry('Ä', new SynthConfig(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(1.8, 4.0))),
+        entry('Ö', new SynthConfig(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.5, 3.2))),
+        entry('Ü', new SynthConfig(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 3.5))),
 
-        entry('P', new SynthConfig(CharacterType.PLOSIVE, null, NO_PHONEME)),
-        entry('T', new SynthConfig(CharacterType.PLOSIVE, null, NO_PHONEME)),
-        entry('K', new SynthConfig(CharacterType.PLOSIVE, null, NO_PHONEME)),
-        entry('B', new SynthConfig(CharacterType.PLOSIVE, null, NO_PHONEME)),
-        entry('D', new SynthConfig(CharacterType.PLOSIVE, null, NO_PHONEME)),
-        entry('G', new SynthConfig(CharacterType.PLOSIVE, null, NO_PHONEME)),
+        entry('P', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('T', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('K', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('B', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('D', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('G', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
 
-        entry('M', new SynthConfig(CharacterType.NASAL, 0.88, NASAL_PHONEME)),
-        entry('N', new SynthConfig(CharacterType.NASAL, 0.88, NASAL_PHONEME)),
-        entry('L', new SynthConfig(CharacterType.NASAL, 0.88, NASAL_PHONEME)),
-        entry('W', new SynthConfig(CharacterType.NASAL, 0.88, NASAL_PHONEME)),
-        entry('R', new SynthConfig(CharacterType.NASAL, 0.88, NASAL_PHONEME)),
+        entry('M', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('N', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('L', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('W', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('R', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
 
-        entry('.', new SynthConfig(CharacterType.PUCTUATION, null, NO_PHONEME)),
-        entry(',', new SynthConfig(CharacterType.PUCTUATION, null, NO_PHONEME)),
-        entry('!', new SynthConfig(CharacterType.PUCTUATION, null, NO_PHONEME)),
-        entry('?', new SynthConfig(CharacterType.PUCTUATION, null, NO_PHONEME)),
-        entry(';', new SynthConfig(CharacterType.PUCTUATION, null, NO_PHONEME)),
-        entry(':', new SynthConfig(CharacterType.PUCTUATION, null, NO_PHONEME)),
-        entry('-', new SynthConfig(CharacterType.PUCTUATION, null, NO_PHONEME)),
+        entry('.', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry(',', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('!', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('?', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry(';', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry(':', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('-', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
 
-        entry(' ', new SynthConfig(CharacterType.SPACE, null, NO_PHONEME))
+        entry(' ', new SynthConfig(CharacterType.SPACE, (context) -> context.currentVowelShift, NO_PHONEME))
     );
 
     public enum WaveType {SINE, SQUARE, TRIANGLE}
@@ -139,7 +140,7 @@ public class MumbleSynthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var type = SYNTH_CONFIG.getOrDefault(character, new SynthConfig(CharacterType.UNKNOWM, null, NO_PHONEME));
+                var type = SYNTH_CONFIG.getOrDefault(character, new SynthConfig(CharacterType.UNKNOWM, (context) -> context.currentVowelShift, NO_PHONEME));
 
                 // Berechnung der globalen Text-Position für die Satzmelodie (0.0 bis 1.0)
                 double textProgress = (double) i / chars.length;
@@ -164,9 +165,7 @@ public class MumbleSynthesizer {
                                               SoundContext context, DataOutputStream dos, double textProgress) {
         int currentSamplesPerBlip = calculateSingleBlipLength(character, config, options);
 
-        double targetVowelShift = config.targetWovelShift() == null
-            ? context.currentVowelShift
-            : config.targetWovelShift();
+        double targetVowelShift = config.targetWovelShift().apply(context);
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
         double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
