@@ -19,46 +19,46 @@ public class MumbleSynthesizer {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
     private static final Random random = new Random();
 
-    private record CharConfig(CharacterType type, Double targetWovelShift) {
-
+    private record CharConfig(CharacterType type, Double targetWovelShift, Double wovelHeight, Double wovelBackness) {
+//TODO add constructor without wovelconfig
     }
 
     private static final Map<Character, CharConfig> CHARACTER_CONFIGS = Map.ofEntries(
-        entry('A', new CharConfig(CharacterType.VOWEL, 0.92)),
-        entry('E', new CharConfig(CharacterType.VOWEL, 1.05)),
-        entry('I', new CharConfig(CharacterType.VOWEL, 1.12)),
-        entry('O', new CharConfig(CharacterType.VOWEL, 0.85)),
-        entry('U', new CharConfig(CharacterType.VOWEL, 0.75)),
-        entry('Ä', new CharConfig(CharacterType.VOWEL, 0.92)),
-        entry('Ö', new CharConfig(CharacterType.VOWEL, 0.85)),
-        entry('Ü', new CharConfig(CharacterType.VOWEL, 1.12)),
+        entry('A', new CharConfig(CharacterType.VOWEL, 0.92, 2.0, 3.5)),
+        entry('E', new CharConfig(CharacterType.VOWEL, 1.05, 1.5, 4.0)),
+        entry('I', new CharConfig(CharacterType.VOWEL, 1.12, 1.2, 4.5)),
+        entry('O', new CharConfig(CharacterType.VOWEL, 0.85, 1.4, 2.4)),
+        entry('U', new CharConfig(CharacterType.VOWEL, 0.75, 1.1, 1.8)),
+        entry('Ä', new CharConfig(CharacterType.VOWEL, 0.92, 1.8, 4.0)),
+        entry('Ö', new CharConfig(CharacterType.VOWEL, 0.85, 1.5, 3.2)),
+        entry('Ü', new CharConfig(CharacterType.VOWEL, 1.12, 1.2, 3.5)),
 
-        entry('P', new CharConfig(CharacterType.PLOSIVE, null)),
-        entry('T', new CharConfig(CharacterType.PLOSIVE, null)),
-        entry('K', new CharConfig(CharacterType.PLOSIVE, null)),
-        entry('B', new CharConfig(CharacterType.PLOSIVE, null)),
-        entry('D', new CharConfig(CharacterType.PLOSIVE, null)),
-        entry('G', new CharConfig(CharacterType.PLOSIVE, null)),
+        entry('P', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('T', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('K', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('B', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('D', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('G', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
 
-        entry('M', new CharConfig(CharacterType.NASAL, 0.88)),
-        entry('N', new CharConfig(CharacterType.NASAL, 0.88)),
-        entry('L', new CharConfig(CharacterType.NASAL, 0.88)),
-        entry('W', new CharConfig(CharacterType.NASAL, 0.88)),
-        entry('R', new CharConfig(CharacterType.NASAL, 0.88)),
+        entry('M', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('N', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('L', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('W', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('R', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
 
-        entry('.', new CharConfig(CharacterType.PUCTUATION, null)),
-        entry(',', new CharConfig(CharacterType.PUCTUATION, null)),
-        entry('!', new CharConfig(CharacterType.PUCTUATION, null)),
-        entry('?', new CharConfig(CharacterType.PUCTUATION, null)),
-        entry(';', new CharConfig(CharacterType.PUCTUATION, null)),
-        entry(':', new CharConfig(CharacterType.PUCTUATION, null)),
-        entry('-', new CharConfig(CharacterType.PUCTUATION, null)),
+        entry('.', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry(',', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry('!', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry('?', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry(';', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry(':', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry('-', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
 
-        entry(' ', new CharConfig(CharacterType.SPACE, null))
+        entry(' ', new CharConfig(CharacterType.SPACE, null, null, null))
     );
 
     private static CharConfig fetchConfig(char c) {
-        return CHARACTER_CONFIGS.getOrDefault(c, new CharConfig(CharacterType.UNKNOWM, null));
+        return CHARACTER_CONFIGS.getOrDefault(c, new CharConfig(CharacterType.UNKNOWM, null, null, null));
     }
 
     public enum WaveType {SINE, SQUARE, TRIANGLE}
@@ -232,18 +232,6 @@ public class MumbleSynthesizer {
     private record FormantMult(double f1, double f2) {
     }
 
-    private static final FormantMult DEFAULT_MULT = new FormantMult(1.0, 2.0);
-    private static final Map<Character, FormantMult> VOWEL_MAP = Map.of(//TODO Combine with other map
-        'A', new FormantMult(2.0, 3.5),
-        'E', new FormantMult(1.5, 4.0),
-        'I', new FormantMult(1.2, 4.5),
-        'O', new FormantMult(1.4, 2.4),
-        'U', new FormantMult(1.1, 1.8),
-        'Ä', new FormantMult(1.8, 4.0),
-        'Ö', new FormantMult(1.5, 3.2),
-        'Ü', new FormantMult(1.2, 3.5)
-    );
-
     private static double synthesizePhoneme(char c, CharConfig config, double phase, VoiceOptions options) {
         if (CharacterType.PUCTUATION == config.type()) {
             return 0.0;
@@ -267,16 +255,13 @@ public class MumbleSynthesizer {
             };
 
             // Schneller Lookup statt komplexem Switch mit Seiteneffekten
-            FormantMult mult = VOWEL_MAP.getOrDefault(c, DEFAULT_MULT);
 
             // Harmonische Obertöne sehr subtil beimischen (Verhindert Klingeln im Ohr)
-            double formant1 = MathUtil.fastSin(phase * mult.f1()) * 0.25;
-            double formant2 = MathUtil.fastSin(phase * mult.f2()) * 0.10;
+            double formant1 = MathUtil.fastSin(phase * config.wovelHeight()) * 0.25;
+            double formant2 = MathUtil.fastSin(phase * config.wovelBackness()) * 0.10;
 
             return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * options.vowelGain;
         }
-
-
 
 
         return 0.0;
