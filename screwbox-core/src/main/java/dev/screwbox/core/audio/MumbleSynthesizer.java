@@ -52,7 +52,9 @@ public class MumbleSynthesizer {
         entry('?', new CharConfig(CharacterType.PUCTUATION, null)),
         entry(';', new CharConfig(CharacterType.PUCTUATION, null)),
         entry(':', new CharConfig(CharacterType.PUCTUATION, null)),
-        entry('-', new CharConfig(CharacterType.PUCTUATION, null))
+        entry('-', new CharConfig(CharacterType.PUCTUATION, null)),
+
+        entry(' ', new CharConfig(CharacterType.SPACE, null))
     );
 
     private static CharConfig fetchConfig(char c) {
@@ -66,6 +68,7 @@ public class MumbleSynthesizer {
         PLOSIVE,
         NASAL,
         PUCTUATION,
+        SPACE,
         UNKNOWM
     }
 
@@ -242,13 +245,26 @@ public class MumbleSynthesizer {
     );
 
     private static double synthesizePhoneme(char c, CharConfig config, double phase, VoiceOptions options) {
-
-        if (CharacterType.PUCTUATION == config.type() || c == ' ') {
-            return 0.0;//TODO TYPE SPACE?
+        if (CharacterType.PUCTUATION == config.type()) {
+            return 0.0;
+        }
+        if (CharacterType.SPACE == config.type()) {
+            return 0.0;
+        }
+        if (CharacterType.PLOSIVE == config.type()) {
+            return 0.0;
+        }
+        if (CharacterType.NASAL == config.type()) {
+            return MathUtil.fastSin(phase * 0.5) * options.nasalGain;
         }
 
         if (CharacterType.VOWEL == config.type()) {
-            double baseWave = generateBaseWave(phase, options.waveType);
+            double baseWave = switch (options.waveType) {
+                case SINE -> MathUtil.fastSin(phase);
+                // Ultra-weiche Annäherung einer Dreieckswelle für wärmeren Sound
+                case SQUARE -> MathUtil.fastSin(MathUtil.fastSin(phase) * 1.2) * 0.8;
+                case TRIANGLE -> (Math.abs((phase % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
+            };
 
             // Schneller Lookup statt komplexem Switch mit Seiteneffekten
             FormantMult mult = VOWEL_MAP.getOrDefault(c, DEFAULT_MULT);
@@ -260,23 +276,10 @@ public class MumbleSynthesizer {
             return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * options.vowelGain;
         }
 
-        if (CharacterType.PLOSIVE == config.type()) {
-            return 0.0;
-        }
 
-        if (CharacterType.NASAL == config.type()) {
-            return MathUtil.fastSin(phase * 0.5) * options.nasalGain;
-        }
+
+
         return 0.0;
-    }
-
-    private static double generateBaseWave(double phase, WaveType waveType) {
-        return switch (waveType) {
-            case SINE -> MathUtil.fastSin(phase);
-            // Ultra-weiche Annäherung einer Dreieckswelle für wärmeren Sound
-            case SQUARE -> MathUtil.fastSin(MathUtil.fastSin(phase) * 1.2) * 0.8;
-            case TRIANGLE -> (Math.abs((phase % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
-        };
     }
 
 
