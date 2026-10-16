@@ -55,9 +55,6 @@ public class MumbleSynthesizer {
         double filterStateLeft = 0.0;
         double filterStateRight = 0.0;
 
-        // Letztes Sample für Crossfading, um Knackser komplett zu verhindern
-        double lastSampleValue = 0.0;
-
         public SoundContext(double startPitch) {
             currentPitch = startPitch;
         }
@@ -77,7 +74,7 @@ public class MumbleSynthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var type = fetchType(character);
+                var type = fetchConfig(character);
 
                 // Berechnung der globalen Text-Position für die Satzmelodie (0.0 bis 1.0)
                 double textProgress = (double) i / chars.length;
@@ -98,18 +95,20 @@ public class MumbleSynthesizer {
         }
     }
 
-    private static void addSampleForCharacter(VoiceOptions config, char character, CharacterType type,
+    private static void addSampleForCharacter(VoiceOptions options, char character, CharConfig config,
                                               SoundContext context, DataOutputStream dos, double textProgress) {
-        int currentSamplesPerBlip = calculateSingleBlipLength(character, type, config);
-        boolean isPunctuation = CharacterType.PUCTUATION == type;
+        int currentSamplesPerBlip = calculateSingleBlipLength(character, config, options);
+        boolean isPunctuation = CharacterType.PUCTUATION == config.type();
 
-        double targetVowelShift = determineTargetVowelShift(character, context.currentVowelShift, type);
+        double targetVowelShift = config.targetWovelShift() == null
+            ? context.currentVowelShift
+            : config.targetWovelShift();
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
         double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
-        double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character, type) * (1.0 + intonation);
+        double targetFrequency = calculateSegmentFrequency(options.baseFreq, options.pitchRandomness, character, config) * (1.0 + intonation);
 
-        double volumeModifier = calculateSegmentVolume(character, type);
+        double volumeModifier = calculateSegmentVolume(character, config);
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
@@ -120,13 +119,13 @@ public class MumbleSynthesizer {
 
             // Shimmer & Jitter: Winzige, unvorhersehbare Muskelunreinheiten der Stimme
             double jitter = (random.nextDouble() - 0.5) * 0.002;
-            double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
+            double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed * globalTime) * options.vibratoDepth;
 
             double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
             context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI);
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
-            double rawValue = synthesizePhoneme(character, type, context.runningPhase, currentSamplesPerBlip, s, config);
+            double rawValue = synthesizePhoneme(character, config, context.runningPhase, currentSamplesPerBlip, s, options);
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
@@ -134,8 +133,8 @@ public class MumbleSynthesizer {
             double preFilteredSample = Math.clamp(rawValue * envelope * volumeModifier * breathShimmer, -1.0, 1.0);
 
             // Tiefpassfilterung (Getrennte Zustände für Stereo-Breite, falls gewünscht)
-            context.filterStateLeft += config.lowPassCutoff * (preFilteredSample - context.filterStateLeft);
-            context.filterStateRight += config.lowPassCutoff * (preFilteredSample - context.filterStateRight);
+            context.filterStateLeft += options.lowPassCutoff * (preFilteredSample - context.filterStateLeft);
+            context.filterStateRight += options.lowPassCutoff * (preFilteredSample - context.filterStateRight);
 
             short pcmSampleLeft = (short) (context.filterStateLeft * 32767.0);
             short pcmSampleRight = (short) (context.filterStateRight * 32767.0);
@@ -159,39 +158,28 @@ public class MumbleSynthesizer {
         return 1.0;
     }
 
-    private static int calculateSingleBlipLength(char c, CharacterType type, VoiceOptions config) {
-        if (c == '.' || c == '!' || c == '?') return (int) (AUDIO_FORMAT.getSampleRate() * config.sentencePause);
-        if (c == ',' || c == ';' || c == ':') return (int) (AUDIO_FORMAT.getSampleRate() * config.commaPause);
-        if (c == ' ' || c == '-') return (int) (AUDIO_FORMAT.getSampleRate() * config.wordPause);
+    private static int calculateSingleBlipLength(char c, CharConfig config, VoiceOptions options) {
+        if (c == '.' || c == '!' || c == '?') return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause);
+        if (c == ',' || c == ';' || c == ':') return (int) (AUDIO_FORMAT.getSampleRate() * options.commaPause);
+        if (c == ' ' || c == '-') return (int) (AUDIO_FORMAT.getSampleRate() * options.wordPause);
 
-        int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * config.baseBlipDuration);
-        double deviation = (random.nextDouble() * 2.0 - 1.0) * config.speedRandomness;
+        int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * options.baseBlipDuration);
+        double deviation = (random.nextDouble() * 2.0 - 1.0) * options.speedRandomness;
 
         double speedModifier = 1.0 + deviation;
-        if (type == CharacterType.PLOSIVE) speedModifier *= 0.4; // Kürzere Artikulation
+        if (config.type() == CharacterType.PLOSIVE) speedModifier *= 0.4; // Kürzere Artikulation
 
         return (int) (baseSamplesPerBlip * speedModifier);
     }
 
-    private static double determineTargetVowelShift(char c, double fallbackValue, CharacterType type) {
-        return switch (c) {
-            case 'A', 'Ä' -> 0.92;
-            case 'E' -> 1.05;
-            case 'I', 'Ü' -> 1.12;
-            case 'O', 'Ö' -> 0.85;
-            case 'U' -> 0.75;
-            default -> type == CharacterType.NASAL ? 0.88 : fallbackValue;
-        };
-    }
-
-    private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, char c, CharacterType type) {
-        if (CharacterType.PUCTUATION == type || c == ' ' ) return baseFreq;
+    private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, char c, CharConfig config) {
+        if (CharacterType.PUCTUATION == config.type() || c == ' ' ) return baseFreq;
         double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * pitchRandomness;
         return baseFreq * (1.0 + randomPitchOffset);
     }
 
-    private static double calculateSegmentVolume(char c, CharacterType type) {
-        if (CharacterType.PUCTUATION == type || c == ' ' ) return 0.0;
+    private static double calculateSegmentVolume(char c, CharConfig config) {
+        if (CharacterType.PUCTUATION == config.type() || c == ' ' ) return 0.0;
         return (0.85 + random.nextDouble() * 0.15);
     }
 
@@ -210,12 +198,12 @@ public class MumbleSynthesizer {
         'Ü', new FormantMult(1.2, 3.5)
     );
 
-    private static double synthesizePhoneme(char c, CharacterType type, double phase, int totalSamples, int currentSample, VoiceOptions config) {
+    private static double synthesizePhoneme(char c, CharConfig config, double phase, int totalSamples, int currentSample, VoiceOptions options) {
 
-        if (CharacterType.PUCTUATION == type || c == ' ' ) return 0.0;//TODO TYPE SPACE?
+        if (CharacterType.PUCTUATION == config.type() || c == ' ' ) return 0.0;//TODO TYPE SPACE?
 
-        if (CharacterType.VOWEL == type) {
-            double baseWave = generateBaseWave(phase, config.waveType);
+        if (CharacterType.VOWEL == config.type()) {
+            double baseWave = generateBaseWave(phase, options.waveType);
 
             // Schneller Lookup statt komplexem Switch mit Seiteneffekten
             FormantMult mult = VOWEL_MAP.getOrDefault(c, DEFAULT_MULT);
@@ -224,19 +212,19 @@ public class MumbleSynthesizer {
             double formant1 = MathUtil.fastSin(phase * mult.f1()) * 0.25;
             double formant2 = MathUtil.fastSin(phase * mult.f2()) * 0.10;
 
-            return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * config.vowelGain;
+            return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * options.vowelGain;
         }
 
-        if (CharacterType.PLOSIVE == type) {
+        if (CharacterType.PLOSIVE == config.type()) {
             if (currentSample < totalSamples * 0.10) {
                 // Sehr tiefer, sanfter Pop-Laut ohne Klickgeräusch
-                return MathUtil.fastSin(phase * 0.08) * Math.exp(-currentSample / 120.0) * config.plosiveGain;
+                return MathUtil.fastSin(phase * 0.08) * Math.exp(-currentSample / 120.0) * options.plosiveGain;
             }
             return 0.0;
         }
 
-        if (CharacterType.NASAL == type) {
-            return MathUtil.fastSin(phase * 0.5) * config.nasalGain;
+        if (CharacterType.NASAL == config.type()) {
+            return MathUtil.fastSin(phase * 0.5) * options.nasalGain;
         }
         return 0.0;
     }
@@ -252,40 +240,44 @@ public class MumbleSynthesizer {
 
 
 
-    private static final Map<Character, CharacterType> TYPE_MAP = Map.ofEntries(
-        Map.entry('A', CharacterType.VOWEL),
-        Map.entry('E', CharacterType.VOWEL),
-        Map.entry('I', CharacterType.VOWEL),
-        Map.entry('O', CharacterType.VOWEL),
-        Map.entry('U', CharacterType.VOWEL),
-        Map.entry('Ä', CharacterType.VOWEL),
-        Map.entry('Ö', CharacterType.VOWEL),
-        Map.entry('Ü', CharacterType.VOWEL),
 
-        Map.entry('P', CharacterType.PLOSIVE),
-        Map.entry('T', CharacterType.PLOSIVE),
-        Map.entry('K', CharacterType.PLOSIVE),
-        Map.entry('B', CharacterType.PLOSIVE),
-        Map.entry('D', CharacterType.PLOSIVE),
-        Map.entry('G', CharacterType.PLOSIVE),
+private record CharConfig(CharacterType type, Double targetWovelShift) {
 
-        Map.entry('M', CharacterType.NASAL),
-        Map.entry('N', CharacterType.NASAL),
-        Map.entry('L', CharacterType.NASAL),
-        Map.entry('W', CharacterType.NASAL),
-        Map.entry('R', CharacterType.NASAL),
+}
+    private static final Map<Character, CharConfig> TYPE_MAP = Map.ofEntries(
+        Map.entry('A', new CharConfig(CharacterType.VOWEL, 0.92)),
+        Map.entry('E', new CharConfig(CharacterType.VOWEL, 1.05)),
+        Map.entry('I', new CharConfig(CharacterType.VOWEL, 1.12)),
+        Map.entry('O', new CharConfig(CharacterType.VOWEL, 0.85)),
+        Map.entry('U', new CharConfig(CharacterType.VOWEL, 0.75)),
+        Map.entry('Ä', new CharConfig(CharacterType.VOWEL, 0.92)),
+        Map.entry('Ö', new CharConfig(CharacterType.VOWEL, 0.85)),
+        Map.entry('Ü', new CharConfig(CharacterType.VOWEL, 1.12)),
 
-        Map.entry('.', CharacterType.PUCTUATION),
-        Map.entry(',', CharacterType.PUCTUATION),
-        Map.entry('!', CharacterType.PUCTUATION),
-        Map.entry('?', CharacterType.PUCTUATION),
-        Map.entry(';', CharacterType.PUCTUATION),
-        Map.entry(':', CharacterType.PUCTUATION),
-        Map.entry('-', CharacterType.PUCTUATION)
+        Map.entry('P', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('T', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('K', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('B', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('D', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('G', new CharConfig(CharacterType.PLOSIVE, null)),
+
+        Map.entry('M', new CharConfig(CharacterType.NASAL,0.88)),
+        Map.entry('N', new CharConfig(CharacterType.NASAL,0.88)),
+        Map.entry('L', new CharConfig(CharacterType.NASAL,0.88)),
+        Map.entry('W', new CharConfig(CharacterType.NASAL,0.88)),
+        Map.entry('R', new CharConfig(CharacterType.NASAL,0.88)),
+
+        Map.entry('.', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry(',', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry('!', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry('?', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry(';', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry(':', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry('-', new CharConfig(CharacterType.PUCTUATION, null))
     );
 
-    private static CharacterType fetchType(char c) {
-        return TYPE_MAP.getOrDefault(c, CharacterType.UNKNOWM);
+    private static CharConfig fetchConfig(char c) {
+        return TYPE_MAP.getOrDefault(c, new CharConfig(CharacterType.UNKNOWM, null));
     }
 
     private static void writeWavHeader(ByteBuffer buffer, int audioDataLength) {
