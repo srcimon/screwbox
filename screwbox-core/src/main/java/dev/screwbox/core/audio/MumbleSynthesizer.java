@@ -15,37 +15,36 @@ import java.util.Random;
 public class MumbleSynthesizer {
 
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
-
-    private final static Random random = new Random();
-
+    private static final Random random = new Random();
     private static final int WAV_HEADER_SIZE = 44;
 
-    public enum WaveType {
-        SINE, SQUARE, TRIANGLE
+    public enum WaveType { SINE, SQUARE, TRIANGLE }
+    enum CharacterType {
+        VOWEL,
+        PLOSIVE,
+        NASAL,
+        PUCTUATION,
+        UNKNOWM
     }
 
     public static class VoiceOptions {
         public double baseFreq = 110.0;
-        public double baseBlipDuration = 0.08;
-        public double pitchRandomness = 0.15;
-        public double speedRandomness = 0.25;
-        public double vibratoSpeed = 5.5;
-        public double vibratoDepth = 0.025;
+        public double baseBlipDuration = 0.07; // Leicht verkürzt für knackigeres Sprechtempo
+        public double pitchRandomness = 0.08;   // Reduziert, da Satzmelodie jetzt steuert
+        public double speedRandomness = 0.15;
+        public double vibratoSpeed = 5.0;
+        public double vibratoDepth = 0.015;
 
-        public double sentencePause = 0.45;
-        public double commaPause = 0.22;
-        public double wordPause = 0.15;
+        public double sentencePause = 0.50;
+        public double commaPause = 0.25;
+        public double wordPause = 0.12;
 
         public WaveType waveType = WaveType.SINE;
 
         public double vowelGain = 0.75;
-        public double nasalGain = 0.40;
-        public double plosiveGain = 0.35;
-
-        // Filter-Koeffizient: 1.0 = ungefiltert, 0.1 = extrem dumpf/warm.
-        // 0.25 ist der Sweet-Spot für eine klare, aber absolut kratzfreie Stimme.
-        public double lowPassCutoff = 0.15;
-
+        public double nasalGain = 0.35;
+        public double plosiveGain = 0.45;
+        public double lowPassCutoff = 0.18;
     }
 
     private static class SoundContext {
@@ -53,9 +52,11 @@ public class MumbleSynthesizer {
         double currentPitch;
         double currentVowelShift = 1.0;
         int totalSamplesWritten = 0;
+        double filterStateLeft = 0.0;
+        double filterStateRight = 0.0;
 
-        // Zustandsspeicher für den Tiefpassfilter
-        double filterState = 0.0;
+        // Letztes Sample für Crossfading, um Knackser komplett zu verhindern
+        double lastSampleValue = 0.0;
 
         public SoundContext(double startPitch) {
             currentPitch = startPitch;
@@ -65,25 +66,29 @@ public class MumbleSynthesizer {
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
         String sanitizedText = text.toUpperCase();
 
-        // Verwende ein anpassbares ByteArrayOutputStream, um direkt auf den internen Puffer zuzugreifen
-        try (final var baos = new ByteArrayOutputStream(4096);
+        try (final var baos = new ByteArrayOutputStream(8192);
             DataOutputStream dos = new DataOutputStream(baos)) {
 
-            // 1. Platzhalter für den 44-Byte-Header schreiben
             byte[] dummyHeader = new byte[WAV_HEADER_SIZE];
             dos.write(dummyHeader);
 
             var soundContext = new SoundContext(options.baseFreq);
-            for (char character : sanitizedText.toCharArray()) {
+            char[] chars = sanitizedText.toCharArray();
+
+            for (int i = 0; i < chars.length; i++) {
+                char character = chars[i];
                 var type = fetchType(character);
-                addSampleForChaacter(options, character, type, soundContext, dos);//TODO add type to context?
+
+                // Berechnung der globalen Text-Position für die Satzmelodie (0.0 bis 1.0)
+                double textProgress = (double) i / chars.length;
+
+                addSampleForCharacter(options, character, type, soundContext, dos, textProgress);
             }
             dos.flush();
 
             byte[] finalWav = baos.toByteArray();
             int audioDataLength = finalWav.length - WAV_HEADER_SIZE;
 
-            // 3. Den Header nachträglich direkt im finalen Array korrigieren
             ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
             writeWavHeader(headerBuffer, audioDataLength);
 
@@ -93,79 +98,89 @@ public class MumbleSynthesizer {
         }
     }
 
-    private static void addSampleForChaacter(VoiceOptions config, char character, CharacterType type, SoundContext context, DataOutputStream dos) {
+    private static void addSampleForCharacter(VoiceOptions config, char character, CharacterType type,
+                                              SoundContext context, DataOutputStream dos, double textProgress) {
         int currentSamplesPerBlip = calculateSingleBlipLength(character, type, config);
         boolean isPunctuation = CharacterType.PUCTUATION == type;
 
         double targetVowelShift = determineTargetVowelShift(character, context.currentVowelShift, type);
-        // Stark geglättete Pitch-Änderungen pro Segment, um Frequenzsprünge zu mindern
-        double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character, type);
+
+        // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
+        double intonation = Math.sin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
+        double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character, type) * (1.0 + intonation);
+
         double volumeModifier = calculateSegmentVolume(character, type);
 
-
         for (int s = 0; s < currentSamplesPerBlip; s++) {
-            // Übergänge verlangsamt (0.001 statt 0.003), um Knackser bei Vokalwechseln zu eliminieren
-            context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.001;
-            context.currentPitch += (targetFrequency - context.currentPitch) * 0.001;
+            // Extrem glatte Übergänge für organischen Redefluss
+            context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.002;
+            context.currentPitch += (targetFrequency - context.currentPitch) * 0.002;
 
-            // Wichtig: Da wir zwei Stereo-Frames pro Loop schreiben, entspricht globalTime weiterhin
-            // den geschriebenen Samples dividiert durch die Sample-Rate
             double globalTime = (double) context.totalSamplesWritten / AUDIO_FORMAT.getSampleRate();
-            double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
-            double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.25) * (1.0 + vibrato), 40.0, 400.0);
 
+            // Shimmer & Jitter: Winzige, unvorhersehbare Muskelunreinheiten der Stimme
+            double jitter = (random.nextDouble() - 0.5) * 0.002;
+            double vibrato = Math.sin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
+
+            double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
             context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI);
 
+            // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
             double rawValue = synthesizePhoneme(character, type, context.runningPhase, currentSamplesPerBlip, s, config);
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
-            double preFilteredSample = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
 
-            // TIEFPASSFILTER (One-Pole IIR Filter): Glättet das Signal in Echtzeit
-            context.filterState += config.lowPassCutoff * (preFilteredSample - context.filterState);
-            double finalSampleValue = context.filterState;
+            // Menschliche Amplitudenschwankung (Atem)
+            double breathShimmer = 1.0 + (Math.sin(globalTime * 2.0) * 0.05);
+            double preFilteredSample = Math.clamp(rawValue * envelope * volumeModifier * breathShimmer, -1.0, 1.0);
 
-            // Kanäle trennen und Stereo-Lautstärke anwenden
-            short pcmSampleLeft = (short) (finalSampleValue * 32767.0);
-            short pcmSampleRight = (short) (finalSampleValue * 32767.0);
+            // Tiefpassfilterung (Getrennte Zustände für Stereo-Breite, falls gewünscht)
+            context.filterStateLeft += config.lowPassCutoff * (preFilteredSample - context.filterStateLeft);
+            context.filterStateRight += config.lowPassCutoff * (preFilteredSample - context.filterStateRight);
+
+            short pcmSampleLeft = (short) (context.filterStateLeft * 32767.0);
+            short pcmSampleRight = (short) (context.filterStateRight * 32767.0);
 
             try {
-                // Linker Kanal (Zuerst)
                 dos.writeByte(pcmSampleLeft & 0xFF);
                 dos.writeByte((pcmSampleLeft >> 8) & 0xFF);
-
-                // Rechter Kanal (Danach)
                 dos.writeByte(pcmSampleRight & 0xFF);
                 dos.writeByte((pcmSampleRight >> 8) & 0xFF);
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
 
             context.totalSamplesWritten++;
         }
     }
 
+
+    private static double applyClickProtectionEnvelope(int sampleIdx, int totalSamples) {
+        int fadeSamples = Math.min(120, totalSamples / 10); // Sanftes Ein-/Ausblenden (ca. 2-3ms)
+        if (sampleIdx < fadeSamples) return (double) sampleIdx / fadeSamples;
+        if (sampleIdx > totalSamples - fadeSamples) return (double) (totalSamples - sampleIdx) / fadeSamples;
+        return 1.0;
+    }
+
     private static int calculateSingleBlipLength(char c, CharacterType type, VoiceOptions config) {
-        if (c == '.' || c == '!' || c == '?' ) return (int) (AUDIO_FORMAT.getSampleRate() * config.sentencePause);
-        if (c == ',' || c == ';' || c == ':' ) return (int) (AUDIO_FORMAT.getSampleRate() * config.commaPause);
-        if (c == ' ' || c == '-' ) return (int) (AUDIO_FORMAT.getSampleRate() * config.wordPause);
+        if (c == '.' || c == '!' || c == '?') return (int) (AUDIO_FORMAT.getSampleRate() * config.sentencePause);
+        if (c == ',' || c == ';' || c == ':') return (int) (AUDIO_FORMAT.getSampleRate() * config.commaPause);
+        if (c == ' ' || c == '-') return (int) (AUDIO_FORMAT.getSampleRate() * config.wordPause);
 
         int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * config.baseBlipDuration);
         double deviation = (random.nextDouble() * 2.0 - 1.0) * config.speedRandomness;
-        double speedModifier = 1.0 + deviation;
 
-        if (CharacterType.PLOSIVE == type) {
-            speedModifier *= 0.35;
-        }
+        double speedModifier = 1.0 + deviation;
+        if (type == CharacterType.PLOSIVE) speedModifier *= 0.4; // Kürzere Artikulation
+
         return (int) (baseSamplesPerBlip * speedModifier);
     }
 
     private static double determineTargetVowelShift(char c, double fallbackValue, CharacterType type) {
         return switch (c) {
-            case 'A' -> 0.95;
-            case 'E' -> 1.02;
-            case 'I' -> 1.08;
-            case 'O' -> 0.88;
-            case 'U' -> 0.78;
-            default -> CharacterType.NASAL == type ? 0.85 : fallbackValue;
+            case 'A', 'Ä' -> 0.92;
+            case 'E' -> 1.05;
+            case 'I', 'Ü' -> 1.12;
+            case 'O', 'Ö' -> 0.85;
+            case 'U' -> 0.75;
+            default -> type == CharacterType.NASAL ? 0.88 : fallbackValue;
         };
     }
 
@@ -226,14 +241,6 @@ public class MumbleSynthesizer {
         return 0.0;
     }
 
-    private static double applyClickProtectionEnvelope(int sampleIndex, int totalSamples) {
-        // Größeres Fade-Fenster (12% statt 10%), um die Zeichen extrem sanft ineinander übergehen zu lassen
-        int fadeSamples = Math.min(220, totalSamples / 8);
-        if (sampleIndex < fadeSamples) return sampleIndex / (double) fadeSamples;
-        if (sampleIndex > totalSamples - fadeSamples) return (totalSamples - sampleIndex) / (double) fadeSamples;
-        return 1.0;
-    }
-
     private static double generateBaseWave(double phase, WaveType waveType) {
         return switch (waveType) {
             case SINE -> MathUtil.fastSin(phase);
@@ -243,13 +250,7 @@ public class MumbleSynthesizer {
         };
     }
 
-    enum CharacterType {
-        VOWEL,
-        PLOSIVE,
-        NASAL,
-        PUCTUATION,
-        UNKNOWM
-    }
+
 
     private static final Map<Character, CharacterType> TYPE_MAP = Map.ofEntries(
         Map.entry('A', CharacterType.VOWEL),
