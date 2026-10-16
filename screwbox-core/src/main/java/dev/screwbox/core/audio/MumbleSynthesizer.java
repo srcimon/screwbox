@@ -21,8 +21,8 @@ public class MumbleSynthesizer {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
     private static final Random random = new Random();
 
-    private record SynthConfig(CharacterType type, Function<SoundContext, Double> targetWovelShift,
-                               BiFunction<Double, VoiceOptions, Double> phonemeCalculation) {
+    private record SynthElement(CharacterType type, Function<SoundContext, Double> targetWovelShift,
+                                BiFunction<Double, VoiceOptions, Double> phonemeCalculation) {
 //TODO add constructor without wovelconfig
     }
 
@@ -49,38 +49,38 @@ public class MumbleSynthesizer {
     }
 
     //TODO get rid of CharacterType
-    private static final Map<Character, SynthConfig> SYNTH_CONFIG = Map.ofEntries(
-        entry('A', new SynthConfig(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(2.0, 3.5))),//TODO MOVE CONFIG INSIDE
-        entry('E', new SynthConfig(CharacterType.VOWEL, (context) -> 1.05, new WovelPhoneme(1.5, 4.0))),
-        entry('I', new SynthConfig(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 4.5))),
-        entry('O', new SynthConfig(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.4, 2.4))),
-        entry('U', new SynthConfig(CharacterType.VOWEL, (context) -> 0.75, new WovelPhoneme(1.1, 1.8))),
-        entry('Ä', new SynthConfig(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(1.8, 4.0))),
-        entry('Ö', new SynthConfig(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.5, 3.2))),
-        entry('Ü', new SynthConfig(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 3.5))),
+    private static final Map<Character, SynthElement> SYNTH_CONFIG = Map.ofEntries(
+        entry('A', new SynthElement(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(2.0, 3.5))),//TODO MOVE CONFIG INSIDE
+        entry('E', new SynthElement(CharacterType.VOWEL, (context) -> 1.05, new WovelPhoneme(1.5, 4.0))),
+        entry('I', new SynthElement(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 4.5))),
+        entry('O', new SynthElement(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.4, 2.4))),
+        entry('U', new SynthElement(CharacterType.VOWEL, (context) -> 0.75, new WovelPhoneme(1.1, 1.8))),
+        entry('Ä', new SynthElement(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(1.8, 4.0))),
+        entry('Ö', new SynthElement(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.5, 3.2))),
+        entry('Ü', new SynthElement(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 3.5))),
 
-        entry('P', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('T', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('K', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('B', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('D', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('G', new SynthConfig(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('P', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('T', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('K', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('B', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('D', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('G', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
 
-        entry('M', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
-        entry('N', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
-        entry('L', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
-        entry('W', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
-        entry('R', new SynthConfig(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('M', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('N', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('L', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('W', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('R', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
 
-        entry('.', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry(',', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('!', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('?', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry(';', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry(':', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('-', new SynthConfig(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('.', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry(',', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('!', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('?', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry(';', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry(':', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('-', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
 
-        entry(' ', new SynthConfig(CharacterType.SPACE, (context) -> context.currentVowelShift, NO_PHONEME))
+        entry(' ', new SynthElement(CharacterType.SPACE, (context) -> context.currentVowelShift, NO_PHONEME))
     );
 
     public enum WaveType {SINE, SQUARE, TRIANGLE}
@@ -96,8 +96,8 @@ public class MumbleSynthesizer {
 
     public static class VoiceOptions {
         public double baseFreq = 110.0;
-        public double baseBlipDuration = 0.07; // Leicht verkürzt für knackigeres Sprechtempo
-        public double pitchRandomness = 0.08;   // Reduziert, da Satzmelodie jetzt steuert
+        public double baseBlipDuration = 0.07;
+        public double pitchRandomness = 0.08;
         public double speedRandomness = 0.15;
         public double vibratoSpeed = 5.0;
         public double vibratoDepth = 0.015;
@@ -141,12 +141,10 @@ public class MumbleSynthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var type = SYNTH_CONFIG.getOrDefault(character, new SynthConfig(CharacterType.UNKNOWM, (context) -> context.currentVowelShift, NO_PHONEME));
-
-                // Berechnung der globalen Text-Position für die Satzmelodie (0.0 bis 1.0)
+                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement(CharacterType.UNKNOWM, (context) -> context.currentVowelShift, NO_PHONEME));
                 double textProgress = (double) i / chars.length;
 
-                addSampleForCharacter(options, character, type, soundContext, dos, textProgress);
+                addSampleForCharacter(options, character, synthElement, soundContext, dos, textProgress);
             }
             dos.flush();
 
@@ -162,7 +160,7 @@ public class MumbleSynthesizer {
         }
     }
 
-    private static void addSampleForCharacter(VoiceOptions options, char character, SynthConfig config,
+    private static void addSampleForCharacter(VoiceOptions options, char character, SynthElement config,
                                               SoundContext context, DataOutputStream dos, double textProgress) {
         int currentSamplesPerBlip = calculateSingleBlipLength(character, config, options);
 
@@ -200,8 +198,8 @@ public class MumbleSynthesizer {
             context.filterStateLeft += options.lowPassCutoff * (preFilteredSample - context.filterStateLeft);
             context.filterStateRight += options.lowPassCutoff * (preFilteredSample - context.filterStateRight);
 
-            short pcmSampleLeft = (short) (context.filterStateLeft * 32767.0);
-            short pcmSampleRight = (short) (context.filterStateRight * 32767.0);
+            short pcmSampleLeft = (short) (context.filterStateLeft * TO_SIGNED_INTEGER);
+            short pcmSampleRight = (short) (context.filterStateRight * TO_SIGNED_INTEGER);
 
             try {
                 dos.writeByte(pcmSampleLeft & 0xFF);
@@ -215,6 +213,7 @@ public class MumbleSynthesizer {
         }
     }
 
+    private static double TO_SIGNED_INTEGER = 32767.0;
 
     private static double applyClickProtectionEnvelope(int sampleIdx, int totalSamples) {
         int fadeSamples = Math.min(120, totalSamples / 10); // Sanftes Ein-/Ausblenden (ca. 2-3ms)
@@ -223,7 +222,7 @@ public class MumbleSynthesizer {
         return 1.0;
     }
 
-    private static int calculateSingleBlipLength(char c, SynthConfig config, VoiceOptions options) {
+    private static int calculateSingleBlipLength(char c, SynthElement config, VoiceOptions options) {
         if (c == '.' || c == '!' || c == '?') {
             return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause);
         }
@@ -245,7 +244,7 @@ public class MumbleSynthesizer {
         return (int) (baseSamplesPerBlip * speedModifier);
     }
 
-    private static double calculateSegmentFrequency(VoiceOptions options, SynthConfig config) {
+    private static double calculateSegmentFrequency(VoiceOptions options, SynthElement config) {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
             return options.baseFreq;
         }
@@ -253,7 +252,7 @@ public class MumbleSynthesizer {
         return options.baseFreq * (1.0 + randomPitchOffset);
     }
 
-    private static double calculateSegmentVolume(SynthConfig config) {
+    private static double calculateSegmentVolume(SynthElement config) {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()){
             return 0.0;
         }
