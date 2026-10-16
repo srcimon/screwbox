@@ -151,9 +151,9 @@ public class MumbleSynthesizer {
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
         double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
-        double targetFrequency = calculateSegmentFrequency(options.baseFreq, options.pitchRandomness, character, config) * (1.0 + intonation);
+        double targetFrequency = calculateSegmentFrequency(options.baseFreq, options.pitchRandomness, config) * (1.0 + intonation);
 
-        double volumeModifier = calculateSegmentVolume(character, config);
+        double segmentVolume = calculateSegmentVolume( config);
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
@@ -175,7 +175,7 @@ public class MumbleSynthesizer {
 
             // Menschliche Amplitudenschwankung (Atem)
             double breathShimmer = 1.0 + (MathUtil.fastSin(globalTime * 2.0) * 0.05);
-            double preFilteredSample = Math.clamp(rawValue * envelope * volumeModifier * breathShimmer, -1.0, 1.0);
+            double preFilteredSample = Math.clamp(rawValue * envelope * segmentVolume * breathShimmer, -1.0, 1.0);
 
             // Tiefpassfilterung (Getrennte Zustände für Stereo-Breite, falls gewünscht)
             context.filterStateLeft += options.lowPassCutoff * (preFilteredSample - context.filterStateLeft);
@@ -218,14 +218,14 @@ public class MumbleSynthesizer {
         return (int) (baseSamplesPerBlip * speedModifier);
     }
 
-    private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, char c, CharConfig config) {
-        if (CharacterType.PUCTUATION == config.type() || c == ' ') return baseFreq;
+    private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness,  CharConfig config) {
+        if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) return baseFreq;
         double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * pitchRandomness;
         return baseFreq * (1.0 + randomPitchOffset);
     }
 
-    private static double calculateSegmentVolume(char c, CharConfig config) {
-        if (CharacterType.PUCTUATION == config.type() || c == ' ') return 0.0;
+    private static double calculateSegmentVolume(CharConfig config) {
+        if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) return 0.0;
         return (0.85 + random.nextDouble() * 0.15);
     }
 
