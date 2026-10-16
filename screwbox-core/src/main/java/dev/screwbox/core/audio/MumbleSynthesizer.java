@@ -245,13 +245,17 @@ public class MumbleSynthesizer {
     }
 
     private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, SynthConfig config) {
-        if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) return baseFreq;
+        if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
+            return baseFreq;
+        }
         double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * pitchRandomness;
         return baseFreq * (1.0 + randomPitchOffset);
     }
 
     private static double calculateSegmentVolume(SynthConfig config) {
-        if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) return 0.0;
+        if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()){
+            return 0.0;
+        }
         return (0.85 + random.nextDouble() * 0.15);
     }
 
