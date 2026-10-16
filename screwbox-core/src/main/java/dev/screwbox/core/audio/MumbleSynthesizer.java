@@ -19,47 +19,43 @@ public class MumbleSynthesizer {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
     private static final Random random = new Random();
 
-    private record CharConfig(CharacterType type, Double targetWovelShift, Double wovelHeight, Double wovelBackness) {//TODO wovelHeight and wovelBackness used?
+    private record SynthConfig(CharacterType type, Double targetWovelShift, Double wovelHeight, Double wovelBackness) {//TODO wovelHeight and wovelBackness used?
 //TODO add constructor without wovelconfig
     }
 
-    private static final Map<Character, CharConfig> CHARACTER_CONFIGS = Map.ofEntries(
-        entry('A', new CharConfig(CharacterType.VOWEL, 0.92, 2.0, 3.5)),
-        entry('E', new CharConfig(CharacterType.VOWEL, 1.05, 1.5, 4.0)),
-        entry('I', new CharConfig(CharacterType.VOWEL, 1.12, 1.2, 4.5)),
-        entry('O', new CharConfig(CharacterType.VOWEL, 0.85, 1.4, 2.4)),
-        entry('U', new CharConfig(CharacterType.VOWEL, 0.75, 1.1, 1.8)),
-        entry('Ä', new CharConfig(CharacterType.VOWEL, 0.92, 1.8, 4.0)),
-        entry('Ö', new CharConfig(CharacterType.VOWEL, 0.85, 1.5, 3.2)),
-        entry('Ü', new CharConfig(CharacterType.VOWEL, 1.12, 1.2, 3.5)),
+    private static final Map<Character, SynthConfig> SYNTH_CONFIG = Map.ofEntries(
+        entry('A', new SynthConfig(CharacterType.VOWEL, 0.92, 2.0, 3.5)),
+        entry('E', new SynthConfig(CharacterType.VOWEL, 1.05, 1.5, 4.0)),
+        entry('I', new SynthConfig(CharacterType.VOWEL, 1.12, 1.2, 4.5)),
+        entry('O', new SynthConfig(CharacterType.VOWEL, 0.85, 1.4, 2.4)),
+        entry('U', new SynthConfig(CharacterType.VOWEL, 0.75, 1.1, 1.8)),
+        entry('Ä', new SynthConfig(CharacterType.VOWEL, 0.92, 1.8, 4.0)),
+        entry('Ö', new SynthConfig(CharacterType.VOWEL, 0.85, 1.5, 3.2)),
+        entry('Ü', new SynthConfig(CharacterType.VOWEL, 1.12, 1.2, 3.5)),
 
-        entry('P', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('T', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('K', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('B', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('D', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
-        entry('G', new CharConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('P', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('T', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('K', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('B', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('D', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
+        entry('G', new SynthConfig(CharacterType.PLOSIVE, null, 1.0, 2.0)),
 
-        entry('M', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
-        entry('N', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
-        entry('L', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
-        entry('W', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
-        entry('R', new CharConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('M', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('N', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('L', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('W', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
+        entry('R', new SynthConfig(CharacterType.NASAL, 0.88, 1.0, 2.0)),
 
-        entry('.', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry(',', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry('!', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry('?', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry(';', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry(':', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
-        entry('-', new CharConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry('.', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry(',', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry('!', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry('?', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry(';', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry(':', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
+        entry('-', new SynthConfig(CharacterType.PUCTUATION, null, 1.0, 2.0)),
 
-        entry(' ', new CharConfig(CharacterType.SPACE, null, null, null))
+        entry(' ', new SynthConfig(CharacterType.SPACE, null, null, null))
     );
-
-    private static CharConfig fetchConfig(char c) {
-        return CHARACTER_CONFIGS.getOrDefault(c, new CharConfig(CharacterType.UNKNOWM, null, null, null));
-    }
 
     public enum WaveType {SINE, SQUARE, TRIANGLE}
 
@@ -119,7 +115,7 @@ public class MumbleSynthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var type = fetchConfig(character);
+                var type = SYNTH_CONFIG.getOrDefault(character, new SynthConfig(CharacterType.UNKNOWM, null, null, null));
 
                 // Berechnung der globalen Text-Position für die Satzmelodie (0.0 bis 1.0)
                 double textProgress = (double) i / chars.length;
@@ -140,7 +136,7 @@ public class MumbleSynthesizer {
         }
     }
 
-    private static void addSampleForCharacter(VoiceOptions options, char character, CharConfig config,
+    private static void addSampleForCharacter(VoiceOptions options, char character, SynthConfig config,
                                               SoundContext context, DataOutputStream dos, double textProgress) {
         int currentSamplesPerBlip = calculateSingleBlipLength(character, config, options);
 
@@ -203,7 +199,7 @@ public class MumbleSynthesizer {
         return 1.0;
     }
 
-    private static int calculateSingleBlipLength(char c, CharConfig config, VoiceOptions options) {
+    private static int calculateSingleBlipLength(char c, SynthConfig config, VoiceOptions options) {
         if (c == '.' || c == '!' || c == '?') return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause);
         if (c == ',' || c == ';' || c == ':') return (int) (AUDIO_FORMAT.getSampleRate() * options.commaPause);
         if (c == ' ' || c == '-') return (int) (AUDIO_FORMAT.getSampleRate() * options.wordPause);
@@ -217,18 +213,18 @@ public class MumbleSynthesizer {
         return (int) (baseSamplesPerBlip * speedModifier);
     }
 
-    private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness,  CharConfig config) {
+    private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness,  SynthConfig config) {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) return baseFreq;
         double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * pitchRandomness;
         return baseFreq * (1.0 + randomPitchOffset);
     }
 
-    private static double calculateSegmentVolume(CharConfig config) {
+    private static double calculateSegmentVolume(SynthConfig config) {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) return 0.0;
         return (0.85 + random.nextDouble() * 0.15);
     }
 
-    private static double synthesizePhoneme(CharConfig config, double phase, VoiceOptions options) {
+    private static double synthesizePhoneme(SynthConfig config, double phase, VoiceOptions options) {
         if (CharacterType.NASAL == config.type()) {
             return MathUtil.fastSin(phase * 0.5) * options.nasalGain;
         }
