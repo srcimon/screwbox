@@ -19,7 +19,7 @@ public class MumbleSynthesizer {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
     private static final Random random = new Random();
 
-    private record CharConfig(CharacterType type, Double targetWovelShift, Double wovelHeight, Double wovelBackness) {
+    private record CharConfig(CharacterType type, Double targetWovelShift, Double wovelHeight, Double wovelBackness) {//TODO wovelHeight and wovelBackness used?
 //TODO add constructor without wovelconfig
     }
 
@@ -143,7 +143,6 @@ public class MumbleSynthesizer {
     private static void addSampleForCharacter(VoiceOptions options, char character, CharConfig config,
                                               SoundContext context, DataOutputStream dos, double textProgress) {
         int currentSamplesPerBlip = calculateSingleBlipLength(character, config, options);
-        boolean isPunctuation = CharacterType.PUCTUATION == config.type();
 
         double targetVowelShift = config.targetWovelShift() == null
             ? context.currentVowelShift
@@ -171,7 +170,7 @@ public class MumbleSynthesizer {
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
             double rawValue = synthesizePhoneme(config, context.runningPhase, options);
-            double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
+            double envelope = CharacterType.PUCTUATION == config.type() ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
             double breathShimmer = 1.0 + (MathUtil.fastSin(globalTime * 2.0) * 0.05);
