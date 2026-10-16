@@ -1,5 +1,6 @@
 package dev.screwbox.core.audio;
 
+import dev.screwbox.core.audio.internal.WaveSupport;
 import dev.screwbox.core.utils.MathUtil;
 
 import javax.sound.sampled.AudioFormat;
@@ -8,7 +9,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Random;
 
@@ -16,7 +16,6 @@ public class MumbleSynthesizer {
 
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
     private static final Random random = new Random();
-    private static final int WAV_HEADER_SIZE = 44;
 
     private record CharConfig(CharacterType type, Double targetWovelShift) {
 
@@ -107,7 +106,7 @@ public class MumbleSynthesizer {
         try (final var baos = new ByteArrayOutputStream(8192);
             DataOutputStream dos = new DataOutputStream(baos)) {
 
-            byte[] dummyHeader = new byte[WAV_HEADER_SIZE];
+            byte[] dummyHeader = new byte[WaveSupport.WAV_HEADER_SIZE];
             dos.write(dummyHeader);
 
             var soundContext = new SoundContext(options.baseFreq);
@@ -125,10 +124,10 @@ public class MumbleSynthesizer {
             dos.flush();
 
             byte[] finalWav = baos.toByteArray();
-            int audioDataLength = finalWav.length - WAV_HEADER_SIZE;
+            int audioDataLength = finalWav.length - WaveSupport.WAV_HEADER_SIZE;
 
             ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
-            writeWavHeader(headerBuffer, audioDataLength);
+            WaveSupport.writeHeaderToBuffer(audioDataLength, AUDIO_FORMAT, headerBuffer);
 
             return Sound.fromSoundData(finalWav);
         } catch (IOException e) {
@@ -283,23 +282,4 @@ public class MumbleSynthesizer {
     }
 
 
-    private static void writeWavHeader(ByteBuffer buffer, int audioDataLength) {
-        int sampleRate = (int) AUDIO_FORMAT.getSampleRate();
-        int bitsPerSample = AUDIO_FORMAT.getSampleSizeInBits();
-        int bytesPerSample = bitsPerSample / 8;
-
-        buffer.put("RIFF".getBytes(StandardCharsets.US_ASCII));
-        buffer.putInt(44 - 8 + audioDataLength); // 44 ist die Standard-WAV-Header-Größe
-        buffer.put("WAVE".getBytes(StandardCharsets.US_ASCII));
-        buffer.put("fmt ".getBytes(StandardCharsets.US_ASCII));
-        buffer.putInt(16); // Subchunk1Size für PCM
-        buffer.putShort((short) 1); // AudioFormat (1 = unkomprimiertes PCM)
-        buffer.putShort((short) AUDIO_FORMAT.getChannels());
-        buffer.putInt(sampleRate);
-        buffer.putInt(sampleRate * AUDIO_FORMAT.getChannels() * bytesPerSample);
-        buffer.putShort((short) (AUDIO_FORMAT.getChannels() * bytesPerSample));
-        buffer.putShort((short) bitsPerSample);
-        buffer.put("data".getBytes(StandardCharsets.US_ASCII));
-        buffer.putInt(audioDataLength);
-    }
 }
