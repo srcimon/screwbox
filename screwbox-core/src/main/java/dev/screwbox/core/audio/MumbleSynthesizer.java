@@ -167,7 +167,7 @@ public class MumbleSynthesizer {
             context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI);
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
-            double rawValue = synthesizePhoneme(character, config, context.runningPhase, currentSamplesPerBlip, s, options);
+            double rawValue = synthesizePhoneme(character, config, context.runningPhase, options);
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
@@ -241,7 +241,7 @@ public class MumbleSynthesizer {
         'Ü', new FormantMult(1.2, 3.5)
     );
 
-    private static double synthesizePhoneme(char c, CharConfig config, double phase, int totalSamples, int currentSample, VoiceOptions options) {
+    private static double synthesizePhoneme(char c, CharConfig config, double phase, VoiceOptions options) {
 
         if (CharacterType.PUCTUATION == config.type() || c == ' ') {
             return 0.0;//TODO TYPE SPACE?
@@ -261,10 +261,6 @@ public class MumbleSynthesizer {
         }
 
         if (CharacterType.PLOSIVE == config.type()) {
-            if (currentSample < totalSamples * 0.10) {
-                // Sehr tiefer, sanfter Pop-Laut ohne Klickgeräusch
-                return MathUtil.fastSin(phase * 0.08) * Math.exp(-currentSample / 120.0) * options.plosiveGain;
-            }
             return 0.0;
         }
 
