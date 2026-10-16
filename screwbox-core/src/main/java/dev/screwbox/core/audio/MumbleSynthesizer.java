@@ -170,7 +170,7 @@ public class MumbleSynthesizer {
             context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI);
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
-            double rawValue = synthesizePhoneme(character, config, context.runningPhase, options);
+            double rawValue = synthesizePhoneme(config, context.runningPhase, options);
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
@@ -229,10 +229,7 @@ public class MumbleSynthesizer {
         return (0.85 + random.nextDouble() * 0.15);
     }
 
-    private record FormantMult(double f1, double f2) {
-    }
-
-    private static double synthesizePhoneme(char c, CharConfig config, double phase, VoiceOptions options) {
+    private static double synthesizePhoneme(CharConfig config, double phase, VoiceOptions options) {
         if (CharacterType.PUCTUATION == config.type()) {
             return 0.0;
         }
