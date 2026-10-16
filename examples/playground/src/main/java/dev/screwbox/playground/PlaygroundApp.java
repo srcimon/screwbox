@@ -42,10 +42,10 @@ public class PlaygroundApp {
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
                 MumbleSynthesizer.VoiceOptions config = new MumbleSynthesizer.VoiceOptions();
-                config.baseFreq = 500.0;
+                config.baseFreq = 200.0;
                 config.baseBlipDuration = 0.05;
 
-                config.pitchRandomness = 0.3;       // Etwas reduziert für stabilere Intonation
+                config.pitchRandomness = 0.4;       // Etwas reduziert für stabilere Intonation
                 config.speedRandomness = 0.10;
 
                 // Sanftes Vibrato ohne extreme Ausschläge
