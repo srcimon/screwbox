@@ -18,7 +18,48 @@ public class MumbleSynthesizer {
     private static final Random random = new Random();
     private static final int WAV_HEADER_SIZE = 44;
 
-    public enum WaveType { SINE, SQUARE, TRIANGLE }
+    private record CharConfig(CharacterType type, Double targetWovelShift) {
+
+    }
+
+    private static final Map<Character, CharConfig> TYPE_MAP = Map.ofEntries(
+        Map.entry('A', new CharConfig(CharacterType.VOWEL, 0.92)),
+        Map.entry('E', new CharConfig(CharacterType.VOWEL, 1.05)),
+        Map.entry('I', new CharConfig(CharacterType.VOWEL, 1.12)),
+        Map.entry('O', new CharConfig(CharacterType.VOWEL, 0.85)),
+        Map.entry('U', new CharConfig(CharacterType.VOWEL, 0.75)),
+        Map.entry('Ä', new CharConfig(CharacterType.VOWEL, 0.92)),
+        Map.entry('Ö', new CharConfig(CharacterType.VOWEL, 0.85)),
+        Map.entry('Ü', new CharConfig(CharacterType.VOWEL, 1.12)),
+
+        Map.entry('P', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('T', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('K', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('B', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('D', new CharConfig(CharacterType.PLOSIVE, null)),
+        Map.entry('G', new CharConfig(CharacterType.PLOSIVE, null)),
+
+        Map.entry('M', new CharConfig(CharacterType.NASAL, 0.88)),
+        Map.entry('N', new CharConfig(CharacterType.NASAL, 0.88)),
+        Map.entry('L', new CharConfig(CharacterType.NASAL, 0.88)),
+        Map.entry('W', new CharConfig(CharacterType.NASAL, 0.88)),
+        Map.entry('R', new CharConfig(CharacterType.NASAL, 0.88)),
+
+        Map.entry('.', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry(',', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry('!', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry('?', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry(';', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry(':', new CharConfig(CharacterType.PUCTUATION, null)),
+        Map.entry('-', new CharConfig(CharacterType.PUCTUATION, null))
+    );
+
+    private static CharConfig fetchConfig(char c) {
+        return TYPE_MAP.getOrDefault(c, new CharConfig(CharacterType.UNKNOWM, null));
+    }
+
+    public enum WaveType {SINE, SQUARE, TRIANGLE}
+
     enum CharacterType {
         VOWEL,
         PLOSIVE,
@@ -144,7 +185,8 @@ public class MumbleSynthesizer {
                 dos.writeByte((pcmSampleLeft >> 8) & 0xFF);
                 dos.writeByte(pcmSampleRight & 0xFF);
                 dos.writeByte((pcmSampleRight >> 8) & 0xFF);
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
 
             context.totalSamplesWritten++;
         }
@@ -173,13 +215,13 @@ public class MumbleSynthesizer {
     }
 
     private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, char c, CharConfig config) {
-        if (CharacterType.PUCTUATION == config.type() || c == ' ' ) return baseFreq;
+        if (CharacterType.PUCTUATION == config.type() || c == ' ') return baseFreq;
         double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * pitchRandomness;
         return baseFreq * (1.0 + randomPitchOffset);
     }
 
     private static double calculateSegmentVolume(char c, CharConfig config) {
-        if (CharacterType.PUCTUATION == config.type() || c == ' ' ) return 0.0;
+        if (CharacterType.PUCTUATION == config.type() || c == ' ') return 0.0;
         return (0.85 + random.nextDouble() * 0.15);
     }
 
@@ -200,7 +242,9 @@ public class MumbleSynthesizer {
 
     private static double synthesizePhoneme(char c, CharConfig config, double phase, int totalSamples, int currentSample, VoiceOptions options) {
 
-        if (CharacterType.PUCTUATION == config.type() || c == ' ' ) return 0.0;//TODO TYPE SPACE?
+        if (CharacterType.PUCTUATION == config.type() || c == ' ') {
+            return 0.0;//TODO TYPE SPACE?
+        }
 
         if (CharacterType.VOWEL == config.type()) {
             double baseWave = generateBaseWave(phase, options.waveType);
@@ -238,47 +282,6 @@ public class MumbleSynthesizer {
         };
     }
 
-
-
-
-private record CharConfig(CharacterType type, Double targetWovelShift) {
-
-}
-    private static final Map<Character, CharConfig> TYPE_MAP = Map.ofEntries(
-        Map.entry('A', new CharConfig(CharacterType.VOWEL, 0.92)),
-        Map.entry('E', new CharConfig(CharacterType.VOWEL, 1.05)),
-        Map.entry('I', new CharConfig(CharacterType.VOWEL, 1.12)),
-        Map.entry('O', new CharConfig(CharacterType.VOWEL, 0.85)),
-        Map.entry('U', new CharConfig(CharacterType.VOWEL, 0.75)),
-        Map.entry('Ä', new CharConfig(CharacterType.VOWEL, 0.92)),
-        Map.entry('Ö', new CharConfig(CharacterType.VOWEL, 0.85)),
-        Map.entry('Ü', new CharConfig(CharacterType.VOWEL, 1.12)),
-
-        Map.entry('P', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('T', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('K', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('B', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('D', new CharConfig(CharacterType.PLOSIVE, null)),
-        Map.entry('G', new CharConfig(CharacterType.PLOSIVE, null)),
-
-        Map.entry('M', new CharConfig(CharacterType.NASAL,0.88)),
-        Map.entry('N', new CharConfig(CharacterType.NASAL,0.88)),
-        Map.entry('L', new CharConfig(CharacterType.NASAL,0.88)),
-        Map.entry('W', new CharConfig(CharacterType.NASAL,0.88)),
-        Map.entry('R', new CharConfig(CharacterType.NASAL,0.88)),
-
-        Map.entry('.', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry(',', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry('!', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry('?', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry(';', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry(':', new CharConfig(CharacterType.PUCTUATION, null)),
-        Map.entry('-', new CharConfig(CharacterType.PUCTUATION, null))
-    );
-
-    private static CharConfig fetchConfig(char c) {
-        return TYPE_MAP.getOrDefault(c, new CharConfig(CharacterType.UNKNOWM, null));
-    }
 
     private static void writeWavHeader(ByteBuffer buffer, int audioDataLength) {
         int sampleRate = (int) AUDIO_FORMAT.getSampleRate();
