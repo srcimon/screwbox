@@ -48,6 +48,7 @@ public class MumbleSynthesizer {
         }
     }
 
+    //TODO get rid of CharacterType
     private static final Map<Character, SynthConfig> SYNTH_CONFIG = Map.ofEntries(
         entry('A', new SynthConfig(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(2.0, 3.5))),//TODO MOVE CONFIG INSIDE
         entry('E', new SynthConfig(CharacterType.VOWEL, (context) -> 1.05, new WovelPhoneme(1.5, 4.0))),
