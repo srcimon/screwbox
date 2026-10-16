@@ -75,7 +75,8 @@ public class MumbleSynthesizer {
 
             var soundContext = new SoundContext(options.baseFreq);
             for (char character : sanitizedText.toCharArray()) {
-                addSampleForChaacter(options, character, soundContext, dos);
+                var type = fetchType(character);
+                addSampleForChaacter(options, character, type, soundContext, dos);//TODO add type to context?
             }
             dos.flush();
 
@@ -92,14 +93,14 @@ public class MumbleSynthesizer {
         }
     }
 
-    private static void addSampleForChaacter(VoiceOptions config, char character, SoundContext context, DataOutputStream dos) {
-        int currentSamplesPerBlip = calculateSingleBlipLength(character, config);
-        boolean isPunctuation = isPunctuation(character);
+    private static void addSampleForChaacter(VoiceOptions config, char character, CharacterType type, SoundContext context, DataOutputStream dos) {
+        int currentSamplesPerBlip = calculateSingleBlipLength(character, type, config);
+        boolean isPunctuation = CharacterType.PUCTUATION == type;
 
-        double targetVowelShift = determineTargetVowelShift(character, context.currentVowelShift);
+        double targetVowelShift = determineTargetVowelShift(character, context.currentVowelShift, type);
         // Stark geglättete Pitch-Änderungen pro Segment, um Frequenzsprünge zu mindern
-        double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character);
-        double volumeModifier = calculateSegmentVolume(character);
+        double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character, type);
+        double volumeModifier = calculateSegmentVolume(character, type);
 
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
@@ -115,7 +116,7 @@ public class MumbleSynthesizer {
 
             context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI);
 
-            double rawValue = synthesizePhoneme(character, context.runningPhase, currentSamplesPerBlip, s, config);
+            double rawValue = synthesizePhoneme(character, type, context.runningPhase, currentSamplesPerBlip, s, config);
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
             double preFilteredSample = Math.clamp(rawValue * envelope * volumeModifier, -1.0, 1.0);
 
@@ -142,44 +143,46 @@ public class MumbleSynthesizer {
         }
     }
 
-    private static int calculateSingleBlipLength(char c, VoiceOptions config) {
-        if (c == '.' || c == '!' || c == '?') return (int) (AUDIO_FORMAT.getSampleRate() * config.sentencePause);
-        if (c == ',' || c == ';' || c == ':') return (int) (AUDIO_FORMAT.getSampleRate() * config.commaPause);
-        if (c == ' ' || c == '-') return (int) (AUDIO_FORMAT.getSampleRate() * config.wordPause);
+    private static int calculateSingleBlipLength(char c, CharacterType type, VoiceOptions config) {
+        if (c == '.' || c == '!' || c == '?' ) return (int) (AUDIO_FORMAT.getSampleRate() * config.sentencePause);
+        if (c == ',' || c == ';' || c == ':' ) return (int) (AUDIO_FORMAT.getSampleRate() * config.commaPause);
+        if (c == ' ' || c == '-' ) return (int) (AUDIO_FORMAT.getSampleRate() * config.wordPause);
 
         int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * config.baseBlipDuration);
         double deviation = (random.nextDouble() * 2.0 - 1.0) * config.speedRandomness;
         double speedModifier = 1.0 + deviation;
 
-        if (isPlosive(c)) {
+        if (CharacterType.PLOSIVE == type) {
             speedModifier *= 0.35;
         }
         return (int) (baseSamplesPerBlip * speedModifier);
     }
 
-    private static double determineTargetVowelShift(char c, double fallbackValue) {
+    private static double determineTargetVowelShift(char c, double fallbackValue, CharacterType type) {
         return switch (c) {
             case 'A' -> 0.95;
             case 'E' -> 1.02;
             case 'I' -> 1.08;
             case 'O' -> 0.88;
             case 'U' -> 0.78;
-            default -> isNasal(c) ? 0.85 : fallbackValue;
+            default -> CharacterType.NASAL == type ? 0.85 : fallbackValue;
         };
     }
 
-    private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, char c) {
-        if (isPunctuation(c) || c == ' ') return baseFreq;
+    private static double calculateSegmentFrequency(double baseFreq, double pitchRandomness, char c, CharacterType type) {
+        if (CharacterType.PUCTUATION == type || c == ' ' ) return baseFreq;
         double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * pitchRandomness;
         return baseFreq * (1.0 + randomPitchOffset);
     }
 
-    private static double calculateSegmentVolume(char c) {
-        if (isPunctuation(c) || c == ' ') return 0.0;
+    private static double calculateSegmentVolume(char c, CharacterType type) {
+        if (CharacterType.PUCTUATION == type || c == ' ' ) return 0.0;
         return (0.85 + random.nextDouble() * 0.15);
     }
 
-    private record FormantMult(double f1, double f2) {}
+    private record FormantMult(double f1, double f2) {
+    }
+
     private static final FormantMult DEFAULT_MULT = new FormantMult(1.0, 2.0);
     private static final Map<Character, FormantMult> VOWEL_MAP = Map.of(
         'A', new FormantMult(2.0, 3.5),
@@ -191,10 +194,12 @@ public class MumbleSynthesizer {
         'Ö', new FormantMult(1.5, 3.2),
         'Ü', new FormantMult(1.2, 3.5)
     );
-    private static double synthesizePhoneme(char c, double phase, int totalSamples, int currentSample, VoiceOptions config) {
-        if (isPunctuation(c) || c == ' ') return 0.0;
 
-        if (isVowel(c)) {
+    private static double synthesizePhoneme(char c, CharacterType type, double phase, int totalSamples, int currentSample, VoiceOptions config) {
+
+        if (CharacterType.PUCTUATION == type || c == ' ' ) return 0.0;//TODO TYPE SPACE?
+
+        if (CharacterType.VOWEL == type) {
             double baseWave = generateBaseWave(phase, config.waveType);
 
             // Schneller Lookup statt komplexem Switch mit Seiteneffekten
@@ -207,7 +212,7 @@ public class MumbleSynthesizer {
             return Math.sin((baseWave + formant1 + formant2) * 0.8) * config.vowelGain;
         }
 
-        if (isPlosive(c)) {
+        if (CharacterType.PLOSIVE == type) {
             if (currentSample < totalSamples * 0.10) {
                 // Sehr tiefer, sanfter Pop-Laut ohne Klickgeräusch
                 return MathUtil.fastSin(phase * 0.08) * Math.exp(-currentSample / 120.0) * config.plosiveGain;
@@ -215,7 +220,7 @@ public class MumbleSynthesizer {
             return 0.0;
         }
 
-        if (isNasal(c)) {
+        if (CharacterType.NASAL == type) {
             return MathUtil.fastSin(phase * 0.5) * config.nasalGain;
         }
         return 0.0;
@@ -238,33 +243,50 @@ public class MumbleSynthesizer {
         };
     }
 
-    private static boolean isVowel(char c) {
-        return switch (c) {
-            case 'A', 'E', 'I', 'O', 'U', 'Ä', 'Ö', 'Ü' -> true;
-            default -> false;
-        };
+    enum CharacterType {
+        VOWEL,
+        PLOSIVE,
+        NASAL,
+        PUCTUATION,
+        UNKNOWM
     }
 
-    private static boolean isPlosive(char c) {
-        return switch (c) {
-            case 'P', 'T', 'K', 'B', 'D', 'G' -> true;
-            default -> false;
-        };
+    private static final Map<Character, CharacterType> TYPE_MAP = Map.ofEntries(
+        Map.entry('A', CharacterType.VOWEL),
+        Map.entry('E', CharacterType.VOWEL),
+        Map.entry('I', CharacterType.VOWEL),
+        Map.entry('O', CharacterType.VOWEL),
+        Map.entry('U', CharacterType.VOWEL),
+        Map.entry('Ä', CharacterType.VOWEL),
+        Map.entry('Ö', CharacterType.VOWEL),
+        Map.entry('Ü', CharacterType.VOWEL),
+
+        Map.entry('P', CharacterType.PLOSIVE),
+        Map.entry('T', CharacterType.PLOSIVE),
+        Map.entry('K', CharacterType.PLOSIVE),
+        Map.entry('B', CharacterType.PLOSIVE),
+        Map.entry('D', CharacterType.PLOSIVE),
+        Map.entry('G', CharacterType.PLOSIVE),
+
+        Map.entry('M', CharacterType.NASAL),
+        Map.entry('N', CharacterType.NASAL),
+        Map.entry('L', CharacterType.NASAL),
+        Map.entry('W', CharacterType.NASAL),
+        Map.entry('R', CharacterType.NASAL),
+
+        Map.entry('.', CharacterType.PUCTUATION),
+        Map.entry(',', CharacterType.PUCTUATION),
+        Map.entry('!', CharacterType.PUCTUATION),
+        Map.entry('?', CharacterType.PUCTUATION),
+        Map.entry(';', CharacterType.PUCTUATION),
+        Map.entry(':', CharacterType.PUCTUATION),
+        Map.entry('-', CharacterType.PUCTUATION)
+    );
+
+    private static CharacterType fetchType(char c) {
+        return TYPE_MAP.getOrDefault(c, CharacterType.UNKNOWM);
     }
 
-    private static boolean isNasal(char c) {
-        return switch (c) {
-            case 'M', 'N', 'L', 'W', 'R' -> true;
-            default -> false;
-        };
-    }
-
-    private static boolean isPunctuation(char c) {
-        return switch (c) {
-            case '.', ',', '!', '?', ';', ':', '-' -> true;
-            default -> false;
-        };
-    }
     private static void writeWavHeader(ByteBuffer buffer, int audioDataLength, AudioFormat format) {
         // 1. Berechnungen basierend auf dem AudioFormat
         int channels = format.getChannels();
