@@ -223,15 +223,23 @@ public class MumbleSynthesizer {
     }
 
     private static int calculateSingleBlipLength(char c, SynthConfig config, VoiceOptions options) {
-        if (c == '.' || c == '!' || c == '?') return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause);
-        if (c == ',' || c == ';' || c == ':') return (int) (AUDIO_FORMAT.getSampleRate() * options.commaPause);
-        if (c == ' ' || c == '-') return (int) (AUDIO_FORMAT.getSampleRate() * options.wordPause);
+        if (c == '.' || c == '!' || c == '?') {
+            return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause);
+        }
+        if (c == ',' || c == ';' || c == ':') {
+            return (int) (AUDIO_FORMAT.getSampleRate() * options.commaPause);
+        }
+        if (c == ' ' || c == '-') {
+            return (int) (AUDIO_FORMAT.getSampleRate() * options.wordPause);
+        }
 
         int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * options.baseBlipDuration);
         double deviation = (random.nextDouble() * 2.0 - 1.0) * options.speedRandomness;
 
         double speedModifier = 1.0 + deviation;
-        if (config.type() == CharacterType.PLOSIVE) speedModifier *= 0.4; // Kürzere Artikulation
+        if (config.type() == CharacterType.PLOSIVE) {
+            speedModifier *= 0.4; // Kürzere Artikulation
+        }
 
         return (int) (baseSamplesPerBlip * speedModifier);
     }
