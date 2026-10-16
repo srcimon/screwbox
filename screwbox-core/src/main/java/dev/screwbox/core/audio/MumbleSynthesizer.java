@@ -106,7 +106,7 @@ public class MumbleSynthesizer {
         double targetVowelShift = determineTargetVowelShift(character, context.currentVowelShift, type);
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
-        double intonation = Math.sin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
+        double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
         double targetFrequency = calculateSegmentFrequency(config.baseFreq, config.pitchRandomness, character, type) * (1.0 + intonation);
 
         double volumeModifier = calculateSegmentVolume(character, type);
@@ -120,7 +120,7 @@ public class MumbleSynthesizer {
 
             // Shimmer & Jitter: Winzige, unvorhersehbare Muskelunreinheiten der Stimme
             double jitter = (random.nextDouble() - 0.5) * 0.002;
-            double vibrato = Math.sin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
+            double vibrato = MathUtil.fastSin(2.0 * Math.PI * config.vibratoSpeed * globalTime) * config.vibratoDepth;
 
             double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
             context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI);
@@ -130,7 +130,7 @@ public class MumbleSynthesizer {
             double envelope = isPunctuation ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
-            double breathShimmer = 1.0 + (Math.sin(globalTime * 2.0) * 0.05);
+            double breathShimmer = 1.0 + (MathUtil.fastSin(globalTime * 2.0) * 0.05);
             double preFilteredSample = Math.clamp(rawValue * envelope * volumeModifier * breathShimmer, -1.0, 1.0);
 
             // Tiefpassfilterung (Getrennte Zustände für Stereo-Breite, falls gewünscht)
@@ -224,7 +224,7 @@ public class MumbleSynthesizer {
             double formant1 = MathUtil.fastSin(phase * mult.f1()) * 0.25;
             double formant2 = MathUtil.fastSin(phase * mult.f2()) * 0.10;
 
-            return Math.sin((baseWave + formant1 + formant2) * 0.8) * config.vowelGain;
+            return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * config.vowelGain;
         }
 
         if (CharacterType.PLOSIVE == type) {
@@ -245,7 +245,7 @@ public class MumbleSynthesizer {
         return switch (waveType) {
             case SINE -> MathUtil.fastSin(phase);
             // Ultra-weiche Annäherung einer Dreieckswelle für wärmeren Sound
-            case SQUARE -> Math.sin(MathUtil.fastSin(phase) * 1.2) * 0.8;
+            case SQUARE -> MathUtil.fastSin(MathUtil.fastSin(phase) * 1.2) * 0.8;
             case TRIANGLE -> (Math.abs((phase % (2 * Math.PI)) - Math.PI) / Math.PI) * 2.0 - 1.0;
         };
     }
