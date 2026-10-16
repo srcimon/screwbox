@@ -42,7 +42,7 @@ public class PlaygroundApp {
                 timeout = Time.now().addSeconds(2);
                 Time t = Time.now();
                 MumbleSynthesizer.VoiceOptions config = new MumbleSynthesizer.VoiceOptions();
-                config.baseFreq = 140.0;
+                config.baseFreq = 440.0;
                 config.baseBlipDuration = 0.04;
 
                 config.pitchRandomness = 0.5;       // Etwas reduziert für stabilere Intonation

@@ -85,7 +85,7 @@ public class MumbleSynthesizer {
 
             // 3. Den Header nachträglich direkt im finalen Array korrigieren
             ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
-            writeWavHeader(headerBuffer, audioDataLength, AUDIO_FORMAT);
+            writeWavHeader(headerBuffer, audioDataLength);
 
             return Sound.fromSoundData(finalWav);
         } catch (IOException e) {
@@ -184,7 +184,7 @@ public class MumbleSynthesizer {
     }
 
     private static final FormantMult DEFAULT_MULT = new FormantMult(1.0, 2.0);
-    private static final Map<Character, FormantMult> VOWEL_MAP = Map.of(
+    private static final Map<Character, FormantMult> VOWEL_MAP = Map.of(//TODO Combine with other map
         'A', new FormantMult(2.0, 3.5),
         'E', new FormantMult(1.5, 4.0),
         'I', new FormantMult(1.2, 4.5),
@@ -287,11 +287,11 @@ public class MumbleSynthesizer {
         return TYPE_MAP.getOrDefault(c, CharacterType.UNKNOWM);
     }
 
-    private static void writeWavHeader(ByteBuffer buffer, int audioDataLength, AudioFormat format) {
+    private static void writeWavHeader(ByteBuffer buffer, int audioDataLength) {
         // 1. Berechnungen basierend auf dem AudioFormat
-        int channels = format.getChannels();
-        int sampleRate = (int) format.getSampleRate();
-        int bitsPerSample = format.getSampleSizeInBits();
+        int channels = AUDIO_FORMAT.getChannels();
+        int sampleRate = (int) AUDIO_FORMAT.getSampleRate();
+        int bitsPerSample = AUDIO_FORMAT.getSampleSizeInBits();
         int bytesPerSample = bitsPerSample / 8;
 
         int byteRate = sampleRate * channels * bytesPerSample;
