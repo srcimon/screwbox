@@ -19,7 +19,7 @@ import static java.util.Map.entry;
 public class MumbleSynthesizer {
 
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     private record SynthElement(CharacterType type, Function<SoundContext, Double> targetWovelShift,
                                 BiFunction<Double, VoiceOptions, Double> phonemeCalculation) {
@@ -112,6 +112,7 @@ public class MumbleSynthesizer {
         public double nasalGain = 0.35;
         public double plosiveGain = 0.45;
         public double lowPassCutoff = 0.18;
+        public Long seed;
     }
 
     private static class SoundContext {
@@ -121,9 +122,11 @@ public class MumbleSynthesizer {
         int totalSamplesWritten = 0;
         double filterStateLeft = 0.0;
         double filterStateRight = 0.0;
+        Random random;
 
-        public SoundContext(double startPitch) {
+        public SoundContext(double startPitch, Random random) {
             currentPitch = startPitch;
+            this.random = random;
         }
     }
 
@@ -136,7 +139,7 @@ public class MumbleSynthesizer {
             byte[] dummyHeader = new byte[WaveSupport.WAV_HEADER_SIZE];
             dos.write(dummyHeader);
 
-            var soundContext = new SoundContext(options.baseFreq);
+            var soundContext = new SoundContext(options.baseFreq, options.seed == null ? RANDOM : new Random(options.seed));
             char[] chars = sanitizedText.toCharArray();
 
             for (int i = 0; i < chars.length; i++) {
@@ -162,15 +165,15 @@ public class MumbleSynthesizer {
 
     private static void addSampleForCharacter(VoiceOptions options, char character, SynthElement config,
                                               SoundContext context, DataOutputStream dos, double textProgress) {
-        int currentSamplesPerBlip = calculateSingleBlipLength(character, config, options);
+        int currentSamplesPerBlip = calculateSingleBlipLength(character, config, options, context);
 
         double targetVowelShift = config.targetWovelShift().apply(context);
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
         double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
-        double targetFrequency = calculateSegmentFrequency(options, config) * (1.0 + intonation);
+        double targetFrequency = calculateSegmentFrequency(options, config, context) * (1.0 + intonation);
 
-        double segmentVolume = calculateSegmentVolume(config);
+        double segmentVolume = calculateSegmentVolume(config, context);
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
@@ -180,7 +183,7 @@ public class MumbleSynthesizer {
             double globalTime = (double) context.totalSamplesWritten / AUDIO_FORMAT.getSampleRate();
 
             // Shimmer & Jitter: Winzige, unvorhersehbare Muskelunreinheiten der Stimme
-            double jitter = (random.nextDouble() - 0.5) * 0.002;
+            double jitter = (context.random.nextDouble() - 0.5) * 0.002;
             double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed * globalTime) * options.vibratoDepth;
 
             double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
@@ -213,7 +216,7 @@ public class MumbleSynthesizer {
         }
     }
 
-    private static double TO_SIGNED_INTEGER = 32767.0;
+    private static final double TO_SIGNED_INTEGER = 32767.0;
 
     private static double applyClickProtectionEnvelope(int sampleIdx, int totalSamples) {
         int fadeSamples = Math.min(120, totalSamples / 10); // Sanftes Ein-/Ausblenden (ca. 2-3ms)
@@ -222,7 +225,7 @@ public class MumbleSynthesizer {
         return 1.0;
     }
 
-    private static int calculateSingleBlipLength(char c, SynthElement config, VoiceOptions options) {
+    private static int calculateSingleBlipLength(char c, SynthElement config, VoiceOptions options, SoundContext context) {
         if (c == '.' || c == '!' || c == '?') {
             return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause);
         }
@@ -234,7 +237,7 @@ public class MumbleSynthesizer {
         }
 
         int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * options.baseBlipDuration);
-        double deviation = (random.nextDouble() * 2.0 - 1.0) * options.speedRandomness;
+        double deviation = (context.random.nextDouble() * 2.0 - 1.0) * options.speedRandomness;
 
         double speedModifier = 1.0 + deviation;
         if (config.type() == CharacterType.PLOSIVE) {
@@ -244,19 +247,19 @@ public class MumbleSynthesizer {
         return (int) (baseSamplesPerBlip * speedModifier);
     }
 
-    private static double calculateSegmentFrequency(VoiceOptions options, SynthElement config) {
+    private static double calculateSegmentFrequency(VoiceOptions options, SynthElement config, SoundContext context) {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
             return options.baseFreq;
         }
-        double randomPitchOffset = (random.nextDouble() * 2.0 - 1.0) * options.pitchRandomness;
+        double randomPitchOffset = (context.random.nextDouble() * 2.0 - 1.0) * options.pitchRandomness;
         return options.baseFreq * (1.0 + randomPitchOffset);
     }
 
-    private static double calculateSegmentVolume(SynthElement config) {
-        if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()){
+    private static double calculateSegmentVolume(SynthElement config, SoundContext context) {
+        if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
             return 0.0;
         }
-        return (0.85 + random.nextDouble() * 0.15);
+        return (0.85 + context.random.nextDouble() * 0.15);
     }
 
 }

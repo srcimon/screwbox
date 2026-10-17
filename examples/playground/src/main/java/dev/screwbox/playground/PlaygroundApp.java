@@ -39,13 +39,13 @@ public class PlaygroundApp {
             }
             if (engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
-                timeout = Time.now().addSeconds(2);
+
                 Time t = Time.now();
                 MumbleSynthesizer.VoiceOptions config = new MumbleSynthesizer.VoiceOptions();
-                config.baseFreq = 200.0;
-                config.baseBlipDuration = 0.05;
+                config.baseFreq = 180.0;
+                config.baseBlipDuration = 0.04;
 
-                config.pitchRandomness = 0.4;       // Etwas reduziert für stabilere Intonation
+                config.pitchRandomness = 0.8;       // Etwas reduziert für stabilere Intonation
                 config.speedRandomness = 0.10;
 
                 // Sanftes Vibrato ohne extreme Ausschläge
@@ -65,6 +65,7 @@ public class PlaygroundApp {
 
                 var mumble = MumbleSynthesizer.synthesizeMumbleSpeech(text, config);
                 System.out.println(Duration.since(t).milliseconds());
+                timeout = mumble.duration().addTo(Time.now());
                 engine.audio().playSound(mumble);
             }
         });
