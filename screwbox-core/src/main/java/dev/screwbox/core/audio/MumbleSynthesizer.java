@@ -26,7 +26,7 @@ public class MumbleSynthesizer {
         Function<SynthContext, Double> targetWovelShift,
         BiFunction<Double, VoiceOptions, Double> phonemeCalculation,
         Function<SynthContext, Double> segmentVolume,
-        BiFunction<VoiceOptions, SynthContext, Double> segmentFrequency,
+        BiFunction<SynthContext, VoiceOptions, Double> segmentFrequency,
         BiFunction<SynthContext, VoiceOptions, Double> blipLength
     ) {
 //TODO add constructor without wovelconfig
@@ -37,8 +37,8 @@ public class MumbleSynthesizer {
     private static final BiFunction<Double, VoiceOptions, Double> NASAL_PHONEME = (phase, options) -> MathUtil.fastSin(phase * 0.5) * options.nasalGain();
     private static final Function<SynthContext, Double> RANDOM_SEGMENT_VOLUME = (context) -> 0.85 + context.randomDouble() * 0.15;
 
-    private static final BiFunction<VoiceOptions, SynthContext, Double> SEGMENT_BASE_FREQUENCY = (options, context) -> options.baseFreq();
-    private static final BiFunction<VoiceOptions, SynthContext, Double> RANDOM_FREQUENCY = (options, context) -> {
+    private static final BiFunction<SynthContext, VoiceOptions, Double> SEGMENT_BASE_FREQUENCY = (context, options) -> options.baseFreq();
+    private static final BiFunction<SynthContext, VoiceOptions, Double> RANDOM_FREQUENCY = (context, options) -> {
         double randomPitchOffset = (context.randomDouble() * 2.0 - 1.0) * options.pitchRandomness();
         return options.baseFreq() * (1.0 + randomPitchOffset);
     };
@@ -142,17 +142,17 @@ public class MumbleSynthesizer {
         }
     }
 
-    private static void addSampleForCharacter(VoiceOptions options, SynthElement config,
+    private static void addSampleForCharacter(VoiceOptions options, SynthElement element,
                                               SynthContext context, DataOutputStream dos, double textProgress) {
-        int currentSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * config.blipLength().apply(context, options));
+        int currentSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * element.blipLength().apply(context, options));
 
-        double targetVowelShift = config.targetWovelShift().apply(context);
+        double targetVowelShift = element.targetWovelShift().apply(context);
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
         double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
-        double targetFrequency = config.segmentFrequency.apply(options, context) * (1.0 + intonation);
+        double targetFrequency = element.segmentFrequency.apply(context, options) * (1.0 + intonation);
 
-        double segmentVolume = config.segmentVolume.apply(context);
+        double segmentVolume = element.segmentVolume.apply(context);
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
@@ -169,7 +169,7 @@ public class MumbleSynthesizer {
             context.setRunningPhase((context.runningPhase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
-            double rawValue = config.phonemeCalculation().apply(context.runningPhase(), options);
+            double rawValue = element.phonemeCalculation().apply(context.runningPhase(), options);
             double envelope = applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
