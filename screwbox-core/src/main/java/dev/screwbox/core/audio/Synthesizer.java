@@ -10,8 +10,6 @@ import javax.sound.sampled.AudioFormat;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 
 //TODO rename to synthesizer
@@ -34,10 +32,10 @@ public class Synthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var synthElement = SynthConfiguration.findElement(character);
+                final var element = SynthConfiguration.findElement(character);
                 double textProgress = (double) i / chars.length;
 
-                addSampleForCharacter(options, synthElement, soundContext, outputStream, textProgress);//TODO move text progress into context
+                synthesizeElement(element, options, soundContext, outputStream, textProgress);//TODO move text progress into context
             }
             outputStream.flush();
 
@@ -50,8 +48,8 @@ public class Synthesizer {
         }
     }
 
-    private static void addSampleForCharacter(VoiceOptions options, SynthElement element,
-                                              SynthContext context, DataOutputStream dos, double textProgress) {
+    private static void synthesizeElement(final SynthElement element, final VoiceOptions options,
+                                          final SynthContext context, final DataOutputStream dos, final double textProgress) {
         int currentSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * element.blipLength().apply(context, options));
 
         double targetVowelShift = element.targetWovelShift().apply(context, options);
