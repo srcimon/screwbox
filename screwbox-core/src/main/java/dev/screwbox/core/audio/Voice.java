@@ -8,6 +8,26 @@ import dev.screwbox.core.utils.Validate;
 import static java.util.Objects.requireNonNull;
 
 //TODO document below
+
+/**
+ * Configures a voice used by {@link Synthesizer} and {@link Audio#playChatter(String, Voice)}
+ *
+ * @param baseFrequency
+ * @param baseBlipDuration
+ * @param pitchRandomness
+ * @param speedRandomness
+ * @param vibratoSpeed
+ * @param vibratoDepth
+ * @param sentencePause
+ * @param commaPause
+ * @param wordPause
+ * @param waveType
+ * @param vowelVolume
+ * @param nasalVolume
+ * @param scratchyness
+ * @param seed
+ * @since 3.37.0
+ */
 public record Voice(double baseFrequency,
                     Duration baseBlipDuration,
                     Percent pitchRandomness,
@@ -61,6 +81,7 @@ public record Voice(double baseFrequency,
     public Voice vibratoDepth(final Percent vibratoDepth) {
         return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, scratchyness, seed);
     }
+
     public Voice vowelVolume(final Percent vowelVolume) {
         return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, scratchyness, seed);
     }
