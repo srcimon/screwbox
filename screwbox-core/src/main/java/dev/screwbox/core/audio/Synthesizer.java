@@ -17,16 +17,16 @@ public class Synthesizer {
     private static final double TO_SIGNED_INTEGER = 32767.0;
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
 
-    public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
+    public static Sound synthesizeMumbleSpeech(final String text, final Voice voice) {
         final char[] sanitizedCharacters = text.toUpperCase().toCharArray();
-        final var context = new SynthContext(options);
+        final var context = new SynthContext(voice);
         try (final var byteArrayOutputStream = new ByteArrayOutputStream(8192);
             final var outputStream = new DataOutputStream(byteArrayOutputStream)) {
             outputStream.write(WaveSupport.DUMMY_HEADER);
             for (int i = 0; i < sanitizedCharacters.length; i++) {
                 final var element = SynthConfiguration.findElement(sanitizedCharacters[i]);
                 context.setProgress((double) i / sanitizedCharacters.length);
-                synthesizeElement(element, options, context, outputStream);
+                synthesizeElement(element, voice, context, outputStream);
             }
             outputStream.flush();
 
@@ -39,17 +39,16 @@ public class Synthesizer {
         }
     }
 
-    private static void synthesizeElement(final SynthElement element, final VoiceOptions options,
+    private static void synthesizeElement(final SynthElement element, final Voice voice,
                                           final SynthContext context, final DataOutputStream outputStream) throws IOException {
 
-        final int samplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * element.blipLength().apply(context, options));
-        final double targetVowelShift = element.targetWovelShift().apply(context, options);
+        final int samplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * element.blipLength().apply(context, voice));
+        final double targetVowelShift = element.targetWovelShift().apply(context, voice);
 
-        // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
-        double intonation = MathUtil.fastSin(context.progress() * Math.PI) * 0.15 - (context.progress() * 0.1);
-        double targetFrequency = element.segmentFrequency().apply(context, options) * (1.0 + intonation);
+        final double intonation = MathUtil.fastSin(context.progress() * Math.PI) * 0.15 - (context.progress() * 0.1);
+        final double targetFrequency = element.segmentFrequency().apply(context, voice) * (1.0 + intonation);
 
-        double segmentVolume = element.segmentVolume().apply(context, options);
+        final double segmentVolume = element.segmentVolume().apply(context, voice);
 
         for (int sampleNr = 0; sampleNr < samplesPerBlip; sampleNr++) {
             context.setVowelShift(context.vowelShift() + (targetVowelShift - context.vowelShift()) * 0.002);
@@ -58,18 +57,18 @@ public class Synthesizer {
             final double globalTime = (double) context.samplesWritten() / AUDIO_FORMAT.getSampleRate();
 
             final double jitter = (context.randomDouble() - 0.5) * 0.002;
-            final double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed() * globalTime) * options.vibratoDepth();
+            final double vibrato = MathUtil.fastSin(2.0 * Math.PI * voice.vibratoSpeed() * globalTime) * voice.vibratoDepth();
 
             final double instantFreq = Math.clamp(context.pitch() * (1.0 + (context.vowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
             context.setPhase((context.phase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
 
-            final double rawValue = element.phoneme().apply(context, options);
+            final double rawValue = element.phoneme().apply(context, voice);
             final double envelope = applyClickProtectionEnvelope(sampleNr, samplesPerBlip);
 
             final double breathShimmer = 1.0 + (MathUtil.fastSin(globalTime * 2.0) * 0.05);
             final double preFilteredSample = Math.clamp(rawValue * envelope * segmentVolume * breathShimmer, -1.0, 1.0);
 
-            context.setFilterState(context.filterState() + options.lowPassCutoff() * (preFilteredSample - context.filterState()));
+            context.setFilterState(context.filterState() + voice.lowPassCutoff() * (preFilteredSample - context.filterState()));
 
             final short pcmSample = (short) (context.filterState() * TO_SIGNED_INTEGER);
             outputStream.writeByte(pcmSample & 0xFF);

@@ -1,7 +1,7 @@
 package dev.screwbox.core.audio.internal.synth;
 
 import dev.screwbox.core.Time;
-import dev.screwbox.core.audio.VoiceOptions;
+import dev.screwbox.core.audio.Voice;
 
 import java.util.Random;
 
@@ -19,7 +19,7 @@ public class SynthContext {
     private double pitch;
 
     //TODO simplify methods
-    public SynthContext(final VoiceOptions options) {
+    public SynthContext(final Voice options) {
         this.pitch = options.baseFrequency();
         this.random = new Random(isNull(options.seed())
             ? Time.now().milliseconds()

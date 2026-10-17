@@ -6,6 +6,8 @@ import dev.screwbox.core.audio.AudioConfiguration;
 import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.audio.Synthesizer;
+import dev.screwbox.core.audio.Voice;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Validate;
 
@@ -132,10 +134,19 @@ public class DefaultAudio implements Audio, Updatable {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
 
-        ActivePlayback activePlayback = new ActivePlayback(sound, options);
+        final var activePlayback = new ActivePlayback(sound, options);
         activePlaybacks.put(activePlayback.id(), activePlayback);
         executor.execute(() -> play(activePlayback));
         return activePlayback.toPlayback();
+    }
+
+    //TODO test
+    @Override
+    public Audio speakMumbled(final String text, final Voice voice, final SoundOptions options) {//TODO sound options
+        requireNonNull(text, "text must not be null");
+        requireNonNull(voice, "voice must not be null");
+        executor.execute(() -> playSound(Synthesizer.synthesizeMumbleSpeech(text, voice), options));
+        return this;
     }
 
     @Override

@@ -2,18 +2,15 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.FontBundle;
-import dev.screwbox.core.audio.Synthesizer;
-import dev.screwbox.core.audio.VoiceOptions;
+import dev.screwbox.core.audio.Voice;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
 
 import java.util.List;
-import java.util.Random;
 
 public class PlaygroundApp {
 
@@ -43,12 +40,8 @@ public class PlaygroundApp {
             if (engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
 
-                Time t = Time.now();
-                var mumble = Synthesizer.synthesizeMumbleSpeech(text, VoiceOptions.variable()
-                    .baseFrequency(150));
-                System.out.println(Duration.since(t).milliseconds());
-                timeout = mumble.duration().addTo(Time.now());
-                engine.audio().playSound(mumble);
+                engine.audio().speakMumbled(text, Voice.variable().baseFrequency(250));
+                timeout = Time.now().addSeconds(2);
             }
         });
 

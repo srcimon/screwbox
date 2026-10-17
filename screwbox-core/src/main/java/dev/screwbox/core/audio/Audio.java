@@ -90,6 +90,14 @@ public interface Audio {
         return playSound(sound.get());
     }
 
+    //TODO document
+    Audio speakMumbled(String text, Voice voice, SoundOptions options);
+
+    //TODO document
+    default Audio speakMumbled(final String text, final Voice voice) {
+        return speakMumbled(text, voice, playOnce());
+    }
+
     /**
      * Returns {@code true} if the specified {@link Playback} is active.
      */
