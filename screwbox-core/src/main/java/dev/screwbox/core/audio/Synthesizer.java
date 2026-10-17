@@ -69,7 +69,7 @@ public class Synthesizer {
             final double globalTime = (double) context.samplesWritten() / AUDIO_FORMAT.getSampleRate();
 
             final double jitter = (context.randomDouble() - 0.5) * 0.002;
-            final double vibrato = MathUtil.fastSin(2.0 * Math.PI * voice.vibratoSpeed() * globalTime) * voice.vibratoDepth();
+            final double vibrato = MathUtil.fastSin(2.0 * Math.PI * voice.vibratoSpeed() * globalTime) * voice.vibratoDepth().value();
 
             final double instantFreq = Math.clamp(context.pitch() * (1.0 + (context.vowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
             context.setPhase((context.phase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
@@ -80,7 +80,7 @@ public class Synthesizer {
             final double breathShimmer = 1.0 + (MathUtil.fastSin(globalTime * 2.0) * 0.05);
             final double preFilteredSample = Math.clamp(rawValue * envelope * segmentVolume * breathShimmer, -1.0, 1.0);
 
-            context.setFilterState(context.filterState() + voice.lowPassCutoff() * (preFilteredSample - context.filterState()));
+            context.setFilterState(context.filterState() + voice.scratchyness().value() * (preFilteredSample - context.filterState()));
 
             final short pcmSample = (short) (context.filterState() * TO_SIGNED_INTEGER);
             outputStream.writeByte(pcmSample & 0xFF);
