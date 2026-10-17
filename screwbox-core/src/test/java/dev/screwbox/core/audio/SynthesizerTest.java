@@ -8,49 +8,49 @@ class SynthesizerTest {
 
     @Test
     void generateChatter_sameTextAndPinnedSeed_isIdentical() {
-        var firstSpeech = Synthesizer.generateChatter("test", Voice.fixed(121239L));
-        var secondSpeech = Synthesizer.generateChatter("test", Voice.fixed(121239L));
+        var firstChatter = Synthesizer.generateChatter("test", Voice.fixed(121239L));
+        var secondChatter = Synthesizer.generateChatter("test", Voice.fixed(121239L));
 
-        assertThat(firstSpeech.content()).isEqualTo(secondSpeech.content());
-        assertThat(firstSpeech.duration()).isEqualTo(secondSpeech.duration());
+        assertThat(firstChatter.content()).isEqualTo(secondChatter.content());
+        assertThat(firstChatter.duration()).isEqualTo(secondChatter.duration());
     }
 
     @Test
     void generateChatter_longerTextSameSeed_isLonger() {
-        var firstSpeech = Synthesizer.generateChatter("test", Voice.fixed(121239L));
-        var secondSpeech = Synthesizer.generateChatter("tetstst", Voice.fixed(121239L));
+        var firstChatter = Synthesizer.generateChatter("test", Voice.fixed(121239L));
+        var secondChatter = Synthesizer.generateChatter("tetstst", Voice.fixed(121239L));
 
-        assertThat(firstSpeech.content()).isNotEqualTo(secondSpeech.content());
-        assertThat(firstSpeech.duration().isLessThan(secondSpeech.duration())).isTrue();
+        assertThat(firstChatter.content()).isNotEqualTo(secondChatter.content());
+        assertThat(firstChatter.duration().isLessThan(secondChatter.duration())).isTrue();
     }
 
     @Test
     void generateChatter_differentSeeds_areDifferent() {
-        var firstSpeech = Synthesizer.generateChatter("test", Voice.fixed(123L));
-        var secondSpeech = Synthesizer.generateChatter("test", Voice.fixed(121239L));
+        var firstChatter = Synthesizer.generateChatter("test", Voice.fixed(123L));
+        var secondChatter = Synthesizer.generateChatter("test", Voice.fixed(121239L));
 
-        assertThat(firstSpeech.content()).isNotEqualTo(secondSpeech.content());
-        assertThat(firstSpeech.duration()).isNotEqualTo(secondSpeech.duration());
+        assertThat(firstChatter.content()).isNotEqualTo(secondChatter.content());
+        assertThat(firstChatter.duration()).isNotEqualTo(secondChatter.duration());
     }
 
     @Test
     void generateChatter_fixedSeedAndText_isIdentical() {
         Voice fixed = Voice.fixed();
-        var firstSpeech = Synthesizer.generateChatter("test", fixed);
-        var secondSpeech = Synthesizer.generateChatter("test", fixed);
+        var firstChatter = Synthesizer.generateChatter("test", fixed);
+        var secondChatter = Synthesizer.generateChatter("test", fixed);
 
-        assertThat(firstSpeech.content()).isEqualTo(secondSpeech.content());
-        assertThat(firstSpeech.duration()).isEqualTo(secondSpeech.duration());
+        assertThat(firstChatter.content()).isEqualTo(secondChatter.content());
+        assertThat(firstChatter.duration()).isEqualTo(secondChatter.duration());
     }
 
     @Test
     void generateChatter_sameTextVariableSeed_isDifferent() {
         Voice variable = Voice.variable();
-        var firstSpeech = Synthesizer.generateChatter("test", variable);
-        var secondSpeech = Synthesizer.generateChatter("test", variable);
+        var firstChatter = Synthesizer.generateChatter("test", variable);
+        var secondChatter = Synthesizer.generateChatter("test", variable);
 
-        assertThat(firstSpeech.content()).isNotEqualTo(secondSpeech.content());
-        assertThat(firstSpeech.duration()).isNotEqualTo(secondSpeech.duration());
+        assertThat(firstChatter.content()).isNotEqualTo(secondChatter.content());
+        assertThat(firstChatter.duration()).isNotEqualTo(secondChatter.duration());
     }
 
     @Test
