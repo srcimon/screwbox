@@ -11,15 +11,24 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-//TODO document
+/**
+ * Can synthesize mumbled speech. Saves money for voice actors.
+ *
+ * @since 3.37.0
+ */
 public class Synthesizer {
+
+    private static final double TO_SIGNED_INTEGER = 32767.0;
+    private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
 
     private Synthesizer() {
 
     }
-    private static final double TO_SIGNED_INTEGER = 32767.0;
-    private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
 
+    /**
+     * Synthesize a {@link Sound} from specified text and {@link Voice}. Synthesizing will take 1 to 100 ms based on
+     * the system. It's recommended to use {@link Audio#speakMumbled(String, Voice)} to avoid stuttering.
+     */
     public static Sound synthesizeMumbleSpeech(final String text, final Voice voice) {
         final char[] sanitizedCharacters = text.toUpperCase().toCharArray();
         final var context = new SynthContext(voice);
