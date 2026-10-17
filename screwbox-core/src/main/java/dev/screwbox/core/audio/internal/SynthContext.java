@@ -2,7 +2,6 @@ package dev.screwbox.core.audio.internal;
 
 import java.util.Random;
 
-//TODO rename all properties
 public class SynthContext {
 
     private final Random random;
@@ -13,7 +12,7 @@ public class SynthContext {
     private int samplesWritten = 0;
     private double filterState = 0.0;
 
-
+//TODO simplify methods
     public SynthContext(final double pitch, final long seed) {
         this.pitch = pitch;
         this.random = new Random(seed);
