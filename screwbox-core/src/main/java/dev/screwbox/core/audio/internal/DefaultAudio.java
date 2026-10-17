@@ -140,7 +140,6 @@ public class DefaultAudio implements Audio, Updatable {
         return activePlayback.toPlayback();
     }
 
-    //TODO test
     @Override
     public Playback playChatter(final String text, final Voice voice, final SoundOptions options) {
         requireNonNull(text, "text must not be null");

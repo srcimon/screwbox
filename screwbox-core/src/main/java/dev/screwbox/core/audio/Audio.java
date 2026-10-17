@@ -90,10 +90,20 @@ public interface Audio {
         return playSound(sound.get());
     }
 
-    //TODO document
+    /**
+     * Plays a synthesized chatter to voice NPCs. Chatter will start asynchronously because generation can take some time.
+     *
+     * @see Synthesizer#generateChatter(String, Voice)
+     * @since 3.37.0
+     */
     Playback playChatter(String text, Voice voice, SoundOptions options);
 
-    //TODO document
+    /**
+     * Plays a synthesized chatter to voice NPCs. Chatter will start asynchronously because generation can take some time.
+     *
+     * @see Synthesizer#generateChatter(String, Voice)
+     * @since 3.37.0
+     */
     default Playback playChatter(final String text, final Voice voice) {
         return playChatter(text, voice, playOnce());
     }
