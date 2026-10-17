@@ -43,8 +43,7 @@ public class PlaygroundApp {
                 text = ListUtil.pickRandom(texts);
 
                 Time t = Time.now();
-                var mumble = Synthesizer.synthesizeMumbleSpeech(text, VoiceOptions.variable()
-                    .plosiveVolume(Percent.of(1)));
+                var mumble = Synthesizer.synthesizeMumbleSpeech(text, VoiceOptions.variable());
                 System.out.println(Duration.since(t).milliseconds());
                 timeout = mumble.duration().addTo(Time.now());
                 engine.audio().playSound(mumble);

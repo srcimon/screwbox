@@ -18,7 +18,6 @@ public record VoiceOptions(double baseFrequency,//TODO optimize or validate type
                            WaveType waveType,//TODO optimize or validate type
                            Percent vowelVolume,
                            Percent nasalVolume,
-                           Percent plosiveVolume,
                            double lowPassCutoff,//TODO optimize or validate type
                            Long seed) {
 
@@ -26,25 +25,20 @@ public record VoiceOptions(double baseFrequency,//TODO optimize or validate type
     public enum WaveType {SINE, SQUARE, TRIANGLE}
 
     private VoiceOptions(final Long seed) {
-        this(180.0, 0.04, 0.5, 0.15, 5.0, 0.025, 0.3, 0.15, 0.06, WaveType.SINE, Percent.of(0.75), Percent.of(0.35), Percent.of(0.45), 0.18, seed);
+        this(180.0, 0.04, 0.5, 0.15, 5.0, 0.025, 0.3, 0.15, 0.06, WaveType.SINE, Percent.of(0.75), Percent.of(0.35), 0.18, seed);
     }
 
     public VoiceOptions {
         Objects.requireNonNull(vowelVolume, "vowel volume must not be null");
         Objects.requireNonNull(nasalVolume, "nasal volume must not be null");
-        Objects.requireNonNull(plosiveVolume, "plosive volume must not be null");
     }
 
     public VoiceOptions vowelVolume(final Percent vowelVolume) {
-        return new VoiceOptions(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, plosiveVolume, lowPassCutoff, seed);
+        return new VoiceOptions(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, lowPassCutoff, seed);
     }
 
     public VoiceOptions nasalVolume(final Percent nasalVolume) {
-        return new VoiceOptions(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, plosiveVolume, lowPassCutoff, seed);
-    }
-
-    public VoiceOptions plosiveVolume(final Percent plosiveVolume) {
-        return new VoiceOptions(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, plosiveVolume, lowPassCutoff, seed);
+        return new VoiceOptions(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, lowPassCutoff, seed);
     }
 
     public static VoiceOptions variable() {
