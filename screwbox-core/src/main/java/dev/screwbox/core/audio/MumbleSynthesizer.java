@@ -107,7 +107,8 @@ public class MumbleSynthesizer {
             byte[] dummyHeader = new byte[WaveSupport.WAV_HEADER_SIZE];
             dos.write(dummyHeader);
 
-            var soundContext = new SynthContext(options.baseFreq(), options.seed() == null ? Time.now().milliseconds() : options.seed());
+
+            var soundContext = new SynthContext(options);
             char[] chars = sanitizedText.toCharArray();
 
             for (int i = 0; i < chars.length; i++) {

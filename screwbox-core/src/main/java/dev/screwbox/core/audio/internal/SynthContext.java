@@ -1,6 +1,11 @@
 package dev.screwbox.core.audio.internal;
 
+import dev.screwbox.core.Time;
+import dev.screwbox.core.audio.VoiceOptions;
+
 import java.util.Random;
+
+import static java.util.Objects.isNull;
 
 public class SynthContext {
 
@@ -12,10 +17,12 @@ public class SynthContext {
     private int samplesWritten = 0;
     private double filterState = 0.0;
 
-//TODO simplify methods
-    public SynthContext(final double pitch, final long seed) {
-        this.pitch = pitch;
-        this.random = new Random(seed);
+    //TODO simplify methods
+    public SynthContext(final VoiceOptions options) {
+        this.pitch = options.baseFreq();
+        this.random = new Random(isNull(options.seed())
+            ? Time.now().milliseconds()
+            : options.seed());
     }
 
     public double currentVowelShift() {
@@ -37,6 +44,7 @@ public class SynthContext {
     public double runningPhase() {
         return runningPhase;
     }
+
     public double filterState() {
         return filterState;
     }
@@ -53,7 +61,7 @@ public class SynthContext {
         this.samplesWritten = samplesWritten;
     }
 
-    public void setRunningPhase(double runningPhase ) {
+    public void setRunningPhase(double runningPhase) {
         this.runningPhase = runningPhase;
     }
 
