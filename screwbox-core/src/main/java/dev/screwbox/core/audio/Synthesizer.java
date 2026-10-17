@@ -19,23 +19,19 @@ public class Synthesizer {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
 
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
-        final String sanitizedText = text.toUpperCase();
+        final char[] sanitizedCharacters = text.toUpperCase().toCharArray();
+        final var context = new SynthContext(options);
         try (final var byteArrayOutputStream = new ByteArrayOutputStream(8192);
-            final DataOutputStream outputStream = new DataOutputStream(byteArrayOutputStream)) {
-
-            byte[] dummyHeader = new byte[WaveSupport.WAV_HEADER_SIZE];
-            outputStream.write(dummyHeader);
+            final var outputStream = new DataOutputStream(byteArrayOutputStream)) {
+            outputStream.write(WaveSupport.DUMMY_HEADER);
 
 
-            var soundContext = new SynthContext(options);
-            char[] chars = sanitizedText.toCharArray();
 
-            for (int i = 0; i < chars.length; i++) {
-                char character = chars[i];
-                final var element = SynthConfiguration.findElement(character);
-                double textProgress = (double) i / chars.length;
+            for (int i = 0; i < sanitizedCharacters.length; i++) {
+                final var element = SynthConfiguration.findElement(sanitizedCharacters[i]);
+                double textProgress = (double) i / sanitizedCharacters.length;
 
-                synthesizeElement(element, options, soundContext, outputStream, textProgress);//TODO move text progress into context
+                synthesizeElement(element, options, context, outputStream, textProgress);//TODO move text progress into context
             }
             outputStream.flush();
 
@@ -75,7 +71,7 @@ public class Synthesizer {
             context.setPhase((context.phase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
-            double rawValue = element.phonemeCalculation().apply(context, options);
+            double rawValue = element.phoneme().apply(context, options);
             double envelope = applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)

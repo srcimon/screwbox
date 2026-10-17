@@ -2,7 +2,7 @@ package dev.screwbox.core.audio.internal.synth;
 
 public record SynthElement(
     SynthFunction targetWovelShift,
-    SynthFunction phonemeCalculation,
+    SynthFunction phoneme,
     SynthFunction segmentVolume,
     SynthFunction segmentFrequency,
     SynthFunction blipLength

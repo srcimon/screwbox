@@ -47,12 +47,7 @@ public class SynthConfiguration {
         entry(' ', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new WordPauseFunction()))
     );
 
-    private static final SynthElement DEFAULT_ELEMENT = new SynthElement(
-        new WovelShiftFunction(),
-        new FixedValueFunction(),
-        new FixedValueFunction(),
-        new RandomFrequencyFunction(),
-        new BlipLengthFunction());
+    private static final SynthElement DEFAULT_ELEMENT = new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new RandomFrequencyFunction(), new BlipLengthFunction());
 
     public static SynthElement findElement(final char character) {
         return SYNTH_CONFIG.getOrDefault(character, DEFAULT_ELEMENT);

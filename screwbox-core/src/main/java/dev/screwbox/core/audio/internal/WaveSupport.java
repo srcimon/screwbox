@@ -8,7 +8,8 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
 
 public final class WaveSupport {
 
-    public static final int WAV_HEADER_SIZE = 44;
+    public static final byte[] DUMMY_HEADER = new byte[WaveSupport.WAV_HEADER_SIZE];
+    private static final int WAV_HEADER_SIZE = 44;
 
     private WaveSupport() {
 
