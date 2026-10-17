@@ -1,4 +1,4 @@
-package dev.screwbox.core.audio.internal;
+package dev.screwbox.core.audio.internal.synth;
 
 import dev.screwbox.core.Time;
 import dev.screwbox.core.audio.VoiceOptions;

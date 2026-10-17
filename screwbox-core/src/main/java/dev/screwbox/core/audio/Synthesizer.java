@@ -1,8 +1,8 @@
 package dev.screwbox.core.audio;
 
-import dev.screwbox.core.audio.internal.SynthContext;
+import dev.screwbox.core.audio.internal.synth.SynthContext;
 import dev.screwbox.core.audio.internal.WaveSupport;
-import dev.screwbox.core.audio.internal.synth.MumbleSynthConfiguration;
+import dev.screwbox.core.audio.internal.synth.SynthConfiguration;
 import dev.screwbox.core.audio.internal.synth.SynthElement;
 import dev.screwbox.core.utils.MathUtil;
 
@@ -34,7 +34,7 @@ public class Synthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var synthElement = MumbleSynthConfiguration.findElement(character);
+                var synthElement = SynthConfiguration.findElement(character);
                 double textProgress = (double) i / chars.length;
 
                 addSampleForCharacter(options, synthElement, soundContext, dos, textProgress);//TODO move text progress into context

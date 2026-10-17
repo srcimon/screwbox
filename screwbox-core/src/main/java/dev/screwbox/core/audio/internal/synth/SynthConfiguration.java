@@ -1,15 +1,13 @@
 package dev.screwbox.core.audio.internal.synth;
 
 import dev.screwbox.core.audio.VoiceOptions;
-import dev.screwbox.core.audio.internal.SynthContext;
-import dev.screwbox.core.audio.internal.SynthFunction;
 import dev.screwbox.core.utils.MathUtil;
 
 import java.util.Map;
 
 import static java.util.Map.entry;
 
-public class MumbleSynthConfiguration {
+public class SynthConfiguration {
 
     private static final SynthFunction NO_PHONEME = (context, options) -> 0.0;
     private static final SynthFunction NASAL_PHONEME = (context, options) -> MathUtil.fastSin(context.runningPhase() * 0.5) * options.nasalGain();
