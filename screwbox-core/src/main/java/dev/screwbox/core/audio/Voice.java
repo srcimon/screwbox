@@ -63,7 +63,7 @@ public record Voice(double baseFrequency,
     }
 
     private Voice(final Long seed) {
-        this(220.0, Duration.ofMillis(80), Percent.of(0.0), Percent.of(0.15), 1.0, Percent.of(0.1), Duration.ofMillis(200), Duration.ofMillis(100), Duration.ofMillis(40), WaveType.SQUARE, Percent.of(0.95), Percent.of(0.8), Percent.of(0.15), seed);
+        this(220.0, Duration.ofMillis(80), Percent.of(0.2), Percent.of(0.15), 1.0, Percent.of(0.1), Duration.ofMillis(200), Duration.ofMillis(100), Duration.ofMillis(40), WaveType.TRIANGLE, Percent.of(0.95), Percent.of(0.8), Percent.of(0.05), seed);
     }
 
     public Voice {
