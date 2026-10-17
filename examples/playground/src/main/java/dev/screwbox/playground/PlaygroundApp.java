@@ -39,7 +39,8 @@ public class PlaygroundApp {
             if (engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
                 playback = engine.audio().playChatter(text, Voice.variable()
-                    .baseFrequency(250)
+                    .baseFrequency(150)
+                    .baseBlipDuration(Duration.ofMillis(40))
 
                 );
             }

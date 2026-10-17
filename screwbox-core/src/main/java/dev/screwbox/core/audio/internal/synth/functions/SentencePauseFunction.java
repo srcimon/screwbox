@@ -8,6 +8,6 @@ public class SentencePauseFunction implements SynthFunction {
 
     @Override
     public Double apply(final SynthContext context, final Voice voice) {
-        return voice.sentencePause();
+        return voice.sentencePause().exactSeconds();
     }
 }

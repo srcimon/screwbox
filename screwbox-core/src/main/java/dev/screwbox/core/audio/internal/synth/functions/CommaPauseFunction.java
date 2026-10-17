@@ -8,6 +8,6 @@ public class CommaPauseFunction implements SynthFunction {
 
     @Override
     public Double apply(final SynthContext context, final Voice voice) {
-        return voice.commaPause().milliseconds() * 0.001;
+        return voice.commaPause().exactSeconds();
     }
 }
