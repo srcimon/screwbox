@@ -22,7 +22,7 @@ import static java.util.Objects.requireNonNull;
  * @param waveType         The type of sound wave used for synthesis.
  * @param vowelVolume      The volume level specifically for vowel sounds.
  * @param nasalVolume      The volume level specifically for nasal sounds.
- * @param scratchyness     The amount of allowed distortion or scratchiness in the voice.
+ * @param scratchyness     The amount of allowed distortion or scratchiness in the voice. Minimum is 0.01 to avoid muting the sound.
  * @param seed             The random seed used for generating consistent voice characteristics.
  * @since 3.37.0
  */
@@ -67,8 +67,9 @@ public record Voice(double baseFrequency,
     }
 
     public Voice {
+        Validate.range(scratchyness.value(), 0.01, 1.0, "scratchyness must be between 0.01 and 1.0");
         Validate.range(baseFrequency, 10.0, 500.0, "base frequency must be between 10.0 and 500.0");
-        Validate.range(vibratoSpeed, 0.5, 10.0, "vibrato speed must be between 0.5 and 10.0");
+        Validate.range(vibratoSpeed, 0.5, 20, "vibrato speed must be between 0.5 and 20.0");
         requireNonNull(baseBlipDuration, "base blip duration must not be null");
         requireNonNull(vowelVolume, "vowel volume must not be null");
         requireNonNull(nasalVolume, "nasal volume must not be null");
@@ -138,7 +139,7 @@ public record Voice(double baseFrequency,
     }
 
     /**
-     * Set the amount of allowed distortion or scratchiness in the voice.
+     * Set the amount of allowed distortion or scratchiness in the voice. Minimum is 0.01 to avoid muting the sound.
      */
     public Voice scratchyness(final Percent scratchyness) {
         return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, scratchyness, seed);

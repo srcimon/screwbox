@@ -42,6 +42,15 @@ class VoiceTest {
         assertThat(voice.speedRandomness()).isEqualTo(Percent.of(0.3));
     }
 
+
+    @Test
+    void newInstance_scratchynessOutOfRange_throwsException() {
+        var voice = Voice.fixed(140);
+
+        assertThatThrownBy(() -> voice.scratchyness(Percent.of(0.001)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("scratchyness must be between 0.01 and 1.0 (actual value: 0.001)");
+    }
     @Test
     void newInstance_baseFrequencyOutOfRange_throwsException() {
         var voice = Voice.fixed(140);
