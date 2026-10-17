@@ -1,6 +1,7 @@
 package dev.screwbox.core.audio;
 
 import dev.screwbox.core.audio.internal.SynthContext;
+import dev.screwbox.core.audio.internal.SynthFunction;
 import dev.screwbox.core.audio.internal.WaveSupport;
 import dev.screwbox.core.utils.MathUtil;
 
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 import static java.util.Map.entry;
 
@@ -22,35 +22,34 @@ public class MumbleSynthesizer {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
 
     private record SynthElement(
-        BiFunction<SynthContext, VoiceOptions, Double> targetWovelShift,
-        BiFunction<SynthContext, VoiceOptions, Double> phonemeCalculation,
-        BiFunction<SynthContext, VoiceOptions, Double> segmentVolume,
-        BiFunction<SynthContext, VoiceOptions, Double> segmentFrequency,
-        BiFunction<SynthContext, VoiceOptions, Double> blipLength
+        SynthFunction targetWovelShift,
+        SynthFunction phonemeCalculation,
+        SynthFunction segmentVolume,
+        SynthFunction segmentFrequency,
+        SynthFunction blipLength
     ) {
 //TODO add constructor without wovelconfig
     }
 
-    //TODO Normalize Bifunctions
-    private static final BiFunction<SynthContext, VoiceOptions, Double> NO_PHONEME = (context, options) -> 0.0;
-    private static final BiFunction<SynthContext, VoiceOptions, Double> NASAL_PHONEME = (context, options) -> MathUtil.fastSin(context.runningPhase() * 0.5) * options.nasalGain();
-    private static final BiFunction<SynthContext, VoiceOptions, Double> RANDOM_SEGMENT_VOLUME = (context, options) -> 0.85 + context.randomDouble() * 0.15;
+    private static final SynthFunction NO_PHONEME = (context, options) -> 0.0;
+    private static final SynthFunction NASAL_PHONEME = (context, options) -> MathUtil.fastSin(context.runningPhase() * 0.5) * options.nasalGain();
+    private static final SynthFunction RANDOM_SEGMENT_VOLUME = (context, options) -> 0.85 + context.randomDouble() * 0.15;
 
-    private static final BiFunction<SynthContext, VoiceOptions, Double> SEGMENT_BASE_FREQUENCY = (context, options) -> options.baseFreq();
-    private static final BiFunction<SynthContext, VoiceOptions, Double> RANDOM_FREQUENCY = (context, options) -> {
+    private static final SynthFunction SEGMENT_BASE_FREQUENCY = (context, options) -> options.baseFreq();
+    private static final SynthFunction RANDOM_FREQUENCY = (context, options) -> {
         double randomPitchOffset = (context.randomDouble() * 2.0 - 1.0) * options.pitchRandomness();
         return options.baseFreq() * (1.0 + randomPitchOffset);
     };
 
-    private static final BiFunction<SynthContext, VoiceOptions, Double> SENTENCE_PAUSE_BLIP_LENGTH = (context, options) -> options.sentencePause();
-    private static final BiFunction<SynthContext, VoiceOptions, Double> COMMA_PAUSE_BLIP_LENGTH = (context, options) -> options.commaPause();
-    private static final BiFunction<SynthContext, VoiceOptions, Double> WORD_PAUSE_BLIP_LENGTH = (context, options) -> options.wordPause();
-    private static final BiFunction<SynthContext, VoiceOptions, Double> PLOSIVE_BLIP_LENGTH = (context, options) -> options.baseBlipDuration() * (1.0 + (context.randomDouble() * 2.0 - 1.0) * options.speedRandomness()) * 0.4;
-    private static final BiFunction<SynthContext, VoiceOptions, Double> DEFAULT_BLIP_LENGTH = (context, options) -> options.baseBlipDuration() * (1.0 + (context.randomDouble() * 2.0 - 1.0) * options.speedRandomness());
+    private static final SynthFunction SENTENCE_PAUSE_BLIP_LENGTH = (context, options) -> options.sentencePause();
+    private static final SynthFunction COMMA_PAUSE_BLIP_LENGTH = (context, options) -> options.commaPause();
+    private static final SynthFunction WORD_PAUSE_BLIP_LENGTH = (context, options) -> options.wordPause();
+    private static final SynthFunction PLOSIVE_BLIP_LENGTH = (context, options) -> options.baseBlipDuration() * (1.0 + (context.randomDouble() * 2.0 - 1.0) * options.speedRandomness()) * 0.4;
+    private static final SynthFunction DEFAULT_BLIP_LENGTH = (context, options) -> options.baseBlipDuration() * (1.0 + (context.randomDouble() * 2.0 - 1.0) * options.speedRandomness());
 
 
     private record WovelPhoneme(double wovelHeight,
-                                double wovelBackness) implements BiFunction<SynthContext, VoiceOptions, Double> {
+                                double wovelBackness) implements SynthFunction {
 
         @Override
         public Double apply(SynthContext context, VoiceOptions options) {
