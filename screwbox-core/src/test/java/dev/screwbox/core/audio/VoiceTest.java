@@ -64,9 +64,9 @@ class VoiceTest {
     void newInstance_vibratoSpeedOutOfRange_throwsException() {
         var voice = Voice.fixed(140);
 
-        assertThatThrownBy(() -> voice.vibratoSpeed(12))
+        assertThatThrownBy(() -> voice.vibratoSpeed(22))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("vibrato speed must be between 0.5 and 10.0 (actual value: 12.0)");
+            .hasMessage("vibrato speed must be between 0.5 and 20.0 (actual value: 22.0)");
     }
 
 

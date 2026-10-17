@@ -67,6 +67,7 @@ public record Voice(double baseFrequency,
     }
 
     public Voice {
+        requireNonNull(scratchyness, "scratchyness must not be null");
         Validate.range(scratchyness.value(), 0.01, 1.0, "scratchyness must be between 0.01 and 1.0");
         Validate.range(baseFrequency, 10.0, 500.0, "base frequency must be between 10.0 and 500.0");
         Validate.range(vibratoSpeed, 0.5, 20, "vibrato speed must be between 0.5 and 20.0");
@@ -77,7 +78,6 @@ public record Voice(double baseFrequency,
         requireNonNull(commaPause, "comma pause must not be null");
         requireNonNull(pitchRandomness, "pitch randomness must not be null");
         requireNonNull(speedRandomness, "speed randomness must not be null");
-        requireNonNull(scratchyness, "scratchyness must not be null");
         requireNonNull(waveType, "wave type must not be null");
         requireNonNull(vibratoDepth, "vibrato depth must not be null");
     }
