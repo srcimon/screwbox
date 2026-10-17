@@ -18,10 +18,11 @@ import static java.util.Map.entry;
 
 public class MumbleSynthesizer {
 
+    private static final double TO_SIGNED_INTEGER = 32767.0;
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
     private static final Random RANDOM = new Random();
 
-    private record SynthElement(CharacterType type, Function<SoundContext, Double> targetWovelShift,
+    private record SynthElement(CharacterType type, Function<SynthContext, Double> targetWovelShift,
                                 BiFunction<Double, VoiceOptions, Double> phonemeCalculation) {
 //TODO add constructor without wovelconfig
     }
@@ -115,7 +116,7 @@ public class MumbleSynthesizer {
         public Long seed;
     }
 
-    private static class SoundContext {
+    private static class SynthContext {
         double runningPhase = 0.0;
         double currentPitch;
         double currentVowelShift = 1.0;
@@ -124,7 +125,7 @@ public class MumbleSynthesizer {
         double filterStateRight = 0.0;
         Random random;
 
-        public SoundContext(double startPitch, Random random) {
+        public SynthContext(double startPitch, Random random) {
             currentPitch = startPitch;
             this.random = random;
         }
@@ -139,7 +140,7 @@ public class MumbleSynthesizer {
             byte[] dummyHeader = new byte[WaveSupport.WAV_HEADER_SIZE];
             dos.write(dummyHeader);
 
-            var soundContext = new SoundContext(options.baseFreq, options.seed == null ? RANDOM : new Random(options.seed));
+            var soundContext = new SynthContext(options.baseFreq, options.seed == null ? RANDOM : new Random(options.seed));
             char[] chars = sanitizedText.toCharArray();
 
             for (int i = 0; i < chars.length; i++) {
@@ -164,7 +165,7 @@ public class MumbleSynthesizer {
     }
 
     private static void addSampleForCharacter(VoiceOptions options, char character, SynthElement config,
-                                              SoundContext context, DataOutputStream dos, double textProgress) {
+                                              SynthContext context, DataOutputStream dos, double textProgress) {
         int currentSamplesPerBlip = calculateSingleBlipLength(character, config, options, context);
 
         double targetVowelShift = config.targetWovelShift().apply(context);
@@ -216,7 +217,7 @@ public class MumbleSynthesizer {
         }
     }
 
-    private static final double TO_SIGNED_INTEGER = 32767.0;
+
 
     private static double applyClickProtectionEnvelope(int sampleIdx, int totalSamples) {
         int fadeSamples = Math.min(120, totalSamples / 10); // Sanftes Ein-/Ausblenden (ca. 2-3ms)
@@ -225,7 +226,7 @@ public class MumbleSynthesizer {
         return 1.0;
     }
 
-    private static int calculateSingleBlipLength(char c, SynthElement config, VoiceOptions options, SoundContext context) {
+    private static int calculateSingleBlipLength(char c, SynthElement config, VoiceOptions options, SynthContext context) {
         if (c == '.' || c == '!' || c == '?') {
             return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause);
         }
@@ -247,7 +248,7 @@ public class MumbleSynthesizer {
         return (int) (baseSamplesPerBlip * speedModifier);
     }
 
-    private static double calculateSegmentFrequency(VoiceOptions options, SynthElement config, SoundContext context) {
+    private static double calculateSegmentFrequency(VoiceOptions options, SynthElement config, SynthContext context) {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
             return options.baseFreq;
         }
@@ -255,7 +256,7 @@ public class MumbleSynthesizer {
         return options.baseFreq * (1.0 + randomPitchOffset);
     }
 
-    private static double calculateSegmentVolume(SynthElement config, SoundContext context) {
+    private static double calculateSegmentVolume(SynthElement config, SynthContext context) {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
             return 0.0;
         }
