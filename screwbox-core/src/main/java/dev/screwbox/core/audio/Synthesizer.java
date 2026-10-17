@@ -42,9 +42,7 @@ public class Synthesizer {
             outputStream.flush();
 
             final byte[] finalWav = byteArrayOutputStream.toByteArray();
-
-            final ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
-            WaveSupport.writeHeaderToBuffer(finalWav.length - WaveSupport.WAV_HEADER_SIZE, AUDIO_FORMAT, headerBuffer);
+            WaveSupport.writeHeaderToBuffer(finalWav, AUDIO_FORMAT);
 
             return Sound.fromSoundData(finalWav);
         } catch (IOException e) {

@@ -2,6 +2,7 @@ package dev.screwbox.core.audio.internal;
 
 import javax.sound.sampled.AudioFormat;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
@@ -13,13 +14,14 @@ public final class WaveSupport {
 
     }
 
-    public static void writeHeaderToBuffer(final int audioDataLength, final AudioFormat format, final ByteBuffer buffer) {
+    public static void writeHeaderToBuffer(final byte[] wavData, final AudioFormat format) {
+        final ByteBuffer buffer = ByteBuffer.wrap(wavData).order(ByteOrder.LITTLE_ENDIAN);
         final int sampleRate = (int) format.getSampleRate();
         final int bitsPerSample = format.getSampleSizeInBits();
         final int bytesPerSample = bitsPerSample / 8;
 
         buffer.put("RIFF".getBytes(US_ASCII));
-        buffer.putInt(WAV_HEADER_SIZE - 8 + audioDataLength);
+        buffer.putInt(WAV_HEADER_SIZE - 8 + wavData.length - WaveSupport.WAV_HEADER_SIZE);
         buffer.put("WAVE".getBytes(US_ASCII));
         buffer.put("fmt ".getBytes(US_ASCII));
         buffer.putInt(16);
@@ -30,6 +32,6 @@ public final class WaveSupport {
         buffer.putShort((short) (format.getChannels() * bytesPerSample));
         buffer.putShort((short) bitsPerSample);
         buffer.put("data".getBytes(US_ASCII));
-        buffer.putInt(audioDataLength);
+        buffer.putInt(wavData.length - WaveSupport.WAV_HEADER_SIZE);
     }
 }
