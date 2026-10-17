@@ -15,6 +15,7 @@ public class SynthContext {
     private double vowelShift = 1.0;
     private int samplesWritten = 0;
     private double filterState = 0.0;
+    private double progress = 0.0;
     private double pitch;
 
     //TODO simplify methods
@@ -67,5 +68,13 @@ public class SynthContext {
 
     public double randomDouble() {
         return random.nextDouble();
+    }
+
+    public void setProgress(final double progress) {
+        this.progress = progress;
+    }
+
+    public double progress() {
+        return progress;
     }
 }

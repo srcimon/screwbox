@@ -26,12 +26,10 @@ public class Synthesizer {
             outputStream.write(WaveSupport.DUMMY_HEADER);
 
 
-
             for (int i = 0; i < sanitizedCharacters.length; i++) {
                 final var element = SynthConfiguration.findElement(sanitizedCharacters[i]);
-                double textProgress = (double) i / sanitizedCharacters.length;
-
-                synthesizeElement(element, options, context, outputStream, textProgress);//TODO move text progress into context
+                context.setProgress((double) i / sanitizedCharacters.length);
+                synthesizeElement(element, options, context, outputStream);//TODO move text progress into context
             }
             outputStream.flush();
 
@@ -45,13 +43,13 @@ public class Synthesizer {
     }
 
     private static void synthesizeElement(final SynthElement element, final VoiceOptions options,
-                                          final SynthContext context, final DataOutputStream dos, final double textProgress) {
+                                          final SynthContext context, final DataOutputStream dos) {
         int currentSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * element.blipLength().apply(context, options));
 
         double targetVowelShift = element.targetWovelShift().apply(context, options);
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
-        double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
+        double intonation = MathUtil.fastSin(context.progress() * Math.PI) * 0.15 - (context.progress() * 0.1);
         double targetFrequency = element.segmentFrequency().apply(context, options) * (1.0 + intonation);
 
         double segmentVolume = element.segmentVolume().apply(context, options);
