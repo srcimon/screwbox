@@ -108,6 +108,10 @@ public class MumbleSynthesizer {
         entry(' ', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context, options) -> 0.0, SEGMENT_BASE_FREQUENCY, WORD_PAUSE_BLIP_LENGTH))
     );
 
+    private static SynthElement fetchSynthElement(char character) {
+        return SYNTH_CONFIG.getOrDefault(character, new SynthElement((context, voiceOptions) -> context.currentVowelShift(), NO_PHONEME, (context, voiceOptions) -> 0.0, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH));
+    }
+
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
         final String sanitizedText = text.toUpperCase();
         try (final var baos = new ByteArrayOutputStream(8192);
@@ -122,7 +126,7 @@ public class MumbleSynthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement((context, voiceOptions) -> context.currentVowelShift(), NO_PHONEME, (context, voiceOptions) -> 0.0, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH));
+                var synthElement = fetchSynthElement(character);
                 double textProgress = (double) i / chars.length;
 
                 addSampleForCharacter(options, synthElement, soundContext, dos, textProgress);//TODO move text progress into context
