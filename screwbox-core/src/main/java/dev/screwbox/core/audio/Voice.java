@@ -12,8 +12,8 @@ import static java.util.Objects.requireNonNull;
 //TODO document below
 public record Voice(double baseFrequency,
                     Duration baseBlipDuration,
-                    double pitchRandomness,//TODO optimize or validate type
-                    double speedRandomness,//TODO optimize or validate type
+                    Percent pitchRandomness,
+                    Percent speedRandomness,
                     double vibratoSpeed,//TODO optimize or validate type
                     double vibratoDepth,//TODO optimize or validate type
                     Duration sentencePause,
@@ -29,7 +29,7 @@ public record Voice(double baseFrequency,
     public enum WaveType {SINE, SQUARE, TRIANGLE}
 
     private Voice(final Long seed) {
-        this(280.0, Duration.ofMillis(40), 0.5, 0.15, 5.0, 0.025, Duration.ofMillis(300), Duration.ofMillis(150), Duration.ofMillis(60), WaveType.SINE, Percent.of(0.75), Percent.of(0.35), 0.18, seed);
+        this(280.0, Duration.ofMillis(40), Percent.of(0.5), Percent.of(0.15), 5.0, 0.025, Duration.ofMillis(300), Duration.ofMillis(150), Duration.ofMillis(60), WaveType.SINE, Percent.of(0.75), Percent.of(0.35), 0.18, seed);
     }
 
     public Voice {
@@ -38,12 +38,21 @@ public record Voice(double baseFrequency,
         requireNonNull(nasalVolume, "nasal volume must not be null");
         requireNonNull(wordPause, "word pause must not be null");
         requireNonNull(commaPause, "comma pause must not be null");
+        requireNonNull(pitchRandomness, "pitch randomness must not be null");
+        requireNonNull(speedRandomness, "speed randomness must not be null");
     }
 
     public Voice vowelVolume(final Percent vowelVolume) {
         return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, lowPassCutoff, seed);
     }
 
+    public Voice speedRandomness(final Percent speedRandomness) {
+        return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, lowPassCutoff, seed);
+    }
+
+    public Voice pitchRandomness(final Percent pitchRandomness) {
+        return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, lowPassCutoff, seed);
+    }
     public Voice nasalVolume(final Percent nasalVolume) {
         return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, lowPassCutoff, seed);
     }

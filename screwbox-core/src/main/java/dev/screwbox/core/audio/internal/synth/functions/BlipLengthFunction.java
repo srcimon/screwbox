@@ -8,6 +8,6 @@ public class BlipLengthFunction implements SynthFunction {
 
     @Override
     public Double apply(final SynthContext context, final Voice voice) {
-        return voice.baseBlipDuration().exactSeconds() * (1.0 + (context.randomDouble() * 2.0 - 1.0) * voice.speedRandomness());
+        return voice.baseBlipDuration().exactSeconds() * (1.0 + (context.randomDouble() * 2.0 - 1.0) * voice.speedRandomness().value());
     }
 }

@@ -2,6 +2,7 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.audio.Playback;
@@ -39,8 +40,9 @@ public class PlaygroundApp {
             if (engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
                 playback = engine.audio().playChatter(text, Voice.variable()
-                    .baseFrequency(150)
-                    .baseBlipDuration(Duration.ofMillis(40))
+                    .baseFrequency(250)
+                    .pitchRandomness(Percent.of(0.1))
+                    .baseBlipDuration(Duration.ofMillis(60))
 
                 );
             }
