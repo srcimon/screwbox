@@ -11,11 +11,11 @@ public class SynthContext {
 
     private final Random random;
 
-    private double runningPhase = 0.0;
-    private double pitch;
+    private double phase = 0.0;
     private double vowelShift = 1.0;
     private int samplesWritten = 0;
     private double filterState = 0.0;
+    private double pitch;
 
     //TODO simplify methods
     public SynthContext(final VoiceOptions options) {
@@ -29,11 +29,7 @@ public class SynthContext {
         return vowelShift;
     }
 
-    public double randomDouble() {
-        return random.nextDouble();
-    }
-
-    public double currentPitch() {
+    public double pitch() {
         return pitch;
     }
 
@@ -42,30 +38,34 @@ public class SynthContext {
     }
 
     public double phase() {
-        return runningPhase;
+        return phase;
     }
 
     public double filterState() {
         return filterState;
     }
 
-    public void setCurrentPitch(double currentPitch) {
-        this.pitch = currentPitch;
+    public void setPitch(final double pitch) {
+        this.pitch = pitch;
     }
 
-    public void setVowelShift(double vowelShift) {
+    public void setVowelShift(final double vowelShift) {
         this.vowelShift = vowelShift;
     }
 
-    public void setSamplesWritten(int samplesWritten) {
+    public void setSamplesWritten(final int samplesWritten) {
         this.samplesWritten = samplesWritten;
     }
 
-    public void setRunningPhase(double runningPhase) {
-        this.runningPhase = runningPhase;
+    public void setPhase(final double phase) {
+        this.phase = phase;
     }
 
-    public void setFilterState(double filterState) {
+    public void setFilterState(final double filterState) {
         this.filterState = filterState;
+    }
+
+    public double randomDouble() {
+        return random.nextDouble();
     }
 }

@@ -1,8 +1,8 @@
 package dev.screwbox.core.audio;
 
-import dev.screwbox.core.audio.internal.synth.SynthContext;
 import dev.screwbox.core.audio.internal.WaveSupport;
 import dev.screwbox.core.audio.internal.synth.SynthConfiguration;
+import dev.screwbox.core.audio.internal.synth.SynthContext;
 import dev.screwbox.core.audio.internal.synth.SynthElement;
 import dev.screwbox.core.utils.MathUtil;
 
@@ -22,11 +22,11 @@ public class Synthesizer {
 
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
         final String sanitizedText = text.toUpperCase();
-        try (final var baos = new ByteArrayOutputStream(8192);
-            DataOutputStream dos = new DataOutputStream(baos)) {
+        try (final var byteArrayOutputStream = new ByteArrayOutputStream(8192);
+            final DataOutputStream outputStream = new DataOutputStream(byteArrayOutputStream)) {
 
             byte[] dummyHeader = new byte[WaveSupport.WAV_HEADER_SIZE];
-            dos.write(dummyHeader);
+            outputStream.write(dummyHeader);
 
 
             var soundContext = new SynthContext(options);
@@ -37,19 +37,18 @@ public class Synthesizer {
                 var synthElement = SynthConfiguration.findElement(character);
                 double textProgress = (double) i / chars.length;
 
-                addSampleForCharacter(options, synthElement, soundContext, dos, textProgress);//TODO move text progress into context
+                addSampleForCharacter(options, synthElement, soundContext, outputStream, textProgress);//TODO move text progress into context
             }
-            dos.flush();
+            outputStream.flush();
 
-            byte[] finalWav = baos.toByteArray();
-            int audioDataLength = finalWav.length - WaveSupport.WAV_HEADER_SIZE;
+            final byte[] finalWav = byteArrayOutputStream.toByteArray();
 
-            ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
-            WaveSupport.writeHeaderToBuffer(audioDataLength, AUDIO_FORMAT, headerBuffer);
+            final ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
+            WaveSupport.writeHeaderToBuffer(finalWav.length - WaveSupport.WAV_HEADER_SIZE, AUDIO_FORMAT, headerBuffer);
 
             return Sound.fromSoundData(finalWav);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException("could not create audio data", e);
         }
     }
 
@@ -68,7 +67,7 @@ public class Synthesizer {
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
             context.setVowelShift(context.vowelShift() + (targetVowelShift - context.vowelShift()) * 0.002);
-            context.setCurrentPitch(context.currentPitch() + (targetFrequency - context.currentPitch()) * 0.002);
+            context.setPitch(context.pitch() + (targetFrequency - context.pitch()) * 0.002);
 
             double globalTime = (double) context.totalSamplesWritten() / AUDIO_FORMAT.getSampleRate();
 
@@ -76,8 +75,8 @@ public class Synthesizer {
             double jitter = (context.randomDouble() - 0.5) * 0.002;
             double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed() * globalTime) * options.vibratoDepth();
 
-            double instantFreq = Math.clamp(context.currentPitch() * (1.0 + (context.vowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
-            context.setRunningPhase((context.phase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
+            double instantFreq = Math.clamp(context.pitch() * (1.0 + (context.vowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
+            context.setPhase((context.phase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
             double rawValue = element.phonemeCalculation().apply(context, options);
