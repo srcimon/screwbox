@@ -24,7 +24,7 @@ public class MumbleSynthesizer {
 
     private record SynthElement(
         Function<SynthContext, Double> targetWovelShift,
-        BiFunction<Double, VoiceOptions, Double> phonemeCalculation,
+        BiFunction<SynthContext, VoiceOptions, Double> phonemeCalculation,
         Function<SynthContext, Double> segmentVolume,
         BiFunction<SynthContext, VoiceOptions, Double> segmentFrequency,
         BiFunction<SynthContext, VoiceOptions, Double> blipLength
@@ -33,8 +33,8 @@ public class MumbleSynthesizer {
     }
 
     //TODO Normalize Bifunctions
-    private static final BiFunction<Double, VoiceOptions, Double> NO_PHONEME = (phase, options) -> 0.0;
-    private static final BiFunction<Double, VoiceOptions, Double> NASAL_PHONEME = (phase, options) -> MathUtil.fastSin(phase * 0.5) * options.nasalGain();
+    private static final BiFunction<SynthContext, VoiceOptions, Double> NO_PHONEME = (context, options) -> 0.0;
+    private static final BiFunction<SynthContext, VoiceOptions, Double> NASAL_PHONEME = (context, options) -> MathUtil.fastSin(context.runningPhase() * 0.5) * options.nasalGain();
     private static final Function<SynthContext, Double> RANDOM_SEGMENT_VOLUME = (context) -> 0.85 + context.randomDouble() * 0.15;
 
     private static final BiFunction<SynthContext, VoiceOptions, Double> SEGMENT_BASE_FREQUENCY = (context, options) -> options.baseFreq();
@@ -51,10 +51,11 @@ public class MumbleSynthesizer {
 
 
     private record WovelPhoneme(double wovelHeight,
-                                double wovelBackness) implements BiFunction<Double, VoiceOptions, Double> {
+                                double wovelBackness) implements BiFunction<SynthContext, VoiceOptions, Double> {
 
         @Override
-        public Double apply(Double phase, VoiceOptions options) {
+        public Double apply(SynthContext context, VoiceOptions options) {
+            final var phase = context.runningPhase();
             double baseWave = switch (options.waveType()) {
                 case SINE -> MathUtil.fastSin(phase);
                 // Ultra-weiche Annäherung einer Dreieckswelle für wärmeren Sound
@@ -169,7 +170,7 @@ public class MumbleSynthesizer {
             context.setRunningPhase((context.runningPhase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
-            double rawValue = element.phonemeCalculation().apply(context.runningPhase(), options);
+            double rawValue = element.phonemeCalculation().apply(context, options);
             double envelope = applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
