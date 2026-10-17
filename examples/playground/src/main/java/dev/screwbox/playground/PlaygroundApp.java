@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
 
 import java.util.List;
+import java.util.Random;
 
 public class PlaygroundApp {
 
@@ -43,7 +44,8 @@ public class PlaygroundApp {
                 text = ListUtil.pickRandom(texts);
 
                 Time t = Time.now();
-                var mumble = Synthesizer.synthesizeMumbleSpeech(text, VoiceOptions.variable());
+                var mumble = Synthesizer.synthesizeMumbleSpeech(text, VoiceOptions.variable()
+                    .baseFrequency(150));
                 System.out.println(Duration.since(t).milliseconds());
                 timeout = mumble.duration().addTo(Time.now());
                 engine.audio().playSound(mumble);
@@ -53,4 +55,5 @@ public class PlaygroundApp {
 
         screwBox.start();
     }
+
 }

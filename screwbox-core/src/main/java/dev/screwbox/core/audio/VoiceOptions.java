@@ -2,11 +2,12 @@ package dev.screwbox.core.audio;
 
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
+import dev.screwbox.core.utils.Validate;
 
 import java.util.Objects;
 
 //TODO rename options
-public record VoiceOptions(double baseFrequency,//TODO optimize or validate type
+public record VoiceOptions(double baseFrequency,
                            double baseBlipDuration,//TODO optimize or validate type
                            double pitchRandomness,//TODO optimize or validate type
                            double speedRandomness,//TODO optimize or validate type
@@ -29,6 +30,7 @@ public record VoiceOptions(double baseFrequency,//TODO optimize or validate type
     }
 
     public VoiceOptions {
+        Validate.range(baseFrequency, 10.0, 500.0, "base frequency must be between 10.0 and 500.0");
         Objects.requireNonNull(vowelVolume, "vowel volume must not be null");
         Objects.requireNonNull(nasalVolume, "nasal volume must not be null");
     }
@@ -38,6 +40,10 @@ public record VoiceOptions(double baseFrequency,//TODO optimize or validate type
     }
 
     public VoiceOptions nasalVolume(final Percent nasalVolume) {
+        return new VoiceOptions(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, lowPassCutoff, seed);
+    }
+
+    public VoiceOptions baseFrequency(final double baseFrequency) {
         return new VoiceOptions(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, lowPassCutoff, seed);
     }
 
