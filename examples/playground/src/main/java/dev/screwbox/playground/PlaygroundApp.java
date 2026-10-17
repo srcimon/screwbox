@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.assets.FontBundle;
@@ -37,7 +38,10 @@ public class PlaygroundApp {
             }
             if (engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
-                playback = engine.audio().playChatter(text, Voice.variable().baseFrequency(250));
+                playback = engine.audio().playChatter(text, Voice.variable()
+                    .baseFrequency(250)
+
+                );
             }
         });
 
