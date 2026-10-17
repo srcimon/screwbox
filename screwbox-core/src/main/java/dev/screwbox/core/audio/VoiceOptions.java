@@ -21,7 +21,7 @@ public record VoiceOptions(double baseFreq,
                            Long seed) {
 
     private VoiceOptions(final Long seed) {
-        this(180.0, 0.04, 0.5, 0.15, 5.0, 0.025, 0.5, 0.25, 0.12, WaveType.SINE, 0.75, 0.35, 0.45, 0.18, seed);
+        this(180.0, 0.04, 0.5, 0.15, 5.0, 0.025, 0.3, 0.15, 0.06, WaveType.SINE, 0.75, 0.35, 0.45, 0.18, seed);
     }
 
     public static VoiceOptions variable() {

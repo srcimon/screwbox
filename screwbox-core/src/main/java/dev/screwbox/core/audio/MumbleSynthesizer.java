@@ -175,7 +175,7 @@ public class MumbleSynthesizer {
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
             double rawValue = config.phonemeCalculation().apply(context.runningPhase(), options);
-            double envelope = CharacterType.PUCTUATION == config.type() ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
+            double envelope =  applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
             double breathShimmer = 1.0 + (MathUtil.fastSin(globalTime * 2.0) * 0.05);
