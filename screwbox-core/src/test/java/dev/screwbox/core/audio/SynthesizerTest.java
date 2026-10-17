@@ -52,4 +52,13 @@ class SynthesizerTest {
         assertThat(firstSpeech.content()).isNotEqualTo(secondSpeech.content());
         assertThat(firstSpeech.duration()).isNotEqualTo(secondSpeech.duration());
     }
+
+    @Test
+    void generateChatter_complexText_hasValidOutput() {
+        String text = "This is a much more complex, yet still not too complex Demo text containing all german umlauts (ä, ö and ü)! And it has multple sentences.";
+        var chatter = Synthesizer.generateChatter(text, Voice.fixed(1230L));
+
+        assertThat(chatter.content()).isNotNull();
+        assertThat(chatter.duration().milliseconds()).isGreaterThan(2000);
+    }
 }

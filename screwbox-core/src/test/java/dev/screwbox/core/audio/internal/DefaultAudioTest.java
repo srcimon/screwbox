@@ -6,6 +6,7 @@ import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.audio.Voice;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.InjectMocks;
@@ -53,22 +54,22 @@ class DefaultAudioTest {
     @Test
     void playSound_soundIsNull_throwsException() {
         assertThatThrownBy(() -> audio.playSound((Sound) null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("sound must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("sound must not be null");
     }
 
     @Test
     void playSound_optionsIsNull_throwsException() {
         assertThatThrownBy(() -> audio.playSound(SOUND, null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("options must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("options must not be null");
     }
 
     @Test
     void stopPlayback_playbackIsNull_throwsException() {
         assertThatThrownBy(() -> audio.stopPlayback(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("playback must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("playback must not be null");
     }
 
     @Test
@@ -82,23 +83,23 @@ class DefaultAudioTest {
     void updatePlaybackOptions_playbackIsNull_throwsException() {
         var options = SoundOptions.playOnce();
         assertThatThrownBy(() -> audio.updatePlaybackOptions(null, options))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("playback must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("playback must not be null");
     }
 
     @Test
     void updatePlaybackOptions_optionsIsNull_throwsException() {
         var playback = new Playback(UUID.randomUUID(), null, null);
         assertThatThrownBy(() -> audio.updatePlaybackOptions(playback, null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("options must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("options must not be null");
     }
 
     @Test
     void isPlaybackActive_playbackNull_throwsExceptionPlaybacks() {
         assertThatThrownBy(() -> audio.isPlaybackActive(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("playback must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("playback must not be null");
     }
 
     @Test
@@ -112,15 +113,15 @@ class DefaultAudioTest {
     void playSound_soundNull_throwsException() {
         var options = SoundOptions.playContinuously();
         assertThatThrownBy(() -> audio.playSound((Sound) null, options))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("sound must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("sound must not be null");
     }
 
     @Test
     void playSound_optionsNull_throwsException() {
         assertThatThrownBy(() -> audio.playSound(SOUND, null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("options must not be null");
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("options must not be null");
     }
 
     @Test
@@ -137,9 +138,9 @@ class DefaultAudioTest {
         audio.playSound(SoundBundle.JUMP, SoundOptions.playTimes(2));
 
         assertThat(audio.activePlaybacks()).hasSize(2)
-                .anyMatch(playback -> playback.options().equals(SoundOptions.playContinuously()))
-                .anyMatch(playback -> playback.options().equals(SoundOptions.playTimes(2)))
-                .allMatch(playback -> playback.sound().equals(SoundBundle.JUMP.get()));
+            .anyMatch(playback -> playback.options().equals(SoundOptions.playContinuously()))
+            .anyMatch(playback -> playback.options().equals(SoundOptions.playTimes(2)))
+            .allMatch(playback -> playback.sound().equals(SoundBundle.JUMP.get()));
     }
 
     @Test
@@ -191,8 +192,8 @@ class DefaultAudioTest {
         var newOptions = SoundOptions.playContinuously();
 
         assertThatThrownBy(() -> audio.updatePlaybackOptions(playback, newOptions))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("cannot change speed of playback once it has started");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("cannot change speed of playback once it has started");
     }
 
     @Test
@@ -236,4 +237,26 @@ class DefaultAudioTest {
         assertThat(audio.soundsPlayedCount()).isZero();
     }
 
+    @Test
+    void playChatter_textIsNull_throwsException() {
+        var voice = Voice.variable();
+
+        assertThatThrownBy(() -> audio.playChatter(null, voice))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("text must not be null");
+    }
+
+    @Test
+    void playChatter_voiceIsNull_throwsException() {
+        assertThatThrownBy(() -> audio.playChatter("text123", null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("voice must not be null");
+    }
+
+    @Test
+    void playChatter_someTextWithVariableVoice_startsPlayback() {
+        var playback = audio.playChatter("Demo text", Voice.variable());
+
+        assertThat(audio.isPlaybackActive(playback)).isTrue();
+    }
 }
