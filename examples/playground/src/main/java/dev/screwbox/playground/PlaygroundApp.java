@@ -40,9 +40,12 @@ public class PlaygroundApp {
             if (engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
                 playback = engine.audio().playChatter(text, Voice.variable()
-                    .baseFrequency(250)
+                    .baseFrequency(450)
                     .pitchRandomness(Percent.of(0.1))
-                    .baseBlipDuration(Duration.ofMillis(60))
+                    .vibratoDepth(Percent.of(0.5))
+                    .vibratoSpeed(10)
+                    .scratchyness(Percent.of(0.1))
+                    .baseBlipDuration(Duration.ofMillis(30))
 
                 );
             }
