@@ -4,5 +4,6 @@ import dev.screwbox.core.audio.VoiceOptions;
 
 import java.util.function.BiFunction;
 
+@FunctionalInterface
 public interface SynthFunction extends BiFunction<SynthContext, VoiceOptions, Double> {
 }
