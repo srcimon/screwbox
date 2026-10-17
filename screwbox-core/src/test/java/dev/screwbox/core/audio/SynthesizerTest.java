@@ -2,11 +2,11 @@ package dev.screwbox.core.audio;
 
 import org.junit.jupiter.api.Test;
 
-class MumbleSynthesizerTest {
+class SynthesizerTest {
 
     @Test
     void pseudoTest() {
         //TODO implement
-        MumbleSynthesizer.synthesizeMumbleSpeech("test", VoiceOptions.fixed(121239L));
+        Synthesizer.synthesizeMumbleSpeech("test", VoiceOptions.fixed(121239L));
     }
 }

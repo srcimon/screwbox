@@ -1,0 +1,115 @@
+package dev.screwbox.core.audio;
+
+import dev.screwbox.core.audio.internal.SynthContext;
+import dev.screwbox.core.audio.internal.WaveSupport;
+import dev.screwbox.core.audio.internal.synth.MumbleSynthConfiguration;
+import dev.screwbox.core.audio.internal.synth.SynthElement;
+import dev.screwbox.core.utils.MathUtil;
+
+import javax.sound.sampled.AudioFormat;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
+
+//TODO rename to synthesizer
+public class Synthesizer {
+
+    private static final double TO_SIGNED_INTEGER = 32767.0;
+    private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
+
+    public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
+        final String sanitizedText = text.toUpperCase();
+        try (final var baos = new ByteArrayOutputStream(8192);
+            DataOutputStream dos = new DataOutputStream(baos)) {
+
+            byte[] dummyHeader = new byte[WaveSupport.WAV_HEADER_SIZE];
+            dos.write(dummyHeader);
+
+
+            var soundContext = new SynthContext(options);
+            char[] chars = sanitizedText.toCharArray();
+
+            for (int i = 0; i < chars.length; i++) {
+                char character = chars[i];
+                var synthElement = MumbleSynthConfiguration.findElement(character);
+                double textProgress = (double) i / chars.length;
+
+                addSampleForCharacter(options, synthElement, soundContext, dos, textProgress);//TODO move text progress into context
+            }
+            dos.flush();
+
+            byte[] finalWav = baos.toByteArray();
+            int audioDataLength = finalWav.length - WaveSupport.WAV_HEADER_SIZE;
+
+            ByteBuffer headerBuffer = ByteBuffer.wrap(finalWav).order(ByteOrder.LITTLE_ENDIAN);
+            WaveSupport.writeHeaderToBuffer(audioDataLength, AUDIO_FORMAT, headerBuffer);
+
+            return Sound.fromSoundData(finalWav);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void addSampleForCharacter(VoiceOptions options, SynthElement element,
+                                              SynthContext context, DataOutputStream dos, double textProgress) {
+        int currentSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * element.blipLength().apply(context, options));
+
+        double targetVowelShift = element.targetWovelShift().apply(context, options);
+
+        // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
+        double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
+        double targetFrequency = element.segmentFrequency().apply(context, options) * (1.0 + intonation);
+
+        double segmentVolume = element.segmentVolume().apply(context, options);
+
+        for (int s = 0; s < currentSamplesPerBlip; s++) {
+            // Extrem glatte Übergänge für organischen Redefluss
+            context.setVowelShift(context.currentVowelShift() + (targetVowelShift - context.currentVowelShift()) * 0.002);
+            context.setCurrentPitch(context.currentPitch() + (targetFrequency - context.currentPitch()) * 0.002);
+
+            double globalTime = (double) context.totalSamplesWritten() / AUDIO_FORMAT.getSampleRate();
+
+            // Shimmer & Jitter: Winzige, unvorhersehbare Muskelunreinheiten der Stimme
+            double jitter = (context.randomDouble() - 0.5) * 0.002;
+            double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed() * globalTime) * options.vibratoDepth();
+
+            double instantFreq = Math.clamp(context.currentPitch() * (1.0 + (context.currentVowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
+            context.setRunningPhase((context.runningPhase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
+
+            // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
+            double rawValue = element.phonemeCalculation().apply(context, options);
+            double envelope = applyClickProtectionEnvelope(s, currentSamplesPerBlip);
+
+            // Menschliche Amplitudenschwankung (Atem)
+            double breathShimmer = 1.0 + (MathUtil.fastSin(globalTime * 2.0) * 0.05);
+            double preFilteredSample = Math.clamp(rawValue * envelope * segmentVolume * breathShimmer, -1.0, 1.0);
+
+            // Tiefpassfilterung (Getrennte Zustände für Stereo-Breite, falls gewünscht)
+            context.setFilterState(context.filterState() + options.lowPassCutoff() * (preFilteredSample - context.filterState()));
+
+            short pcmSampleLeft = (short) (context.filterState() * TO_SIGNED_INTEGER);
+            short pcmSampleRight = (short) (context.filterState() * TO_SIGNED_INTEGER);
+
+            try {
+                dos.writeByte(pcmSampleLeft & 0xFF);
+                dos.writeByte((pcmSampleLeft >> 8) & 0xFF);
+                dos.writeByte(pcmSampleRight & 0xFF);
+                dos.writeByte((pcmSampleRight >> 8) & 0xFF);
+            } catch (IOException ignored) {
+            }
+
+            context.setSamplesWritten(context.totalSamplesWritten() + 1);
+        }
+    }
+
+    private static double applyClickProtectionEnvelope(int sampleIdx, int totalSamples) {
+        int fadeSamples = Math.min(120, totalSamples / 10); // Sanftes Ein-/Ausblenden (ca. 2-3ms)
+        if (sampleIdx < fadeSamples) return (double) sampleIdx / fadeSamples;
+        if (sampleIdx > totalSamples - fadeSamples) return (double) (totalSamples - sampleIdx) / fadeSamples;
+        return 1.0;
+    }
+
+}
