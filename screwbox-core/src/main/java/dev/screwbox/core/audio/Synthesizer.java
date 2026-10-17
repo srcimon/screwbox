@@ -67,7 +67,7 @@ public class Synthesizer {
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
-            context.setVowelShift(context.currentVowelShift() + (targetVowelShift - context.currentVowelShift()) * 0.002);
+            context.setVowelShift(context.vowelShift() + (targetVowelShift - context.vowelShift()) * 0.002);
             context.setCurrentPitch(context.currentPitch() + (targetFrequency - context.currentPitch()) * 0.002);
 
             double globalTime = (double) context.totalSamplesWritten() / AUDIO_FORMAT.getSampleRate();
@@ -76,8 +76,8 @@ public class Synthesizer {
             double jitter = (context.randomDouble() - 0.5) * 0.002;
             double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed() * globalTime) * options.vibratoDepth();
 
-            double instantFreq = Math.clamp(context.currentPitch() * (1.0 + (context.currentVowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
-            context.setRunningPhase((context.runningPhase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
+            double instantFreq = Math.clamp(context.currentPitch() * (1.0 + (context.vowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
+            context.setRunningPhase((context.phase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
             double rawValue = element.phonemeCalculation().apply(context, options);

@@ -20,12 +20,12 @@ public class SynthConfiguration {
         entry('Ü', new SynthElement(new FixedValueFunction(1.12), new WovelPhonemeFunction(1.2, 3.5), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new BlipLengthFunction())),
 
         // plosive
-        entry('P', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
-        entry('T', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
-        entry('K', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
-        entry('B', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
-        entry('D', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
-        entry('G', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
+        entry('P', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
+        entry('T', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
+        entry('K', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
+        entry('B', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
+        entry('D', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
+        entry('G', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new PlosiveBlipLengthFunction())),
 
         // nasal
         entry('M', new SynthElement(new FixedValueFunction(0.88), new NasalPhonemeFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new BlipLengthFunction())),
@@ -35,20 +35,20 @@ public class SynthConfiguration {
         entry('R', new SynthElement(new FixedValueFunction(0.88), new NasalPhonemeFunction(), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new BlipLengthFunction())),
 
         // punctuation
-        entry('.', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new SentencePauseFunction())),
-        entry(',', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new CommaPauseFunction())),
-        entry('!', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new SentencePauseFunction())),
-        entry('?', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new SentencePauseFunction())),
-        entry(';', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new CommaPauseFunction())),
-        entry(':', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new CommaPauseFunction())),
-        entry('-', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new WordPauseFunction())),
+        entry('.', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new SentencePauseFunction())),
+        entry(',', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new CommaPauseFunction())),
+        entry('!', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new SentencePauseFunction())),
+        entry('?', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new SentencePauseFunction())),
+        entry(';', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new CommaPauseFunction())),
+        entry(':', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new CommaPauseFunction())),
+        entry('-', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new WordPauseFunction())),
 
         // space
-        entry(' ', new SynthElement(new CurrentWovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new WordPauseFunction()))
+        entry(' ', new SynthElement(new WovelShiftFunction(), new FixedValueFunction(), new FixedValueFunction(), new BaseFrequencyFunction(), new WordPauseFunction()))
     );
 
     private static final SynthElement DEFAULT_ELEMENT = new SynthElement(
-        new CurrentWovelShiftFunction(),
+        new WovelShiftFunction(),
         new FixedValueFunction(),
         new FixedValueFunction(),
         new RandomFrequencyFunction(),

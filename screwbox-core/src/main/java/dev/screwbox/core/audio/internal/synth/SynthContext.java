@@ -25,7 +25,7 @@ public class SynthContext {
             : options.seed());
     }
 
-    public double currentVowelShift() {
+    public double vowelShift() {
         return vowelShift;
     }
 
@@ -41,7 +41,7 @@ public class SynthContext {
         return samplesWritten;
     }
 
-    public double runningPhase() {
+    public double phase() {
         return runningPhase;
     }
 

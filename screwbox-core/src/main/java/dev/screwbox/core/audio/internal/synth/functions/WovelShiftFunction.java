@@ -4,10 +4,10 @@ import dev.screwbox.core.audio.VoiceOptions;
 import dev.screwbox.core.audio.internal.synth.SynthContext;
 import dev.screwbox.core.audio.internal.synth.SynthFunction;
 
-public class CurrentWovelShiftFunction implements SynthFunction {
+public class WovelShiftFunction implements SynthFunction {
 
     @Override
     public Double apply(final SynthContext context, final VoiceOptions options) {
-        return context.currentVowelShift();
+        return context.vowelShift();
     }
 }

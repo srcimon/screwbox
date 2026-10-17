@@ -9,6 +9,6 @@ public class NasalPhonemeFunction implements SynthFunction {
 
     @Override
     public Double apply(final SynthContext context, final VoiceOptions options) {
-        return MathUtil.fastSin(context.runningPhase() * 0.5) * options.nasalGain();
+        return MathUtil.fastSin(context.phase() * 0.5) * options.nasalGain();
     }
 }
