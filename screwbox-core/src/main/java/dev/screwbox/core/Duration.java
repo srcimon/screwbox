@@ -157,6 +157,17 @@ public class Duration implements Serializable {
     }
 
     /**
+     * Returns the total seconds including fraction of the {@link Duration}.
+     * @since 3.37.0
+     *
+     * @see #nanos()
+     * @see #milliseconds()
+     */
+    public double exactSeconds() {
+        return (double) nanos / Time.Unit.SECONDS.nanos();
+    }
+
+    /**
      * Adds another {@link Duration} to this {@link Duration}.
      *
      * @param other the {@link Duration} to add

@@ -90,6 +90,14 @@ public interface Audio {
         return playSound(sound.get());
     }
 
+    //TODO document
+    Playback playChatter(String text, Voice voice, SoundOptions options);
+
+    //TODO document
+    default Playback playChatter(final String text, final Voice voice) {
+        return playChatter(text, voice, playOnce());
+    }
+
     /**
      * Returns {@code true} if the specified {@link Playback} is active.
      */

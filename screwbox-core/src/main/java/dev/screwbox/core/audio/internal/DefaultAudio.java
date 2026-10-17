@@ -6,6 +6,8 @@ import dev.screwbox.core.audio.AudioConfiguration;
 import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.audio.Synthesizer;
+import dev.screwbox.core.audio.Voice;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Validate;
 
@@ -132,10 +134,26 @@ public class DefaultAudio implements Audio, Updatable {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
 
-        ActivePlayback activePlayback = new ActivePlayback(sound, options);
+        final var activePlayback = new ActivePlayback(sound, options);
         activePlaybacks.put(activePlayback.id(), activePlayback);
         executor.execute(() -> play(activePlayback));
         return activePlayback.toPlayback();
+    }
+
+    //TODO test
+    @Override
+    public Playback playChatter(final String text, final Voice voice, final SoundOptions options) {
+        requireNonNull(text, "text must not be null");
+        requireNonNull(voice, "voice must not be null");
+        final var unstartedPlayback = new ActivePlayback(null, options);
+        activePlaybacks.put(unstartedPlayback.id(), unstartedPlayback);
+        executor.execute(() -> {
+            final var sound = Synthesizer.generateChatter(text, voice);
+            final var activePlayback = new ActivePlayback(unstartedPlayback.id(), sound, options);
+            activePlaybacks.put(activePlayback.id(), activePlayback);
+            play(activePlayback);
+        });
+        return unstartedPlayback.toPlayback();
     }
 
     @Override

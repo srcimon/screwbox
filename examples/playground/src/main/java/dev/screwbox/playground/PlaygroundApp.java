@@ -1,67 +1,61 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.core.StaticBoundsComponent;
-import dev.screwbox.core.environment.importing.ImportOptions;
-import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
-import dev.screwbox.core.environment.smoke.WindComponent;
-import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.smoke.SmokeOptions;
-import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.core.assets.FontBundle;
+import dev.screwbox.core.audio.Playback;
+import dev.screwbox.core.audio.Voice;
+import dev.screwbox.core.graphics.ShaderBundle;
+import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.utils.ListUtil;
+
+import java.util.List;
 
 public class PlaygroundApp {
 
-
-    static Color color = Color.WHITE;
+    static String text = null;
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-        screwBox.graphics().configuration().setSmokeCellSize(8).setSmokeBlur(3).setSmokeScale(4);
 
-        screwBox.environment()
-            .enableAllFeatures()
-            .addSystem(new LogFpsSystem());
+        List<String> texts = List.of(
+            "I am your friend. But i am also okay with it.",
+            "My cat is so fat, it cannot swim in the ocean.",
+            "Lets have a party.",
+            "Do you want to be my friend?",
+            "Is this your house?",
+            "Can I ask you a question? It's about life and death."
+        );
 
-        var map = TileMap.fromString("""
-            
-             ###       #   ##
-             #         ## #### ###
-                       #
-            
-            
-            G               
-                       P    
-              WWWWWW   ######### # #  #           #   #        
-                       #        #  #           #   ################
-                       #        #  #           #
-            
-            """, Size.square(32));
-        screwBox.graphics().smoke().setOptions(SmokeOptions.noFade());
-        screwBox.environment().importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-            .assign('#', (source, idPool) -> new Entity().bounds(source.bounds()).add(new SmokeObstacleComponent()).add(new StaticBoundsComponent()).add(new ColliderComponent()).add(new RenderComponent(Sprite.placeholder(Color.DARK_GREEN, 32))))
-            .assign('W', (source, idPool) -> new Entity().bounds(source.bounds()).add(new StaticBoundsComponent())
-                .add(new RenderComponent(Sprite.placeholder(Color.WHITE.opacity(0.2), Size.square(32)))).add(new WindComponent(Vector.y(500)))));
-        screwBox.environment().addSystem(x -> {
-            x.mouse().hoverViewport().camera().changeZoomBy(x.mouse().unitsScrolled() / -20.0);
-            if (x.mouse().isDownRight()) {
-                x.graphics().smoke().push(Bounds.atPosition(screwBox.mouse().position(), 32, 32), Vector.x(8000).multiply(screwBox.loop().delta()));
-                x.graphics().smoke().emit(screwBox.mouse().position(), 255 * 0.8 * screwBox.loop().delta(), color);
+
+        screwBox.environment().addSystem(engine -> {
+            if (playback == null || !engine.audio().isPlaybackActive(playback)) {
+                text = null;
             }
-            if (x.mouse().isPressedLeft()) {
-                color = Color.random();
+            if (text != null) {
+                engine.graphics().canvas().drawText(engine.graphics().canvas().center(), text, TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(3).alignCenter().shader(ShaderBundle.NEON));
             }
-            x.mouse().hoverViewport().camera().move(x.keyboard().wsadMovement(500 * screwBox.loop().delta()));
+            if (engine.mouse().isPressedLeft()) {
+                text = ListUtil.pickRandom(texts);
+                playback = engine.audio().playChatter(text, Voice.variable()
+                    .baseFrequency(450)
+                    .pitchRandomness(Percent.of(0.1))
+                    .vibratoDepth(Percent.of(0.5))
+                    .vibratoSpeed(10)
+                    .scratchyness(Percent.of(0.1))
+                    .baseBlipDuration(Duration.ofMillis(30))
+
+                );
+            }
         });
-        screwBox.environment().addSystem(new DebugGridSystem(16, 256));
+
+        //TODO VoiceBundle
+        //TODO update Audio documentation
         screwBox.start();
     }
+
+    static Playback playback;
+
 }

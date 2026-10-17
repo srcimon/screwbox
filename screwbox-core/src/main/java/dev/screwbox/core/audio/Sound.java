@@ -68,7 +68,7 @@ public final class Sound implements Serializable {
             final var isMono = audioInputStream.getFormat().getFrameSize() <= 2;
             sourceFormat = detectSourceFormat(content, isMono);
             this.content = isMono ? convertToStereo(audioInputStream) : content;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new IllegalArgumentException("could not create sound", e);
         }
     }

@@ -18,6 +18,13 @@ class DurationTest {
     }
 
     @Test
+    void exactSeconds_returnsSecondsIncludingFractions() {
+        Duration seconds = Duration.ofMillis(2500);
+
+        assertThat(seconds.exactSeconds()).isEqualTo(2.5);
+    }
+
+    @Test
     void none_returnsDurationOfNotEvenANanoSecond() {
         assertThat(Duration.none().nanos()).isZero();
     }
