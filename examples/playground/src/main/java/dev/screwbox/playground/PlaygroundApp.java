@@ -6,6 +6,7 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.audio.MumbleSynthesizer;
+import dev.screwbox.core.audio.VoiceOptions;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
@@ -41,29 +42,7 @@ public class PlaygroundApp {
                 text = ListUtil.pickRandom(texts);
 
                 Time t = Time.now();
-                MumbleSynthesizer.VoiceOptions config = new MumbleSynthesizer.VoiceOptions();
-                config.baseFreq = 180.0;
-                config.baseBlipDuration = 0.04;
-
-                config.pitchRandomness = 0.8;       // Etwas reduziert für stabilere Intonation
-                config.speedRandomness = 0.10;
-
-                // Sanftes Vibrato ohne extreme Ausschläge
-                config.vibratoSpeed = 5.0;
-                config.vibratoDepth = 0.15;
-
-                // Pausenkonfiguration
-                config.sentencePause = 0.25;
-                config.commaPause = 0.12;
-                config.wordPause = 0.08;
-
-                // Mischpult
-                config.vowelGain = 0.70;
-                config.nasalGain = 0.40;
-                config.plosiveGain = 0.30;
-                config.waveType = MumbleSynthesizer.WaveType.SQUARE;
-
-                var mumble = MumbleSynthesizer.synthesizeMumbleSpeech(text, config);
+                var mumble = MumbleSynthesizer.synthesizeMumbleSpeech(text, VoiceOptions.male());
                 System.out.println(Duration.since(t).milliseconds());
                 timeout = mumble.duration().addTo(Time.now());
                 engine.audio().playSound(mumble);

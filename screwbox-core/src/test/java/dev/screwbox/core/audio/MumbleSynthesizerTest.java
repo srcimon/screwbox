@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 class MumbleSynthesizerTest {
 
-     @Test
+    @Test
     void pseudoTest() {
-         //TODO implement
-            MumbleSynthesizer.synthesizeMumbleSpeech("test", new MumbleSynthesizer.VoiceOptions());
-     }
+        //TODO implement
+        MumbleSynthesizer.synthesizeMumbleSpeech("test", VoiceOptions.male());
+    }
 }

@@ -29,14 +29,14 @@ public class MumbleSynthesizer {
     }
 
     private static final BiFunction<Double, VoiceOptions, Double> NO_PHONEME = (phase, options) -> 0.0;
-    private static final BiFunction<Double, VoiceOptions, Double> NASAL_PHONEME = (phase, options) -> MathUtil.fastSin(phase * 0.5) * options.nasalGain;
+    private static final BiFunction<Double, VoiceOptions, Double> NASAL_PHONEME = (phase, options) -> MathUtil.fastSin(phase * 0.5) * options.nasalGain();
 
     private record WovelPhoneme(double wovelHeight,
                                 double wovelBackness) implements BiFunction<Double, VoiceOptions, Double> {
 
         @Override
         public Double apply(Double phase, VoiceOptions options) {
-            double baseWave = switch (options.waveType) {
+            double baseWave = switch (options.waveType()) {
                 case SINE -> MathUtil.fastSin(phase);
                 // Ultra-weiche Annäherung einer Dreieckswelle für wärmeren Sound
                 case SQUARE -> MathUtil.fastSin(MathUtil.fastSin(phase) * 1.2) * 0.8;
@@ -46,7 +46,7 @@ public class MumbleSynthesizer {
             double formant1 = MathUtil.fastSin(phase * wovelHeight) * 0.25;
             double formant2 = MathUtil.fastSin(phase * wovelBackness) * 0.10;
 
-            return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * options.vowelGain;
+            return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * options.vowelGain();
         }
     }
 
@@ -85,8 +85,10 @@ public class MumbleSynthesizer {
         entry(' ', new SynthElement(CharacterType.SPACE, SynthContext::currentVowelShift, NO_PHONEME))
     );
 
+    //TODO move to options
     public enum WaveType {SINE, SQUARE, TRIANGLE}
 
+    //TODO get rid off enum
     enum CharacterType {
         VOWEL,
         PLOSIVE,
@@ -94,27 +96,6 @@ public class MumbleSynthesizer {
         PUCTUATION,
         SPACE,
         UNKNOWM
-    }
-
-    public static class VoiceOptions {
-        public double baseFreq = 110.0;
-        public double baseBlipDuration = 0.07;
-        public double pitchRandomness = 0.08;
-        public double speedRandomness = 0.15;
-        public double vibratoSpeed = 5.0;
-        public double vibratoDepth = 0.015;
-
-        public double sentencePause = 0.50;
-        public double commaPause = 0.25;
-        public double wordPause = 0.12;
-
-        public WaveType waveType = WaveType.SINE;
-
-        public double vowelGain = 0.75;
-        public double nasalGain = 0.35;
-        public double plosiveGain = 0.45;
-        public double lowPassCutoff = 0.18;
-        public Long seed;
     }
 
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
@@ -126,7 +107,7 @@ public class MumbleSynthesizer {
             byte[] dummyHeader = new byte[WaveSupport.WAV_HEADER_SIZE];
             dos.write(dummyHeader);
 
-            var soundContext = new SynthContext(options.baseFreq, options.seed == null ? Time.now().milliseconds() : options.seed);
+            var soundContext = new SynthContext(options.baseFreq(), options.seed() == null ? Time.now().milliseconds() : options.seed());
             char[] chars = sanitizedText.toCharArray();
 
             for (int i = 0; i < chars.length; i++) {
@@ -171,7 +152,7 @@ public class MumbleSynthesizer {
 
             // Shimmer & Jitter: Winzige, unvorhersehbare Muskelunreinheiten der Stimme
             double jitter = (context.randomDouble() - 0.5) * 0.002;
-            double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed * globalTime) * options.vibratoDepth;
+            double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed() * globalTime) * options.vibratoDepth();
 
             double instantFreq = Math.clamp(context.currentPitch() * (1.0 + (context.currentVowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
             context.setRunningPhase((context.runningPhase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
@@ -185,7 +166,7 @@ public class MumbleSynthesizer {
             double preFilteredSample = Math.clamp(rawValue * envelope * segmentVolume * breathShimmer, -1.0, 1.0);
 
             // Tiefpassfilterung (Getrennte Zustände für Stereo-Breite, falls gewünscht)
-            context.setFilterState(context.filterState() + options.lowPassCutoff * (preFilteredSample - context.filterState()));
+            context.setFilterState(context.filterState() + options.lowPassCutoff() * (preFilteredSample - context.filterState()));
 
             short pcmSampleLeft = (short) (context.filterState() * TO_SIGNED_INTEGER);
             short pcmSampleRight = (short) (context.filterState() * TO_SIGNED_INTEGER);
@@ -212,17 +193,17 @@ public class MumbleSynthesizer {
 
     private static int calculateSingleBlipLength(char c, SynthElement config, VoiceOptions options, SynthContext context) {
         if (c == '.' || c == '!' || c == '?') {
-            return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause);
+            return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause());
         }
         if (c == ',' || c == ';' || c == ':') {
-            return (int) (AUDIO_FORMAT.getSampleRate() * options.commaPause);
+            return (int) (AUDIO_FORMAT.getSampleRate() * options.commaPause());
         }
         if (c == ' ' || c == '-') {
-            return (int) (AUDIO_FORMAT.getSampleRate() * options.wordPause);
+            return (int) (AUDIO_FORMAT.getSampleRate() * options.wordPause());
         }
 
-        int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * options.baseBlipDuration);
-        double deviation = (context.randomDouble() * 2.0 - 1.0) * options.speedRandomness;
+        int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * options.baseBlipDuration());
+        double deviation = (context.randomDouble() * 2.0 - 1.0) * options.speedRandomness();
 
         double speedModifier = 1.0 + deviation;
         if (config.type() == CharacterType.PLOSIVE) {
@@ -234,10 +215,10 @@ public class MumbleSynthesizer {
 
     private static double calculateSegmentFrequency(VoiceOptions options, SynthElement config, SynthContext context) {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
-            return options.baseFreq;
+            return options.baseFreq();
         }
-        double randomPitchOffset = (context.randomDouble() * 2.0 - 1.0) * options.pitchRandomness;
-        return options.baseFreq * (1.0 + randomPitchOffset);
+        double randomPitchOffset = (context.randomDouble() * 2.0 - 1.0) * options.pitchRandomness();
+        return options.baseFreq() * (1.0 + randomPitchOffset);
     }
 
     private static double calculateSegmentVolume(SynthElement config, SynthContext context) {
