@@ -23,7 +23,7 @@ public class MumbleSynthesizer {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
 
     private record SynthElement(
-        Function<SynthContext, Double> targetWovelShift,
+        BiFunction<SynthContext, VoiceOptions, Double> targetWovelShift,
         BiFunction<SynthContext, VoiceOptions, Double> phonemeCalculation,
         Function<SynthContext, Double> segmentVolume,
         BiFunction<SynthContext, VoiceOptions, Double> segmentFrequency,
@@ -73,41 +73,41 @@ public class MumbleSynthesizer {
     //TODO get rid of CharacterType
     private static final Map<Character, SynthElement> SYNTH_CONFIG = Map.ofEntries(
         // vowel
-        entry('A', new SynthElement((context) -> 0.92, new WovelPhoneme(2.0, 3.5), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),//TODO MOVE CONFIG INSIDE
-        entry('E', new SynthElement((context) -> 1.05, new WovelPhoneme(1.5, 4.0), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('I', new SynthElement((context) -> 1.12, new WovelPhoneme(1.2, 4.5), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('O', new SynthElement((context) -> 0.85, new WovelPhoneme(1.4, 2.4), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('U', new SynthElement((context) -> 0.75, new WovelPhoneme(1.1, 1.8), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('Ä', new SynthElement((context) -> 0.92, new WovelPhoneme(1.8, 4.0), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('Ö', new SynthElement((context) -> 0.85, new WovelPhoneme(1.5, 3.2), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('Ü', new SynthElement((context) -> 1.12, new WovelPhoneme(1.2, 3.5), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('A', new SynthElement((context, options) -> 0.92, new WovelPhoneme(2.0, 3.5), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),//TODO MOVE CONFIG INSIDE
+        entry('E', new SynthElement((context, options) -> 1.05, new WovelPhoneme(1.5, 4.0), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('I', new SynthElement((context, options) -> 1.12, new WovelPhoneme(1.2, 4.5), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('O', new SynthElement((context, options) -> 0.85, new WovelPhoneme(1.4, 2.4), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('U', new SynthElement((context, options) -> 0.75, new WovelPhoneme(1.1, 1.8), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('Ä', new SynthElement((context, options) -> 0.92, new WovelPhoneme(1.8, 4.0), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('Ö', new SynthElement((context, options) -> 0.85, new WovelPhoneme(1.5, 3.2), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('Ü', new SynthElement((context, options) -> 1.12, new WovelPhoneme(1.2, 3.5), RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
 
         // plosive
-        entry('P', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
-        entry('T', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
-        entry('K', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
-        entry('B', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
-        entry('D', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
-        entry('G', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
+        entry('P', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
+        entry('T', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
+        entry('K', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
+        entry('B', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
+        entry('D', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
+        entry('G', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, PLOSIVE_BLIP_LENGTH)),
 
         // nasal
-        entry('M', new SynthElement((context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('N', new SynthElement((context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('L', new SynthElement((context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('W', new SynthElement((context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
-        entry('R', new SynthElement((context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('M', new SynthElement((context, options) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('N', new SynthElement((context, options) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('L', new SynthElement((context, options) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('W', new SynthElement((context, options) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
+        entry('R', new SynthElement((context, options) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
 
         // punctuation
-        entry('.', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
-        entry(',', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
-        entry('!', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
-        entry('?', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
-        entry(';', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
-        entry(':', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
-        entry('-', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, WORD_PAUSE_BLIP_LENGTH)),
+        entry('.', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
+        entry(',', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
+        entry('!', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
+        entry('?', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
+        entry(';', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
+        entry(':', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
+        entry('-', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, WORD_PAUSE_BLIP_LENGTH)),
 
         // space
-        entry(' ', new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, WORD_PAUSE_BLIP_LENGTH))
+        entry(' ', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, WORD_PAUSE_BLIP_LENGTH))
     );
 
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
@@ -124,7 +124,7 @@ public class MumbleSynthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement(SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH));
+                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement((context, voiceOptions) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH));
                 double textProgress = (double) i / chars.length;
 
                 addSampleForCharacter(options, synthElement, soundContext, dos, textProgress);//TODO move text progress into context
@@ -147,7 +147,7 @@ public class MumbleSynthesizer {
                                               SynthContext context, DataOutputStream dos, double textProgress) {
         int currentSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * element.blipLength().apply(context, options));
 
-        double targetVowelShift = element.targetWovelShift().apply(context);
+        double targetVowelShift = element.targetWovelShift().apply(context, options);
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
         double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
