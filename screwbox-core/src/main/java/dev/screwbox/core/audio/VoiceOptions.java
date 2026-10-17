@@ -24,13 +24,16 @@ public record VoiceOptions(double baseFreq,
         this(110.0, 0.06, 0.5, 0.15, 5.0, 0.025, 0.5, 0.25, 0.12, WaveType.SINE, 0.75, 0.35, 0.45, 0.18, seed);
     }
 
-    //TODO why would male be the default
     public static VoiceOptions variable() {
         return new VoiceOptions(null);
     }
 
+    public static VoiceOptions fixed(final long seed) {
+        return new VoiceOptions(seed);
+    }
+
     public static VoiceOptions fixed() {
-        return new VoiceOptions(Time.now().nanos());
+        return fixed(Time.now().nanos());
     }
 
     public enum WaveType {SINE, SQUARE, TRIANGLE}
