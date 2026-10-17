@@ -1,7 +1,10 @@
 ### 🚀 Features & improvements
 
-- Find ui menu items at screen position
+- Synthesize mumbled chatter (#1104)
+- Play synthesized mumbled chatter asynchronously (#1104)
 - Check if a ui menu is currently open
+- Find ui menu items at screen position
+- Retrieve seconds including fractions from `Duration`
 
 ### 🪛 Bug Fixes
 

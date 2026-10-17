@@ -91,6 +91,24 @@ public interface Audio {
     }
 
     /**
+     * Plays a synthesized chatter to voice NPCs. Chatter will start asynchronously because generation can take some time.
+     *
+     * @see Synthesizer#generateChatter(String, Voice)
+     * @since 3.37.0
+     */
+    Playback playChatter(String text, Voice voice, SoundOptions options);
+
+    /**
+     * Plays a synthesized chatter to voice NPCs. Chatter will start asynchronously because generation can take some time.
+     *
+     * @see Synthesizer#generateChatter(String, Voice)
+     * @since 3.37.0
+     */
+    default Playback playChatter(final String text, final Voice voice) {
+        return playChatter(text, voice, playOnce());
+    }
+
+    /**
      * Returns {@code true} if the specified {@link Playback} is active.
      */
     boolean isPlaybackActive(Playback playback);

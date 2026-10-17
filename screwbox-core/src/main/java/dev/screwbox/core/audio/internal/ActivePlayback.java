@@ -14,10 +14,14 @@ class ActivePlayback {
     private SoundOptions options;
     private SourceDataLine line;
 
-    public ActivePlayback(final Sound sound, final SoundOptions options) {
-        this.id = UUID.randomUUID();
+    public ActivePlayback(final UUID id, final Sound sound, final SoundOptions options) {
+        this.id = id;
         this.sound = sound;
         this.options = options;
+    }
+
+    public ActivePlayback(final Sound sound, final SoundOptions options) {
+        this(UUID.randomUUID(), sound, options);
     }
 
     public void setOptions(final SoundOptions options) {
