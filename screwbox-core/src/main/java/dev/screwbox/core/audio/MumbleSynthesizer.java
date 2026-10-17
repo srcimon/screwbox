@@ -85,9 +85,6 @@ public class MumbleSynthesizer {
         entry(' ', new SynthElement(CharacterType.SPACE, SynthContext::currentVowelShift, NO_PHONEME))
     );
 
-    //TODO move to options
-    public enum WaveType {SINE, SQUARE, TRIANGLE}
-
     //TODO get rid off enum
     enum CharacterType {
         VOWEL,

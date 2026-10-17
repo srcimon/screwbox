@@ -7,6 +7,6 @@ class MumbleSynthesizerTest {
     @Test
     void pseudoTest() {
         //TODO implement
-        MumbleSynthesizer.synthesizeMumbleSpeech("test", VoiceOptions.male());
+        MumbleSynthesizer.synthesizeMumbleSpeech("test", VoiceOptions.fluky());
     }
 }

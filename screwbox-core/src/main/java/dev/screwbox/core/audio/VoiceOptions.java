@@ -1,5 +1,7 @@
 package dev.screwbox.core.audio;
 
+import dev.screwbox.core.Time;
+
 //TODO rename options
 //TODO find better data types if possible
 public record VoiceOptions(double baseFreq,
@@ -11,19 +13,25 @@ public record VoiceOptions(double baseFreq,
                            double sentencePause,
                            double commaPause,
                            double wordPause,
-                           MumbleSynthesizer.WaveType waveType,
+                           WaveType waveType,
                            double vowelGain,
                            double nasalGain,
                            double plosiveGain,
                            double lowPassCutoff,
                            Long seed) {
 
-    private VoiceOptions() {
-        this(140.0, 0.04, 0.6, 0.15, 5.0, 0.015, 0.5, 0.25, 0.12, MumbleSynthesizer.WaveType.SQUARE, 0.75, 0.35, 0.45, 0.18, null);
+    private VoiceOptions(final Long seed) {
+        this(110.0, 0.06, 0.5, 0.15, 5.0, 0.025, 0.5, 0.25, 0.12, WaveType.SINE, 0.75, 0.35, 0.45, 0.18, seed);
     }
 
     //TODO why would male be the default
-    public static VoiceOptions male() {
-        return new VoiceOptions();
+    public static VoiceOptions variable() {
+        return new VoiceOptions(null);
     }
+
+    public static VoiceOptions fixed() {
+        return new VoiceOptions(Time.now().nanos());
+    }
+
+    public enum WaveType {SINE, SQUARE, TRIANGLE}
 }
