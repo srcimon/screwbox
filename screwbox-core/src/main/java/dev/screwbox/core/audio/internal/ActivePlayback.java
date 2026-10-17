@@ -5,7 +5,6 @@ import dev.screwbox.core.audio.Sound;
 import dev.screwbox.core.audio.SoundOptions;
 
 import javax.sound.sampled.SourceDataLine;
-import java.util.Optional;
 import java.util.UUID;
 
 class ActivePlayback {

@@ -41,9 +41,9 @@ public class PlaygroundApp {
             }
         });
 
+        //TODO update lets go system
 //TODO document in changelog: Synthesizer, Audio methods
         //TODO update Audio documentation
-        //TODO add to changelog
         screwBox.start();
     }
 

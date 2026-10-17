@@ -14,6 +14,9 @@ import java.io.IOException;
 //TODO document
 public class Synthesizer {
 
+    private Synthesizer() {
+
+    }
     private static final double TO_SIGNED_INTEGER = 32767.0;
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
 
