@@ -12,7 +12,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import static java.util.Map.entry;
 
@@ -25,7 +24,7 @@ public class MumbleSynthesizer {
     private record SynthElement(
         BiFunction<SynthContext, VoiceOptions, Double> targetWovelShift,
         BiFunction<SynthContext, VoiceOptions, Double> phonemeCalculation,
-        Function<SynthContext, Double> segmentVolume,
+        BiFunction<SynthContext, VoiceOptions, Double> segmentVolume,
         BiFunction<SynthContext, VoiceOptions, Double> segmentFrequency,
         BiFunction<SynthContext, VoiceOptions, Double> blipLength
     ) {
@@ -35,7 +34,7 @@ public class MumbleSynthesizer {
     //TODO Normalize Bifunctions
     private static final BiFunction<SynthContext, VoiceOptions, Double> NO_PHONEME = (context, options) -> 0.0;
     private static final BiFunction<SynthContext, VoiceOptions, Double> NASAL_PHONEME = (context, options) -> MathUtil.fastSin(context.runningPhase() * 0.5) * options.nasalGain();
-    private static final Function<SynthContext, Double> RANDOM_SEGMENT_VOLUME = (context) -> 0.85 + context.randomDouble() * 0.15;
+    private static final BiFunction<SynthContext, VoiceOptions, Double> RANDOM_SEGMENT_VOLUME = (context, options) -> 0.85 + context.randomDouble() * 0.15;
 
     private static final BiFunction<SynthContext, VoiceOptions, Double> SEGMENT_BASE_FREQUENCY = (context, options) -> options.baseFreq();
     private static final BiFunction<SynthContext, VoiceOptions, Double> RANDOM_FREQUENCY = (context, options) -> {
@@ -98,16 +97,16 @@ public class MumbleSynthesizer {
         entry('R', new SynthElement((context, options) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH)),
 
         // punctuation
-        entry('.', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
-        entry(',', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
-        entry('!', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
-        entry('?', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
-        entry(';', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
-        entry(':', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
-        entry('-', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, WORD_PAUSE_BLIP_LENGTH)),
+        entry('.', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context, options) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
+        entry(',', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context, options) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
+        entry('!', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context, options) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
+        entry('?', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context, options) -> 0.0, SEGMENT_BASE_FREQUENCY, SENTENCE_PAUSE_BLIP_LENGTH)),
+        entry(';', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context, options) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
+        entry(':', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context, options) -> 0.0, SEGMENT_BASE_FREQUENCY, COMMA_PAUSE_BLIP_LENGTH)),
+        entry('-', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context, options) -> 0.0, SEGMENT_BASE_FREQUENCY, WORD_PAUSE_BLIP_LENGTH)),
 
         // space
-        entry(' ', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, SEGMENT_BASE_FREQUENCY, WORD_PAUSE_BLIP_LENGTH))
+        entry(' ', new SynthElement((context, options) -> context.currentVowelShift(), NO_PHONEME, (context, options) -> 0.0, SEGMENT_BASE_FREQUENCY, WORD_PAUSE_BLIP_LENGTH))
     );
 
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
@@ -124,7 +123,7 @@ public class MumbleSynthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement((context, voiceOptions) -> context.currentVowelShift(), NO_PHONEME, (context) -> 0.0, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH));
+                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement((context, voiceOptions) -> context.currentVowelShift(), NO_PHONEME, (context, voiceOptions) -> 0.0, RANDOM_FREQUENCY, DEFAULT_BLIP_LENGTH));
                 double textProgress = (double) i / chars.length;
 
                 addSampleForCharacter(options, synthElement, soundContext, dos, textProgress);//TODO move text progress into context
@@ -153,7 +152,7 @@ public class MumbleSynthesizer {
         double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
         double targetFrequency = element.segmentFrequency.apply(context, options) * (1.0 + intonation);
 
-        double segmentVolume = element.segmentVolume.apply(context);
+        double segmentVolume = element.segmentVolume.apply(context, options);
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
