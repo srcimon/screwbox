@@ -1,10 +1,9 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.Time;
 import dev.screwbox.core.assets.FontBundle;
+import dev.screwbox.core.audio.Playback;
 import dev.screwbox.core.audio.Voice;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
@@ -14,7 +13,6 @@ import java.util.List;
 
 public class PlaygroundApp {
 
-    static Time timeout = Time.now();
     static String text = null;
 
     public static void main(String[] args) {
@@ -31,7 +29,7 @@ public class PlaygroundApp {
 
 
         screwBox.environment().addSystem(engine -> {
-            if (Time.now().isAfter(timeout)) {
+            if (playback == null || !engine.audio().isPlaybackActive(playback)) {
                 text = null;
             }
             if (text != null) {
@@ -39,14 +37,16 @@ public class PlaygroundApp {
             }
             if (engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
-
-                engine.audio().speakMumbled(text, Voice.variable().baseFrequency(250));
-                timeout = Time.now().addSeconds(2);
+                playback = engine.audio().speakMumbled(text, Voice.variable().baseFrequency(250));
             }
         });
 
-
+//TODO document in changelog: Synthesizer, Audio methods
+        //TODO update Audio documentation
+        //TODO add to changelog
         screwBox.start();
     }
+
+    static Playback playback;
 
 }

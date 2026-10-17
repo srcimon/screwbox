@@ -91,10 +91,10 @@ public interface Audio {
     }
 
     //TODO document
-    Audio speakMumbled(String text, Voice voice, SoundOptions options);
+    Playback speakMumbled(String text, Voice voice, SoundOptions options);
 
     //TODO document
-    default Audio speakMumbled(final String text, final Voice voice) {
+    default Playback speakMumbled(final String text, final Voice voice) {
         return speakMumbled(text, voice, playOnce());
     }
 

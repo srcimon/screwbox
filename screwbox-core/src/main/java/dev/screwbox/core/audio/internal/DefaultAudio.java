@@ -142,11 +142,18 @@ public class DefaultAudio implements Audio, Updatable {
 
     //TODO test
     @Override
-    public Audio speakMumbled(final String text, final Voice voice, final SoundOptions options) {//TODO sound options
+    public Playback speakMumbled(final String text, final Voice voice, final SoundOptions options) {
         requireNonNull(text, "text must not be null");
         requireNonNull(voice, "voice must not be null");
-        executor.execute(() -> playSound(Synthesizer.synthesizeMumbleSpeech(text, voice), options));
-        return this;
+        final var unstartedPlayback = new ActivePlayback(null, options);
+        activePlaybacks.put(unstartedPlayback.id(), unstartedPlayback);
+        executor.execute(() -> {
+            final var sound = Synthesizer.synthesizeMumbleSpeech(text, voice);
+            final var activePlayback = new ActivePlayback(unstartedPlayback.id(), sound, options);
+            activePlaybacks.put(activePlayback.id(), activePlayback);
+            play(activePlayback);
+        });
+        return unstartedPlayback.toPlayback();
     }
 
     @Override
