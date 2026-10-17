@@ -34,7 +34,7 @@ public class SynthContext {
         return pitch;
     }
 
-    public int totalSamplesWritten() {
+    public int samplesWritten() {
         return samplesWritten;
     }
 

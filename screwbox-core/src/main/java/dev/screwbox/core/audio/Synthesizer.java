@@ -11,8 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-
-//TODO rename to synthesizer
+//TODO document
 public class Synthesizer {
 
     private static final double TO_SIGNED_INTEGER = 32767.0;
@@ -24,12 +23,10 @@ public class Synthesizer {
         try (final var byteArrayOutputStream = new ByteArrayOutputStream(8192);
             final var outputStream = new DataOutputStream(byteArrayOutputStream)) {
             outputStream.write(WaveSupport.DUMMY_HEADER);
-
-
             for (int i = 0; i < sanitizedCharacters.length; i++) {
                 final var element = SynthConfiguration.findElement(sanitizedCharacters[i]);
                 context.setProgress((double) i / sanitizedCharacters.length);
-                synthesizeElement(element, options, context, outputStream);//TODO move text progress into context
+                synthesizeElement(element, options, context, outputStream);
             }
             outputStream.flush();
 
@@ -37,16 +34,16 @@ public class Synthesizer {
             WaveSupport.writeHeaderToBuffer(finalWav, AUDIO_FORMAT);
 
             return Sound.fromSoundData(finalWav);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException("could not create audio data", e);
         }
     }
 
     private static void synthesizeElement(final SynthElement element, final VoiceOptions options,
-                                          final SynthContext context, final DataOutputStream dos) {
-        int currentSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * element.blipLength().apply(context, options));
+                                          final SynthContext context, final DataOutputStream outputStream) throws IOException {
 
-        double targetVowelShift = element.targetWovelShift().apply(context, options);
+        final int samplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * element.blipLength().apply(context, options));
+        final double targetVowelShift = element.targetWovelShift().apply(context, options);
 
         // Menschliche Intonationskurve: Tonhöhe fällt zum Satzende hin natürlich ab
         double intonation = MathUtil.fastSin(context.progress() * Math.PI) * 0.15 - (context.progress() * 0.1);
@@ -54,50 +51,43 @@ public class Synthesizer {
 
         double segmentVolume = element.segmentVolume().apply(context, options);
 
-        for (int s = 0; s < currentSamplesPerBlip; s++) {
-            // Extrem glatte Übergänge für organischen Redefluss
+        for (int sampleNr = 0; sampleNr < samplesPerBlip; sampleNr++) {
             context.setVowelShift(context.vowelShift() + (targetVowelShift - context.vowelShift()) * 0.002);
             context.setPitch(context.pitch() + (targetFrequency - context.pitch()) * 0.002);
 
-            double globalTime = (double) context.totalSamplesWritten() / AUDIO_FORMAT.getSampleRate();
+            final double globalTime = (double) context.samplesWritten() / AUDIO_FORMAT.getSampleRate();
 
-            // Shimmer & Jitter: Winzige, unvorhersehbare Muskelunreinheiten der Stimme
-            double jitter = (context.randomDouble() - 0.5) * 0.002;
-            double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed() * globalTime) * options.vibratoDepth();
+            final double jitter = (context.randomDouble() - 0.5) * 0.002;
+            final double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed() * globalTime) * options.vibratoDepth();
 
-            double instantFreq = Math.clamp(context.pitch() * (1.0 + (context.vowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
+            final double instantFreq = Math.clamp(context.pitch() * (1.0 + (context.vowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
             context.setPhase((context.phase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
 
-            // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
-            double rawValue = element.phoneme().apply(context, options);
-            double envelope = applyClickProtectionEnvelope(s, currentSamplesPerBlip);
+            final double rawValue = element.phoneme().apply(context, options);
+            final double envelope = applyClickProtectionEnvelope(sampleNr, samplesPerBlip);
 
-            // Menschliche Amplitudenschwankung (Atem)
-            double breathShimmer = 1.0 + (MathUtil.fastSin(globalTime * 2.0) * 0.05);
-            double preFilteredSample = Math.clamp(rawValue * envelope * segmentVolume * breathShimmer, -1.0, 1.0);
+            final double breathShimmer = 1.0 + (MathUtil.fastSin(globalTime * 2.0) * 0.05);
+            final double preFilteredSample = Math.clamp(rawValue * envelope * segmentVolume * breathShimmer, -1.0, 1.0);
 
-            // Tiefpassfilterung (Getrennte Zustände für Stereo-Breite, falls gewünscht)
             context.setFilterState(context.filterState() + options.lowPassCutoff() * (preFilteredSample - context.filterState()));
 
-            short pcmSampleLeft = (short) (context.filterState() * TO_SIGNED_INTEGER);
-            short pcmSampleRight = (short) (context.filterState() * TO_SIGNED_INTEGER);
-
-            try {
-                dos.writeByte(pcmSampleLeft & 0xFF);
-                dos.writeByte((pcmSampleLeft >> 8) & 0xFF);
-                dos.writeByte(pcmSampleRight & 0xFF);
-                dos.writeByte((pcmSampleRight >> 8) & 0xFF);
-            } catch (IOException ignored) {
-            }
-
-            context.setSamplesWritten(context.totalSamplesWritten() + 1);
+            final short pcmSample = (short) (context.filterState() * TO_SIGNED_INTEGER);
+            outputStream.writeByte(pcmSample & 0xFF);
+            outputStream.writeByte((pcmSample >> 8) & 0xFF);
+            outputStream.writeByte(pcmSample & 0xFF);
+            outputStream.writeByte((pcmSample >> 8) & 0xFF);
+            context.setSamplesWritten(context.samplesWritten() + 1);
         }
     }
 
-    private static double applyClickProtectionEnvelope(int sampleIdx, int totalSamples) {
-        int fadeSamples = Math.min(120, totalSamples / 10); // Sanftes Ein-/Ausblenden (ca. 2-3ms)
-        if (sampleIdx < fadeSamples) return (double) sampleIdx / fadeSamples;
-        if (sampleIdx > totalSamples - fadeSamples) return (double) (totalSamples - sampleIdx) / fadeSamples;
+    private static double applyClickProtectionEnvelope(final int sampleIdx, final int totalSamples) {
+        final int fadeSamples = Math.min(120, totalSamples / 10); // soft fade in and out
+        if (sampleIdx < fadeSamples) {
+            return (double) sampleIdx / fadeSamples;
+        }
+        if (sampleIdx > totalSamples - fadeSamples) {
+            return (double) (totalSamples - sampleIdx) / fadeSamples;
+        }
         return 1.0;
     }
 
