@@ -20,7 +20,7 @@ public class SynthContext {
 
     //TODO simplify methods
     public SynthContext(final VoiceOptions options) {
-        this.pitch = options.baseFreq();
+        this.pitch = options.baseFrequency();
         this.random = new Random(isNull(options.seed())
             ? Time.now().milliseconds()
             : options.seed());

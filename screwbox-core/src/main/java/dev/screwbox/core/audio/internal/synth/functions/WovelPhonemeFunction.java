@@ -18,6 +18,6 @@ public record WovelPhonemeFunction(double wovelHeight, double wovelBackness) imp
         final double formant1 = MathUtil.fastSin(phase * wovelHeight) * 0.25;
         final double formant2 = MathUtil.fastSin(phase * wovelBackness) * 0.10;
 
-        return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * options.vowelGain();
+        return MathUtil.fastSin((baseWave + formant1 + formant2) * 0.8) * options.vowelVolume().value();
     }
 }

@@ -8,6 +8,6 @@ public class RandomFrequencyFunction implements SynthFunction {
 
     @Override
     public Double apply(final SynthContext context, final VoiceOptions options) {
-        return options.baseFreq() * (1.0 + (context.randomDouble() * 2.0 - 1.0) * options.pitchRandomness());
+        return options.baseFrequency() * (1.0 + (context.randomDouble() * 2.0 - 1.0) * options.pitchRandomness());
     }
 }

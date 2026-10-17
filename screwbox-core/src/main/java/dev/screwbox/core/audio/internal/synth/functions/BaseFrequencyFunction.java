@@ -8,6 +8,6 @@ public class BaseFrequencyFunction implements SynthFunction {
 
     @Override
     public Double apply(final SynthContext context, final VoiceOptions options) {
-        return options.baseFreq();
+        return options.baseFrequency();
     }
 }
