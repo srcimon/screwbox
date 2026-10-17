@@ -164,8 +164,8 @@ public class MumbleSynthesizer {
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
-            context.setCurrentVowelShift(context.currentVowelShift() + (targetVowelShift - context.currentVowelShift()) * 0.002);
-            context.setCurrentPitch(context.currentPitch() +(targetFrequency - context.currentPitch()) * 0.002);
+            context.setVowelShift(context.currentVowelShift() + (targetVowelShift - context.currentVowelShift()) * 0.002);
+            context.setCurrentPitch(context.currentPitch() + (targetFrequency - context.currentPitch()) * 0.002);
 
             double globalTime = (double) context.totalSamplesWritten() / AUDIO_FORMAT.getSampleRate();
 
@@ -185,11 +185,10 @@ public class MumbleSynthesizer {
             double preFilteredSample = Math.clamp(rawValue * envelope * segmentVolume * breathShimmer, -1.0, 1.0);
 
             // Tiefpassfilterung (Getrennte Zustände für Stereo-Breite, falls gewünscht)
-            context.setFilterStateLeft(context.filterStateLeft() + options.lowPassCutoff * (preFilteredSample - context.filterStateLeft()));
-            context.setFilterStateRight(context.filterStateRight() + options.lowPassCutoff * (preFilteredSample - context.filterStateRight())) ;
+            context.setFilterState(context.filterState() + options.lowPassCutoff * (preFilteredSample - context.filterState()));
 
-            short pcmSampleLeft = (short) (context.filterStateLeft() * TO_SIGNED_INTEGER);
-            short pcmSampleRight = (short) (context.filterStateRight() * TO_SIGNED_INTEGER);
+            short pcmSampleLeft = (short) (context.filterState() * TO_SIGNED_INTEGER);
+            short pcmSampleRight = (short) (context.filterState() * TO_SIGNED_INTEGER);
 
             try {
                 dos.writeByte(pcmSampleLeft & 0xFF);
@@ -199,7 +198,7 @@ public class MumbleSynthesizer {
             } catch (IOException ignored) {
             }
 
-            context.setTotalSamplesWritten(context.totalSamplesWritten() + 1);
+            context.setSamplesWritten(context.totalSamplesWritten() + 1);
         }
     }
 

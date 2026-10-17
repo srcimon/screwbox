@@ -4,13 +4,15 @@ import java.util.Random;
 
 //TODO rename all properties
 public class SynthContext {
+
+    private final Random random;
+
     private double runningPhase = 0.0;
     private double pitch;
-    private double currentVowelShift = 1.0;
-    private int totalSamplesWritten = 0;
-    private double filterStateLeft = 0.0;
-    private double filterStateRight = 0.0;
-    private final Random random;
+    private double vowelShift = 1.0;
+    private int samplesWritten = 0;
+    private double filterState = 0.0;
+
 
     public SynthContext(final double pitch, final long seed) {
         this.pitch = pitch;
@@ -18,7 +20,7 @@ public class SynthContext {
     }
 
     public double currentVowelShift() {
-        return currentVowelShift;
+        return vowelShift;
     }
 
     public double randomDouble() {
@@ -30,42 +32,33 @@ public class SynthContext {
     }
 
     public int totalSamplesWritten() {
-        return totalSamplesWritten;
+        return samplesWritten;
     }
 
     public double runningPhase() {
         return runningPhase;
     }
-    //TODO combine filter states!
-    public double filterStateLeft() {
-        return filterStateLeft;
-    }
-
-    public double filterStateRight() {
-        return filterStateRight;
+    public double filterState() {
+        return filterState;
     }
 
     public void setCurrentPitch(double currentPitch) {
         this.pitch = currentPitch;
     }
 
-    public void setCurrentVowelShift(double currentVowelShift) {
-        this.currentVowelShift = currentVowelShift;
+    public void setVowelShift(double vowelShift) {
+        this.vowelShift = vowelShift;
     }
 
-    public void setTotalSamplesWritten(int totalSamplesWritten) {
-        this.totalSamplesWritten = totalSamplesWritten;
+    public void setSamplesWritten(int samplesWritten) {
+        this.samplesWritten = samplesWritten;
     }
 
     public void setRunningPhase(double runningPhase ) {
         this.runningPhase = runningPhase;
     }
 
-    public void setFilterStateLeft(double filterStateLeft) {
-        this.filterStateLeft = filterStateLeft;
-    }
-
-    public void setFilterStateRight(double filterStateRight) {
-        this.filterStateRight = filterStateRight;
+    public void setFilterState(double filterState) {
+        this.filterState = filterState;
     }
 }
