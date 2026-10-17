@@ -23,13 +23,17 @@ public class MumbleSynthesizer {
     private static final double TO_SIGNED_INTEGER = 32767.0;
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
 
-    private record SynthElement(CharacterType type, Function<SynthContext, Double> targetWovelShift,
-                                BiFunction<Double, VoiceOptions, Double> phonemeCalculation) {
+    private record SynthElement(CharacterType type,
+                                Function<SynthContext, Double> targetWovelShift,
+                                BiFunction<Double, VoiceOptions, Double> phonemeCalculation,
+                                Function<SynthContext, Double> segmentVolume
+    ) {
 //TODO add constructor without wovelconfig
     }
 
     private static final BiFunction<Double, VoiceOptions, Double> NO_PHONEME = (phase, options) -> 0.0;
     private static final BiFunction<Double, VoiceOptions, Double> NASAL_PHONEME = (phase, options) -> MathUtil.fastSin(phase * 0.5) * options.nasalGain();
+    private static final Function<SynthContext, Double> RANDOM_SEGMENT_VOLUME = (context) -> 0.85 + context.randomDouble() * 0.15;
 
     private record WovelPhoneme(double wovelHeight,
                                 double wovelBackness) implements BiFunction<Double, VoiceOptions, Double> {
@@ -52,37 +56,37 @@ public class MumbleSynthesizer {
 
     //TODO get rid of CharacterType
     private static final Map<Character, SynthElement> SYNTH_CONFIG = Map.ofEntries(
-        entry('A', new SynthElement(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(2.0, 3.5))),//TODO MOVE CONFIG INSIDE
-        entry('E', new SynthElement(CharacterType.VOWEL, (context) -> 1.05, new WovelPhoneme(1.5, 4.0))),
-        entry('I', new SynthElement(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 4.5))),
-        entry('O', new SynthElement(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.4, 2.4))),
-        entry('U', new SynthElement(CharacterType.VOWEL, (context) -> 0.75, new WovelPhoneme(1.1, 1.8))),
-        entry('Ä', new SynthElement(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(1.8, 4.0))),
-        entry('Ö', new SynthElement(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.5, 3.2))),
-        entry('Ü', new SynthElement(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 3.5))),
+        entry('A', new SynthElement(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(2.0, 3.5), (context) -> 0.85 + context.randomDouble() * 0.15)),//TODO MOVE CONFIG INSIDE
+        entry('E', new SynthElement(CharacterType.VOWEL, (context) -> 1.05, new WovelPhoneme(1.5, 4.0), RANDOM_SEGMENT_VOLUME)),
+        entry('I', new SynthElement(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 4.5), RANDOM_SEGMENT_VOLUME)),
+        entry('O', new SynthElement(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.4, 2.4), RANDOM_SEGMENT_VOLUME)),
+        entry('U', new SynthElement(CharacterType.VOWEL, (context) -> 0.75, new WovelPhoneme(1.1, 1.8), RANDOM_SEGMENT_VOLUME)),
+        entry('Ä', new SynthElement(CharacterType.VOWEL, (context) -> 0.92, new WovelPhoneme(1.8, 4.0), RANDOM_SEGMENT_VOLUME)),
+        entry('Ö', new SynthElement(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.5, 3.2), RANDOM_SEGMENT_VOLUME)),
+        entry('Ü', new SynthElement(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 3.5), RANDOM_SEGMENT_VOLUME)),
 
-        entry('P', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry('T', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry('K', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry('B', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry('D', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry('G', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('P', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME)),
+        entry('T', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME)),
+        entry('K', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME)),
+        entry('B', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME)),
+        entry('D', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME)),
+        entry('G', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME, RANDOM_SEGMENT_VOLUME)),
 
-        entry('M', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
-        entry('N', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
-        entry('L', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
-        entry('W', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
-        entry('R', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
+        entry('M', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME)),
+        entry('N', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME)),
+        entry('L', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME)),
+        entry('W', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME)),
+        entry('R', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME, RANDOM_SEGMENT_VOLUME)),
 
-        entry('.', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry(',', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry('!', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry('?', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry(';', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry(':', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
-        entry('-', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('.', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0)),
+        entry(',', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0)),
+        entry('!', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0)),
+        entry('?', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0)),
+        entry(';', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0)),
+        entry(':', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0)),
+        entry('-', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0)),
 
-        entry(' ', new SynthElement(CharacterType.SPACE, SynthContext::currentVowelShift, NO_PHONEME))
+        entry(' ', new SynthElement(CharacterType.SPACE, SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0))
     );
 
     //TODO get rid off enum
@@ -96,8 +100,7 @@ public class MumbleSynthesizer {
     }
 
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
-        String sanitizedText = text.toUpperCase();
-
+        final String sanitizedText = text.toUpperCase();
         try (final var baos = new ByteArrayOutputStream(8192);
             DataOutputStream dos = new DataOutputStream(baos)) {
 
@@ -109,7 +112,7 @@ public class MumbleSynthesizer {
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement(CharacterType.UNKNOWM, SynthContext::currentVowelShift, NO_PHONEME));
+                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement(CharacterType.UNKNOWM, SynthContext::currentVowelShift, NO_PHONEME, (context) -> 0.0));
                 double textProgress = (double) i / chars.length;
 
                 addSampleForCharacter(options, character, synthElement, soundContext, dos, textProgress);
@@ -138,7 +141,7 @@ public class MumbleSynthesizer {
         double intonation = MathUtil.fastSin(textProgress * Math.PI) * 0.15 - (textProgress * 0.1);
         double targetFrequency = calculateSegmentFrequency(options, config, context) * (1.0 + intonation);
 
-        double segmentVolume = calculateSegmentVolume(config, context);
+        double segmentVolume = config.segmentVolume.apply(context);
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
@@ -217,12 +220,4 @@ public class MumbleSynthesizer {
         double randomPitchOffset = (context.randomDouble() * 2.0 - 1.0) * options.pitchRandomness();
         return options.baseFreq() * (1.0 + randomPitchOffset);
     }
-
-    private static double calculateSegmentVolume(SynthElement config, SynthContext context) {
-        if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
-            return 0.0;
-        }
-        return (0.85 + context.randomDouble() * 0.15);
-    }
-
 }
