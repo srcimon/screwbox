@@ -7,25 +7,23 @@ import dev.screwbox.core.utils.Validate;
 
 import static java.util.Objects.requireNonNull;
 
-//TODO document below
-
 /**
- * Configures a voice used by {@link Synthesizer} and {@link Audio#playChatter(String, Voice)}
+ * Configures a voice used by {@link Synthesizer} and {@link Audio#playChatter(String, Voice)}.
  *
- * @param baseFrequency
- * @param baseBlipDuration
- * @param pitchRandomness
- * @param speedRandomness
- * @param vibratoSpeed
- * @param vibratoDepth
- * @param sentencePause
- * @param commaPause
- * @param wordPause
- * @param waveType
- * @param vowelVolume
- * @param nasalVolume
- * @param scratchyness
- * @param seed
+ * @param baseFrequency    The fundamental frequency of the voice in Hz.
+ * @param baseBlipDuration The duration of an individual sound blip.
+ * @param pitchRandomness  The amount of random variation applied to the pitch.
+ * @param speedRandomness  The amount of random variation applied to the speech speed.
+ * @param vibratoSpeed     The frequency or speed of the vibrato effect.
+ * @param vibratoDepth     The intensity or depth of the vibrato effect.
+ * @param sentencePause    The duration of the pause at the end of a sentence.
+ * @param commaPause       The duration of the pause at a comma.
+ * @param wordPause        The duration of the pause between words.
+ * @param waveType         The type of sound wave used for synthesis.
+ * @param vowelVolume      The volume level specifically for vowel sounds.
+ * @param nasalVolume      The volume level specifically for nasal sounds.
+ * @param scratchyness     The amount of distortion or scratchiness in the voice.
+ * @param seed             The random seed used for generating consistent voice characteristics.
  * @since 3.37.0
  */
 public record Voice(double baseFrequency,
@@ -43,10 +41,24 @@ public record Voice(double baseFrequency,
                     Percent scratchyness,
                     Long seed) {
 
-
+    /**
+     * Type of wave used for synthesis.
+     */
     public enum WaveType {
+
+        /**
+         * Sinus wave
+         */
         SINE,
+
+        /**
+         * Square wave
+         */
         SQUARE,
+
+        /**
+         * Triangles
+         */
         TRIANGLE
     }
 
@@ -55,9 +67,9 @@ public record Voice(double baseFrequency,
     }
 
     public Voice {
-        //TODO test validations below
         Validate.range(baseFrequency, 10.0, 500.0, "base frequency must be between 10.0 and 500.0");
         Validate.range(vibratoSpeed, 0.5, 10.0, "vibrato speed must be between 0.5 and 10.0");
+        requireNonNull(baseBlipDuration, "base blip duration must not be null");
         requireNonNull(vowelVolume, "vowel volume must not be null");
         requireNonNull(nasalVolume, "nasal volume must not be null");
         requireNonNull(wordPause, "word pause must not be null");
@@ -69,7 +81,14 @@ public record Voice(double baseFrequency,
         requireNonNull(vibratoDepth, "vibrato depth must not be null");
     }
 
-    //TODO check for missing methods
+    /**
+     * Set the fundamental frequency of the voice in Hz. Valid range is 10.0 to 500.0.
+     */
+    public Voice baseFrequency(final double baseFrequency) {
+        return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, scratchyness, seed);
+    }
+
+    //TODO document below
     public Voice waveType(final WaveType waveType) {
         return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, scratchyness, seed);
     }
@@ -99,10 +118,6 @@ public record Voice(double baseFrequency,
     }
 
     public Voice nasalVolume(final Percent nasalVolume) {
-        return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, scratchyness, seed);
-    }
-
-    public Voice baseFrequency(final double baseFrequency) {
         return new Voice(baseFrequency, baseBlipDuration, pitchRandomness, speedRandomness, vibratoSpeed, vibratoDepth, sentencePause, commaPause, wordPause, waveType, vowelVolume, nasalVolume, scratchyness, seed);
     }
 

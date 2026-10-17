@@ -35,7 +35,7 @@ public class Synthesizer {
         final var context = new SynthContext(voice);
         try (final var byteArrayOutputStream = new ByteArrayOutputStream(8192);
             final var outputStream = new DataOutputStream(byteArrayOutputStream)) {
-            outputStream.write(WaveSupport.DUMMY_HEADER);
+            outputStream.write(new byte[WaveSupport.WAV_HEADER_SIZE]);
             for (int i = 0; i < sanitizedCharacters.length; i++) {
                 final var element = SynthConfiguration.findElement(sanitizedCharacters[i]);
                 context.setProgress((double) i / sanitizedCharacters.length);

@@ -52,7 +52,6 @@ public class PlaygroundApp {
         });
 
         //TODO VoiceBundle
-        //TODO update lets go system
         //TODO update Audio documentation
         screwBox.start();
     }
