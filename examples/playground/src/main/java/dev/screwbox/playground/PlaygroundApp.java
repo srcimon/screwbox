@@ -58,8 +58,6 @@ public class PlaygroundApp {
             }
         });
 
-        //TODO VoiceBundle
-        //TODO update Audio documentation with voice bundle
         screwBox.start();
     }
 

@@ -7,5 +7,4 @@ public record SynthElement(
     SynthFunction segmentFrequency,
     SynthFunction blipLength
 ) {
-    //TODO insert calc methods here
 }

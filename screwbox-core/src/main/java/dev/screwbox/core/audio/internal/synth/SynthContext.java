@@ -18,7 +18,6 @@ public class SynthContext {
     private double progress = 0.0;
     private double pitch;
 
-    //TODO simplify methods
     public SynthContext(final Voice options) {
         this.pitch = options.baseFrequency();
         this.random = new Random(isNull(options.seed())

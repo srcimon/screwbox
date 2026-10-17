@@ -12,11 +12,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Can synthesize mumbled speech. Saves money for voice actors.
+ * Can synthesize mumbled chatter to give NPCs a voice.
  *
  * @since 3.37.0
  */
-//TODO Sound.chatter(Text, voice)
 public class Synthesizer {
 
     private static final double TO_SIGNED_INTEGER = 32767.0;

@@ -8,6 +8,10 @@ import static java.util.Map.entry;
 
 public class SynthConfiguration {
 
+    private SynthConfiguration() {
+
+    }
+
     private static final Map<Character, SynthElement> SYNTH_CONFIG = Map.ofEntries(
         // vowel
         entry('A', new SynthElement(new FixedValueFunction(0.92), new WovelPhonemeFunction(2.0, 3.5), new RandomSegmentVolumeFunction(), new RandomFrequencyFunction(), new BlipLengthFunction())),
