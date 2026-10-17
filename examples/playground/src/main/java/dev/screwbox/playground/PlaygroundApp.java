@@ -37,7 +37,7 @@ public class PlaygroundApp {
             }
             if (engine.mouse().isPressedLeft()) {
                 text = ListUtil.pickRandom(texts);
-                playback = engine.audio().speakMumbled(text, Voice.variable().baseFrequency(250));
+                playback = engine.audio().playChatter(text, Voice.variable().baseFrequency(250));
             }
         });
 

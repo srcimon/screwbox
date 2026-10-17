@@ -8,7 +8,7 @@ import java.util.UUID;
  * has been started.
  *
  * @param id      unique identifier of the playback
- * @param sound   {@link Sound} played. Can be null when {@link Sound} is created asynchronously (e.g. {@link Audio#speakMumbled(String, Voice)}).
+ * @param sound   {@link Sound} played. Can be null when {@link Sound} is created asynchronously (e.g. {@link Audio#playChatter(String, Voice)}).
  * @param options {@link SoundOptions} used to play the {@link Sound}.
  * @see Audio#stopPlayback(Playback)
  * @see Audio#updatePlaybackOptions(Playback, SoundOptions)

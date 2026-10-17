@@ -91,11 +91,11 @@ public interface Audio {
     }
 
     //TODO document
-    Playback speakMumbled(String text, Voice voice, SoundOptions options);
+    Playback playChatter(String text, Voice voice, SoundOptions options);
 
     //TODO document
-    default Playback speakMumbled(final String text, final Voice voice) {
-        return speakMumbled(text, voice, playOnce());
+    default Playback playChatter(final String text, final Voice voice) {
+        return playChatter(text, voice, playOnce());
     }
 
     /**
