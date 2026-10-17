@@ -140,7 +140,7 @@ public class MumbleSynthesizer {
 
     private static void addSampleForCharacter(VoiceOptions options, char character, SynthElement config,
                                               SynthContext context, DataOutputStream dos, double textProgress) {
-        int currentSamplesPerBlip = calculateSingleBlipLength(character, config, options, context);
+        int currentSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * calculateSingleBlipLength(character, config, options, context));
 
         double targetVowelShift = config.targetWovelShift().apply(context);
 
@@ -198,18 +198,17 @@ public class MumbleSynthesizer {
         return 1.0;
     }
 
-    private static int calculateSingleBlipLength(char c, SynthElement config, VoiceOptions options, SynthContext context) {
+    private static double calculateSingleBlipLength(char c, SynthElement config, VoiceOptions options, SynthContext context) {
         if (c == '.' || c == '!' || c == '?') {
-            return (int) (AUDIO_FORMAT.getSampleRate() * options.sentencePause());
+            return (options.sentencePause());
         }
         if (c == ',' || c == ';' || c == ':') {
-            return (int) (AUDIO_FORMAT.getSampleRate() * options.commaPause());
+            return (options.commaPause());
         }
         if (c == ' ' || c == '-') {
-            return (int) (AUDIO_FORMAT.getSampleRate() * options.wordPause());
+            return (options.wordPause());
         }
 
-        int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * options.baseBlipDuration());
         double deviation = (context.randomDouble() * 2.0 - 1.0) * options.speedRandomness();
 
         double speedModifier = 1.0 + deviation;
@@ -217,7 +216,7 @@ public class MumbleSynthesizer {
             speedModifier *= 0.4; // Kürzere Artikulation
         }
 
-        return (int) (baseSamplesPerBlip * speedModifier);
+        return ((options.baseBlipDuration()) * speedModifier);
     }
 
 }
