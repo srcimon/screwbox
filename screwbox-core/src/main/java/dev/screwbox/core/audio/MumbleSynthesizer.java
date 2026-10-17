@@ -1,5 +1,7 @@
 package dev.screwbox.core.audio;
 
+import dev.screwbox.core.Time;
+import dev.screwbox.core.audio.internal.SynthContext;
 import dev.screwbox.core.audio.internal.WaveSupport;
 import dev.screwbox.core.utils.MathUtil;
 
@@ -10,17 +12,16 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Map;
-import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static java.util.Map.entry;
 
+//TODO rename to synthesizer
 public class MumbleSynthesizer {
 
     private static final double TO_SIGNED_INTEGER = 32767.0;
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100, 16, 2, true, false);
-    private static final Random RANDOM = new Random();
 
     private record SynthElement(CharacterType type, Function<SynthContext, Double> targetWovelShift,
                                 BiFunction<Double, VoiceOptions, Double> phonemeCalculation) {
@@ -60,12 +61,12 @@ public class MumbleSynthesizer {
         entry('Ö', new SynthElement(CharacterType.VOWEL, (context) -> 0.85, new WovelPhoneme(1.5, 3.2))),
         entry('Ü', new SynthElement(CharacterType.VOWEL, (context) -> 1.12, new WovelPhoneme(1.2, 3.5))),
 
-        entry('P', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('T', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('K', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('B', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('D', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('G', new SynthElement(CharacterType.PLOSIVE, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('P', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('T', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('K', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('B', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('D', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('G', new SynthElement(CharacterType.PLOSIVE, SynthContext::currentVowelShift, NO_PHONEME)),
 
         entry('M', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
         entry('N', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
@@ -73,15 +74,15 @@ public class MumbleSynthesizer {
         entry('W', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
         entry('R', new SynthElement(CharacterType.NASAL, (context) -> 0.88, NASAL_PHONEME)),
 
-        entry('.', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry(',', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('!', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('?', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry(';', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry(':', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
-        entry('-', new SynthElement(CharacterType.PUCTUATION, (context) -> context.currentVowelShift, NO_PHONEME)),
+        entry('.', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry(',', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('!', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('?', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry(';', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry(':', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
+        entry('-', new SynthElement(CharacterType.PUCTUATION, SynthContext::currentVowelShift, NO_PHONEME)),
 
-        entry(' ', new SynthElement(CharacterType.SPACE, (context) -> context.currentVowelShift, NO_PHONEME))
+        entry(' ', new SynthElement(CharacterType.SPACE, SynthContext::currentVowelShift, NO_PHONEME))
     );
 
     public enum WaveType {SINE, SQUARE, TRIANGLE}
@@ -116,21 +117,6 @@ public class MumbleSynthesizer {
         public Long seed;
     }
 
-    private static class SynthContext {
-        double runningPhase = 0.0;
-        double currentPitch;
-        double currentVowelShift = 1.0;
-        int totalSamplesWritten = 0;
-        double filterStateLeft = 0.0;
-        double filterStateRight = 0.0;
-        Random random;
-
-        public SynthContext(double startPitch, Random random) {
-            currentPitch = startPitch;
-            this.random = random;
-        }
-    }
-
     public static Sound synthesizeMumbleSpeech(final String text, final VoiceOptions options) {
         String sanitizedText = text.toUpperCase();
 
@@ -140,12 +126,12 @@ public class MumbleSynthesizer {
             byte[] dummyHeader = new byte[WaveSupport.WAV_HEADER_SIZE];
             dos.write(dummyHeader);
 
-            var soundContext = new SynthContext(options.baseFreq, options.seed == null ? RANDOM : new Random(options.seed));
+            var soundContext = new SynthContext(options.baseFreq, options.seed == null ? Time.now().milliseconds() : options.seed);
             char[] chars = sanitizedText.toCharArray();
 
             for (int i = 0; i < chars.length; i++) {
                 char character = chars[i];
-                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement(CharacterType.UNKNOWM, (context) -> context.currentVowelShift, NO_PHONEME));
+                var synthElement = SYNTH_CONFIG.getOrDefault(character, new SynthElement(CharacterType.UNKNOWM, SynthContext::currentVowelShift, NO_PHONEME));
                 double textProgress = (double) i / chars.length;
 
                 addSampleForCharacter(options, character, synthElement, soundContext, dos, textProgress);
@@ -178,20 +164,20 @@ public class MumbleSynthesizer {
 
         for (int s = 0; s < currentSamplesPerBlip; s++) {
             // Extrem glatte Übergänge für organischen Redefluss
-            context.currentVowelShift += (targetVowelShift - context.currentVowelShift) * 0.002;
-            context.currentPitch += (targetFrequency - context.currentPitch) * 0.002;
+            context.setCurrentVowelShift(context.currentVowelShift() + (targetVowelShift - context.currentVowelShift()) * 0.002);
+            context.setCurrentPitch(context.currentPitch() +(targetFrequency - context.currentPitch()) * 0.002);
 
-            double globalTime = (double) context.totalSamplesWritten / AUDIO_FORMAT.getSampleRate();
+            double globalTime = (double) context.totalSamplesWritten() / AUDIO_FORMAT.getSampleRate();
 
             // Shimmer & Jitter: Winzige, unvorhersehbare Muskelunreinheiten der Stimme
-            double jitter = (context.random.nextDouble() - 0.5) * 0.002;
+            double jitter = (context.randomDouble() - 0.5) * 0.002;
             double vibrato = MathUtil.fastSin(2.0 * Math.PI * options.vibratoSpeed * globalTime) * options.vibratoDepth;
 
-            double instantFreq = Math.clamp(context.currentPitch * (1.0 + (context.currentVowelShift - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
-            context.runningPhase = (context.runningPhase + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI);
+            double instantFreq = Math.clamp(context.currentPitch() * (1.0 + (context.currentVowelShift() - 1.0) * 0.20) * (1.0 + vibrato + jitter), 45.0, 350.0);
+            context.setRunningPhase((context.runningPhase() + (2.0 * Math.PI * instantFreq) / AUDIO_FORMAT.getSampleRate()) % (2.0 * Math.PI));
 
             // Synthese und Hüllkurve gegen Knacken (Fade-In / Fade-Out pro Blip)
-            double rawValue = config.phonemeCalculation().apply(context.runningPhase, options);
+            double rawValue = config.phonemeCalculation().apply(context.runningPhase(), options);
             double envelope = CharacterType.PUCTUATION == config.type() ? 0.0 : applyClickProtectionEnvelope(s, currentSamplesPerBlip);
 
             // Menschliche Amplitudenschwankung (Atem)
@@ -199,11 +185,11 @@ public class MumbleSynthesizer {
             double preFilteredSample = Math.clamp(rawValue * envelope * segmentVolume * breathShimmer, -1.0, 1.0);
 
             // Tiefpassfilterung (Getrennte Zustände für Stereo-Breite, falls gewünscht)
-            context.filterStateLeft += options.lowPassCutoff * (preFilteredSample - context.filterStateLeft);
-            context.filterStateRight += options.lowPassCutoff * (preFilteredSample - context.filterStateRight);
+            context.setFilterStateLeft(context.filterStateLeft() + options.lowPassCutoff * (preFilteredSample - context.filterStateLeft()));
+            context.setFilterStateRight(context.filterStateRight() + options.lowPassCutoff * (preFilteredSample - context.filterStateRight())) ;
 
-            short pcmSampleLeft = (short) (context.filterStateLeft * TO_SIGNED_INTEGER);
-            short pcmSampleRight = (short) (context.filterStateRight * TO_SIGNED_INTEGER);
+            short pcmSampleLeft = (short) (context.filterStateLeft() * TO_SIGNED_INTEGER);
+            short pcmSampleRight = (short) (context.filterStateRight() * TO_SIGNED_INTEGER);
 
             try {
                 dos.writeByte(pcmSampleLeft & 0xFF);
@@ -213,10 +199,9 @@ public class MumbleSynthesizer {
             } catch (IOException ignored) {
             }
 
-            context.totalSamplesWritten++;
+            context.setTotalSamplesWritten(context.totalSamplesWritten() + 1);
         }
     }
-
 
 
     private static double applyClickProtectionEnvelope(int sampleIdx, int totalSamples) {
@@ -238,7 +223,7 @@ public class MumbleSynthesizer {
         }
 
         int baseSamplesPerBlip = (int) (AUDIO_FORMAT.getSampleRate() * options.baseBlipDuration);
-        double deviation = (context.random.nextDouble() * 2.0 - 1.0) * options.speedRandomness;
+        double deviation = (context.randomDouble() * 2.0 - 1.0) * options.speedRandomness;
 
         double speedModifier = 1.0 + deviation;
         if (config.type() == CharacterType.PLOSIVE) {
@@ -252,7 +237,7 @@ public class MumbleSynthesizer {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
             return options.baseFreq;
         }
-        double randomPitchOffset = (context.random.nextDouble() * 2.0 - 1.0) * options.pitchRandomness;
+        double randomPitchOffset = (context.randomDouble() * 2.0 - 1.0) * options.pitchRandomness;
         return options.baseFreq * (1.0 + randomPitchOffset);
     }
 
@@ -260,7 +245,7 @@ public class MumbleSynthesizer {
         if (CharacterType.PUCTUATION == config.type() || CharacterType.SPACE == config.type()) {
             return 0.0;
         }
-        return (0.85 + context.random.nextDouble() * 0.15);
+        return (0.85 + context.randomDouble() * 0.15);
     }
 
 }
