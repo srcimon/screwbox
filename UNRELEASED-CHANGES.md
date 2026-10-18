@@ -19,3 +19,8 @@
 ### 📦 Dependency updates
 
 - Bump Node dependencies
+- Bump maven-help-plugin to 3.5.2
+- Bump actions/checkout to 7
+- Bump actions/cache to 6.1.0
+- Bump actions/upload-pages-artifact to 5
+- Bump actions/setup-java to 6.1.0
