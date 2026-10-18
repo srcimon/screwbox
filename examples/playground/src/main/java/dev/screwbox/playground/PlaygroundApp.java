@@ -9,8 +9,6 @@ import dev.screwbox.core.environment.ai.BoidComponent;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
-import dev.screwbox.core.environment.importing.ComplexBlueprint;
-import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.BackdropOccluderComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
@@ -42,7 +40,6 @@ import dev.screwbox.core.graphics.smoke.styles.HeatVisionSmokeStyle;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class PlaygroundApp {
