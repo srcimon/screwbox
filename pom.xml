@@ -311,6 +311,7 @@
                         <configuration>
                             <publishingServerId>central</publishingServerId>
                             <autoPublish>false</autoPublish>
+                            <waitUntil>uploaded</waitUntil>
                             <excludeArtifacts>docs,game-of-life,hello-world,pathfinding,platformer,playground,vacuum-outlaw</excludeArtifacts>
                         </configuration>
                     </plugin>
