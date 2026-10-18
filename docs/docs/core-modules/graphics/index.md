@@ -154,6 +154,7 @@ Options that can be specified:
 | lightBounceIntensityLoss | `0.1`      | sets the loss of light intensity when it bounces of an occluder                                                 |
 | lightBounceLengthLoss    | `0.2`      | sets the loss of light length when it bounces of an occluder                                                    |
 | indirectLightIntensity   | `0.9`      | specify the intensity of indirect light that is cast when light hits occluders                                  |
+| indirectLightRaySpacing  | `2.0`      | specify the space in degrees between indirect light rays                                                        |
 | indirectLightDiameter    | `16`       | sets the diameter of indirect light rays.                                                                       |
 | maxLightBounces          | `2`        | specify the maximum number of consecutive bounces that light will make when hitting occluders                   |
 | renderingApi             | auto       | returns the specified rendering API. Read only property.                                                        |

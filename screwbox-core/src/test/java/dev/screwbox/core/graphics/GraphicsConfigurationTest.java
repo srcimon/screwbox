@@ -382,6 +382,20 @@ class GraphicsConfigurationTest {
         verifyEventPosted(SMOKE_AUTO_ENABLE, times(1));
     }
 
+    @Test
+    void setIndirectLightRaySpacing_threeDegrees_setsIndirectLightRaySpacingAndNotifiesListeners() {
+        graphicsConfiguration.setIndirectLightRaySpacing(3.0);
+        assertThat(graphicsConfiguration.indirectLightRaySpacing()).isEqualTo(3.0);
+        verifyEventPosted(INDIRECT_LIGHT_RAY_SPACING, times(1));
+    }
+
+    @Test
+    void setIndirectLightRaySpacing_zeroDegrees_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setIndirectLightRaySpacing(0))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("indirect light ray spacing must be in range 0.1 to 4.0 (actual value: 0.0)");
+    }
+
     private void verifyEventPosted(final GraphicsConfigurationEvent.ConfigurationProperty configurationProperty, final VerificationMode times) {
         verify(graphicsConfigListener, times)
             .configurationChanged(argThat(event -> event.changedProperty().equals(configurationProperty)));

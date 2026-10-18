@@ -124,6 +124,11 @@ public class GraphicsConfigurationEvent extends EventObject {
         SMOKE_AUTO_ENABLE,
 
         /**
+         * {@link GraphicsConfiguration#indirectLightRaySpacing()} was changed.
+         */
+        INDIRECT_LIGHT_RAY_SPACING,
+
+        /**
          * {@link GraphicsConfiguration#smokeScale()} was changed.
          */
         SMOKE_SCALE
