@@ -45,6 +45,7 @@ public class GraphicsConfiguration {
     private Percent lightBounceIntensityLoss = Percent.of(0.1);
     private Percent lightBounceLengthLoss = Percent.of(0.2);
     private Percent indirectLightIntensity = Percent.of(0.9);
+    private double indirectLightRaySpacing = 2.0;
     private float indirectLightDiameter = 16f;
     private int maxLightBounces = 2;
     private boolean isSmokeEnabled = false;
@@ -56,6 +57,28 @@ public class GraphicsConfiguration {
 
     public GraphicsConfiguration(final RenderingApi renderingApi) {
         this.renderingApi = renderingApi;
+    }
+
+    /**
+     * Sets the space in degrees between indirect light rays. Smaller angles will result in reduced performance.
+     * Default value is 2.0. Valid values are 0.1 to 4.0 degrees.
+     *
+     * @since 3.38.0
+     */
+    public GraphicsConfiguration setIndirectLightRaySpacing(final double indirectLightRaySpacing) {
+        Validate.range(indirectLightRaySpacing, 0.1, 4.0, "indirect light ray spacing must be in range 0.1 to 4.0");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.INDIRECT_LIGHT_RAY_SPACING);
+        this.indirectLightRaySpacing = indirectLightRaySpacing;
+        return this;
+    }
+
+    /**
+     * Returns the space in degrees between indirect light rays.
+     *
+     * @since 3.38.0
+     */
+    public double indirectLightRaySpacing() {
+        return indirectLightRaySpacing;
     }
 
     /**

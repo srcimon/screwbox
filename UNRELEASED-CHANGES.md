@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Configure spacing between indirect light rays
 
 ### 🪛 Bug Fixes
 
