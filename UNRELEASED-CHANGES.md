@@ -19,6 +19,7 @@
 ### 📦 Dependency updates
 
 - Bump Node dependencies
+- Bump central-publishing-maven-plugin to 0.12.0
 - Bump maven-help-plugin to 3.5.2
 - Bump actions/checkout to 7
 - Bump actions/cache to 6.1.0
