@@ -25,6 +25,12 @@ jobs:
           java-package: 'jdk'
           cache: 'maven'
           server-id: ossrh
+
+      - name: Set up Maven 3.9.9 # required due to https://github.com/mavenplugins/central-publishing-maven-plugin/issues/79
+        uses: batmahdi/setup-maven@v2
+        with:
+          maven-version: '3.9.9'
+
       - name: Configure Git User
         run: |
           git config user.email "actions@github.com"
