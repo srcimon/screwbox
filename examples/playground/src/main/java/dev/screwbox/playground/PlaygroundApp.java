@@ -24,6 +24,12 @@ import dev.screwbox.core.environment.smoke.WindComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.smoke.SmokeOptions;
+import dev.screwbox.core.graphics.smoke.styles.ComicSmokeStyle;
+import dev.screwbox.core.graphics.smoke.styles.FireSmokeStyle;
+import dev.screwbox.core.graphics.smoke.styles.HeatVisionSmokeStyle;
+import dev.screwbox.core.graphics.smoke.styles.NettrunnerSmokeStyle;
+import dev.screwbox.core.graphics.smoke.styles.OilSmokeStyle;
 import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
@@ -56,9 +62,10 @@ public class PlaygroundApp {
         screwBox.graphics().configuration()
             .setIndirectLightRaySpacing(0.2)
             .setIndirectLightDiameter(4f)
-            .setSmokeCellSize(4)
+            .setSmokeCellSize(2)
             .setBackgroundColor(Color.BLUE);
 
+        screwBox.graphics().smoke().setOptions(SmokeOptions.noFade().style(new HeatVisionSmokeStyle()).opacity(Percent.of(0.85)));
         screwBox.graphics().light().setAmbientLight(Percent.of(0.5));
         screwBox.environment()
             .enableAllFeatures()
@@ -76,7 +83,7 @@ public class PlaygroundApp {
                     .add(new SmokeInteractionComponent()))
                 .assign('S', source -> new Entity()
                     .bounds(source.bounds())
-                    .add(new SmokeEmitterComponent(25, Color.WHITE, Vector.y(-100))))
+                    .add(new SmokeEmitterComponent(35, Color.WHITE, Vector.y(-200))))
                 .assign('S', source -> new Entity()
                     .bounds(source.bounds())
                     .add(new WindComponent(Vector.y(-20))))
