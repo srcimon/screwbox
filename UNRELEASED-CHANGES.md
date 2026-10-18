@@ -15,6 +15,7 @@
 - Removed `Layout` parameter from `UiInteractor`
 - Renamed `ListUtil.pickRandom(List)`
 - Added tests for `SmokeProjector` (#1057)
+- Maven version pinned to 3.9.9 using maven-wrapper
 
 ### 📦 Dependency updates
 
