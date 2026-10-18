@@ -27,7 +27,7 @@ jobs:
           server-id: ossrh
 
       - name: Set up Maven 3.9.9 # required due to https://github.com/mavenplugins/central-publishing-maven-plugin/issues/79
-        uses: batmahdi/setup-maven@v2
+        uses: batmahdi/setup-maven@v3
         with:
           maven-version: '3.9.9'
 
