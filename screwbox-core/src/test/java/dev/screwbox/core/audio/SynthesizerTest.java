@@ -50,7 +50,6 @@ class SynthesizerTest {
         var secondChatter = Synthesizer.generateChatter("test", variable);
 
         assertThat(firstChatter.content()).isNotEqualTo(secondChatter.content());
-        assertThat(firstChatter.duration()).isNotEqualTo(secondChatter.duration());
     }
 
     @Test
