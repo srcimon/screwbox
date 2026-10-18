@@ -22,5 +22,3 @@
 - Bump central-publishing-maven-plugin to 0.12.0
 - Bump actions/checkout to 7
 - Bump actions/cache to 6.1.0
-- Bump actions/upload-pages-artifact to 5
-- Bump actions/setup-java to 6.1.0
