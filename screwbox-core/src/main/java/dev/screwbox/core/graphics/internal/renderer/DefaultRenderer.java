@@ -213,7 +213,7 @@ public class DefaultRenderer implements Renderer {
         var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
         double dx = to.x() - from.x();
         double dy = to.y() - from.y();
-        double distance = Math.sqrt(dx * dx + dy * dy);
+        double distance = Math.sqrt(dx * dx + dy * dy);//TODO from.distanceTo(to)k
 //TODO use original clip
         int imgWidth = sprite.size().width();
         int imgHeight = sprite.size().height();
