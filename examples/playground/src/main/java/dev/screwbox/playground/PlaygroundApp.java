@@ -71,9 +71,9 @@ public class PlaygroundApp {
 
         screwBox.graphics().camera().setZoomRestriction(1, 10).setZoom(1);
         screwBox.graphics().configuration()
-            .setIndirectLightRaySpacing(0.5)
-            .setLightQuality(Percent.of(0.4))
-            .setIndirectLightDiameter(6f)
+            .setIndirectLightRaySpacing(0.4)
+            .setLightQuality(Percent.of(0.2))
+            .setIndirectLightDiameter(16f)
             .setSmokeCellSize(2)
             .setSmokeCellPadding(64)
             .setBackgroundColor(Color.BLUE);
@@ -82,7 +82,7 @@ public class PlaygroundApp {
         screwBox.environment().addSystem(s -> {
             Vector delta = s.mouse().position().add(200, 100);
             var target = s.navigation().raycastFrom(s.mouse().position()).castingTo(delta).nearestHit().orElse(delta);
-            s.graphics().world().drawLine(s.mouse().position(), target, sprite,  new SpriteLineDrawOptions(1, 0.5, ShaderBundle.CONVEYOR.get()));
+            s.graphics().world().drawLine(s.mouse().position(), target, sprite,  new SpriteLineDrawOptions(1, 1, ShaderBundle.CONVEYOR.get()));
         });
         screwBox.graphics().light().setAmbientLight(Percent.of(0.5));
         screwBox.environment()
