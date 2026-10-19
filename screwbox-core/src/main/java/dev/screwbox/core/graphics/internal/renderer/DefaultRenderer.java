@@ -215,43 +215,39 @@ public class DefaultRenderer implements Renderer {
         double dy = to.y() - from.y();
         double distance = Math.sqrt(dx * dx + dy * dy);
 //TODO use original clip
-        var size = sprite.size();
-        int imgWidth = size.width();
-        int imgHeight = size.height();
+        int imgWidth = sprite.size().width();
+        int imgHeight = sprite.size().height();
 
         // 1. Skalierungsfaktor holen und skalierte Maße berechnen
-        double scale = options.scale();
-        double scaledWidth = imgWidth * scale;
-        double scaledHeight = imgHeight * scale;
+        double scaledWidth = imgWidth * options.scale();
+        double scaledHeight = imgHeight * options.scale();
 
         // 2. Sichere den aktuellen Zustand des Clips
         Shape originalClip = graphics.getClip();
 
 //TODO apply clip
         double angle = Math.atan2(dy, dx);
-            AffineTransform localClipTransform = new AffineTransform();
-            localClipTransform.translate(from.x(), from.y());
-            localClipTransform.rotate(angle);
+        AffineTransform localClipTransform = new AffineTransform();
+        localClipTransform.translate(from.x(), from.y());
+        localClipTransform.rotate(angle);
 
-            Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
-            Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
+        Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
+        Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
 
-            graphics.clip(transformedClip);
+        graphics.clip(transformedClip);
 
-            double stepSpacing = scaledWidth;
-
-            for (double d = 0; d <= distance + stepSpacing; d += stepSpacing) {
-                double t = d / distance;
-                double x = from.x() + t * dx;
-                double y = from.y() + t * dy;
-                AffineTransform tx = new AffineTransform();
-                tx.translate(x, y);
-                tx.rotate(angle);
-                tx.scale(scale, scale);
-                tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
-                drawSprite(sprite, shader, tx);
-            }
-            graphics.setClip(originalClip);
+        for (double d = 0; d <= distance + scaledWidth; d += scaledWidth) {
+            double t = d / distance;
+            double x = from.x() + t * dx;
+            double y = from.y() + t * dy;
+            AffineTransform tx = new AffineTransform();
+            tx.translate(x, y);
+            tx.rotate(angle);
+            tx.scale(options.scale(), options.scale());
+            tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
+            drawSprite(sprite, shader, tx);
+        }
+        graphics.setClip(originalClip);
     }
 
     @Override
