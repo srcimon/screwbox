@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
@@ -33,6 +34,8 @@ import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.ShaderBundle;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.light.ShadowOptions;
@@ -75,12 +78,12 @@ public class PlaygroundApp {
             .setSmokeCellPadding(64)
             .setBackgroundColor(Color.BLUE);
 
-        Sprite sprite = Sprite.fromFile("laser.png");
+        Sprite sprite = Sprite.animatedFromFile("laser.png", Size.square(16), Duration.ofMillis(150));
         screwBox.environment().addSystem(s -> {
             Vector delta = s.mouse().position().add(200, 100);
             var target = s.navigation().raycastFrom(s.mouse().position()).castingTo(delta).nearestHit().orElse(delta);
             s.graphics().world().drawLine(s.mouse().position(), target, LineDrawOptions.color(Color.WHITE).strokeWidth(2));
-            s.graphics().world().drawLine(s.mouse().position(), target, sprite,  new SpriteLineDrawOptions(1, 0.5));
+            s.graphics().world().drawLine(s.mouse().position(), target, sprite,  new SpriteLineDrawOptions(1, 0.5, null));
         });
         screwBox.graphics().light().setAmbientLight(Percent.of(0.5));
         screwBox.environment()

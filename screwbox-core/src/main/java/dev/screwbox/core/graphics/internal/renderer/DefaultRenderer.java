@@ -223,66 +223,67 @@ public class DefaultRenderer implements Renderer {
         double scaledWidth = imgWidth * scale;
         double scaledHeight = imgHeight * scale;
 
-        // 2. Sichere den aktuellen Zustand (Transformation & Clipping)
-        AffineTransform originalTransform = graphics.getTransform();
+        // 2. Sichere den aktuellen Zustand des Clips
         Shape originalClip = graphics.getClip();
 
         if (distance == 0) {
-            AffineTransform tx = new AffineTransform(originalTransform);
+            AffineTransform tx = new AffineTransform();
             tx.translate(from.x(), from.y());
             tx.scale(scale, scale);
             tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
-            graphics.setTransform(tx);
-            graphics.drawImage(image, 0, 0, null);
-            graphics.setTransform(originalTransform);
+
+            // Verwendet die Transformation direkt im drawImage-Aufruf
+            graphics.drawImage(image, tx, null);
             return;
         }
 //TODO apply clip
         double angle = Math.atan2(dy, dx);
 
-        AffineTransform localClipTransform = new AffineTransform();
-        localClipTransform.translate(from.x(), from.y());
-        localClipTransform.rotate(angle);
+        try {
+            // 3. Erstelle das Clip-Rechteck
+            AffineTransform localClipTransform = new AffineTransform();
+            localClipTransform.translate(from.x(), from.y());
+            localClipTransform.rotate(angle);
 
-        // Das Begrenzungsfenster startet bei 0 (from) und geht exakt bis 'distance' (to)
-        Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
-        Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
+            Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
+            Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
 
-        // Jetzt schneidet Java exakt am echten Punkt B ab, egal wo die Kamera steht
-        graphics.clip(transformedClip);
+            graphics.clip(transformedClip);
 
-        // 4. Zeichne die Bilder entlang der Linie mit skaliertem Abstand
-        double stepSpacing = scaledWidth;
+            // 4. Zeichne die Bilder entlang der Linie mit skaliertem Abstand
+            double stepSpacing = scaledWidth;
 
-        // Wir laufen ein Segment weiter über das Ziel hinaus, der Clip schneidet es sauber ab.
-        for (double d = 0; d <= distance + stepSpacing; d += stepSpacing) {
-            // Prozentualer Fortschritt auf der Linie
-            double t = d / distance;
+            for (double d = 0; d <= distance + stepSpacing; d += stepSpacing) {
+                double t = d / distance;
+                double x = from.x() + t * dx;
+                double y = from.y() + t * dy;
 
-            // Berechne die Weltkoordinate für das Teilstück
-            double x = from.x() + t * dx;
-            double y = from.y() + t * dy;
+                // FIX: Erstelle eine komplett leere/frische Transformation (Identitätsmatrix).
+                // Wir fügen hier KEINE 'originalTransform' mehr ein!
+                AffineTransform tx = new AffineTransform();
 
-            // Nutze die originale Engine-Matrix als Basis
-            AffineTransform tx = new AffineTransform(originalTransform);
+                // Schritt A: Zur Weltposition des Segments bewegen
+                tx.translate(x, y);
 
-            // Schritt A: Bewege das System an die Weltposition des aktuellen Segments
-            tx.translate(x, y);
+                // Schritt B: In Linienrichtung rotieren
+                tx.rotate(angle);
 
-            // Schritt B: Rotiere das Segment exakt in Richtung der Linie (nach rechts)
-            tx.rotate(angle);
+                // Schritt C: Skalierung anwenden
+                tx.scale(scale, scale);
 
-            // Schritt C: Skalierung anwenden
-            tx.scale(scale, scale);
+                // Schritt D: Zentrieren mit unskalierten Originalmaßen
+                tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
 
-            // Schritt D: Zentriere das Bild präzise (X- und Y-Achse mittig)
-            tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
-
-            graphics.setTransform(tx);
-            graphics.drawImage(image, 0, 0, null);
+                // FIX: Übergebe die Matrix direkt an drawImage.
+                // Java multipliziert 'tx' intern automatisch mit der bestehenden Engine-Transformation.
+                var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
+                drawSprite(sprite, shader, tx);//TODO reavel shader
+            }
+        } finally {
+            // 5. Stelle NUR den Originalclip wieder her.
+            // Die Transformation von g2d wurde zu keinem Zeitpunkt verändert!
+            graphics.setClip(originalClip);
         }
-        graphics.setTransform(originalTransform);
-        graphics.setClip(originalClip);
     }
 
     @Override
