@@ -210,13 +210,14 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawLine(final Offset from, final Offset to, final Sprite sprite, final SpriteLineDrawOptions options, final ScreenBounds clip) {
+        var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
         double dx = to.x() - from.x();
         double dy = to.y() - from.y();
         double distance = Math.sqrt(dx * dx + dy * dy);
 
-        Image image = sprite.image(Time.now());
-        int imgWidth = image.getWidth(null);
-        int imgHeight = image.getHeight(null);
+        var size = sprite.size();
+        int imgWidth = size.width();
+        int imgHeight = size.height();
 
         // 1. Skalierungsfaktor holen und skalierte Maße berechnen
         double scale = options.scale();
@@ -226,16 +227,6 @@ public class DefaultRenderer implements Renderer {
         // 2. Sichere den aktuellen Zustand des Clips
         Shape originalClip = graphics.getClip();
 
-        if (distance == 0) {
-            AffineTransform tx = new AffineTransform();
-            tx.translate(from.x(), from.y());
-            tx.scale(scale, scale);
-            tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
-
-            // Verwendet die Transformation direkt im drawImage-Aufruf
-            graphics.drawImage(image, tx, null);
-            return;
-        }
 //TODO apply clip
         double angle = Math.atan2(dy, dx);
 
@@ -275,7 +266,7 @@ public class DefaultRenderer implements Renderer {
 
                 // FIX: Übergebe die Matrix direkt an drawImage.
                 // Java multipliziert 'tx' intern automatisch mit der bestehenden Engine-Transformation.
-                var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
+
                 drawSprite(sprite, shader, tx);//TODO reavel shader
             }
             // 5. Stelle NUR den Originalclip wieder her.

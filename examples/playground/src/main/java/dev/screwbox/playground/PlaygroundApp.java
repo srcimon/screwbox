@@ -78,12 +78,11 @@ public class PlaygroundApp {
             .setSmokeCellPadding(64)
             .setBackgroundColor(Color.BLUE);
 
-        Sprite sprite = Sprite.animatedFromFile("laser.png", Size.square(16), Duration.ofMillis(150));
+        Sprite sprite = Sprite.fromFile("laser.png");
         screwBox.environment().addSystem(s -> {
             Vector delta = s.mouse().position().add(200, 100);
             var target = s.navigation().raycastFrom(s.mouse().position()).castingTo(delta).nearestHit().orElse(delta);
-            s.graphics().world().drawLine(s.mouse().position(), target, LineDrawOptions.color(Color.WHITE).strokeWidth(2));
-            s.graphics().world().drawLine(s.mouse().position(), target, sprite,  new SpriteLineDrawOptions(1, 0.5, null));
+            s.graphics().world().drawLine(s.mouse().position(), target, sprite,  new SpriteLineDrawOptions(1, 0.5, ShaderBundle.CONVEYOR.get()));
         });
         screwBox.graphics().light().setAmbientLight(Percent.of(0.5));
         screwBox.environment()
