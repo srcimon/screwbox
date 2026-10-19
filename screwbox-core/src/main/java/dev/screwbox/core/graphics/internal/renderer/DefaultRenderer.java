@@ -210,6 +210,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawLine(final Offset from, final Offset to, final Sprite sprite, final SpriteLineDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
         double dx = to.x() - from.x();
         double dy = to.y() - from.y();
@@ -225,7 +226,6 @@ public class DefaultRenderer implements Renderer {
         // 2. Sichere den aktuellen Zustand des Clips
         Shape originalClip = graphics.getClip();
 
-//TODO apply clip
         double angle = Math.atan2(dy, dx);
         AffineTransform localClipTransform = new AffineTransform();
         localClipTransform.translate(from.x(), from.y());
@@ -233,7 +233,6 @@ public class DefaultRenderer implements Renderer {
 
         Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
         Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
-
         graphics.clip(transformedClip);
 
         for (double d = 0; d <= distance + scaledWidth; d += scaledWidth) {
