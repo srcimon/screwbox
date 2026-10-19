@@ -11,6 +11,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
@@ -31,6 +32,8 @@ public interface Renderer {
     void drawRectangle(Offset offset, Size size, RectangleDrawOptions options, ScreenBounds clip);
 
     void drawLine(Offset from, Offset to, LineDrawOptions options, ScreenBounds clip);
+
+    void drawLine(Offset from, Offset to, Sprite sprite, SpriteLineDrawOptions options, ScreenBounds clip);
 
     void drawOval(Offset offset, int radiusX, int radiusY, OvalDrawOptions options, ScreenBounds clip);
 

@@ -19,6 +19,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
@@ -208,6 +209,64 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
+    public void drawLine(final Offset from, final Offset to, final Sprite sprite, final SpriteLineDrawOptions options, final ScreenBounds clip) {
+        double dx = to.x() - from.x();
+        double dy = to.y() - from.y();
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        Image image = sprite.image(Time.now());
+        int imgWidth = image.getWidth(null);
+        int imgHeight = image.getHeight(null);
+
+        if (distance == 0) {
+            graphics.drawImage(image, from.x() - imgWidth / 2, from.y() - imgHeight / 2, null);
+            return;
+        }
+//TODO apply clip
+        double angle = Math.atan2(dy, dx);
+
+        // 1. Sichere den aktuellen Zustand (Transformation & Clipping)
+        AffineTransform originalTransform = graphics.getTransform();
+        Shape originalClip = graphics.getClip();
+
+        try {
+            // 2. Erstelle ein Clip-Rechteck, das exakt am Zielpunkt B endet.
+            // Es startet bei (0, -imgHeight) und geht bis (distance, imgHeight * 2),
+            // bezogen auf das lokale, rotierte Koordinatensystem.
+            AffineTransform clipTransform = new AffineTransform();
+            clipTransform.translate(from.x(), from.y());
+            clipTransform.rotate(angle);
+
+            // Das unsichtbare Begrenzungsfenster entlang des Strahls
+            Rectangle2D clipRect = new Rectangle2D.Double(0, -imgHeight, distance, imgHeight * 2);
+            Shape transformedClip = clipTransform.createTransformedShape(clipRect);
+
+            // Clip auf den Grafikkontext anwenden (schneidet alles außerhalb ab)
+            graphics.clip(transformedClip);
+
+            // 3. Zeichne die Bilder entlang der Linie
+            int stepSpacing = 4;//TODO fix
+            for (double d = 0; d <= distance; d += stepSpacing) {
+                double t = d / distance;
+                int x = (int) (from.x() + t * dx);
+                int y = (int) (from.y() + t * dy);
+
+                AffineTransform tx = new AffineTransform();
+                tx.translate(x, y);
+                tx.rotate(angle);
+                tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
+
+                graphics.setTransform(tx);
+                graphics.drawImage(image, 0, 0, null);
+            }
+        } finally {
+            // 4. Stelle den Originalzustand absolut sicher wieder her
+            graphics.setTransform(originalTransform);
+            graphics.setClip(originalClip);
+        }
+    }
+
+    @Override
     public void drawOval(final Offset offset, final int radiusX, final int radiusY, final OvalDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         final int x = offset.x() - radiusX;
@@ -316,7 +375,7 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
         final var textBlock = new RichTextBlock(text, options);
-        for(final var glyph : textBlock.glyphs()) {
+        for (final var glyph : textBlock.glyphs()) {
             transform.setTransform(options.scale(), 0, 0, options.scale(), offset.add(glyph.offset()).x(), offset.add(glyph.offset()).y());
             final var shaderSetup = ShaderResolver.resolveShader(defaultShader, glyph.shader());
             final var shiftedShaderSetup = nonNull(shaderSetup)

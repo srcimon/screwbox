@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
@@ -37,6 +38,14 @@ public class DefaultWorld implements World {
     public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
             viewport.canvas().drawLine(viewport.toCanvas(from), viewport.toCanvas(to), options.strokeWidth((int) (options.strokeWidth() * viewport.camera().zoom())));
+        }
+        return this;
+    }
+
+    @Override
+    public World drawLine(final Vector from, final Vector to, final Sprite sprite, final SpriteLineDrawOptions options) {
+        for (final var viewport : viewportManager.viewports()) {
+            viewport.canvas().drawLine(viewport.toCanvas(from), viewport.toCanvas(to), sprite, options);//TODO update scale by zoom
         }
         return this;
     }

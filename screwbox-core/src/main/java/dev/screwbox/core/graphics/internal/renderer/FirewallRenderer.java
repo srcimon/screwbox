@@ -12,6 +12,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
@@ -80,6 +81,11 @@ public class FirewallRenderer implements Renderer {
         if (options.color().isVisible() && screenBounds.intersects(clip)) {
             next.drawLine(from, to, options, clip);
         }
+    }
+
+    @Override
+    public void drawLine(final Offset from, final Offset to, final Sprite sprite, final SpriteLineDrawOptions options, final ScreenBounds clip) {
+        next.drawLine(from, to, sprite, options, clip);//TODO add firewall rules
     }
 
     @Override

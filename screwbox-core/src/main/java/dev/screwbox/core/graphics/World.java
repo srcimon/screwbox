@@ -9,6 +9,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
@@ -81,6 +82,13 @@ public interface World {
      */
     default World drawLine(final Line line, final LineDrawOptions options) {
         return drawLine(line.start(), line.end(), options);
+    }
+
+    //TODO Document
+    World drawLine(Vector from, Vector to, Sprite sprite, SpriteLineDrawOptions options);
+
+    default World drawLine(final Line line, final Sprite sprite, final SpriteLineDrawOptions options) {
+        return drawLine(line.start(), line.end(), sprite, options);
     }
 
     /**
