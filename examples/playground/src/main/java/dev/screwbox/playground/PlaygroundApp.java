@@ -5,55 +5,52 @@ import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.ai.BoidComponent;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
+import dev.screwbox.core.environment.controls.JumpControlComponent;
+import dev.screwbox.core.environment.controls.LeftRightControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
-import dev.screwbox.core.environment.light.BackdropOccluderComponent;
-import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
-import dev.screwbox.core.environment.light.SpotLightComponent;
-import dev.screwbox.core.environment.physics.AttachmentComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
+import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.smoke.SmokeEmitterComponent;
-import dev.screwbox.core.environment.smoke.SmokeInteractionComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
-import dev.screwbox.core.environment.smoke.WindComponent;
-import dev.screwbox.core.environment.smoke.WindForceComponent;
-import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyBoundaryComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
+import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
 import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.light.ShadowOptions;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
-import dev.screwbox.core.graphics.smoke.SmokeOptions;
-import dev.screwbox.core.graphics.smoke.styles.HeatVisionSmokeStyle;
-import dev.screwbox.core.utils.ListUtil;
+import dev.screwbox.core.mouse.MouseButton;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 
 public class PlaygroundApp {
 
+    static List<Vector> vectors = new ArrayList<>();
     static Angle angle = Angle.degrees(50);
+
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
@@ -81,28 +78,48 @@ public class PlaygroundApp {
             .setSmokeCellSize(2)
             .setSmokeCellPadding(64)
             .setBackgroundColor(Color.BLUE);
-
+        screwBox.graphics().camera().setPosition(map.bounds().position());
+        Sprite sprite1 = Sprite.animatedFromFile("hairs.png", Size.of(64, 16), Duration.ofMillis(150));
         Sprite sprite = Sprite.fromFile("laser.png");
-        screwBox.environment().addSystem(s -> {
+        screwBox.environment().addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
+        screwBox.environment().addSystem(Order.PRESENTATION_FOREGROUND, s -> {
+            s.environment().fetchAll(Archetype.ofSpacial(SoftBodyComponent.class)).forEach(body -> {
+                body.get(SoftBodyComponent.class).shape.segments().forEach(segment -> {
+
+                    s.graphics().world().drawLine(segment, sprite1, new SpriteLineDrawOptions(1,0.5, null));
+                });
+            });
+            if (s.mouse().isPressedLeft()) {
+                vectors.add(s.mouse().position());
+            }
+            if (s.mouse().isPressedRight()) {
+                var body = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(vectors), s.environment());
+                body.root().add(new SoftBodyRenderComponent(Color.BLACK), b -> b.rounded = false)
+                    .add(new SoftBodyCollisionComponent())
+                    .add(new SoftBodyOccluderComponent(ShadowOptions.rounded()))
+                    .add(new SoftBodyShapeComponent())
+                    .add(new SoftBodyBoundaryComponent());
+                body.forEach(b -> b.get(PhysicsComponent.class).friction = 1);
+                body.forEach(b -> b.add(new JumpControlComponent()));
+                body.forEach(b -> b.add(new LeftRightControlComponent()));
+                s.environment().addEntities(body);
+                vectors.clear();
+            }
             angle = angle.addDegrees(s.loop().delta() * 40);
             Vector delta = angle.rotateAroundCenter(s.mouse().position(), Line.normal(s.mouse().position(), 200).end());
             var target = s.navigation().raycastFrom(s.mouse().position()).castingTo(delta).nearestHit().orElse(delta);
-            s.graphics().world().drawLine(s.mouse().position(), target, sprite,  new SpriteLineDrawOptions(1, 1, ShaderBundle.CONVEYOR.get()));
+            s.graphics().world().drawLine(s.mouse().position(), target, sprite, new SpriteLineDrawOptions(1, 1, ShaderBundle.CONVEYOR.get()));
         });
         screwBox.graphics().light().setAmbientLight(Percent.of(0.5));
         screwBox.environment()
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystem(e -> {
-                if(e.mouse().isDownLeft()) {
+                if (e.mouse().isDown(MouseButton.MIDDLE)) {
                     e.graphics().camera().move(e.mouse().drag());
                 }
                 e.graphics().camera().changeZoomBy(e.mouse().unitsScrolled() / -20.0);
             })
-            .addEntity(new Entity().add(new CameraTargetComponent(), s -> {
-                s.maxSpeed = 0;
-                s.allowTeleport=true;
-            }).bounds(map.bounds()))
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', source -> new Entity()
                     .bounds(source.bounds())
