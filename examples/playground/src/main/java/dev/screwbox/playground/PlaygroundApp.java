@@ -42,6 +42,7 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -88,6 +89,7 @@ public class PlaygroundApp {
         screwBox.graphics().camera().setPosition(map.bounds().position());
         Sprite hairs = Sprite.animatedFromFile("hairs.png", Size.of(64, 16), Duration.ofMillis(150));
         Sprite sprite = Sprite.fromFile("laser.png");
+        screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         screwBox.environment().addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
         screwBox.environment().addSystem(Order.PRESENTATION_FOREGROUND, s -> {
             s.environment().fetchAll(Archetype.ofSpacial(SoftBodyComponent.class)).forEach(body -> {
@@ -136,9 +138,9 @@ public class PlaygroundApp {
             .addSystem(new LogFpsSystem())
             .addSystem(e -> {
                 if (e.mouse().isDown(MouseButton.MIDDLE)) {
-                    e.graphics().camera().move(e.mouse().drag());
+                    e.graphics().viewportAt(e.mouse().offset()).camera().move(e.mouse().drag());
                 }
-                e.graphics().camera().changeZoomBy(e.mouse().unitsScrolled() / -20.0);
+                e.graphics().viewportAt(e.mouse().offset()).camera().changeZoomBy(e.mouse().unitsScrolled() / -20.0);
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', source -> new Entity()
