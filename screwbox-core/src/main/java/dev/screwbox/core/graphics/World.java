@@ -84,6 +84,7 @@ public interface World {
         return drawLine(line.start(), line.end(), options);
     }
 
+    //TODO add supplier methods
     //TODO Document
     World drawLine(Vector from, Vector to, Sprite sprite, SpriteLineDrawOptions options);
 

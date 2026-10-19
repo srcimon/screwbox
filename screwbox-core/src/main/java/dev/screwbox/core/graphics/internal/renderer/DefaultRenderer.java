@@ -217,7 +217,6 @@ public class DefaultRenderer implements Renderer {
         Image image = sprite.image(Time.now());
         int imgWidth = image.getWidth(null);
         int imgHeight = image.getHeight(null);
-
         if (distance == 0) {
             graphics.drawImage(image, from.x() - imgWidth / 2, from.y() - imgHeight / 2, null);
             return;
@@ -245,12 +244,11 @@ public class DefaultRenderer implements Renderer {
             graphics.clip(transformedClip);
 
             // 3. Zeichne die Bilder entlang der Linie
-            int stepSpacing = 4;//TODO fix
+            int stepSpacing = image.getWidth(null);//TODO fix
             for (double d = 0; d <= distance; d += stepSpacing) {
                 double t = d / distance;
                 int x = (int) (from.x() + t * dx);
                 int y = (int) (from.y() + t * dy);
-
                 AffineTransform tx = new AffineTransform();
                 tx.translate(x, y);
                 tx.rotate(angle);
