@@ -87,8 +87,6 @@ public class PlaygroundApp {
             .setBackgroundColor(Color.BLUE);
         screwBox.graphics().camera().setPosition(map.bounds().position());
         Sprite hairs = Sprite.animatedFromFile("hairs.png", Size.of(64, 16), Duration.ofMillis(150));
-        Sprite hairs2 = Sprite.animatedFromFile("hairs2.png", Size.of(64, 16), Duration.ofMillis(150));
-        Sprite eyes = Sprite.fromFile("eyes.png");
         Sprite sprite = Sprite.fromFile("laser.png");
         screwBox.environment().addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
         screwBox.environment().addSystem(Order.PRESENTATION_FOREGROUND, s -> {
@@ -98,13 +96,6 @@ public class PlaygroundApp {
                     s.graphics().world().drawLine(segment, hairs, new SpriteLineDrawOptions(1,0.5, null));
                 });
 
-                s.graphics().world().drawSprite(eyes, body.get(SoftBodyComponent.class).shape.center().add(eyes.size().width()*-0.5, eyes.size().height()*-0.5), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.IRIS_SHOT.get().ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(4))));
-            });
-            s.environment().fetchAll(Archetype.ofSpacial(RopeComponent.class)).forEach(body -> {
-                body.get(RopeComponent.class).shape.segments().forEach(segment -> {
-
-                    s.graphics().world().drawLine(segment, hairs2, new SpriteLineDrawOptions(1,0.5, null));
-                });
             });
             if (s.mouse().isPressedLeft()) {
                 vectors.add(s.mouse().position());
