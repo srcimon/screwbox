@@ -239,7 +239,6 @@ public class DefaultRenderer implements Renderer {
 //TODO apply clip
         double angle = Math.atan2(dy, dx);
 
-        try {
             // 3. Erstelle das Clip-Rechteck
             AffineTransform localClipTransform = new AffineTransform();
             localClipTransform.translate(from.x(), from.y());
@@ -279,11 +278,9 @@ public class DefaultRenderer implements Renderer {
                 var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
                 drawSprite(sprite, shader, tx);//TODO reavel shader
             }
-        } finally {
             // 5. Stelle NUR den Originalclip wieder her.
             // Die Transformation von g2d wurde zu keinem Zeitpunkt verändert!
             graphics.setClip(originalClip);
-        }
     }
 
     @Override
