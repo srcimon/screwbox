@@ -1,7 +1,9 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
@@ -43,6 +45,7 @@ import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.graphics.smoke.styles.HeatVisionSmokeStyle;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.TileMap;
 
 import java.util.ArrayList;
@@ -50,6 +53,7 @@ import java.util.Random;
 
 public class PlaygroundApp {
 
+    static Angle angle = Angle.degrees(50);
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
@@ -80,7 +84,8 @@ public class PlaygroundApp {
 
         Sprite sprite = Sprite.fromFile("laser.png");
         screwBox.environment().addSystem(s -> {
-            Vector delta = s.mouse().position().add(200, 100);
+            angle = angle.addDegrees(s.loop().delta() * 40);
+            Vector delta = angle.rotateAroundCenter(s.mouse().position(), Line.normal(s.mouse().position(), 200).end());
             var target = s.navigation().raycastFrom(s.mouse().position()).castingTo(delta).nearestHit().orElse(delta);
             s.graphics().world().drawLine(s.mouse().position(), target, sprite,  new SpriteLineDrawOptions(1, 1, ShaderBundle.CONVEYOR.get()));
         });
