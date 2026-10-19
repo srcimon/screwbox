@@ -223,54 +223,70 @@ public class DefaultRenderer implements Renderer {
         double scaledWidth = imgWidth * scale;
         double scaledHeight = imgHeight * scale;
 
+        // 2. Sichere den aktuellen Zustand (Transformation & Clipping)
+        AffineTransform originalTransform = graphics.getTransform();
+        Shape originalClip = graphics.getClip();
+
         if (distance == 0) {
-            // Auch im Fall von distance == 0 die Skalierung beachten
-            graphics.drawImage(image, (int) (from.x() - scaledWidth / 2), (int) (from.y() - scaledHeight / 2), null);
+            AffineTransform tx = new AffineTransform(originalTransform);
+            tx.translate(from.x(), from.y());
+            tx.scale(scale, scale);
+            tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
+            graphics.setTransform(tx);
+            graphics.drawImage(image, 0, 0, null);
+            graphics.setTransform(originalTransform);
             return;
         }
 //TODO apply clip
         double angle = Math.atan2(dy, dx);
 
-        // 2. Sichere den aktuellen Zustand (Transformation & Clipping)
-        AffineTransform originalTransform = graphics.getTransform();
-        Shape originalClip = graphics.getClip();
-
         try {
-            // 3. Erstelle ein Clip-Rechteck, das exakt am Zielpunkt B endet.
-            AffineTransform clipTransform = new AffineTransform();
-            clipTransform.translate(from.x(), from.y());
-            clipTransform.rotate(angle);
+            // 3. FIX für das Clipping-Problem:
+            // Wir erstellen das Clip-Rechteck REIN im lokalen Raum des Lasers (ohne originalTransform!).
+            // Java wendet die globale originalTransform beim Aufruf von g2d.clip() automatisch an.
+            AffineTransform localClipTransform = new AffineTransform();
+            localClipTransform.translate(from.x(), from.y());
+            localClipTransform.rotate(angle);
 
-            // Das Begrenzungsfenster nutzt hier die skalierte Höhe
+            // Das Begrenzungsfenster startet bei 0 (from) und geht exakt bis 'distance' (to)
             Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
-            Shape transformedClip = clipTransform.createTransformedShape(clipRect);
+            Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
 
-            // Clip auf den Grafikkontext anwenden (schneidet alles außerhalb ab)
+            // Jetzt schneidet Java exakt am echten Punkt B ab, egal wo die Kamera steht
             graphics.clip(transformedClip);
 
             // 4. Zeichne die Bilder entlang der Linie mit skaliertem Abstand
             double stepSpacing = scaledWidth;
-            for (double d = 0; d <= distance; d += stepSpacing) {
-                double t = d / distance;
-                int x = (int) (from.x() + t * dx);
-                int y = (int) (from.y() + t * dy);
 
-                AffineTransform tx = new AffineTransform();
-                // Schritt A: Zur Zielposition bewegen
+            // Wir laufen ein Segment weiter über das Ziel hinaus, der Clip schneidet es sauber ab.
+            for (double d = 0; d <= distance + stepSpacing; d += stepSpacing) {
+                // Prozentualer Fortschritt auf der Linie
+                double t = d / distance;
+
+                // Berechne die Weltkoordinate für das Teilstück
+                double x = from.x() + t * dx;
+                double y = from.y() + t * dy;
+
+                // Nutze die originale Engine-Matrix als Basis
+                AffineTransform tx = new AffineTransform(originalTransform);
+
+                // Schritt A: Bewege das System an die Weltposition des aktuellen Segments
                 tx.translate(x, y);
-                // Schritt B: In Linienrichtung rotieren
+
+                // Schritt B: Rotiere das Segment exakt in Richtung der Linie (nach rechts)
                 tx.rotate(angle);
+
                 // Schritt C: Skalierung anwenden
                 tx.scale(scale, scale);
-                // Schritt D: Zentrieren mit unskalierten Originalmaßen!
-                // (tx.scale beeinflusst alle nachfolgenden Operationen, daher hier unskaliert)
+
+                // Schritt D: Zentriere das Bild präzise (X- und Y-Achse mittig)
                 tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
 
                 graphics.setTransform(tx);
                 graphics.drawImage(image, 0, 0, null);
             }
         } finally {
-            // 5. Stelle den Originalzustand absolut sicher wieder her
+            // 5. Stelle den Originalzustand des Grafikkontexts wieder her
             graphics.setTransform(originalTransform);
             graphics.setClip(originalClip);
         }

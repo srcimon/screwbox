@@ -66,7 +66,7 @@ public class PlaygroundApp {
             ############################
             """);
 
-        screwBox.graphics().camera().setZoomRestriction(3, 10).setZoom(3);
+        screwBox.graphics().camera().setZoomRestriction(1, 10).setZoom(1);
         screwBox.graphics().configuration()
             .setIndirectLightRaySpacing(0.5)
             .setLightQuality(Percent.of(0.4))
@@ -75,11 +75,12 @@ public class PlaygroundApp {
             .setSmokeCellPadding(64)
             .setBackgroundColor(Color.BLUE);
 
+        Sprite sprite = Sprite.fromFile("laser.png");
         screwBox.environment().addSystem(s -> {
             Vector delta = s.mouse().position().add(200, 100);
             var target = s.navigation().raycastFrom(s.mouse().position()).castingTo(delta).nearestHit().orElse(delta);
             s.graphics().world().drawLine(s.mouse().position(), target, LineDrawOptions.color(Color.WHITE).strokeWidth(2));
-            s.graphics().world().drawLine(s.mouse().position(), target, SpriteBundle.BOX.get(), new SpriteLineDrawOptions(1, 1));
+            s.graphics().world().drawLine(s.mouse().position(), target, sprite,  new SpriteLineDrawOptions(1, 0.5));
         });
         screwBox.graphics().light().setAmbientLight(Percent.of(0.5));
         screwBox.environment()
