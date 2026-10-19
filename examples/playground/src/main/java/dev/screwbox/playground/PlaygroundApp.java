@@ -2,12 +2,14 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
+import dev.screwbox.core.Ease;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.audio.Voice;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
@@ -19,6 +21,7 @@ import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
+import dev.screwbox.core.environment.physics.AttachmentComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
@@ -26,6 +29,8 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
+import dev.screwbox.core.environment.softphysics.RopeComponent;
+import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyBoundaryComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
@@ -39,7 +44,9 @@ import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.light.ShadowOptions;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
+import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.mouse.MouseButton;
 import dev.screwbox.core.utils.TileMap;
 
@@ -79,21 +86,35 @@ public class PlaygroundApp {
             .setSmokeCellPadding(64)
             .setBackgroundColor(Color.BLUE);
         screwBox.graphics().camera().setPosition(map.bounds().position());
-        Sprite sprite1 = Sprite.animatedFromFile("hairs.png", Size.of(64, 16), Duration.ofMillis(150));
+        Sprite hairs = Sprite.animatedFromFile("hairs.png", Size.of(64, 16), Duration.ofMillis(150));
+        Sprite hairs2 = Sprite.animatedFromFile("hairs2.png", Size.of(64, 16), Duration.ofMillis(150));
+        Sprite eyes = Sprite.fromFile("eyes.png");
         Sprite sprite = Sprite.fromFile("laser.png");
         screwBox.environment().addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
         screwBox.environment().addSystem(Order.PRESENTATION_FOREGROUND, s -> {
             s.environment().fetchAll(Archetype.ofSpacial(SoftBodyComponent.class)).forEach(body -> {
                 body.get(SoftBodyComponent.class).shape.segments().forEach(segment -> {
 
-                    s.graphics().world().drawLine(segment, sprite1, new SpriteLineDrawOptions(1,0.5, null));
+                    s.graphics().world().drawLine(segment, hairs, new SpriteLineDrawOptions(1,0.5, null));
+                });
+
+                s.graphics().world().drawSprite(eyes, body.get(SoftBodyComponent.class).shape.center().add(eyes.size().width()*-0.5, eyes.size().height()*-0.5), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.IRIS_SHOT.get().ease(Ease.SINE_IN_OUT).duration(Duration.ofSeconds(4))));
+            });
+            s.environment().fetchAll(Archetype.ofSpacial(RopeComponent.class)).forEach(body -> {
+                body.get(RopeComponent.class).shape.segments().forEach(segment -> {
+
+                    s.graphics().world().drawLine(segment, hairs2, new SpriteLineDrawOptions(1,0.5, null));
                 });
             });
             if (s.mouse().isPressedLeft()) {
                 vectors.add(s.mouse().position());
             }
+            if(s.keyboard().isPressed(Key.SPACE)) {
+                s.audio().playMumble("jum", Voice.variable().waveType(Voice.WaveType.TRIANGLE));
+            }
             if (s.mouse().isPressedRight()) {
                 var body = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(vectors), s.environment());
+                s.environment().addEntities(body);
                 body.root().add(new SoftBodyRenderComponent(Color.BLACK), b -> b.rounded = false)
                     .add(new SoftBodyCollisionComponent())
                     .add(new SoftBodyOccluderComponent(ShadowOptions.rounded()))
@@ -102,7 +123,15 @@ public class PlaygroundApp {
                 body.forEach(b -> b.get(PhysicsComponent.class).friction = 1);
                 body.forEach(b -> b.add(new JumpControlComponent()));
                 body.forEach(b -> b.add(new LeftRightControlComponent()));
-                s.environment().addEntities(body);
+                var collectd = new ArrayList<Entity>();
+                body.forEach(node -> {
+                    var arm = SoftPhysicsSupport.createRope(node.position(), node.position().addX(20), 4, s.environment());
+                    arm.root().add(new AttachmentComponent(node.forceId()));
+                    arm.forEach(e -> e.get(PhysicsComponent.class).friction = 1.0);
+                    collectd.addAll(arm);
+                });
+
+                s.environment().addEntities(collectd);
                 vectors.clear();
             }
             angle = angle.addDegrees(s.loop().delta() * 40);
