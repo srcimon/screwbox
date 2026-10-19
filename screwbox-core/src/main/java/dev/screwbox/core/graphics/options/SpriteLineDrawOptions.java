@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.options;
 
 import dev.screwbox.core.graphics.ShaderSetup;
 
+//TODO rename to SpriteStrokeDrawOptions
 //TODO finish up
 public record SpriteLineDrawOptions(int drawOrder, double scale, ShaderSetup shader) {//TODO shader
     //TODO scale
