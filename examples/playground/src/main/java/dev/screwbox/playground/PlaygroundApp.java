@@ -45,6 +45,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.light.ShadowOptions;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
 import dev.screwbox.core.keyboard.Key;
@@ -96,6 +97,7 @@ public class PlaygroundApp {
                 body.get(SoftBodyComponent.class).shape.segments().forEach(segment -> {
 
                     s.graphics().world().drawLine(segment, hairs, new SpriteLineDrawOptions(1,0.5, null));
+
                 });
 
             });

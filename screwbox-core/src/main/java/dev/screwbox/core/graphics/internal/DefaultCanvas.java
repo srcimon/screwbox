@@ -73,7 +73,7 @@ public class DefaultCanvas implements Canvas {
 
     @Override
     public Canvas drawLine(final Offset from, final Offset to, final Sprite sprite, final SpriteLineDrawOptions options) {
-        renderer.drawLine(from, to, sprite, options, clip);
+        renderer.drawLine(from.add(offset), to.add(offset), sprite, options, clip);
         return this;
     }
 
