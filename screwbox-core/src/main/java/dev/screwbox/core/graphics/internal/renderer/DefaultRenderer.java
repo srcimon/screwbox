@@ -214,7 +214,7 @@ public class DefaultRenderer implements Renderer {
         double dx = to.x() - from.x();
         double dy = to.y() - from.y();
         double distance = Math.sqrt(dx * dx + dy * dy);
-
+//TODO use original clip
         var size = sprite.size();
         int imgWidth = size.width();
         int imgHeight = size.height();
