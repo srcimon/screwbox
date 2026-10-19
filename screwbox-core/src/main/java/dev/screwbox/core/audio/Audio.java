@@ -91,21 +91,21 @@ public interface Audio {
     }
 
     /**
-     * Plays a synthesized chatter to voice NPCs. Chatter will start asynchronously because generation can take some time.
+     * Plays a synthesized mumble to voice NPCs. Mumble will start asynchronously because generation can take some time.
      *
-     * @see Synthesizer#generateChatter(String, Voice)
+     * @see Synthesizer#generateMumble(String, Voice)
      * @since 3.37.0
      */
-    Playback playChatter(String text, Voice voice, SoundOptions options);
+    Playback playMumble(String text, Voice voice, SoundOptions options);
 
     /**
-     * Plays a synthesized chatter to voice NPCs. Chatter will start asynchronously because generation can take some time.
+     * Plays a synthesized mumble to voice NPCs. Mumble will start asynchronously because generation can take some time.
      *
-     * @see Synthesizer#generateChatter(String, Voice)
+     * @see Synthesizer#generateMumble(String, Voice)
      * @since 3.37.0
      */
-    default Playback playChatter(final String text, final Voice voice) {
-        return playChatter(text, voice, playOnce());
+    default Playback playMumble(final String text, final Voice voice) {
+        return playMumble(text, voice, playOnce());
     }
 
     /**

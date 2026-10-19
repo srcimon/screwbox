@@ -7,57 +7,57 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SynthesizerTest {
 
     @Test
-    void generateChatter_sameTextAndPinnedSeed_isIdentical() {
-        var firstChatter = Synthesizer.generateChatter("test", Voice.fixed(121239L));
-        var secondChatter = Synthesizer.generateChatter("test", Voice.fixed(121239L));
+    void generateMumble_sameTextAndPinnedSeed_isIdentical() {
+        var firstMumble = Synthesizer.generateMumble("test", Voice.fixed(121239L));
+        var secondMumbe = Synthesizer.generateMumble("test", Voice.fixed(121239L));
 
-        assertThat(firstChatter.content()).isEqualTo(secondChatter.content());
-        assertThat(firstChatter.duration()).isEqualTo(secondChatter.duration());
+        assertThat(firstMumble.content()).isEqualTo(secondMumbe.content());
+        assertThat(firstMumble.duration()).isEqualTo(secondMumbe.duration());
     }
 
     @Test
-    void generateChatter_longerTextSameSeed_isLonger() {
-        var firstChatter = Synthesizer.generateChatter("test", Voice.fixed(121239L));
-        var secondChatter = Synthesizer.generateChatter("tetstst", Voice.fixed(121239L));
+    void generateMumble_longerTextSameSeed_isLonger() {
+        var firstMumble = Synthesizer.generateMumble("test", Voice.fixed(121239L));
+        var secondMumbe = Synthesizer.generateMumble("tetstst", Voice.fixed(121239L));
 
-        assertThat(firstChatter.content()).isNotEqualTo(secondChatter.content());
-        assertThat(firstChatter.duration().isLessThan(secondChatter.duration())).isTrue();
+        assertThat(firstMumble.content()).isNotEqualTo(secondMumbe.content());
+        assertThat(firstMumble.duration().isLessThan(secondMumbe.duration())).isTrue();
     }
 
     @Test
-    void generateChatter_differentSeeds_areDifferent() {
-        var firstChatter = Synthesizer.generateChatter("test", Voice.fixed(123L));
-        var secondChatter = Synthesizer.generateChatter("test", Voice.fixed(121239L));
+    void generateMumble_differentSeeds_areDifferent() {
+        var firstMumble = Synthesizer.generateMumble("test", Voice.fixed(123L));
+        var secondMumbe = Synthesizer.generateMumble("test", Voice.fixed(121239L));
 
-        assertThat(firstChatter.content()).isNotEqualTo(secondChatter.content());
-        assertThat(firstChatter.duration()).isNotEqualTo(secondChatter.duration());
+        assertThat(firstMumble.content()).isNotEqualTo(secondMumbe.content());
+        assertThat(firstMumble.duration()).isNotEqualTo(secondMumbe.duration());
     }
 
     @Test
-    void generateChatter_fixedSeedAndText_isIdentical() {
+    void generateMumble_fixedSeedAndText_isIdentical() {
         Voice fixed = Voice.fixed();
-        var firstChatter = Synthesizer.generateChatter("test", fixed);
-        var secondChatter = Synthesizer.generateChatter("test", fixed);
+        var firstMumble = Synthesizer.generateMumble("test", fixed);
+        var secondMumbe = Synthesizer.generateMumble("test", fixed);
 
-        assertThat(firstChatter.content()).isEqualTo(secondChatter.content());
-        assertThat(firstChatter.duration()).isEqualTo(secondChatter.duration());
+        assertThat(firstMumble.content()).isEqualTo(secondMumbe.content());
+        assertThat(firstMumble.duration()).isEqualTo(secondMumbe.duration());
     }
 
     @Test
-    void generateChatter_sameTextVariableSeed_isDifferent() {
+    void generateMumble_sameTextVariableSeed_isDifferent() {
         Voice variable = Voice.variable();
-        var firstChatter = Synthesizer.generateChatter("test", variable);
-        var secondChatter = Synthesizer.generateChatter("test", variable);
+        var firstMumble = Synthesizer.generateMumble("test", variable);
+        var secondMumbe = Synthesizer.generateMumble("test", variable);
 
-        assertThat(firstChatter.content()).isNotEqualTo(secondChatter.content());
+        assertThat(firstMumble.content()).isNotEqualTo(secondMumbe.content());
     }
 
     @Test
-    void generateChatter_complexText_hasValidOutput() {
+    void generateMumble_complexText_hasValidOutput() {
         String text = "This is a much more complex, yet still not too complex Demo text containing all german umlauts (ä, ö and ü)! And it has multple sentences.";
-        var chatter = Synthesizer.generateChatter(text, Voice.fixed(1230L));
+        var mumble = Synthesizer.generateMumble(text, Voice.fixed(1230L));
 
-        assertThat(chatter.content()).isNotNull();
-        assertThat(chatter.duration().milliseconds()).isGreaterThan(2000);
+        assertThat(mumble.content()).isNotNull();
+        assertThat(mumble.duration().milliseconds()).isGreaterThan(2000);
     }
 }

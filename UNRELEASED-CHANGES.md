@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed chatter to mumble (#1113)
 
 ### 📦 Dependency updates
 

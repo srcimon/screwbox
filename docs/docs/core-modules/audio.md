@@ -88,19 +88,19 @@ The `AudioConfiguration` can be used to change music and effect volumes and the 
 
 To link a continuous playback to an entity add a `SoundComponent` to that entity.
 
-## NPC chatter
+## NPC mumble
 
-Use the `Synthesizer` class to create chatter sounds used to voice NPC characters.
+Use the `Synthesizer` class to create mumble speech used to voice NPC characters.
 This process can take some time and can cause stuttering when used within the game loop.
-To avoid stuttering create chatter upfront using assets or use the `Audio` subsystem which will spawn chatter creation in another thread.
-The chatter can be customized to some extend by configuring the countless properties of the `Voice`.
+To avoid stuttering create mumble upfront using assets or use the `Audio` subsystem which will spawn mumble creation in another thread.
+The mumble can be customized to some extend by configuring the countless properties of the `Voice`.
 
-NPC chatter can enhance the feel of in game text quite nicely.
-The chatter can never be understand and is not intended to replace actual voice acting.
+NPC mumble can enhance the feel of in game text quite nicely.
+The mumble can never be understand and is not intended to replace actual voice acting.
 But it's quite low budget.
 
 ``` java
-engine.audio().playChatter("This is a test.", Voice.variable()
+engine.audio().playMumble("This is a test.", Voice.variable()
     .baseFrequency(450)
     .pitchRandomness(Percent.of(0.1))
     .vibratoDepth(Percent.of(0.5))

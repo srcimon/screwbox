@@ -141,13 +141,13 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public Playback playChatter(final String text, final Voice voice, final SoundOptions options) {
+    public Playback playMumble(final String text, final Voice voice, final SoundOptions options) {
         requireNonNull(text, "text must not be null");
         requireNonNull(voice, "voice must not be null");
         final var unstartedPlayback = new ActivePlayback(null, options);
         activePlaybacks.put(unstartedPlayback.id(), unstartedPlayback);
         executor.execute(() -> {
-            final var sound = Synthesizer.generateChatter(text, voice);
+            final var sound = Synthesizer.generateMumble(text, voice);
             final var activePlayback = new ActivePlayback(unstartedPlayback.id(), sound, options);
             activePlaybacks.put(activePlayback.id(), activePlayback);
             play(activePlayback);

@@ -238,24 +238,24 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playChatter_textIsNull_throwsException() {
+    void playMumble_textIsNull_throwsException() {
         var voice = Voice.variable();
 
-        assertThatThrownBy(() -> audio.playChatter(null, voice))
+        assertThatThrownBy(() -> audio.playMumble(null, voice))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("text must not be null");
     }
 
     @Test
-    void playChatter_voiceIsNull_throwsException() {
-        assertThatThrownBy(() -> audio.playChatter("text123", null))
+    void playMumble_voiceIsNull_throwsException() {
+        assertThatThrownBy(() -> audio.playMumble("text123", null))
             .isInstanceOf(NullPointerException.class)
             .hasMessage("voice must not be null");
     }
 
     @Test
-    void playChatter_someTextWithVariableVoice_startsPlayback() {
-        var playback = audio.playChatter("Demo text", Voice.variable());
+    void playMumble_someTextWithVariableVoice_startsPlayback() {
+        var playback = audio.playMumble("Demo text", Voice.variable());
 
         assertThat(audio.isPlaybackActive(playback)).isTrue();
     }

@@ -12,7 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Can synthesize mumbled chatter to give NPCs a voice.
+ * Can synthesize mumbled mumble to give NPCs a voice.
  *
  * @since 3.37.0
  */
@@ -27,9 +27,9 @@ public class Synthesizer {
 
     /**
      * Synthesize a {@link Sound} from specified text and {@link Voice}. Synthesizing will take 1 to 100 ms based on
-     * the system. It's recommended to use {@link Audio#playChatter(String, Voice)} to avoid stuttering.
+     * the system. It's recommended to use {@link Audio#playMumble(String, Voice)} to avoid stuttering.
      */
-    public static Sound generateChatter(final String text, final Voice voice) {
+    public static Sound generateMumble(final String text, final Voice voice) {
         final char[] sanitizedCharacters = text.toUpperCase().toCharArray();
         final var context = new SynthContext(voice);
         try (final var byteArrayOutputStream = new ByteArrayOutputStream(8192);

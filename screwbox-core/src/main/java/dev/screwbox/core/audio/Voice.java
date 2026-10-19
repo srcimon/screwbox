@@ -8,7 +8,7 @@ import dev.screwbox.core.utils.Validate;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Configures a voice used by {@link Synthesizer} and {@link Audio#playChatter(String, Voice)}.
+ * Configures a voice used by {@link Synthesizer} and {@link Audio#playMumble(String, Voice)}.
  *
  * @param baseFrequency    The fundamental frequency of the voice in Hz.
  * @param baseBlipDuration The duration of an individual sound blip.
