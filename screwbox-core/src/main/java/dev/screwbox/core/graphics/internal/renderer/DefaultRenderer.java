@@ -229,8 +229,6 @@ public class DefaultRenderer implements Renderer {
 
 //TODO apply clip
         double angle = Math.atan2(dy, dx);
-
-            // 3. Erstelle das Clip-Rechteck
             AffineTransform localClipTransform = new AffineTransform();
             localClipTransform.translate(from.x(), from.y());
             localClipTransform.rotate(angle);
@@ -240,37 +238,19 @@ public class DefaultRenderer implements Renderer {
 
             graphics.clip(transformedClip);
 
-            // 4. Zeichne die Bilder entlang der Linie mit skaliertem Abstand
             double stepSpacing = scaledWidth;
 
             for (double d = 0; d <= distance + stepSpacing; d += stepSpacing) {
                 double t = d / distance;
                 double x = from.x() + t * dx;
                 double y = from.y() + t * dy;
-
-                // FIX: Erstelle eine komplett leere/frische Transformation (Identitätsmatrix).
-                // Wir fügen hier KEINE 'originalTransform' mehr ein!
                 AffineTransform tx = new AffineTransform();
-
-                // Schritt A: Zur Weltposition des Segments bewegen
                 tx.translate(x, y);
-
-                // Schritt B: In Linienrichtung rotieren
                 tx.rotate(angle);
-
-                // Schritt C: Skalierung anwenden
                 tx.scale(scale, scale);
-
-                // Schritt D: Zentrieren mit unskalierten Originalmaßen
                 tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
-
-                // FIX: Übergebe die Matrix direkt an drawImage.
-                // Java multipliziert 'tx' intern automatisch mit der bestehenden Engine-Transformation.
-
-                drawSprite(sprite, shader, tx);//TODO reavel shader
+                drawSprite(sprite, shader, tx);
             }
-            // 5. Stelle NUR den Originalclip wieder her.
-            // Die Transformation von g2d wurde zu keinem Zeitpunkt verändert!
             graphics.setClip(originalClip);
     }
 
