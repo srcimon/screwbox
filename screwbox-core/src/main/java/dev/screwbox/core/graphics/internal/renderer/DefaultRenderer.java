@@ -240,56 +240,49 @@ public class DefaultRenderer implements Renderer {
 //TODO apply clip
         double angle = Math.atan2(dy, dx);
 
-        try {
-            // 3. FIX für das Clipping-Problem:
-            // Wir erstellen das Clip-Rechteck REIN im lokalen Raum des Lasers (ohne originalTransform!).
-            // Java wendet die globale originalTransform beim Aufruf von g2d.clip() automatisch an.
-            AffineTransform localClipTransform = new AffineTransform();
-            localClipTransform.translate(from.x(), from.y());
-            localClipTransform.rotate(angle);
+        AffineTransform localClipTransform = new AffineTransform();
+        localClipTransform.translate(from.x(), from.y());
+        localClipTransform.rotate(angle);
 
-            // Das Begrenzungsfenster startet bei 0 (from) und geht exakt bis 'distance' (to)
-            Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
-            Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
+        // Das Begrenzungsfenster startet bei 0 (from) und geht exakt bis 'distance' (to)
+        Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
+        Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
 
-            // Jetzt schneidet Java exakt am echten Punkt B ab, egal wo die Kamera steht
-            graphics.clip(transformedClip);
+        // Jetzt schneidet Java exakt am echten Punkt B ab, egal wo die Kamera steht
+        graphics.clip(transformedClip);
 
-            // 4. Zeichne die Bilder entlang der Linie mit skaliertem Abstand
-            double stepSpacing = scaledWidth;
+        // 4. Zeichne die Bilder entlang der Linie mit skaliertem Abstand
+        double stepSpacing = scaledWidth;
 
-            // Wir laufen ein Segment weiter über das Ziel hinaus, der Clip schneidet es sauber ab.
-            for (double d = 0; d <= distance + stepSpacing; d += stepSpacing) {
-                // Prozentualer Fortschritt auf der Linie
-                double t = d / distance;
+        // Wir laufen ein Segment weiter über das Ziel hinaus, der Clip schneidet es sauber ab.
+        for (double d = 0; d <= distance + stepSpacing; d += stepSpacing) {
+            // Prozentualer Fortschritt auf der Linie
+            double t = d / distance;
 
-                // Berechne die Weltkoordinate für das Teilstück
-                double x = from.x() + t * dx;
-                double y = from.y() + t * dy;
+            // Berechne die Weltkoordinate für das Teilstück
+            double x = from.x() + t * dx;
+            double y = from.y() + t * dy;
 
-                // Nutze die originale Engine-Matrix als Basis
-                AffineTransform tx = new AffineTransform(originalTransform);
+            // Nutze die originale Engine-Matrix als Basis
+            AffineTransform tx = new AffineTransform(originalTransform);
 
-                // Schritt A: Bewege das System an die Weltposition des aktuellen Segments
-                tx.translate(x, y);
+            // Schritt A: Bewege das System an die Weltposition des aktuellen Segments
+            tx.translate(x, y);
 
-                // Schritt B: Rotiere das Segment exakt in Richtung der Linie (nach rechts)
-                tx.rotate(angle);
+            // Schritt B: Rotiere das Segment exakt in Richtung der Linie (nach rechts)
+            tx.rotate(angle);
 
-                // Schritt C: Skalierung anwenden
-                tx.scale(scale, scale);
+            // Schritt C: Skalierung anwenden
+            tx.scale(scale, scale);
 
-                // Schritt D: Zentriere das Bild präzise (X- und Y-Achse mittig)
-                tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
+            // Schritt D: Zentriere das Bild präzise (X- und Y-Achse mittig)
+            tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
 
-                graphics.setTransform(tx);
-                graphics.drawImage(image, 0, 0, null);
-            }
-        } finally {
-            // 5. Stelle den Originalzustand des Grafikkontexts wieder her
-            graphics.setTransform(originalTransform);
-            graphics.setClip(originalClip);
+            graphics.setTransform(tx);
+            graphics.drawImage(image, 0, 0, null);
         }
+        graphics.setTransform(originalTransform);
+        graphics.setClip(originalClip);
     }
 
     @Override
