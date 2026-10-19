@@ -36,6 +36,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.light.ShadowOptions;
+import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.graphics.smoke.styles.HeatVisionSmokeStyle;
@@ -77,7 +78,8 @@ public class PlaygroundApp {
         screwBox.environment().addSystem(s -> {
             Vector delta = s.mouse().position().add(200, 100);
             var target = s.navigation().raycastFrom(s.mouse().position()).castingTo(delta).nearestHit().orElse(delta);
-            s.graphics().world().drawLine(s.mouse().position(), target, SpriteBundle.BOX.get(), new SpriteLineDrawOptions(1));
+            s.graphics().world().drawLine(s.mouse().position(), target, LineDrawOptions.color(Color.WHITE).strokeWidth(2));
+            s.graphics().world().drawLine(s.mouse().position(), target, SpriteBundle.BOX.get(), new SpriteLineDrawOptions(1, 1));
         });
         screwBox.graphics().light().setAmbientLight(Percent.of(0.5));
         screwBox.environment()

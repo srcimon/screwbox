@@ -45,7 +45,7 @@ public class DefaultWorld implements World {
     @Override
     public World drawLine(final Vector from, final Vector to, final Sprite sprite, final SpriteLineDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
-            viewport.canvas().drawLine(viewport.toCanvas(from), viewport.toCanvas(to), sprite, options);//TODO update scale by zoom
+            viewport.canvas().drawLine(viewport.toCanvas(from), viewport.toCanvas(to), sprite, options.scale(options.scale() * viewport.camera().zoom()));
         }
         return this;
     }

@@ -217,48 +217,60 @@ public class DefaultRenderer implements Renderer {
         Image image = sprite.image(Time.now());
         int imgWidth = image.getWidth(null);
         int imgHeight = image.getHeight(null);
+
+        // 1. Skalierungsfaktor holen und skalierte Maße berechnen
+        double scale = options.scale();
+        double scaledWidth = imgWidth * scale;
+        double scaledHeight = imgHeight * scale;
+
         if (distance == 0) {
-            graphics.drawImage(image, from.x() - imgWidth / 2, from.y() - imgHeight / 2, null);
+            // Auch im Fall von distance == 0 die Skalierung beachten
+            graphics.drawImage(image, (int) (from.x() - scaledWidth / 2), (int) (from.y() - scaledHeight / 2), null);
             return;
         }
 //TODO apply clip
         double angle = Math.atan2(dy, dx);
 
-        // 1. Sichere den aktuellen Zustand (Transformation & Clipping)
+        // 2. Sichere den aktuellen Zustand (Transformation & Clipping)
         AffineTransform originalTransform = graphics.getTransform();
         Shape originalClip = graphics.getClip();
 
         try {
-            // 2. Erstelle ein Clip-Rechteck, das exakt am Zielpunkt B endet.
-            // Es startet bei (0, -imgHeight) und geht bis (distance, imgHeight * 2),
-            // bezogen auf das lokale, rotierte Koordinatensystem.
+            // 3. Erstelle ein Clip-Rechteck, das exakt am Zielpunkt B endet.
             AffineTransform clipTransform = new AffineTransform();
             clipTransform.translate(from.x(), from.y());
             clipTransform.rotate(angle);
 
-            // Das unsichtbare Begrenzungsfenster entlang des Strahls
-            Rectangle2D clipRect = new Rectangle2D.Double(0, -imgHeight, distance, imgHeight * 2);
+            // Das Begrenzungsfenster nutzt hier die skalierte Höhe
+            Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
             Shape transformedClip = clipTransform.createTransformedShape(clipRect);
 
             // Clip auf den Grafikkontext anwenden (schneidet alles außerhalb ab)
             graphics.clip(transformedClip);
 
-            // 3. Zeichne die Bilder entlang der Linie
-            int stepSpacing = image.getWidth(null);//TODO fix
+            // 4. Zeichne die Bilder entlang der Linie mit skaliertem Abstand
+            double stepSpacing = scaledWidth;
             for (double d = 0; d <= distance; d += stepSpacing) {
                 double t = d / distance;
                 int x = (int) (from.x() + t * dx);
                 int y = (int) (from.y() + t * dy);
+
                 AffineTransform tx = new AffineTransform();
+                // Schritt A: Zur Zielposition bewegen
                 tx.translate(x, y);
+                // Schritt B: In Linienrichtung rotieren
                 tx.rotate(angle);
+                // Schritt C: Skalierung anwenden
+                tx.scale(scale, scale);
+                // Schritt D: Zentrieren mit unskalierten Originalmaßen!
+                // (tx.scale beeinflusst alle nachfolgenden Operationen, daher hier unskaliert)
                 tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
 
                 graphics.setTransform(tx);
                 graphics.drawImage(image, 0, 0, null);
             }
         } finally {
-            // 4. Stelle den Originalzustand absolut sicher wieder her
+            // 5. Stelle den Originalzustand absolut sicher wieder her
             graphics.setTransform(originalTransform);
             graphics.setClip(originalClip);
         }
