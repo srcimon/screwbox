@@ -230,7 +230,7 @@ public class DefaultRenderer implements Renderer {
         Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
         Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
         graphics.clip(transformedClip);
-
+        applyOpacityConfig(options.opacity());
         for (double d = 0; d <= distance + scaledWidth; d += scaledWidth) {
             double t = d / distance;
             double x = from.x() + t * dx;

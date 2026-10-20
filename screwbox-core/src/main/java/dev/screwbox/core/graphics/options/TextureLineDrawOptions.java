@@ -1,15 +1,14 @@
 package dev.screwbox.core.graphics.options;
 
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.ShaderSetup;
 
-//TODO actually use drawOrder
-//TODO SoftBodyRenderComponent.surfaceTexture
-//TODO finish up
-public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup shader) {
-    //TODO scale
 
+//TODO finish up
+public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup shader, Percent opacity) {
+//TODO validation
     public static TextureLineDrawOptions scaled(final double scale) {
-        return new TextureLineDrawOptions(0, scale, null);
+        return new TextureLineDrawOptions(0, scale, null, Percent.max());
     }
 
     public static TextureLineDrawOptions originalSize() {
@@ -17,10 +16,14 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
     }
 
     public TextureLineDrawOptions scale(final double scale) {
-        return new TextureLineDrawOptions(drawOrder, scale, shader);
+        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
     }
 
     public TextureLineDrawOptions shader(final ShaderSetup shader) {
-        return new TextureLineDrawOptions(drawOrder, scale, shader);
+        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
+    }
+
+    public TextureLineDrawOptions opacity(final Percent opacity) {
+        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
     }
 }

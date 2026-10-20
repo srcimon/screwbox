@@ -73,6 +73,7 @@ public class PlaygroundApp {
             ############################
             """);
 
+        //TODO SoftBodyRenderComponent.surfaceTexture
         screwBox.graphics().camera().setZoomRestriction(1, 10).setZoom(1);
         screwBox.graphics().configuration()
             .setIndirectLightRaySpacing(0.4)
@@ -90,7 +91,7 @@ public class PlaygroundApp {
             s.environment().fetchAll(Archetype.ofSpacial(SoftBodyComponent.class)).forEach(body -> {
                 body.get(SoftBodyComponent.class).shape.segments().forEach(segment -> {
 
-                    s.graphics().world().drawLine(segment, hairs, new TextureLineDrawOptions(1,0.5, null));
+                    s.graphics().world().drawLine(segment, hairs, new TextureLineDrawOptions(1,0.5, null, Percent.max()));
 
                 });
 
@@ -126,7 +127,7 @@ public class PlaygroundApp {
             angle = angle.addDegrees(s.loop().delta() * 40);
             Vector delta = angle.rotateAroundCenter(s.mouse().position(), Line.normal(s.mouse().position(), 200).end());
             var target = s.navigation().raycastFrom(s.mouse().position()).castingTo(delta).nearestHit().orElse(delta);
-            s.graphics().world().drawLine(s.mouse().position(), target, sprite, new TextureLineDrawOptions(1, 1, ShaderBundle.CONVEYOR.get()));
+            s.graphics().world().drawLine(s.mouse().position(), target, sprite, new TextureLineDrawOptions(1, 1, ShaderBundle.CONVEYOR.get(), Percent.max()));
         });
         screwBox.graphics().light().setAmbientLight(Percent.of(0.5));
         screwBox.environment()
