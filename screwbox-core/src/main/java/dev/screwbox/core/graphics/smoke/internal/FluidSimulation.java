@@ -385,7 +385,7 @@ public class FluidSimulation {
         }
     }
 
-    public void loadFrom(final FluidSimulation oldSimulation, final int deltaX, final int deltaY) {
+    public void loadCells(final FluidSimulation oldSimulation, final int deltaX, final int deltaY) {
         final double resolutionFactor = (double) resolution / (double) oldSimulation.resolution;
         for (int x = 1; x < resolutionMinusOne; x++) {
             for (int y = 1; y < resolutionMinusOne; y++) {

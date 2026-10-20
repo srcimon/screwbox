@@ -176,6 +176,35 @@ class FluidSimulationTest {
         assertThat(simulation.densityAt(4, 9)).isEqualTo(Color.TRANSPARENT);
     }
 
+    @Test
+    void loadCells_sameSize_copiesCellsWithOffset() {
+        var oldSimulation = new FluidSimulation(16);
+        oldSimulation.addDensity(1, 1, 1, Color.RED);
+        oldSimulation.addDensity(10, 10, 1, Color.BLUE);
+
+        var newSimulation = new FluidSimulation(16);
+
+        newSimulation.loadCells(oldSimulation, 6, 1);
+
+        assertThat(newSimulation.densityAt(1, 1)).isEqualTo(Color.TRANSPARENT);
+        assertThat(newSimulation.densityAt(4, 9)).isEqualTo(Color.BLUE);
+    }
+
+    @Test
+    void loadCells_bigger_copiesCellsWithOffset() {
+        var oldSimulation = new FluidSimulation(16);
+        oldSimulation.addDensity(1, 1, 1, Color.RED);
+        oldSimulation.addDensity(10, 10, 1, Color.BLUE);
+
+        var newSimulation = new FluidSimulation(20);
+
+        newSimulation.loadCells(oldSimulation, 6, 1);
+
+        assertThat(newSimulation.densityAt(1, 1)).isEqualTo(Color.TRANSPARENT);
+        assertThat(newSimulation.densityAt(4, 9)).isEqualTo(Color.BLUE);
+    }
+
+
     private void assertTotalRedDensity(double expectedDensity) {
         final var state = simulation.densityData();
         var sum = 0.0;

@@ -229,7 +229,7 @@ public class SmokeProjector {
             final int deltaY = (int) Math.round((worldAnchor.y() - lastAnchor.y()) / configuration.smokeCellSize());
 
             if (nonNull(previousSimulation)) {
-                simulation.loadFrom(previousSimulation, deltaX, deltaY);
+                simulation.loadCells(previousSimulation, deltaX, deltaY);
             }
         }
     }
