@@ -19,7 +19,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
-import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
@@ -209,7 +209,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final Sprite sprite, final SpriteLineDrawOptions options, final ScreenBounds clip) {
+    public void drawLine(final Offset from, final Offset to, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
         double dx = to.x() - from.x();
@@ -219,12 +219,8 @@ public class DefaultRenderer implements Renderer {
         int imgWidth = sprite.size().width();
         int imgHeight = sprite.size().height();
 
-        // 1. Skalierungsfaktor holen und skalierte Maße berechnen
         double scaledWidth = imgWidth * options.scale();
         double scaledHeight = imgHeight * options.scale();
-
-        // 2. Sichere den aktuellen Zustand des Clips
-        Shape originalClip = graphics.getClip();
 
         double angle = Math.atan2(dy, dx);
         AffineTransform localClipTransform = new AffineTransform();
@@ -246,7 +242,7 @@ public class DefaultRenderer implements Renderer {
             tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
             drawSprite(sprite, shader, tx);
         }
-        graphics.setClip(originalClip);
+        lastUsedClip = null; // resets clip
     }
 
     @Override

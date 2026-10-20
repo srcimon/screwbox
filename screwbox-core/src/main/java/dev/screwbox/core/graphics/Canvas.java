@@ -6,7 +6,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
-import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
@@ -68,7 +68,7 @@ public interface Canvas extends Sizeable {
     Canvas drawLine(Offset from, Offset to, LineDrawOptions options);
 
     //TODO document
-    Canvas drawLine(Offset from, Offset to, Sprite sprite, SpriteLineDrawOptions options);
+    Canvas drawLine(Offset from, Offset to, Sprite sprite, TextureLineDrawOptions options);
 
     /**
      * Draws a circle (special kind of oval) on the {@link Canvas} using the given position and {@link OvalDrawOptions}.

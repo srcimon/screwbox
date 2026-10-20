@@ -12,7 +12,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
-import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 
@@ -72,7 +72,7 @@ public class DefaultCanvas implements Canvas {
     }
 
     @Override
-    public Canvas drawLine(final Offset from, final Offset to, final Sprite sprite, final SpriteLineDrawOptions options) {
+    public Canvas drawLine(final Offset from, final Offset to, final Sprite sprite, final TextureLineDrawOptions options) {
         renderer.drawLine(from.add(offset), to.add(offset), sprite, options, clip);
         return this;
     }

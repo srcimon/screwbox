@@ -2,7 +2,6 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Duration;
-import dev.screwbox.core.Ease;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
@@ -26,11 +25,8 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
-import dev.screwbox.core.environment.softphysics.RopeComponent;
-import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyBoundaryComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
@@ -45,9 +41,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.SplitScreenOptions;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.light.ShadowOptions;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteLineDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.mouse.MouseButton;
 import dev.screwbox.core.utils.TileMap;
@@ -96,7 +90,7 @@ public class PlaygroundApp {
             s.environment().fetchAll(Archetype.ofSpacial(SoftBodyComponent.class)).forEach(body -> {
                 body.get(SoftBodyComponent.class).shape.segments().forEach(segment -> {
 
-                    s.graphics().world().drawLine(segment, hairs, new SpriteLineDrawOptions(1,0.5, null));
+                    s.graphics().world().drawLine(segment, hairs, new TextureLineDrawOptions(1,0.5, null));
 
                 });
 
@@ -132,7 +126,7 @@ public class PlaygroundApp {
             angle = angle.addDegrees(s.loop().delta() * 40);
             Vector delta = angle.rotateAroundCenter(s.mouse().position(), Line.normal(s.mouse().position(), 200).end());
             var target = s.navigation().raycastFrom(s.mouse().position()).castingTo(delta).nearestHit().orElse(delta);
-            s.graphics().world().drawLine(s.mouse().position(), target, sprite, new SpriteLineDrawOptions(1, 1, ShaderBundle.CONVEYOR.get()));
+            s.graphics().world().drawLine(s.mouse().position(), target, sprite, new TextureLineDrawOptions(1, 1, ShaderBundle.CONVEYOR.get()));
         });
         screwBox.graphics().light().setAmbientLight(Percent.of(0.5));
         screwBox.environment()
