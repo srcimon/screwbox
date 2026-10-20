@@ -5,6 +5,7 @@ import dev.screwbox.core.graphics.Canvas;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ShaderBundle;
 import dev.screwbox.core.graphics.ShaderSetup;
+import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.utils.Validate;
 
 import java.util.Objects;
@@ -17,7 +18,7 @@ import java.util.function.Supplier;
  * @param scale     scale of the used texture
  * @param shader    specity the {@link ShaderBundle} for drawing
  * @param opacity   specity the opacity of the texture
- * @see Canvas#drawLine(Offset, Offset, TextureLineDrawOptions)
+ * @see Canvas#drawLine(Offset, Offset, Sprite, TextureLineDrawOptions) 
  * @since 3.38.0
  */
 public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup shader, Percent opacity) {
