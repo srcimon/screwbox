@@ -18,7 +18,7 @@ import java.util.function.Supplier;
  * @param scale     scale of the used texture
  * @param shader    specity the {@link ShaderBundle} for drawing
  * @param opacity   specity the opacity of the texture
- * @see Canvas#drawLine(Offset, Offset, Sprite, TextureLineDrawOptions) 
+ * @see Canvas#drawLine(Offset, Offset, Sprite, TextureLineDrawOptions)
  * @since 3.38.0
  */
 public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup shader, Percent opacity) {
