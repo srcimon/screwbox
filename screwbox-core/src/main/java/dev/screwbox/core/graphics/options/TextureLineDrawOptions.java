@@ -27,6 +27,7 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
         Objects.requireNonNull(opacity, "opacity must not be null");
         Validate.positive(scale, "scale must not be negative");
     }
+
     //TODO finish up
     public static TextureLineDrawOptions scaled(final double scale) {
         return new TextureLineDrawOptions(0, scale, null, Percent.max());
@@ -37,10 +38,6 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
     }
 
     public TextureLineDrawOptions drawOrder(final int drawOrder) {
-        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
-    }
-
-    public TextureLineDrawOptions scale(final double scale) {
         return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
     }
 
