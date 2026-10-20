@@ -77,10 +77,8 @@ public class FirewallRenderer implements Renderer {
         if (!options.color().isVisible()) {
             return;
         }
-        final int minX = Math.min(from.x(), to.x());
-        final int minY = Math.min(from.y(), to.y());
-        final var size = Size.definedBy(from, to);
-        final var screenBounds = new ScreenBounds(Offset.at(minX, minY), size);
+
+        final var screenBounds = ScreenBounds.definedBy(from, to);
         if (screenBounds.intersects(clip)) {
             next.drawLine(from, to, options, clip);
         }
@@ -93,10 +91,7 @@ public class FirewallRenderer implements Renderer {
         }
         //TODO avoid duplication / see above
         final int padding = (int) (Math.max(sprite.width(), sprite.height()) * options.scale());
-        final int minX = Math.min(from.x(), to.x());
-        final int minY = Math.min(from.y(), to.y());
-        final var size = Size.definedBy(from, to);
-        final var screenBounds = new ScreenBounds(Offset.at(minX, minY), size).expand(padding * 2);
+        final var screenBounds = ScreenBounds.definedBy(from, to).expand(padding * 2);
         if (screenBounds.intersects(clip)) {
             next.drawLine(from, to, sprite, options, clip);//TODO add firewall rules
         }

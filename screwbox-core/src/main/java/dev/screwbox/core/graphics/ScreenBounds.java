@@ -38,6 +38,17 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
         return new ScreenBounds(minX, minY, maxX - minX, maxY - minY);
     }
 
+    //TODO document
+    //TODO test
+    //TODO changelog
+    public static ScreenBounds definedBy(final Offset first, final Offset second) {
+        final int minX = Math.min(first.x(), second.x());
+        final int minY = Math.min(first.y(), second.y());
+        final int maxX = Math.max(first.x(), second.x());
+        final int maxY = Math.max(first.y(), second.y());
+        return new ScreenBounds(minX, minY, maxX - minX, maxY - minY);
+    }
+
     /**
      * Returns the center {@link Offset}.
      */
