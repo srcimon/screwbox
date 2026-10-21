@@ -36,5 +36,8 @@ class TextureLineDrawOptionsTest {
         assertThat(options.drawOrder()).isEqualTo(4);
         assertThat(options.shader()).isEqualTo(ShaderBundle.GREYSCALE.get());
         assertThat(options.scale()).isEqualTo(3.1);
+
+        var laterUpdatedScale = options.scale(4);
+        assertThat(laterUpdatedScale.scale()).isEqualTo(4.0);
     }
 }
