@@ -272,7 +272,7 @@ public final class Frame implements Serializable, Sizeable {
      */
     public void exportPng(final String fileName) {
         requireNonNull(fileName, "file name must not be null");
-        final String exportName = fileName.endsWith(".png") ? fileName : fileName + ".png";
+        final String exportName = fileName.endsWith("drawLine_textureLineOptions_drawsTextureLine") ? fileName : fileName + "drawLine_textureLineOptions_drawsTextureLine";
         try {
             ImageIO.write(ImageOperations.cloneImage(image()), "png", new File(exportName));
         } catch (final IOException e) {
