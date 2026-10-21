@@ -10,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed chatter to mumble (#1113)
+- Updated `Canvas` and `World` method parameter names consistently
 
 ### 📦 Dependency updates
 

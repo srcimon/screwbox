@@ -20,7 +20,6 @@ import java.util.function.Supplier;
  * Draw directly to the game world. Automatically supports split screen and screen translation.
  */
 public interface World {
-//TODO rename all from,to to start end
 
     /**
      * Draws a polygon on the {@link World} using the specified {@link PolygonDrawOptions}.
@@ -74,7 +73,7 @@ public interface World {
      *
      * @see #drawLine(Line, LineDrawOptions)
      */
-    World drawLine(Vector from, Vector to, LineDrawOptions options);
+    World drawLine(Vector start, Vector end, LineDrawOptions options);
 
     /**
      * Draw a {@link Line} on the {@link World} using {@link RectangleDrawOptions}.
@@ -90,15 +89,15 @@ public interface World {
      *
      * @since 3.38.0
      */
-    World drawLine(Vector from, Vector to, Sprite sprite, TextureLineDrawOptions options);
+    World drawLine(Vector start, Vector end, Sprite sprite, TextureLineDrawOptions options);
 
     /**
      * Draw a {@link Line} using a {@link Sprite texture}.
      *
      * @since 3.38.0
      */
-    default World drawLine(Vector from, Vector to, final Supplier<Sprite> sprite, final TextureLineDrawOptions options) {
-        return drawLine(from, to, sprite.get(), options);
+    default World drawLine(final Vector start, final Vector end, final Supplier<Sprite> sprite, final TextureLineDrawOptions options) {
+        return drawLine(start, end, sprite.get(), options);
     }
 
     /**

@@ -35,17 +35,17 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
+    public World drawLine(final Vector start, final Vector end, final LineDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
-            viewport.canvas().drawLine(viewport.toCanvas(from), viewport.toCanvas(to), options.strokeWidth((int) (options.strokeWidth() * viewport.camera().zoom())));
+            viewport.canvas().drawLine(viewport.toCanvas(start), viewport.toCanvas(end), options.strokeWidth((int) (options.strokeWidth() * viewport.camera().zoom())));
         }
         return this;
     }
 
     @Override
-    public World drawLine(final Vector from, final Vector to, final Sprite sprite, final TextureLineDrawOptions options) {
+    public World drawLine(final Vector start, final Vector end, final Sprite sprite, final TextureLineDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
-            viewport.canvas().drawLine(viewport.toCanvas(from), viewport.toCanvas(to), sprite, options.scale(options.scale() * viewport.camera().zoom()));
+            viewport.canvas().drawLine(viewport.toCanvas(start), viewport.toCanvas(end), sprite, options.scale(options.scale() * viewport.camera().zoom()));
         }
         return this;
     }
