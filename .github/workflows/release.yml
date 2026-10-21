@@ -26,7 +26,7 @@ jobs:
           cache: 'maven'
           server-id: ossrh
 
-      - name: Set up Maven 3.9.9@f81c845fbbaa97e79d46bc3aefed2ee6643346f7 # v3.37.0 (required due to https://github.com/mavenplugins/central-publishing-maven-plugin/issues/79)
+      - name: Set up Maven 3.9.9 # (required due to https://github.com/mavenplugins/central-publishing-maven-plugin/issues/79)
         uses: batmahdi/setup-maven@v3
         with:
           maven-version: '3.9.9'
