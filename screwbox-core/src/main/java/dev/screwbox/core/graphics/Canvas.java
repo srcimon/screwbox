@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -62,9 +63,25 @@ public interface Canvas extends Sizeable {
     }
 
     /**
-     * Draws a line on the {@link Canvas} using the given {@link Offset}s and {@link LineDrawOptions}.
+     * Draws a line on the {@link Canvas} using the specified {@link Offset offsets} and {@link LineDrawOptions}.
      */
-    Canvas drawLine(Offset from, Offset to, LineDrawOptions options);
+    Canvas drawLine(Offset start, Offset end, LineDrawOptions options);
+
+    /**
+     * Draws a line on the {@link Canvas} using the specified {@link Offset offsets}, {@link Sprite texture} and {@link TextureLineDrawOptions options}.
+     *
+     * @since 3.38.0
+     */
+    Canvas drawLine(Offset start, Offset end, Sprite sprite, TextureLineDrawOptions options);
+
+    /**
+     * Draws a line on the {@link Canvas} using the specified {@link Offset offsets}, {@link Sprite texture} and {@link TextureLineDrawOptions options}.
+     *
+     * @since 3.38.0
+     */
+    default Canvas drawLine(final Offset start, final Offset end, Supplier<Sprite> sprite, TextureLineDrawOptions options) {
+        return drawLine(start, end, sprite.get(), options);
+    }
 
     /**
      * Draws a circle (special kind of oval) on the {@link Canvas} using the given position and {@link OvalDrawOptions}.

@@ -10,14 +10,15 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.Renderer;
-import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.LineDrawOptions;
+import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -285,7 +286,7 @@ class FirewallRendererTest {
 
     @Test
     void drawPolygon_outOfView_skipsRendering() {
-        renderer.drawPolygon(List.of(Offset.at(-510, 4), Offset.at(-459,20)), PolygonDrawOptions.filled(Color.RED), CLIP);
+        renderer.drawPolygon(List.of(Offset.at(-510, 4), Offset.at(-459, 20)), PolygonDrawOptions.filled(Color.RED), CLIP);
 
         verifyNoInteractions(next);
     }
@@ -302,5 +303,26 @@ class FirewallRendererTest {
         renderer.drawPolygon(List.of(Offset.at(10, 40)), PolygonDrawOptions.filled(Color.RED), CLIP);
 
         verify(next).drawPolygon(List.of(Offset.at(10, 40)), PolygonDrawOptions.filled(Color.RED), CLIP);
+    }
+
+    @Test
+    void drawLine_opacityZero_skipsRendering() {
+        renderer.drawLine(Offset.at(10, 3), Offset.origin(), SpriteBundle.MAN_WALK_RIGHT.get(), TextureLineDrawOptions.originalSize().opacity(Percent.zero()), CLIP);
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawLine_doesNotIntersectClip_skipsRendering() {
+        renderer.drawLine(Offset.at(-100, -30), Offset.at(-10, -20), SpriteBundle.MAN_WALK_RIGHT.get(), TextureLineDrawOptions.originalSize(), CLIP);
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawLine_notFiltered_drawsLine() {
+        renderer.drawLine(Offset.at(-80, -20), Offset.origin(), SpriteBundle.MAN_WALK_RIGHT.get(), TextureLineDrawOptions.originalSize(), CLIP);
+
+        verify(next).drawLine(Offset.at(-80, -20), Offset.origin(), SpriteBundle.MAN_WALK_RIGHT.get(), TextureLineDrawOptions.originalSize(), CLIP);
     }
 }

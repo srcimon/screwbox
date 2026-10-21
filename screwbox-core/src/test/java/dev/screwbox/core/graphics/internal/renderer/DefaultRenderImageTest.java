@@ -19,6 +19,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -218,7 +219,8 @@ class DefaultRenderImageTest {
     }
 
     @Test
-    @DisabledOnOs(OS.LINUX) // fonts missing in docker
+    @DisabledOnOs(OS.LINUX)
+        // fonts missing in docker
     void drawText_italicAlignedRight_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").alignRight().italic().size(10).color(RED.opacity(0.8)), CLIP);
 
@@ -226,14 +228,16 @@ class DefaultRenderImageTest {
     }
 
     @Test
-    @DisabledOnOs(OS.LINUX) // fonts missing in docker
+    @DisabledOnOs(OS.LINUX)
+        // fonts missing in docker
     void drawText_italicBoldAlignedCenter_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Serif.plain").alignCenter().italic().bold().size(10).color(BLUE), CLIP);
         verifyIsSameImage(result.image(), "renderer/drawText_italicBoldAlignedCenter_drawsText.png");
     }
 
     @Test
-    @DisabledOnOs(OS.LINUX) // fonts missing in docker
+    @DisabledOnOs(OS.LINUX)
+        // fonts missing in docker
     void drawText_normal_drawsText() {
         renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("Serif.plain"), CLIP);
         verifyIsSameImage(result.image(), "renderer/drawText_normal_drawsText.png");
@@ -350,12 +354,17 @@ class DefaultRenderImageTest {
         verifyIsSameImage(result.image(), "renderer/drawPolygon_verticalGradient_usesGradient.png");
     }
 
-
     @Test
     void drawSprite_defaultAndCustomShaderSet_drawsUsingCombinedShader() {
         renderer.setDefaultShader(ShaderBundle.GREYSCALE.get());
 
         renderer.drawSprite(SpriteBundle.BOX, Offset.origin(), SpriteDrawOptions.originalSize().shaderSetup(ShaderBundle.INVERT_COLORS), CLIP);
         verifyIsSameImage(result.image(), "renderer/drawSprite_defaultAndCustomShaderSet_drawsUsingCombinedShader.png");
+    }
+
+    @Test
+    void drawLine_textureLineOptions_drawsTextureLine() {
+        renderer.drawLine(Offset.origin(), Offset.at(40, 20), SpriteBundle.BOX.get(), TextureLineDrawOptions.scaled(0.4), CLIP);
+        verifyIsSameImage(result.image(), "renderer/drawLine_textureLineOptions_drawsTextureLine.png");
     }
 }

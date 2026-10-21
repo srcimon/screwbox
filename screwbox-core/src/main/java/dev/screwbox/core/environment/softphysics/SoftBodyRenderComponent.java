@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Sprite;
 
 import java.io.Serial;
 
@@ -34,6 +35,13 @@ public class SoftBodyRenderComponent implements Component {
      * Draw a rounded soft body.
      */
     public boolean rounded = true;
+
+    /**
+     * Specify the surface texture of the soft body.
+     *
+     * @since 3.38.0
+     */
+    public Sprite surfaceTexture;
 
     /**
      * Draw order used for rendering.

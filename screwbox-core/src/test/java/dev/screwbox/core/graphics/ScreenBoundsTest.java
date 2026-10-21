@@ -116,4 +116,16 @@ class ScreenBoundsTest {
         var bounds = ScreenBounds.around(List.of(Offset.at(4, 2), Offset.at(-100, 99), Offset.at(400, 3)));
         assertThat(bounds).isEqualTo(new ScreenBounds(-100, 2, 500, 97));
     }
+
+    @Test
+    void definedBy_samePosition_hasNoSize() {
+        var bounds = ScreenBounds.definedBy(Offset.at(4, 2), Offset.at(4, 2));
+        assertThat(bounds).isEqualTo(new ScreenBounds(4, 2, 0, 0));
+    }
+
+    @Test
+    void definedBy_distinctPosition_hasSize() {
+        var bounds = ScreenBounds.definedBy(Offset.at(4, 2), Offset.at(-4, 20));
+        assertThat(bounds).isEqualTo(new ScreenBounds(-4, 2, 8, 18));
+    }
 }

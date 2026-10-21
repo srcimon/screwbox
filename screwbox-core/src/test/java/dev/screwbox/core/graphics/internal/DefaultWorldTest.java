@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -8,6 +9,7 @@ import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -69,5 +71,15 @@ class DefaultWorldTest {
         world.drawPolygon(List.of($(10, 30), $(30, 20), $(15, 9)), PolygonDrawOptions.filled(Color.RED));
 
         verify(canvas).drawPolygon(List.of(Offset.at(-60, -120), Offset.at(-20, -140), Offset.at(-50, -162)), PolygonDrawOptions.filled(Color.RED).strokeWidth(2));
+    }
+
+    @Test
+    void drawLine_textureOptions_drawsTextureLine() {
+        when(camera.focus()).thenReturn($(40, 90));
+        when(camera.zoom()).thenReturn(2.0);
+
+        world.drawLine($(10, 20), $(9, 3), SpriteBundle.BOX, TextureLineDrawOptions.scaled(3).opacity(Percent.half()));
+
+        verify(canvas).drawLine(Offset.at(-60, -140), Offset.at(-62, -174), SpriteBundle.BOX.get(), TextureLineDrawOptions.scaled(6).opacity(Percent.half()));
     }
 }

@@ -21,6 +21,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -193,18 +194,51 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
+    public void drawLine(final Offset start, final Offset end, final LineDrawOptions options, final ScreenBounds clip) {
         graphics.setColor(toAwtColor(options.color()));
         applyClip(clip);
         if (options.strokeWidth() == 1) {
-            graphics.drawLine(from.x(), from.y(), to.x(), to.y());
+            graphics.drawLine(start.x(), start.y(), end.x(), end.y());
         } else {
             var oldStroke = graphics.getStroke();
             graphics.setStroke(new BasicStroke(options.strokeWidth()));
-            graphics.drawLine(from.x(), from.y(), to.x(), to.y());
+            graphics.drawLine(start.x(), start.y(), end.x(), end.y());
             graphics.setStroke(oldStroke);
         }
+    }
 
+    @Override
+    public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
+        final var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
+        final double deltaX = (double)end.x() - start.x();
+        final double deltaY = (double)end.y() - start.y();
+        final double distance = start.distanceTo(end);
+
+        final double scaledWidth = sprite.size().width() * options.scale();
+        final double scaledHeight = sprite.size().height() * options.scale();
+
+        final double angle = Math.atan2(deltaY, deltaX);
+        final var localClipTransform = new AffineTransform();
+        localClipTransform.translate(start.x(), start.y());
+        localClipTransform.rotate(angle);
+
+        final var clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
+        graphics.clip(localClipTransform.createTransformedShape(clipRect));
+        applyOpacityConfig(options.opacity());
+
+        for (double d = 0; d <= distance + scaledWidth; d += scaledWidth) {
+            double t = d / distance;
+            double x = start.x() + t * deltaX;
+            double y = start.y() + t * deltaY;
+            final var localTransform = new AffineTransform();
+            localTransform.translate(x, y);
+            localTransform.rotate(angle);
+            localTransform.scale(options.scale(), options.scale());
+            localTransform.translate(-sprite.size().width() / 2.0, -sprite.size().height() / 2.0);
+            drawSprite(sprite, shader, localTransform);
+        }
+        lastUsedClip = null; // resets clip
     }
 
     @Override
@@ -316,7 +350,7 @@ public class DefaultRenderer implements Renderer {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
         final var textBlock = new RichTextBlock(text, options);
-        for(final var glyph : textBlock.glyphs()) {
+        for (final var glyph : textBlock.glyphs()) {
             transform.setTransform(options.scale(), 0, 0, options.scale(), offset.add(glyph.offset()).x(), offset.add(glyph.offset()).y());
             final var shaderSetup = ShaderResolver.resolveShader(defaultShader, glyph.shader());
             final var shiftedShaderSetup = nonNull(shaderSetup)

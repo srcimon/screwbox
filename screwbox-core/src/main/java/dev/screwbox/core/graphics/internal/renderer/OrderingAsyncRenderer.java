@@ -16,6 +16,7 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.utils.Latch;
@@ -90,8 +91,13 @@ public class OrderingAsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
-        addTask(options.drawOrder(), () -> next.drawLine(from, to, options, clip));
+    public void drawLine(final Offset start, final Offset end, final LineDrawOptions options, final ScreenBounds clip) {
+        addTask(options.drawOrder(), () -> next.drawLine(start, end, options, clip));
+    }
+
+    @Override
+    public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
+        addTask(options.drawOrder(), () -> next.drawLine(start, end, sprite, options, clip));
     }
 
     @Override

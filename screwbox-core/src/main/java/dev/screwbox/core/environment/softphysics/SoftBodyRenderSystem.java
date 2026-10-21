@@ -7,10 +7,12 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.NONE;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SPLINE;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -34,21 +36,25 @@ public class SoftBodyRenderSystem implements EntitySystem {
     private static void renderSoftBody(final Entity body, final World world) {
         final var config = body.get(SoftBodyRenderComponent.class);
         final var softBody = body.get(SoftBodyComponent.class);
-        if (nonNull(softBody.shape)) {
-            if (config.color.isVisible()) {
-                world.drawPolygon(softBody.shape.definitionNotes(), PolygonDrawOptions
-                    .filled(config.color)
-                    .smoothing(config.rounded ? SPLINE : NONE)
-                    .drawOrder(config.drawOrder));
+        if (isNull(softBody.shape)) {
+            return;
+        }
+        if (config.color.isVisible()) {
+            world.drawPolygon(softBody.shape.definitionNotes(), PolygonDrawOptions
+                .filled(config.color)
+                .smoothing(config.rounded ? SPLINE : NONE)
+                .drawOrder(config.drawOrder));
+        }
+        if (nonNull(config.surfaceTexture)) {
+            for (final var segment : softBody.shape.segments()) {
+                world.drawLine(segment, config.surfaceTexture, TextureLineDrawOptions.originalSize());
             }
-
-            if (config.outlineColor.isVisible()) {
-                world.drawPolygon(softBody.shape.definitionNotes(), PolygonDrawOptions
-                    .outline(config.outlineColor)
-                    .strokeWidth(config.outlineStrokeWidth)
-                    .smoothing(config.rounded ? SPLINE : NONE)
-                    .drawOrder(config.drawOrder));
-            }
+        } else if (config.outlineColor.isVisible()) {
+            world.drawPolygon(softBody.shape.definitionNotes(), PolygonDrawOptions
+                .outline(config.outlineColor)
+                .strokeWidth(config.outlineStrokeWidth)
+                .smoothing(config.rounded ? SPLINE : NONE)
+                .drawOrder(config.drawOrder));
         }
     }
 }

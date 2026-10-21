@@ -23,6 +23,11 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
         this(Offset.at(x, y), Size.of(width, height));
     }
 
+    /**
+     * Creates a new instance around the containing all specified positions.
+     *
+     * @see #definedBy(Offset, Offset)
+     */
     public static ScreenBounds around(final List<Offset> positions) {
         Validate.notEmpty(positions, "positions must not be empty");
         int minX = Integer.MAX_VALUE;
@@ -35,6 +40,19 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
             minY = Math.min(minY, position.y());
             maxY = Math.max(maxY, position.y());
         }
+        return new ScreenBounds(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    /**
+     * Creates a new instance around the two specified positions.
+     *
+     * @see #around(List)
+     */
+    public static ScreenBounds definedBy(final Offset first, final Offset second) {
+        final int minX = Math.min(first.x(), second.x());
+        final int minY = Math.min(first.y(), second.y());
+        final int maxX = Math.max(first.x(), second.x());
+        final int maxY = Math.max(first.y(), second.y());
         return new ScreenBounds(minX, minY, maxX - minX, maxY - minY);
     }
 

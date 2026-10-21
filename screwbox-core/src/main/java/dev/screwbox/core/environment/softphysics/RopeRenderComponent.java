@@ -2,8 +2,10 @@ package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Sprite;
 
 import java.io.Serial;
+import java.util.function.Supplier;
 
 /**
  * Renders ropes when added to entity also containing a {@link RopeComponent}.
@@ -37,8 +39,23 @@ public class RopeRenderComponent implements Component {
      */
     public int drawOrder;
 
+    /**
+     * Draw using a texture instead of simple lines.
+     *
+     * @since 3.38.0
+     */
+    public Sprite texture;
+
     public RopeRenderComponent(final Color color, final double strokeWidth) {
         this.color = color;
         this.strokeWidth = strokeWidth;
+    }
+
+    public RopeRenderComponent(final Supplier<Sprite> texture) {
+        this(texture.get());
+    }
+
+    public RopeRenderComponent(final Sprite texture) {
+        this.texture = texture;
     }
 }

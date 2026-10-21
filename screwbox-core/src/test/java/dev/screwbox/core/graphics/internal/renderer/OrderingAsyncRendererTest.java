@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,11 +84,13 @@ class OrderingAsyncRendererTest {
     void applyDrawActions_update_nextRendererInvoked() {
         orderingAsyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW), CLIP);
         orderingAsyncRenderer.drawOval(Offset.origin(), 25, 25, OvalDrawOptions.filled(Color.BLUE), CLIP);
+        orderingAsyncRenderer.drawLine(Offset.at(10, 20), Offset.origin(), SpriteBundle.ICON.get(), TextureLineDrawOptions.originalSize(), CLIP);
 
         orderingAsyncRenderer.updateContext(null);
 
         verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW), CLIP);
         verify(renderer, timeout(1000)).drawOval(Offset.origin(), 25, 25, OvalDrawOptions.filled(Color.BLUE), CLIP);
+        verify(renderer, timeout(1000)).drawLine(Offset.at(10, 20), Offset.origin(), SpriteBundle.ICON.get(), TextureLineDrawOptions.originalSize(), CLIP);
         verify(renderer, timeout(1000)).updateContext(null);
     }
 

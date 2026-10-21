@@ -14,6 +14,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import java.awt.*;
 import java.util.List;
@@ -72,13 +73,26 @@ public class FirewallRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
-        final int minX = Math.min(from.x(), to.x());
-        final int minY = Math.min(from.y(), to.y());
-        final var size = Size.definedBy(from, to);
-        final var screenBounds = new ScreenBounds(Offset.at(minX, minY), size);
-        if (options.color().isVisible() && screenBounds.intersects(clip)) {
-            next.drawLine(from, to, options, clip);
+    public void drawLine(final Offset start, final Offset end, final LineDrawOptions options, final ScreenBounds clip) {
+        if (!options.color().isVisible()) {
+            return;
+        }
+
+        final var screenBounds = ScreenBounds.definedBy(start, end);
+        if (screenBounds.intersects(clip)) {
+            next.drawLine(start, end, options, clip);
+        }
+    }
+
+    @Override
+    public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
+        if (options.opacity().isZero()) {
+            return;
+        }
+        final int padding = (int) (Math.max(sprite.width(), sprite.height()) * options.scale());
+        final var screenBounds = ScreenBounds.definedBy(start, end).expand(padding * 2);
+        if (screenBounds.intersects(clip)) {
+            next.drawLine(start, end, sprite, options, clip);
         }
     }
 

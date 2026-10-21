@@ -385,36 +385,36 @@ public class FluidSimulation {
         }
     }
 
-    public void loadFrom(final FluidSimulation oldSimulation, final int deltaX, final int deltaY) {
-        final double resolutionFactor = (double) resolution / (double) oldSimulation.resolution;
+    public void loadCells(final FluidSimulation source, final int deltaX, final int deltaY) {
+        final double resolutionFactor = (double) resolution / (double) source.resolution;
         for (int x = 1; x < resolutionMinusOne; x++) {
             for (int y = 1; y < resolutionMinusOne; y++) {
 
-                int xOld = x + deltaX;
-                int yOld = y + deltaY;
+                final int xOld = x + deltaX;
+                final int yOld = y + deltaY;
 
-                if (xOld >= 1 && xOld < oldSimulation.resolutionMinusOne &&
-                    yOld >= 1 && yOld < oldSimulation.resolutionMinusOne) {
+                if (xOld >= 1 && xOld < source.resolutionMinusOne &&
+                    yOld >= 1 && yOld < source.resolutionMinusOne) {
 
                     int ix = x + y * resolution;
-                    int ixOld = xOld + yOld * oldSimulation.resolution;
+                    int ixOld = xOld + yOld * source.resolution;
 
-                    densityR[ix] = oldSimulation.densityR[ixOld];
-                    densityR0[ix] = oldSimulation.densityR0[ixOld];
-                    densityG[ix] = oldSimulation.densityG[ixOld];
-                    densityG0[ix] = oldSimulation.densityG0[ixOld];
+                    densityR[ix] = source.densityR[ixOld];
+                    densityR0[ix] = source.densityR0[ixOld];
+                    densityG[ix] = source.densityG[ixOld];
+                    densityG0[ix] = source.densityG0[ixOld];
 
-                    densityB[ix] = oldSimulation.densityB[ixOld];
-                    densityB0[ix] = oldSimulation.densityB0[ixOld];
-                    densityA[ix] = oldSimulation.densityA[ixOld];
-                    densityA0[ix] = oldSimulation.densityA0[ixOld];
+                    densityB[ix] = source.densityB[ixOld];
+                    densityB0[ix] = source.densityB0[ixOld];
+                    densityA[ix] = source.densityA[ixOld];
+                    densityA0[ix] = source.densityA0[ixOld];
 
-                    velocityX[ix] = oldSimulation.velocityX[ixOld] * resolutionFactor;
-                    velocityX0[ix] = oldSimulation.velocityX0[ixOld] * resolutionFactor;
-                    velocityY[ix] = oldSimulation.velocityY[ixOld] * resolutionFactor;
-                    velocityY0[ix] = oldSimulation.velocityY0[ixOld] * resolutionFactor;
+                    velocityX[ix] = source.velocityX[ixOld] * resolutionFactor;
+                    velocityX0[ix] = source.velocityX0[ixOld] * resolutionFactor;
+                    velocityY[ix] = source.velocityY[ixOld] * resolutionFactor;
+                    velocityY0[ix] = source.velocityY0[ixOld] * resolutionFactor;
 
-                    obstacles[ix] = oldSimulation.obstacles[ixOld];
+                    obstacles[ix] = source.obstacles[ixOld];
                 }
             }
         }

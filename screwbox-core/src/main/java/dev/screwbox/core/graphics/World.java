@@ -11,6 +11,7 @@ import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -72,7 +73,7 @@ public interface World {
      *
      * @see #drawLine(Line, LineDrawOptions)
      */
-    World drawLine(Vector from, Vector to, LineDrawOptions options);
+    World drawLine(Vector start, Vector end, LineDrawOptions options);
 
     /**
      * Draw a {@link Line} on the {@link World} using {@link RectangleDrawOptions}.
@@ -81,6 +82,40 @@ public interface World {
      */
     default World drawLine(final Line line, final LineDrawOptions options) {
         return drawLine(line.start(), line.end(), options);
+    }
+
+    /**
+     * Draw a {@link Line} using a {@link Sprite texture}.
+     *
+     * @since 3.38.0
+     */
+    World drawLine(Vector start, Vector end, Sprite sprite, TextureLineDrawOptions options);
+
+    /**
+     * Draw a {@link Line} using a {@link Sprite texture}.
+     *
+     * @since 3.38.0
+     */
+    default World drawLine(final Vector start, final Vector end, final Supplier<Sprite> sprite, final TextureLineDrawOptions options) {
+        return drawLine(start, end, sprite.get(), options);
+    }
+
+    /**
+     * Draw a {@link Line} using a {@link Sprite texture}.
+     *
+     * @since 3.38.0
+     */
+    default World drawLine(final Line line, final Sprite sprite, final TextureLineDrawOptions options) {
+        return drawLine(line.start(), line.end(), sprite, options);
+    }
+
+    /**
+     * Draw a {@link Line} using a {@link Sprite texture}.
+     *
+     * @since 3.38.0
+     */
+    default World drawLine(final Line line, final Supplier<Sprite> sprite, final TextureLineDrawOptions options) {
+        return drawLine(line, sprite.get(), options);
     }
 
     /**

@@ -176,6 +176,50 @@ class FluidSimulationTest {
         assertThat(simulation.densityAt(4, 9)).isEqualTo(Color.TRANSPARENT);
     }
 
+    @Test
+    void loadCells_sameSize_copiesCellsWithOffset() {
+        var oldSimulation = new FluidSimulation(16);
+        oldSimulation.addDensity(1, 1, 1, Color.RED);
+        oldSimulation.addDensity(10, 10, 1, Color.BLUE);
+        oldSimulation.addVelocity(10, 10, Vector.$(40, 30));
+
+        var newSimulation = new FluidSimulation(16);
+
+        newSimulation.loadCells(oldSimulation, 6, 1);
+
+        assertThat(newSimulation.densityAt(1, 1)).isEqualTo(Color.TRANSPARENT);
+        assertThat(newSimulation.densityAt(4, 9)).isEqualTo(Color.BLUE);
+        assertThat(newSimulation.velocityAt(4, 9)).isEqualTo(Vector.$(40, 30));
+    }
+
+    @Test
+    void loadCells_bigger_copiesCellsWithOffsetAndScalesVelocity() {
+        var oldSimulation = new FluidSimulation(16);
+        oldSimulation.addDensity(1, 1, 1, Color.RED);
+        oldSimulation.addDensity(10, 10, 1, Color.BLUE);
+        oldSimulation.addVelocity(10, 10, Vector.$(40, 30));
+
+        var newSimulation = new FluidSimulation(32);
+
+        newSimulation.loadCells(oldSimulation, 6, 1);
+
+        assertThat(newSimulation.densityAt(1, 1)).isEqualTo(Color.TRANSPARENT);
+        assertThat(newSimulation.densityAt(4, 9)).isEqualTo(Color.BLUE);
+        assertThat(newSimulation.velocityAt(4, 9)).isEqualTo(Vector.$(80, 60));
+    }
+
+    @Test
+    void clearObscales_obstaclePresent_clearsObstacle() {
+        simulation.setObstacle(1, 1);
+        simulation.addVelocity(1, 1, Vector.$(100, 100));
+
+        assertThat(simulation.velocityAt(1, 1)).isEqualTo(Vector.zero()); // blocked by obstacle
+
+        simulation.clearObstacles();
+        simulation.addVelocity(1, 1, Vector.$(100, 100));
+        assertThat(simulation.velocityAt(1, 1)).isEqualTo(Vector.$(100, 100)); // no more blocking
+    }
+
     private void assertTotalRedDensity(double expectedDensity) {
         final var state = simulation.densityData();
         var sum = 0.0;
