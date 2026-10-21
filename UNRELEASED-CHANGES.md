@@ -1,8 +1,9 @@
 ### 🚀 Features & improvements
 
+- Draw lines using sprites
+- Ropes and soft bodies surfaces support sprites for drawing
 - Configure spacing between indirect light rays
 - Create `ScreenBounds` by to defining positions
-- Ropes and soft bodies support textures for drawing
 
 ### 🪛 Bug Fixes
 
