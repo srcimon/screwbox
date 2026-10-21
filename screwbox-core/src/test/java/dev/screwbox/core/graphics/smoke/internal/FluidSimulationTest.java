@@ -208,6 +208,19 @@ class FluidSimulationTest {
         assertThat(newSimulation.velocityAt(4, 9)).isEqualTo(Vector.$(80, 60));
     }
 
+    @Test
+    void clearObscales_obstaclePresent_clearsObstacle() {
+        var simulation = new FluidSimulation(16);
+        simulation.setObstacle(1, 1);
+        simulation.addVelocity(1, 1, Vector.$(100, 100));
+
+        assertThat(simulation.velocityAt(1, 1)).isEqualTo(Vector.zero()); // blocked by obstacle
+
+        simulation.clearObstacles();
+        simulation.addVelocity(1, 1, Vector.$(100, 100));
+        assertThat(simulation.velocityAt(1, 1)).isEqualTo(Vector.$(100, 100)); // no more blocking
+    }
+
     private void assertTotalRedDensity(double expectedDensity) {
         final var state = simulation.densityData();
         var sum = 0.0;
