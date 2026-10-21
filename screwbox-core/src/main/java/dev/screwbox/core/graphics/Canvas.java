@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.options.TextDrawOptions;
 import java.util.List;
 import java.util.function.Supplier;
 
+//TODO rename all from,to to start end
 public interface Canvas extends Sizeable {
 
     /**

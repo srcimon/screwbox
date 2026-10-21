@@ -18,7 +18,7 @@ import dev.screwbox.core.graphics.options.TextDrawOptions;
 import java.awt.*;
 import java.util.List;
 import java.util.function.Supplier;
-
+//TODO rename all from,to to start end
 public interface Renderer {
 
     void updateContext(Supplier<Graphics2D> graphics);

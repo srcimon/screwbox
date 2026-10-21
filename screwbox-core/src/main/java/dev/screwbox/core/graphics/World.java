@@ -9,9 +9,9 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -20,6 +20,7 @@ import java.util.function.Supplier;
  * Draw directly to the game world. Automatically supports split screen and screen translation.
  */
 public interface World {
+//TODO rename all from,to to start end
 
     /**
      * Draws a polygon on the {@link World} using the specified {@link PolygonDrawOptions}.
@@ -84,12 +85,38 @@ public interface World {
         return drawLine(line.start(), line.end(), options);
     }
 
-    //TODO add supplier methods
-    //TODO Document
+    /**
+     * Draw a {@link Line} using a {@link Sprite texture}.
+     *
+     * @since 3.38.0
+     */
     World drawLine(Vector from, Vector to, Sprite sprite, TextureLineDrawOptions options);
 
+    /**
+     * Draw a {@link Line} using a {@link Sprite texture}.
+     *
+     * @since 3.38.0
+     */
+    default World drawLine(Vector from, Vector to, final Supplier<Sprite> sprite, final TextureLineDrawOptions options) {
+        return drawLine(from, to, sprite.get(), options);
+    }
+
+    /**
+     * Draw a {@link Line} using a {@link Sprite texture}.
+     *
+     * @since 3.38.0
+     */
     default World drawLine(final Line line, final Sprite sprite, final TextureLineDrawOptions options) {
         return drawLine(line.start(), line.end(), sprite, options);
+    }
+
+    /**
+     * Draw a {@link Line} using a {@link Sprite texture}.
+     *
+     * @since 3.38.0
+     */
+    default World drawLine(final Line line, final Supplier<Sprite> sprite, final TextureLineDrawOptions options) {
+        return drawLine(line, sprite.get(), options);
     }
 
     /**
