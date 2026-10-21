@@ -1,6 +1,8 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Ease;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
@@ -205,42 +207,38 @@ public class DefaultRenderer implements Renderer {
             graphics.drawLine(start.x(), start.y(), end.x(), end.y());
             graphics.setStroke(oldStroke);
         }
-
     }
 
     @Override
     public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
-        double dx = end.x() - start.x();
-        double dy = end.y() - start.y();
-        double distance = Math.sqrt(dx * dx + dy * dy);//TODO from.distanceTo(to)k
-//TODO use original clip
-        int imgWidth = sprite.size().width();
-        int imgHeight = sprite.size().height();
+        final var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
+        final double deltaX = end.x() - start.x();
+        final double deltaY = end.y() - start.y();
+        final double distance = start.distanceTo(end);
 
-        double scaledWidth = imgWidth * options.scale();
-        double scaledHeight = imgHeight * options.scale();
+        final double scaledWidth = sprite.size().width() * options.scale();
+        final double scaledHeight = sprite.size().height() * options.scale();
 
-        double angle = Math.atan2(dy, dx);
-        AffineTransform localClipTransform = new AffineTransform();
+        final double angle = Math.atan2(deltaY, deltaX);
+        final var localClipTransform = new AffineTransform();
         localClipTransform.translate(start.x(), start.y());
         localClipTransform.rotate(angle);
 
-        Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
-        Shape transformedClip = localClipTransform.createTransformedShape(clipRect);
-        graphics.clip(transformedClip);
+        final var clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
+        graphics.clip(localClipTransform.createTransformedShape(clipRect));
         applyOpacityConfig(options.opacity());
+
         for (double d = 0; d <= distance + scaledWidth; d += scaledWidth) {
             double t = d / distance;
-            double x = start.x() + t * dx;
-            double y = start.y() + t * dy;
-            AffineTransform tx = new AffineTransform();
-            tx.translate(x, y);
-            tx.rotate(angle);
-            tx.scale(options.scale(), options.scale());
-            tx.translate(-imgWidth / 2.0, -imgHeight / 2.0);
-            drawSprite(sprite, shader, tx);
+            double x = start.x() + t * deltaX;
+            double y = start.y() + t * deltaY;
+            final var localTransform = new AffineTransform();
+            localTransform.translate(x, y);
+            localTransform.rotate(angle);
+            localTransform.scale(options.scale(), options.scale());
+            localTransform.translate(-sprite.size().width() / 2.0, -sprite.size().height() / 2.0);
+            drawSprite(sprite, shader, localTransform);
         }
         lastUsedClip = null; // resets clip
     }
