@@ -9,7 +9,6 @@ import dev.screwbox.core.Polygon;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.audio.Voice;
-import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.ai.BoidObstacleComponent;
@@ -21,15 +20,16 @@ import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.physics.AttachmentComponent;
+import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.GravityComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
+import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyBoundaryComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyCollisionComponent;
-import dev.screwbox.core.environment.softphysics.SoftBodyComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyOccluderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyRenderComponent;
 import dev.screwbox.core.environment.softphysics.SoftBodyShapeComponent;
@@ -60,7 +60,7 @@ public class PlaygroundApp {
         var map = TileMap.fromString("""
             ############################
             ############################
-            ##                        ##
+            ##    R    R              ##
             ##                        ##
             ##            ##          ##
             ##            #           ##
@@ -73,7 +73,6 @@ public class PlaygroundApp {
             ############################
             """);
 
-        //TODO SoftBodyRenderComponent.surfaceTexture
         screwBox.graphics().camera().setZoomRestriction(1, 10).setZoom(1);
         screwBox.graphics().configuration()
             .setIndirectLightRaySpacing(0.4)
@@ -88,24 +87,19 @@ public class PlaygroundApp {
         screwBox.graphics().enableSplitScreenMode(SplitScreenOptions.viewports(2));
         screwBox.environment().addEntity(new Entity().add(new GravityComponent(Vector.y(400))));
         screwBox.environment().addSystem(Order.PRESENTATION_FOREGROUND, s -> {
-            s.environment().fetchAll(Archetype.ofSpacial(SoftBodyComponent.class)).forEach(body -> {
-                body.get(SoftBodyComponent.class).shape.segments().forEach(segment -> {
-
-                    s.graphics().world().drawLine(segment, hairs, new TextureLineDrawOptions(1,0.5, null, Percent.max()));
-
-                });
-
-            });
             if (s.mouse().isPressedLeft()) {
                 vectors.add(s.mouse().position());
             }
-            if(s.keyboard().isPressed(Key.SPACE)) {
+            if (s.keyboard().isPressed(Key.SPACE)) {
                 s.audio().playMumble("jum", Voice.variable().waveType(Voice.WaveType.TRIANGLE));
             }
             if (s.mouse().isPressedRight()) {
                 var body = SoftPhysicsSupport.createStabilizedSoftBody(Polygon.ofNodes(vectors), s.environment());
                 s.environment().addEntities(body);
-                body.root().add(new SoftBodyRenderComponent(Color.BLACK), b -> b.rounded = false)
+                body.root().add(new SoftBodyRenderComponent(Color.BLACK), b -> {
+                        b.rounded = false;
+                        b.surfaceTexture = hairs;
+                    })
                     .add(new SoftBodyCollisionComponent())
                     .add(new SoftBodyOccluderComponent(ShadowOptions.rounded()))
                     .add(new SoftBodyShapeComponent())
@@ -140,6 +134,16 @@ public class PlaygroundApp {
                 e.graphics().viewportAt(e.mouse().offset()).camera().changeZoomBy(e.mouse().unitsScrolled() / -20.0);
             })
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
+                .assignComplex('R', (source, idPool) -> {
+                        var rope = SoftPhysicsSupport.createRope(source.origin().addX(source.size().width() / 2.0), source.position().addY(20), 5, idPool);
+                        rope.root().add(new RopeRenderComponent(Color.WHITE, 2), config -> {
+                            config.texture = hairs;
+                        });
+                        rope.forEach(r -> r.add(new ChaoticMovementComponent(80, Duration.oneSecond())));
+                        rope.root().remove(PhysicsComponent.class);
+                        return rope;
+                    }
+                )
                 .assign('#', source -> new Entity()
                     .bounds(source.bounds())
                     .add(new BoidObstacleComponent())

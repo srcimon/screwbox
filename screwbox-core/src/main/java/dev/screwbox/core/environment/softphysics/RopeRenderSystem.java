@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.NONE;
@@ -22,11 +23,19 @@ public class RopeRenderSystem implements EntitySystem {
             final var config = rope.get(RopeRenderComponent.class);
             final var shape = rope.get(RopeComponent.class).shape;
             if (nonNull(shape)) {
-                engine.graphics().world().drawPolygon(shape, PolygonDrawOptions
-                    .outline(config.color)
-                    .strokeWidth(config.strokeWidth)
-                    .drawOrder(config.drawOrder)
-                    .smoothing(config.rounded ? SPLINE : NONE));
+                final var world = engine.graphics().world();
+
+                if(nonNull(config.texture)) {
+                    for (final var segment : shape.segments()) {
+                        world.drawLine(segment, config.texture, TextureLineDrawOptions.originalSize());
+                    }
+                } else {
+                    world.drawPolygon(shape, PolygonDrawOptions
+                        .outline(config.color)
+                        .strokeWidth(config.strokeWidth)
+                        .drawOrder(config.drawOrder)
+                        .smoothing(config.rounded ? SPLINE : NONE));
+                }
             }
         }
     }

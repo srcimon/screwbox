@@ -23,6 +23,8 @@ import java.util.function.Supplier;
  */
 public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup shader, Percent opacity) {
 
+    private static final TextureLineDrawOptions ORIGINAL_SIZE = scaled(1);
+
     public TextureLineDrawOptions {
         Objects.requireNonNull(opacity, "opacity must not be null");
         Validate.positive(scale, "scale must not be negative");
@@ -39,7 +41,7 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
      * Creates options for an unscaled texture.
      */
     public static TextureLineDrawOptions originalSize() {
-        return scaled(1);
+        return ORIGINAL_SIZE;
     }
 
     /**

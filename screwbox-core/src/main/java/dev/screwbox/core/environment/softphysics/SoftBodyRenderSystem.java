@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import static dev.screwbox.core.environment.Order.PRESENTATION_WORLD;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.NONE;
@@ -48,6 +49,11 @@ public class SoftBodyRenderSystem implements EntitySystem {
                     .strokeWidth(config.outlineStrokeWidth)
                     .smoothing(config.rounded ? SPLINE : NONE)
                     .drawOrder(config.drawOrder));
+            }
+            if (nonNull(config.surfaceTexture)) {
+                for (final var segment : softBody.shape.segments()) {
+                    world.drawLine(segment, config.surfaceTexture, TextureLineDrawOptions.originalSize());
+                }
             }
         }
     }
