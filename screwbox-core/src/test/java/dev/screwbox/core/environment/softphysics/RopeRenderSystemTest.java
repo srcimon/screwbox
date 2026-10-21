@@ -5,6 +5,7 @@ import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.World;
@@ -93,7 +94,7 @@ class RopeRenderSystemTest {
 
         Entity start = new Entity(1).name("rope-start")
             .add(new RopeComponent())
-            .add(new RopeRenderComponent(SpriteBundle.BOX))
+            .add(new RopeRenderComponent(Color.RED, 3))
             .add(new SoftLinkComponent(2))
             .add(new TransformComponent(2, 2, 0, 0));
 
