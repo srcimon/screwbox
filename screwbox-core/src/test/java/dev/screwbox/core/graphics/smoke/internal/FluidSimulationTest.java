@@ -210,7 +210,6 @@ class FluidSimulationTest {
 
     @Test
     void clearObscales_obstaclePresent_clearsObstacle() {
-        var simulation = new FluidSimulation(16);
         simulation.setObstacle(1, 1);
         simulation.addVelocity(1, 1, Vector.$(100, 100));
 

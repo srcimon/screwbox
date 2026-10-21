@@ -1,8 +1,6 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
-import dev.screwbox.core.Angle;
 import dev.screwbox.core.Ease;
-import dev.screwbox.core.Line;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.Color;
@@ -21,9 +19,9 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
-import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -213,8 +211,8 @@ public class DefaultRenderer implements Renderer {
     public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         final var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
-        final double deltaX = end.x() - start.x();
-        final double deltaY = end.y() - start.y();
+        final double deltaX = (double)end.x() - start.x();
+        final double deltaY = (double)end.y() - start.y();
         final double distance = start.distanceTo(end);
 
         final double scaledWidth = sprite.size().width() * options.scale();
