@@ -194,26 +194,26 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
+    public void drawLine(final Offset start, final Offset end, final LineDrawOptions options, final ScreenBounds clip) {
         graphics.setColor(toAwtColor(options.color()));
         applyClip(clip);
         if (options.strokeWidth() == 1) {
-            graphics.drawLine(from.x(), from.y(), to.x(), to.y());
+            graphics.drawLine(start.x(), start.y(), end.x(), end.y());
         } else {
             var oldStroke = graphics.getStroke();
             graphics.setStroke(new BasicStroke(options.strokeWidth()));
-            graphics.drawLine(from.x(), from.y(), to.x(), to.y());
+            graphics.drawLine(start.x(), start.y(), end.x(), end.y());
             graphics.setStroke(oldStroke);
         }
 
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
+    public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
-        double dx = to.x() - from.x();
-        double dy = to.y() - from.y();
+        double dx = end.x() - start.x();
+        double dy = end.y() - start.y();
         double distance = Math.sqrt(dx * dx + dy * dy);//TODO from.distanceTo(to)k
 //TODO use original clip
         int imgWidth = sprite.size().width();
@@ -224,7 +224,7 @@ public class DefaultRenderer implements Renderer {
 
         double angle = Math.atan2(dy, dx);
         AffineTransform localClipTransform = new AffineTransform();
-        localClipTransform.translate(from.x(), from.y());
+        localClipTransform.translate(start.x(), start.y());
         localClipTransform.rotate(angle);
 
         Rectangle2D clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
@@ -233,8 +233,8 @@ public class DefaultRenderer implements Renderer {
         applyOpacityConfig(options.opacity());
         for (double d = 0; d <= distance + scaledWidth; d += scaledWidth) {
             double t = d / distance;
-            double x = from.x() + t * dx;
-            double y = from.y() + t * dy;
+            double x = start.x() + t * dx;
+            double y = start.y() + t * dy;
             AffineTransform tx = new AffineTransform();
             tx.translate(x, y);
             tx.rotate(angle);

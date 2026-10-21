@@ -73,26 +73,26 @@ public class FirewallRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
+    public void drawLine(final Offset start, final Offset end, final LineDrawOptions options, final ScreenBounds clip) {
         if (!options.color().isVisible()) {
             return;
         }
 
-        final var screenBounds = ScreenBounds.definedBy(from, to);
+        final var screenBounds = ScreenBounds.definedBy(start, end);
         if (screenBounds.intersects(clip)) {
-            next.drawLine(from, to, options, clip);
+            next.drawLine(start, end, options, clip);
         }
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
+    public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
         if (options.opacity().isZero()) {
             return;
         }
         final int padding = (int) (Math.max(sprite.width(), sprite.height()) * options.scale());
-        final var screenBounds = ScreenBounds.definedBy(from, to).expand(padding * 2);
+        final var screenBounds = ScreenBounds.definedBy(start, end).expand(padding * 2);
         if (screenBounds.intersects(clip)) {
-            next.drawLine(from, to, sprite, options, clip);
+            next.drawLine(start, end, sprite, options, clip);
         }
     }
 
