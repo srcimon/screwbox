@@ -57,6 +57,13 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
     }
 
     /**
+     * Sets the scale for drawing.
+     */
+    public TextureLineDrawOptions scale(final double scale) {
+        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
+    }
+
+    /**
      * Sets the {@link ShaderBundle} for drawing.
      */
     public TextureLineDrawOptions shader(final ShaderSetup shader) {

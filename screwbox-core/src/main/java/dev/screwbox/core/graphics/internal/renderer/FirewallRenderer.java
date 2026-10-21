@@ -89,11 +89,10 @@ public class FirewallRenderer implements Renderer {
         if (options.opacity().isZero()) {
             return;
         }
-        //TODO avoid duplication / see above
         final int padding = (int) (Math.max(sprite.width(), sprite.height()) * options.scale());
         final var screenBounds = ScreenBounds.definedBy(from, to).expand(padding * 2);
         if (screenBounds.intersects(clip)) {
-            next.drawLine(from, to, sprite, options, clip);//TODO add firewall rules
+            next.drawLine(from, to, sprite, options, clip);
         }
     }
 

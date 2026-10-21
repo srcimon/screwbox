@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Configure spacing between indirect light rays
+- Create `ScreenBounds` by to defining positions
 
 ### 🪛 Bug Fixes
 
