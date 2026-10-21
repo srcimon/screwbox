@@ -16,8 +16,8 @@ import java.util.function.Supplier;
  *
  * @param drawOrder order of this drawing task in comparison to others
  * @param scale     scale of the used texture
- * @param shader    specity the {@link ShaderBundle} for drawing
- * @param opacity   specity the opacity of the texture
+ * @param shader    specify the {@link ShaderBundle} for drawing
+ * @param opacity   specify the opacity of the texture
  * @see Canvas#drawLine(Offset, Offset, Sprite, TextureLineDrawOptions)
  * @since 3.38.0
  */
@@ -28,27 +28,44 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
         Validate.positive(scale, "scale must not be negative");
     }
 
-    //TODO finish up
+    /**
+     * Creates options for a scaled texture.
+     */
     public static TextureLineDrawOptions scaled(final double scale) {
         return new TextureLineDrawOptions(0, scale, null, Percent.max());
     }
 
+    /**
+     * Creates options for an unscaled texture.
+     */
     public static TextureLineDrawOptions originalSize() {
         return scaled(1);
     }
 
+    /**
+     * Sets order of this drawing task in comparison to others.
+     */
     public TextureLineDrawOptions drawOrder(final int drawOrder) {
         return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
     }
 
+    /**
+     * Sets order of this drawing task in comparison to others.
+     */
     public TextureLineDrawOptions shader(final Supplier<ShaderSetup> shader) {
         return shader(shader.get());
     }
 
+    /**
+     * Sets the {@link ShaderBundle} for drawing.
+     */
     public TextureLineDrawOptions shader(final ShaderSetup shader) {
         return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
     }
 
+    /**
+     * Sets the opacity for drawing.
+     */
     public TextureLineDrawOptions opacity(final Percent opacity) {
         return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
     }
