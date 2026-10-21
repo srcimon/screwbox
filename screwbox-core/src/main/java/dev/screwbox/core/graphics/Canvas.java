@@ -80,7 +80,7 @@ public interface Canvas extends Sizeable {
      * @since 3.38.0
      */
     default Canvas drawLine(final Offset start, final Offset end, Supplier<Sprite> sprite, TextureLineDrawOptions options) {
-        return drawLine(start, end,sprite.get(), options);
+        return drawLine(start, end, sprite.get(), options);
     }
 
     /**

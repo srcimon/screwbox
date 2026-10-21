@@ -16,6 +16,7 @@
 
 ### 📦 Dependency updates
 
+- Bump Node to v24.22.1
 - Bump Node dependencies
 - Bump maven-help-plugin to 3.5.2
 - Bump actions/checkout to 7.0.1 (#1110)
