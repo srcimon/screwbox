@@ -1,7 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.Percent;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -75,7 +74,12 @@ class DefaultWorldTest {
     }
 
     @Test
-    void xxx() {
-        world.drawLine($(10, 20), $(9,3), SpriteBundle.BOX, TextureLineDrawOptions.scaled(3).opacity(Percent.half()));
+    void drawLine_textureOptions_drawsTextureLine() {
+        when(camera.focus()).thenReturn($(40, 90));
+        when(camera.zoom()).thenReturn(2.0);
+
+        world.drawLine($(10, 20), $(9, 3), SpriteBundle.BOX, TextureLineDrawOptions.scaled(3).opacity(Percent.half()));
+
+        verify(canvas).drawLine(Offset.at(-60, -140), Offset.at(-62, -174), SpriteBundle.BOX.get(), TextureLineDrawOptions.scaled(6).opacity(Percent.half()));
     }
 }
