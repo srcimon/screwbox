@@ -17,20 +17,13 @@ import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 
-import java.util.*;
-import static java.util.Objects.nonNull;
-
 public class EntityManager implements EntityListener {
 
     private static final int CACHE_MIN_SIZE = 4;
 
-    // Verwende Set statt List für O(1) Lookups/Entfernungen bei Beibehaltung der Reihenfolge
-    private final Set<Entity> entities = new LinkedHashSet<>();
+    private final List<Entity> entities = new ArrayList<>();
     private final Map<Integer, Entity> entitiesById = new HashMap<>();
-
-    // Ändere die inneren Listen zu LinkedHashSet für O(1) contains/remove
-    private final Map<Archetype, Set<Entity>> archetypeCache = new HashMap<>();
-
+    private final Map<Archetype, List<Entity>> archetypeCache = new HashMap<>();
     private final List<Entity> pendingNewEntities = new ArrayList<>();
     private final List<Entity> pendingEntityDeletions = new ArrayList<>();
     private final List<Entity> pendingEntityCachesToRefresh = new ArrayList<>();
@@ -42,55 +35,48 @@ public class EntityManager implements EntityListener {
         } else {
             entity.id().ifPresent(id -> {
                 if (nonNull(entitiesById.put(id, entity))) {
-                    throw new IllegalStateException("Duplicate entity id detected: " + id);
+                    throw new IllegalStateException("duplicate entity id detected: " + id);
                 }
             });
             entity.registerListener(this);
-            this.entities.add(entity);
-
-            // Optimiert: Nur noch betroffene Caches anfassen
             refreshCachedArchetypes(entity);
+            this.entities.add(entity);
         }
     }
 
-    // Falls die API zwingend eine List verlangt, defensiv kopieren oder Typ ändern
     public List<Entity> allEntities() {
-        return new ArrayList<>(entities);
+        return entities;
     }
 
     public List<Entity> entitiesMatching(final Archetype archetype) {
         Objects.requireNonNull(archetype, "archetype must not be null");
-
-        Set<Entity> cacheResult = archetypeCache.get(archetype);
+        final List<Entity> cacheResult = archetypeCache.get(archetype);
         if (nonNull(cacheResult)) {
-            return new ArrayList<>(cacheResult);
+            return cacheResult;
         }
-
-        // Falls noch nicht im Cache, erstelle ein neues Set
-        final Set<Entity> calculatedResult = new LinkedHashSet<>();
+        final List<Entity> calculatedResult = new ArrayList<>();
         for (final var entity : entities) {
             if (archetype.matches(entity)) {
                 calculatedResult.add(entity);
             }
         }
         archetypeCache.put(archetype, calculatedResult);
-        return new ArrayList<>(calculatedResult);
+        return calculatedResult;
     }
 
     private void refreshCachedArchetypes(final Entity entity) {
-        // O(1) Operationen statt O(N) linearer Suche dank Set
-        for (final var entry : archetypeCache.entrySet()) {
-            final Archetype archetype = entry.getKey();
-            final Set<Entity> cacheEntities = entry.getValue();
-
+        for (final var cacheSet : archetypeCache.entrySet()) {
+            final Archetype archetype = cacheSet.getKey();
+            final var cacheEntities = cacheSet.getValue();
             if (archetype.matches(entity)) {
-                cacheEntities.add(entity); // O(1)
+                if (!cacheEntities.contains(entity)) {
+                    cacheEntities.add(entity);
+                }
             } else {
-                cacheEntities.remove(entity); // O(1)
+                cacheEntities.remove(entity);
             }
         }
     }
-
 
     public void delayChanges() {
         this.delayChanges = true;
@@ -206,8 +192,6 @@ public class EntityManager implements EntityListener {
             addEntity(entity);
         }
     }
-
-    //TODO document huge performance improvement on massive entity updates
 
     private static Entity tryBake(final Entity entity, final Entity peer, Class<? extends Component> componentClass) {
         final var entityComponent = entity.get(componentClass);
