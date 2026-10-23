@@ -1,7 +1,9 @@
 package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -23,7 +25,7 @@ public class ChunkSystem implements EntitySystem {
         var chunks = engine.environment().fetchAll(Archetype.ofSpacial(ChunkComponent.class));
         var stashes = engine.environment().fetchAll(Archetype.ofSpacial(StashComponent.class));
         int killDist = 1024;
-        int reviveDist = 768;
+        int reviveDist = 512;
         int chunkSize = 256;
         Map<Vector, StashComponent> stashMap = new HashMap<>();
         stashes.forEach(stash -> {
@@ -31,6 +33,7 @@ public class ChunkSystem implements EntitySystem {
             stashMap.put(snapped, stash.get(StashComponent.class));
         });
 
+        int stashCount = 0;
         for (var chunk : chunks) {
             boolean isNear = engine.graphics().isWithinDistanceToVisibleArea(chunk.position(), killDist);
             if (!isNear) {
@@ -48,15 +51,19 @@ public class ChunkSystem implements EntitySystem {
 
                 matchingStash.stashedEntities.add(chunk);
                 engine.environment().remove(chunk);
+                stashCount++;
             }
         }
+        int rewivecount = 0;
         for(final var stash : stashes) {
             boolean isNear = engine.graphics().isWithinDistanceToVisibleArea(stash.position(), reviveDist);
             if(isNear) {
                 List<Entity> stashedEntities = stash.get(StashComponent.class).stashedEntities;
                 engine.environment().addEntities(stashedEntities);
                 engine.environment().remove(stash);
+                rewivecount+=stashedEntities.size();
             }
         }
+//        System.out.println("Killed %s and revived %s".formatted(stashCount, rewivecount));
     }
 }

@@ -23,8 +23,8 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
         screwBox.graphics().camera().setZoom(2);
         Sprite sprite = Sprite.placeholder(Color.RED, Size.square(16));
-        for (int x = 0; x < 4000; x += 16) {
-            for (int y = 0; y < 4000; y += 16) {
+        for (int x = 0; x < 10000; x += 16) {
+            for (int y = 0; y < 10000; y += 16) {
                 screwBox.environment().addEntity(new Entity()
                     .bounds(Bounds.atOrigin(Vector.of(x, y), 16, 16))
                     .add(new ColliderComponent())
