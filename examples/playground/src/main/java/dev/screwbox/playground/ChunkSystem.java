@@ -30,7 +30,7 @@ public class ChunkSystem implements EntitySystem {
             boolean isNear = engine.graphics().isWithinDistanceToVisibleArea(chunk.position(), killDist);
             if (!isNear) {
                 var snapped = chunk.position().snap(chunkSize);
-                stashMap.computeIfAbsent(snapped, new Function<Vector, StashComponent>() {
+                StashComponent matchingStash = stashMap.computeIfAbsent(snapped, new Function<Vector, StashComponent>() {
                     @Override
                     public StashComponent apply(Vector vector) {
                         Entity ee = new Entity().bounds(Bounds.atPosition(vector, 0, 0));
@@ -41,6 +41,8 @@ public class ChunkSystem implements EntitySystem {
                     }
                 });
 
+                matchingStash.stashedEntities.add(chunk);
+                engine.environment().remove(chunk);
             }
         }
     }
