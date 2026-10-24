@@ -1,0 +1,45 @@
+package dev.screwbox.core.environment.internal;
+
+import dev.screwbox.core.environment.Entity;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class EntityContainer {
+
+    private final Set<Entity> entitiesSet = new HashSet<>();
+    private List<Entity> entities = new ArrayList<>();
+    private boolean isOutOfSync = false;
+
+    public EntityContainer() {
+    }
+    public EntityContainer(final List<Entity> entities) {
+        entitiesSet.addAll(entities);
+        isOutOfSync = true;
+    }
+
+
+    public void add(final Entity entity) {
+        entitiesSet.add(entity);
+        isOutOfSync = true;
+    }
+
+    public List<Entity> all() {
+        if (isOutOfSync) {
+            entities = new ArrayList<>(entitiesSet);
+            isOutOfSync = false;
+        }
+        return entities;
+    }
+
+    public boolean contains(final Entity entity) {
+        return entitiesSet.contains(entity);
+    }
+
+    public void remove(final Entity entity) {
+        entitiesSet.remove(entity);
+        isOutOfSync = true;
+    }
+}
