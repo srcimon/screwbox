@@ -1,11 +1,14 @@
 package dev.screwbox.vacuum.enemies;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.audio.SoundOptions;
+import dev.screwbox.core.audio.Voice;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.SpriteBundle;
+import dev.screwbox.core.graphics.light.ShockwaveOptions;
 import dev.screwbox.core.particles.ParticleOptions;
 
 import static dev.screwbox.core.Duration.ofMillis;
@@ -20,12 +23,13 @@ public class HurtSystem implements EntitySystem {
         for (final var enemy : engine.environment().fetchAll(HURT_ENEMIES)) {
             engine.audio().playSound(SoundBundle.SPLASH, SoundOptions.playOnce().position(enemy.position()));
             engine.graphics().camera().shake(lastingForDuration(ofMillis(200)).strength(20));
+            engine.audio().playMumble("ouch", Voice.variable().baseFrequency(120));
             engine.particles().spawnMultiple(8, enemy.position(), ParticleOptions.particleSource(enemy)
-                    .lifespanSeconds(1)
-                    .randomBaseSpeed(20)
-                    .randomStartScale(0.5, 0.8)
-                    .animateOpacity()
-                    .sprite(SpriteBundle.DOT_YELLOW));
+                .lifespanSeconds(1)
+                .randomBaseSpeed(20)
+                .randomStartScale(0.5, 0.8)
+                .animateOpacity()
+                .sprite(SpriteBundle.DOT_YELLOW));
             engine.environment().remove(enemy);
         }
 

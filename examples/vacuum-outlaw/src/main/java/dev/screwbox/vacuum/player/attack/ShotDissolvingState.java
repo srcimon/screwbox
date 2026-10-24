@@ -11,6 +11,7 @@ import dev.screwbox.core.environment.tweening.TweenComponent;
 import dev.screwbox.core.environment.tweening.TweenDestroyComponent;
 import dev.screwbox.core.environment.tweening.TweenLightComponent;
 import dev.screwbox.core.environment.tweening.TweenScaleComponent;
+import dev.screwbox.core.graphics.light.ShockwaveOptions;
 
 public class ShotDissolvingState implements EntityState {
 
@@ -22,6 +23,8 @@ public class ShotDissolvingState implements EntityState {
         entity.add(new TweenScaleComponent(0, 1));
         entity.add(new TweenLightComponent(Percent.zero(), Percent.max()));
         entity.add(new TweenDestroyComponent());
+        engine.graphics().postProcessing().triggerShockwave(entity.position(), ShockwaveOptions.radius(30).duration(Duration.ofMillis(500)));
+
     }
 
     @Override
