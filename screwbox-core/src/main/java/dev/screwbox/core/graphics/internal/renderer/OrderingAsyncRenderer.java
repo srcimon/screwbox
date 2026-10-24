@@ -140,17 +140,18 @@ public class OrderingAsyncRenderer implements Renderer {
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
+            final var inactiveTasks = renderTasks.inactive();
             try {
-                renderTasks.inactive().sort(null);
-                for (final var renderingTask : renderTasks.inactive()) {
+                inactiveTasks.sort(null);
+                for (final var renderingTask : inactiveTasks) {
                     renderingTask.task.run();
                 }
             } catch (final Exception e) {
                 Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
             }
-            renderTaskCount = renderTasks.inactive().size();
+            renderTaskCount = inactiveTasks.size();
             renderingDuration = Duration.since(startOfRendering);
-            renderTasks.inactive().clear();
+            inactiveTasks.clear();
         }, null);
     }
 
