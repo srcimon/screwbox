@@ -21,9 +21,9 @@ public class EntityManager implements EntityListener {
 
     private static final int CACHE_MIN_SIZE = 4;
 
-    private final EntityContainer entities = new EntityContainer();
+    private final List<Entity> entities = new ArrayList<>();
     private final Map<Integer, Entity> entitiesById = new HashMap<>();
-    private final Map<Archetype, EntityContainer> archetypeCache = new HashMap<>();
+    private final Map<Archetype, List<Entity>> archetypeCache = new HashMap<>();
     private final List<Entity> pendingNewEntities = new ArrayList<>();
     private final List<Entity> pendingEntityDeletions = new ArrayList<>();
     private final List<Entity> pendingEntityCachesToRefresh = new ArrayList<>();
@@ -45,22 +45,22 @@ public class EntityManager implements EntityListener {
     }
 
     public List<Entity> allEntities() {
-        return entities.all();
+        return entities;
     }
 
     public List<Entity> entitiesMatching(final Archetype archetype) {
         Objects.requireNonNull(archetype, "archetype must not be null");
-        final var cacheResult = archetypeCache.get(archetype);
+        final List<Entity> cacheResult = archetypeCache.get(archetype);
         if (nonNull(cacheResult)) {
-            return cacheResult.all();
+            return cacheResult;
         }
         final List<Entity> calculatedResult = new ArrayList<>();
-        for (final var entity : entities.all()) {
+        for (final var entity : entities) {
             if (archetype.matches(entity)) {
                 calculatedResult.add(entity);
             }
         }
-        archetypeCache.put(archetype, new EntityContainer(calculatedResult));
+        archetypeCache.put(archetype, calculatedResult);
         return calculatedResult;
     }
 
