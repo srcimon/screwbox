@@ -15,7 +15,7 @@ import static java.util.Collections.emptyList;
  */
 class EntityContainer {
 
-    private final Set<Entity> entitiesSet = new LinkedHashSet<>();
+    private Set<Entity> entitiesSet = new LinkedHashSet<>();
     private List<Entity> entities = new ArrayList<>();
     private boolean isOutOfSync = false;
 
@@ -23,7 +23,7 @@ class EntityContainer {
     }
 
     public EntityContainer(final List<Entity> entities) {
-        entitiesSet.addAll(entities);
+        entitiesSet = new LinkedHashSet<>(entities);
         isOutOfSync = true;
     }
 
