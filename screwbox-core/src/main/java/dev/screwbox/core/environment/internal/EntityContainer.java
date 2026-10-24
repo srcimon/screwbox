@@ -7,13 +7,15 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.Collections.emptyList;
+
 /**
  * Allows fast adding and removing of {@link Entity entities} but will also reduce overhead of retrieving all
  * {@link Entity entities} as list.
  */
 class EntityContainer {
 
-    private final Set<Entity> entitiesSet = new LinkedHashSet<>();
+    private Set<Entity> entitiesSet = new LinkedHashSet<>();
     private List<Entity> entities = new ArrayList<>();
     private boolean isOutOfSync = false;
 
@@ -21,7 +23,7 @@ class EntityContainer {
     }
 
     public EntityContainer(final List<Entity> entities) {
-        entitiesSet.addAll(entities);
+        entitiesSet = new LinkedHashSet<>(entities);
         isOutOfSync = true;
     }
 
@@ -34,7 +36,7 @@ class EntityContainer {
 
     public List<Entity> all() {
         if (isOutOfSync) {
-            entities = List.copyOf(entitiesSet);
+            entities = entitiesSet.isEmpty() ? emptyList() : List.copyOf(entitiesSet);
             isOutOfSync = false;
         }
         return entities;
