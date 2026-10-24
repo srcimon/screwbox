@@ -85,7 +85,7 @@ public class EntityManager implements EntityListener {
     public void pickUpChanges() {
         this.delayChanges = false;
 
-        if (archetypeCache.size() > CACHE_MIN_SIZE && pendingEntityCachesToRefresh.size() + pendingEntityDeletions.size() + pendingNewEntities.size() > archetypeCache.size()) {
+        if (shouldArchetypeCachesBeInvalidated()) {
             archetypeCache.clear();
             pendingEntityCachesToRefresh.clear();
         }
@@ -104,6 +104,11 @@ public class EntityManager implements EntityListener {
             refreshCachedArchetypes(entity);
         }
         pendingEntityCachesToRefresh.clear();
+    }
+
+    private boolean shouldArchetypeCachesBeInvalidated() {
+        final var pendingUpdateCount = pendingEntityCachesToRefresh.size() + pendingEntityDeletions.size() + pendingNewEntities.size();
+        return archetypeCache.size() > CACHE_MIN_SIZE && pendingUpdateCount > archetypeCache.size();
     }
 
     @Override
