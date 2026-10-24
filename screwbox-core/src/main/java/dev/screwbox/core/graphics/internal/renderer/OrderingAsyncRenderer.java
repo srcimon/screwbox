@@ -50,8 +50,10 @@ public class OrderingAsyncRenderer implements Renderer {
 
         @Override
         public int compareTo(final RenderingTask other) {
-            final int byOrder = Integer.compare(drawOrder, other.drawOrder);
-            return byOrder == 0 ? Integer.compare(zIndex, other.zIndex) : byOrder;
+            final long thisKey = ((long) this.drawOrder << 32) | (this.zIndex & 0xFFFFFFFFL);
+            final long otherKey = ((long) other.drawOrder << 32) | (other.zIndex & 0xFFFFFFFFL);
+
+            return Long.compare(thisKey, otherKey);
         }
     }
 
@@ -142,7 +144,9 @@ public class OrderingAsyncRenderer implements Renderer {
             final Time startOfRendering = Time.now();
             final var inactiveTasks = renderTasks.inactive();
             try {
+                Time t = Time.now();
                 inactiveTasks.sort(null);
+                System.out.println(Duration.since(t).nanos());
                 for (final var renderingTask : inactiveTasks) {
                     renderingTask.task.run();
                 }
