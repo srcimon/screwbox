@@ -28,7 +28,6 @@ public class HeavyLoadScene implements Scene {
 
     @Override
     public void populate(Environment environment) {
-
         Sprite sprite = Sprite.placeholder(Color.RED, Size.square(16));
         for (int x = 0; x < 40000; x += 16) {
             for (int y = 0; y < 40000; y += 16) {

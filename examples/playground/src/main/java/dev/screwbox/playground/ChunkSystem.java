@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
-import dev.screwbox.core.graphics.Offset;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +21,7 @@ public class ChunkSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
+        Time t = Time.now();
         var chunks = engine.environment().fetchAll(Archetype.ofSpacial(ChunkComponent.class));
         var stashes = engine.environment().fetchAll(Archetype.ofSpacial(StashComponent.class));
         int killDist = 1024;
@@ -64,6 +64,6 @@ public class ChunkSystem implements EntitySystem {
                 rewivecount+=stashedEntities.size();
             }
         }
-//        System.out.println("Killed %s and revived %s".formatted(stashCount, rewivecount));
+//        System.out.println("!!" + Duration.since(t).milliseconds());
     }
 }
