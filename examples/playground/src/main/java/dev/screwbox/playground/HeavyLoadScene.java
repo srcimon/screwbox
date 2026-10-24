@@ -29,8 +29,8 @@ public class HeavyLoadScene implements Scene {
     @Override
     public void populate(Environment environment) {
         Sprite sprite = Sprite.placeholder(Color.RED, Size.square(16));
-        for (int x = 0; x < 40000; x += 16) {
-            for (int y = 0; y < 40000; y += 16) {
+        for (int x = 0; x < 16000; x += 16) {
+            for (int y = 0; y < 16000; y += 16) {
                 environment.addEntity(new Entity()
                     .bounds(Bounds.atOrigin(Vector.of(x, y), 16, 16))
                     .add(new ColliderComponent())
