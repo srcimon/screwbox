@@ -4,9 +4,9 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 
+import static dev.screwbox.core.environment.Order.PRESENTATION_EFFECTS;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.HORIZONTAL;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -16,7 +16,7 @@ import static java.util.Objects.nonNull;
  *
  * @since 2.19.0
  */
-@ExecutionOrder(Order.PRESENTATION_EFFECTS)
+@ExecutionOrder(PRESENTATION_EFFECTS)
 public class FluidRenderSystem implements EntitySystem {
 
     private static final Archetype FLUIDS = Archetype.ofSpacial(FluidComponent.class, FluidRenderComponent.class);
@@ -33,10 +33,10 @@ public class FluidRenderSystem implements EntitySystem {
                 : PolygonDrawOptions.verticalGradient(renderConfig.color, renderConfig.secondaryColor);
 
             engine.graphics().world().drawPolygon(fluid.outline, options.smoothing(HORIZONTAL).drawOrder(renderConfig.drawOrder));
-
             if (nonNull(renderConfig.surfaceColor)) {
                 engine.graphics().world().drawPolygon(fluid.surface, PolygonDrawOptions.outline(renderConfig.surfaceColor)
                     .smoothing(HORIZONTAL)
+                    .drawOrder(renderConfig.drawOrder)
                     .strokeWidth(renderConfig.surfaceStrokeWidth));
             }
         }

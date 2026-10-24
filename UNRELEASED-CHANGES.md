@@ -8,7 +8,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed fluid outlines did not apply draw order
 
 ### 🧽 Cleanup & refactoring
 
