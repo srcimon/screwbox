@@ -7,6 +7,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.Collections.emptyList;
+
 /**
  * Allows fast adding and removing of {@link Entity entities} but will also reduce overhead of retrieving all
  * {@link Entity entities} as list.
@@ -34,7 +36,7 @@ class EntityContainer {
 
     public List<Entity> all() {
         if (isOutOfSync) {
-            entities = List.copyOf(entitiesSet);
+            entities = entitiesSet.isEmpty() ? emptyList() : List.copyOf(entitiesSet);
             isOutOfSync = false;
         }
         return entities;
