@@ -3,7 +3,7 @@ package dev.screwbox.core.environment.internal;
 import dev.screwbox.core.environment.Entity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,7 +13,7 @@ import java.util.Set;
  */
 class EntityContainer {
 
-    private final Set<Entity> entitiesSet = new HashSet<>();
+    private final Set<Entity> entitiesSet = new LinkedHashSet<>();
     private List<Entity> entities = new ArrayList<>();
     private boolean isOutOfSync = false;
 
