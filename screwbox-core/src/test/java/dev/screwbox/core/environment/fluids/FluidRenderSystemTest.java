@@ -52,15 +52,18 @@ class FluidRenderSystemTest {
             .addSystem(new FluidRenderSystem())
             .addEntity(new Entity()
                 .add(fluid)
-                .add(new FluidRenderComponent(Color.RED), render -> render.surfaceColor = Color.WHITE)
+                .add(new FluidRenderComponent(Color.RED), render -> {
+                    render.surfaceColor = Color.WHITE;
+                    render.drawOrder = 4;
+                })
                 .bounds(Bounds.$$(24, 18, 100, 20)));
 
         environment.update();
 
         verify(world).drawPolygon(Polygon.ofNodes($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18), $(124, 38), $(24, 38)),
-            PolygonDrawOptions.filled(Color.RED).smoothing(HORIZONTAL));
+            PolygonDrawOptions.filled(Color.RED).smoothing(HORIZONTAL).drawOrder(4));
 
         verify(world).drawPolygon(Polygon.ofNodes($(24, 28), $(44, 16), $(64, 18), $(84, 18), $(104, 22), $(124, 18)),
-            PolygonDrawOptions.outline(Color.WHITE).smoothing(HORIZONTAL).strokeWidth(2));
+            PolygonDrawOptions.outline(Color.WHITE).smoothing(HORIZONTAL).strokeWidth(2).drawOrder(4));
     }
 }
