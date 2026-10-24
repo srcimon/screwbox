@@ -16,9 +16,9 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
-import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
@@ -144,9 +144,7 @@ public class OrderingAsyncRenderer implements Renderer {
             final Time startOfRendering = Time.now();
             final var inactiveTasks = renderTasks.inactive();
             try {
-                Time t = Time.now();
                 inactiveTasks.sort(null);
-                System.out.println(Duration.since(t).nanos());
                 for (final var renderingTask : inactiveTasks) {
                     renderingTask.task.run();
                 }
