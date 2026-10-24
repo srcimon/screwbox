@@ -7,7 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class EntityContainer {
+/**
+ * Allows fast adding and removing of {@link Entity entities} but will also reduce overhead of retrieving all
+ * {@link Entity entities} as list.
+ */
+class EntityContainer {
 
     private final Set<Entity> entitiesSet = new HashSet<>();
     private List<Entity> entities = new ArrayList<>();
@@ -15,6 +19,7 @@ public class EntityContainer {
 
     public EntityContainer() {
     }
+
     public EntityContainer(final List<Entity> entities) {
         entitiesSet.addAll(entities);
         isOutOfSync = true;
@@ -22,8 +27,7 @@ public class EntityContainer {
 
 
     public void add(final Entity entity) {
-        entitiesSet.add(entity);
-        isOutOfSync = true;
+        isOutOfSync = entitiesSet.add(entity);
     }
 
     public List<Entity> all() {
@@ -39,7 +43,6 @@ public class EntityContainer {
     }
 
     public void remove(final Entity entity) {
-        entitiesSet.remove(entity);
-        isOutOfSync = true;
+        isOutOfSync = entitiesSet.remove(entity);
     }
 }
