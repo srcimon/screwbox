@@ -16,9 +16,9 @@ import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteFillOptions;
-import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.utils.Latch;
 
 import java.awt.*;
@@ -50,8 +50,10 @@ public class OrderingAsyncRenderer implements Renderer {
 
         @Override
         public int compareTo(final RenderingTask other) {
-            final int byOrder = Integer.compare(drawOrder, other.drawOrder);
-            return byOrder == 0 ? Integer.compare(zIndex, other.zIndex) : byOrder;
+            final long thisKey = ((long) this.drawOrder << 32) | (this.zIndex & 0xFFFFFFFFL);
+            final long otherKey = ((long) other.drawOrder << 32) | (other.zIndex & 0xFFFFFFFFL);
+
+            return Long.compare(thisKey, otherKey);
         }
     }
 
@@ -140,17 +142,18 @@ public class OrderingAsyncRenderer implements Renderer {
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
             final Time startOfRendering = Time.now();
+            final var inactiveTasks = renderTasks.inactive();
             try {
-                renderTasks.inactive().sort(null);
-                for (final var renderingTask : renderTasks.inactive()) {
+                inactiveTasks.sort(null);
+                for (final var renderingTask : inactiveTasks) {
                     renderingTask.task.run();
                 }
             } catch (final Exception e) {
                 Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
             }
-            renderTaskCount = renderTasks.inactive().size();
+            renderTaskCount = inactiveTasks.size();
             renderingDuration = Duration.since(startOfRendering);
-            renderTasks.inactive().clear();
+            inactiveTasks.clear();
         }, null);
     }
 
