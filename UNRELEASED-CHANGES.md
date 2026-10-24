@@ -14,6 +14,7 @@
 
 - Renamed chatter to mumble (#1113)
 - Updated `Canvas` and `World` method parameter names consistently
+- Simplyfied code for disabling rendering on closed window
 
 ### 📦 Dependency updates
 
