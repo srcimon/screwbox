@@ -4,6 +4,7 @@
 - Ropes and soft bodies surfaces support sprites for drawing
 - Configure spacing between indirect light rays
 - Create `ScreenBounds` by to defining positions
+- Significantly improved performance for adding and removing entities from the environment
 
 ### 🪛 Bug Fixes
 

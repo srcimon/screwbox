@@ -27,12 +27,14 @@ class EntityContainer {
 
 
     public void add(final Entity entity) {
-        isOutOfSync = entitiesSet.add(entity);
+        if (entitiesSet.add(entity)) {
+            isOutOfSync = true;
+        }
     }
 
     public List<Entity> all() {
         if (isOutOfSync) {
-            entities = new ArrayList<>(entitiesSet);
+            entities = List.copyOf(entitiesSet);
             isOutOfSync = false;
         }
         return entities;
@@ -43,6 +45,8 @@ class EntityContainer {
     }
 
     public void remove(final Entity entity) {
-        isOutOfSync = entitiesSet.remove(entity);
+        if (entitiesSet.remove(entity)) {
+            isOutOfSync = true;
+        }
     }
 }
