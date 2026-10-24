@@ -15,20 +15,21 @@ public class RenderPipeline implements GraphicsConfigurationListener {
 
     private final OrderingAsyncRenderer orderingAsyncRenderer;
     private final StandbyProxyRenderer standbyProxyRenderer;
+    private final FirewallRenderer firewallRenderer;
     private final DefaultRenderer defaultRenderer;
     private final GraphicsConfiguration configuration;
 
     public RenderPipeline(final ExecutorService executor, final GraphicsConfiguration configuration, final Engine engine) {
         defaultRenderer = new DefaultRenderer();
         orderingAsyncRenderer = new OrderingAsyncRenderer(defaultRenderer, executor, engine);
-        final var firewallRenderer = new FirewallRenderer(orderingAsyncRenderer);
-        standbyProxyRenderer = new StandbyProxyRenderer(firewallRenderer);
+        standbyProxyRenderer = new StandbyProxyRenderer(orderingAsyncRenderer);
+        firewallRenderer = new FirewallRenderer(standbyProxyRenderer);
         this.configuration = configuration;
         configuration.addListener(this);
     }
 
     public Renderer renderer() {
-        return standbyProxyRenderer;
+        return firewallRenderer;
     }
 
     public void skipFrames(final int count) {
