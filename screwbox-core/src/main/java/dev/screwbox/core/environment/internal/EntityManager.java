@@ -21,9 +21,9 @@ public class EntityManager implements EntityListener {
 
     private static final int CACHE_MIN_SIZE = 4;
 
-    private final List<Entity> entities = new ArrayList<>();
+    private final EntityContainer entities = new EntityContainer();
     private final Map<Integer, Entity> entitiesById = new HashMap<>();
-    private final Map<Archetype, List<Entity>> archetypeCache = new HashMap<>();
+    private final Map<Archetype, EntityContainer> archetypeCache = new HashMap<>();
     private final List<Entity> pendingNewEntities = new ArrayList<>();
     private final List<Entity> pendingEntityDeletions = new ArrayList<>();
     private final List<Entity> pendingEntityCachesToRefresh = new ArrayList<>();
@@ -45,22 +45,22 @@ public class EntityManager implements EntityListener {
     }
 
     public List<Entity> allEntities() {
-        return entities;
+        return entities.all();
     }
 
     public List<Entity> entitiesMatching(final Archetype archetype) {
         Objects.requireNonNull(archetype, "archetype must not be null");
-        final List<Entity> cacheResult = archetypeCache.get(archetype);
+        final var cacheResult = archetypeCache.get(archetype);
         if (nonNull(cacheResult)) {
-            return cacheResult;
+            return cacheResult.all();
         }
         final List<Entity> calculatedResult = new ArrayList<>();
-        for (final var entity : entities) {
+        for (final var entity : entities.all()) {
             if (archetype.matches(entity)) {
                 calculatedResult.add(entity);
             }
         }
-        archetypeCache.put(archetype, calculatedResult);
+        archetypeCache.put(archetype, new EntityContainer(calculatedResult));
         return calculatedResult;
     }
 
@@ -85,7 +85,7 @@ public class EntityManager implements EntityListener {
     public void pickUpChanges() {
         this.delayChanges = false;
 
-        if (archetypeCache.size() > CACHE_MIN_SIZE && pendingEntityCachesToRefresh.size() + pendingEntityDeletions.size() + pendingNewEntities.size() > archetypeCache.size()) {
+        if (shouldArchetypeCachesBeInvalidated()) {
             archetypeCache.clear();
             pendingEntityCachesToRefresh.clear();
         }
@@ -104,6 +104,11 @@ public class EntityManager implements EntityListener {
             refreshCachedArchetypes(entity);
         }
         pendingEntityCachesToRefresh.clear();
+    }
+
+    private boolean shouldArchetypeCachesBeInvalidated() {
+        final var pendingUpdateCount = pendingEntityCachesToRefresh.size() + pendingEntityDeletions.size() + pendingNewEntities.size();
+        return archetypeCache.size() > CACHE_MIN_SIZE && pendingUpdateCount > archetypeCache.size();
     }
 
     @Override
