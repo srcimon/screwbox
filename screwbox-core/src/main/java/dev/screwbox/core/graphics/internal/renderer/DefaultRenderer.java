@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.AwtMapper;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.RichTextBlock;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
@@ -211,36 +212,48 @@ public class DefaultRenderer implements Renderer {
     public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
         final var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
+
         final double deltaX = (double)end.x() - start.x();
         final double deltaY = (double)end.y() - start.y();
         final double distance = start.distanceTo(end);
 
-        final double scaledWidth = sprite.size().width() * options.scale();
-        final double scaledHeight = sprite.size().height() * options.scale();
+        final double spriteWidth = sprite.size().width();
+        final double spriteHeight = sprite.size().height();
+        final double scaledHeight = spriteHeight * options.scale();
 
-        final double angle = Math.atan2(deltaY, deltaX);
-        final var localClipTransform = new AffineTransform();
-        localClipTransform.translate(start.x(), start.y());
-        localClipTransform.rotate(angle);
-
-        final var clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
-        graphics.clip(localClipTransform.createTransformedShape(clipRect));
+        // 1. Grafik-Kontext sichern
+        final var oldTransform = graphics.getTransform();
         applyOpacityConfig(options.opacity());
 
-        final double textureOffset = (options.offset() - (scaledWidth / 2.0)) % scaledWidth;
+        // 2. Koordinatensystem für die Geometrie transformieren (Startpunkt & Richtung der Linie)
+        final double angle = Math.atan2(deltaY, deltaX);
+        graphics.translate(start.x(), start.y());
+        graphics.rotate(angle);
+        graphics.scale(options.scale(), options.scale());
 
-        for (double d = -textureOffset; d <= distance + scaledWidth; d += scaledWidth) {
-            double t = d / distance;
-            double x = start.x() + t * deltaX;
-            double y = start.y() + t * deltaY;
-            final var localTransform = new AffineTransform();
-            localTransform.translate(x, y);
-            localTransform.rotate(angle);
-            localTransform.scale(options.scale(), options.scale());
-            localTransform.translate(-sprite.size().width() / 2.0, -sprite.size().height() / 2.0);
-            drawSprite(sprite, shader, localTransform);
-        }
-        lastUsedClip = null; // resets clip
+        // 3. Den mathematisch korrekten Textur-Offset berechnen
+        // options.offset() muss den akkumulierten Fortschritt des Gesamtweges enthalten.
+        // Wir rechnen den skalierungsbereinigten Offset aus und fangen negative Werte ab.
+        final double unscaledOffset = options.offset() / options.scale();
+        final double localOffset = ((unscaledOffset - (spriteWidth / 2.0)) % spriteWidth + spriteWidth) % spriteWidth;
+
+        // 4. TexturePaint relativ zur transformierten Linien-Achse definieren
+        // Der Anker verschiebt sich um den localOffset nach LINKS (-), damit das Muster visuell nach rechts wandert.
+        // Wichtig: Da wir uns bereits im lokal rotierten Raum befinden, läuft dieser Anker exakt parallel zur Linie!
+        final var anchor = new Rectangle2D.Double(-localOffset, -spriteHeight / 2.0, spriteWidth, spriteHeight);
+
+        final var image = sprite.image(shader, time);
+        final var texturePaint = new TexturePaint(ImageOperations.toBufferedImage(image), anchor);
+        graphics.setPaint(texturePaint);
+
+        // 5. Ein einziges, unverschobenes Rechteck füllen (Gleiche Geometrie wie dein originaler Clip)
+        // Da wir herunterskaliert haben, teilen wir die Distanz durch den lokalen Linien-Scale.
+        final double localDistance = distance / options.scale();
+        graphics.fill(new Rectangle2D.Double(0, -spriteHeight / 2.0, localDistance, spriteHeight));
+
+        // Transformation zurücksetzen
+        graphics.setTransform(oldTransform);
+        lastUsedClip = null;
     }
 
     @Override
