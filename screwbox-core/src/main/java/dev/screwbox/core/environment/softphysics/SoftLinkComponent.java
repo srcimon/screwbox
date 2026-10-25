@@ -62,7 +62,4 @@ public class SoftLinkComponent implements Component {
      * @since 3.21.0
      */
     public Percent stiffness = Percent.of(0.125);
-
-    public boolean isLengthFixed = false; // TODO document, test, changelog
-    //TODO test serialisation
 }
