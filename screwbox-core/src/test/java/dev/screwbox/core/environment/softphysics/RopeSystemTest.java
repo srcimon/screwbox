@@ -1,9 +1,13 @@
 package dev.screwbox.core.environment.softphysics;
 
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.importing.IdPool;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.test.EnvironmentExtension;
+import dev.screwbox.core.utils.Validate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -40,6 +44,18 @@ class RopeSystemTest {
         environment.update();
         assertThat(start.get(RopeComponent.class).nodes).containsExactly(start, firstNode, secondNode);
         assertThat(start.get(RopeComponent.class).shape.definitionNotes()).containsExactly(start.position(), firstNode.position(), secondNode.position());
+    }
+
+    @Test
+    void xxxx(DefaultEnvironment environment) {
+        var rope = SoftPhysicsSupport.createRope(Vector.$(10, 20), Vector.$(400, 200), 40, environment);
+        rope.root().get(RopeComponent.class).isLengthFixed = true;
+
+        rope.end().remove(PhysicsComponent.class);
+        environment.addEntities(rope);
+        environment.addSystem(new RopeSystem());
+        environment.update();
+
     }
 
     @Test

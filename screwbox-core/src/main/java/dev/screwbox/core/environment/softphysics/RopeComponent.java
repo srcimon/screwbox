@@ -36,7 +36,6 @@ public class RopeComponent implements Component {
     public boolean isLengthFixed = false;//TODO document
 
     //TODO test, changelog
-    //TODO test serialization
     @Serial
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();

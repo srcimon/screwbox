@@ -10,7 +10,6 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
-import dev.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +37,21 @@ public class RopeSystem implements EntitySystem {
             }
             config.shape = toPolygon(config.nodes);
             if (config.isLengthFixed) {
-                var nodes = config.nodes;
-                for (int i = 0; i < nodes.size() - 1; i++) {
-                    final Entity node = nodes.get(i);
-                    final Entity target = nodes.get(i + 1);
-                    Validate.isTrue(target.hasComponent(PhysicsComponent.class), "fixed length ropes are only supported for connected nodes that have a PhysicsComponent");
-                    final double length = node.get(SoftLinkComponent.class).length;
-                    Vector newpos = Line.between(node.position(), target.position()).length(length).end();//TODO optimize
-                    target.moveTo(newpos);
-                }
+                applyFixedLength(config);
             }
+        }
+    }
+
+    private static void applyFixedLength(final RopeComponent rope) {
+        for (int i = 0; i < rope.nodes.size() - 1; i++) {
+            final Entity node = rope.nodes.get(i);
+            final Entity target = rope.nodes.get(i + 1);
+            if (!target.hasComponent(PhysicsComponent.class)) {
+                throw new IllegalStateException("fixed length ropes are only supported for connected nodes that have a PhysicsComponent");
+            }
+            final double length = node.get(SoftLinkComponent.class).length;
+            Vector newpos = Line.between(node.position(), target.position()).length(length).end();//TODO optimize
+            target.moveTo(newpos);
         }
     }
 

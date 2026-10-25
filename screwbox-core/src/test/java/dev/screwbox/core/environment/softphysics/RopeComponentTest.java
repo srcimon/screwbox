@@ -11,11 +11,13 @@ class RopeComponentTest {
     @Test
     void testSerialization() {
         var rope = new RopeComponent();
+        rope.isLengthFixed = true;
         rope.nodes.add(new Entity(1));
 
         var afterRoundTrip = TestSupport.roundTripSerialization(rope);
 
         assertThat(afterRoundTrip.nodes).hasSize(1);
         assertThat(afterRoundTrip.nodes.getFirst().id()).contains(1);
+        assertThat(afterRoundTrip.isLengthFixed).isTrue();
     }
 }
