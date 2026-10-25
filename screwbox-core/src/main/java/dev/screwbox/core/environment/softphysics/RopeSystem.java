@@ -1,7 +1,6 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
@@ -50,9 +49,7 @@ public class RopeSystem implements EntitySystem {
                 throw new IllegalStateException("fixed length ropes are only supported for connected nodes that have a PhysicsComponent");
             }
             final double length = node.get(SoftLinkComponent.class).length;
-            final var newpos = Line.between(node.position(), target.position()).length(length).end();
-            //TODO Vector.clampDistance(other, distance)
-            target.moveTo(newpos);
+            target.moveTo(node.position().clampDistance(target.position(), length));
         }
     }
 
