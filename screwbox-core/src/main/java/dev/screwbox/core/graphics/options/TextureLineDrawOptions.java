@@ -18,10 +18,10 @@ import java.util.function.Supplier;
  * @param scale     scale of the used texture
  * @param shader    specify the {@link ShaderBundle} for drawing
  * @param opacity   specify the opacity of the texture
+ * @param offset    specify image offset for drawing. Usefull when drawing continuous lines.
  * @see Canvas#drawLine(Offset, Offset, Sprite, TextureLineDrawOptions)
  * @since 3.38.0
  */
-//TODO document offset
 public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup shader, Percent opacity, double offset) {
 
     private static final TextureLineDrawOptions ORIGINAL_SIZE = scaled(1);
@@ -80,6 +80,9 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
         return new TextureLineDrawOptions(drawOrder, scale, shader, opacity, offset);
     }
 
+    /**
+     * Sets the image offset for drawing. Usefull when drawing continuous lines.
+     */
     public TextureLineDrawOptions offset(final double offset) {
         return new TextureLineDrawOptions(drawOrder, scale, shader, opacity, offset);
     }
