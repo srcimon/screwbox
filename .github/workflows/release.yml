@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: '21'
-          distribution: 'temurin'f
+          distribution: 'temurin'
           java-package: 'jdk'
           cache: 'maven'
           server-id: ossrh
