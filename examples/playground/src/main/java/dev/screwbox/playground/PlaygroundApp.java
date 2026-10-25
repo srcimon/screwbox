@@ -29,7 +29,7 @@ public class PlaygroundApp {
     }
 
     private static SoftPhysicsSupport.RopeEntities createSnake(Vector position, Engine screwBox) {
-        var snake = SoftPhysicsSupport.createRope(position, position.addX(256), 9, screwBox.environment());
+        var snake = SoftPhysicsSupport.createRope(position, position.addX(256), 17, screwBox.environment());
         snake.root().add(new RopeRenderComponent(Sprite.fromFile("snake.png")));
         snake.root().get(RopeComponent.class).isLengthFixed = true;
         snake.root().add(new CameraTargetComponent(10));
