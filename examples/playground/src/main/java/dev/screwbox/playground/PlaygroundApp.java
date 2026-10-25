@@ -21,6 +21,7 @@ public class PlaygroundApp {
         var snake = SoftPhysicsSupport.createRope(Vector.$(0, 0), Vector.$(256, 0), 9, screwBox.environment());
         snake.root().add(new RopeRenderComponent(Sprite.fromFile("snake.png")));
         snake.root().add(new CameraTargetComponent());
+        snake.root().get(RopeComponent.class).isLengthFixed = true;
         snake.forEach(s -> s.get(PhysicsComponent.class).friction = 0.8);
         screwBox.environment().enableAllFeatures().addEntities(snake)
             .addSystem(new DebugGridSystem(16, 256))

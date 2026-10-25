@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
@@ -34,6 +35,16 @@ public class RopeSystem implements EntitySystem {
                 fillInRopeNodes(environment, rope, config.nodes);
             }
             config.shape = toPolygon(config.nodes);
+            if (config.isLengthFixed) {
+                var nodes = config.nodes;
+                for (int i = 0; i < nodes.size() - 1; i++) {
+                    final Entity node = nodes.get(i);
+                    final Entity target = nodes.get(i + 1);
+                    final double length = node.get(SoftLinkComponent.class).length;
+                    Vector newpos = Line.between(node.position(), target.position()).length(length).end();//TODO optimize
+                    target.moveTo(newpos);
+                }
+            }
         }
     }
 

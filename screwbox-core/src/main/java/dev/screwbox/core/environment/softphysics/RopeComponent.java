@@ -33,7 +33,10 @@ public class RopeComponent implements Component {
      * List of {@link Entity entities} that are part of the rope. Will be updated by {@link RopeSystem}.
      */
     public transient List<Entity> nodes = new ArrayList<>();
+    public boolean isLengthFixed = false;//TODO document
 
+    //TODO test, changelog
+    //TODO test serialization
     @Serial
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
