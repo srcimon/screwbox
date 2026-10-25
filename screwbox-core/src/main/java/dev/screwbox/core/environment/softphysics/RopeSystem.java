@@ -50,7 +50,8 @@ public class RopeSystem implements EntitySystem {
                 throw new IllegalStateException("fixed length ropes are only supported for connected nodes that have a PhysicsComponent");
             }
             final double length = node.get(SoftLinkComponent.class).length;
-            Vector newpos = Line.between(node.position(), target.position()).length(length).end();//TODO optimize
+            final var newpos = Line.between(node.position(), target.position()).length(length).end();
+            //TODO Vector.clampDistance(other, distance)
             target.moveTo(newpos);
         }
     }
