@@ -1,5 +1,7 @@
 package dev.screwbox.core.audio;
 
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +49,7 @@ class SynthesizerTest {
     void generateMumble_sameTextVariableSeed_isDifferent() {
         Voice variable = Voice.variable();
         var firstMumble = Synthesizer.generateMumble("test", variable);
+        TestSupport.sleep(Duration.ofMillis(10));
         var secondMumbe = Synthesizer.generateMumble("test", variable);
 
         assertThat(firstMumble.content()).isNotEqualTo(secondMumbe.content());

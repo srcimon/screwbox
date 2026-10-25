@@ -16,7 +16,7 @@ public final class AwtMapper {
     }
 
     public static java.awt.Color toAwtColor(final Color color) {
-        return new java.awt.Color(color.r(), color.g(), color.b(), color.opacity().rangeValue(0, 255));
+        return new java.awt.Color(color.r(), color.g(), color.b(), color.alpha());
     }
 
     public static Font toAwtFont(final SystemTextDrawOptions options) {
