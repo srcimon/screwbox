@@ -113,7 +113,7 @@ public class ImportOptions<S, I> {
      * @since 3.28.0
      */
     public ImportOptions<S, I> repeatLastAssignment(final int repetitionCount) {
-        Validate.isFalse(assignments::isEmpty, "cannot repeat assigment without specifying an assignment");
+        Validate.isFalse(assignments.isEmpty(), "cannot repeat assigment without specifying an assignment");
         Validate.positive(repetitionCount, "repetition count must be positive");
 
         for (int i = 0; i < repetitionCount; i++) {

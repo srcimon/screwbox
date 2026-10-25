@@ -67,6 +67,6 @@ public class SavegameManager {
 
     private static void validateName(final String name) {
         requireNonNull(name, "name must not be null");
-        Validate.isFalse(() -> name.endsWith(".") || name.endsWith(File.separator), "savegame name is invalid: " + name);
+        Validate.isFalse(name.endsWith(".") || name.endsWith(File.separator), "savegame name is invalid: " + name);
     }
 }

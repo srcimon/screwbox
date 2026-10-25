@@ -249,7 +249,7 @@ public final class TileMap<T> {
     }
 
     public TileMap(final Map<Offset, T> directory, final Size tileSize, final Size mapSize) {
-        Validate.isTrue(tileSize::isValid, "tile size must be valid");
+        Validate.isTrue(tileSize.isValid(), "tile size must be valid");
         this.tileSize = tileSize;
         this.mapSize = mapSize;
         for (final var entry : directory.entrySet()) {

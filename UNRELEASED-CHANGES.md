@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Simplyfied validation for boolean conditions
 
 ### 📦 Dependency updates
 

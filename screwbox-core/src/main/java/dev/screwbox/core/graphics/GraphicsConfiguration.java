@@ -145,7 +145,7 @@ public class GraphicsConfiguration {
      */
     public GraphicsConfiguration setLightBounceIntensityLoss(final Percent loss) {
         Objects.requireNonNull(loss, "loss must not be null");
-        Validate.isFalse(loss::isMax, "loss must below maximum value");
+        Validate.isFalse(loss.isMax(), "loss must below maximum value");
         this.lightBounceIntensityLoss = loss;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BOUNCE_INTENSITY_LOSS);
         return this;
@@ -167,7 +167,7 @@ public class GraphicsConfiguration {
      */
     public GraphicsConfiguration setLightBounceLengthLoss(final Percent loss) {
         Objects.requireNonNull(loss, "loss must not be null");
-        Validate.isFalse(loss::isMax, "loss must below maximum value");
+        Validate.isFalse(loss.isMax(), "loss must below maximum value");
         this.lightBounceLengthLoss = loss;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_BOUNCE_LENGTH_LOSS);
         return this;

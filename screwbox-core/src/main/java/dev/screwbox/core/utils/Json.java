@@ -58,15 +58,15 @@ public class Json {
 
         private JsonObject(final String content) {
             var trimmedContent = content.trim();
-            Validate.isTrue(() -> trimmedContent.startsWith("{"), "input is no json string: " + trimmedContent);
-            Validate.isTrue(() -> trimmedContent.endsWith("}"), "input is no json string: " + trimmedContent);
+            Validate.isTrue(trimmedContent.startsWith("{"), "input is no json string: " + trimmedContent);
+            Validate.isTrue(trimmedContent.endsWith("}"), "input is no json string: " + trimmedContent);
             final var pureContent = trimmedContent.substring(1, trimmedContent.length() - 1).trim();
             int index = 0;
             while (index < pureContent.length()) {
                 final var attribute = fetchNextAttribute(pureContent, index);
                 if (!attributes.isEmpty()) {
                     final var commaPosition = pureContent.indexOf(',', attributes.getLast().valuePosition().end());
-                    Validate.isTrue(() -> commaPosition < attribute.keyPosition().start() && commaPosition != NOT_FOUND, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().key, attribute.key));
+                    Validate.isTrue(commaPosition < attribute.keyPosition().start() && commaPosition != NOT_FOUND, "malformatted json string: missing ',' between fields '%s' and '%s'".formatted(attributes.getLast().key, attribute.key));
                 }
                 attributes.add(attribute);
                 index = attribute.valuePosition().after();
@@ -196,7 +196,7 @@ public class Json {
 
         @SuppressWarnings("unchecked")
         private static Object toInstance(final String value, final Class<?> type) {
-            Validate.isFalse(type::isArray, "arrays are not supported at the moment");
+            Validate.isFalse(type.isArray(), "arrays are not supported at the moment");
 
             if (type.isEnum()) {
                 return Enum.valueOf((Class<Enum>) type, value);
@@ -282,7 +282,7 @@ public class Json {
         requireNonNull(fileName, "file name must not be null");
         requireNonNull(type, "type must not be null");
 
-        Validate.isTrue(() -> fileName.toLowerCase().endsWith(".json"), fileName + " is not a JSON-File");
+        Validate.isTrue(fileName.toLowerCase().endsWith(".json"), fileName + " is not a JSON-File");
         final var binaryContent = Resources.loadBinary(fileName);
         final var textContent = new String(binaryContent, UTF_8);
         return load(textContent, type);

@@ -43,7 +43,7 @@ public class ExpandShader extends Shader {
         super("size-increase-%s-%s".formatted(increaseX, increaseY), false);
         Validate.range(increaseX, 0, 32, "only size increase from 1 to 32 is supported");
         Validate.range(increaseY, 0, 32, "only size increase from 1 to 32 is supported");
-        Validate.isTrue(() -> increaseX != 0 || increaseY != 0, "at least one axis should be size increased");
+        Validate.isTrue(increaseX != 0 || increaseY != 0, "at least one axis should be size increased");
         this.increaseX = increaseX;
         this.increaseY = increaseY;
     }

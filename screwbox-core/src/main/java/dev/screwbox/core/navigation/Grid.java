@@ -60,7 +60,7 @@ public class Grid<T extends Serializable> implements Serializable {
     }
 
     public Grid(final Size size, final Bounds bounds, final Class<T> type) {
-        Validate.isTrue(size::isValid, "grid size must be valid");
+        Validate.isTrue(size.isValid(), "grid size must be valid");
         this.size = size;
         this.cellData = (T[]) Array.newInstance(type, size.width() * size.height());
         updateBounds(bounds);

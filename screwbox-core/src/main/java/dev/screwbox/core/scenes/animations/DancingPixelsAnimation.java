@@ -17,7 +17,7 @@ import java.awt.geom.AffineTransform;
 public record DancingPixelsAnimation(Size cellSize, boolean isOutsideIn) implements TransitionAnimation {
 
     public DancingPixelsAnimation {
-        Validate.isTrue(cellSize::isValid, "cell size must be valid");
+        Validate.isTrue(cellSize.isValid(), "cell size must be valid");
     }
 
     public DancingPixelsAnimation() {

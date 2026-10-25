@@ -69,7 +69,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Scenes remove(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
-        Validate.isFalse(() -> activeScene.isSameAs(sceneClass), "cannot remove active scene");
+        Validate.isFalse(activeScene.isSameAs(sceneClass), "cannot remove active scene");
         sceneData.remove(sceneClass);
         return this;
     }
@@ -186,14 +186,14 @@ public class DefaultScenes implements Scenes, Updatable {
 
     private void add(final Scene scene) {
         final var sceneClass = scene.getClass();
-        Validate.isFalse(() -> sceneData.containsKey(sceneClass), "scene is already present: " + sceneClass);
+        Validate.isFalse(sceneData.containsKey(sceneClass), "scene is already present: " + sceneClass);
         final SceneData data = createSceneData(scene);
         executor.execute(data::initialize);
         this.sceneData.put(sceneClass, data);
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
-        Validate.isTrue(() -> exists(sceneClass), "scene doesn't exist: " + sceneClass);
+        Validate.isTrue(exists(sceneClass), "scene doesn't exist: " + sceneClass);
     }
 
     private SceneData createSceneData(final Scene scene) {

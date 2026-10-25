@@ -42,7 +42,7 @@ public class RopeSystem implements EntitySystem {
                 for (int i = 0; i < nodes.size() - 1; i++) {
                     final Entity node = nodes.get(i);
                     final Entity target = nodes.get(i + 1);
-                    Validate.isTrue(() -> target.hasComponent(PhysicsComponent.class), "fixed length ropes are only supported for connected nodes that have a PhysicsComponent");
+                    Validate.isTrue(target.hasComponent(PhysicsComponent.class), "fixed length ropes are only supported for connected nodes that have a PhysicsComponent");
                     final double length = node.get(SoftLinkComponent.class).length;
                     Vector newpos = Line.between(node.position(), target.position()).length(length).end();//TODO optimize
                     target.moveTo(newpos);

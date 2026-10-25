@@ -49,7 +49,7 @@ public final class Resources {
      */
     public static byte[] loadBinary(final String fileName) {
         try (final var inputStream = inputStream(fileName)) {
-            Validate.isFalse(() -> isNull(inputStream), "file not found: " + fileName);
+            Validate.isFalse(isNull(inputStream), "file not found: " + fileName);
             return inputStream.readAllBytes();
         } catch (final IOException e) {
             throw new IllegalArgumentException("resource could not be read: " + fileName, e);
@@ -64,7 +64,7 @@ public final class Resources {
     public static Map<String, String> loadProperties(final String fileName) {
         final var propertyMap = new HashMap<String, String>();
         try (var inputStream = Resources.inputStream(fileName)) {
-            Validate.isFalse(() -> isNull(inputStream), "file not found: " + fileName);
+            Validate.isFalse(isNull(inputStream), "file not found: " + fileName);
             final var properties = new Properties();
             properties.load(inputStream);
             for (final var property : properties.entrySet()) {

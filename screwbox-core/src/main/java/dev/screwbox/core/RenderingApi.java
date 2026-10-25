@@ -48,12 +48,12 @@ public enum RenderingApi {
         System.clearProperty("sun.java2d.metal");
 
         if (DIRECT_3D.equals(this)) {
-            Validate.isFalse(MacOsSupport::isMacOs, "Direct3D rendering is not supported on MacOs");
+            Validate.isFalse(MacOsSupport.isMacOs(), "Direct3D rendering is not supported on MacOs");
             System.setProperty("sun.java2d.d3d", "true");
         } else if (OPEN_GL.equals(this)) {
             System.setProperty("sun.java2d.opengl", "true");
         } else if (METAL.equals(this)) {
-            Validate.isTrue(MacOsSupport::isMacOs, "Metal rendering is only supported on MacOs");
+            Validate.isTrue(MacOsSupport.isMacOs(), "Metal rendering is only supported on MacOs");
             System.setProperty("sun.java2d.metal", "true");
         }
     }
