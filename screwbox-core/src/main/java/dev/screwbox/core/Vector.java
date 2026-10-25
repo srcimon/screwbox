@@ -403,4 +403,14 @@ public final class Vector implements Serializable {
             y + (target.y - y) * ratio);
     }
 
+    //TODO document
+    //TODO changelog
+    //TODO test
+    public Vector clampDistance(final Vector other, final double distance) {
+        Validate.zeroOrPositive(distance, "distance must be positive");
+        if(isSameAs(other)) {
+            return addY(-distance);
+        }
+        return Line.between(this, other).length(distance).end();//TODO remove line dependency
+    }
 }

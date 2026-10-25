@@ -380,4 +380,27 @@ class VectorTest {
         Vector result = start.advance($(20, 10), -10);
         assertThat(result).isEqualTo($(-4, -8));
     }
+
+    @Test
+    void clampDistance_biggerDistanceThanSpecified_movesOtherInwards() {
+        Vector result = $(4, -2).clampDistance($(40, -2), 30);
+        assertThat(result).isEqualTo($(34, -2));
+    }
+
+    @Test
+    void clampDistance_negativeDistance_throwsException() {
+        Vector result = $(4, -2);
+        Vector other = $(22, -2);
+
+        assertThatThrownBy(() -> result.clampDistance(other, -1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("distance must be positive (actual value: -1.0)");
+    }
+
+    @Test
+    void clampDistance_samePosition_returnsNormal() {
+        Vector result = $(4, -2);
+
+        assertThat(result.clampDistance(result, 8)).isEqualTo($(4, -10));
+    }
 }
