@@ -12,7 +12,7 @@ public class Latch<T> {
     private boolean toggled;
 
     /**
-     * New instance with the given variables.
+     * New instance with the specified variables.
      */
     public static <T> Latch<T> of(final T active, final T inactive) {
         return new Latch<>(active, inactive);
