@@ -211,49 +211,27 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
-
-        final double deltaX = (double)end.x() - start.x();
-        final double deltaY = (double)end.y() - start.y();
-        final double distance = start.distanceTo(end);
-
-        final double spriteWidth = sprite.size().width();
-        final double spriteHeight = sprite.size().height();
-        final double scaledHeight = spriteHeight * options.scale();
-
-        // 1. Grafik-Kontext sichern
-        final var oldTransform = graphics.getTransform();
         applyOpacityConfig(options.opacity());
 
-        // 2. Koordinatensystem für die Geometrie transformieren (Startpunkt & Richtung der Linie)
-        final double angle = Math.atan2(deltaY, deltaX);
+        final var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
+        final double spriteWidth = sprite.size().width();
+        final double spriteHeight = sprite.size().height();
+        final var oldTransform = graphics.getTransform();
+        final double angle = Math.atan2((double)end.y() - start.y(), (double)end.x() - start.x());
         graphics.translate(start.x(), start.y());
         graphics.rotate(angle);
         graphics.scale(options.scale(), options.scale());
 
-        // 3. Den mathematisch korrekten Textur-Offset berechnen
-        // options.offset() muss den akkumulierten Fortschritt des Gesamtweges enthalten.
-        // Wir rechnen den skalierungsbereinigten Offset aus und fangen negative Werte ab.
         final double unscaledOffset = options.offset() / options.scale();
-        final double localOffset = ((unscaledOffset - (spriteWidth / 2.0)) % spriteWidth + spriteWidth) % spriteWidth;
-
-        // 4. TexturePaint relativ zur transformierten Linien-Achse definieren
-        // Der Anker verschiebt sich um den localOffset nach LINKS (-), damit das Muster visuell nach rechts wandert.
-        // Wichtig: Da wir uns bereits im lokal rotierten Raum befinden, läuft dieser Anker exakt parallel zur Linie!
+        final double localOffset = ((unscaledOffset % spriteWidth) + spriteWidth) % spriteWidth;
         final var anchor = new Rectangle2D.Double(-localOffset, -spriteHeight / 2.0, spriteWidth, spriteHeight);
-
         final var image = sprite.image(shader, time);
         final var texturePaint = new TexturePaint(ImageOperations.toBufferedImage(image), anchor);
         graphics.setPaint(texturePaint);
-
-        // 5. Ein einziges, unverschobenes Rechteck füllen (Gleiche Geometrie wie dein originaler Clip)
-        // Da wir herunterskaliert haben, teilen wir die Distanz durch den lokalen Linien-Scale.
-        final double localDistance = distance / options.scale();
+        final double localDistance = start.distanceTo(end) / options.scale();
         graphics.fill(new Rectangle2D.Double(0, -spriteHeight / 2.0, localDistance, spriteHeight));
-
-        // Transformation zurücksetzen
         graphics.setTransform(oldTransform);
-        lastUsedClip = null;
+        lastUsedClip = null; // reset clipping
     }
 
     @Override
