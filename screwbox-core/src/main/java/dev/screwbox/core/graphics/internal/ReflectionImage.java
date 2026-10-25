@@ -14,7 +14,6 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -75,7 +74,7 @@ public final class ReflectionImage {
         ImageOperations.applyHighPerformanceRenderingHints(graphics);
         final var renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics);
-        Collections.sort(tasks);
+        tasks.sort(null);
         final var clip = new ScreenBounds(imageSize);
         for (final var entry : tasks) {
             renderer.drawSprite(entry.sprite, entry.localOffset, entry.options, clip);

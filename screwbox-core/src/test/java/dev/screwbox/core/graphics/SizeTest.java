@@ -3,7 +3,6 @@ package dev.screwbox.core.graphics;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.List.of;
@@ -62,7 +61,7 @@ class SizeTest {
 
         var dimensions = new ArrayList<>(of(mediumRes, highRes, lowRes));
 
-        Collections.sort(dimensions);
+        dimensions.sort(null);
 
         assertThat(dimensions).containsSequence(lowRes, mediumRes, highRes);
     }

@@ -40,7 +40,7 @@ import static java.util.Objects.nonNull;
 public class DefaultRenderer implements Renderer {
 
 
-    private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
+    private static final float[] FADEOUT_FRACTIONS = {0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private final AffineTransform transform = new AffineTransform();
@@ -217,7 +217,7 @@ public class DefaultRenderer implements Renderer {
         final double spriteWidth = sprite.size().width();
         final double spriteHeight = sprite.size().height();
         final var oldTransform = graphics.getTransform();
-        final double angle = Math.atan2((double)end.y() - start.y(), (double)end.x() - start.x());
+        final double angle = Math.atan2((double) end.y() - start.y(), (double) end.x() - start.x());
         graphics.translate(start.x(), start.y());
         graphics.rotate(angle);
         graphics.scale(options.scale(), options.scale());
