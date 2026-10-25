@@ -227,11 +227,9 @@ public class DefaultRenderer implements Renderer {
         graphics.clip(localClipTransform.createTransformedShape(clipRect));
         applyOpacityConfig(options.opacity());
 
-        // Kompensiert die Zentrierung (-scaledWidth / 2.0), damit Offset 0 exakt am Linienanfang startet
-        final double baseOffset = options.offset() - (scaledWidth / 2.0);
-        final double textureOffsetX = baseOffset % scaledWidth;
+        final double textureOffset = (options.offset() - (scaledWidth / 2.0)) % scaledWidth;
 
-        for (double d = -textureOffsetX; d <= distance + scaledWidth; d += scaledWidth) {
+        for (double d = -textureOffset; d <= distance + scaledWidth; d += scaledWidth) {
             double t = d / distance;
             double x = start.x() + t * deltaX;
             double y = start.y() + t * deltaY;
