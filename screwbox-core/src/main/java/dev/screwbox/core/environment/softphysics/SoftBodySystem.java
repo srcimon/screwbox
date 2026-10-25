@@ -42,7 +42,7 @@ public class SoftBodySystem implements EntitySystem {
         Entity lastTargetEntity = start;
         while (nonNull(link)) {
             final var targetEntity = environment.fetchById(link.targetId);
-            if(targetEntity.equals(lastTargetEntity)) {
+            if (targetEntity.equals(lastTargetEntity)) {
                 throw new IllegalArgumentException("soft link of entity with id %s is linked to self".formatted(link.targetId));
             }
             nodes.add(targetEntity);
@@ -56,7 +56,7 @@ public class SoftBodySystem implements EntitySystem {
     }
 
     private static Polygon toPolygon(final SoftBodyComponent softBody) {
-        final List<Vector> nodes = new ArrayList<>();
+        final List<Vector> nodes = new ArrayList<>(softBody.nodes.size());
         for (final var node : softBody.nodes) {
             nodes.add(node.position());
         }
