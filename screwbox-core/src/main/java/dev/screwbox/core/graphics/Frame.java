@@ -110,7 +110,7 @@ public final class Frame implements Serializable, Sizeable {
      * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
      */
     public Frame extract(final Offset offset, final Size size) {
-        Validate.isTrue(() -> isAreaWithinFrame(offset, size), "specified area is out off frame bounds");
+        Validate.isTrue(isAreaWithinFrame(offset, size), "specified area is out off frame bounds");
         final var image = ImageOperations.cloneImage(image(), size());
         final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());
         return new Frame(subImage, duration);
@@ -140,7 +140,7 @@ public final class Frame implements Serializable, Sizeable {
      */
     public Color colorAt(final Offset offset) {
         return colorCache.getOrElse(offset, () -> {
-            Validate.isTrue(() -> new ScreenBounds(size()).contains(offset), "position is out of bounds: %d:%d".formatted(offset.x(), offset.y()));
+            Validate.isTrue(new ScreenBounds(size()).contains(offset), "position is out of bounds: %d:%d".formatted(offset.x(), offset.y()));
             final int rgb = imageStorage.image().getRGB(offset.x(), offset.y());
             final java.awt.Color awtColor = new java.awt.Color(rgb, true);
             final Percent opacity = Percent.of(awtColor.getAlpha() / 255.0);

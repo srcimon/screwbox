@@ -7,7 +7,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -74,7 +73,7 @@ public class Archetype implements Serializable {
         for (final var componentClass : componentClasses) {
             names.add(componentClass.getName());
         }
-        Collections.sort(names);
+        names.sort(null);
         return names.hashCode();
     }
 

@@ -9,13 +9,13 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.LensFlare;
-import dev.screwbox.core.graphics.light.LensFlareBundle;
-import dev.screwbox.core.graphics.light.Light;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
 import dev.screwbox.core.graphics.internal.filter.ExpandImageFilter;
+import dev.screwbox.core.graphics.light.LensFlareBundle;
+import dev.screwbox.core.graphics.light.Light;
 import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Validate;
@@ -136,7 +136,7 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light addBackgdropOccluder(final Polygon occluder, final ShadowOptions options) {
         autoTurnOnLight();
-        Validate.isTrue(occluder::isClosed, "occluder must be closed");
+        Validate.isTrue(occluder.isClosed(), "occluder must be closed");
 
         for (final var renderer : renderers) {
             renderer.addBackgdropOccluder(occluder, options);

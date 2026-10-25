@@ -2,7 +2,6 @@ package dev.screwbox.core.utils;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 import static dev.screwbox.core.utils.ListUtil.containsDuplicates;
 
@@ -118,8 +117,8 @@ public final class Validate {
      *
      * @throws IllegalArgumentException using specified message when not
      */
-    public static void isTrue(final BooleanSupplier condition, final String message) {
-        if (!condition.getAsBoolean()) {
+    public static void isTrue(final boolean condition, final String message) {
+        if (!condition) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -151,8 +150,8 @@ public final class Validate {
      *
      * @throws IllegalArgumentException using specified message when not
      */
-    public static void isFalse(final BooleanSupplier condition, final String message) {
-        if (condition.getAsBoolean()) {
+    public static void isFalse(final boolean condition, final String message) {
+        if (condition) {
             throw new IllegalArgumentException(message);
         }
     }

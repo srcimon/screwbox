@@ -71,7 +71,7 @@ public class Sprite implements Serializable, Sizeable {
     public static Sprite placeholder(final Color color, final Size size) {
         requireNonNull(color, "color must not be null");
         requireNonNull(size, "size must not be null");
-        Validate.isTrue(size::isValid, "size must be valid");
+        Validate.isTrue(size.isValid(), "size must be valid");
         final var image = ImageOperations.createImage(size);
         final var graphics = image.createGraphics();
         graphics.setColor(AwtMapper.toAwtColor(color));

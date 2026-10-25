@@ -1,6 +1,5 @@
 package dev.screwbox.vacuum.enemies;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.audio.SoundOptions;
@@ -8,7 +7,6 @@ import dev.screwbox.core.audio.Voice;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.core.graphics.light.ShockwaveOptions;
 import dev.screwbox.core.particles.ParticleOptions;
 
 import static dev.screwbox.core.Duration.ofMillis;

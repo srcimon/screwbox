@@ -22,13 +22,13 @@ public record GridShredderAnimation(Size cellSize) implements TransitionAnimatio
     }
 
     public GridShredderAnimation {
-        Validate.isTrue(cellSize::isValid, "cell size must be valid");
+        Validate.isTrue(cellSize.isValid(), "cell size must be valid");
     }
 
     @Override
     public void apply(final Image source, final Graphics2D target, final AnimationContext context) {
-        final int scaledWidth = (int)(cellSize.width() * context.resolutionScale());
-        final int scaledHeight = (int)(cellSize.height() * context.resolutionScale());
+        final int scaledWidth = (int) (cellSize.width() * context.resolutionScale());
+        final int scaledHeight = (int) (cellSize.height() * context.resolutionScale());
         final int columns = (int) Math.ceil((double) context.width() / scaledWidth);
         final int rows = (int) Math.ceil((double) context.height() / scaledHeight);
 

@@ -419,7 +419,7 @@ public final class Polygon implements Serializable {
      */
     public Polygon stroked(final double strokedWidth) {
         Validate.positive(strokedWidth, "stroke width must be positive");
-        Validate.isTrue(this::isOpen, "polygon must be open to create stroked polygon");
+        Validate.isTrue(isOpen(), "polygon must be open to create stroked polygon");
         final List<Vector> leftSide = new ArrayList<>();
         final List<Vector> rightSide = new ArrayList<>();
         final double halfWidth = strokedWidth * 0.5;

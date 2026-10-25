@@ -53,7 +53,7 @@ public final class FractalNoise {
      */
     public static Frame createPreview(final Color color, final Size size, double zoom, long seed) {
         Objects.requireNonNull(color, "color must not be null");
-        Validate.isTrue(size::isValid, "invalid size for preview image");
+        Validate.isTrue(size.isValid(), "invalid size for preview image");
         Validate.positive(zoom, "zoom must be positive");
 
         final var emptyImage = ImageOperations.createImage(size);

@@ -30,7 +30,7 @@ public record OvalDrawOptions(Style style, Color color, int strokeWidth, Angle a
     }
 
     public OvalDrawOptions {
-        Validate.isTrue(() -> style == Style.OUTLINE || strokeWidth == 1, "stroke width is only used when drawing circle outline");
+        Validate.isTrue(style == Style.OUTLINE || strokeWidth == 1, "stroke width is only used when drawing circle outline");
         Validate.positive(strokeWidth, "stroke width must be positive");
     }
 

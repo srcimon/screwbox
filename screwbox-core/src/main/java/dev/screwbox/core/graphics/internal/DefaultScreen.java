@@ -244,7 +244,7 @@ public class DefaultScreen implements Screen, Updatable {
         final ScreenBounds bounds = new ScreenBounds(offset, size);
         requireNonNull(bounds, "bounds must not be null");
         final var screenBounds = new ScreenBounds(frame.getCanvasSize());
-        Validate.isTrue(() -> screenBounds.intersects(bounds), "bounds must be on screen");
+        Validate.isTrue(screenBounds.intersects(bounds), "bounds must be on screen");
         return new DefaultCanvas(renderer, bounds);
     }
 

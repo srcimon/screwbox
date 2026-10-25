@@ -24,7 +24,8 @@ import dev.screwbox.core.utils.Validate;
  * @see Canvas#drawRectangle(Offset, Size, RectangleDrawOptions)
  * @see World#drawRectangle(Bounds, RectangleDrawOptions)
  */
-public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Angle rotation, int curveRadius, int drawOrder) {
+public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Angle rotation, int curveRadius,
+                                   int drawOrder) {
 
     /**
      * The style used to draw.
@@ -49,7 +50,7 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, An
     }
 
     public RectangleDrawOptions {
-        Validate.isFalse(() -> Style.OUTLINE != style && strokeWidth != 1, "stroke width is only used when drawing outline of rectangles");
+        Validate.isFalse(Style.OUTLINE != style && strokeWidth != 1, "stroke width is only used when drawing outline of rectangles");
         Validate.positive(strokeWidth, "stroke width must be positive");
         Validate.zeroOrPositive(curveRadius, "curve radius must be positive");
     }

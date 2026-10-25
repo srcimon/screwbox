@@ -24,7 +24,7 @@ public class DefaultLog implements Log {
 
     @Override
     public Log log(final LogLevel level, final String message) {
-        Validate.isFalse(() -> message.contains("{}"), "missing parameter value for placeholder in log message: " + message);
+        Validate.isFalse(message.contains("{}"), "missing parameter value for placeholder in log message: " + message);
         if (isActive && isActiveForLevel(level)) {
             loggingAdapter.log(level, message);
         }
@@ -59,7 +59,7 @@ public class DefaultLog implements Log {
 
         for (final var parameter : parameters) {
             minPos = message.indexOf("{}", minPos);
-            if(minPos == -1) {
+            if (minPos == -1) {
                 throw new IllegalArgumentException("missing placeholder in log message for parameter value: " + message);
             }
             messageBuilder.append(message, lastIndex, minPos);

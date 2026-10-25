@@ -17,7 +17,7 @@ public record BlackHoleAnimation(Size cellSize) implements TransitionAnimation {
     }
 
     public BlackHoleAnimation {
-        Validate.isTrue(cellSize::isValid, "cell size must be valid");
+        Validate.isTrue(cellSize.isValid(), "cell size must be valid");
     }
 
     @Override

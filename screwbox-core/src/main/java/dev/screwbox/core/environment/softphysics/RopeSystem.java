@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ExecutionOrder;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,22 @@ public class RopeSystem implements EntitySystem {
             if (config.nodes.isEmpty()) {
                 fillInRopeNodes(environment, rope, config.nodes);
             }
+            if (config.isLengthFixed) {
+                applyFixedLength(config);
+            }
             config.shape = toPolygon(config.nodes);
+        }
+    }
+
+    private static void applyFixedLength(final RopeComponent rope) {
+        for (int i = 0; i < rope.nodes.size() - 1; i++) {
+            final Entity node = rope.nodes.get(i);
+            final Entity target = rope.nodes.get(i + 1);
+            if (!target.hasComponent(PhysicsComponent.class)) {
+                throw new IllegalStateException("fixed length ropes are only supported for connected nodes that have a PhysicsComponent");
+            }
+            final double length = node.get(SoftLinkComponent.class).length;
+            target.moveTo(node.position().clampDistance(target.position(), length));
         }
     }
 

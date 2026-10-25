@@ -17,7 +17,7 @@ public record GridAnimation(Size cellSize) implements TransitionAnimation {
     }
 
     public GridAnimation {
-        Validate.isTrue(cellSize::isValid, "cell size must be valid");
+        Validate.isTrue(cellSize.isValid(), "cell size must be valid");
     }
 
     @Override

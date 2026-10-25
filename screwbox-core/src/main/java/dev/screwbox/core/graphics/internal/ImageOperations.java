@@ -100,7 +100,7 @@ public final class ImageOperations {
     }
 
     public static Image stackImages(final Image bottom, final Image top) {
-        Validate.isTrue(() -> bottom.getHeight(null) == top.getHeight(null) && bottom.getWidth(null) == top.getWidth(null), "images must have same size");
+        Validate.isTrue(bottom.getHeight(null) == top.getHeight(null) && bottom.getWidth(null) == top.getWidth(null), "images must have same size");
         final var result = ImageOperations.cloneImage(bottom);
         var graphics = result.createGraphics();
         graphics.drawImage(top, 0, 0, null);
@@ -114,7 +114,7 @@ public final class ImageOperations {
      * @param preserveColor specify if colored pixels should be prevented from getting totally transparent
      */
     public static void invertOpacity(final BufferedImage image, final boolean preserveColor) {
-        Validate.isTrue(() -> image.getType() == TYPE_INT_ARGB_PRE || image.getType() == TYPE_INT_ARGB, "image type not supported: " + image.getType());
+        Validate.isTrue(image.getType() == TYPE_INT_ARGB_PRE || image.getType() == TYPE_INT_ARGB, "image type not supported: " + image.getType());
         final int[] pixels = getPixelValues(image);
         final int numPixels = pixels.length;
         for (int i = 0; i < numPixels; i++) {

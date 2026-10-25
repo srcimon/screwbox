@@ -102,14 +102,14 @@ public class AutoTile implements Serializable, Sizeable {
     public static Mask createMask(final Offset offset, final Predicate<Offset> isConnected) {
         Objects.requireNonNull(offset, "tile offset must not be null");
         return new Mask(
-                isConnected.test(offset.add(0, -1)),
-                isConnected.test(offset.add(1, -1)),
-                isConnected.test(offset.add(1, 0)),
-                isConnected.test(offset.add(1, 1)),
-                isConnected.test(offset.add(0, 1)),
-                isConnected.test(offset.add(-1, 1)),
-                isConnected.test(offset.add(-1, 0)),
-                isConnected.test(offset.add(-1, -1)));
+            isConnected.test(offset.add(0, -1)),
+            isConnected.test(offset.add(1, -1)),
+            isConnected.test(offset.add(1, 0)),
+            isConnected.test(offset.add(1, 1)),
+            isConnected.test(offset.add(0, 1)),
+            isConnected.test(offset.add(-1, 1)),
+            isConnected.test(offset.add(-1, 0)),
+            isConnected.test(offset.add(-1, -1)));
     }
 
     /**
@@ -140,8 +140,8 @@ public class AutoTile implements Serializable, Sizeable {
 
         final int imageRatio = frame.width() / frame.height();
         final int layoutRatio = layout.size.width() / layout.size.height();
-        Validate.isTrue(() -> imageRatio == layoutRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
-                .formatted(frame.width(), frame.height(), 1 / layoutRatio));
+        Validate.isTrue(imageRatio == layoutRatio, "aspect ratio of image (%s:%s) doesn't match template (1:%s)"
+            .formatted(frame.width(), frame.height(), 1 / layoutRatio));
 
         size = Size.square(frame.height() / layout.size.height());
 

@@ -3,6 +3,7 @@ package dev.screwbox.core.environment.softphysics;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,6 +34,13 @@ public class RopeComponent implements Component {
      * List of {@link Entity entities} that are part of the rope. Will be updated by {@link RopeSystem}.
      */
     public transient List<Entity> nodes = new ArrayList<>();
+
+    /**
+     * Keeps all segments of the rope at exactly the specified distance. Requires all connected nodes to have a {@link PhysicsComponent}.
+     *
+     * @since 3.39.0
+     */
+    public boolean isLengthFixed = false;
 
     @Serial
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
