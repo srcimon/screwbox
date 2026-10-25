@@ -50,10 +50,8 @@ public class OrderingAsyncRenderer implements Renderer {
 
         @Override
         public int compareTo(final RenderingTask other) {
-            final long thisKey = ((long) this.drawOrder << 32) | (this.zIndex & 0xFFFFFFFFL);
-            final long otherKey = ((long) other.drawOrder << 32) | (other.zIndex & 0xFFFFFFFFL);
-
-            return Long.compare(thisKey, otherKey);
+            final int byOrder = Integer.compare(drawOrder, other.drawOrder);
+            return byOrder == 0 ? Integer.compare(zIndex, other.zIndex) : byOrder;
         }
     }
 
