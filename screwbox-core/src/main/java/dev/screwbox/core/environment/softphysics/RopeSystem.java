@@ -35,10 +35,10 @@ public class RopeSystem implements EntitySystem {
             if (config.nodes.isEmpty()) {
                 fillInRopeNodes(environment, rope, config.nodes);
             }
-            config.shape = toPolygon(config.nodes);
             if (config.isLengthFixed) {
                 applyFixedLength(config);
             }
+            config.shape = toPolygon(config.nodes);
         }
     }
 

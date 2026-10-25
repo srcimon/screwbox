@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 @ExtendWith(EnvironmentExtension.class)
 class RopeSystemTest {
@@ -58,6 +59,24 @@ class RopeSystemTest {
             .hasMessage("fixed length ropes are only supported for connected nodes that have a PhysicsComponent");
     }
 
+    @Test
+    void updated_usesFixedLength_allNodesHaveCorrectDistanceFromEachOther(DefaultEnvironment environment) {
+        var rope = SoftPhysicsSupport.createRope(Vector.$(0, 0), Vector.$(400, 0), 11, environment);
+        for (final var node : rope) {
+            node.moveTo(Vector.random(100, 200));
+        }
+
+        rope.root().get(RopeComponent.class).isLengthFixed = true;
+
+        environment.addEntities(rope);
+        environment.addSystem(new RopeSystem());
+
+        environment.update();
+
+        for (var segment : rope.root().get(RopeComponent.class).shape.segments()) {
+            assertThat(segment.length()).isEqualTo(40.0, offset(0.01));
+        }
+    }
 
     @Test
     void update_ropeIsLooped_throwsException(DefaultEnvironment environment) {
