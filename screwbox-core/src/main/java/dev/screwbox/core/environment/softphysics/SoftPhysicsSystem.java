@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.softphysics;
 
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Line;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -9,6 +10,10 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.utils.MathUtil;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static dev.screwbox.core.environment.Order.SIMULATION;
 import static java.util.Objects.nonNull;
@@ -24,7 +29,13 @@ public class SoftPhysicsSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final var entity : engine.environment().fetchAll(LINKS)) {
+        List<Entity> entities = engine.environment().fetchAll(LINKS);
+        var entityCopy = new ArrayList<Entity>(entities);
+        Collections.shuffle(entityCopy);
+        Collections.shuffle(entityCopy);
+        Collections.shuffle(entityCopy);
+        Collections.shuffle(entityCopy);
+        for (final var entity : entityCopy) {
             final var link = entity.get(SoftLinkComponent.class);
             updateLink(entity, link, engine);
         }
@@ -49,7 +60,8 @@ public class SoftPhysicsSystem implements EntitySystem {
             if (linkEntity.equals(linkTarget)) {
                 throw new IllegalArgumentException("soft link of entity with id %s is linked to self".formatted(link.targetId));
             }
-            final Vector delta = linkTarget.position().subtract(linkEntity.position());
+            Vector linkPosition = linkEntity.position();
+            final Vector delta = linkTarget.position().subtract(linkPosition);
             if (link.length == 0) {
                 link.length = delta.length();
             }
@@ -69,6 +81,10 @@ public class SoftPhysicsSystem implements EntitySystem {
             final var targetPhysics = linkTarget.get(PhysicsComponent.class);
             if (nonNull(targetPhysics)) {
                 targetPhysics.velocity = targetPhysics.velocity.add(motion.invert());
+            }
+            if (link.isLengthFixed) {
+                Vector newpos = Line.between(linkPosition, linkTarget.position()).length(link.length).end();
+                linkTarget.moveTo(newpos);
             }
             link.angle = Angle.ofVector(delta);
         }, () -> linkEntity.remove(SoftLinkComponent.class));
