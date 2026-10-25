@@ -21,7 +21,8 @@ import java.util.function.Supplier;
  * @see Canvas#drawLine(Offset, Offset, Sprite, TextureLineDrawOptions)
  * @since 3.38.0
  */
-public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup shader, Percent opacity) {
+//TODO document offset
+public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup shader, Percent opacity, double offset) {
 
     private static final TextureLineDrawOptions ORIGINAL_SIZE = scaled(1);
 
@@ -34,7 +35,7 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
      * Creates options for a scaled texture.
      */
     public static TextureLineDrawOptions scaled(final double scale) {
-        return new TextureLineDrawOptions(0, scale, null, Percent.max());
+        return new TextureLineDrawOptions(0, scale, null, Percent.max(), 0);
     }
 
     /**
@@ -48,7 +49,7 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
      * Sets order of this drawing task in comparison to others.
      */
     public TextureLineDrawOptions drawOrder(final int drawOrder) {
-        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
+        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity, offset);
     }
 
     /**
@@ -62,20 +63,24 @@ public record TextureLineDrawOptions(int drawOrder, double scale, ShaderSetup sh
      * Sets the scale for drawing.
      */
     public TextureLineDrawOptions scale(final double scale) {
-        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
+        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity, offset);
     }
 
     /**
      * Sets the {@link ShaderBundle} for drawing.
      */
     public TextureLineDrawOptions shader(final ShaderSetup shader) {
-        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
+        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity, offset);
     }
 
     /**
      * Sets the opacity for drawing.
      */
     public TextureLineDrawOptions opacity(final Percent opacity) {
-        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity);
+        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity, offset);
+    }
+
+    public TextureLineDrawOptions offset(final double offset) {
+        return new TextureLineDrawOptions(drawOrder, scale, shader, opacity, offset);
     }
 }

@@ -227,7 +227,10 @@ public class DefaultRenderer implements Renderer {
         graphics.clip(localClipTransform.createTransformedShape(clipRect));
         applyOpacityConfig(options.opacity());
 
-        for (double d = 0; d <= distance + scaledWidth; d += scaledWidth) {
+        // Bestimme den Startpunkt für das kontinuierliche Muster (Modulo verhindert unnötig große Werte)
+        final double textureOffsetX = options.offset() % scaledWidth;
+
+        for (double d = -textureOffsetX; d <= distance + scaledWidth; d += scaledWidth) {
             double t = d / distance;
             double x = start.x() + t * deltaX;
             double y = start.y() + t * deltaY;

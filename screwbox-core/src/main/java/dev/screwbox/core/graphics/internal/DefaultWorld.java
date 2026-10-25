@@ -10,9 +10,9 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class DefaultWorld implements World {
     @Override
     public World drawLine(final Vector start, final Vector end, final Sprite sprite, final TextureLineDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
-            viewport.canvas().drawLine(viewport.toCanvas(start), viewport.toCanvas(end), sprite, options.scale(options.scale() * viewport.camera().zoom()));
+            viewport.canvas().drawLine(viewport.toCanvas(start), viewport.toCanvas(end), sprite, options.scale(options.scale() * viewport.camera().zoom()).offset(options.offset() * viewport.camera().zoom()));
         }
         return this;
     }
