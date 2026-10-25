@@ -403,14 +403,13 @@ public final class Vector implements Serializable {
             y + (target.y - y) * ratio);
     }
 
-    //TODO document
-    //TODO changelog
-    //TODO test
+    /**
+     * Clamps the position of this vector relative to another target vector by a distance.
+     */
     public Vector clampDistance(final Vector other, final double distance) {
         Validate.zeroOrPositive(distance, "distance must be positive");
-        if(isSameAs(other)) {
-            return addY(-distance);
-        }
-        return Line.between(this, other).length(distance).end();//TODO remove line dependency
+        return isSameAs(other)
+            ? addY(-distance)
+            : this.add(other.subtract(this).length(distance));
     }
 }

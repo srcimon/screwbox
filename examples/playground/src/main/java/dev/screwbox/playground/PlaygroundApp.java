@@ -1,11 +1,9 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.physics.ChaoticMovementComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.softphysics.RopeComponent;
@@ -33,7 +31,6 @@ public class PlaygroundApp {
     private static SoftPhysicsSupport.RopeEntities createSnake(Vector position, Engine screwBox) {
         var snake = SoftPhysicsSupport.createRope(position, position.addX(256), 9, screwBox.environment());
         snake.root().add(new RopeRenderComponent(Sprite.fromFile("snake.png")));
-        snake.forEach(s -> s.add(new ChaoticMovementComponent(120, Duration.oneSecond())));
         snake.root().get(RopeComponent.class).isLengthFixed = true;
         snake.root().add(new CameraTargetComponent(10));
         snake.forEach(s -> s.get(PhysicsComponent.class).friction = 0.8);
