@@ -227,8 +227,9 @@ public class DefaultRenderer implements Renderer {
         graphics.clip(localClipTransform.createTransformedShape(clipRect));
         applyOpacityConfig(options.opacity());
 
-        // Bestimme den Startpunkt für das kontinuierliche Muster (Modulo verhindert unnötig große Werte)
-        final double textureOffsetX = options.offset() % scaledWidth;
+        // Kompensiert die Zentrierung (-scaledWidth / 2.0), damit Offset 0 exakt am Linienanfang startet
+        final double baseOffset = options.offset() - (scaledWidth / 2.0);
+        final double textureOffsetX = baseOffset % scaledWidth;
 
         for (double d = -textureOffsetX; d <= distance + scaledWidth; d += scaledWidth) {
             double t = d / distance;
