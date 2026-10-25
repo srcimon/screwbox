@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.AwtMapper;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.RichTextBlock;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
@@ -210,35 +211,27 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawLine(final Offset start, final Offset end, final Sprite sprite, final TextureLineDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
-        final double deltaX = (double)end.x() - start.x();
-        final double deltaY = (double)end.y() - start.y();
-        final double distance = start.distanceTo(end);
-
-        final double scaledWidth = sprite.size().width() * options.scale();
-        final double scaledHeight = sprite.size().height() * options.scale();
-
-        final double angle = Math.atan2(deltaY, deltaX);
-        final var localClipTransform = new AffineTransform();
-        localClipTransform.translate(start.x(), start.y());
-        localClipTransform.rotate(angle);
-
-        final var clipRect = new Rectangle2D.Double(0, -scaledHeight, distance, scaledHeight * 2);
-        graphics.clip(localClipTransform.createTransformedShape(clipRect));
         applyOpacityConfig(options.opacity());
 
-        for (double d = 0; d <= distance + scaledWidth; d += scaledWidth) {
-            double t = d / distance;
-            double x = start.x() + t * deltaX;
-            double y = start.y() + t * deltaY;
-            final var localTransform = new AffineTransform();
-            localTransform.translate(x, y);
-            localTransform.rotate(angle);
-            localTransform.scale(options.scale(), options.scale());
-            localTransform.translate(-sprite.size().width() / 2.0, -sprite.size().height() / 2.0);
-            drawSprite(sprite, shader, localTransform);
-        }
-        lastUsedClip = null; // resets clip
+        final var shader = ShaderResolver.resolveShader(defaultShader, options.shader());
+        final double spriteWidth = sprite.size().width();
+        final double spriteHeight = sprite.size().height();
+        final var oldTransform = graphics.getTransform();
+        final double angle = Math.atan2((double)end.y() - start.y(), (double)end.x() - start.x());
+        graphics.translate(start.x(), start.y());
+        graphics.rotate(angle);
+        graphics.scale(options.scale(), options.scale());
+
+        final double unscaledOffset = options.offset() / options.scale();
+        final double localOffset = ((unscaledOffset % spriteWidth) + spriteWidth) % spriteWidth;
+        final var anchor = new Rectangle2D.Double(-localOffset, -spriteHeight / 2.0, spriteWidth, spriteHeight);
+        final var image = sprite.image(shader, time);
+        final var texturePaint = new TexturePaint(ImageOperations.toBufferedImage(image), anchor);
+        graphics.setPaint(texturePaint);
+        final double localDistance = start.distanceTo(end) / options.scale();
+        graphics.fill(new Rectangle2D.Double(0, -spriteHeight / 2.0, localDistance, spriteHeight));
+        graphics.setTransform(oldTransform);
+        lastUsedClip = null; // reset clipping
     }
 
     @Override

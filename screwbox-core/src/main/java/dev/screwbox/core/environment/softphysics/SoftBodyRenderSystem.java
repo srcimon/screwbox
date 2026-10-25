@@ -46,8 +46,10 @@ public class SoftBodyRenderSystem implements EntitySystem {
                 .drawOrder(config.drawOrder));
         }
         if (nonNull(config.surfaceTexture)) {
+            double offset = 0;
             for (final var segment : softBody.shape.segments()) {
-                world.drawLine(segment, config.surfaceTexture, TextureLineDrawOptions.originalSize());
+                world.drawLine(segment, config.surfaceTexture, TextureLineDrawOptions.originalSize().offset(offset));
+                offset += segment.length();
             }
         } else if (config.outlineColor.isVisible()) {
             world.drawPolygon(softBody.shape.definitionNotes(), PolygonDrawOptions

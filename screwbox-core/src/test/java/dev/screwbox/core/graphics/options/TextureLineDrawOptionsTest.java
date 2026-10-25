@@ -29,11 +29,13 @@ class TextureLineDrawOptionsTest {
     void newInstance_allPropertiesSet_hasCorrectValues() {
         var options = TextureLineDrawOptions.scaled(3.1)
             .drawOrder(4)
+            .offset(2.0)
             .shader(ShaderBundle.GREYSCALE)
             .opacity(Percent.half());
 
         assertThat(options.opacity()).isEqualTo(Percent.half());
         assertThat(options.drawOrder()).isEqualTo(4);
+        assertThat(options.offset()).isEqualTo(2.0);
         assertThat(options.shader()).isEqualTo(ShaderBundle.GREYSCALE.get());
         assertThat(options.scale()).isEqualTo(3.1);
 

@@ -25,9 +25,11 @@ public class RopeRenderSystem implements EntitySystem {
             if (nonNull(shape)) {
                 final var world = engine.graphics().world();
 
-                if(nonNull(config.texture)) {
+                if (nonNull(config.texture)) {
+                    double offset = 0;
                     for (final var segment : shape.segments()) {
-                        world.drawLine(segment, config.texture, TextureLineDrawOptions.originalSize());
+                        world.drawLine(segment, config.texture, TextureLineDrawOptions.originalSize().offset(offset));
+                        offset += segment.length();
                     }
                 } else {
                     world.drawPolygon(shape, PolygonDrawOptions
