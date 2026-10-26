@@ -71,6 +71,7 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
         applyClip(clip);
+        final var shader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
         applyOpacityConfig(options.opacity());
         final int spriteWidth = (int) (sprite.width() * options.scale());
         final int spriteHeight = (int) (sprite.height() * options.scale());
@@ -79,8 +80,7 @@ public class DefaultRenderer implements Renderer {
         for (int x = xStart; x <= clip.width() + clip.x(); x += spriteWidth) {
             for (int y = yStart; y <= clip.height() + clip.y(); y += spriteHeight) {
                 transform.setTransform(options.scale(), 0, 0, options.scale(), x, y);
-                final var appliedShader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
-                drawSprite(sprite, appliedShader, transform);
+                drawSprite(sprite, shader, transform);
             }
         }
         resetOpacityConfig(options.opacity());
