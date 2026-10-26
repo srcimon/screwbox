@@ -5,7 +5,6 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static org.assertj.core.api.Assertions.assertThat;

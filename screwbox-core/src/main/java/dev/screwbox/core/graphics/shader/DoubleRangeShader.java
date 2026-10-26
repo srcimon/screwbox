@@ -3,7 +3,6 @@ package dev.screwbox.core.graphics.shader;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.io.Serializable;

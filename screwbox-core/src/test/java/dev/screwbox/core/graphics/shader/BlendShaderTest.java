@@ -5,7 +5,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;

@@ -6,7 +6,6 @@ import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.MaskImageFilter;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.Serial;
 

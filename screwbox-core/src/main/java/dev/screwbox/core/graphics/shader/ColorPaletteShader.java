@@ -6,7 +6,6 @@ import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.utils.Validate;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 import java.io.Serial;

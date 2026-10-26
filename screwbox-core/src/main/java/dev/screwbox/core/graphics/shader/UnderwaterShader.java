@@ -7,7 +7,6 @@ import dev.screwbox.core.utils.FractalNoise;
 import dev.screwbox.core.utils.MathUtil;
 import dev.screwbox.core.utils.Validate;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 

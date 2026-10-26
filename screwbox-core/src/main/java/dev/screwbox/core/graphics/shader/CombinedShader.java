@@ -4,7 +4,6 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.utils.Validate;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.util.List;

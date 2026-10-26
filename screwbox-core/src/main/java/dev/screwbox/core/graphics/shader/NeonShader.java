@@ -9,7 +9,6 @@ import dev.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import dev.screwbox.core.graphics.internal.filter.MaskColorFilter;
 import dev.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**

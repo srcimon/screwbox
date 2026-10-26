@@ -5,7 +5,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 

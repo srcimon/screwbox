@@ -5,7 +5,6 @@ import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
