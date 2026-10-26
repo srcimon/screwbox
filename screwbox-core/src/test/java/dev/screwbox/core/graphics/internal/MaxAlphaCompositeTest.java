@@ -8,7 +8,7 @@ class MaxAlphaCompositeTest {
 
     @Test
     void testCompositeContext() {
-        var image = SpriteBundle.SMOKE.get().singleImage();
+        var image = ImageOperations.toBufferedImage(SpriteBundle.SMOKE.get().singleImage());
         var graphics = image.createGraphics();
         graphics.setComposite(new MaxAlphaComposite());
 

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
 
 class ImageOperationsTest {
+
+    private static final Image SOME_IMAGE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void invertOpacity_wrongType_throwsException() {
@@ -45,6 +48,13 @@ class ImageOperationsTest {
         ImageOperations.invertOpacity(supportedImage, true);
 
         assertThat(Frame.fromImage(supportedImage).colorAt(0, 0).opacity().value()).isEqualTo(0.004, offset(0.001));
+    }
+
+    @Test
+    void toBufferedImage_alreadyABufferedImage_createsClone() {
+        BufferedImage result = ImageOperations.cloneImage(SOME_IMAGE);
+
+        assertThat(result).isNotEqualTo(SOME_IMAGE);
     }
 
     @ParameterizedTest

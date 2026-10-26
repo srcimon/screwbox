@@ -77,6 +77,12 @@ public final class ImageOperations {
         return createImage(source.getWidth(null), source.getHeight(null));
     }
 
+    public static BufferedImage toBufferedImage(final Image image) {
+        return image instanceof BufferedImage bufferedImage
+            ? bufferedImage
+            : cloneImage(image);
+    }
+
     public static BufferedImage cloneImage(final Image source, Size size) {
         final var clone = createImage(size);
         final var graphics = clone.getGraphics();
