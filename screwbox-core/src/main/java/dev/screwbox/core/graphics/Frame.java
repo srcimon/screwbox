@@ -50,7 +50,7 @@ public final class Frame implements Serializable, Sizeable {
     private final Duration duration;
     private final ImageStore imageStorage;
 
-    private final Cache<String, Image> shaderCache = new Cache<>();
+    private final Cache<String, BufferedImage> shaderCache = new Cache<>();
 
     /**
      * Returns an invisible {@link Frame}.
@@ -336,7 +336,7 @@ public final class Frame implements Serializable, Sizeable {
      * @param time        current time used to get the right image from animated shaders.
      * @since 2.15.0
      */
-    public Image image(final ShaderSetup shaderSetup, final Time time) {
+    public BufferedImage image(final ShaderSetup shaderSetup, final Time time) {
         if (isNull(shaderSetup)) {
             return image();
         }

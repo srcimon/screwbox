@@ -8,18 +8,18 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class SpriteFillOptionsTest {
+class TextureFillOptionsTest {
 
     @Test
     void newInstance_scaleZero_throwsException() {
-        assertThatThrownBy(() -> SpriteFillOptions.scale(0))
+        assertThatThrownBy(() -> TextureFillOptions.scale(0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("scale must be positive (actual value: 0.0)");
     }
 
     @Test
     void newInstance_opacityNull_throwsException() {
-        final var options = SpriteFillOptions.scale(1);
+        final var options = TextureFillOptions.scale(1);
         assertThatThrownBy(() -> options.opacity(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("opacity must not be null");
@@ -27,7 +27,7 @@ class SpriteFillOptionsTest {
 
     @Test
     void newInstance_offsetNull_throwsException() {
-        final var options = SpriteFillOptions.scale(1);
+        final var options = TextureFillOptions.scale(1);
 
         assertThatThrownBy(() -> options.offset(null))
                 .isInstanceOf(NullPointerException.class)
@@ -36,7 +36,7 @@ class SpriteFillOptionsTest {
 
     @Test
     void newInstance_validInputs_returnsInstance() {
-        final var options = SpriteFillOptions.scale(1)
+        final var options = TextureFillOptions.scale(1)
                 .shaderSetup(ShaderBundle.WATER)
                 .opacity(Percent.half())
                 .drawOrder(19)

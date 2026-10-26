@@ -15,7 +15,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
@@ -69,14 +69,14 @@ class FirewallRendererTest {
 
     @Test
     void fillWith_spriteHasZeroOpacity_skipsRendering() {
-        renderer.fillWith(Sprite.invisible(), SpriteFillOptions.scale(2).opacity(Percent.zero()), CLIP);
+        renderer.fillWith(Sprite.invisible(), TextureFillOptions.scale(2).opacity(Percent.zero()), CLIP);
 
         verifyNoInteractions(next);
     }
 
     @Test
     void fillWith_spriteHasHalfOpacity_renders() {
-        renderer.fillWith(Sprite.invisible(), SpriteFillOptions.scale(2).opacity(Percent.half()), CLIP);
+        renderer.fillWith(Sprite.invisible(), TextureFillOptions.scale(2).opacity(Percent.half()), CLIP);
 
         verify(next).fillWith(any(), any(), any());
     }

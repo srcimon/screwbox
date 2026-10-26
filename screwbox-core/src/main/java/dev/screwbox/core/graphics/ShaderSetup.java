@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.shader.CombinedShader;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -93,18 +94,18 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
     /**
      * Creates an animated preview {@link Sprite} with default settings.
      *
-     * @see #createPreview(Image, Image, int)
+     * @see #createPreview(BufferedImage, Image, int)
      */
-    public Sprite createPreview(final Image source) {
+    public Sprite createPreview(final BufferedImage source) {
         return createPreview(source, SpriteBundle.SHADER_PREVIEW.get().singleImage(), 10);
     }
 
     /**
      * Creates an animated preview {@link Sprite} without background image.
      *
-     * @see #createPreview(Image, Image, int)
+     * @see #createPreview(BufferedImage, Image, int)
      */
-    public Sprite createPreview(final Image source, int frameCount) {
+    public Sprite createPreview(final BufferedImage source, int frameCount) {
         return createPreview(source, null, frameCount);
     }
 
@@ -113,7 +114,7 @@ public record ShaderSetup(Shader shader, Time offset, Duration duration, Ease ea
      * Frame count will be ignored on non animated {@link Shader shaders}.
      * It's possible to ad a background. The background can also be null.
      */
-    public Sprite createPreview(final Image source, final Image background, int frameCount) {
+    public Sprite createPreview(final BufferedImage source, final Image background, int frameCount) {
         if (!shader.isAnimated()) {
             final Image preview = shader.apply(source, null);
             final Image previewOnBackground = combine(preview, background);

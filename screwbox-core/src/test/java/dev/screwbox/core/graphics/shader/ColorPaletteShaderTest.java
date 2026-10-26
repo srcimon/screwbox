@@ -5,7 +5,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Set;
 
 import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ColorPaletteShaderTest {
 
-    private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
+    private static final BufferedImage SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void apply_smallPalette_reducesImageToPalette() {

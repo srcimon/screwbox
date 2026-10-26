@@ -5,14 +5,14 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ExpandShaderTest {
 
-    private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
+    private static final BufferedImage SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void apply_sameIncreaseXandY_increasesBoth() {

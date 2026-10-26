@@ -5,11 +5,9 @@ import dev.screwbox.core.Ease;
 import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.shader.CombinedShader;
 import dev.screwbox.core.graphics.shader.DistortionShader;
-import dev.screwbox.core.graphics.shader.OutlineShader;
 import dev.screwbox.core.graphics.shader.ExpandShader;
+import dev.screwbox.core.graphics.shader.OutlineShader;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +40,7 @@ class ShaderSetupTest {
     @Test
     void createPreview_nonAnimatedPreview_hasOneFrame() {
         ShaderSetup shaderSetup = ShaderBundle.OUTLINE.get();
-        Image source = SpriteBundle.DOT_RED.get().singleImage();
+        var source = SpriteBundle.DOT_RED.get().singleImage();
 
         var preview = shaderSetup.createPreview(source, 2);
 
@@ -52,7 +50,7 @@ class ShaderSetupTest {
     @Test
     void createPreview_animatedPreviewWithTenFrames_hasTenFrame() {
         ShaderSetup shaderSetup = ShaderBundle.WATER.get();
-        Image source = SpriteBundle.DOT_RED.get().singleImage();
+        var source = SpriteBundle.DOT_RED.get().singleImage();
 
         var preview = shaderSetup.createPreview(source, 10);
 

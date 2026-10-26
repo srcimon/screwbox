@@ -11,6 +11,7 @@ import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -239,7 +240,7 @@ public class Sprite implements Serializable, Sizeable {
      *
      * @throws IllegalStateException {@link Sprite} has more than one {@link Frame}
      */
-    public Image singleImage() {
+    public BufferedImage singleImage() {
         return singleFrame().image();
     }
 
@@ -355,7 +356,7 @@ public class Sprite implements Serializable, Sizeable {
      *
      * @since 2.15.0
      */
-    public Image image(final ShaderSetup shaderSetup, final Time time) {
+    public BufferedImage image(final ShaderSetup shaderSetup, final Time time) {
         return frame(time).image(shaderSetup, time);
     }
 

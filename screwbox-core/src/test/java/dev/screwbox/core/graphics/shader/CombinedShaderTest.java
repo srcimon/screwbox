@@ -5,7 +5,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CombinedShaderTest {
 
-    private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
+    private static final BufferedImage SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void newInstance_onlyOneShader_throwsException() {

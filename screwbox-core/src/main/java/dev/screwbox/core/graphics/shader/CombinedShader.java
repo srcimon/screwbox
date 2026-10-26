@@ -4,7 +4,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.utils.Validate;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.util.List;
 import java.util.stream.Stream;
@@ -33,8 +33,8 @@ public class CombinedShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, Percent progress) {
-        Image lastResult = source;
+    public BufferedImage apply(final BufferedImage source, Percent progress) {
+        BufferedImage lastResult = source;
         for (final var shader : shaders) {
             lastResult = shader.apply(lastResult, progress);
         }

@@ -7,6 +7,7 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 import static java.awt.AlphaComposite.SRC_OVER;
@@ -29,7 +30,7 @@ public class AberrationShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final var result = ImageOperations.createImage(Size.of(
             source.getWidth(null) + SIZE_INCREASE,
             source.getHeight(null) + SIZE_INCREASE));

@@ -6,7 +6,7 @@ import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.DistortionImageFilter;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 /**
@@ -42,7 +42,7 @@ public class DistortionShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final var sourceImage = ImageOperations.cloneImage(source);
         final double seed = progress.value() * Math.PI * 2;
         final var filterConfig = new DistortionImageFilter.DistortionConfig(

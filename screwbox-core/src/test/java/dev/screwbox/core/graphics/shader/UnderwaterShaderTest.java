@@ -5,7 +5,7 @@ import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -13,7 +13,7 @@ class UnderwaterShaderTest {
 
     @Test
     void apply_someDistortion_createsUnderwaterEffect() {
-        Image image = SpriteBundle.BOX.get().singleImage();
+        BufferedImage image = SpriteBundle.BOX.get().singleImage();
 
         var result = new UnderwaterShader(10, 4).apply(image, Percent.half());
 

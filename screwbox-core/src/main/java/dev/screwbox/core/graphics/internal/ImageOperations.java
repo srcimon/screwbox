@@ -99,7 +99,7 @@ public final class ImageOperations {
         return clone;
     }
 
-    public static Image stackImages(final Image bottom, final Image top) {
+    public static BufferedImage stackImages(final Image bottom, final Image top) {
         Validate.isTrue(bottom.getHeight(null) == top.getHeight(null) && bottom.getWidth(null) == top.getWidth(null), "images must have same size");
         final var result = ImageOperations.cloneImage(bottom);
         var graphics = result.createGraphics();
