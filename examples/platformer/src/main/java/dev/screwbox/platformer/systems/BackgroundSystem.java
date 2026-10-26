@@ -26,14 +26,15 @@ public class BackgroundSystem implements EntitySystem {
 
             final var options = TextureFillOptions.scale(background.zoom * resolutionScale)
                 .opacity(config.options.opacity())
-                .drawOrder(config.options.drawOrder());
+                .drawOrder(config.options.drawOrder())
+                .shaderSetup(ShaderBundle.BREEZE);
 
             for (final var viewport : engine.graphics().viewports()) {
                 final var cameraPosition = viewport.camera().position();
                 final Offset offset = Offset.at(
                     cameraPosition.x() * (background.parallaxX - 1),
                     cameraPosition.y() * (background.parallaxY - 1));
-                viewport.canvas().fillWith(config.sprite, options.offset(offset).shaderSetup(ShaderBundle.BREEZE));
+                viewport.canvas().fillWith(config.sprite, options.offset(offset));
             }
         }
     }
