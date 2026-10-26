@@ -2,7 +2,7 @@
 
 - Fixed length property prevents length changes of ropes
 - Added `Vector.clampDistance(Vector, double)`
-- Significantly improved performance of texture fill (time consumed is reduced by 95%) (#1122)
+- Reduced texture fill processing time by 95% for significantly faster rendering (#1122)
 
 ### 🪛 Bug Fixes
 
