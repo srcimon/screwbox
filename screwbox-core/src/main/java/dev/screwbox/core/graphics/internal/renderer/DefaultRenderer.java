@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
@@ -71,18 +72,22 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final var shader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
         applyOpacityConfig(options.opacity());
-        final int spriteWidth = (int) (sprite.width() * options.scale());
-        final int spriteHeight = (int) (sprite.height() * options.scale());
-        final int xStart = options.offset().x() % spriteWidth == 0 ? 0 : options.offset().x() % spriteWidth - spriteWidth;
-        final int yStart = options.offset().y() % spriteHeight == 0 ? 0 : options.offset().y() % spriteHeight - spriteHeight;
-        for (int x = xStart; x <= clip.width() + clip.x(); x += spriteWidth) {
-            for (int y = yStart; y <= clip.height() + clip.y(); y += spriteHeight) {
-                transform.setTransform(options.scale(), 0, 0, options.scale(), x, y);
-                drawSprite(sprite, shader, transform);
-            }
-        }
+
+        final var anchor = new Rectangle2D.Double(
+            options.offset().x(),
+            options.offset().y(),
+            (int) (sprite.width() * options.scale()),
+            (int) (sprite.height() * options.scale())
+        );
+
+        final var shader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
+        final var texturePaint = new TexturePaint(ImageOperations.toBufferedImage(sprite.image(shader, time)), anchor);
+
+        graphics.setPaint(texturePaint);
+
+        graphics.fill(new Rectangle2D.Double(clip.x(), clip.y(), clip.width(), clip.height()));
+
         resetOpacityConfig(options.opacity());
     }
 

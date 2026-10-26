@@ -22,6 +22,7 @@ import static java.util.Objects.requireNonNull;
  * @param drawOrder   order of this drawing task in comparison to others
  * @see Canvas#fillWith(Sprite, SpriteFillOptions)
  */
+//TODO rename to TextureFillOoptions
 public record SpriteFillOptions(Offset offset, double scale, Percent opacity, ShaderSetup shaderSetup, int drawOrder) {
 
     public SpriteFillOptions {
