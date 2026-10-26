@@ -5,9 +5,9 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import java.util.List;
@@ -36,9 +36,22 @@ public interface Canvas extends Sizeable {
     Canvas fillWith(Color color);
 
     /**
-     * Fills the {@link Canvas} with a repeated {@link Sprite} using the given {@link TextureFillOptions}.
+     * Fills the {@link Canvas} with a repeated {@link Sprite} using the specified {@link TextureFillOptions}.
+     *
+     * @see #fillWith(Supplier, TextureFillOptions)
      */
     Canvas fillWith(Sprite sprite, TextureFillOptions options);
+
+    /**
+     * Fills the {@link Canvas} with a repeated {@link Sprite} using the specified {@link TextureFillOptions}.
+     *
+     * @see #fillWith(Sprite, TextureFillOptions)
+     * @since 3.39.0
+     */
+    default Canvas fillWith(Supplier<Sprite> sprite, TextureFillOptions options) {
+        return fillWith(sprite.get(), options);
+    }
+
 
     /**
      * Draws text on the {@link Canvas} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and
