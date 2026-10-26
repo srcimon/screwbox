@@ -5,6 +5,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 /**
@@ -27,7 +28,7 @@ public class EaseReplaceShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         return subShader.apply(source, ease.applyOn(progress));
     }
 }

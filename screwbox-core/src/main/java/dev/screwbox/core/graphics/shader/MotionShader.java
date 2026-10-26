@@ -5,6 +5,7 @@ import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 import java.io.Serial;
 
@@ -28,7 +29,7 @@ public class MotionShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final int width = source.getWidth(null);
         final int height = source.getHeight(null);
         final int relocateX = relocate(progress, speedX, width);

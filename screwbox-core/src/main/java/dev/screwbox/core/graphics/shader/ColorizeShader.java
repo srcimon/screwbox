@@ -7,6 +7,7 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.ColorizeImageFilter;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 import static dev.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
@@ -50,7 +51,7 @@ public class ColorizeShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final double progressValue = progress.value();
         final double invertValue = progress.invert().value();
         final int deltaRed = Color.clampRgbRange((int) (invertValue * startColor.getRed() + progressValue * stopColor.getRed() - baseLineColor.getRed()));

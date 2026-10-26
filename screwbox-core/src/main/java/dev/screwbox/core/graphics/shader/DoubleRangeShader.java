@@ -4,6 +4,7 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.Shader;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -35,7 +36,7 @@ public class DoubleRangeShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final var rangeValue = progress.rangeValue(from, to);
         return subShader.create(rangeValue).apply(source, progress);
     }

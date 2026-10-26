@@ -6,11 +6,11 @@ import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 class ColorizeShaderTest {
 
-    private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
+    private static final BufferedImage SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void apply_halfProcessed_appliesColorChange() {

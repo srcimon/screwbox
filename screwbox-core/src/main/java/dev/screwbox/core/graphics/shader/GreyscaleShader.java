@@ -6,6 +6,7 @@ import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 import java.io.Serial;
 
@@ -31,7 +32,7 @@ public class GreyscaleShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         return ImageOperations.applyFilter(source, GREYSCALE_FILTER);
     }
 }

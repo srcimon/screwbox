@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Simplyfied validation for boolean conditions
+- Updated graphics related classes with `BufferImage` instead of `Image` to reduce conversion overhead 
 - Renamed `TextureFillOptions`
 
 ### 📦 Dependency updates

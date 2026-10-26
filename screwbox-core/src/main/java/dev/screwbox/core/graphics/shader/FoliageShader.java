@@ -7,6 +7,7 @@ import dev.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 public class FoliageShader extends Shader {
@@ -22,7 +23,7 @@ public class FoliageShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final var result = ImageOperations.createEmptyImageOfSameSize(source);
         final var graphics = result.createGraphics();
         final var transform = new AffineTransform();

@@ -5,6 +5,7 @@ import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 
@@ -26,7 +27,7 @@ public class BlendShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final var innerResult = innerShader.apply(source, progress);
         final var result = ImageOperations.createEmptyImageOfSameSize(source);
         final Graphics2D graphics = result.createGraphics();

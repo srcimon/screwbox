@@ -8,12 +8,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 class MotionShaderTest {
 
-    private static final Image SOURCE = Frame.fromFile("tile.bmp").image();
+    private static final BufferedImage SOURCE = Frame.fromFile("tile.bmp").image();
 
     @Test
     void apply_halfProcessed_appliesPixelRelocation() {

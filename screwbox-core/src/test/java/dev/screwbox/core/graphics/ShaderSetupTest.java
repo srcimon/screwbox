@@ -42,7 +42,7 @@ class ShaderSetupTest {
     @Test
     void createPreview_nonAnimatedPreview_hasOneFrame() {
         ShaderSetup shaderSetup = ShaderBundle.OUTLINE.get();
-        Image source = SpriteBundle.DOT_RED.get().singleImage();
+        var source = SpriteBundle.DOT_RED.get().singleImage();
 
         var preview = shaderSetup.createPreview(source, 2);
 
@@ -52,7 +52,7 @@ class ShaderSetupTest {
     @Test
     void createPreview_animatedPreviewWithTenFrames_hasTenFrame() {
         ShaderSetup shaderSetup = ShaderBundle.WATER.get();
-        Image source = SpriteBundle.DOT_RED.get().singleImage();
+        var source = SpriteBundle.DOT_RED.get().singleImage();
 
         var preview = shaderSetup.createPreview(source, 10);
 

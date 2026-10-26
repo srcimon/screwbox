@@ -6,12 +6,13 @@ import dev.screwbox.core.graphics.Frame;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import static dev.screwbox.core.test.TestSupport.verifyIsSameImage;
 
 class SilhouetteShaderTest {
 
-    private static final Image SOURCE = Frame.fromFile("transparent.png").image();
+    private static final BufferedImage SOURCE = Frame.fromFile("transparent.png").image();
 
     @Test
     void apply_colorRed_drawsRedSilhouette() {

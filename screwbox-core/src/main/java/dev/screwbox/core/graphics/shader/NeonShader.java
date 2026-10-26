@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.internal.filter.MaskColorFilter;
 import dev.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Adds a neon glow effect to the specified {@link Color}. {@link Color} of glow can also be specified.
@@ -28,7 +29,7 @@ public class NeonShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final var mask = ImageOperations.applyFilter(source, new MaskColorFilter(maskColor));
 
         final var firstOutlineFilter = new OutlineImageFilter(Frame.fromImage(mask), neonColor.opacity(0.4));

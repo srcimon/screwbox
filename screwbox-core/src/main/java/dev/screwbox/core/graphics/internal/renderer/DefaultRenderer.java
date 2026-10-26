@@ -10,7 +10,6 @@ import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.internal.AwtMapper;
-import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.Renderer;
 import dev.screwbox.core.graphics.internal.RichTextBlock;
 import dev.screwbox.core.graphics.internal.ShaderResolver;
@@ -19,9 +18,9 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 
 import java.awt.*;
@@ -80,7 +79,7 @@ public class DefaultRenderer implements Renderer {
         );
 
         final var shader = ShaderResolver.resolveShader(defaultShader, options.shaderSetup());
-        final var texturePaint = new TexturePaint(ImageOperations.toBufferedImage(sprite.image(shader, time)), anchor);
+        final var texturePaint = new TexturePaint(sprite.image(shader, time), anchor);
 
         graphics.setPaint(texturePaint);
         graphics.fill(new Rectangle2D.Double(clip.x(), clip.y(), clip.width(), clip.height()));
@@ -227,7 +226,7 @@ public class DefaultRenderer implements Renderer {
         final double localOffset = ((unscaledOffset % spriteWidth) + spriteWidth) % spriteWidth;
         final var anchor = new Rectangle2D.Double(-localOffset, -spriteHeight / 2.0, spriteWidth, spriteHeight);
         final var image = sprite.image(shader, time);
-        final var texturePaint = new TexturePaint(ImageOperations.toBufferedImage(image), anchor);
+        final var texturePaint = new TexturePaint(image, anchor);
         graphics.setPaint(texturePaint);
         final double localDistance = start.distanceTo(end) / options.scale();
         graphics.fill(new Rectangle2D.Double(0, -spriteHeight / 2.0, localDistance, spriteHeight));

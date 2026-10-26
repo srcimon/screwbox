@@ -7,6 +7,7 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 /**
@@ -49,7 +50,7 @@ public class ExpandShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final int resultWidth = source.getWidth(null) + increaseX * 2;
         final int resultHeight = source.getHeight(null) + increaseY * 2;
         final var newImage = ImageOperations.createImage(Size.of(resultWidth, resultHeight));

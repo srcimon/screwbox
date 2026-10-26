@@ -7,6 +7,7 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.utils.Validate;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 import java.io.Serial;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class ColorPaletteShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         return ImageOperations.applyFilter(source, new RGBImageFilter() {
 
             @Override

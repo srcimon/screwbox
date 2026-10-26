@@ -3,7 +3,7 @@ package dev.screwbox.core.graphics;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 /**
@@ -51,7 +51,7 @@ public abstract class Shader implements Serializable {
      * Returns a new image from source. Can use specified progress to create an
      * animated effect.
      */
-    public abstract Image apply(Image source, Percent progress);
+    public abstract BufferedImage apply(BufferedImage source, Percent progress);
 
 
 }

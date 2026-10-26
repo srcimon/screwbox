@@ -30,7 +30,7 @@ public class UnderwaterShader extends Shader {
     }
 
     @Override
-    public Image apply(Image source, Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final BufferedImage sourceImage = ImageOperations.cloneImage(source);
         return ImageOperations.applyFilter(source, new RGBImageFilter() {
             @Override

@@ -7,6 +7,7 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.MaskImageFilter;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 public class DissolveShader extends Shader {
@@ -19,7 +20,7 @@ public class DissolveShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final var mask = SpriteBundle.CLOUDS.get().singleFrame();
         final int threshold = progress.rangeValue(0, 255);
         return ImageOperations.applyFilter(source, new MaskImageFilter(mask, threshold, false));

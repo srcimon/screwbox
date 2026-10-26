@@ -26,7 +26,7 @@ public class PixelateShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         if (pixelSize == 1) {
             return source;
         }

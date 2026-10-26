@@ -8,6 +8,7 @@ import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.filter.OutlineImageFilter;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 
 /**
@@ -40,7 +41,7 @@ public class OutlineShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final var appliedColor = animateOpacity ? color.opacity(progress) : color;
         return ImageOperations.applyFilter(source, new OutlineImageFilter(Frame.fromImage(source), appliedColor));
     }

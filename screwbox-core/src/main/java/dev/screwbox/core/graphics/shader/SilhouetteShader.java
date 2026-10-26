@@ -6,6 +6,7 @@ import dev.screwbox.core.graphics.Shader;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
 
 import static java.util.Objects.requireNonNull;
@@ -25,7 +26,7 @@ public class SilhouetteShader extends Shader {
     }
 
     @Override
-    public Image apply(final Image source, final Percent progress) {
+    public BufferedImage apply(final BufferedImage source, final Percent progress) {
         final int targetRgb = color.rgb();
         return ImageOperations.applyFilter(source, new RGBImageFilter() {
 
