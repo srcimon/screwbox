@@ -73,7 +73,6 @@ public class DefaultRenderer implements Renderer {
     public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
-
         final var anchor = new Rectangle2D.Double(
             options.offset().x(),
             options.offset().y(),
@@ -85,9 +84,7 @@ public class DefaultRenderer implements Renderer {
         final var texturePaint = new TexturePaint(ImageOperations.toBufferedImage(sprite.image(shader, time)), anchor);
 
         graphics.setPaint(texturePaint);
-
         graphics.fill(new Rectangle2D.Double(clip.x(), clip.y(), clip.width(), clip.height()));
-
         resetOpacityConfig(options.opacity());
     }
 
