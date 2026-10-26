@@ -12,6 +12,7 @@
 
 - Simplyfied validation for boolean conditions
 - Updated graphics related classes with `BufferImage` instead of `Image` to reduce conversion overhead 
+- Removed no longer necessary buffer image conversion
 - Renamed `TextureFillOptions`
 
 ### 📦 Dependency updates
