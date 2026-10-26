@@ -9,7 +9,7 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.ImageOperations;
-import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +43,7 @@ class RendererPipelineTest {
 
     @Test
     void renderDuration_renderingHappened_hasDuration() {
-        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
+        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), TextureFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
         updateContext();
 
         assertThat(renderPipeline.renderDuration().nanos()).isPositive();
@@ -51,8 +51,8 @@ class RendererPipelineTest {
 
     @Test
     void renderTaskCount_renderingHappened_hasTaskCount() {
-        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
-        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), SpriteFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
+        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), TextureFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
+        renderPipeline.renderer().fillWith(SpriteBundle.EXPLOSION.get(), TextureFillOptions.scale(2), new ScreenBounds(Size.of(240, 160)));
         updateContext();
 
         await(() -> renderPipeline.renderTaskCount() == 2, Duration.ofMillis(200));

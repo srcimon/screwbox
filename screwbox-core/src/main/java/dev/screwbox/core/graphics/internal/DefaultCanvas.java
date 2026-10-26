@@ -11,7 +11,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
@@ -48,7 +48,7 @@ public class DefaultCanvas implements Canvas {
     }
 
     @Override
-    public Canvas fillWith(final Sprite sprite, final SpriteFillOptions options) {
+    public Canvas fillWith(final Sprite sprite, final TextureFillOptions options) {
         renderer.fillWith(sprite, options.offset(options.offset().add(offset)), clip);
         return this;
     }

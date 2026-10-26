@@ -10,7 +10,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
@@ -25,7 +25,7 @@ public interface Renderer {
 
     void fillWith(Color color, ScreenBounds clip);
 
-    void fillWith(Sprite sprite, SpriteFillOptions options, ScreenBounds clip);
+    void fillWith(Sprite sprite, TextureFillOptions options, ScreenBounds clip);
 
     void drawText(Offset offset, String text, SystemTextDrawOptions options, ScreenBounds clip);
 

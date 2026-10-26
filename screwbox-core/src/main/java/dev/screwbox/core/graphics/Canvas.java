@@ -5,7 +5,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
@@ -36,9 +36,9 @@ public interface Canvas extends Sizeable {
     Canvas fillWith(Color color);
 
     /**
-     * Fills the {@link Canvas} with a repeated {@link Sprite} using the given {@link SpriteFillOptions}.
+     * Fills the {@link Canvas} with a repeated {@link Sprite} using the given {@link TextureFillOptions}.
      */
-    Canvas fillWith(Sprite sprite, SpriteFillOptions options);
+    Canvas fillWith(Sprite sprite, TextureFillOptions options);
 
     /**
      * Draws text on the {@link Canvas} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and

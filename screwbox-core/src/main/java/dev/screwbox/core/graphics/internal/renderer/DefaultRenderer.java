@@ -1,6 +1,5 @@
 package dev.screwbox.core.graphics.internal.renderer;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Time;
@@ -20,7 +19,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
@@ -70,7 +69,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+    public void fillWith(final Sprite sprite, final TextureFillOptions options, final ScreenBounds clip) {
         applyClip(clip);
         applyOpacityConfig(options.opacity());
         final var anchor = new Rectangle2D.Double(

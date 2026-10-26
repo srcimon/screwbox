@@ -16,7 +16,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
@@ -245,21 +245,21 @@ class DefaultRenderImageTest {
 
     @Test
     void fillWith_spriteFillWithDoubleSizeAndHalfOpacity_fillsWholeImage() {
-        renderer.fillWith(SPRITE, SpriteFillOptions.scale(2).opacity(Percent.half()), CLIP);
+        renderer.fillWith(SPRITE, TextureFillOptions.scale(2).opacity(Percent.half()), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/fillWith_spriteFillWithDoubleSizeAndHalfOpacity_fillsWholeImage.png");
     }
 
     @Test
     void fillWith_spriteFillWithOffset_fillsWholeImage() {
-        renderer.fillWith(SPRITE, SpriteFillOptions.scale(1).offset(Offset.at(3, 5)).opacity(Percent.half()), CLIP);
+        renderer.fillWith(SPRITE, TextureFillOptions.scale(1).offset(Offset.at(3, 5)).opacity(Percent.half()), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/fillWith_spriteFillWithOffset_fillsWholeImage.png");
     }
 
     @Test
     void fillWith_spriteFillWithDifferentOffset_fillsWholeImage() {
-        renderer.fillWith(SPRITE, SpriteFillOptions.scale(1).offset(Offset.at(-13, -9000)).opacity(Percent.half()), CLIP);
+        renderer.fillWith(SPRITE, TextureFillOptions.scale(1).offset(Offset.at(-13, -9000)).opacity(Percent.half()), CLIP);
 
         verifyIsSameImage(result.image(), "renderer/fillWith_spriteFillWithDifferentOffset_fillsWholeImage.png");
     }

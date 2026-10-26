@@ -20,12 +20,11 @@ import static java.util.Objects.requireNonNull;
  * @param opacity     the opacity used to fill the {@link Screen}
  * @param shaderSetup {@link ShaderSetup} used for drawing
  * @param drawOrder   order of this drawing task in comparison to others
- * @see Canvas#fillWith(Sprite, SpriteFillOptions)
+ * @see Canvas#fillWith(Sprite, TextureFillOptions)
  */
-//TODO rename to TextureFillOoptions
-public record SpriteFillOptions(Offset offset, double scale, Percent opacity, ShaderSetup shaderSetup, int drawOrder) {
+public record TextureFillOptions(Offset offset, double scale, Percent opacity, ShaderSetup shaderSetup, int drawOrder) {
 
-    public SpriteFillOptions {
+    public TextureFillOptions {
         Validate.positive(scale, "scale must be positive");
         requireNonNull(offset, "offset must not be null");
         requireNonNull(opacity, "opacity must not be null");
@@ -34,22 +33,22 @@ public record SpriteFillOptions(Offset offset, double scale, Percent opacity, Sh
     /**
      * Creates a new instance with given {@link #scale()}.
      */
-    public static SpriteFillOptions scale(final double scale) {
-        return new SpriteFillOptions(Offset.origin(), scale, Percent.max(), null, 0);
+    public static TextureFillOptions scale(final double scale) {
+        return new TextureFillOptions(Offset.origin(), scale, Percent.max(), null, 0);
     }
 
     /**
      * Creates a new instance with given {@link #offset()}
      */
-    public SpriteFillOptions offset(final Offset offset) {
-        return new SpriteFillOptions(offset, scale, opacity, shaderSetup, drawOrder);
+    public TextureFillOptions offset(final Offset offset) {
+        return new TextureFillOptions(offset, scale, opacity, shaderSetup, drawOrder);
     }
 
     /**
      * Creates a new instance with given {@link #opacity()}.
      */
-    public SpriteFillOptions opacity(final Percent opacity) {
-        return new SpriteFillOptions(offset, scale, opacity, shaderSetup, drawOrder);
+    public TextureFillOptions opacity(final Percent opacity) {
+        return new TextureFillOptions(offset, scale, opacity, shaderSetup, drawOrder);
     }
 
     /**
@@ -57,8 +56,8 @@ public record SpriteFillOptions(Offset offset, double scale, Percent opacity, Sh
      *
      * @since 2.15.0
      */
-    public SpriteFillOptions shaderSetup(ShaderSetup shaderSetup) {
-        return new SpriteFillOptions(offset, scale, opacity, shaderSetup, drawOrder);
+    public TextureFillOptions shaderSetup(ShaderSetup shaderSetup) {
+        return new TextureFillOptions(offset, scale, opacity, shaderSetup, drawOrder);
     }
 
     /**
@@ -66,7 +65,7 @@ public record SpriteFillOptions(Offset offset, double scale, Percent opacity, Sh
      *
      * @since 2.15.0
      */
-    public SpriteFillOptions shaderSetup(Supplier<ShaderSetup> shaderOptions) {
+    public TextureFillOptions shaderSetup(Supplier<ShaderSetup> shaderOptions) {
         return shaderSetup(shaderOptions.get());
     }
 
@@ -75,7 +74,7 @@ public record SpriteFillOptions(Offset offset, double scale, Percent opacity, Sh
      *
      * @since 3.14.0
      */
-    public SpriteFillOptions drawOrder(final int drawOrder) {
-        return new SpriteFillOptions(offset, scale, opacity, shaderSetup, drawOrder);
+    public TextureFillOptions drawOrder(final int drawOrder) {
+        return new TextureFillOptions(offset, scale, opacity, shaderSetup, drawOrder);
     }
 }

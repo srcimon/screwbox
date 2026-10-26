@@ -15,7 +15,7 @@ import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.core.graphics.options.SpriteFillOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
@@ -76,7 +76,7 @@ public class OrderingAsyncRenderer implements Renderer {
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+    public void fillWith(final Sprite sprite, final TextureFillOptions options, final ScreenBounds clip) {
         addTask(options.drawOrder(), () -> next.fillWith(sprite, options, clip));
     }
 

@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Simplyfied validation for boolean conditions
+- Renamed `TextureFillOptions`
 
 ### 📦 Dependency updates
 
