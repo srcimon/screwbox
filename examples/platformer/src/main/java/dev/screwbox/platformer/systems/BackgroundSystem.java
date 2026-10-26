@@ -31,8 +31,8 @@ public class BackgroundSystem implements EntitySystem {
             for (final var viewport : engine.graphics().viewports()) {
                 final var cameraPosition = viewport.camera().position();
                 final Offset offset = Offset.at(
-                    cameraPosition.x() * -1 * (background.parallaxX - 1),
-                    cameraPosition.y() * -1 * (background.parallaxY - 1));
+                    cameraPosition.x() * (background.parallaxX - 1),
+                    cameraPosition.y() * (background.parallaxY - 1));
                 viewport.canvas().fillWith(config.sprite, options.offset(offset).shaderSetup(ShaderBundle.BREEZE));
             }
         }
