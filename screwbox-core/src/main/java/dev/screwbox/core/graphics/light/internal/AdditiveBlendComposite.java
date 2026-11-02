@@ -1,5 +1,7 @@
 package dev.screwbox.core.graphics.light.internal;
 
+import dev.screwbox.core.Percent;
+
 import java.awt.*;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
@@ -10,19 +12,10 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
     private final float extraAlpha;
 
     // Privater Konstruktor: Instanziierung nur über getInstance()
-    private AdditiveBlendComposite(float alpha) {
-        this.extraAlpha = Math.min(1.0f, Math.max(0.0f, alpha));
+    public AdditiveBlendComposite(final Percent alpha) {
+        this.extraAlpha = (float)alpha.value();
     }
 
-    /**
-     * Erstellt oder holt eine Instanz des additiven Composites mit definierter Opazität.
-     * @param alpha Wert von 0.0f (voll transparent) bis 1.0f (voll deckend)
-     */
-    public static AdditiveBlendComposite getInstance(float alpha) {
-        // Für maximale Performance könnte man hier häufig genutzte Werte cachen,
-        // aber das Erstellen des Contexts ist in Java 2D bereits sehr leichtgewichtig.
-        return new AdditiveBlendComposite(alpha);
-    }
 
     @Override
     public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
