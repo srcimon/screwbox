@@ -3,12 +3,11 @@
 - Fixed length property prevents length changes of ropes
 - Added `Vector.clampDistance(Vector, double)`
 - Reduced texture fill processing time by 95% for significantly faster rendering (#1122)
-- Indirect lights are drawn without color for improved visuals
-- Improved color blending for better light visuals when using colored lights
+- Improved color blending for colored lights preventing colors from getting lost
 
 ### 🪛 Bug Fixes
 
-- ..
+- Fixed indirect lights color bleed when using colored lights
 
 ### 🧽 Cleanup & refactoring
 
