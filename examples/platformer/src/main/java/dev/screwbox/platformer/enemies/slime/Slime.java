@@ -30,7 +30,7 @@ public class Slime implements Blueprint<GameObject> {
     public Entity assembleFrom(final GameObject object) {
         return new Entity(object.id(), "Slime").add(
                 new PointLightComponent(15, Color.YELLOW.opacity(1)),
-//                new GlowComponent(45, Color.YELLOW.opacity(0.3)),
+                new GlowComponent(45, Color.YELLOW.opacity(0.3)),
                 new StateComponent(new SlimeAliveState()),
                 new TransformComponent(Bounds.atPosition(object.position(), 12, 10)),
                 new KillZoneComponent(DeathEventComponent.DeathType.ENEMY_TOUCHED),

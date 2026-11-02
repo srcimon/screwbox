@@ -25,7 +25,7 @@ public class Cherries implements Blueprint<GameObject> {
         return new Entity().add(
                 new FixedSpinComponent(0.4),
                 new PointLightComponent(20, Color.RED),
-//                new GlowComponent(60, Color.RED.opacity(0.5)),
+                new GlowComponent(60, Color.RED.opacity(0.5)),
                 new TransformComponent(object.bounds()),
                 new RenderComponent(SPRITE, object.layer().order()),
                 new CollisionSensorComponent(),
