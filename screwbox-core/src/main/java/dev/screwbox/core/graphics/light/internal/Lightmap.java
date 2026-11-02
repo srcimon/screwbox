@@ -134,8 +134,8 @@ final class Lightmap {
 
     private void renderDirectionalLight(final DirectionalLight directionalLight) {
         applyOpacityConfig(directionalLight.color());
-        Offset start = directionalLight.start();
-        Offset end = directionalLight.end();
+        final Offset start = directionalLight.start();
+        final Offset end = directionalLight.end();
         graphics.setPaint(new GradientPaint(
             (float) start.x() / scale, (float) start.y() / scale,
             AwtMapper.toAwtColor(directionalLight.color().opacity(1)),
