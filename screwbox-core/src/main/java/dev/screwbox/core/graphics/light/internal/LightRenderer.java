@@ -3,6 +3,7 @@ package dev.screwbox.core.graphics.light.internal;
 import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Line;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.Polygon;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.assets.Asset;
@@ -14,9 +15,9 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
+import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
-import dev.screwbox.core.graphics.light.ShadowOptions;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -89,12 +90,12 @@ class LightRenderer {
                 final Offset offset = viewport.toCanvas(position);
                 final int screenRadius = viewport.toCanvas(radius);
                 lightmap.addPointLight(new Lightmap.PointLight(offset, screenRadius, area, color));
-                addIndirectLight(lightBox, color, minAngle, maxAngle);
+                addIndirectLight(lightBox, color.opacity(), minAngle, maxAngle);
             }
         });
     }
 
-    private void addIndirectLight(final Bounds lightBox, final Color color, final double minAngle, final double maxAngle) {
+    private void addIndirectLight(final Bounds lightBox, final Percent opacity, final double minAngle, final double maxAngle) {
         if (configuration.isIndirectLightEnabled()) {
             final var indirectLights = lightPhysics.calculateIndirectLights(lightBox, minAngle, maxAngle);
             final var screenBox = viewport.toCanvas(lightBox);
@@ -102,8 +103,9 @@ class LightRenderer {
             for (final var indirectLight : indirectLights) {
                 final Offset start = viewport.toCanvas(indirectLight.ray().start());
                 final Offset end = viewport.toCanvas(indirectLight.ray().end());
-                final Color startColor = color.opacity(color.opacity().multiply(indirectLight.startStrength().value()));
-                final Color endColor = color.opacity(color.opacity().multiply(indirectLight.endStrength().value()));
+
+                final Color startColor = Color.BLACK.opacity(opacity.multiply(indirectLight.startStrength().value()));
+                final Color endColor = Color.BLACK.opacity(opacity.multiply(indirectLight.endStrength().value()));
                 rays.add(new Lightmap.LightRay(start, end, startColor, endColor));
             }
             lightmap.addIndirectLightSource(new Lightmap.IndirectLightSource(screenBox, rays, configuration.indirectLightDiameter()));
