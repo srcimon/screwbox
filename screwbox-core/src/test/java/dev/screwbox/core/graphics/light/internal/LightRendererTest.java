@@ -139,6 +139,7 @@ class LightRendererTest {
 
         var sprite = lightRenderer.renderLight();
 
+        sprite.get().singleFrame().exportPng("renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible.png");
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible.png");
     }
 
