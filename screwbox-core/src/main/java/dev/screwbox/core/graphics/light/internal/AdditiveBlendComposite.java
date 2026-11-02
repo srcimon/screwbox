@@ -52,26 +52,50 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
 
             float factor = (aSrc / 255.0f) * extraAlpha;
 
-            // ========================================================
-            // KORREKTUR: Sättigung (Farbigkeit) des Quell-Lichts messen
-            // ========================================================
+            // Gedimmte Werte der neuen Lichtquelle berechnen
+            int dimmedRSrc = (int) (rSrc * factor);
+            int dimmedGSrc = (int) (gSrc * factor);
+            int dimmedBSrc = (int) (bSrc * factor);
+
+            // Sättigung (Farbigkeit) des Quell-Lichts messen
             int maxColor = Math.max(rSrc, Math.max(gSrc, bSrc));
             int minColor = Math.min(rSrc, Math.min(gSrc, bSrc));
-
-            // Sättigung ist 0.0 bei reinem Weiß/Grau/Schwarz und 1.0 bei reinem Farbton
             float saturation = (maxColor == 0) ? 0.0f : (float)(maxColor - minColor) / maxColor;
 
-            // Reines Additiv-Dimm-Verhalten für Weiß (damit es nicht grau wird)
-            int addR = Math.min(255, rDst + (int)(rSrc * factor));
-            int addG = Math.min(255, gDst + (int)(gSrc * factor));
-            int addB = Math.min(255, bDst + (int)(bSrc * factor));
+            // 1. Reiner additiver Pfad für weißes Licht
+            int addR = Math.min(255, rDst + dimmedRSrc);
+            int addG = Math.min(255, gDst + dimmedGSrc);
+            int addB = Math.min(255, bDst + dimmedBSrc);
 
-            // Interpoliertes Verhalten für bunte Farben (verhindert das Ausbleichen zu Weiß)
-            int mixR = (int) (rDst * (1.0f - factor) + rSrc * factor);
-            int mixG = (int) (gDst * (1.0f - factor) + gSrc * factor);
-            int mixB = (int) (bDst * (1.0f - factor) + bSrc * factor);
+            // ========================================================
+            // KORREKTUR: Lichtfarben-Mischung mit Helligkeits-Begrenzung
+            // ========================================================
+            // Wir addieren die Farbkanäle, um die Farbmischung zu erzwingen (z. B. Rot + Blau = Lila)
+            int blendedR = rDst + dimmedRSrc;
+            int blendedG = gDst + dimmedGSrc;
+            int blendedB = bDst + dimmedBSrc;
 
-            // Überblenden zwischen Additiv (Weiß) und Mix (Farbe) basierend auf der Sättigung
+            // Um das Ausbrennen zu Weiß zu verhindern, ermitteln wir die jeweils höchsten
+            // Einzelkanal-Intensitäten beider Lichter und nutzen das als Obergrenze (Helligkeitsdeckel)
+            int maxAllowedR = Math.max(rDst, rSrc);
+            int maxAllowedG = Math.max(gDst, gSrc);
+            int maxAllowedB = Math.max(bDst, bSrc);
+            int targetMaxBrightness = Math.max(maxAllowedR, Math.max(maxAllowedG, maxAllowedB));
+
+            // Das gemischte Licht wird proportional herunterskaliert, falls es den Deckel sprengt
+            int currentMixMax = Math.max(blendedR, Math.max(blendedG, blendedB));
+            if (currentMixMax > targetMaxBrightness && currentMixMax > 0) {
+                blendedR = (blendedR * targetMaxBrightness) / currentMixMax;
+                blendedG = (blendedG * targetMaxBrightness) / currentMixMax;
+                blendedB = (blendedB * targetMaxBrightness) / currentMixMax;
+            }
+
+            // Sicherheits-Clamp
+            int mixR = Math.max(0, Math.min(255, blendedR));
+            int mixG = Math.max(0, Math.min(255, blendedG));
+            int mixB = Math.max(0, Math.min(255, blendedB));
+
+            // 3. Überblenden zwischen Weiß (Additiv) und Farb-Lichtmischung
             int rFinal = (int) (addR * (1.0f - saturation) + mixR * saturation);
             int gFinal = (int) (addG * (1.0f - saturation) + mixG * saturation);
             int bFinal = (int) (addB * (1.0f - saturation) + mixB * saturation);
