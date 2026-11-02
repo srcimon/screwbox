@@ -35,7 +35,7 @@ public class PlayerAttackControlSystem implements EntitySystem {
                 final int drawOrder = player.get(RenderComponent.class).options.drawOrder();
                 engine.environment().addEntity("shoot",
                     new TransformComponent(player.position(), 8, 8),
-                    new GlowComponent(8, Color.RED.opacity(0.75)),
+                    new GlowComponent(16, Color.RED.opacity(0.25)),
                     new PointLightComponent(64, Color.RED),
                     new ShotComponent(),
                     new CollisionSensorComponent(),
