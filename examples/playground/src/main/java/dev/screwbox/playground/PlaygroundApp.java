@@ -2,46 +2,51 @@ package dev.screwbox.playground;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.StaticBoundsComponent;
+import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
-import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
-import dev.screwbox.core.environment.softphysics.RopeComponent;
-import dev.screwbox.core.environment.softphysics.RopeRenderComponent;
-import dev.screwbox.core.environment.softphysics.SoftPhysicsSupport;
+import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
 
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
+
+        var map = TileMap.fromString("""
+            #######################
+            #        ###          #
+            #        #            #
+            #          C  #       #
+            #             #      ##
+            #        ###          #
+            #######################
+            """);
+
         screwBox.graphics().camera().setZoom(3);
-        screwBox.environment().addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.atPosition(0,0,1,1)).add(new PointLightComponent(60, Color.BLACK)));
-        var snake = createSnake(Vector.$(0, 0), screwBox);
-        snake.end().moveTo(snake.root().position().addX(120));
-        screwBox.environment().enableAllFeatures().addEntities(snake)
-            .addSystem(s -> {
-                var target = s.environment().fetchSingleton(Archetype.of(CameraTargetComponent.class));
-                target.get(PhysicsComponent.class).velocity = s.keyboard().wsadMovement(60);
-            })
-            .addSystem(new DebugGridSystem(16, 256));
-        screwBox.graphics().configuration().setBackgroundColor(Color.WHITE);
+        screwBox.graphics().light().setAmbientLight(Percent.of(0.3));
+        screwBox.environment().enableAllFeatures()
+            .addEntity(new Entity().bounds(Bounds.atPosition(0, 0, 0, 0)).add(new CursorAttachmentComponent()).add(new PointLightComponent(60, Color.RED)))
+            .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
+                .assign('#', source -> new Entity().bounds(source.bounds())
+                    .add(new OccluderComponent())
+                    .add(new StaticBoundsComponent())
+                    .add(new RenderComponent(AutoTileBundle.ROCKS.get().findSprite(source.autoTileMask()))))
+                .assign('C', source -> new Entity().bounds(source.bounds())
+                    .add(new PointLightComponent(100, Color.YELLOW))
+                    .add(new CameraTargetComponent()))
+            );
+        screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
         screwBox.start();
     }
 
-    private static SoftPhysicsSupport.RopeEntities createSnake(Vector position, Engine screwBox) {
-        var snake = SoftPhysicsSupport.createRope(position, position.addX(256), 17, screwBox.environment());
-        snake.root().add(new RopeRenderComponent(Sprite.fromFile("snake.png")));
-        snake.root().get(RopeComponent.class).isLengthFixed = true;
-        snake.root().add(new CameraTargetComponent(10));
-        snake.root().add(new PointLightComponent(60, Color.BLACK));
-        snake.forEach(s -> s.get(PhysicsComponent.class).friction = 0.8);
-        return snake;
-    }
 }
