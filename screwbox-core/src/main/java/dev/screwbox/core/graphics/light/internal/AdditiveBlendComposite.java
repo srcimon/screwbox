@@ -10,13 +10,11 @@ import java.awt.image.WritableRaster;
 
 public class AdditiveBlendComposite implements Composite, CompositeContext {
 
-    private final float extraAlpha;
+    private final float factor;
 
-    // Privater Konstruktor: Instanziierung nur über getInstance()
     public AdditiveBlendComposite(final Percent alpha) {
-        this.extraAlpha = (float) alpha.value();
+        this.factor = (float) alpha.value() / 255.0f;
     }
-
 
     @Override
     public CompositeContext createContext(final ColorModel srcColorModel, final ColorModel dstColorModel, final RenderingHints hints) {
@@ -51,12 +49,13 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
         final int gSrc = (srcPixel >> 8) & 0xFF;
         final int bSrc = srcPixel & 0xFF;
 
+        //TODO add Color helper Methods
         final int aDst = (dstPixel >> 24) & 0xFF;
         final int rDst = (dstPixel >> 16) & 0xFF;
         final int gDst = (dstPixel >> 8) & 0xFF;
         final int bDst = dstPixel & 0xFF;
 
-        final float factor = (aSrc / 255.0f) * extraAlpha;
+        final float factor = aSrc * this.factor;
 
         // Gedimmte Werte der neuen Lichtquelle berechnen
         int dimmedRSrc = (int) (rSrc * factor);
@@ -86,7 +85,7 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
         final int finalG = Color.clampRgbRange((int) (addG + saturation * (screenG - addG)));
         final int finalB = Color.clampRgbRange((int) (addB + saturation * (screenB - addB)));
 
-        final int finalAlpha = Math.max(aDst, (int) (aSrc * extraAlpha));
+        final int finalAlpha = Math.max(aDst, (int) (aSrc * this.factor));
 
         return (finalAlpha << 24) | (finalR << 16) | (finalG << 8) | finalB;
     }
