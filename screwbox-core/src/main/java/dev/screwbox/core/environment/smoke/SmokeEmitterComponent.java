@@ -37,7 +37,6 @@ public class SmokeEmitterComponent implements Component {
      */
     public Vector velocity;
 
-    //TODO document
     /**
      * Specify the noise applied on velocity when {@link #velocityTurbulenceRange} has a value.
      *
