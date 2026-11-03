@@ -2,6 +2,7 @@ package dev.screwbox.core.environment.smoke;
 
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Component;
+import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.smoke.Smoke;
 
@@ -32,6 +33,12 @@ public class SmokeEmitterComponent implements Component {
      * Velocity of emit.
      */
     public Vector velocity;
+
+    /**
+     * Specify if smoke is emitted from whole {@link Entity#bounds()} (default {@code false}) or only from {@link Entity#position()}.
+     * @since 3.39.0
+     */
+    public boolean isPointEmitter = false;
 
     /**
      * Creates a new instance with default settings.

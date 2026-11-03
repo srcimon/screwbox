@@ -31,6 +31,12 @@ public interface Smoke {
      */
     Smoke emit(Vector position, Vector velocity, double amount, Color color);
 
+    //TODO document
+    Smoke emit(Bounds bounds, Vector velocity, double amount, Color color);
+
+    //TODO document
+    Smoke emit(Bounds bounds, double amount, Color color);
+
     /**
      * Emits smoke using the specified values.
      *

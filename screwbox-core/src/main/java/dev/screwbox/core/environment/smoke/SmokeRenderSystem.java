@@ -33,7 +33,12 @@ public class SmokeRenderSystem implements EntitySystem {
         // emitters
         for (final var entity : engine.environment().fetchAll(EMITTERS)) {
             final var emitter = entity.get(SmokeEmitterComponent.class);
-            smoke.emit(entity.position(), emitter.velocity.multiply(engine.loop().delta()), emitter.amount * engine.loop().delta(), emitter.color);
+
+            if (emitter.isPointEmitter) {
+                smoke.emit(entity.position(), emitter.velocity.multiply(engine.loop().delta()), emitter.amount * engine.loop().delta(), emitter.color);
+            } else {
+                smoke.emit(entity.bounds(), emitter.velocity.multiply(engine.loop().delta()), emitter.amount * engine.loop().delta(), emitter.color);
+            }
         }
 
         // winds
@@ -45,7 +50,7 @@ public class SmokeRenderSystem implements EntitySystem {
         // interactors
         for (final var entity : engine.environment().fetchAll(INTERACTORS)) {
             var interaction = entity.get(SmokeInteractionComponent.class);
-            final Vector speed = entity.get(PhysicsComponent.class).velocity.multiply(interaction.modifier* engine.loop().delta());
+            final Vector speed = entity.get(PhysicsComponent.class).velocity.multiply(interaction.modifier * engine.loop().delta());
             smoke.push(entity.bounds(), speed);
         }
 
