@@ -27,6 +27,7 @@ public class LightmapBlendComposite implements Composite, CompositeContext {
 
     @Override
     public void dispose() {
+        // NOP
     }
 
     @Override

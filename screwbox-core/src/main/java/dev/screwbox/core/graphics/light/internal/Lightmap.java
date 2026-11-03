@@ -309,12 +309,7 @@ final class Lightmap {
     }
 
     private void applyOpacityConfig(final Color color) {
-        applyOpacityConfig(color.opacity());
-    }
-
-    private void applyOpacityConfig(final Percent opacity) {
-//        graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, (float)opacity.value()));//TODO remove
-        graphics.setComposite(new LightmapBlendComposite(opacity));
+        graphics.setComposite(new LightmapBlendComposite(color.opacity()));
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
