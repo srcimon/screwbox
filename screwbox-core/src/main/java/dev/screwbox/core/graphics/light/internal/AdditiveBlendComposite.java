@@ -70,38 +70,28 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
             // ========================================================
             // KORREKTUR: Lichtfarben-Mischung mit Helligkeits-Begrenzung
             // ========================================================
-            // Wir addieren die Farbkanäle, um die Farbmischung zu erzwingen (z. B. Rot + Blau = Lila)
-            int blendedR = rDst + dimmedRSrc;
-            int blendedG = gDst + dimmedGSrc;
-            int blendedB = bDst + dimmedBSrc;
+            // Wir nutzen "Screen" (Negativ Multiplizieren) für farbige Bereiche,
+            // um weiche Verläufe ohne abruptes Ausbrennen zu erzielen.
+            int screenR = 255 - ((255 - rDst) * (255 - dimmedRSrc) / 255);
+            int screenG = 255 - ((255 - gDst) * (255 - dimmedGSrc) / 255);
+            int screenB = 255 - ((255 - bDst) * (255 - dimmedBSrc) / 255);
 
-            // Um das Ausbrennen zu Weiß zu verhindern, ermitteln wir die jeweils höchsten
-            // Einzelkanal-Intensitäten beider Lichter und nutzen das als Obergrenze (Helligkeitsdeckel)
-            int maxAllowedR = Math.max(rDst, rSrc);
-            int maxAllowedG = Math.max(gDst, gSrc);
-            int maxAllowedB = Math.max(bDst, bSrc);
-            int targetMaxBrightness = Math.max(maxAllowedR, Math.max(maxAllowedG, maxAllowedB));
+            // Dynamischer Mix: Je gesättigter die Lichtquelle, desto mehr Screen nutzen wir.
+            // Das bewahrt die lebendigen Farben (z.B. Lila bei Rot + Blau).
+            // Ungesättigtes (weißes) Licht bleibt knackig additiv.
+            int finalR = (int) (addR + saturation * (screenR - addR));
+            int finalG = (int) (addG + saturation * (screenG - addG));
+            int finalB = (int) (addB + saturation * (screenB - addB));
 
-            // Das gemischte Licht wird proportional herunterskaliert, falls es den Deckel sprengt
-            int currentMixMax = Math.max(blendedR, Math.max(blendedG, blendedB));
-            if (currentMixMax > targetMaxBrightness && currentMixMax > 0) {
-                blendedR = (blendedR * targetMaxBrightness) / currentMixMax;
-                blendedG = (blendedG * targetMaxBrightness) / currentMixMax;
-                blendedB = (blendedB * targetMaxBrightness) / currentMixMax;
-            }
+            // Letzte Absicherung gegen Überläufe
+            finalR = Math.max(0, Math.min(255, finalR));
+            finalG = Math.max(0, Math.min(255, finalG));
+            finalB = Math.max(0, Math.min(255, finalB));
 
-            int mixR = Math.clamp(blendedR, 0, 255);
-            int mixG = Math.clamp(blendedG, 0, 255);
-            int mixB = Math.clamp(blendedB, 0, 255);
+            // Ziel-Alpha berechnen (Standard-Lichtmischung behält Ziel-Alpha oder addiert Anteile)
+            int finalA = Math.max(aDst, (int)(aSrc * extraAlpha));
 
-            // 3. Überblenden zwischen Weiß (Additiv) und Farb-Lichtmischung
-            int rFinal = (int) (addR * (1.0f - saturation) + mixR * saturation);
-            int gFinal = (int) (addG * (1.0f - saturation) + mixG * saturation);
-            int bFinal = (int) (addB * (1.0f - saturation) + mixB * saturation);
-
-            int aFinal = Math.min(255, (int)(aSrc * extraAlpha) + aDst);
-
-            destinationPixel[i] = (aFinal << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
+            destinationPixel[i] = (finalA << 24) | (finalR << 16) | (finalG << 8) | finalB;
         }
 
         dstOut.setDataElements(0, 0, width, height, destinationPixel);
