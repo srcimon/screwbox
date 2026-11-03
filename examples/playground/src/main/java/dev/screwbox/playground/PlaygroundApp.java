@@ -40,7 +40,7 @@ public class PlaygroundApp {
         snake.root().add(new RopeRenderComponent(Sprite.fromFile("snake.png")));
         snake.root().get(RopeComponent.class).isLengthFixed = true;
         snake.root().add(new CameraTargetComponent(10));
-        snake.root().add(new PointLightComponent(60, Color.RED));
+        snake.root().add(new PointLightComponent(60, Color.YELLOW));
         snake.forEach(s -> s.get(PhysicsComponent.class).friction = 0.8);
         return snake;
     }
