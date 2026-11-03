@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.OccluderComponent;
@@ -32,6 +33,9 @@ public class PlaygroundApp {
             #######################
             """);
 
+        screwBox.loop().unlockFps();
+        screwBox.environment().addSystem(new LogFpsSystem());
+        screwBox.graphics().configuration().setLightQuality(Percent.half());
         screwBox.graphics().camera().setZoom(3);
         screwBox.graphics().light().setAmbientLight(Percent.of(0.3));
         screwBox.environment().enableAllFeatures()
@@ -42,7 +46,7 @@ public class PlaygroundApp {
                     .add(new StaticBoundsComponent())
                     .add(new RenderComponent(AutoTileBundle.ROCKS.get().findSprite(source.autoTileMask()))))
                 .assign('C', source -> new Entity().bounds(source.bounds())
-                    .add(new PointLightComponent(100, Color.YELLOW))
+                    .add(new PointLightComponent(100, Color.GREEN))
                     .add(new CameraTargetComponent()))
             );
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
