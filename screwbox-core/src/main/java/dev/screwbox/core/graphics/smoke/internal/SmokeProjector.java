@@ -39,10 +39,13 @@ public class SmokeProjector {
     public record VelocityChange(Vector position, Vector velocity) {
     }
 
+    public record AreaVelocityChange(Bounds area, Vector velocity) {
+    }
+
     public record DensityChange(Vector position, double amount, Color color) {
     }
 
-    public record AreaVelocityChange(Bounds area, Vector velocity) {
+    public record AreaDensityChange(Bounds area, double amount, Color color) {
     }
 
     public SmokeProjector(final ExecutorService executor, final GraphicsConfiguration configuration) {
@@ -109,6 +112,18 @@ public class SmokeProjector {
             for (int x = origin.x(); x < max.x(); x++) {
                 for (int y = origin.y(); y < max.y(); y++) {
                     simulation.addVelocity(x, y, velocity);
+                }
+            }
+        }
+    }
+
+    public void applyAreaDensityChanges(final List<AreaDensityChange> areaDensityChanges) {
+        for (final var densityChange : areaDensityChanges) {
+            final var origin = toCell(densityChange.area().origin());
+            final var max = toCell(densityChange.area().bottomRight());
+            for (int x = origin.x(); x < max.x(); x++) {
+                for (int y = origin.y(); y < max.y(); y++) {
+                    simulation.addDensity(x, y, densityChange.amount(), densityChange.color());
                 }
             }
         }

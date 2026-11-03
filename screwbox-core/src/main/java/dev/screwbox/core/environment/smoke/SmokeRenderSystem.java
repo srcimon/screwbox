@@ -1,5 +1,6 @@
 package dev.screwbox.core.environment.smoke;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
@@ -24,6 +25,7 @@ public class SmokeRenderSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         final var smoke = engine.graphics().smoke();
+        final double delta = engine.loop().delta();
 
         // obstacles
         for (final var entity : engine.environment().fetchAll(OBSTACLES)) {
@@ -33,22 +35,30 @@ public class SmokeRenderSystem implements EntitySystem {
         // emitters
         for (final var entity : engine.environment().fetchAll(EMITTERS)) {
             final var emitter = entity.get(SmokeEmitterComponent.class);
-            smoke.emit(entity.position(), emitter.velocity.multiply(engine.loop().delta()), emitter.amount * engine.loop().delta(), emitter.color);
+
+            final var varianceDegrees = emitter.velocityTurbulence.value(engine.loop().time()) * emitter.velocityTurbulenceRange.degrees();
+            final var velocity = Angle.degrees(varianceDegrees).rotate(emitter.velocity.multiply(delta));
+
+            if (emitter.isPointEmitter) {
+                smoke.emit(entity.position(), velocity, emitter.amount * delta, emitter.color);
+            } else {
+                smoke.emit(entity.bounds(), velocity, emitter.amount * delta, emitter.color);
+            }
         }
 
         // winds
         for (final var entity : engine.environment().fetchAll(WINDS)) {
             final var wind = entity.get(WindComponent.class);
-            smoke.approachTargetVelocity(entity.bounds(), wind.velocity, wind.adjustmentSpeed * engine.loop().delta());
+            smoke.approachTargetVelocity(entity.bounds(), wind.velocity, wind.adjustmentSpeed * delta);
         }
 
         // interactors
         for (final var entity : engine.environment().fetchAll(INTERACTORS)) {
             var interaction = entity.get(SmokeInteractionComponent.class);
-            final Vector speed = entity.get(PhysicsComponent.class).velocity.multiply(interaction.modifier* engine.loop().delta());
+            final Vector speed = entity.get(PhysicsComponent.class).velocity.multiply(interaction.modifier * delta);
             smoke.push(entity.bounds(), speed);
         }
 
-        smoke.render(engine.loop().delta());
+        smoke.render(delta);
     }
 }

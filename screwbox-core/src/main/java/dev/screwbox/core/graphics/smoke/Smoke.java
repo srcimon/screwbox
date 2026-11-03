@@ -32,6 +32,22 @@ public interface Smoke {
     Smoke emit(Vector position, Vector velocity, double amount, Color color);
 
     /**
+     * Emits smoke using the specified values. Also pushes the smoke using the specified velocity.
+     *
+     * @see #emit(Vector, Vector, double, Color)
+     * @see #push(Vector, Vector)
+     */
+    Smoke emit(Bounds bounds, Vector velocity, double amount, Color color);
+
+    /**
+     * Emits smoke using the specified values.
+     *
+     * @see #emit(Vector, Vector, double, Color)
+     * @see #push(Vector, Vector)
+     */
+    Smoke emit(Bounds bounds, double amount, Color color);
+
+    /**
      * Emits smoke using the specified values.
      *
      * @see #emit(Vector, Vector, double, Color)
