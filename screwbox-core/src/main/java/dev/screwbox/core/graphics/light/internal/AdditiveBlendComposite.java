@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.light.internal;
 
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.graphics.Color;
 
 import java.awt.*;
 import java.awt.image.ColorModel;
@@ -79,14 +80,9 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
             // Dynamischer Mix: Je gesättigter die Lichtquelle, desto mehr Screen nutzen wir.
             // Das bewahrt die lebendigen Farben (z.B. Lila bei Rot + Blau).
             // Ungesättigtes (weißes) Licht bleibt knackig additiv.
-            int finalR = (int) (addR + saturation * (screenR - addR));
-            int finalG = (int) (addG + saturation * (screenG - addG));
-            int finalB = (int) (addB + saturation * (screenB - addB));
-
-            // Letzte Absicherung gegen Überläufe
-            finalR = Math.max(0, Math.min(255, finalR));
-            finalG = Math.max(0, Math.min(255, finalG));
-            finalB = Math.max(0, Math.min(255, finalB));
+            int finalR = Color.clampRgbRange((int) (addR + saturation * (screenR - addR)));
+            int finalG = Color.clampRgbRange((int) (addG + saturation * (screenG - addG)));
+            int finalB = Color.clampRgbRange((int) (addB + saturation * (screenB - addB)));
 
             // Ziel-Alpha berechnen (Standard-Lichtmischung behält Ziel-Alpha oder addiert Anteile)
             int finalA = Math.max(aDst, (int)(aSrc * extraAlpha));
