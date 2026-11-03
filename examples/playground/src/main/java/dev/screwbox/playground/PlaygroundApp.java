@@ -1,5 +1,6 @@
 package dev.screwbox.playground;
 
+import dev.screwbox.core.Angle;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
@@ -37,7 +38,6 @@ public class PlaygroundApp {
             """);
 
         screwBox.graphics().configuration().setSmokeCellSize(4);
-
         screwBox.loop().unlockFps();
         screwBox.environment().addSystem(new LogFpsSystem());
         screwBox.graphics().configuration().setLightQuality(Percent.half());
@@ -45,7 +45,10 @@ public class PlaygroundApp {
         screwBox.graphics().light().setAmbientLight(Percent.of(0.3));
         screwBox.environment().enableAllFeatures()
             .addEntity(new Entity().bounds(Bounds.atPosition(0, 0, 8, 8)).add(new CursorAttachmentComponent())
-                .add(new SmokeEmitterComponent(10, Color.RED, Vector.x(1800)))
+                .add(new SmokeEmitterComponent(10, Color.RED, Vector.x(1800)), config -> {
+                    config.velocityTurbulenceRange= Angle.degrees(45);
+
+                })
                 .add(new PointLightComponent(60, Color.RED)))
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', source -> new Entity().bounds(source.bounds())
