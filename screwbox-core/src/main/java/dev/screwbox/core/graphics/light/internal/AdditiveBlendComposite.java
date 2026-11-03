@@ -46,6 +46,7 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
     }
 
     private int calculatePixelRgb(int srcPixel, int dstPixel) {
+        //TODO COlor.helper methods
         final int aSrc = (srcPixel >> 24) & 0xFF;
         final int rSrc = (srcPixel >> 16) & 0xFF;
         final int gSrc = (srcPixel >> 8) & 0xFF;
