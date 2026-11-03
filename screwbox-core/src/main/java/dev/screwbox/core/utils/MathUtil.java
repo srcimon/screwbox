@@ -144,7 +144,7 @@ public final class MathUtil {
      *
      * @since 3.39.0
      */
-    public static int max(int first, int second, int third) {
+    public static int max(final int first, final int second, final int third) {
         return Math.max(first, Math.max(second, third));
     }
 
@@ -153,7 +153,8 @@ public final class MathUtil {
      *
      * @since 3.39.0
      */
-    public static int min(int first, int second, int third) {
+    public static int min(final int first, final int second, final int third) {
         return Math.min(first, Math.min(second, third));
     }
+
 }
