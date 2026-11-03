@@ -17,6 +17,7 @@
 - Updated graphics related classes with `BufferImage` instead of `Image` to reduce conversion overhead
 - Added min and max method for three inputs
 - Renamed `TextureFillOptions`
+- Made `BoidObstacleComponent` bakeable
 
 ### 📦 Dependency updates
 
