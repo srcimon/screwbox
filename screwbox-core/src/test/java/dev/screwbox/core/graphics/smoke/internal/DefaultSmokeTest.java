@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.concurrent.ExecutorService;
 
+import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,9 +34,17 @@ class DefaultSmokeTest {
     GraphicsConfiguration configuration = new GraphicsConfiguration(RenderingApi.OPEN_GL);
 
     @Test
-    void emit_negativeAmount_throwsException() {
+    void emit_postionNegativeAmount_throwsException() {
         Vector position = $(40, 10);
         assertThatThrownBy(() -> smoke.emit(position, -0.1, Color.RED))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("amount must be positive (actual value: -0.1)");
+    }
+
+    @Test
+    void emit_areaNegativeAmount_throwsException() {
+        var area = $$(40, 10, 19, 30);
+        assertThatThrownBy(() -> smoke.emit(area, -0.1, Color.RED))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("amount must be positive (actual value: -0.1)");
     }
@@ -48,10 +57,19 @@ class DefaultSmokeTest {
     }
 
     @Test
-    void emit_autoTurnOnDisabled_leavesSmokeDisabled() {
+    void emit_atPostionAndAutoTurnOnDisabled_leavesSmokeDisabled() {
         configuration.setAutoEnableSmoke(false);
 
         smoke.emit($(4, 1), 20, Color.WHITE);
+
+        assertThat(configuration.isSmokeEnabled()).isFalse();
+    }
+
+    @Test
+    void emit_atAreaAndAutoTurnOnDisabled_leavesSmokeDisabled() {
+        configuration.setAutoEnableSmoke(false);
+
+        smoke.emit($$(4, 1, 10, 250), 20, Color.WHITE);
 
         assertThat(configuration.isSmokeEnabled()).isFalse();
     }
