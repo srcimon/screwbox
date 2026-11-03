@@ -10,6 +10,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed indirect lights color bleed when using colored lights
+- Updated defaults for boids for better obstacle avoidance
 
 ### 🧽 Cleanup & refactoring
 

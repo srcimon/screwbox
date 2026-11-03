@@ -28,12 +28,12 @@ public class BoidComponent implements Component {
     /**
      * Configure perception radius for obstacles.
      */
-    public double obstaclePerceptionRadius = 120;
+    public double obstaclePerceptionRadius = 30;
 
     /**
      * Strength of the steer to avoid obstacles.
      */
-    public double obstacleAvoidanceStrength = 10;
+    public double obstacleAvoidanceStrength = 30;
 
     /**
      * Velocity of the boid. Boids will not slow down.

@@ -25,6 +25,7 @@ import dev.screwbox.core.environment.smoke.SmokeInteractionComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.graphics.smoke.styles.NettrunnerSmokeStyle;
@@ -55,7 +56,6 @@ public class PlaygroundApp {
             #######################
             """);
 
-        screwBox.environment().addEntity(new Entity().bounds(map.bounds()).add(new BoidObstacleComponent(), b -> b.isContainer=true));
         screwBox.graphics().smoke().setOptions(SmokeOptions.slowFade().diffusion(Percent.of(0.00000001)).opacity(Percent.half()).style(new NettrunnerSmokeStyle()));
         screwBox.graphics().configuration().setSmokeCellSize(4);
 
@@ -68,14 +68,14 @@ public class PlaygroundApp {
                 .add(new PointLightComponent(120, Color.BLACK))
                 .add(new GlowComponent(80, Color.WHITE.opacity(0.4))))
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-                .assign('B', source -> new Entity().bounds(source.bounds())
+                .assign('B', source -> new Entity().bounds(source.bounds().scale(0.25))
                     .add(new PhysicsComponent())
                         .add(new BoidComponent(), v -> {
                             v.velocity=50;
-                            v.obstacleAvoidanceStrength=20;
                         })
-                        .add(new RenderComponent(Sprite.pixel(Color.WHITE)))
-                        .add(new SmokeInteractionComponent(0.4))
+                        .add(new RenderComponent(Sprite.placeholder(Color.WHITE, Size.square(4))))
+                        .add(new GlowComponent(20, Color.YELLOW.opacity(0.2)))
+                        .add(new PointLightComponent(30, Color.BLACK))
                     )
                 .assign('#', source -> new Entity().bounds(source.bounds())
                     .add(new OccluderComponent())
@@ -92,7 +92,7 @@ public class PlaygroundApp {
                         config.velocityTurbulence = Noise.fixedInterval(Duration.ofMillis(200));
 
                     }))
-            );
+                   );
         screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
         screwBox.start();
     }
