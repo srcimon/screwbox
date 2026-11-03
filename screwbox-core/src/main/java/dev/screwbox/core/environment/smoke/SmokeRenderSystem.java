@@ -36,7 +36,7 @@ public class SmokeRenderSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(EMITTERS)) {
             final var emitter = entity.get(SmokeEmitterComponent.class);
 
-            final var varianceDegrees = emitter.velocityNoise.value(engine.loop().time()) * emitter.velocityVariance.degrees();
+            final var varianceDegrees = emitter.velocityTurbulence.value(engine.loop().time()) * emitter.velocityTurbulenceRange.degrees();
             final var velocity = Angle.degrees(varianceDegrees).rotate(emitter.velocity.multiply(delta));
 
             if (emitter.isPointEmitter) {

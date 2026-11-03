@@ -39,18 +39,18 @@ public class SmokeEmitterComponent implements Component {
 
     //TODO document
     /**
-     * Specify the noise applied on velocity when {@link #velocityVariance} has a value.
+     * Specify the noise applied on velocity when {@link #velocityTurbulenceRange} has a value.
      *
      * @since 3.39.0
      */
-    public Noise velocityNoise = Noise.variableInterval(Duration.ofMillis(500));
+    public Noise velocityTurbulence = Noise.variableInterval(Duration.ofMillis(500));
 
     /**
      * Specify the variance applied on the velocity of the emitted smoke.
      *
      * @since 3.39.0
      */
-    public Angle velocityVariance = Angle.none();
+    public Angle velocityTurbulenceRange = Angle.none();
 
     /**
      * Specify if smoke is emitted from whole {@link Entity#bounds()} (default {@code false}) or only from {@link Entity#position()}.
@@ -58,8 +58,6 @@ public class SmokeEmitterComponent implements Component {
      * @since 3.39.0
      */
     public boolean isPointEmitter = false;
-
-    public double randomness = 20;
 
     /**
      * Creates a new instance with default settings.
