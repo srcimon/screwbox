@@ -138,4 +138,23 @@ public final class MathUtil {
             ? target
             : value + Math.signum(delta) * step;
     }
+
+    /**
+     * Returns the maximum of all three values.
+     *
+     * @since 3.39.0
+     */
+    public static int max(final int first, final int second, final int third) {
+        return Math.max(first, Math.max(second, third));
+    }
+
+    /**
+     * Returns the minimum of all three values.
+     *
+     * @since 3.39.0
+     */
+    public static int min(final int first, final int second, final int third) {
+        return Math.min(first, Math.min(second, third));
+    }
+
 }

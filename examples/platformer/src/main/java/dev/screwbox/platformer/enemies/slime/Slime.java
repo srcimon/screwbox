@@ -4,10 +4,10 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
-import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.ai.PatrolMovementComponent;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.logic.StateComponent;
@@ -29,7 +29,7 @@ public class Slime implements Blueprint<GameObject> {
     @Override
     public Entity assembleFrom(final GameObject object) {
         return new Entity(object.id(), "Slime").add(
-                new PointLightComponent(15, Color.BLACK.opacity(1)),
+                new PointLightComponent(15, Color.hex("#aeec6a")),
                 new GlowComponent(45, Color.YELLOW.opacity(0.3)),
                 new StateComponent(new SlimeAliveState()),
                 new TransformComponent(Bounds.atPosition(object.position(), 12, 10)),

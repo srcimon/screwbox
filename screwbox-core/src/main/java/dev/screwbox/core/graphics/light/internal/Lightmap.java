@@ -9,8 +9,8 @@ import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.MaxAlphaComposite;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.light.ShadowOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -20,7 +20,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.awt.AlphaComposite.SRC_OVER;
 import static java.util.Objects.nonNull;
 
 final class Lightmap {
@@ -134,8 +133,8 @@ final class Lightmap {
 
     private void renderDirectionalLight(final DirectionalLight directionalLight) {
         applyOpacityConfig(directionalLight.color());
-        Offset start = directionalLight.start();
-        Offset end = directionalLight.end();
+        final Offset start = directionalLight.start();
+        final Offset end = directionalLight.end();
         graphics.setPaint(new GradientPaint(
             (float) start.x() / scale, (float) start.y() / scale,
             AwtMapper.toAwtColor(directionalLight.color().opacity(1)),
@@ -310,11 +309,7 @@ final class Lightmap {
     }
 
     private void applyOpacityConfig(final Color color) {
-        applyOpacityConfig(color.opacity());
-    }
-
-    private void applyOpacityConfig(final Percent opacity) {
-        graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) opacity.value()));
+        graphics.setComposite(new LightmapBlendComposite(color.opacity()));
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {

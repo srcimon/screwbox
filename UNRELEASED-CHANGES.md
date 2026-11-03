@@ -1,17 +1,19 @@
 ### 🚀 Features & improvements
 
-- Fixed length property prevents length changes of ropes
-- Added `Vector.clampDistance(Vector, double)`
+- Fixed length property makes rope lengths static
 - Reduced texture fill processing time by 95% for significantly faster rendering (#1122)
+- Significantly Improved color blending for colored lights
+- Added `Vector.clampDistance(Vector, double)`
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed indirect lights color bleed when using colored lights
 
 ### 🧽 Cleanup & refactoring
 
 - Simplyfied validation for boolean conditions
-- Updated graphics related classes with `BufferImage` instead of `Image` to reduce conversion overhead 
+- Updated graphics related classes with `BufferImage` instead of `Image` to reduce conversion overhead
+- Added min and max method for three inputs
 - Renamed `TextureFillOptions`
 
 ### 📦 Dependency updates
