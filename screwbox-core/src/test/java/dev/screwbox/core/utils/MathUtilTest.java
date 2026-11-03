@@ -129,4 +129,26 @@ class MathUtilTest {
         var result = MathUtil.advance(value, target, step);
         assertThat(result).isEqualTo(expectation);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "0, 1, 0, 1",
+        "1, 2, 5, 5",
+        "-1, 8, 5, 8"
+    })
+    void max_differentInputs_returnsMax(int first, int second, int third, int expected) {
+        var result = MathUtil.max(first, second, third);
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "0, 1, 0, 0",
+        "1, 2, 5, 1",
+        "-1, 8, 5, -1"
+    })
+    void min_differentInputs_returnMin(int first, int second, int third, int expected) {
+        var result = MathUtil.min(first, second, third);
+        assertThat(result).isEqualTo(expected);
+    }
 }

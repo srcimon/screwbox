@@ -14,6 +14,7 @@
 - Simplyfied validation for boolean conditions
 - Updated graphics related classes with `BufferImage` instead of `Image` to reduce conversion overhead 
 - Renamed `TextureFillOptions`
+- Added min and max method for three inputs
 
 ### 📦 Dependency updates
 
