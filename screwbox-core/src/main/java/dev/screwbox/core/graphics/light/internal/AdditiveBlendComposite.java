@@ -46,17 +46,17 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
     }
 
     private int calculatePixelRgb(int srcPixel, int dstPixel) {
-        int aSrc = (srcPixel >> 24) & 0xFF;
-        int rSrc = (srcPixel >> 16) & 0xFF;
-        int gSrc = (srcPixel >> 8) & 0xFF;
-        int bSrc = srcPixel & 0xFF;
+        final int aSrc = (srcPixel >> 24) & 0xFF;
+        final int rSrc = (srcPixel >> 16) & 0xFF;
+        final int gSrc = (srcPixel >> 8) & 0xFF;
+        final int bSrc = srcPixel & 0xFF;
 
-        int aDst = (dstPixel >> 24) & 0xFF;
-        int rDst = (dstPixel >> 16) & 0xFF;
-        int gDst = (dstPixel >> 8) & 0xFF;
-        int bDst = dstPixel & 0xFF;
+        final int aDst = (dstPixel >> 24) & 0xFF;
+        final int rDst = (dstPixel >> 16) & 0xFF;
+        final int gDst = (dstPixel >> 8) & 0xFF;
+        final int bDst = dstPixel & 0xFF;
 
-        float factor = (aSrc / 255.0f) * extraAlpha;
+        final float factor = (aSrc / 255.0f) * extraAlpha;
 
         // Gedimmte Werte der neuen Lichtquelle berechnen
         int dimmedRSrc = (int) (rSrc * factor);
@@ -82,17 +82,12 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
         int screenG = 255 - ((255 - gDst) * (255 - dimmedGSrc) / 255);
         int screenB = 255 - ((255 - bDst) * (255 - dimmedBSrc) / 255);
 
-        // Dynamischer Mix: Je gesättigter die Lichtquelle, desto mehr Screen nutzen wir.
-        // Das bewahrt die lebendigen Farben (z.B. Lila bei Rot + Blau).
-        // Ungesättigtes (weißes) Licht bleibt knackig additiv.
-        int finalR = Color.clampRgbRange((int) (addR + saturation * (screenR - addR)));
-        int finalG = Color.clampRgbRange((int) (addG + saturation * (screenG - addG)));
-        int finalB = Color.clampRgbRange((int) (addB + saturation * (screenB - addB)));
+        final int finalR = Color.clampRgbRange((int) (addR + saturation * (screenR - addR)));
+        final int finalG = Color.clampRgbRange((int) (addG + saturation * (screenG - addG)));
+        final int finalB = Color.clampRgbRange((int) (addB + saturation * (screenB - addB)));
 
-        // Ziel-Alpha berechnen (Standard-Lichtmischung behält Ziel-Alpha oder addiert Anteile)
-        int finalA = Math.max(aDst, (int) (aSrc * extraAlpha));
+        final int finalAlpha = Math.max(aDst, (int) (aSrc * extraAlpha));
 
-        int i1 = (finalA << 24) | (finalR << 16) | (finalG << 8) | finalB;
-        return i1;
+        return (finalAlpha << 24) | (finalR << 16) | (finalG << 8) | finalB;
     }
 }
