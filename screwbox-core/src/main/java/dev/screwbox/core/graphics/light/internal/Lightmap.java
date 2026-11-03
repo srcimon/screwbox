@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.internal.AwtMapper;
 import dev.screwbox.core.graphics.internal.ImageOperations;
-import dev.screwbox.core.graphics.internal.MaxAlphaComposite;
 import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
@@ -48,7 +47,7 @@ final class Lightmap {
 
     }
 
-    private static final MaxAlphaComposite MAX_ALPHA_COMPOSITE = new MaxAlphaComposite();
+    private static final Composite LIGHTMAP_BLEND_COMPOSITE = new LightmapBlendComposite(Percent.max());
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
     private final BufferedImage image;
     private final Graphics2D graphics;
@@ -231,7 +230,7 @@ final class Lightmap {
     }
 
     private void renderIndirectLightSource(final IndirectLightSource indirectLightSource) {
-        graphics.setComposite(MAX_ALPHA_COMPOSITE);
+        graphics.setComposite(LIGHTMAP_BLEND_COMPOSITE);
 
         graphics.setStroke(new BasicStroke(indirectLightSource.rayWidth() / scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         applyBackdropOccludersClip(indirectLightSource.box.center(), boundsToRectangle(indirectLightSource.box()), null);
