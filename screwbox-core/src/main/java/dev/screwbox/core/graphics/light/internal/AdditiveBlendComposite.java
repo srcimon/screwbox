@@ -46,16 +46,15 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
     }
 
     private int calculatePixelRgb(int srcPixel, int dstPixel) {
-        //TODO COlor.helper methods
-        final int aSrc = (srcPixel >> 24) & 0xFF;
-        final int rSrc = (srcPixel >> 16) & 0xFF;
-        final int gSrc = (srcPixel >> 8) & 0xFF;
-        final int bSrc = srcPixel & 0xFF;
+        final int aSrc = Color.alphaValue(srcPixel);
+        final int rSrc = Color.redValue(srcPixel);
+        final int gSrc = Color.greenValue(srcPixel);
+        final int bSrc = Color.blueValue(srcPixel);
 
-        final int aDst = (dstPixel >> 24) & 0xFF;
-        final int rDst = (dstPixel >> 16) & 0xFF;
-        final int gDst = (dstPixel >> 8) & 0xFF;
-        final int bDst = dstPixel & 0xFF;
+        final int aDst = Color.alphaValue(dstPixel);
+        final int rDst = Color.redValue(dstPixel);
+        final int gDst =  Color.greenValue(dstPixel);
+        final int bDst = Color.blueValue(dstPixel);
 
         final float factor = (aSrc / 255.0f) * extraAlpha;
 
