@@ -3,7 +3,7 @@
 - Fixed length property prevents length changes of ropes
 - Added `Vector.clampDistance(Vector, double)`
 - Reduced texture fill processing time by 95% for significantly faster rendering (#1122)
-- Improved color blending for colored lights preventing colors from getting lost
+- Significantly Improved color blending for colored lights
 
 ### 🪛 Bug Fixes
 

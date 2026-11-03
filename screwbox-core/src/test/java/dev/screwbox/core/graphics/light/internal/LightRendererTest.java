@@ -9,7 +9,6 @@ import dev.screwbox.core.assets.Asset;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
-import dev.screwbox.core.graphics.light.LensFlareBundle;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
@@ -17,6 +16,7 @@ import dev.screwbox.core.graphics.internal.DefaultCamera;
 import dev.screwbox.core.graphics.internal.DefaultCanvas;
 import dev.screwbox.core.graphics.internal.DefaultViewport;
 import dev.screwbox.core.graphics.internal.Renderer;
+import dev.screwbox.core.graphics.light.LensFlareBundle;
 import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
@@ -96,6 +96,7 @@ class LightRendererTest {
         lightPhysics.addOccluder($$(20, 0, 40, 20));
 
         var sprite = lightRenderer.renderLight();
+
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_multipleDirectionalLightsAndOccluders_rendersLight.png");
     }
 
@@ -139,7 +140,6 @@ class LightRendererTest {
 
         var sprite = lightRenderer.renderLight();
 
-        sprite.get().singleFrame().exportPng("renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible.png");
         verifyIsIdenticalWithReferenceImage(sprite, "renderLight_lightBlockedByOccluderButHasOrthographicWallOnTop_isVisible.png");
     }
 

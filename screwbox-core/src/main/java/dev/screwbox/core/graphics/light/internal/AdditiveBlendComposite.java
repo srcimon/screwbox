@@ -27,18 +27,18 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
 
     @Override
     public void compose(Raster src, Raster dstIn, WritableRaster dstOut) {
-        int w = Math.min(src.getWidth(), dstIn.getWidth());
-        int h = Math.min(src.getHeight(), dstIn.getHeight());
+        int width = Math.min(src.getWidth(), dstIn.getWidth());
+        int height = Math.min(src.getHeight(), dstIn.getHeight());
 
-        int[] srcPixels = new int[w * h];
-        int[] dstPixels = new int[w * h];
+        final int[] sourcePixels = new int[width * height];
+        final int[] destinationPixel = new int[width * height];
 
-        src.getDataElements(0, 0, w, h, srcPixels);
-        dstIn.getDataElements(0, 0, w, h, dstPixels);
+        src.getDataElements(0, 0, width, height, sourcePixels);
+        dstIn.getDataElements(0, 0, width, height, destinationPixel);
 
-        for (int i = 0; i < srcPixels.length; i++) {
-            int srcPixel = srcPixels[i];
-            int dstPixel = dstPixels[i];
+        for (int i = 0; i < sourcePixels.length; i++) {
+            int srcPixel = sourcePixels[i];
+            int dstPixel = destinationPixel[i];
 
             int aSrc = (srcPixel >> 24) & 0xFF;
             int rSrc = (srcPixel >> 16) & 0xFF;
@@ -90,10 +90,9 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
                 blendedB = (blendedB * targetMaxBrightness) / currentMixMax;
             }
 
-            // Sicherheits-Clamp
-            int mixR = Math.max(0, Math.min(255, blendedR));
-            int mixG = Math.max(0, Math.min(255, blendedG));
-            int mixB = Math.max(0, Math.min(255, blendedB));
+            int mixR = Math.clamp(blendedR, 0, 255);
+            int mixG = Math.clamp(blendedG, 0, 255);
+            int mixB = Math.clamp(blendedB, 0, 255);
 
             // 3. Überblenden zwischen Weiß (Additiv) und Farb-Lichtmischung
             int rFinal = (int) (addR * (1.0f - saturation) + mixR * saturation);
@@ -102,9 +101,9 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
 
             int aFinal = Math.min(255, (int)(aSrc * extraAlpha) + aDst);
 
-            dstPixels[i] = (aFinal << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
+            destinationPixel[i] = (aFinal << 24) | (rFinal << 16) | (gFinal << 8) | bFinal;
         }
 
-        dstOut.setDataElements(0, 0, w, h, dstPixels);
+        dstOut.setDataElements(0, 0, width, height, destinationPixel);
     }
 }

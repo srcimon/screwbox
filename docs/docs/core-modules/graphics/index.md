@@ -292,8 +292,7 @@ The following types of lights and occluders are supported:
 
 ::::tip
 It's highly recommended to add the `StaticOccluderComponent` to any shadow casting entity that will not move to
-massively
-improve rendering performance.
+massively improve rendering performance.
 ::::
 
 The recommended way to add light to your scenes is by using the corresponding components of the ecs.
@@ -317,10 +316,13 @@ Light is created by drawing a separate transparent image with the black gradient
 Which is then inverted, blurred and scaled to create some kind of immersive light effect.
 
 This is not how light works at all in the real world or any other game engine I know.
-So to avoid graphic glitches it is recommended to draw only black light sources.
-(With exception of glow lights, which are actually drawn on top of the image.)
-Any other color might work but may result in some quite ugly graphics.
-This is kind of strange and will likely change in the future.
+To get the best results start adding lights that use black color.
+It's a little bit confusing but black colored light actually means it has no color at all within ScrewBox.
+
+After this you might try adding colored lights.
+Color is sometimes barely visible due to the restrictions of the drawing process.
+Sometimes it might also overpower.
+Mixing light colors mostly works okayish as for now but might be improved in the future.
 
 ### Creating immersive light sources
 
