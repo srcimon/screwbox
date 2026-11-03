@@ -3,6 +3,7 @@ package dev.screwbox.core.environment.ai;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.core.Bakeable;
 
 import java.io.Serial;
 
@@ -13,6 +14,7 @@ import java.io.Serial;
  *
  * @since 3.27.0
  */
+@Bakeable
 public class BoidObstacleComponent implements Component {
 
     @Serial

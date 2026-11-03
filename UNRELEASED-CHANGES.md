@@ -10,6 +10,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed indirect lights color bleed when using colored lights
+- Updated defaults for boids for better obstacle avoidance
 
 ### 🧽 Cleanup & refactoring
 
@@ -17,6 +18,7 @@
 - Updated graphics related classes with `BufferImage` instead of `Image` to reduce conversion overhead
 - Added min and max method for three inputs
 - Renamed `TextureFillOptions`
+- Made `BoidObstacleComponent` bakeable
 
 ### 📦 Dependency updates
 
