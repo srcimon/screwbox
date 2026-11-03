@@ -9,15 +9,16 @@ import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
-public class AdditiveBlendComposite implements Composite, CompositeContext {
+/**
+ * Tries to preserve colors to improve visuals of merged colored light sources.
+ */
+public class LightmapBlendComposite implements Composite, CompositeContext {
 
     private final float extraAlpha;
 
-    // Privater Konstruktor: Instanziierung nur über getInstance()
-    public AdditiveBlendComposite(final Percent alpha) {
+    public LightmapBlendComposite(final Percent alpha) {
         this.extraAlpha = (float) alpha.value();
     }
-
 
     @Override
     public CompositeContext createContext(final ColorModel srcColorModel, final ColorModel dstColorModel, final RenderingHints hints) {
@@ -54,7 +55,7 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
 
         final int aDst = Color.alphaValue(dstPixel);
         final int rDst = Color.redValue(dstPixel);
-        final int gDst =  Color.greenValue(dstPixel);
+        final int gDst = Color.greenValue(dstPixel);
         final int bDst = Color.blueValue(dstPixel);
 
         final float factor = (aSrc / 255.0f) * extraAlpha;
@@ -71,11 +72,6 @@ public class AdditiveBlendComposite implements Composite, CompositeContext {
         final int addG = Math.min(255, gDst + dimmedGSrc);
         final int addB = Math.min(255, bDst + dimmedBSrc);
 
-        // ========================================================
-        // KORREKTUR: Lichtfarben-Mischung mit Helligkeits-Begrenzung
-        // ========================================================
-        // Wir nutzen "Screen" (Negativ Multiplizieren) für farbige Bereiche,
-        // um weiche Verläufe ohne abruptes Ausbrennen zu erzielen.
         final int screenR = 255 - ((255 - rDst) * (255 - dimmedRSrc) / 255);
         final int screenG = 255 - ((255 - gDst) * (255 - dimmedGSrc) / 255);
         final int screenB = 255 - ((255 - bDst) * (255 - dimmedBSrc) / 255);

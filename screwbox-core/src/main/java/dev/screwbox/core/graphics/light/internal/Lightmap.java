@@ -20,7 +20,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.awt.AlphaComposite.SRC_OVER;
 import static java.util.Objects.nonNull;
 
 final class Lightmap {
@@ -315,7 +314,7 @@ final class Lightmap {
 
     private void applyOpacityConfig(final Percent opacity) {
 //        graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, (float)opacity.value()));//TODO remove
-        graphics.setComposite(new AdditiveBlendComposite(opacity));
+        graphics.setComposite(new LightmapBlendComposite(opacity));
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
