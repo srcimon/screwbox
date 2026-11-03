@@ -22,7 +22,7 @@ public class PlaygroundApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
         screwBox.graphics().camera().setZoom(3);
-        screwBox.environment().addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.atPosition(0,0,1,1)).add(new PointLightComponent(60, Color.BLUE)));
+        screwBox.environment().addEntity(new Entity().add(new CursorAttachmentComponent()).bounds(Bounds.atPosition(0,0,1,1)).add(new PointLightComponent(60, Color.BLACK)));
         var snake = createSnake(Vector.$(0, 0), screwBox);
         snake.end().moveTo(snake.root().position().addX(120));
         screwBox.environment().enableAllFeatures().addEntities(snake)
@@ -40,7 +40,7 @@ public class PlaygroundApp {
         snake.root().add(new RopeRenderComponent(Sprite.fromFile("snake.png")));
         snake.root().get(RopeComponent.class).isLengthFixed = true;
         snake.root().add(new CameraTargetComponent(10));
-        snake.root().add(new PointLightComponent(60, Color.YELLOW));
+        snake.root().add(new PointLightComponent(60, Color.BLACK));
         snake.forEach(s -> s.get(PhysicsComponent.class).friction = 0.8);
         return snake;
     }
