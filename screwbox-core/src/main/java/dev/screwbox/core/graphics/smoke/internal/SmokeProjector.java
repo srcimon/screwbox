@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
@@ -213,9 +212,7 @@ public class SmokeProjector {
         final int startCellY = Math.clamp((int) Math.floor(gridMinY / configuration.smokeCellSize()) - 1L, 0, maxCells - 1);
         final int endCellX = Math.clamp((int) Math.ceil(gridMaxX / configuration.smokeCellSize()) + 1L, startCellX + 1, maxCells);
         final int endCellY = Math.clamp((int) Math.ceil(gridMaxY / configuration.smokeCellSize()) + 1L, startCellY + 1, maxCells);
-
-        final Size size = Size.of(endCellX - startCellX, endCellY - startCellY);
-        return new ScreenBounds(Offset.origin().add(startCellX, startCellY), size);
+        return new ScreenBounds(startCellX, startCellY, endCellX - startCellX, endCellY - startCellY);
     }
 
     private Bounds calculateFluidOnWorld() {
