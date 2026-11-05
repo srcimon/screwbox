@@ -62,7 +62,7 @@ public class SmokeProjector {
                 simulation.fade(delta * options.fade());
             });
 
-            final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
+            final var visibleBounds = calculateVisibleBounds(viewport.visibleArea());
             final SmokeRenderer activeRenderer = renderer.active();
             final var sprite = Asset.asset(() -> {
                 final var image = activeRenderer.renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
@@ -174,7 +174,6 @@ public class SmokeProjector {
         return toWorldVelocity(simulationVelocity);
     }
 
-
     public void adaptToViewport(final Viewport viewport) {
         if (nonNull(simulation) && nonNull(simulationTask)) {
             try {
@@ -196,7 +195,7 @@ public class SmokeProjector {
         return Offset.at(cellX, cellY);
     }
 
-    private ScreenBounds calculateActuallyVisibleBounds(final Bounds visibleArea) {
+    private ScreenBounds calculateVisibleBounds(final Bounds visibleArea) {
         final double viewMinX = visibleArea.minX();
         final double viewMinY = visibleArea.minY();
         final double viewMaxX = viewMinX + visibleArea.width();
