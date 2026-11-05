@@ -13,8 +13,8 @@ import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
 @ExecutionOrder(Order.DEBUG_OVERLAY)
 public class DebugGridSystem implements EntitySystem {
 
-    private int cellSize;
-    private int majorLineSize;
+    private final int cellSize;
+    private final int majorLineSize;
 
     public DebugGridSystem(int cellSize, int majorLineSize) {
         this.cellSize = cellSize;
