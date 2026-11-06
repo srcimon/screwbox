@@ -335,4 +335,24 @@ class SpriteTest {
             .isInstanceOf(NullPointerException.class)
             .hasMessage("file name must not be null");
     }
+
+    @Test
+    void compileShader_animatedSprite_compilesShader() {
+        var animated = Sprite.animatedFromFile("placeholder.png", Size.of(2, 10), Duration.ofMillis(100));
+
+        assertThat(animated.isShaderCompiled(ShaderBundle.WATER)).isFalse();
+
+        animated.compileShader(ShaderBundle.WATER);
+
+        assertThat(animated.isShaderCompiled(ShaderBundle.WATER)).isTrue();
+    }
+
+    @Test
+    void isShaderCompiled_onlyAnotherShaderCompiled_isFalse() {
+        var animated = Sprite.animatedFromFile("placeholder.png", Size.of(2, 10), Duration.ofMillis(100));
+
+        animated.compileShader(ShaderBundle.WATER);
+
+        assertThat(animated.isShaderCompiled(ShaderBundle.GREYSCALE)).isFalse();
+    }
 }

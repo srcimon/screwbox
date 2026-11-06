@@ -7,7 +7,6 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
-import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.Viewport;
 import dev.screwbox.core.graphics.internal.ImageOperations;
@@ -63,7 +62,7 @@ public class SmokeProjector {
                 simulation.fade(delta * options.fade());
             });
 
-            final var visibleBounds = calculateActuallyVisibleBounds(viewport.visibleArea());
+            final var visibleBounds = calculateVisibleBounds(viewport.visibleArea());
             final SmokeRenderer activeRenderer = renderer.active();
             final var sprite = Asset.asset(() -> {
                 final var image = activeRenderer.renderSmoke(densityData, visibleBounds, configuration.smokeScale(), options.style());
@@ -175,7 +174,6 @@ public class SmokeProjector {
         return toWorldVelocity(simulationVelocity);
     }
 
-
     public void adaptToViewport(final Viewport viewport) {
         if (nonNull(simulation) && nonNull(simulationTask)) {
             try {
@@ -197,7 +195,7 @@ public class SmokeProjector {
         return Offset.at(cellX, cellY);
     }
 
-    private ScreenBounds calculateActuallyVisibleBounds(final Bounds visibleArea) {
+    private ScreenBounds calculateVisibleBounds(final Bounds visibleArea) {
         final double viewMinX = visibleArea.minX();
         final double viewMinY = visibleArea.minY();
         final double viewMaxX = viewMinX + visibleArea.width();
@@ -213,9 +211,7 @@ public class SmokeProjector {
         final int startCellY = Math.clamp((int) Math.floor(gridMinY / configuration.smokeCellSize()) - 1L, 0, maxCells - 1);
         final int endCellX = Math.clamp((int) Math.ceil(gridMaxX / configuration.smokeCellSize()) + 1L, startCellX + 1, maxCells);
         final int endCellY = Math.clamp((int) Math.ceil(gridMaxY / configuration.smokeCellSize()) + 1L, startCellY + 1, maxCells);
-
-        final Size size = Size.of(endCellX - startCellX, endCellY - startCellY);
-        return new ScreenBounds(Offset.origin().add(startCellX, startCellY), size);
+        return new ScreenBounds(startCellX, startCellY, endCellX - startCellX, endCellY - startCellY);
     }
 
     private Bounds calculateFluidOnWorld() {

@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.BeforeEach;
@@ -243,6 +244,7 @@ class FrameTest {
         frame.compileShader(ShaderBundle.GREYSCALE);
 
         assertThat(frame.shaderCacheSize()).isOne();
+        assertThat(frame.isShaderCompiled(ShaderBundle.GREYSCALE)).isTrue();
     }
 
     @Test
@@ -250,6 +252,7 @@ class FrameTest {
         frame.compileShader(ShaderBundle.WATER);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(100);
+        assertThat(frame.isShaderCompiled(ShaderBundle.WATER)).isTrue();
     }
 
     @Test
@@ -259,6 +262,7 @@ class FrameTest {
         frame.invalidateShaderCache();
 
         assertThat(frame.shaderCacheSize()).isZero();
+        assertThat(frame.isShaderCompiled(ShaderBundle.WATER)).isFalse();
     }
 
     @Test
@@ -274,6 +278,10 @@ class FrameTest {
         frame.compileShader(ShaderBundle.ALARMED);
 
         assertThat(frame.shaderCacheSize()).isEqualTo(201);
+
+        assertThat(frame.isShaderCompiled(ShaderBundle.WATER)).isTrue();
+        assertThat(frame.isShaderCompiled(ShaderBundle.GREYSCALE)).isTrue();
+        assertThat(frame.isShaderCompiled(ShaderBundle.ALARMED)).isTrue();
     }
 
     @Test
@@ -352,5 +360,12 @@ class FrameTest {
         Frame second = Sprite.pixel(Color.rgb(224, 0, 0)).singleFrame();
 
         assertThat(first.hasIdenticalPixels(second, Percent.of(0.1))).isFalse();
+    }
+
+    @Test
+    void isShaderCompiled_notFullyCompiled_isFalse() {
+        frame.image(ShaderBundle.WATER.get(), Time.now());
+
+        assertThat(frame.isShaderCompiled(ShaderBundle.WATER)).isFalse();
     }
 }

@@ -6,6 +6,7 @@
 - Added `Vector.clampDistance(Vector, double)`
 - Emit smoke from an area
 - Added customization options for turbulence and area emit in `SmokeEmitterComponent` (#1069)
+- Check shader compilation state (#531)
 
 ### 🪛 Bug Fixes
 
@@ -15,6 +16,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Simplyfied validation for boolean conditions
+- Improved density cache hit rate in fluid simulation
 - Updated graphics related classes with `BufferImage` instead of `Image` to reduce conversion overhead
 - Added min and max method for three inputs
 - Renamed `TextureFillOptions`
