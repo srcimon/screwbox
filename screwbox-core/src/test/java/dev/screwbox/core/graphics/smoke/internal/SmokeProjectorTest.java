@@ -6,13 +6,7 @@ import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
-import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.Size;
-import dev.screwbox.core.graphics.internal.DefaultCamera;
-import dev.screwbox.core.graphics.internal.DefaultCanvas;
-import dev.screwbox.core.graphics.internal.DefaultViewport;
-import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
-import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,15 +78,6 @@ class SmokeProjectorTest {
         ));
 
         assertThat(smokeProjector.velocityAt(Vector.zero())).isEqualTo(Vector.$(10, 14));
-    }
-
-    @Test
-    void xxx() {
-        DefaultCanvas canvas = new DefaultCanvas(new DefaultRenderer(), new ScreenBounds(0, 0, 640, 480));
-        DefaultViewport viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
-        smokeProjector.adaptToViewport(viewport);
-        smokeProjector.render(viewport, SmokeOptions.noFade(), 0.01);
-        //TODO remove executor from smokeprojector and let smokeProjector return asset
     }
 
     @AfterEach
