@@ -88,7 +88,6 @@ class SmokeProjectorTest {
 
     @Test
     void xxx() {
-        //TODO TestSupport.createCanvas()?
         DefaultCanvas canvas = new DefaultCanvas(new DefaultRenderer(), new ScreenBounds(0, 0, 640, 480));
         DefaultViewport viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         smokeProjector.adaptToViewport(viewport);

@@ -26,13 +26,12 @@ abstract class PostFilterTest {
     @BeforeEach
     void setUp() {
         source = SpriteBundle.SHADER_PREVIEW.get().singleImage();
-        final Size size = Size.of(source.getWidth(null), source.getHeight(null));
+        final var size = Size.of(source.getWidth(null), source.getHeight(null));
         targetImage = ImageOperations.createImage(size);
         target = targetImage.createGraphics();
-        DefaultCanvas canvas = new DefaultCanvas(new DefaultRenderer(), new ScreenBounds(Offset.origin(), size));
+        final var canvas = new DefaultCanvas(new DefaultRenderer(), new ScreenBounds(Offset.origin(), size));
         viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
     }
-
 
     @AfterEach
     void tearDown() {
