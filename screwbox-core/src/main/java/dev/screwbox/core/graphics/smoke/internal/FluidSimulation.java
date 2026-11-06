@@ -67,7 +67,6 @@ public class FluidSimulation {
         if (nonNull(hasDensity)) {
             return hasDensity;
         }
-        System.out.println("CACHE MISS");
         final int cellCount = resolution * resolution;
 
         for (int i = 0; i < cellCount; i++) {
