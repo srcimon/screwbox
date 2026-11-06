@@ -15,6 +15,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Simplyfied validation for boolean conditions
+- Improved density cache hit rate in fluid simulation
 - Updated graphics related classes with `BufferImage` instead of `Image` to reduce conversion overhead
 - Added min and max method for three inputs
 - Renamed `TextureFillOptions`

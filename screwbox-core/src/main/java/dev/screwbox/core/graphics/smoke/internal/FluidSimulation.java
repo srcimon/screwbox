@@ -7,6 +7,8 @@ import dev.screwbox.core.utils.MathUtil;
 
 import java.util.Arrays;
 
+import static java.util.Objects.nonNull;
+
 public class FluidSimulation {
 
     private final int resolution;
@@ -34,7 +36,7 @@ public class FluidSimulation {
 
     private final boolean[] obstacles;
 
-    private boolean hasDensityCache = true;
+    private Boolean hasDensity = false;
 
     public FluidSimulation(final int resolution) {
         this.resolution = resolution;
@@ -62,23 +64,26 @@ public class FluidSimulation {
     }
 
     public boolean hasDensity() {
-        if (!hasDensityCache) {
-            return false;
+        if (nonNull(hasDensity)) {
+            return hasDensity;
         }
+        System.out.println("CACHE MISS");
         final int cellCount = resolution * resolution;
+
         for (int i = 0; i < cellCount; i++) {
             if (densityR[i] > 0 || densityG[i] > 0 || densityB[i] > 0 || densityA[i] > 0) {
+                hasDensity = true;
                 return true;
             }
         }
-        hasDensityCache = false;
+        hasDensity = false;
         return false;
     }
 
     public void addDensity(final int x, int y, final double amount, final Color color) {
         final int index = index(x, y);
         if (isInGrid(x, y) && isFree(index)) {
-            hasDensityCache = true;
+            hasDensity = true;
             densityR[index] += color.r() / 255.0 * amount;
             densityG[index] += color.g() / 255.0 * amount;
             densityB[index] += color.b() / 255.0 * amount;
@@ -247,6 +252,11 @@ public class FluidSimulation {
             densityG[i] = Math.max(0, densityG[i] - fade);
             densityB[i] = Math.max(0, densityB[i] - fade);
             densityA[i] = Math.max(0, densityA[i] - fade);
+        }
+
+        // cache maybe invalid
+        if (Boolean.TRUE.equals(hasDensity)) {
+            hasDensity = null;
         }
     }
 
