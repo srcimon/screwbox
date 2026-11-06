@@ -1,8 +1,13 @@
 package dev.screwbox.core.graphics.internal;
 
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
+import dev.screwbox.core.graphics.options.TextureFillOptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -38,6 +43,31 @@ class StandbyProxyRendererTest {
         standbyProxyRenderer.fillWith(Color.RED, CLIP);
 
         verifyNoInteractions(renderer);
+    }
+
+    @Test
+    void fillWith_textureRenderingDisabled_doesntRender() {
+        standbyProxyRenderer.fillWith(SpriteBundle.BOX.get(), TextureFillOptions.scale(1), CLIP);
+
+        verifyNoInteractions(renderer);
+    }
+
+    @Test
+    void drawRectangle_renderingDisabled_doesntRender() {
+        standbyProxyRenderer.drawRectangle(Offset.at(10, 2), Size.of(10, 20), RectangleDrawOptions.fading(Color.RED), CLIP);
+
+        verifyNoInteractions(renderer);
+    }
+
+    @Test
+    void drawRectangle_renderingEnabled_renders() {
+        standbyProxyRenderer.toggleOnOff(); // on
+        standbyProxyRenderer.toggleOnOff(); // off
+        standbyProxyRenderer.toggleOnOff(); // on again
+
+        standbyProxyRenderer.drawRectangle(Offset.at(10, 2), Size.of(10, 20), RectangleDrawOptions.fading(Color.RED), CLIP);
+
+        verify(renderer).drawRectangle(Offset.at(10, 2), Size.of(10, 20), RectangleDrawOptions.fading(Color.RED), CLIP);
     }
 
     @Test
