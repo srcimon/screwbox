@@ -6,6 +6,7 @@
 - Added `Vector.clampDistance(Vector, double)`
 - Emit smoke from an area
 - Added customization options for turbulence and area emit in `SmokeEmitterComponent` (#1069)
+- Check shader compilation state (#531)
 
 ### 🪛 Bug Fixes
 

@@ -335,6 +335,29 @@ public class Sprite implements Serializable, Sizeable {
     }
 
     /**
+     * Returns {@code true} if the specified shader is compiled.
+     *
+     * @since 3.39.0
+     */
+    public boolean isShaderCompiled(final Supplier<ShaderSetup> shaderSetup) {
+        return isShaderCompiled(shaderSetup.get().shader());
+    }
+
+    /**
+     * Returns {@code true} if the specified shader is compiled.
+     *
+     * @since 3.39.0
+     */
+    public boolean isShaderCompiled(final Shader shader) {
+        for (final var frame : frames) {
+            if (!frame.isShaderCompiled(shader)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Exports the sprite as gif file at the specified location.
      *
      * @since 2.15.0

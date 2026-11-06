@@ -299,14 +299,42 @@ public final class Frame implements Serializable, Sizeable {
      * @since 2.15.0
      */
     public void compileShader(final Shader shader) {
-        final int preparations = shader.isAnimated() ? (SHADER_CACHE_LIMIT - 1) : 0;
-        for (int i = 0; i <= preparations; i++) {
-            final String cacheKey = shader.isAnimated()
-                ? shader.cacheKey() + i
-                : shader.cacheKey();
+        if (!shader.isAnimated()) {
+            shaderCache.getOrElse(shader.cacheKey(), () -> shader.apply(image(), null));
+            return;
+        }
+        for (int i = 0; i < SHADER_CACHE_LIMIT; i++) {
+            final String cacheKey = shader.cacheKey() + i;
             final var progress = Percent.of(i / (1.0 * (SHADER_CACHE_LIMIT - 1)));
             shaderCache.getOrElse(cacheKey, () -> shader.apply(image(), progress));
         }
+    }
+
+    /**
+     * Returns {@code true} if the specified shader is compiled.
+     *
+     * @since 3.39.0
+     */
+    public boolean isShaderCompiled(final Supplier<ShaderSetup> shaderSetup) {
+        return isShaderCompiled(shaderSetup.get().shader());
+    }
+
+    /**
+     * Returns {@code true} if the specified shader is compiled.
+     *
+     * @since 3.39.0
+     */
+    public boolean isShaderCompiled(final Shader shader) {
+        if (!shader.isAnimated()) {
+            return shaderCache.get(shader.cacheKey()).isPresent();
+        }
+        for (int i = 0; i < SHADER_CACHE_LIMIT; i++) {
+            final String cacheKey = shader.cacheKey() + i;
+            if (shaderCache.get(cacheKey).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
