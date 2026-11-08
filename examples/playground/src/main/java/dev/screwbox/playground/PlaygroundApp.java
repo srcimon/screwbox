@@ -1,37 +1,24 @@
 package dev.screwbox.playground;
 
-import dev.screwbox.core.Angle;
-import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
-import dev.screwbox.core.environment.light.BackdropOccluderComponent;
-import dev.screwbox.core.environment.light.GlowComponent;
-import dev.screwbox.core.environment.light.OccluderComponent;
-import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.CameraLeadComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.environment.smoke.SmokeEmitterComponent;
-import dev.screwbox.core.environment.smoke.SmokeInteractionComponent;
-import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.graphics.smoke.styles.NettrunnerSmokeStyle;
-import dev.screwbox.core.utils.Noise;
 import dev.screwbox.core.utils.TileMap;
 
 public class PlaygroundApp {
@@ -48,13 +35,13 @@ public class PlaygroundApp {
             #                     #
             #                     #
             #                     #
-            #     DP   C          #
-            #   ####              #
+            #                     #
+            #   ####   P          #
             #                     #
             #                     #
             #             #       #
             #             #      ##
-            #  D      ###     D   #
+            #         ###         #
             #######################
             """);
 
@@ -62,36 +49,28 @@ public class PlaygroundApp {
         screwBox.graphics().configuration().setSmokeCellSize(4);
         screwBox.environment().addSystem(new LogFpsSystem());
         screwBox.graphics().configuration().setLightQuality(Percent.half());
-        screwBox.graphics().camera().setZoom(3);
-        screwBox.graphics().light().setAmbientLight(Percent.of(0.3));
+        screwBox.graphics().camera().setZoom(4);
         screwBox.environment().enableAllFeatures()
-            .addEntity(new Entity().bounds(Bounds.atPosition(0, 0, 8, 8)).add(new CursorAttachmentComponent())
-                .add(new PointLightComponent(100, Color.RED))
-                .add(new GlowComponent(80, Color.WHITE.opacity(0.4))))
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', source -> new Entity().bounds(source.bounds())
-                    .add(new OccluderComponent())
-                    .add(new SmokeObstacleComponent())
                     .add(new ColliderComponent())
                     .add(new StaticBoundsComponent())
-                    .add(new RenderComponent(AutoTileBundle.ROCKS.get().findSprite(source.autoTileMask()))))
-                .assign('P', source -> new Entity().bounds(source.bounds().scale(0.5))
-                    .add(new BackdropOccluderComponent(ShadowOptions.angular().backdropDistance(0.2)))
-                    .add(new PhysicsComponent(), config -> config.friction = 3)
-                    .add(new SmokeInteractionComponent())
-                    .add(new MovementControlComponent(), config -> config.isHorizontalOnly = false)
-                    .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, Size.square(8)))))
-                .assign('C', source -> new Entity().bounds(source.bounds())
-                    .add(new PointLightComponent(100, Color.BLACK))
-                    .add(new CameraTargetComponent()))
-                .assign('D', source -> new Entity().bounds(source.bounds())
-                    .add(new SmokeEmitterComponent(4, Color.WHITE, Vector.y(-500)), config -> {
-                        config.velocityTurbulenceRange = Angle.degrees(60);
-                        config.velocityTurbulence = Noise.fixedInterval(Duration.ofMillis(200));
-
-                    }))
+                    .add(new RenderComponent(AutoTileBundle.BUBBLEGUM.get().findSprite(source.autoTileMask()))))
+                .assign('P', source -> new Entity().bounds(source.bounds().scale(0.75))
+                    .add(new PhysicsComponent(), config -> config.friction = 4)
+                    .add(new CameraTargetComponent(60))
+                    .add(new CameraLeadComponent(), config -> {
+                        config.adjustmentSpeed = 0.8;
+                        config.xModifier = 0.6;
+                        config.yModifier = 0.6;
+                    })
+                    .add(new MovementControlComponent(), config -> {
+                        config.acceleration = 400;
+                        config.maxSpeed = 100;
+                    })
+                    .add(new RenderComponent(Sprite.placeholder(Color.RED, Size.square(12)))))
             );
-        screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
+        screwBox.graphics().configuration().setBackgroundColor(Color.WHITE);
         screwBox.start();
     }
 
