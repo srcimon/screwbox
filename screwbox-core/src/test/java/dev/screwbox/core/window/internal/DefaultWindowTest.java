@@ -96,4 +96,9 @@ class DefaultWindowTest {
         verify(frame).setBounds(20, 20, 512, 256);
     }
 
+    @Test
+    void title_returnsFrameTitle() {
+        when(frame.getTitle()).thenReturn("Playground");
+        assertThat(window.title()).isEqualTo("Playground");
+    }
 }
