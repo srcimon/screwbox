@@ -16,26 +16,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class LeftRightControlSystemTest {
+class MovementControlSystemTest {
 
     PhysicsComponent physicsComponent;
-    LeftRightControlComponent leftRightControlComponent;
+    MovementControlComponent movementControlComponent;
 
     @BeforeEach
     void setUp(DefaultEnvironment environment) {
         physicsComponent = new PhysicsComponent();
-        leftRightControlComponent = new LeftRightControlComponent();
+        movementControlComponent = new MovementControlComponent();
 
         environment.addEntity(new Entity()
-                .add(physicsComponent)
-                .add(leftRightControlComponent));
+            .add(physicsComponent)
+            .add(movementControlComponent));
 
-        environment.addSystem(new LeftRightControlSystem());
+        environment.addSystem(new MovementControlSystem());
     }
 
     @Test
     void update_leftPressed_movesToTheLeft(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
-        when(keyboard.isDown(DefaultControlSet.LEFT)).thenReturn(true);
+        movementControlComponent.isHorizontalOnly = true;
+        when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(-1.0);
         when(loop.delta(-600)).thenReturn(-12.2);
 
         environment.update();
@@ -44,12 +45,27 @@ class LeftRightControlSystemTest {
 
         environment.updateTimes(8);
 
-        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(-leftRightControlComponent.maxSpeed));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(-movementControlComponent.maxSpeed));
+    }
+
+    @Test
+    void update_notRestrictedToHorizontalMovementAndUpPressed_movesAlsoUp(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+        when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(-1.0);
+        when(keyboard.axisSign(DefaultControlSet.UP, DefaultControlSet.DOWN)).thenReturn(-1.0);
+        when(loop.delta(-600)).thenReturn(-12.2);
+
+        environment.update();
+
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.$(-12.2, -12.2));
+
+        environment.updateTimes(8);
+
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.$(-movementControlComponent.maxSpeed, -movementControlComponent.maxSpeed));
     }
 
     @Test
     void update_rightPressed_movesToTheRight(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
-        when(keyboard.isDown(DefaultControlSet.RIGHT)).thenReturn(true);
+        when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(1.0);
         when(loop.delta(600)).thenReturn(12.2);
 
         environment.update();
@@ -58,14 +74,14 @@ class LeftRightControlSystemTest {
 
         environment.updateTimes(8);
 
-        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(leftRightControlComponent.maxSpeed));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(movementControlComponent.maxSpeed));
     }
 
     @Test
-    void update_rightPressedButDisables_doesntMove(DefaultEnvironment environment, Keyboard keyboard) {
-        when(keyboard.isDown(DefaultControlSet.RIGHT)).thenReturn(true);
-        leftRightControlComponent.isEnabled = false;
-
+    void update_rightPressedButDisabled_doesntMove(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+        movementControlComponent.isEnabled = false;
+        when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(1.0);
+        when(loop.delta(600)).thenReturn(12.2);
         environment.update();
 
         assertThat(physicsComponent.velocity).isEqualTo(Vector.zero());

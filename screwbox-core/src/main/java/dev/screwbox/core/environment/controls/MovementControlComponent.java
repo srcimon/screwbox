@@ -7,29 +7,21 @@ import dev.screwbox.core.keyboard.DefaultControlSet;
 import java.io.Serial;
 
 /**
- * Let the {@link Entity} move left and right on key press.
+ * Let the {@link Entity} move on key press.
  *
  * @since 2.15.0
  */
-public class LeftRightControlComponent implements Component {
+public class MovementControlComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * Creates a new instance using the {@link DefaultControlSet}.
+     * Restricts horizontal movement (left and right) when set to {@code true}.
+     *
+     * @since 3.40.0
      */
-    public LeftRightControlComponent() {
-        this(DefaultControlSet.LEFT, DefaultControlSet.RIGHT);
-    }
-
-    /**
-     * Creates a new instance setting the aliases for left and right movement.
-     */
-    public LeftRightControlComponent(final Enum<?> leftAlias, final Enum<?> rightAlias) {
-        this.leftAlias = leftAlias;
-        this.rightAlias = rightAlias;
-    }
+    public boolean isHorizontalOnly = false;
 
     /**
      * Enable or disable left right movement control.
@@ -49,11 +41,25 @@ public class LeftRightControlComponent implements Component {
     /**
      * Alias for key to press to move to the left.
      */
-    public Enum<?> leftAlias;
+    public Enum<?> leftAlias = DefaultControlSet.LEFT;
 
     /**
      * Alias for key to press to move to the right.
      */
-    public Enum<?> rightAlias;
+    public Enum<?> rightAlias = DefaultControlSet.RIGHT;
+
+    /**
+     * Alias for key to press to move upwards.
+     *
+     * @since 3.40.0
+     */
+    public Enum<?> upAlias = DefaultControlSet.UP;
+
+    /**
+     * Alias for key to press to move downwards.
+     *
+     * @since 3.40.0
+     */
+    public Enum<?> downAlias = DefaultControlSet.DOWN;
 
 }

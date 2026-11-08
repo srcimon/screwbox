@@ -81,7 +81,7 @@ public interface Keyboard {
      *
      * @since 2.10.0
      */
-    Optional<Key> getKeyForAlias(Enum<?> alias);
+    Optional<Key> keyForAlias(Enum<?> alias);
 
     /**
      * Returns {@code true} if the given {@link KeyCombination} is down at the moment.
@@ -131,4 +131,26 @@ public interface Keyboard {
      */
     boolean isAnyKeyPressed();
 
+    /**
+     * Returns input value to bind to movement controls. Will return -1 if only negative is down. 1 if only positive is down.
+     * And will return zero if none or both keys are down.
+     *
+     * @since 3.40.0
+     */
+    double axisSign(Key negative, Key positive);
+
+    /**
+     * Returns input value to bind to movement controls. Will return -1 if only negative is down. 1 if only positive is down.
+     * And will return zero if none or both keys are down.
+     *
+     * @since 3.40.0
+     */
+    double axisSign(Enum<?> negative, Enum<?> positive);
+
+    /**
+     * Returns the {@link Key} currently bound to the specified alias. Will throw {@link IllegalStateException} if no alias is bound.
+     *
+     * @since 3.40.0
+     */
+    Key forceKeyForAlias(Enum<?> alias);
 }

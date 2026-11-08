@@ -13,7 +13,7 @@ import dev.screwbox.core.environment.ai.TargetLockSystem;
 import dev.screwbox.core.environment.ai.TargetMovementSystem;
 import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
-import dev.screwbox.core.environment.controls.LeftRightControlSystem;
+import dev.screwbox.core.environment.controls.MovementControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.QuitOnKeySystem;
@@ -408,7 +408,7 @@ class DefaultEnvironmentTest {
 
         assertThat(environment.systems()).hasSize(3)
             .anyMatch(system -> system.getClass().equals(JumpControlSystem.class))
-            .anyMatch(system -> system.getClass().equals(LeftRightControlSystem.class))
+            .anyMatch(system -> system.getClass().equals(MovementControlSystem.class))
             .anyMatch(system -> system.getClass().equals(SuspendJumpControlSystem.class));
     }
 

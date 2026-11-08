@@ -43,9 +43,9 @@ To utilize these components, first call `environment.enableControls()`.
 
 | Component                     | Description                                      |
 |-------------------------------|--------------------------------------------------|
-| `LeftRightControlComponent`   | Let the entity move left and right on key press. |
-| `JumpControlComponent`        | Let the entity do a jump on key press.           |
-| `SuspendJumpControlComponent` | Enforce ground contact for jumping.              |
+| `MovementControlComponent`   | let the entity move on key press |
+| `JumpControlComponent`        | let the entity do a jump on key press           |
+| `SuspendJumpControlComponent` | enforce ground contact for jumping              |
 
 ## Tweening components
 

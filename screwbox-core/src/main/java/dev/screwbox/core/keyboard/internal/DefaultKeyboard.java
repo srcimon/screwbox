@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static dev.screwbox.core.keyboard.Key.*;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -89,8 +88,8 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
     @Override
     public Optional<String> recordedText() {
         return isRecording()
-                ? Optional.of(textRecorder.toString())
-                : Optional.empty();
+            ? Optional.of(textRecorder.toString())
+            : Optional.empty();
     }
 
     @Override
@@ -158,17 +157,17 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
     @Override
     public Vector wsadMovement(final double length) {
         return Vector.of(
-                        valueOfHighLow(A, D),
-                        valueOfHighLow(W, S))
-                .length(length);
+                axisSign(Key.A, Key.D),
+                axisSign(Key.W, Key.S))
+            .length(length);
     }
 
     @Override
     public Vector arrowKeysMovement(final double length) {
         return Vector.of(
-                        valueOfHighLow(ARROW_LEFT, ARROW_RIGHT),
-                        valueOfHighLow(ARROW_UP, ARROW_DOWN))
-                .length(length);
+                axisSign(Key.ARROW_LEFT, Key.ARROW_RIGHT),
+                axisSign(Key.ARROW_UP, Key.ARROW_DOWN))
+            .length(length);
     }
 
     @Override
@@ -176,11 +175,17 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
         return !pressedKeys.inactive().isEmpty();
     }
 
-    private double valueOfHighLow(final Key low, final Key high) {
-        if (isDown(low)) {
-            return isDown(high) ? 0 : -1;
+    @Override
+    public double axisSign(final Key negative, final Key positive) {
+        if (isDown(negative)) {
+            return isDown(positive) ? 0 : -1;
         }
-        return isDown(high) ? 1 : 0;
+        return isDown(positive) ? 1 : 0;
+    }
+
+    @Override
+    public double axisSign(final Enum<?> negative, final Enum<?> positive) {
+        return axisSign(forceKeyForAlias(negative), forceKeyForAlias(positive));
     }
 
     private static List<Key> mapCodes(final Set<Integer> codes) {
@@ -192,29 +197,30 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
     }
 
     @Override
-    public Optional<Key> getKeyForAlias(final Enum<?> alias) {
+    public Optional<Key> keyForAlias(final Enum<?> alias) {
         final var key = this.alias.get(alias);
-        if (isNull(key)) {
-            final DefaultKey annotation = getDefaultKeyAnnotation(alias);
-            if (nonNull(annotation)) {
-                bindAlias(alias, annotation.value());
-                return getKeyForAlias(alias);
-            }
-            return Optional.empty();
+        if (nonNull(key)) {
+            return Optional.of(key);
         }
-        return Optional.of(key);
+        final DefaultKey annotation = getDefaultKeyAnnotation(alias);
+        if (nonNull(annotation)) {
+            bindAlias(alias, annotation.value());
+            return keyForAlias(alias);
+        }
+        return Optional.empty();
     }
 
     private static DefaultKey getDefaultKeyAnnotation(final Enum<?> alias) {
         try {
             return alias.getClass().getField(alias.name()).getAnnotation(DefaultKey.class);
-        } catch (NoSuchFieldException e) {
+        } catch (final NoSuchFieldException e) {
             throw new IllegalStateException("could not find field", e);
         }
     }
 
-    private Key forceKeyForAlias(final Enum<?> alias) {
-        return getKeyForAlias(alias).orElseThrow(() -> new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name()));
+    @Override
+    public Key forceKeyForAlias(final Enum<?> alias) {
+        return keyForAlias(alias).orElseThrow(() -> new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name()));
     }
 
     @Override

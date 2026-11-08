@@ -1,6 +1,7 @@
 package dev.screwbox.core.keyboard.internal;
 
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.keyboard.DefaultControlSet;
 import dev.screwbox.core.keyboard.DefaultKey;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.keyboard.KeyCombination;
@@ -270,7 +271,7 @@ class DefaultKeyboardTest {
 
     @Test
     void getKeyForAlias_noAliasSpecified_isEmpty() {
-        assertThat(keyboard.getKeyForAlias(Borders.ALL)).isEmpty();
+        assertThat(keyboard.keyForAlias(Borders.ALL)).isEmpty();
     }
 
     enum MyControls {
@@ -281,14 +282,14 @@ class DefaultKeyboardTest {
 
     @Test
     void getKeyForAlias_keySpaceDefinedByAnnotation_returnsKeySpace() {
-        assertThat(keyboard.getKeyForAlias(MyControls.JUMP)).contains(Key.SPACE);
+        assertThat(keyboard.keyForAlias(MyControls.JUMP)).contains(Key.SPACE);
     }
 
     @Test
     void bindAlias_keyHasDefaultValue_overwritesDefault() {
         keyboard.bindAlias(MyControls.JUMP, Key.ENTER);
 
-        assertThat(keyboard.getKeyForAlias(MyControls.JUMP)).contains(Key.ENTER);
+        assertThat(keyboard.keyForAlias(MyControls.JUMP)).contains(Key.ENTER);
     }
 
     @Test
@@ -350,6 +351,21 @@ class DefaultKeyboardTest {
         mockKeyRelease(Key.Z);
 
         assertThat(keyboard.isDown(Key.Y)).isTrue();
+    }
+
+    @Test
+    void downKeys_twoKeysDown_returnsTwoKeys() {
+        mockKeyPress(Key.Y);
+        mockKeyPress(Key.Z);
+
+        assertThat(keyboard.downKeys()).containsExactlyInAnyOrder(Key.Y, Key.Z);
+    }
+
+    @Test
+    void axisSign_nonePressed_isZero() {
+        mockKeyPress(Key.Z);
+
+        assertThat(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).isZero();
     }
 
     private void mockKeyRelease(Key key) {
