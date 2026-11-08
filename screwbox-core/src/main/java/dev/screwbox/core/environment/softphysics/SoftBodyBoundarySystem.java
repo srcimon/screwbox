@@ -60,7 +60,8 @@ public class SoftBodyBoundarySystem implements EntitySystem {
 
                 if (nonNull(intersection)) {
                     Vector normal = landscapeEdge.end().subtract(landscapeEdge.start()).normalize();
-                    if (dotProduct(intersection.subtract(collider.position()), normal) < 0) {
+                    final Vector first = intersection.subtract(collider.position());
+                    if (first.dotProduct(normal) < 0) {
                         normal = normal.invert();
                     }
 
@@ -108,7 +109,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         if (nonNull(closestEdge)) {
             Vector normal = closestEdge.start().subtract(closestEdge.end()).normalize();
 
-            if (dotProduct(normal, closestEdge.center().subtract(softBody.shape.center())) < 0) {
+            if (normal.dotProduct(closestEdge.center().subtract(softBody.shape.center())) < 0) {
                 normal = normal.invert();
             }
 
@@ -128,7 +129,7 @@ public class SoftBodyBoundarySystem implements EntitySystem {
     private void applyWeightedImpulseResponse(final Entity node, final Vector normal, final double weight) {
         final var physics = node.get(PhysicsComponent.class);
         if (nonNull(physics)) {
-            double dot = dotProduct(physics.velocity, normal);
+            double dot = physics.velocity.dotProduct(normal);
             if (dot < 0) {
                 Vector delta = normal.multiply(dot * IMPULSE_RESPONSE * weight);
                 physics.velocity = physics.velocity.subtract(delta);
@@ -136,7 +137,4 @@ public class SoftBodyBoundarySystem implements EntitySystem {
         }
     }
 
-    public double dotProduct(final Vector first, final Vector second) {
-        return first.x() * second.x() + first.y() * second.y();
-    }
 }
