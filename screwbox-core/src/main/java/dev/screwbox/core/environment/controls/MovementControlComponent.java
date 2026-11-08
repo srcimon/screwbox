@@ -12,7 +12,7 @@ import java.io.Serial;
  * @since 2.15.0
  */
 public class MovementControlComponent implements Component {
-    //TODO document changes
+
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -21,7 +21,7 @@ public class MovementControlComponent implements Component {
      *
      * @since 3.40.0
      */
-    public boolean isHorizontalOnly = true;
+    public boolean isHorizontalOnly = false;
 
     /**
      * Enable or disable left right movement control.

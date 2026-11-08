@@ -35,6 +35,7 @@ class MovementControlSystemTest {
 
     @Test
     void update_leftPressed_movesToTheLeft(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+        movementControlComponent.isEnabled = true;
         when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(-1.0);
         when(loop.delta(-600)).thenReturn(-12.2);
 
@@ -80,7 +81,6 @@ class MovementControlSystemTest {
     @Test
     void update_rightPressedButDisables_doesntMove(DefaultEnvironment environment, Keyboard keyboard) {
         when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(1.0);
-        movementControlComponent.isEnabled = false;
 
         environment.update();
 
