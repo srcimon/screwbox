@@ -8,19 +8,26 @@ import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
+import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.light.BackdropOccluderComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
+import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.environment.smoke.SmokeEmitterComponent;
+import dev.screwbox.core.environment.smoke.SmokeInteractionComponent;
 import dev.screwbox.core.environment.smoke.SmokeObstacleComponent;
 import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Size;
+import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.graphics.smoke.styles.NettrunnerSmokeStyle;
 import dev.screwbox.core.utils.Noise;
@@ -40,7 +47,7 @@ public class PlaygroundApp {
             #                     #
             #                     #
             #                     #
-            #     D    C          #
+            #     DP   C          #
             #   ####              #
             #                     #
             #                     #
@@ -66,6 +73,12 @@ public class PlaygroundApp {
                     .add(new SmokeObstacleComponent())
                     .add(new StaticBoundsComponent())
                     .add(new RenderComponent(AutoTileBundle.ROCKS.get().findSprite(source.autoTileMask()))))
+                .assign('P', source -> new Entity().bounds(source.bounds().scale(0.5))
+                    .add(new BackdropOccluderComponent(ShadowOptions.angular().backdropDistance(0.2)))
+                    .add(new PhysicsComponent(), config -> config.friction = 3)
+                    .add(new SmokeInteractionComponent())
+                    .add(new MovementControlComponent())
+                    .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, Size.square(8)))))
                 .assign('C', source -> new Entity().bounds(source.bounds())
                     .add(new PointLightComponent(100, Color.BLACK))
                     .add(new CameraTargetComponent()))
