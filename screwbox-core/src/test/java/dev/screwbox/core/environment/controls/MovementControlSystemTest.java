@@ -35,7 +35,7 @@ class MovementControlSystemTest {
 
     @Test
     void update_leftPressed_movesToTheLeft(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
-        movementControlComponent.isEnabled = true;
+        movementControlComponent.isHorizontalOnly = true;
         when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(-1.0);
         when(loop.delta(-600)).thenReturn(-12.2);
 
@@ -53,7 +53,6 @@ class MovementControlSystemTest {
         when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(-1.0);
         when(keyboard.axisSign(DefaultControlSet.UP, DefaultControlSet.DOWN)).thenReturn(-1.0);
         when(loop.delta(-600)).thenReturn(-12.2);
-        movementControlComponent.isHorizontalOnly = false;
 
         environment.update();
 
@@ -79,9 +78,10 @@ class MovementControlSystemTest {
     }
 
     @Test
-    void update_rightPressedButDisables_doesntMove(DefaultEnvironment environment, Keyboard keyboard) {
+    void update_rightPressedButDisabled_doesntMove(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+        movementControlComponent.isEnabled = false;
         when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(1.0);
-
+        when(loop.delta(600)).thenReturn(12.2);
         environment.update();
 
         assertThat(physicsComponent.velocity).isEqualTo(Vector.zero());
