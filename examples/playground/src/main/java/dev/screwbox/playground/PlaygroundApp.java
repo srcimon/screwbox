@@ -7,9 +7,12 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
+import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
+import dev.screwbox.core.environment.physics.AttachmentComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.physics.TailwindComponent;
 import dev.screwbox.core.environment.rendering.CameraLeadComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
@@ -17,9 +20,12 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.smoke.SmokeOptions;
 import dev.screwbox.core.graphics.smoke.styles.NettrunnerSmokeStyle;
+import dev.screwbox.core.scenes.animations.GridShredderAnimation;
 import dev.screwbox.core.utils.TileMap;
+import dev.screwbox.playground.debug.DebugGridSystem;
 
 public class PlaygroundApp {
 
@@ -32,9 +38,9 @@ public class PlaygroundApp {
             #        ###          #
             #        #            #
             #        #            #
-            #                     #
-            #                     #
-            #                     #
+            #                B    #
+            #                B    #
+            #                BBBB #
             #                     #
             #   ####   P          #
             #                     #
@@ -45,32 +51,36 @@ public class PlaygroundApp {
             #######################
             """);
 
-        screwBox.graphics().smoke().setOptions(SmokeOptions.slowFade().diffusion(Percent.of(0.00000001)).opacity(Percent.half()).style(new NettrunnerSmokeStyle()));
-        screwBox.graphics().configuration().setSmokeCellSize(4);
         screwBox.environment().addSystem(new LogFpsSystem());
         screwBox.graphics().configuration().setLightQuality(Percent.half());
         screwBox.graphics().camera().setZoom(4);
         screwBox.environment().enableAllFeatures()
+            .addSystem(new JumpSystem())
+            .addSystem(new DebugGridSystem(16, 256))
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
                 .assign('#', source -> new Entity().bounds(source.bounds())
                     .add(new ColliderComponent())
                     .add(new StaticBoundsComponent())
                     .add(new RenderComponent(AutoTileBundle.BUBBLEGUM.get().findSprite(source.autoTileMask()))))
-                .assign('P', source -> new Entity().bounds(source.bounds().scale(0.75))
-                    .add(new PhysicsComponent(), config -> config.friction = 4)
+                .assign('B', source -> new Entity().bounds(source.bounds())
+                    .add(new RenderComponent(Sprite.placeholder(Color.BLACK, Size.square(16)))))
+                .assign('P', source ->  new Entity(1).bounds(source.bounds().scale(0.75))
+                    .add(new PhysicsComponent(), config -> config.friction = 8)
                     .add(new CameraTargetComponent(60))
                     .add(new CameraLeadComponent(), config -> {
                         config.adjustmentSpeed = 0.8;
                         config.xModifier = 0.6;
                         config.yModifier = 0.6;
                     })
+                    .add(new RenderComponent(SpriteBundle.DOT_WHITE.get().replaceColor(Color.WHITE, Color.BLACK.opacity(0.5))))
                     .add(new MovementControlComponent(), config -> {
-                        config.acceleration = 400;
+                        config.acceleration = 800;
                         config.maxSpeed = 100;
                     })
-                    .add(new RenderComponent(Sprite.placeholder(Color.RED, Size.square(12)))))
+                   )
             );
-        screwBox.graphics().configuration().setBackgroundColor(Color.WHITE);
+        screwBox.environment().addEntity(new Entity(2).add(new TransformComponent()).add(new AttachmentComponent(1)) .add(new RenderComponent(Sprite.placeholder(Color.RED, Size.square(12)))));
+        screwBox.graphics().configuration().setBackgroundColor(Color.DARK_BLUE);
         screwBox.start();
     }
 
