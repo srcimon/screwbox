@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static dev.screwbox.core.keyboard.Key.*;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -89,8 +88,8 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
     @Override
     public Optional<String> recordedText() {
         return isRecording()
-                ? Optional.of(textRecorder.toString())
-                : Optional.empty();
+            ? Optional.of(textRecorder.toString())
+            : Optional.empty();
     }
 
     @Override
@@ -158,17 +157,17 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
     @Override
     public Vector wsadMovement(final double length) {
         return Vector.of(
-                        valueOfHighLow(A, D),
-                        valueOfHighLow(W, S))
-                .length(length);
+                valueOfHighLow(A, D),
+                valueOfHighLow(W, S))
+            .length(length);
     }
 
     @Override
     public Vector arrowKeysMovement(final double length) {
         return Vector.of(
-                        valueOfHighLow(ARROW_LEFT, ARROW_RIGHT),
-                        valueOfHighLow(ARROW_UP, ARROW_DOWN))
-                .length(length);
+                valueOfHighLow(ARROW_LEFT, ARROW_RIGHT),
+                valueOfHighLow(ARROW_UP, ARROW_DOWN))
+            .length(length);
     }
 
     @Override
@@ -194,21 +193,21 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
     @Override
     public Optional<Key> getKeyForAlias(final Enum<?> alias) {
         final var key = this.alias.get(alias);
-        if (isNull(key)) {
-            final DefaultKey annotation = getDefaultKeyAnnotation(alias);
-            if (nonNull(annotation)) {
-                bindAlias(alias, annotation.value());
-                return getKeyForAlias(alias);
-            }
-            return Optional.empty();
+        if (nonNull(key)) {
+            return Optional.of(key);
         }
-        return Optional.of(key);
+        final DefaultKey annotation = getDefaultKeyAnnotation(alias);
+        if (nonNull(annotation)) {
+            bindAlias(alias, annotation.value());
+            return getKeyForAlias(alias);
+        }
+        return Optional.empty();
     }
 
     private static DefaultKey getDefaultKeyAnnotation(final Enum<?> alias) {
         try {
             return alias.getClass().getField(alias.name()).getAnnotation(DefaultKey.class);
-        } catch (NoSuchFieldException e) {
+        } catch (final NoSuchFieldException e) {
             throw new IllegalStateException("could not find field", e);
         }
     }

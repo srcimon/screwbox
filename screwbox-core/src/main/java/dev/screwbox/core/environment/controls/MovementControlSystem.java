@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment.controls;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
@@ -22,10 +23,17 @@ public class MovementControlSystem implements EntitySystem {
         for (final var mover : engine.environment().fetchAll(MOVERS)) {
             final var control = mover.get(MovementControlComponent.class);
             if (control.isEnabled) {
-                final var speed = speedFromInput(control.leftAlias, control.rightAlias, engine.keyboard()) * control.acceleration;
                 final var physics = mover.get(PhysicsComponent.class);
-                final var xSpeed = Math.clamp(physics.velocity.x() + engine.loop().delta(speed), -control.maxSpeed, control.maxSpeed);
-                physics.velocity = physics.velocity.replaceX(xSpeed);
+                final var xSpeedSource = speedFromInput(control.leftAlias, control.rightAlias, engine.keyboard()) * control.acceleration;
+                final var xSpeed = Math.clamp(physics.velocity.x() + engine.loop().delta(xSpeedSource), -control.maxSpeed, control.maxSpeed);
+
+                if (control.isLimitedToHorizontalMovement) {
+                    physics.velocity = physics.velocity.replaceX(xSpeed);
+                } else {
+                    final var ySpeedSource = speedFromInput(control.upAlias, control.downAlias, engine.keyboard()) * control.acceleration;
+                    final var ySpeed = Math.clamp(physics.velocity.y() + engine.loop().delta(ySpeedSource), -control.maxSpeed, control.maxSpeed);
+                    physics.velocity = Vector.$(xSpeed, ySpeed);
+                }
             }
         }
     }
@@ -36,5 +44,4 @@ public class MovementControlSystem implements EntitySystem {
         }
         return keyboard.isDown(right) ? 1 : 0;
     }
-
 }

@@ -16,6 +16,7 @@ import dev.screwbox.core.environment.light.BackdropOccluderComponent;
 import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
@@ -71,13 +72,14 @@ public class PlaygroundApp {
                 .assign('#', source -> new Entity().bounds(source.bounds())
                     .add(new OccluderComponent())
                     .add(new SmokeObstacleComponent())
+                    .add(new ColliderComponent())
                     .add(new StaticBoundsComponent())
                     .add(new RenderComponent(AutoTileBundle.ROCKS.get().findSprite(source.autoTileMask()))))
                 .assign('P', source -> new Entity().bounds(source.bounds().scale(0.5))
                     .add(new BackdropOccluderComponent(ShadowOptions.angular().backdropDistance(0.2)))
                     .add(new PhysicsComponent(), config -> config.friction = 3)
                     .add(new SmokeInteractionComponent())
-                    .add(new MovementControlComponent())
+                    .add(new MovementControlComponent(), config -> config.isLimitedToHorizontalMovement = false)
                     .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, Size.square(8)))))
                 .assign('C', source -> new Entity().bounds(source.bounds())
                     .add(new PointLightComponent(100, Color.BLACK))
