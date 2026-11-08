@@ -6,7 +6,7 @@ import dev.screwbox.core.environment.ai.TargetLockSystem;
 import dev.screwbox.core.environment.ai.TargetMovementSystem;
 import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
-import dev.screwbox.core.environment.controls.LeftRightControlSystem;
+import dev.screwbox.core.environment.controls.MovementControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.core.Bakeable;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
@@ -403,7 +403,7 @@ public interface Environment extends IdPool {
      *
      * @see JumpControlSystem
      * @see SuspendJumpControlSystem
-     * @see LeftRightControlSystem
+     * @see MovementControlSystem
      * @since 2.15.0
      */
     Environment enableControls();

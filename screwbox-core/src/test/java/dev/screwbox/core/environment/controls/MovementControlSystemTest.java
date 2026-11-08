@@ -16,21 +16,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-class LeftRightControlSystemTest {
+class MovementControlSystemTest {
 
     PhysicsComponent physicsComponent;
-    LeftRightControlComponent leftRightControlComponent;
+    MovementControlComponent movementControlComponent;
 
     @BeforeEach
     void setUp(DefaultEnvironment environment) {
         physicsComponent = new PhysicsComponent();
-        leftRightControlComponent = new LeftRightControlComponent();
+        movementControlComponent = new MovementControlComponent();
 
         environment.addEntity(new Entity()
                 .add(physicsComponent)
-                .add(leftRightControlComponent));
+                .add(movementControlComponent));
 
-        environment.addSystem(new LeftRightControlSystem());
+        environment.addSystem(new MovementControlSystem());
     }
 
     @Test
@@ -44,7 +44,7 @@ class LeftRightControlSystemTest {
 
         environment.updateTimes(8);
 
-        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(-leftRightControlComponent.maxSpeed));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(-movementControlComponent.maxSpeed));
     }
 
     @Test
@@ -58,13 +58,13 @@ class LeftRightControlSystemTest {
 
         environment.updateTimes(8);
 
-        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(leftRightControlComponent.maxSpeed));
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.x(movementControlComponent.maxSpeed));
     }
 
     @Test
     void update_rightPressedButDisables_doesntMove(DefaultEnvironment environment, Keyboard keyboard) {
         when(keyboard.isDown(DefaultControlSet.RIGHT)).thenReturn(true);
-        leftRightControlComponent.isEnabled = false;
+        movementControlComponent.isEnabled = false;
 
         environment.update();
 

@@ -8,19 +8,19 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.keyboard.Keyboard;
 
 /**
- * Applies left and right movement for all {@link Entity entities} having {@link LeftRightControlComponent}.
+ * Applies movement for all {@link Entity entities} having {@link MovementControlComponent}.
  *
- * @see LeftRightControlComponent
+ * @see MovementControlComponent
  * @since 2.15.0
  */
-public class LeftRightControlSystem implements EntitySystem {
+public class MovementControlSystem implements EntitySystem {
 
-    private static final Archetype MOVERS = Archetype.of(LeftRightControlComponent.class, PhysicsComponent.class);
+    private static final Archetype MOVERS = Archetype.of(MovementControlComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final var mover : engine.environment().fetchAll(MOVERS)) {
-            final var control = mover.get(LeftRightControlComponent.class);
+            final var control = mover.get(MovementControlComponent.class);
             if (control.isEnabled) {
                 final var speed = speedFromInput(control.leftAlias, control.rightAlias, engine.keyboard()) * control.acceleration;
                 final var physics = mover.get(PhysicsComponent.class);

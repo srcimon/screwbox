@@ -2,13 +2,13 @@ package dev.screwbox.core.keyboard;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.controls.JumpControlComponent;
-import dev.screwbox.core.environment.controls.LeftRightControlComponent;
+import dev.screwbox.core.environment.controls.MovementControlComponent;
 
 /**
  * Default control set used for controlling the movement of an {@link Entity} using the {@link Keyboard}.
  *
  * @see JumpControlComponent
- * @see LeftRightControlComponent
+ * @see MovementControlComponent
  *
  * @since 2.15.0
  */

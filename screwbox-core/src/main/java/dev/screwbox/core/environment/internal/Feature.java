@@ -8,7 +8,7 @@ import dev.screwbox.core.environment.ai.TargetLockSystem;
 import dev.screwbox.core.environment.ai.TargetMovementSystem;
 import dev.screwbox.core.environment.audio.SoundSystem;
 import dev.screwbox.core.environment.controls.JumpControlSystem;
-import dev.screwbox.core.environment.controls.LeftRightControlSystem;
+import dev.screwbox.core.environment.controls.MovementControlSystem;
 import dev.screwbox.core.environment.controls.SuspendJumpControlSystem;
 import dev.screwbox.core.environment.fluids.DiveSystem;
 import dev.screwbox.core.environment.fluids.FloatRotationSystem;
@@ -60,7 +60,7 @@ public enum Feature {
     ),
 
     CONTROLS(
-        new LeftRightControlSystem(),
+        new MovementControlSystem(),
         new JumpControlSystem(),
         new SuspendJumpControlSystem()
     ),
