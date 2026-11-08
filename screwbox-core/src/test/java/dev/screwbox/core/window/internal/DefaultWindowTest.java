@@ -3,12 +3,14 @@ package dev.screwbox.core.window.internal;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
+import dev.screwbox.core.window.DroppedFiles;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -104,8 +106,31 @@ class DefaultWindowTest {
 
     @Test
     void droppedFiles_noFilesDropped_isEmpty() {
-      assertThat(window.droppedFiles()).isEmpty();
+        assertThat(window.droppedFiles()).isEmpty();
     }
 
+    @Test
+    void droppedFiles_filesDroppedInCurrentFrame_isEmpty() {
+        DroppedFiles droppedFiles = new DroppedFiles(Collections.emptyList(), Offset.at(20, 0));
+        window.onFileDrop(droppedFiles);
+        assertThat(window.droppedFiles()).isEmpty();
+    }
 
+    @Test
+    void droppedFiles_filesDroppedInLastFrame_containsDroppedFiles() {
+        DroppedFiles droppedFiles = new DroppedFiles(Collections.emptyList(), Offset.at(20, 0));
+        window.onFileDrop(droppedFiles);
+        window.update();
+        assertThat(window.droppedFiles()).contains(droppedFiles);
+    }
+
+    @Test
+    void droppedFiles_filesDroppedAFewFramesAgo_isEmpty() {
+        DroppedFiles droppedFiles = new DroppedFiles(Collections.emptyList(), Offset.at(20, 0));
+        window.onFileDrop(droppedFiles);
+        window.update();
+        window.update();
+
+        assertThat(window.droppedFiles()).isEmpty();
+    }
 }

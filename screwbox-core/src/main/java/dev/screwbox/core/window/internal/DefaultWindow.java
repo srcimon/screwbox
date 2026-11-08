@@ -15,7 +15,6 @@ import dev.screwbox.core.window.MouseCursor;
 import dev.screwbox.core.window.Window;
 
 import java.awt.*;
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -244,8 +243,8 @@ public class DefaultWindow implements Window, Updatable {
         }
     }
 
-    public void onFileDrop(final List<File> files, final Offset position) {
-        droppedFiles.assignActive(new DroppedFiles(files, position));
+    public void onFileDrop(final DroppedFiles files) {
+        droppedFiles.assignActive(files);
     }
 
     private Supplier<Cursor> cursorFrom(final MouseCursor cursor) {

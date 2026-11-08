@@ -1,6 +1,7 @@
 package dev.screwbox.core.window.internal;
 
 import dev.screwbox.core.graphics.Offset;
+import dev.screwbox.core.window.DroppedFiles;
 
 import java.awt.*;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -12,13 +13,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.TooManyListenersException;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class DragAndDropSupport extends DropTargetAdapter {
 
-    private final BiConsumer<List<File>, Offset> onFilesDroppedOnWindow;
+    private final Consumer<DroppedFiles> onFilesDroppedOnWindow;
 
-    public DragAndDropSupport(final Frame frame, final BiConsumer<List<File>, Offset> onFilesDroppedOnWindow) {
+    public DragAndDropSupport(final Frame frame, final Consumer<DroppedFiles> onFilesDroppedOnWindow) {
         try {
             final var dropTarget = new DropTarget();
             frame.setDropTarget(dropTarget);
@@ -38,7 +39,7 @@ public class DragAndDropSupport extends DropTargetAdapter {
                 try {
                     final Offset position = Offset.at(event.getLocation().x, event.getLocation().y);
                     final List<File> files = (List<File>) transferable.getTransferData(dataFlavor);
-                    onFilesDroppedOnWindow.accept(files, position);
+                    onFilesDroppedOnWindow.accept(new DroppedFiles(files, position));
                 } catch (final UnsupportedFlavorException | IOException e) {
                     throw new IllegalStateException("drop failed", e);
                 }
