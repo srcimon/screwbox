@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- `LeftRightControlComponent` now supports all direction movement is was renamed to `MovementControlComponent` (#503)
+- Added support for vertical movement in `LeftRightControlComponent` and renamed to `MovementControlComponent` (#503)
 - Retrieve axis sign value for two key input
 
 ### 🪛 Bug Fixes
