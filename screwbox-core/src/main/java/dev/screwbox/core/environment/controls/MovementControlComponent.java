@@ -21,7 +21,7 @@ public class MovementControlComponent implements Component {
      *
      * @since 3.40.0
      */
-    public boolean isLimitedToHorizontalMovement = true;
+    public boolean isHorizontalOnly = true;
 
     /**
      * Enable or disable left right movement control.

@@ -79,7 +79,7 @@ public class PlaygroundApp {
                     .add(new BackdropOccluderComponent(ShadowOptions.angular().backdropDistance(0.2)))
                     .add(new PhysicsComponent(), config -> config.friction = 3)
                     .add(new SmokeInteractionComponent())
-                    .add(new MovementControlComponent(), config -> config.isLimitedToHorizontalMovement = false)
+                    .add(new MovementControlComponent(), config -> config.isHorizontalOnly = false)
                     .add(new RenderComponent(Sprite.placeholder(Color.YELLOW, Size.square(8)))))
                 .assign('C', source -> new Entity().bounds(source.bounds())
                     .add(new PointLightComponent(100, Color.BLACK))

@@ -27,15 +27,15 @@ class MovementControlSystemTest {
         movementControlComponent = new MovementControlComponent();
 
         environment.addEntity(new Entity()
-                .add(physicsComponent)
-                .add(movementControlComponent));
+            .add(physicsComponent)
+            .add(movementControlComponent));
 
         environment.addSystem(new MovementControlSystem());
     }
 
     @Test
     void update_leftPressed_movesToTheLeft(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
-        when(keyboard.isDown(DefaultControlSet.LEFT)).thenReturn(true);
+        when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(-1.0);
         when(loop.delta(-600)).thenReturn(-12.2);
 
         environment.update();
@@ -48,8 +48,24 @@ class MovementControlSystemTest {
     }
 
     @Test
+    void update_notRestrictedToHorizontalMovementAndUpPressed_movesAlsoUp(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+        when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(-1.0);
+        when(keyboard.axisSign(DefaultControlSet.UP, DefaultControlSet.DOWN)).thenReturn(-1.0);
+        when(loop.delta(-600)).thenReturn(-12.2);
+        movementControlComponent.isHorizontalOnly = false;
+
+        environment.update();
+
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.$(-12.2, -12.2));
+
+        environment.updateTimes(8);
+
+        assertThat(physicsComponent.velocity).isEqualTo(Vector.$(-movementControlComponent.maxSpeed, -movementControlComponent.maxSpeed));
+    }
+
+    @Test
     void update_rightPressed_movesToTheRight(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
-        when(keyboard.isDown(DefaultControlSet.RIGHT)).thenReturn(true);
+        when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(1.0);
         when(loop.delta(600)).thenReturn(12.2);
 
         environment.update();
@@ -63,7 +79,7 @@ class MovementControlSystemTest {
 
     @Test
     void update_rightPressedButDisables_doesntMove(DefaultEnvironment environment, Keyboard keyboard) {
-        when(keyboard.isDown(DefaultControlSet.RIGHT)).thenReturn(true);
+        when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(1.0);
         movementControlComponent.isEnabled = false;
 
         environment.update();

@@ -138,7 +138,7 @@ public interface Keyboard {
      * @since 3.40.0
      */
     double axisSign(Key negative, Key positive);
-    //TODO add dedicated tests
+
     /**
      * Returns input value to bind to movement controls. Will return -1 if only negative is down. 1 if only positive is down.
      * And will return zero if none or both keys are down.
@@ -146,7 +146,6 @@ public interface Keyboard {
      * @since 3.40.0
      */
     double axisSign(Enum<?> negative, Enum<?> positive);
-    //TODO add dedicated tests
 
     /**
      * Returns the {@link Key} currently bound to the specified alias. Will throw {@link IllegalStateException} if no alias is bound.
@@ -154,5 +153,4 @@ public interface Keyboard {
      * @since 3.40.0
      */
     Key forceKeyForAlias(Enum<?> alias);
-    //TODO add dedicated tests
 }

@@ -26,7 +26,7 @@ public class MovementControlSystem implements EntitySystem {
                 final var targetXSpeed = engine.keyboard().axisSign(control.leftAlias, control.rightAlias) * control.acceleration;
                 final var xSpeed = Math.clamp(physics.velocity.x() + engine.loop().delta(targetXSpeed), -control.maxSpeed, control.maxSpeed);
 
-                if (control.isLimitedToHorizontalMovement) {
+                if (control.isHorizontalOnly) {
                     physics.velocity = physics.velocity.replaceX(xSpeed);
                 } else {
                     final var targetYSpeed = engine.keyboard().axisSign(control.upAlias, control.downAlias) * control.acceleration;
