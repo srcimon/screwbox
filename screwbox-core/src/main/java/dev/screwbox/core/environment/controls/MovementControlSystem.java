@@ -38,10 +38,10 @@ public class MovementControlSystem implements EntitySystem {
         }
     }
 
-    public static double speedFromInput(final Enum<?> left, final Enum<?> right, final Keyboard keyboard) {
-        if (keyboard.isDown(left)) {
+    public static double speedFromInput(final Enum<?> low, final Enum<?> high, final Keyboard keyboard) {
+        if (keyboard.isDown(low)) {
             return -1;
         }
-        return keyboard.isDown(right) ? 1 : 0;
+        return keyboard.isDown(high) ? 1 : 0;
     }
 }

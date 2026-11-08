@@ -157,16 +157,16 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
     @Override
     public Vector wsadMovement(final double length) {
         return Vector.of(
-                valueOfHighLow(A, D),
-                valueOfHighLow(W, S))
+                axisSign(Key.A, Key.D),
+                axisSign(Key.W, Key.S))
             .length(length);
     }
 
     @Override
     public Vector arrowKeysMovement(final double length) {
         return Vector.of(
-                valueOfHighLow(ARROW_LEFT, ARROW_RIGHT),
-                valueOfHighLow(ARROW_UP, ARROW_DOWN))
+                axisSign(Key.ARROW_LEFT, Key.ARROW_RIGHT),
+                axisSign(Key.ARROW_UP, Key.ARROW_DOWN))
             .length(length);
     }
 
@@ -175,11 +175,17 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
         return !pressedKeys.inactive().isEmpty();
     }
 
-    private double valueOfHighLow(final Key low, final Key high) {
-        if (isDown(low)) {
-            return isDown(high) ? 0 : -1;
+    @Override
+    public double axisSign(final Key negative, final Key positive) {
+        if (isDown(negative)) {
+            return isDown(positive) ? 0 : -1;
         }
-        return isDown(high) ? 1 : 0;
+        return isDown(positive) ? 1 : 0;
+    }
+
+    @Override
+    public double axisSign(final Enum<?> negative, final Enum<?> positive) {
+        return axisSign(forceKeyForAlias(negative), forceKeyForAlias(positive));
     }
 
     private static List<Key> mapCodes(final Set<Integer> codes) {
@@ -191,7 +197,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
     }
 
     @Override
-    public Optional<Key> getKeyForAlias(final Enum<?> alias) {
+    public Optional<Key> keyForAlias(final Enum<?> alias) {
         final var key = this.alias.get(alias);
         if (nonNull(key)) {
             return Optional.of(key);
@@ -199,7 +205,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
         final DefaultKey annotation = getDefaultKeyAnnotation(alias);
         if (nonNull(annotation)) {
             bindAlias(alias, annotation.value());
-            return getKeyForAlias(alias);
+            return keyForAlias(alias);
         }
         return Optional.empty();
     }
@@ -212,8 +218,9 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener, Window
         }
     }
 
-    private Key forceKeyForAlias(final Enum<?> alias) {
-        return getKeyForAlias(alias).orElseThrow(() -> new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name()));
+    @Override
+    public Key forceKeyForAlias(final Enum<?> alias) {
+        return keyForAlias(alias).orElseThrow(() -> new IllegalStateException("missing key binding for " + alias.getClass().getSimpleName() + "." + alias.name()));
     }
 
     @Override

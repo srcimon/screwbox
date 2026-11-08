@@ -270,7 +270,7 @@ class DefaultKeyboardTest {
 
     @Test
     void getKeyForAlias_noAliasSpecified_isEmpty() {
-        assertThat(keyboard.getKeyForAlias(Borders.ALL)).isEmpty();
+        assertThat(keyboard.keyForAlias(Borders.ALL)).isEmpty();
     }
 
     enum MyControls {
@@ -281,14 +281,14 @@ class DefaultKeyboardTest {
 
     @Test
     void getKeyForAlias_keySpaceDefinedByAnnotation_returnsKeySpace() {
-        assertThat(keyboard.getKeyForAlias(MyControls.JUMP)).contains(Key.SPACE);
+        assertThat(keyboard.keyForAlias(MyControls.JUMP)).contains(Key.SPACE);
     }
 
     @Test
     void bindAlias_keyHasDefaultValue_overwritesDefault() {
         keyboard.bindAlias(MyControls.JUMP, Key.ENTER);
 
-        assertThat(keyboard.getKeyForAlias(MyControls.JUMP)).contains(Key.ENTER);
+        assertThat(keyboard.keyForAlias(MyControls.JUMP)).contains(Key.ENTER);
     }
 
     @Test
