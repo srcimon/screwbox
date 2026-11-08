@@ -101,4 +101,11 @@ class DefaultWindowTest {
         when(frame.getTitle()).thenReturn("Playground");
         assertThat(window.title()).isEqualTo("Playground");
     }
+
+    @Test
+    void droppedFiles_noFilesDropped_isEmpty() {
+      assertThat(window.droppedFiles()).isEmpty();
+    }
+
+
 }

@@ -11,5 +11,5 @@ import java.util.List;
  * @param files  list of {@link File files}
  * @param offset the window offset of the drop
  */
-public record FilesDroppedOnWindow(List<File> files, Offset offset) {
+public record DroppedFiles(List<File> files, Offset offset) {
 }

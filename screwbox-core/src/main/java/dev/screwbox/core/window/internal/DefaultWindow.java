@@ -10,7 +10,7 @@ import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
 import dev.screwbox.core.loop.internal.Updatable;
 import dev.screwbox.core.utils.Latch;
 import dev.screwbox.core.utils.Validate;
-import dev.screwbox.core.window.FilesDroppedOnWindow;
+import dev.screwbox.core.window.DroppedFiles;
 import dev.screwbox.core.window.MouseCursor;
 import dev.screwbox.core.window.Window;
 
@@ -31,7 +31,7 @@ public class DefaultWindow implements Window, Updatable {
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
     private final RenderPipeline renderPipeline;
-    private final Latch<FilesDroppedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
+    private final Latch<DroppedFiles> droppedFiles = Latch.of(null, null);
     private final CursorLockInSupport cursorLockInSupport;
 
     private DisplayMode lastDisplayMode;
@@ -102,8 +102,8 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
-    public Optional<FilesDroppedOnWindow> filesDroppedOnWindow() {
-        return Optional.ofNullable(filesDroppedOnWindow.inactive());
+    public Optional<DroppedFiles> droppedFiles() {
+        return Optional.ofNullable(droppedFiles.inactive());
     }
 
     @Override
@@ -234,8 +234,8 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public void update() {
-        filesDroppedOnWindow.toggle();
-        filesDroppedOnWindow.assignActive(null);
+        droppedFiles.toggle();
+        droppedFiles.assignActive(null);
         if (Duration.since(windowChanged).isLessThan(oneSecond())) {
             updateCursor();
         }
@@ -245,7 +245,7 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     public void onFileDrop(final List<File> files, final Offset position) {
-        filesDroppedOnWindow.assignActive(new FilesDroppedOnWindow(files, position));
+        droppedFiles.assignActive(new DroppedFiles(files, position));
     }
 
     private Supplier<Cursor> cursorFrom(final MouseCursor cursor) {
