@@ -1,6 +1,7 @@
 package dev.screwbox.core.keyboard.internal;
 
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.keyboard.DefaultControlSet;
 import dev.screwbox.core.keyboard.DefaultKey;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.keyboard.KeyCombination;
@@ -350,6 +351,21 @@ class DefaultKeyboardTest {
         mockKeyRelease(Key.Z);
 
         assertThat(keyboard.isDown(Key.Y)).isTrue();
+    }
+
+    @Test
+    void downKeys_twoKeysDown_returnsTwoKeys() {
+        mockKeyPress(Key.Y);
+        mockKeyPress(Key.Z);
+
+        assertThat(keyboard.downKeys()).containsExactlyInAnyOrder(Key.Y, Key.Z);
+    }
+
+    @Test
+    void axisSign_nonePressed_isZero() {
+        mockKeyPress(Key.Z);
+
+        assertThat(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).isZero();
     }
 
     private void mockKeyRelease(Key key) {
