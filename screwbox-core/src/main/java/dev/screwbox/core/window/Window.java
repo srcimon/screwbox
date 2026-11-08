@@ -95,7 +95,7 @@ public interface Window extends Sizeable {
     /**
      * Returns all {@link File files} dropped on the {@link Window} at the current frame.
      */
-    Optional<FilesDroppedOnWindow> filesDroppedOnWindow();
+    Optional<DroppedFiles> droppedFiles();
 
     /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in

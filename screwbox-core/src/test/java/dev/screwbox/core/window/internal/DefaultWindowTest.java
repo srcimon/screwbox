@@ -1,13 +1,16 @@
 package dev.screwbox.core.window.internal;
 
 import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
+import dev.screwbox.core.window.DroppedFiles;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.*;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -68,4 +71,66 @@ class DefaultWindowTest {
         assertThat(window.isCursorLockEnabled()).isTrue();
     }
 
+    @Test
+    void setTitle_titleValid_setsFrameTitle() {
+        window.setTitle("Playground");
+        verify(frame).setTitle("Playground");
+    }
+
+    @Test
+    void moveTo_isInFullscreen_throwsException() {
+        when(configuration.isFullscreen()).thenReturn(true);
+        Offset position = Offset.at(0, 0);
+
+        assertThatThrownBy(() -> window.moveTo(position))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("cannot move Window in fullscreen");
+    }
+
+    @Test
+    void moveTo_isNotInFullscreen_movesFrame() {
+        Offset position = Offset.at(20, 20);
+        when(frame.getWidth()).thenReturn(512);
+        when(frame.getHeight()).thenReturn(256);
+
+        window.moveTo(position);
+
+        verify(frame).setBounds(20, 20, 512, 256);
+    }
+
+    @Test
+    void title_returnsFrameTitle() {
+        when(frame.getTitle()).thenReturn("Playground");
+        assertThat(window.title()).isEqualTo("Playground");
+    }
+
+    @Test
+    void droppedFiles_noFilesDropped_isEmpty() {
+        assertThat(window.droppedFiles()).isEmpty();
+    }
+
+    @Test
+    void droppedFiles_filesDroppedInCurrentFrame_isEmpty() {
+        DroppedFiles droppedFiles = new DroppedFiles(Collections.emptyList(), Offset.at(20, 0));
+        window.onFileDrop(droppedFiles);
+        assertThat(window.droppedFiles()).isEmpty();
+    }
+
+    @Test
+    void droppedFiles_filesDroppedInLastFrame_containsDroppedFiles() {
+        DroppedFiles droppedFiles = new DroppedFiles(Collections.emptyList(), Offset.at(20, 0));
+        window.onFileDrop(droppedFiles);
+        window.update();
+        assertThat(window.droppedFiles()).contains(droppedFiles);
+    }
+
+    @Test
+    void droppedFiles_filesDroppedAFewFramesAgo_isEmpty() {
+        DroppedFiles droppedFiles = new DroppedFiles(Collections.emptyList(), Offset.at(20, 0));
+        window.onFileDrop(droppedFiles);
+        window.update();
+        window.update();
+
+        assertThat(window.droppedFiles()).isEmpty();
+    }
 }

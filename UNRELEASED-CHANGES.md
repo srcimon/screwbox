@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `DroppedFiles`
 
 ### 📦 Dependency updates
 

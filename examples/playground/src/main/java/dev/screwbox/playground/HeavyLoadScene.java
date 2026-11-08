@@ -14,11 +14,8 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
-import dev.screwbox.core.utils.Scheduler;
 
 public class HeavyLoadScene implements Scene {
-
-    static Scheduler scheduler = Scheduler.everySecond();
 
     @Override
     public void onEnter(Engine engine) {
@@ -48,9 +45,6 @@ public class HeavyLoadScene implements Scene {
             .addEntity(new Entity().add(new PhysicsComponent()).bounds(Bounds.atOrigin(Vector.of(0, 0), 16, 16)))
             .addSystem(new LogFpsSystem())
             .addSystem(Order.PREPARATION, s -> {
-                if(scheduler.isTick()) {
-                    System.out.println(s.environment().entityCount());
-                }
                 s.graphics().camera().move(s.keyboard().wsadMovement(s.loop().delta() * 500));
             });
 
