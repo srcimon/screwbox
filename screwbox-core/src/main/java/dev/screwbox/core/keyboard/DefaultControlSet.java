@@ -9,7 +9,6 @@ import dev.screwbox.core.environment.controls.MovementControlComponent;
  *
  * @see JumpControlComponent
  * @see MovementControlComponent
- *
  * @since 2.15.0
  */
 public enum DefaultControlSet {
@@ -19,6 +18,12 @@ public enum DefaultControlSet {
 
     @DefaultKey(Key.ARROW_RIGHT)
     RIGHT,
+
+    @DefaultKey(Key.ARROW_UP)
+    UP,
+
+    @DefaultKey(Key.ARROW_DOWN)
+    DOWN,
 
     @DefaultKey(Key.SPACE)
     JUMP

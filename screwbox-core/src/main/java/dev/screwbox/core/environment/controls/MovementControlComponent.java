@@ -12,9 +12,16 @@ import java.io.Serial;
  * @since 2.15.0
  */
 public class MovementControlComponent implements Component {
-//TODO document changes
+    //TODO document changes
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Restricts horizontal movement (left and right) when set to {@code true}.
+     *
+     * @since 3.40.0
+     */
+    public boolean restrictToHorizontalMovement = true;
 
     /**
      * Enable or disable left right movement control.
@@ -40,5 +47,19 @@ public class MovementControlComponent implements Component {
      * Alias for key to press to move to the right.
      */
     public Enum<?> rightAlias = DefaultControlSet.RIGHT;
+
+    /**
+     * Alias for key to press to move upwards.
+     *
+     * @since 3.40.0
+     */
+    public Enum<?> upAlias = DefaultControlSet.UP;
+
+    /**
+     * Alias for key to press to move downwards.
+     *
+     * @since 3.40.0
+     */
+    public Enum<?> downAlias = DefaultControlSet.DOWN;
 
 }
