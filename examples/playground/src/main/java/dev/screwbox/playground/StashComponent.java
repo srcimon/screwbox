@@ -11,5 +11,5 @@ import java.util.List;
 @ExecutionOrder(Order.PREPARATION)
 public class StashComponent implements Component {
 
-    public transient final List<Entity> stashedEntities = new ArrayList<>();
+    public final transient List<Entity> stashedEntities = new ArrayList<>();
 }
