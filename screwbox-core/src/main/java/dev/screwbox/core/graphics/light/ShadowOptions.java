@@ -2,6 +2,7 @@ package dev.screwbox.core.graphics.light;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.utils.Validate;
 
 import java.io.Serializable;
@@ -13,16 +14,18 @@ import java.io.Serializable;
  * @param isRounded        shadow will be rounded (makes rendering slower)
  * @param isAffectOccluder configures if occluder body itself is affected by shadow
  * @param distortion       configures the distortion of the shadow
+ * @param offset           offset between shadow casting object and shadow
  * @since 3.23.0
  */
 public record ShadowOptions(double backdropDistance, boolean isRounded, boolean isAffectOccluder,
-                            Percent distortion) implements Serializable {
+                            Percent distortion, Vector offset) implements Serializable {
 
     private static final ShadowOptions ROUNDED = new ShadowOptions(true);
     private static final ShadowOptions ANGULAR = new ShadowOptions(false);
 
     public ShadowOptions {
-        Validate.positive(backdropDistance, "backdrop distance must be positive");
+        Validate.zeroOrPositive(backdropDistance, "backdrop distance must be positive");
+        //TODO Validate.isTrue(offset.isZero() == (backdropDistance == 0.0), "backdrop distance must be positive when offset is zero");
     }
 
     /**
@@ -40,27 +43,34 @@ public record ShadowOptions(double backdropDistance, boolean isRounded, boolean 
     }
 
     private ShadowOptions(final boolean isRounded) {
-        this(1, isRounded, false, Percent.zero());
+        this(1, isRounded, false, Percent.zero(), Vector.zero());
     }
 
     /**
      * Sets distance to between occluder and backdrop.
      */
     public ShadowOptions backdropDistance(final double backdropDistance) {
-        return new ShadowOptions(backdropDistance, isRounded, isAffectOccluder, distortion);
+        return new ShadowOptions(backdropDistance, isRounded, isAffectOccluder, distortion, offset);
     }
 
     /**
      * Occluder itself will be affected by shadow.
      */
     public ShadowOptions affectOccluder() {
-        return new ShadowOptions(backdropDistance, isRounded, true, distortion);
+        return new ShadowOptions(backdropDistance, isRounded, true, distortion, offset);
     }
 
     /**
      * Sets percentage of distortion of shadow. Will create a stretched shadow when value above zero is set.
      */
     public ShadowOptions distortion(final Percent distortion) {
-        return new ShadowOptions(backdropDistance, isRounded, isAffectOccluder, distortion);
+        return new ShadowOptions(backdropDistance, isRounded, isAffectOccluder, distortion, offset);
+    }
+
+    /**
+     * Sets the offset between shadow casting object and shadow.
+     */
+    public ShadowOptions offset(final Vector offset) {
+        return new ShadowOptions(backdropDistance, isRounded, isAffectOccluder, distortion, offset);
     }
 }

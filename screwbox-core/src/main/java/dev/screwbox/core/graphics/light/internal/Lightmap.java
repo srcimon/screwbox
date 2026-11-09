@@ -35,7 +35,7 @@ final class Lightmap {
     public record DirectionalLight(Offset start, Offset end, Polygon area, Color color) {
     }
 
-    public record BackdropOccluder(Rectangle box, Polygon area, ShadowOptions options) {
+    public record BackdropOccluder(Rectangle box, Polygon area, Polygon occluderArea, ShadowOptions options) {
 
     }
 
@@ -172,8 +172,8 @@ final class Lightmap {
         for (final var occluder : backdropOccluders) {
             if (!occluder.options.isAffectOccluder() && occluder.box.intersects(lightArea)) {
                 final var occluderArea = occluder.options.isRounded()
-                    ? AwtMapper.toSplinePath(toOffsets(occluder.area))
-                    : new GeneralPath(occluder.area);
+                    ? AwtMapper.toSplinePath(toOffsets(occluder.occluderArea))
+                    : new GeneralPath(occluder.occluderArea);
                 clipArea.add(new Area(occluderArea));
             }
         }
