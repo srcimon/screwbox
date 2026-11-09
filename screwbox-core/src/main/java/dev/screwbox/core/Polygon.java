@@ -507,12 +507,7 @@ public final class Polygon implements Serializable {
      * @since 3.23.0
      */
     public Polygon moveTo(final Vector position) {
-        final var motion = position.subtract(center());
-        final List<Vector> targetNodes = new ArrayList<>();
-        for (var node : definitionNotes()) {
-            targetNodes.add(node.add(motion));
-        }
-        return Polygon.ofNodes(targetNodes);
+        return move(position.subtract(center()));
     }
 
     /**
@@ -526,5 +521,18 @@ public final class Polygon implements Serializable {
             sum += line.length();
         }
         return sum;
+    }
+
+    //TODO add documentation
+    //TODO add changelog
+    public Polygon move(final Vector motion) {
+        if(motion.isZero()) {
+            return this;
+        }
+        final List<Vector> targetNodes = new ArrayList<>(definitionNodes.size());
+        for (var node : definitionNotes()) {
+            targetNodes.add(node.add(motion));
+        }
+        return Polygon.ofNodes(targetNodes);
     }
 }

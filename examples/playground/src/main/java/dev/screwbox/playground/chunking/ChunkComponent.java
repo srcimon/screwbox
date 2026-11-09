@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.playground.chunking;
 
 import dev.screwbox.core.environment.Component;
 
