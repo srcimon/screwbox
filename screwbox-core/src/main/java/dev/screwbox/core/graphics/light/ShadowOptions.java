@@ -25,7 +25,7 @@ public record ShadowOptions(double backdropDistance, boolean isRounded, boolean 
 
     public ShadowOptions {
         Validate.zeroOrPositive(backdropDistance, "backdrop distance must be positive");
-        //TODO Validate.isTrue(offset.isZero() == (backdropDistance == 0.0), "backdrop distance must be positive when offset is zero");
+        Validate.isTrue(!offset.isZero() || backdropDistance > 0, "backdrop distance can only be zero when offset is set");
     }
 
     /**
