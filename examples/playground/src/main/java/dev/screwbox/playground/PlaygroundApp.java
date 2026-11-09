@@ -9,6 +9,7 @@ import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.BackdropOccluderComponent;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.physics.AttachmentComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
@@ -31,7 +32,6 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
         var map = TileMap.fromString("""
-            #######################
             #        ###          #
             #        #            #
             #        #            #
@@ -48,6 +48,7 @@ public class PlaygroundApp {
             #######################
             """);
 
+        screwBox.graphics().configuration().setIndirectLightDiameter(32).setIndirectLightRaySpacing(3).setLightBounceIntensityLoss(Percent.of(0.8)).setMaxLightBounces(1);
         screwBox.environment().addSystem(new LogFpsSystem());
         screwBox.graphics().configuration().setLightQuality(Percent.half());
         screwBox.graphics().camera().setZoom(4);
@@ -59,11 +60,12 @@ public class PlaygroundApp {
                 .assign('#', source -> new Entity().bounds(source.bounds())
                     .add(new ColliderComponent())
                     .add(new StaticBoundsComponent())
+                    .add(new OccluderComponent())
                     .add(new RenderComponent(AutoTileBundle.BUBBLEGUM.get().findSprite(source.autoTileMask()))))
                 .assign('B', source -> new Entity().bounds(source.bounds())
                     .add(new RenderComponent(Sprite.placeholder(Color.BLACK, Size.square(16)))))
                 .assign('L', source -> new Entity().bounds(source.bounds())
-                    .add(new PointLightComponent(80, Color.GREEN)))
+                    .add(new PointLightComponent(100, Color.BLACK)))
                 .assign('P', source -> new Entity(1).bounds(source.bounds().scale(0.75))
                     .add(new PhysicsComponent(), config -> config.friction = 8)
                     .add(new CameraTargetComponent(60))
