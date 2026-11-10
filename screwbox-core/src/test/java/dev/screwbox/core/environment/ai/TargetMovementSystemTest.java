@@ -18,19 +18,39 @@ import static org.mockito.Mockito.when;
 class TargetMovementSystemTest {
 
     @Test
-    void update_movesEntityTowardsTarget(DefaultEnvironment environment, Loop loop) {
+    void update_targetPositionSpecified_movesEntityTowardsTargetPosition(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.2);
         environment
-                .addSystem(new TargetMovementSystem())
-                .addSystem(new PhysicsSystem())
-                .addEntity(1, "mover",
-                        new TargetMovementComponent($(100, 10)),
-                        new TransformComponent(),
-                        new PhysicsComponent());
+            .addSystem(new TargetMovementSystem())
+            .addSystem(new PhysicsSystem())
+            .addEntity(1, "mover",
+                new TargetMovementComponent($(100, 10)),
+                new TransformComponent(),
+                new PhysicsComponent());
 
         environment.updateTimes(10);
 
         var entity = environment.fetchById(1);
+        assertThat(entity.position().x()).isEqualTo(100, offset(0.5));
+        assertThat(entity.position().y()).isEqualTo(10, offset(0.5));
+    }
+
+    @Test
+    void update_targetId_movesEntityTowardsTargetEntity(DefaultEnvironment environment, Loop loop) {
+        when(loop.delta()).thenReturn(0.2);
+        environment
+            .addSystem(new TargetMovementSystem())
+            .addSystem(new PhysicsSystem())
+            .addEntity(124, "target", new TransformComponent($(100, 10)))
+            .addEntity(1, "mover",
+                new TargetMovementComponent(124),
+                new TransformComponent(),
+                new PhysicsComponent());
+
+        environment.updateTimes(10);
+
+        var entity = environment.fetchById(1);
+        assertThat(entity.get(TargetMovementComponent.class).position).isEqualTo($(100, 10));
         assertThat(entity.position().x()).isEqualTo(100, offset(0.5));
         assertThat(entity.position().y()).isEqualTo(10, offset(0.5));
     }
