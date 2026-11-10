@@ -3,6 +3,7 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.ScrewBox;
+import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
@@ -59,11 +60,11 @@ public class PlaygroundApp {
             .addSystem(new CollectableSystem())
             .addSystem(new DebugGridSystem(16, 256))
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-                .assign('C', source -> new Entity().bounds(source.bounds().scale(0.25))
+                .assign('C', source -> new Entity().bounds(source.bounds().scale(0.25).moveBy(Vector.random(10)))
                     .add(new RenderComponent(SpriteBundle.DOT_YELLOW.get().scaled(0.25)))
                     .add(new CollectableComponent())
                     .add(new PhysicsComponent(), p -> p.ignoreCollisions = true)
-                )
+                ).repeatLastAssignment(5)
                 .assign('#', source -> new Entity().bounds(source.bounds())
                     .add(new ColliderComponent())
                     .add(new StaticBoundsComponent())

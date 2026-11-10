@@ -125,6 +125,16 @@ class EntityTest {
     }
 
     @Test
+    void remove_componentNotPresent_doesNotNotifyListeners() {
+        var listener = mock(EntityListener.class);
+        entity.registerListener(listener);
+
+        entity.remove(PhysicsComponent.class);
+
+        verifyNoInteractions(listener);
+    }
+
+    @Test
     void componentCount_returnsCountOfComponents() {
         entity.add(new PhysicsComponent());
         entity.add(new ColliderComponent());

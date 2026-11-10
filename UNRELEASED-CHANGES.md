@@ -14,6 +14,7 @@
 - Renamed `Keyboard.keyForAlias(Alias)`
 - Made `Keyboard.forceKeyForAlias(Alias)` public
 - Removed 500ms Thread.sleep() workaround when opening window on MacOs (#1142)
+- Removing component from entity that is not present does not notify listeners anymore
 
 ### 📦 Dependency updates
 

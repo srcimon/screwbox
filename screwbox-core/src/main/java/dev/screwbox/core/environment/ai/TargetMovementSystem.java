@@ -17,16 +17,16 @@ public class TargetMovementSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(TARGETS)) {
             final var physics = entity.get(PhysicsComponent.class);
-            final var target = entity.get(TargetMovementComponent.class);
-            var destinationVector = target.position.subtract(entity.position());
-            double deltaAcceleration = engine.loop().delta() * target.acceleration;
+            final var movement = entity.get(TargetMovementComponent.class);
+            final var destinationVector = movement.position.subtract(entity.position());
+            final double deltaAcceleration = engine.loop().delta() * movement.acceleration;
             Vector speedChange = destinationVector.length(deltaAcceleration);
 
             if (physics.velocity.length() > destinationVector.length() * 10.0) {
                 speedChange = physics.velocity.invert().length(deltaAcceleration);
             }
             final Vector updatedVelocity = physics.velocity.add(speedChange);
-            physics.velocity = updatedVelocity.length(Math.min(updatedVelocity.length(), target.maxSpeed));
+            physics.velocity = updatedVelocity.length(Math.min(updatedVelocity.length(), movement.maxSpeed));
         }
     }
 }

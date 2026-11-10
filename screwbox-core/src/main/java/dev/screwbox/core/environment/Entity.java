@@ -221,16 +221,17 @@ public class Entity implements Serializable {
     }
 
     /**
-     * Removes a {@link Component} of the given class. Won't do anything, if no {@link Component} of specified class is present.
+     * Removes a {@link Component} of the specified class. Won't do anything, if no {@link Component} of specified class is present.
      */
     public void remove(final Class<? extends Component> componentClass) {
-        components.remove(componentClass);
-        if (TransformComponent.class.equals(componentClass)) {
-            transform = null;
-        }
-        final var event = new EntityEvent(this);
-        for (final var listener : listeners) {
-            listener.componentRemoved(event);
+        if (nonNull(components.remove(componentClass))) {
+            if (TransformComponent.class.equals(componentClass)) {
+                transform = null;
+            }
+            final var event = new EntityEvent(this);
+            for (final var listener : listeners) {
+                listener.componentRemoved(event);
+            }
         }
     }
 
