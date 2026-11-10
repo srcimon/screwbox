@@ -42,7 +42,7 @@ public class TargetMovementComponent implements Component {
      *
      * @since 3.40.0
      */
-    public boolean preventOvershoot = true;
+    public double overshootSpeedModifier = 10.0;
 
     public TargetMovementComponent(final int targetId) {
         this(targetId, 100);

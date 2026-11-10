@@ -64,7 +64,7 @@ public class PlaygroundApp {
                     .add(new RenderComponent(SpriteBundle.DOT_YELLOW.get().scaled(0.25)))
                     .add(new CollectableComponent())
                     .add(new PhysicsComponent(), p -> p.ignoreCollisions = true)
-                ).repeatLastAssignment(5)
+                ).repeatLastAssignment(10)
                 .assign('#', source -> new Entity().bounds(source.bounds())
                     .add(new ColliderComponent())
                     .add(new StaticBoundsComponent())

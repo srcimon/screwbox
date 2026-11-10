@@ -16,7 +16,7 @@ public class CollectableSystem implements EntitySystem {
         for (var entity : engine.environment().fetchAllHaving(CollectableComponent.class)) {
             double distance = entity.position().distanceTo(target.position());
             if (distance < 30 && !entity.hasComponent(TargetMovementComponent.class)) {
-                entity.add(new TargetMovementComponent(target.forceId(), 600), c -> c.preventOvershoot = false);
+                entity.add(new TargetMovementComponent(target.forceId(), 600), c -> c.overshootSpeedModifier = 20);
             } else if (distance > 40) {
                 entity.get(PhysicsComponent.class).velocity = Vector.zero();
                 entity.remove(TargetMovementComponent.class);

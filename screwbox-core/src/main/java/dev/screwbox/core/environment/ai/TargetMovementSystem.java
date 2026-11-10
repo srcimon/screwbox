@@ -27,7 +27,7 @@ public class TargetMovementSystem implements EntitySystem {
             final double deltaAcceleration = engine.loop().delta() * movement.acceleration;
             Vector speedChange = destinationVector.length(deltaAcceleration);
 
-            if (movement.preventOvershoot && physics.velocity.length() > destinationVector.length() * 10.0) {
+            if (physics.velocity.length() > destinationVector.length() * movement.overshootSpeedModifier) {
                 speedChange = physics.velocity.invert().length(deltaAcceleration);
             }
             final Vector updatedVelocity = physics.velocity.add(speedChange);
