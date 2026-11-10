@@ -37,6 +37,13 @@ public class TargetMovementComponent implements Component {
      */
     public Integer targetId;
 
+    /**
+     * Configure overshoot prevenetion when near target.
+     *
+     * @since 3.40.0
+     */
+    public boolean preventOvershoot = true;
+
     public TargetMovementComponent(final int targetId) {
         this(targetId, 100);
     }
