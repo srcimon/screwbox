@@ -6,6 +6,8 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
+import static java.util.Objects.nonNull;
+
 /**
  * Moves entities having {@link TargetMovementComponent} towards the specified position.
  */
@@ -17,16 +19,19 @@ public class TargetMovementSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(TARGETS)) {
             final var physics = entity.get(PhysicsComponent.class);
-            final var target = entity.get(TargetMovementComponent.class);
-            var destinationVector = target.position.subtract(entity.position());
-            double deltaAcceleration = engine.loop().delta() * target.acceleration;
+            final var movement = entity.get(TargetMovementComponent.class);
+            if (nonNull(movement.targetId)) {
+                movement.position = engine.environment().fetchById(movement.targetId).position();
+            }
+            final var destinationVector = movement.position.subtract(entity.position());
+            final double deltaAcceleration = engine.loop().delta() * movement.acceleration;
             Vector speedChange = destinationVector.length(deltaAcceleration);
 
-            if (physics.velocity.length() > destinationVector.length() * 10.0) {
+            if (physics.velocity.length() > destinationVector.length() * movement.overshootSpeedModifier) {
                 speedChange = physics.velocity.invert().length(deltaAcceleration);
             }
             final Vector updatedVelocity = physics.velocity.add(speedChange);
-            physics.velocity = updatedVelocity.length(Math.min(updatedVelocity.length(), target.maxSpeed));
+            physics.velocity = updatedVelocity.length(Math.min(updatedVelocity.length(), movement.maxSpeed));
         }
     }
 }

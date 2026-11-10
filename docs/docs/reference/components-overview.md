@@ -29,9 +29,9 @@ Otherwise this is the recommended way to go.
 To utilize these components, first call `environment.enableAi()`.
 
 | Component                 | Description                                                                       |
-|---------------------------|-----------------------------------------------------------------------------------|
+|---------------------------|--------------------------------------------------------------------------------------|
 | `PatrolMovementComponent` | Applies a patrolling movement pattern.                                            |
-| `TargetMovementComponent` | Moves the entity towards the specified position. Does not avoid obstacles.        |
+| `TargetMovementComponent` | Moves the entity towards the specified position or entity. Does not avoid obstacles. |
 | `PathMovementComponent`   | Moves an entity along a `Path`.                                                   |
 | `TargetLockComponent`     | Rotates the sprites of the `RenderComponent` towards the specified target entity. |
 | `BoidComponent`           | Adds boid (bird-oid object) like behaviour to a physics entity.                   |
