@@ -4,9 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.audio.SoundOptions;
-import dev.screwbox.core.audio.Voice;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.ai.TargetLockComponent;
 import dev.screwbox.core.environment.ai.TargetMovementComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
@@ -25,7 +23,7 @@ public class CollectableSystem implements EntitySystem {
                 }
             } else if(distance > 40){
                 entity.get(PhysicsComponent.class).velocity = Vector.zero();
-                entity.removeIfPresent(TargetMovementComponent.class);
+                entity.remove(TargetMovementComponent.class);
             }
             if(entity.position().distanceTo(target.position()) < 4) {
                 engine.environment().remove(entity);
