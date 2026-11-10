@@ -106,7 +106,7 @@ engine.audio().playMumble("This is a test.", Voice.variable()
     .vibratoDepth(Percent.of(0.5))
     .vibratoSpeed(10)
     .scratchyness(Percent.of(0.1))
-    .baseBlipDuration(Duration.ofMillis(30))
+    .baseBlipDuration(Duration.ofMillis(30)));
 ```
 
 ## Microphone
