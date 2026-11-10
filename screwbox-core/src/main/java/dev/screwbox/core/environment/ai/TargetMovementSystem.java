@@ -6,6 +6,8 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 
+import static java.util.Objects.nonNull;
+
 /**
  * Moves entities having {@link TargetMovementComponent} towards the specified position.
  */
@@ -18,6 +20,9 @@ public class TargetMovementSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(TARGETS)) {
             final var physics = entity.get(PhysicsComponent.class);
             final var movement = entity.get(TargetMovementComponent.class);
+            if (nonNull(movement.targetId)) {
+                movement.position = engine.environment().fetchById(movement.targetId).position();
+            }
             final var destinationVector = movement.position.subtract(entity.position());
             final double deltaAcceleration = engine.loop().delta() * movement.acceleration;
             Vector speedChange = destinationVector.length(deltaAcceleration);

@@ -13,19 +13,15 @@ public class CollectableSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         var target = engine.environment().fetchById(1);
-        for(var entity : engine.environment().fetchAllHaving(CollectableComponent.class)) {
+        for (var entity : engine.environment().fetchAllHaving(CollectableComponent.class)) {
             double distance = entity.position().distanceTo(target.position());
-            if(distance < 20) {
-                if(!entity.hasComponent(TargetMovementComponent.class)) {
-                    entity.add(new TargetMovementComponent(target.position()));
-                } else {
-                    entity.get(TargetMovementComponent.class).position = target.position();
-                }
-            } else if(distance > 40){
+            if (distance < 20 && !entity.hasComponent(TargetMovementComponent.class)) {
+                entity.add(new TargetMovementComponent(target.forceId()));
+            } else if (distance > 40) {
                 entity.get(PhysicsComponent.class).velocity = Vector.zero();
                 entity.remove(TargetMovementComponent.class);
             }
-            if(entity.position().distanceTo(target.position()) < 4) {
+            if (entity.position().distanceTo(target.position()) < 4) {
                 engine.environment().remove(entity);
                 engine.audio().playSound(SoundBundle.PLING, SoundOptions.playOnce().position(target.position()));
             }
