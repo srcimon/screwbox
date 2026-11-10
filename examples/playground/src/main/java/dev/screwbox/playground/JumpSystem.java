@@ -3,11 +3,9 @@ package dev.screwbox.playground;
 import dev.screwbox.core.Ease;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Vector;
-import dev.screwbox.core.environment.EntityListener;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.light.BackdropOccluderComponent;
 import dev.screwbox.core.environment.physics.AttachmentComponent;
-import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.keyboard.Key;
 
 public class JumpSystem implements EntitySystem {

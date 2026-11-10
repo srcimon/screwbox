@@ -21,6 +21,7 @@ import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.light.ShadowOptions;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.debug.DebugGridSystem;
@@ -35,15 +36,15 @@ public class PlaygroundApp {
             #        ###          #
             #        #            #
             #        #            #
-            #                B    #
+            #            C    B   #
             #                B    #
             #      L         BBBB #
             #                     #
-            #   ####   P          #
+            #   ####   P  C       #
             #                     #
-            #                 L   #
+            #   C              L  #
             #             #       #
-            #             #      ##
+            #    C         #      ##
             #         ###         #
             #######################
             """);
@@ -55,8 +56,14 @@ public class PlaygroundApp {
         screwBox.graphics().light().setAmbientLight(Percent.of(0.3));
         screwBox.environment().enableAllFeatures()
             .addSystem(new JumpSystem())
+            .addSystem(new CollectableSystem())
             .addSystem(new DebugGridSystem(16, 256))
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
+                .assign('C', source -> new Entity().bounds(source.bounds().scale(0.25))
+                    .add(new RenderComponent(SpriteBundle.DOT_YELLOW.get().scaled(0.25)))
+                    .add(new CollectableComponent())
+                    .add(new PhysicsComponent(), p -> p.ignoreCollisions = true)
+                )
                 .assign('#', source -> new Entity().bounds(source.bounds())
                     .add(new ColliderComponent())
                     .add(new StaticBoundsComponent())
@@ -71,9 +78,9 @@ public class PlaygroundApp {
                     .add(new CameraTargetComponent(60))
 
                     .add(new CameraLeadComponent(), config -> {
-                        config.adjustmentSpeed = 0.8;
-                        config.xModifier = 0.6;
-                        config.yModifier = 0.6;
+                        config.adjustmentSpeed = 0.4;
+                        config.xModifier = 0.3;
+                        config.yModifier = 0.3;
                     })
                     .add(new BackdropOccluderComponent(ShadowOptions.angular().distortion(Percent.of(0.0)).backdropDistance(0.05)))
                     .add(new MovementControlComponent(), config -> {
