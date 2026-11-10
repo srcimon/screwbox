@@ -14,8 +14,19 @@ public class TargetMovementComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Target position for the movement.
+     */
     public Vector position;
+
+    /**
+     * Maximums speed used for movement.
+     */
     public double maxSpeed;
+
+    /**
+     * Acceleration towards {@link #maxSpeed} for movement.
+     */
     public double acceleration;
 
     public TargetMovementComponent(final Vector position) {
