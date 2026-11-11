@@ -74,6 +74,21 @@ public class LightPhysics {
         }
     }
 
+    private static class OrthographicWallOccluder extends Occluder {
+
+        OrthographicWallOccluder(final Bounds bounds) {
+            super(bounds);
+        }
+
+        @Override
+        public List<Line> lines(final Vector lightPosition) {
+            if (lines == null) {
+                lines = bounds.borders();
+            }
+            return lines;
+        }
+    }
+
     private final List<Occluder> occluders = new ArrayList<>();
     private final GraphicsConfiguration configuration;
 
@@ -137,6 +152,10 @@ public class LightPhysics {
 
     public void addOccluder(final Bounds occluder) {
         occluders.add(new Occluder(occluder));
+    }
+
+    public void addOrthographicWallOccluder(final Bounds occluder) {
+        occluders.add(new OrthographicWallOccluder(occluder));
     }
 
     public boolean isOccluded(final Line source) {
