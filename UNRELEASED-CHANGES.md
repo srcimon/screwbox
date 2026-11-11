@@ -7,7 +7,7 @@
 
 ### 🪛 Bug Fixes
 
-- Fixed illumination of orthographic walls when lights are within wall bounds
+- Fixed shadows cast by orthographic walls
 
 ### 🧽 Cleanup & refactoring
 

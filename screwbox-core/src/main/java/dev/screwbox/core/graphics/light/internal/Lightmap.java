@@ -106,6 +106,8 @@ final class Lightmap {
         return scale;
     }
 
+    //TODO fix contradicting changelog entries
+
     public BufferedImage createImage() {
         for (final var pointLight : pointLights) {
             renderPointLight(pointLight, null);
