@@ -32,7 +32,7 @@
         <sonar.organization>srcimon</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13</sonar.issue.ignore.multicriteria>
 
         <!-- public accessibility in components by intention -->
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1104</sonar.issue.ignore.multicriteria.e1.ruleKey>
@@ -81,6 +81,10 @@
         <!-- sonar false positive bug detected -->
         <sonar.issue.ignore.multicriteria.e12.ruleKey>javabugs:S2259</sonar.issue.ignore.multicriteria.e12.ruleKey>
         <sonar.issue.ignore.multicriteria.e12.resourceKey>**/Noise.java</sonar.issue.ignore.multicriteria.e12.resourceKey>
+
+        <!-- sonar false positive unused parameter used in subclasses -->
+        <sonar.issue.ignore.multicriteria.e13.ruleKey>java:S1172</sonar.issue.ignore.multicriteria.e13.ruleKey>
+        <sonar.issue.ignore.multicriteria.e13.resourceKey>**/LightPhysics.java</sonar.issue.ignore.multicriteria.e13.resourceKey>
     </properties>
 
     <dependencyManagement>
