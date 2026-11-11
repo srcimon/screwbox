@@ -8,22 +8,27 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;
+import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.BackdropOccluderComponent;
+import dev.screwbox.core.environment.light.GlowComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
+import dev.screwbox.core.environment.light.OrthographicWallComponent;
 import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.physics.AttachmentComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraLeadComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.graphics.AutoTileBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.light.ShadowOptions;
+import dev.screwbox.core.keyboard.DefaultControlSet;
+import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.utils.TileMap;
 import dev.screwbox.playground.debug.DebugGridSystem;
 
@@ -34,33 +39,53 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
         var map = TileMap.fromString("""
+            #######################
+            #DDDDDDDD###DDDDDDDDDD#
+            #DDDDDDDD###DDDDDDDDDD#
             #        ###          #
+            #        #DD          #
+            #        #DD          #
             #        #            #
-            #        #            #
-            #            C    B   #
+            #        D    C    B  #
+            #        D            #
             #                B    #
             #      L         BBBB #
             #                     #
             #   ####   P  C       #
+            #   DDDD              #
+            #   DDDD              #
             #                     #
             #   C              L  #
-            #             #       #
-            #    C         #      ##
-            #         ###         #
+            #               #     #
+            #    C          D     #
+            #         ###   D     #
+            #         DDD         #
+            #         DDD         #
+            #                     #
+            #                     #
             #######################
             """);
 
-        screwBox.graphics().configuration().setIndirectLightDiameter(32).setIndirectLightRaySpacing(3).setLightBounceIntensityLoss(Percent.of(0.8)).setMaxLightBounces(1);
+        screwBox.graphics().configuration().setIndirectLightIntensity(Percent.zero());
         screwBox.environment().addSystem(new LogFpsSystem());
-        screwBox.graphics().configuration().setLightQuality(Percent.half());
-        screwBox.graphics().camera().setZoom(4);
-        screwBox.graphics().light().setAmbientLight(Percent.of(0.3));
+        screwBox.keyboard().bindAlias(DefaultControlSet.LEFT, Key.A)
+            .bindAlias(DefaultControlSet.RIGHT, Key.D)
+            .bindAlias(DefaultControlSet.UP, Key.W)
+            .bindAlias(DefaultControlSet.DOWN, Key.S);
+        screwBox.graphics().configuration().setLightQuality(Percent.half()).setLightmapBlur(4);
+        screwBox.graphics().camera().setZoom(3);
+        screwBox.environment().addEntity(new Entity()
+            .add(new CursorAttachmentComponent())
+            .add(new GlowComponent(80, Color.WHITE.opacity(0.2)))
+            .add(new TransformComponent())
+            .add(new PointLightComponent(120)));
+        screwBox.graphics().light().setAmbientLight(Percent.of(0.1));
         screwBox.environment().enableAllFeatures()
             .addSystem(new JumpSystem())
             .addSystem(new CollectableSystem())
             .addSystem(new DebugGridSystem(16, 256))
             .importSource(ImportOptions.indexedSources(map.tiles(), TileMap.Tile::value)
-                .assign('C', source -> new Entity().bounds(source.bounds().scale(0.25).moveBy(Vector.random(10)))
+                .assign('C', source -> new Entity().bounds(source.bounds().scale(0.25).moveBy(Vector.random(4, 10)))
                     .add(new RenderComponent(SpriteBundle.DOT_YELLOW.get().scaled(0.25)))
                     .add(new CollectableComponent())
                     .add(new PhysicsComponent(), p -> p.ignoreCollisions = true)
@@ -69,10 +94,15 @@ public class PlaygroundApp {
                     .add(new ColliderComponent())
                     .add(new StaticBoundsComponent())
                     .add(new OccluderComponent())
-                    .add(new RenderComponent(AutoTileBundle.BUBBLEGUM.get().findSprite(source.autoTileMask()))))
+                    .add(new RenderComponent(Sprite.placeholder(Color.hex("#884410"), Size.square(16)))))
+                .assign('D', source -> new Entity().bounds(source.bounds())
+                    .add(new ColliderComponent())
+                    .add(new StaticBoundsComponent())
+                    .add(new OrthographicWallComponent())
+                    .add(new RenderComponent(Sprite.placeholder(Color.hex("#af5d1e"), Size.square(16)))))
                 .assign('B', source -> new Entity().bounds(source.bounds())
                     .add(new RenderComponent(Sprite.placeholder(Color.BLACK, Size.square(16)))))
-                .assign('L', source -> new Entity().bounds(source.bounds())
+                .assign('x', source -> new Entity().bounds(source.bounds())
                     .add(new PointLightComponent(100, Color.BLACK)))
                 .assign('P', source -> new Entity(1).bounds(source.bounds().scale(0.75))
                     .add(new PhysicsComponent(), config -> config.friction = 8)

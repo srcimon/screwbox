@@ -291,14 +291,14 @@ final class Lightmap {
         final var clip = new Area(boundsToRectangle(orthographicWall));
 
         final int maxY = orthographicWall.offset().y() / scale + orthographicWall.height() / scale;
-        for (final var pointLight : pointLights) {
-            if (pointLight.position.y() / scale >= maxY && createLightBox(pointLight.position, pointLight.radius).intersects(orthographicWall)) {
-                renderPointLight(pointLight, clip);
+        for (final var light : pointLights) {
+            if (orthographicWall.contains(light.position) || (light.position.y() / scale >= maxY && createLightBox(light.position, light.radius).intersects(orthographicWall))) {
+                renderPointLight(light, clip);
             }
         }
-        for (final var spotLight : spotLights) {
-            if (spotLight.position.y() / scale >= maxY && createLightBox(spotLight.position, spotLight.radius).intersects(orthographicWall)) {
-                renderSpotlight(spotLight);
+        for (final var light : spotLights) {
+            if (orthographicWall.contains(light.position) || (light.position.y() / scale >= maxY && createLightBox(light.position, light.radius).intersects(orthographicWall))) {
+                renderSpotlight(light);
             }
         }
     }
