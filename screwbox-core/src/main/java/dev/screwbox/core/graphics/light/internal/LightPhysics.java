@@ -80,6 +80,8 @@ public class LightPhysics {
 
     private static class OrthographicWallOccluder extends Occluder {
 
+        private List<Line> linesForInsideLights;
+
         OrthographicWallOccluder(final Bounds bounds) {
             super(bounds);
         }
@@ -89,12 +91,17 @@ public class LightPhysics {
             return false;
         }
 
-        @Override
-        public List<Line> lines(final Vector lightPosition) {
-            if (lines == null) {
-                lines = bounds.borders();
+        public List<Line> lines(final Vector sourcePosition) {
+            if (isNull(lines)) {
+                lines = new ArrayList<>(bounds.borders());
+                linesForInsideLights = new ArrayList<>();
+                linesForInsideLights.add(lines.getFirst());
+                linesForInsideLights.add(lines.get(1));
+                linesForInsideLights.add(lines.getLast());
             }
-            return lines;
+            return bounds.contains(sourcePosition)
+                ? linesForInsideLights
+                : lines;
         }
     }
 
