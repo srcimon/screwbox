@@ -106,20 +106,18 @@ final class Lightmap {
         return scale;
     }
 
-    //TODO fix contradicting changelog entries
-
     public BufferedImage createImage() {
         for (final var pointLight : pointLights) {
             renderPointLight(pointLight, null);
+        }
+        for (final var orthographicWall : orthographicWalls) {
+            renderOrthographicWall(orthographicWall);
         }
         for (final var spotLight : spotLights) {
             renderSpotlight(spotLight);
         }
         for (final var directionalLight : directionalLights) {
             renderDirectionalLight(directionalLight);
-        }
-        for (final var orthographicWall : orthographicWalls) {
-            renderOrthographicWall(orthographicWall);
         }
         for (final var areaLight : areaLights) {
             renderAreaLight(areaLight);
@@ -296,11 +294,6 @@ final class Lightmap {
         for (final var light : pointLights) {
             if (orthographicWall.contains(light.position) || (light.position.y() / scale >= maxY && createLightBox(light.position, light.radius).intersects(orthographicWall))) {
                 renderPointLight(light, clip);
-            }
-        }
-        for (final var light : spotLights) {
-            if (orthographicWall.contains(light.position) || (light.position.y() / scale >= maxY && createLightBox(light.position, light.radius).intersects(orthographicWall))) {
-                renderSpotlight(light);
             }
         }
     }
