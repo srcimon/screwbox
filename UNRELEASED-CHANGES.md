@@ -4,10 +4,12 @@
 - Retrieve axis sign value for two key input
 - Added offset property to move backdrop shadows away from occluder
 - Specify overshoot prevention and target entity in `TargetMovementComponent`
+- Lights can now be added on top of orthographic walls
 
 ### 🪛 Bug Fixes
 
 - Fixed shadows cast by orthographic walls
+- Removed unwanted reflections on orthographic wall borders
 
 ### 🧽 Cleanup & refactoring
 
