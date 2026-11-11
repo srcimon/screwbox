@@ -101,8 +101,11 @@ public class LightPhysics {
         }
 
         protected List<Line> bounceLines(final Vector sourcePosition) {
-            if (bounds.contains(sourcePosition) || (sourcePosition.x() > bounds.minX() && sourcePosition.x() < bounds.maxX())) {
+            if (bounds.contains(sourcePosition)) {
                 return List.of(bounds.borders().get(1), bounds.borders().getLast());
+            }
+            if((sourcePosition.x() > bounds.minX() && sourcePosition.x() < bounds.maxX())) {//TODO check for redundancies
+                return emptyList();
             }
             if (sourcePosition.x() < bounds.minX()) {
                 return List.of(bounds.borders().getLast());
