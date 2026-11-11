@@ -40,6 +40,10 @@ public class LightPhysics {
             this.bounds = bounds;
         }
 
+        protected boolean preventsLights() {
+            return true;
+        }
+
         public List<Line> lines(final Vector sourcePosition) {
             if (isNull(lines)) {
                 lines = new ArrayList<>(bounds.borders());
@@ -78,6 +82,11 @@ public class LightPhysics {
 
         OrthographicWallOccluder(final Bounds bounds) {
             super(bounds);
+        }
+
+        @Override
+        protected boolean preventsLights() {
+            return false;
         }
 
         @Override
@@ -170,7 +179,7 @@ public class LightPhysics {
 
     public boolean isOccluded(final Vector position) {
         for (final var occluder : occluders) {
-            if (occluder.bounds.contains(position)) {
+            if (occluder.bounds.contains(position) && occluder.preventsLights()) {
                 return true;
             }
         }
