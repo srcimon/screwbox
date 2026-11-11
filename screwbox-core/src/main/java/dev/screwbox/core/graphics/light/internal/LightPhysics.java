@@ -92,16 +92,17 @@ public class LightPhysics {
         }
 
         public List<Line> lines(final Vector sourcePosition) {
-            if (isNull(lines)) {
-                lines = new ArrayList<>(bounds.borders());
-                linesForInsideLights = new ArrayList<>();
-                linesForInsideLights.add(lines.getFirst());
-                linesForInsideLights.add(lines.get(1));
-                linesForInsideLights.add(lines.getLast());
+            if (bounds.contains(sourcePosition)) {
+                if (isNull(linesForInsideLights)) {
+                    linesForInsideLights = List.of(
+                        bounds.borders().getFirst(),
+                        bounds.borders().get(1),
+                        bounds.borders().getLast()
+                    );
+                }
+                return linesForInsideLights;
             }
-            return bounds.contains(sourcePosition)
-                ? linesForInsideLights
-                : lines;
+            return super.lines(sourcePosition);
         }
     }
 

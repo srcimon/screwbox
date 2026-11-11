@@ -66,7 +66,6 @@ public class PlaygroundApp {
             #######################
             """);
 
-        screwBox.graphics().configuration().setIndirectLightIntensity(Percent.zero());
         screwBox.environment().addSystem(new LogFpsSystem());
         screwBox.keyboard().bindAlias(DefaultControlSet.LEFT, Key.A)
             .bindAlias(DefaultControlSet.RIGHT, Key.D)
