@@ -75,9 +75,9 @@ public class PlaygroundApp {
         screwBox.graphics().camera().setZoom(3);
         screwBox.environment().addEntity(new Entity()
             .add(new CursorAttachmentComponent())
-            .add(new GlowComponent(80, Color.WHITE.opacity(0.2)))
+            .add(new GlowComponent(40, Color.WHITE.opacity(0.2)))
             .add(new TransformComponent())
-            .add(new PointLightComponent(120)));
+            .add(new PointLightComponent(80)));
         screwBox.graphics().light().setAmbientLight(Percent.of(0.1));
         screwBox.environment().enableAllFeatures()
             .addSystem(new JumpSystem())
