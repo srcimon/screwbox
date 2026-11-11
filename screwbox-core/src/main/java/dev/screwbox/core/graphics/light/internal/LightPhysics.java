@@ -74,6 +74,7 @@ public class LightPhysics {
             super(bounds);
         }
 
+        @Override
         protected List<Line> bounceLines(final Vector sourcePosition) {
             return lines(sourcePosition);
         }
@@ -100,12 +101,10 @@ public class LightPhysics {
             return false;
         }
 
+        @Override
         protected List<Line> bounceLines(final Vector sourcePosition) {
             if (bounds.contains(sourcePosition)) {
                 return List.of(bounds.borders().get(1), bounds.borders().getLast());
-            }
-            if((sourcePosition.x() > bounds.minX() && sourcePosition.x() < bounds.maxX())) {//TODO check for redundancies
-                return emptyList();
             }
             if (sourcePosition.x() < bounds.minX()) {
                 return List.of(bounds.borders().getLast());
