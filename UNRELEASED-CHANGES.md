@@ -10,7 +10,7 @@
 
 - Fixed shadows cast by orthographic walls
 - Removed unwanted reflections on orthographic wall borders
-- Fixed wrong fluid simulation density cache
+- Fixed invalid fluid simulation density cache value
 
 ### 🧽 Cleanup & refactoring
 
@@ -19,6 +19,7 @@
 - Made `Keyboard.forceKeyForAlias(Alias)` public
 - Removed 500ms Thread.sleep() workaround when opening window on MacOs (#1142)
 - Removing component from entity that is not present does not notify listeners anymore
+- Slightly improved rendering performance of orthographic walls
 
 ### 📦 Dependency updates
 
