@@ -60,7 +60,7 @@ class LightRenderer {
 
     public void addBackgdropOccluder(final Polygon occluder, final ShadowOptions options) {
         final var shadowArea = mapToLightMap(occluder.definitionNotes());
-        final var occluderArea = mapToLightMap(occluder.move(options.offset()).definitionNotes());
+        final var occluderArea = options.offset().isZero() ? shadowArea : mapToLightMap(occluder.move(options.offset()).definitionNotes());
         final var box = shadowArea.getBounds();
         lightmap.addBackdropOccluder(new Lightmap.BackdropOccluder(box, shadowArea, occluderArea, options));
     }
