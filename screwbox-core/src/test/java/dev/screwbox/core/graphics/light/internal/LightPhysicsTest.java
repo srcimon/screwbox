@@ -153,6 +153,15 @@ class LightPhysicsTest {
     }
 
     @Test
+    void calculateIndirectLights_orthographicWallHit_hasHits() {
+        lightPhysics.addOrthographicWallOccluder($$(50, 40, 80, 80));
+
+        var indirectLights = lightPhysics.calculateIndirectLights($$(0, 0, 200, 200), 0, 360);
+
+        assertThat(indirectLights).hasSize(84);
+    }
+
+    @Test
     void renderingApi_returnsRenderingApi() {
         assertThat(configuration.renderingApi()).isEqualTo(RenderingApi.METAL);
     }
