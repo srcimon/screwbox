@@ -10,6 +10,7 @@
 
 - Fixed shadows cast by orthographic walls
 - Removed unwanted reflections on orthographic wall borders
+- Fixed wrong fluid simulation density cache
 
 ### 🧽 Cleanup & refactoring
 

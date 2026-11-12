@@ -395,6 +395,7 @@ public class FluidSimulation {
     }
 
     public void loadCells(final FluidSimulation source, final int deltaX, final int deltaY) {
+        hasDensity = true;
         final double resolutionFactor = (double) resolution / (double) source.resolution;
         for (int x = 1; x < resolutionMinusOne; x++) {
             for (int y = 1; y < resolutionMinusOne; y++) {
