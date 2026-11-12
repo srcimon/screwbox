@@ -148,6 +148,7 @@ public class DefaultLight implements Light, Updatable {
     public Light addOrthographicWall(final Bounds bounds) {
         autoTurnOnLight();
         for (final var renderer : renderers) {
+            lightPhysics.addOrthographicWallOccluder(bounds);
             renderer.addOrthographicWall(bounds);
         }
         return this;

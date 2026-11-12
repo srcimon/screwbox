@@ -502,9 +502,9 @@ class PolygonTest {
     @Test
     void moveTo_newPosition_movesPolygon() {
         Polygon polygon = Polygon.ofNodes(createNodes(4));
-        var moved = polygon.moveTo($(30,20));
+        var moved = polygon.moveTo($(30, 20));
 
-        assertThat(moved.center()).isEqualTo($(30,20));
+        assertThat(moved.center()).isEqualTo($(30, 20));
         assertThat(moved.nodeCount()).isEqualTo(polygon.nodeCount());
     }
 
@@ -514,6 +514,27 @@ class PolygonTest {
 
         assertThat(polygon.length()).isEqualTo(4.24, offset(0.01));
     }
+
+    @Test
+    void move_noMovement_returnsSameInstance() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+
+        assertThat(polygon.move(Vector.zero())).isSameAs(polygon);
+    }
+
+    @Test
+    void move_someMovement_allNodesWereMoved() {
+        var polygon = Polygon.ofNodes(createNodes(4));
+
+        Polygon moved = polygon.move($(4, 2));
+
+        assertThat(moved.nodeCount()).isEqualTo(polygon.nodeCount());
+
+        for (int i = 0; i < polygon.nodeCount(); i++) {
+            assertThat(moved.node(i)).isEqualTo(polygon.node(i).add($(4, 2)));
+        }
+    }
+
 
     private static Polygon createClosedPolygon() {
         return createClosedPolygon(10);

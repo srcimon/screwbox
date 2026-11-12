@@ -10,6 +10,7 @@ import dev.screwbox.core.graphics.GraphicsConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparingDouble;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -26,7 +27,7 @@ public class LightPhysics {
 
     private record FastSortingLine(Line line, double score) implements Comparable<FastSortingLine> {
         @Override
-        public int compareTo(FastSortingLine o) {
+        public int compareTo(final FastSortingLine o) {
             return Double.compare(score, o.score);
         }
     }
@@ -38,6 +39,14 @@ public class LightPhysics {
         Occluder(final Bounds bounds) {
             requireNonNull(bounds, "occluder must not be null");
             this.bounds = bounds;
+        }
+
+        protected boolean preventsLights() {
+            return true;
+        }
+
+        protected List<Line> bounceLines(final Vector sourcePosition) {
+            return emptyList();
         }
 
         public List<Line> lines(final Vector sourcePosition) {
@@ -59,10 +68,15 @@ public class LightPhysics {
         }
     }
 
-    private static class AffectedByShadwowOccluder extends Occluder {
+    private static class AffectedByShadowOccluder extends Occluder {
 
-        AffectedByShadwowOccluder(final Bounds bounds) {
+        AffectedByShadowOccluder(final Bounds bounds) {
             super(bounds);
+        }
+
+        @Override
+        protected List<Line> bounceLines(final Vector sourcePosition) {
+            return lines(sourcePosition);
         }
 
         @Override
@@ -71,6 +85,49 @@ public class LightPhysics {
                 lines = bounds.borders();
             }
             return lines;
+        }
+    }
+
+    private static class OrthographicWallOccluder extends Occluder {
+
+        private List<Line> linesForInsideLights;
+
+        OrthographicWallOccluder(final Bounds bounds) {
+            super(bounds);
+        }
+
+        @Override
+        protected boolean preventsLights() {
+            return false;
+        }
+
+        @Override
+        protected List<Line> bounceLines(final Vector sourcePosition) {
+            if (bounds.contains(sourcePosition)) {
+                return List.of(bounds.borders().get(1), bounds.borders().getLast());
+            }
+            if (sourcePosition.x() < bounds.minX()) {
+                return List.of(bounds.borders().getLast());
+            }
+            if (sourcePosition.x() > bounds.maxX()) {
+                return List.of(bounds.borders().get(1));
+            }
+            return emptyList();
+        }
+
+        @Override
+        public List<Line> lines(final Vector sourcePosition) {
+            if (bounds.contains(sourcePosition)) {
+                if (isNull(linesForInsideLights)) {
+                    linesForInsideLights = List.of(
+                        bounds.borders().getFirst(),
+                        bounds.borders().get(1),
+                        bounds.borders().getLast()
+                    );
+                }
+                return linesForInsideLights;
+            }
+            return super.lines(sourcePosition);
         }
     }
 
@@ -132,11 +189,15 @@ public class LightPhysics {
     }
 
     public void addAffectedByShadowOccluder(final Bounds occluder) {
-        occluders.add(new AffectedByShadwowOccluder(occluder));
+        occluders.add(new AffectedByShadowOccluder(occluder));
     }
 
     public void addOccluder(final Bounds occluder) {
         occluders.add(new Occluder(occluder));
+    }
+
+    public void addOrthographicWallOccluder(final Bounds occluder) {
+        occluders.add(new OrthographicWallOccluder(occluder));
     }
 
     public boolean isOccluded(final Line source) {
@@ -151,7 +212,7 @@ public class LightPhysics {
 
     public boolean isOccluded(final Vector position) {
         for (final var occluder : occluders) {
-            if (occluder.bounds.contains(position)) {
+            if (occluder.bounds.contains(position) && occluder.preventsLights()) {
                 return true;
             }
         }
@@ -240,7 +301,7 @@ public class LightPhysics {
         Line collidedLine = null;
         Vector nearest = null;
         for (final var occluder : rayOccluders) {
-            for (final var other : occluder.lines(raycast.start())) {
+            for (final var other : occluder.bounceLines(raycast.start())) {
                 final var intersection = raycast.intersectionPoint(other);
                 if (nonNull(intersection)) {
                     final var distance = raycast.start().distanceTo(intersection);
