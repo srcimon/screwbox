@@ -5,6 +5,7 @@
 - Added offset property to move backdrop shadows away from occluder
 - Specify overshoot prevention and target entity in `TargetMovementComponent`
 - Lights can now be added on top of orthographic walls
+- Move polygons
 
 ### 🪛 Bug Fixes
 

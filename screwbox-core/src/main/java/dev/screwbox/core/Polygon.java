@@ -523,10 +523,13 @@ public final class Polygon implements Serializable {
         return sum;
     }
 
-    //TODO add documentation
-    //TODO add changelog
+    /**
+     * Move the polygon relatively to the current position.
+     *
+     * @since 3.40.0
+     */
     public Polygon move(final Vector motion) {
-        if(motion.isZero()) {
+        if (motion.isZero()) {
             return this;
         }
         final List<Vector> targetNodes = new ArrayList<>(definitionNodes.size());
