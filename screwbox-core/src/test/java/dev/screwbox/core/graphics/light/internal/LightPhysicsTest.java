@@ -162,6 +162,16 @@ class LightPhysicsTest {
     }
 
     @Test
+    void calculateArea_onOrhographicWallOccluder_returnsArea() {
+        lightPhysics.addOrthographicWallOccluder($$(0, 0, 64, 64));
+        var lightbox = lightPhysics.calculateArea($$(-32, -32, 128, 128), 0, 360);
+
+        assertThat(lightbox).hasSize(16)
+            .contains($(96, -32))
+            .contains($(96, 96));
+    }
+
+    @Test
     void renderingApi_returnsRenderingApi() {
         assertThat(configuration.renderingApi()).isEqualTo(RenderingApi.METAL);
     }

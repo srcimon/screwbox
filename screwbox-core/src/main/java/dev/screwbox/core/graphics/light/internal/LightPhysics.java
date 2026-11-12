@@ -115,6 +115,7 @@ public class LightPhysics {
             return emptyList();
         }
 
+        @Override
         public List<Line> lines(final Vector sourcePosition) {
             if (bounds.contains(sourcePosition)) {
                 if (isNull(linesForInsideLights)) {
