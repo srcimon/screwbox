@@ -1,5 +1,5 @@
 ---
-title: Staus Update
+title: Status Update
 authors: [ srcimon ]
 tags: [ new-features ]
 ---
