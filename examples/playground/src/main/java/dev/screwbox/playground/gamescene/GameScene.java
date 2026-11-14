@@ -4,15 +4,22 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.ai.PathMovementComponent;
+import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.navigation.ObstacleComponent;
+import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
+import dev.screwbox.playground.gamescene.flag.FlagPointComponent;
 import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
@@ -35,8 +42,6 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.graphics().camera().setZoom(3);
-        for(final var player : engine.environment().fetchAllHaving(PlayerComponent.class)) {
-        }
     }
 
     @Override
@@ -45,6 +50,18 @@ public class GameScene implements Scene {
         environment
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
+            .addSystem(new PathMovementDebugSystem())
+            .addSystem(s-> {
+                if(s.keyboard().isPressed(Key.Q)) {
+                    for (var P : s.environment().fetchAllHaving(PlayerComponent.class)) {
+                        if (!P.hasComponent(MovementControlComponent.class)) {
+                                P.get(PathMovementComponent.class).path = s.navigation().findPath(
+                                    P.position(),
+                                    s.environment().fetchAllHaving(FlagPointComponent.class).getFirst().position()).orElse(null);
+                        }
+                    }
+                }
+            })
             .addSystemsFromPackage("dev.screwbox.playground.gamescene")
             .importSource(source(map)
                 .make(new MapConfig()))
@@ -63,13 +80,17 @@ public class GameScene implements Scene {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> config.team = team)
-                    .bounds(Bounds.$$(0, 0, 16, 16))
-                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(16))))
+                    .bounds(Bounds.$$(0, 0, 12, 12))
+                    .add(new ColliderComponent())
+                    .add(new ObstacleComponent())
+                    .add(new PathMovementComponent(100, 600))
+                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(12))))
                     .add(new PhysicsComponent(), config -> config.friction = 10);
                 if (i == 0 && gameConfig.humanTeam().equals(team)) {
                     player
                         .add(new MovementControlComponent())
                         .add(new CameraTargetComponent());
+
                 }
                 environment.addEntity(player);
             }
