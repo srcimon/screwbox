@@ -31,7 +31,7 @@ public class MovementControlSystem implements EntitySystem {
                     physics.velocity = physics.velocity.replaceX(xSpeed);
                 } else {
                     double ySign = engine.keyboard().axisSign(control.upAlias, control.downAlias);
-                    physics.velocity = physics.velocity.advance(Vector.of(xSign, ySign).length(1).multiply(control.maxSpeed), control.acceleration*engine.loop().delta());
+                    physics.velocity = physics.velocity.advance(Vector.of(xSign, ySign).length(1).multiply(control.maxSpeed), control.acceleration * engine.loop().delta());
                 }
             }
         }
