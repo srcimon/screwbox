@@ -1,4 +1,4 @@
-package dev.screwbox.playground.map;
+package dev.screwbox.playground.gamescene.spawn;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
