@@ -3,7 +3,6 @@ package dev.screwbox.playground.gamescene;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
@@ -18,8 +17,7 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.graphics().camera().setZoom(2);
-        engine.loop().unlockFps();
+        engine.graphics().camera().setZoom(3);
     }
 
     @Override
@@ -29,6 +27,7 @@ public class GameScene implements Scene {
         environment
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
+            .addSystemsFromPackage("dev.screwbox.playground.gamescene")
             .importSource(source(map)
                 .make(new MapConfig()))
 
@@ -38,7 +37,7 @@ public class GameScene implements Scene {
             )
 
             .importSource(indexedSources(map.objects(), GameObject::name)
-                .assign("spawn-area", new SpawnArea())
+                .assign("respawn-area", new SpawnArea())
             );
     }
 }

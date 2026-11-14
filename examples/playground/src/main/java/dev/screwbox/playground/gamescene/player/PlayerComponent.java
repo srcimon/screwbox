@@ -1,9 +1,9 @@
-package dev.screwbox.playground.gamescene.spawn;
+package dev.screwbox.playground.gamescene.player;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;
 
-public class SpawnComponent implements Component {
+public class PlayerComponent implements Component {
 
     public Color team;
 }

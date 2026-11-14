@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 import static java.util.Objects.isNull;
 
@@ -19,6 +20,8 @@ import static java.util.Objects.isNull;
  * defines the upper left corner.
  */
 public final class Bounds implements Serializable {
+
+    private static final Random RANDOM = new Random();
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -463,4 +466,8 @@ public final class Bounds implements Serializable {
         return Optional.empty();
     }
 
+    //TODO make new feature
+    public Vector randomPosition() {
+        return Vector.of(RANDOM.nextDouble(minX(), maxX()), RANDOM.nextDouble(minY(), maxY()));
+    }
 }

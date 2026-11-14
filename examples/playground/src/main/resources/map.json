@@ -72,7 +72,7 @@
                 {
                  "height":54,
                  "id":7,
-                 "name":"spawn-area",
+                 "name":"respawn-area",
                  "opacity":1,
                  "properties":[
                         {
@@ -90,7 +90,7 @@
                 {
                  "height":41.9335119736756,
                  "id":8,
-                 "name":"spawn-area",
+                 "name":"respawn-area",
                  "opacity":1,
                  "properties":[
                         {
