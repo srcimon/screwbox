@@ -76,9 +76,9 @@ class TileMapTest {
         assertThat(tile.row()).isEqualTo(2);
         assertThat(tile.column()).isEqualTo(3);
         assertThat(tile.autoTileMask()).isNotNull();
-        assertThat(map.blocks()).hasSize(3);
+        assertThat(map.blocks()).hasSize(8);
         assertThat(map.blocks().get(2).tiles()).hasSize(4);
-        assertThat(map.values()).containsExactlyInAnyOrder(Color.hex("#4300ff"), Color.hex("#c8ff00"), Color.hex("#ff0000"));
+        assertThat(map.values()).containsExactlyInAnyOrder(Color.hex("#4300ff"), Color.hex("#c8ff00"), Color.hex("#ff0000"), Color.hex("#00000000"));
     }
 
     @Test

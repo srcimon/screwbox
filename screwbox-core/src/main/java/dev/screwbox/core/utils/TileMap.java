@@ -219,8 +219,7 @@ public final class TileMap<T> {
     }
 
     /**
-     * Creates a {@link TileMap} from an image file in resource path. Transparent pixels won't create {@link Tile tiles}.
-     * Used default tile size (16).
+     * Creates a {@link TileMap} from an image file in resource path. Uses default tile size (16).
      *
      * @see #fromImageFile(String, Size)
      * @since 3.5.0
@@ -230,8 +229,7 @@ public final class TileMap<T> {
     }
 
     /**
-     * Creates a {@link TileMap} from an image file in resource path. Transparent pixels won't create {@link Tile tiles}.
-     * Tile size can be specified.
+     * Creates a {@link TileMap} from an image file in resource path. Tile size can be specified.
      *
      * @see #fromImageFile(String)
      * @since 3.5.0
@@ -240,10 +238,7 @@ public final class TileMap<T> {
         final var frame = Frame.fromFile(fileName);
         final var directory = new HashMap<Offset, Color>();
         for (final var pixel : frame.size().all()) {
-            final Color color = frame.colorAt(pixel);
-            if (color.isVisible()) {
-                directory.put(pixel, color);
-            }
+            directory.put(pixel, frame.colorAt(pixel));
         }
         return new TileMap<>(directory, tileSize, frame.size());
     }
