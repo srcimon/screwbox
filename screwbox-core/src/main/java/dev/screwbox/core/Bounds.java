@@ -466,7 +466,11 @@ public final class Bounds implements Serializable {
         return Optional.empty();
     }
 
-    //TODO make new feature
+    /**
+     * Returns a random position within the {@link Bounds}.
+     *
+     * @since 3.41.0
+     */
     public Vector randomPosition() {
         return Vector.of(RANDOM.nextDouble(minX(), maxX()), RANDOM.nextDouble(minY(), maxY()));
     }

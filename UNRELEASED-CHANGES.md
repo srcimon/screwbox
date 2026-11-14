@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Pick random position from bounds
 
 ### 🪛 Bug Fixes
 
