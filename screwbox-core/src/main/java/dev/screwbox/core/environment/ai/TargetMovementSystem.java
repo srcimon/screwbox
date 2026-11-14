@@ -1,7 +1,6 @@
 package dev.screwbox.core.environment.ai;
 
 import dev.screwbox.core.Engine;
-import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -25,14 +24,10 @@ public class TargetMovementSystem implements EntitySystem {
             }
             final var destinationVector = movement.position.subtract(entity.position());
             final double deltaAcceleration = engine.loop().delta() * movement.acceleration;
-            Vector speedChange = destinationVector.length(deltaAcceleration);
-
+            physics.velocity = physics.velocity.advance(destinationVector.length(movement.maxSpeed), deltaAcceleration);
             if (physics.velocity.length() > destinationVector.length() * movement.overshootSpeedModifier) {
-                speedChange = physics.velocity.invert().length(deltaAcceleration);
+                physics.velocity = physics.velocity.multiply(1.0 - 1.0 / Math.max(movement.overshootSpeedModifier, 2.0));
             }
-
-            final Vector updatedVelocity = physics.velocity.advance(destinationVector.length(movement.maxSpeed), deltaAcceleration);
-            physics.velocity = updatedVelocity.length(Math.min(updatedVelocity.length(), movement.maxSpeed));
         }
     }
 }
