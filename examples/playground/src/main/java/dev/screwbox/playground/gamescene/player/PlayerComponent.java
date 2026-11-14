@@ -5,5 +5,6 @@ import dev.screwbox.core.graphics.Color;
 
 public class PlayerComponent implements Component {
 
+    public String name;
     public Color team;
 }
