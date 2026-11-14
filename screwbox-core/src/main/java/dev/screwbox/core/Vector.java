@@ -412,4 +412,11 @@ public final class Vector implements Serializable {
             ? addY(-distance)
             : this.add(other.subtract(this).length(distance));
     }
+
+    //TODO combine with distanceTo
+    public double distanceSquared(Vector other) {
+        final double deltaX = x() - other.x;
+        final double deltaY = y() - other.y;
+        return deltaX * deltaX + deltaY * deltaY;
+    }
 }

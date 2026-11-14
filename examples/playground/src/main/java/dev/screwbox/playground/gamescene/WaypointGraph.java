@@ -49,7 +49,7 @@ public class WaypointGraph implements Graph<Vector> {
 
     @Override
     public double traversalCost(Vector start, Vector end) {
-        return 1;
+        return start.distanceSquared(end);
     }
 
     @Override
