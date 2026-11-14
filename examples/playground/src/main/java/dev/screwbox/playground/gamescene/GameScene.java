@@ -48,7 +48,7 @@ public class GameScene implements Scene {
             .importSource(source(map)
                 .make(new MapConfig()))
 
-            .importSource(indexedSources(map.tiles(), tile -> tile.layer().name())
+            .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type"))
                 .assign("floor", new Floor())
                 .assign("wall", new Wall())
             )
@@ -61,8 +61,8 @@ public class GameScene implements Scene {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> config.team = team)
-                    .bounds(Bounds.$$(0, 0, 8, 8))
-                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(8))))
+                    .bounds(Bounds.$$(0, 0, 16, 16))
+                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(16))))
                     .add(new PhysicsComponent(), config -> config.friction = 10);
                 if (i == 0 && gameConfig.humanTeam().equals(team)) {
                     player
