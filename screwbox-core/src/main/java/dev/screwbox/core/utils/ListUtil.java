@@ -72,7 +72,7 @@ public class ListUtil {
      */
     public static <T> T pickRandom(final List<T> list) {
         if (list.isEmpty()) {
-            return null;
+            return null;//TODO throw new illegal argement exception
         }
         final var index = RANDOM.nextInt(0, list.size());
         return list.get(index);

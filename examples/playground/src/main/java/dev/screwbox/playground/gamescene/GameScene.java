@@ -4,8 +4,10 @@ import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
@@ -32,6 +34,8 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.graphics().camera().setZoom(3);
+        for(final var player : engine.environment().fetchAllHaving(PlayerComponent.class)) {
+        }
     }
 
     @Override
@@ -54,11 +58,19 @@ public class GameScene implements Scene {
             );
 
         for (final var team : gameConfig.teams()) {
-            environment.addEntity(new Entity(environment.allocateId())
-                .add(new PlayerComponent(), player -> player.team = team)
-                .bounds(Bounds.$$(0, 0, 8, 8))
-                .add(new RenderComponent(Sprite.placeholder(team, Size.square(8))))
-                .add(new PhysicsComponent()));
+            for (int i = 0; i < gameConfig.teamSize(); i++) {
+                var player = new Entity(environment.allocateId())
+                    .add(new PlayerComponent(), config -> config.team = team)
+                    .bounds(Bounds.$$(0, 0, 8, 8))
+                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(8))))
+                    .add(new PhysicsComponent(), config -> config.friction = 10);
+                if (i == 0 && gameConfig.humanTeam().equals(team)) {
+                    player
+                        .add(new MovementControlComponent())
+                        .add(new CameraTargetComponent());
+                }
+                environment.addEntity(player);
+            }
         }
     }
 
