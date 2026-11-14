@@ -83,12 +83,12 @@ public class GameScene implements Scene {
                     .bounds(Bounds.$$(0, 0, 12, 12))
                     .add(new ColliderComponent())
                     .add(new ObstacleComponent())
-                    .add(new PathMovementComponent(100, 600))
+                    .add(new PathMovementComponent(50, 600))
                     .add(new RenderComponent(Sprite.placeholder(team, Size.square(12))))
                     .add(new PhysicsComponent(), config -> config.friction = 10);
                 if (i == 0 && gameConfig.humanTeam().equals(team)) {
                     player
-                        .add(new MovementControlComponent())
+                        .add(new MovementControlComponent(), m ->m.maxSpeed=50)
                         .add(new CameraTargetComponent());
 
                 }

@@ -30,6 +30,7 @@ public class TargetMovementSystem implements EntitySystem {
             if (physics.velocity.length() > destinationVector.length() * movement.overshootSpeedModifier) {
                 speedChange = physics.velocity.invert().length(deltaAcceleration);
             }
+
             final Vector updatedVelocity = physics.velocity.add(speedChange);
             physics.velocity = updatedVelocity.length(Math.min(updatedVelocity.length(), movement.maxSpeed));
         }
