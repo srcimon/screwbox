@@ -10,7 +10,6 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.World;
 import dev.screwbox.core.graphics.options.PolygonDrawOptions;
-import dev.screwbox.core.graphics.options.TextureLineDrawOptions;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static dev.screwbox.core.graphics.Color.ORANGE;
 import static dev.screwbox.core.graphics.options.PolygonDrawOptions.Smoothing.SPLINE;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -67,7 +67,7 @@ class RopeRenderSystemTest {
 
         Entity start = new Entity(1).name("rope-start")
             .add(new RopeComponent())
-            .add(new RopeRenderComponent(SpriteBundle.BOX))
+            .add(new RopeRenderComponent(SpriteBundle.BOX), config -> config.drawOrder = 12)
             .add(new SoftLinkComponent(2))
             .add(new TransformComponent(2, 2, 0, 0));
 
@@ -80,7 +80,7 @@ class RopeRenderSystemTest {
 
         environment.update();
 
-        verify(world, times(2)).drawLine(any(Line.class), any(Sprite.class), any(TextureLineDrawOptions.class));
+        verify(world, times(2)).drawLine(any(Line.class), any(Sprite.class), argThat(options -> options.drawOrder() == 12));
     }
 
     @Test
