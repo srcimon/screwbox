@@ -24,7 +24,7 @@ public class RespawnSystem implements EntitySystem {
         final var respawnAreas = engine.environment().fetchAll(RESPAWN_AREAS);
         for (var team : respawnConfig.teams) {
             final var teamCount = players.stream().filter(p -> p.get(PlayerComponent.class).team.equals(team)).count();
-            for (int i = 0; i < (respawnConfig.teams.size() - teamCount); i++) {
+            for (int i = 0; i < (respawnConfig.teamSize - teamCount); i++) {
                 var availableAreas = respawnAreas.stream().filter(a -> a.get(RespawnAreaComponent.class).team.equals(team)).toList();
                 var area = ListUtil.pickRandom(availableAreas);
                 Entity player = new Entity()
