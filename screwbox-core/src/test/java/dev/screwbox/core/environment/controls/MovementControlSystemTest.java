@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
@@ -37,7 +38,7 @@ class MovementControlSystemTest {
     void update_leftPressed_movesToTheLeft(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
         movementControlComponent.isHorizontalOnly = true;
         when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(-1.0);
-        when(loop.delta(-600)).thenReturn(-12.2);
+        when(loop.delta(-2000)).thenReturn(-12.2);
 
         environment.update();
 
@@ -52,21 +53,23 @@ class MovementControlSystemTest {
     void update_notRestrictedToHorizontalMovementAndUpPressed_movesAlsoUp(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
         when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(-1.0);
         when(keyboard.axisSign(DefaultControlSet.UP, DefaultControlSet.DOWN)).thenReturn(-1.0);
-        when(loop.delta(-600)).thenReturn(-12.2);
+        when(loop.delta()).thenReturn(0.04);
 
         environment.update();
 
-        assertThat(physicsComponent.velocity).isEqualTo(Vector.$(-12.2, -12.2));
+        assertThat(physicsComponent.velocity.x()).isEqualTo(-56.57, offset(0.01));
+        assertThat(physicsComponent.velocity.y()).isEqualTo(-56.57, offset(0.01));
 
         environment.updateTimes(8);
 
-        assertThat(physicsComponent.velocity).isEqualTo(Vector.$(-movementControlComponent.maxSpeed, -movementControlComponent.maxSpeed));
+        assertThat(physicsComponent.velocity.length()).isEqualTo(movementControlComponent.maxSpeed, offset(0.01));
     }
 
     @Test
     void update_rightPressed_movesToTheRight(DefaultEnvironment environment, Keyboard keyboard, Loop loop) {
+        movementControlComponent.isHorizontalOnly = true;
         when(keyboard.axisSign(DefaultControlSet.LEFT, DefaultControlSet.RIGHT)).thenReturn(1.0);
-        when(loop.delta(600)).thenReturn(12.2);
+        when(loop.delta(2000)).thenReturn(12.2);
 
         environment.update();
 

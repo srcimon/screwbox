@@ -23,11 +23,10 @@ public class MovementControlSystem implements EntitySystem {
             final var control = mover.get(MovementControlComponent.class);
             if (control.isEnabled) {
                 final var physics = mover.get(PhysicsComponent.class);
-                double xSign = engine.keyboard().axisSign(control.leftAlias, control.rightAlias);
-                final var targetXSpeed = xSign * control.acceleration;
-                final var xSpeed = Math.clamp(physics.velocity.x() + engine.loop().delta(targetXSpeed), -control.maxSpeed, control.maxSpeed);
-
+                final double xSign = engine.keyboard().axisSign(control.leftAlias, control.rightAlias);
                 if (control.isHorizontalOnly) {
+                    final var targetXSpeed = xSign * control.acceleration;
+                    final var xSpeed = Math.clamp(physics.velocity.x() + engine.loop().delta(targetXSpeed), -control.maxSpeed, control.maxSpeed);
                     physics.velocity = physics.velocity.replaceX(xSpeed);
                 } else {
                     double ySign = engine.keyboard().axisSign(control.upAlias, control.downAlias);
