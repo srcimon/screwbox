@@ -93,6 +93,44 @@
                  "width":86.7258749550033,
                  "x":765,
                  "y":256
+                }, 
+                {
+                 "height":0,
+                 "id":9,
+                 "name":"flag-point",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"team",
+                         "type":"color",
+                         "value":"#ffff0000"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":185,
+                 "y":249
+                }, 
+                {
+                 "height":0,
+                 "id":11,
+                 "name":"flag-point",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"team",
+                         "type":"color",
+                         "value":"#ff0000ff"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":809,
+                 "y":314
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -101,7 +139,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":9,
+ "nextobjectid":12,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

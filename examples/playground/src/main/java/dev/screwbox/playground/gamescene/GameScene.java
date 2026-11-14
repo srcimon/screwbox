@@ -13,6 +13,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.GameConfig;
+import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
 import dev.screwbox.playground.gamescene.mapimport.Wall;
@@ -55,6 +56,7 @@ public class GameScene implements Scene {
 
             .importSource(indexedSources(map.objects(), GameObject::name)
                 .assign("respawn-area", new SpawnArea())
+                .assign("flag-point", new FlagPoint())
             );
 
         for (final var team : gameConfig.teams()) {
