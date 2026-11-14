@@ -11,7 +11,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- `ListUtil.pickRandom(List)` never returns null and instead validates list not to be empty
 
 ### 📦 Dependency updates
 

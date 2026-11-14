@@ -71,9 +71,7 @@ public class ListUtil {
      * Returns a random item from the specified list.
      */
     public static <T> T pickRandom(final List<T> list) {
-        if (list.isEmpty()) {
-            return null;//TODO throw new illegal argement exception
-        }
+        Validate.isFalse(list.isEmpty(), "list must not be empty");
         final var index = RANDOM.nextInt(0, list.size());
         return list.get(index);
     }

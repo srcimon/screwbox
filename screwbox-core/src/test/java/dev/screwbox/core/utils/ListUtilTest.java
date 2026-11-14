@@ -7,6 +7,7 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ListUtilTest {
 
@@ -41,12 +42,12 @@ class ListUtilTest {
     }
 
     @Test
-    void pickRandom_listIsEmpty_returnsNull() {
+    void pickRandom_listIsEmpty_throwsException() {
         var strings = new ArrayList<>();
 
-        var result = ListUtil.pickRandom(strings);
-
-        assertThat(result).isNull();
+        assertThatThrownBy(() -> ListUtil.pickRandom(strings))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("list must not be empty");
     }
 
     @Test
