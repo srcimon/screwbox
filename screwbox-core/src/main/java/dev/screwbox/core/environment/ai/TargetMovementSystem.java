@@ -31,7 +31,7 @@ public class TargetMovementSystem implements EntitySystem {
                 speedChange = physics.velocity.invert().length(deltaAcceleration);
             }
 
-            final Vector updatedVelocity = physics.velocity.add(speedChange);
+            final Vector updatedVelocity = physics.velocity.advance(destinationVector.length(movement.maxSpeed), deltaAcceleration);
             physics.velocity = updatedVelocity.length(Math.min(updatedVelocity.length(), movement.maxSpeed));
         }
     }
