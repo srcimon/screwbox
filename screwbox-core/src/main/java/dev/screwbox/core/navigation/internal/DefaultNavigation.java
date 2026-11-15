@@ -46,12 +46,12 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles, final List<Bounds> avoidances) {
+    public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles, final List<Bounds> avoidedZones) {
         navigationRegion = region.snapExpand(cellSize);
         grid = Grid.createByCellSize(Size.square(cellSize), navigationRegion, Boolean.class);
         grid.fill(false);
-        for (final var avoidance : avoidances) {
-            grid.fill(avoidance, true);
+        for (final var avoidedZone : avoidedZones) {
+            grid.fill(avoidedZone, true);
         }
         for (final var obstacle : obstacles) {
             grid.fill(obstacle, null);
