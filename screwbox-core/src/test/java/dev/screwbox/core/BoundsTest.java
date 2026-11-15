@@ -1,5 +1,6 @@
 package dev.screwbox.core;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -406,5 +407,14 @@ class BoundsTest {
         Optional<Bounds> result = wall.tryMerge(door);
 
         assertThat(result).isEqualTo(Optional.of(Bounds.atOrigin(0, 0, 20, 30)));
+    }
+
+    @RepeatedTest(4)
+    void randomPosition_multipleTimes_allPositionsAreWithinBounds() {
+        Bounds wall = Bounds.atOrigin(0, 15, 20, 15);
+
+        Vector position = wall.randomPosition();
+
+        assertThat(wall.contains(position)).isTrue();
     }
 }

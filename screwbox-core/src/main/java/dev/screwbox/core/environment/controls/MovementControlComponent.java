@@ -31,7 +31,7 @@ public class MovementControlComponent implements Component {
     /**
      * Acceleration applied when pressing the key for either direction.
      */
-    public double acceleration = 600;
+    public double acceleration = 2000;
 
     /**
      * Maximum speed that can be reached.
