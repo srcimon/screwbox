@@ -143,9 +143,7 @@ public class DefaultNavigation implements Navigation {
         if (!graph.nodeExists(startPoint) || !graph.nodeExists(endPoint)) {
             return Optional.empty();
         }
-        Time t = Time.now();
         final List<T> path = algorithm.findPath(graph, startPoint, endPoint);
-        System.out.println(Duration.since(t).nanos());
         if (path.isEmpty()) {
             return Optional.empty();
         }
