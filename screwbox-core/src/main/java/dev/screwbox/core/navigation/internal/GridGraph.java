@@ -50,7 +50,7 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public double traversalCost(final Offset start, final Offset end) {
-        return start.distanceTo(end);
+        return start.distanceTo(end) + grid.get(end);
     }
 
     @Override

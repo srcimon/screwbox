@@ -89,7 +89,7 @@ public interface Navigation {
      * @see Environment#enableNavigation()
      * @since 3.12.0
      */
-    Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
+    Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles, List<Bounds> avoidances);
 
     /**
      * Returns the current navigation region.
