@@ -1,8 +1,10 @@
 package dev.screwbox.core.navigation.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Polygon;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.Size;
@@ -30,7 +32,7 @@ public class DefaultNavigation implements Navigation {
     private boolean isDiagonalMovementAllowed = true;
     private int cellSize = 16;
     private GridGraph graph;
-    private Grid<Boolean> grid;
+    private Grid<Double> grid;
     private Bounds navigationRegion;
     private long graphCachingNodeLimit = 40_000;
 
@@ -47,9 +49,10 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles) {
         navigationRegion = region.snapExpand(cellSize);
-        grid = Grid.createByCellSize(Size.square(cellSize), navigationRegion, Boolean.class);
+        grid = Grid.createByCellSize(Size.square(cellSize), navigationRegion, Double.class);
+        grid.fill(0.0);
         for (final var obstacle : obstacles) {
-            grid.fill(obstacle, true);
+            grid.fill(obstacle, null);
         }
         updateGraph();
         return this;
@@ -124,7 +127,9 @@ public class DefaultNavigation implements Navigation {
         if (!graph.nodeExists(startPoint) || !graph.nodeExists(endPoint)) {
             return Optional.empty();
         }
+        Time t = Time.now();
         final List<T> path = algorithm.findPath(graph, startPoint, endPoint);
+        System.out.println(Duration.since(t).nanos());
         if (path.isEmpty()) {
             return Optional.empty();
         }

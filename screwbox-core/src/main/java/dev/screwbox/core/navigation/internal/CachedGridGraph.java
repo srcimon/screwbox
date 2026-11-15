@@ -10,7 +10,7 @@ public class CachedGridGraph extends GridGraph {
     private final List<Offset>[] adjacentNodes;
     private final int width;
 
-    public CachedGridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed) {
+    public CachedGridGraph(final Grid<Double> grid, final boolean isDiagonalMovementAllowed) {
         super(grid, isDiagonalMovementAllowed);
         width = grid.size().width();
         adjacentNodes = new List[grid.size().width() * grid.size().height()];

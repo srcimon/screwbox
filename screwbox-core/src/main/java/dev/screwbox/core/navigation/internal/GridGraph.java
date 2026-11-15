@@ -10,10 +10,10 @@ import java.util.List;
 
 public class GridGraph implements Graph<Offset> {
 
-    protected final Grid<Boolean> grid;
+    protected final Grid<Double> grid;
     private final boolean isDiagonalMovementAllowed;
 
-    public GridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed) {
+    public GridGraph(final Grid<Double> grid, final boolean isDiagonalMovementAllowed) {
         this.grid = grid;
         this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
     }
@@ -69,7 +69,7 @@ public class GridGraph implements Graph<Offset> {
     }
 
     private boolean isFree(final Offset node) {
-        return grid.contains(node) && !grid.hasValue(node);
+        return grid.hasValue(node);
     }
 
     private void addIfFree(final Offset node, final List<Offset> offsets) {
