@@ -10,14 +10,12 @@ import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
-import dev.screwbox.core.environment.navigation.ObstacleComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.playground.GameConfig;
@@ -47,6 +45,7 @@ public class GameScene implements Scene {
     }
 
     static Scheduler timer = Scheduler.withInterval(Duration.ofMillis(500));
+
     @Override
     public void populate(Environment environment) {
         var map = Map.fromJson("map.json");
@@ -58,10 +57,12 @@ public class GameScene implements Scene {
                 if (timer.isTick()) {
                     for (var P : s.environment().fetchAllHaving(PlayerComponent.class)) {
                         if (!P.hasComponent(MovementControlComponent.class)) {
-                            P.get(PathMovementComponent.class).path = s.navigation().findPath(
-                                P.position(),
-                                s.environment().fetchAllHaving(FlagPointComponent.class).getFirst().position()
-                            ).orElse(null);
+                            s.async().runExclusive(P, () ->
+                                P.get(PathMovementComponent.class).path = s.navigation().findPath(
+                                    P.position(),
+                                    s.environment().fetchAllHaving(FlagPointComponent.class).getFirst().position()
+                                ).orElse(null)
+                            );
                         }
                     }
                 }
