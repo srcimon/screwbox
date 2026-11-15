@@ -39,8 +39,8 @@ public class NavigationSystem implements EntitySystem {
     }
 
     private static List<Bounds> entitiesToBounds(final List<Entity> obstacleEntities) {
-        final List<Bounds> obstacles = new ArrayList<>();
-        for(var entity : obstacleEntities) {
+        final List<Bounds> obstacles = new ArrayList<>(obstacleEntities.size());
+        for (var entity : obstacleEntities) {
             obstacles.add(entity.bounds());
         }
         return obstacles;
