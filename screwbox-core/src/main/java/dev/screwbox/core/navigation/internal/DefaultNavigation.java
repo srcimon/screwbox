@@ -34,7 +34,7 @@ public class DefaultNavigation implements Navigation {
     private GridGraph graph;
     private Grid<Double> grid;
     private Bounds navigationRegion;
-    private int detourCellCount = 50;
+    private int detourCellCount = 6;
     private long graphCachingNodeLimit = 40_000;
 
     public DefaultNavigation(final Engine engine) {

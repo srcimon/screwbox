@@ -1,6 +1,7 @@
 package dev.screwbox.playground.gamescene;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -18,6 +19,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.gamescene.flag.FlagPointComponent;
 import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
@@ -44,6 +46,7 @@ public class GameScene implements Scene {
         engine.graphics().camera().setZoom(3);
     }
 
+    static Scheduler timer = Scheduler.withInterval(Duration.ofMillis(500));
     @Override
     public void populate(Environment environment) {
         var map = Map.fromJson("map.json");
@@ -52,7 +55,7 @@ public class GameScene implements Scene {
             .addSystem(new LogFpsSystem())
             .addSystem(new PathMovementDebugSystem())
             .addSystem(s -> {
-                if (s.keyboard().isPressed(Key.Q)) {
+                if (timer.isTick()) {
                     for (var P : s.environment().fetchAllHaving(PlayerComponent.class)) {
                         if (!P.hasComponent(MovementControlComponent.class)) {
                             P.get(PathMovementComponent.class).path = s.navigation().findPath(
