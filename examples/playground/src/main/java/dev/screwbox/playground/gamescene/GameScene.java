@@ -6,12 +6,12 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
-import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.CameraLeadComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
@@ -44,7 +44,7 @@ public class GameScene implements Scene {
         engine.graphics().camera().setZoom(3);
     }
 
-    static Scheduler timer = Scheduler.withInterval(Duration.ofMillis(500));
+    static Scheduler timer = Scheduler.withInterval(Duration.ofMillis(1000));
 
     @Override
     public void populate(Environment environment) {
@@ -52,7 +52,6 @@ public class GameScene implements Scene {
         environment
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
-            .addSystem(new PathMovementDebugSystem())
             .addSystem(s -> {
                 if (timer.isTick()) {
                     for (var P : s.environment().fetchAllHaving(PlayerComponent.class)) {
@@ -81,19 +80,24 @@ public class GameScene implements Scene {
                 .assign("flag-point", new FlagPoint())
             );
 
+        addPlayers(environment);
+    }
+
+    private void addPlayers(Environment environment) {
         for (final var team : gameConfig.teams()) {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> config.team = team)
-                    .bounds(Bounds.$$(0, 0, 12, 12))
+                    .bounds(Bounds.$$(0, 0, 10, 10))
                     .add(new ColliderComponent())
                     .add(new AvoidanceComponent())
-                    .add(new PathMovementComponent(50, 2000))
-                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(12))))
+                    .add(new PathMovementComponent(70, 2000))
+                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(10))))
                     .add(new PhysicsComponent(), config -> config.friction = 10);
                 if (i == 0 && gameConfig.humanTeam().equals(team)) {
                     player
-                        .add(new MovementControlComponent(), m -> m.maxSpeed = 50)
+                        .add(new MovementControlComponent(), m -> m.maxSpeed = 70)
+                        .add(new CameraLeadComponent())
                         .add(new CameraTargetComponent());
 
                 }
