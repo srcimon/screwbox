@@ -8,6 +8,8 @@ import dev.screwbox.core.navigation.Grid;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 public class GridGraph implements Graph<Offset> {
 
     protected final Grid<Boolean> grid; // null = blocked, true = avoid, false = free
@@ -53,8 +55,10 @@ public class GridGraph implements Graph<Offset> {
     @Override
     public double traversalCost(final Offset start, final Offset end) {
         final double distance = start.distanceTo(end);
-        final boolean isEndAvoided = grid.getOrDefault(end, false);
-        final double avoidanceCost = isEndAvoided ? detourCellCount : 0;
+        final var valueAtEnd = grid.get(end);
+        final double avoidanceCost = nonNull(valueAtEnd) && valueAtEnd
+            ? detourCellCount
+            : 0;
         return distance + avoidanceCost;
     }
 

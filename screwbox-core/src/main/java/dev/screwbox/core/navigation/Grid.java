@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -290,11 +289,5 @@ public class Grid<T extends Serializable> implements Serializable {
         if (!contains(x, y)) {
             throw new IllegalArgumentException("position is not within grid: " + Offset.at(x, y));
         }
-    }
-
-    //TODO document and test
-    public T getOrDefault(final Offset position, final T defaultValue) {
-        final var value = get(position);
-        return isNull(value) ? defaultValue : value;
     }
 }
