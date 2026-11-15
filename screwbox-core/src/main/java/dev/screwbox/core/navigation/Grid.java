@@ -293,8 +293,8 @@ public class Grid<T extends Serializable> implements Serializable {
     }
 
     //TODO document and test
-    public T getOrDefault(final Offset end, final T defaultValue) {
-        final var value = get(end);
+    public T getOrDefault(final Offset position, final T defaultValue) {
+        final var value = get(position);
         return isNull(value) ? defaultValue : value;
     }
 }
