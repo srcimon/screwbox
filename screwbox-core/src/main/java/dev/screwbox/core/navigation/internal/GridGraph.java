@@ -12,10 +12,12 @@ public class GridGraph implements Graph<Offset> {
 
     protected final Grid<Double> grid;
     private final boolean isDiagonalMovementAllowed;
+    private final int detourCellCount;
 
-    public GridGraph(final Grid<Double> grid, final boolean isDiagonalMovementAllowed) {
+    public GridGraph(final Grid<Double> grid, final boolean isDiagonalMovementAllowed, final int detourCellCount) {
         this.grid = grid;
         this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
+        this.detourCellCount = detourCellCount;
     }
 
     @Override
@@ -50,7 +52,8 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public double traversalCost(final Offset start, final Offset end) {
-        return start.distanceTo(end) + grid.get(end);
+        double distance = start.distanceTo(end);
+        return distance + grid.get(end) * detourCellCount;
     }
 
     @Override

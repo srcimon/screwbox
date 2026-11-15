@@ -34,6 +34,7 @@ public class DefaultNavigation implements Navigation {
     private GridGraph graph;
     private Grid<Double> grid;
     private Bounds navigationRegion;
+    private int detourCellCount = 50;
     private long graphCachingNodeLimit = 40_000;
 
     public DefaultNavigation(final Engine engine) {
@@ -52,7 +53,7 @@ public class DefaultNavigation implements Navigation {
         grid = Grid.createByCellSize(Size.square(cellSize), navigationRegion, Double.class);
         grid.fill(0.0);
         for (final var avoidance : avoidances) {
-            grid.fill(avoidance, 50.0);
+            grid.fill(avoidance, 1.0);
         }
         for (final var obstacle : obstacles) {
             grid.fill(obstacle, null);
@@ -96,6 +97,18 @@ public class DefaultNavigation implements Navigation {
     @Override
     public SelectEntityBuilder searchInArea(final Bounds bounds) {
         return new SelectEntityBuilder(engine.environment(), bounds);
+    }
+
+    @Override
+    public Navigation setDetourCellCount(int detourCellCount) {
+        Validate.zeroOrPositive(detourCellCount, "detour cell count must be positive");
+        this.detourCellCount = detourCellCount;
+        return this;
+    }
+
+    @Override
+    public int detourCellCount() {
+        return detourCellCount;
     }
 
     @Override
@@ -158,8 +171,8 @@ public class DefaultNavigation implements Navigation {
     private void updateGraph() {
         if (nonNull(grid)) {
             graph = grid.cellCount() <= graphCachingNodeLimit
-                ? new CachedGridGraph(grid, isDiagonalMovementAllowed)
-                : new GridGraph(grid, isDiagonalMovementAllowed);
+                ? new CachedGridGraph(grid, isDiagonalMovementAllowed, detourCellCount)
+                : new GridGraph(grid, isDiagonalMovementAllowed, detourCellCount);
         }
     }
 }

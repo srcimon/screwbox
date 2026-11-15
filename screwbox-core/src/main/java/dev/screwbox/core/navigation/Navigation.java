@@ -17,6 +17,12 @@ import java.util.Optional;
  */
 public interface Navigation {
 
+    //TODO document
+    Navigation setDetourCellCount(int detourCellCount);
+
+    //TODO document
+    int detourCellCount();
+
     /**
      * Enables or disables diagonal movement in pathfinding.
      *
@@ -94,7 +100,7 @@ public interface Navigation {
     /**
      * Returns the current navigation region.
      *
-     * @see #setNavigationRegion(Bounds, List)
+     * @see #setNavigationRegion(Bounds, List, List)
      * @since 3.12.0
      */
     Bounds navigationRegion();

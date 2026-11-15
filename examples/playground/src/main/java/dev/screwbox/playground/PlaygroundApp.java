@@ -17,7 +17,6 @@ public class PlaygroundApp {
         Engine screwBox = ScrewBox.createEngine("Playground");
 
         GameConfig gameConfig = new GameConfig(Set.of(Color.RED, Color.BLUE), 4, Duration.ofSeconds(2), Color.BLUE);
-        screwBox.navigation().setCellSize(16);
         screwBox.keyboard()
             .bindAlias(DefaultControlSet.UP, Key.W)
             .bindAlias(DefaultControlSet.DOWN, Key.S)
