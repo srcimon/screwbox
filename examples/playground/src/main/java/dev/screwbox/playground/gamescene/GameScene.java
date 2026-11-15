@@ -6,6 +6,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
+import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
@@ -19,12 +20,12 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.flag.FlagPointComponent;
+import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagPointComponent;
 import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
 import dev.screwbox.playground.gamescene.mapimport.Wall;
-import dev.screwbox.playground.gamescene.player.PlayerComponent;
+import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
 
@@ -51,10 +52,11 @@ public class GameScene implements Scene {
         var map = Map.fromJson("map.json");
         environment
             .enableAllFeatures()
+            .addSystem(new PathMovementDebugSystem())
             .addSystem(new LogFpsSystem())
             .addSystem(s -> {
                 if (timer.isTick()) {
-                    for (var P : s.environment().fetchAllHaving(PlayerComponent.class)) {
+                    for (var P : s.environment().fetchAllHaving(TeamMemberComponent.class)) {
                         if (!P.hasComponent(MovementControlComponent.class)) {
                             s.async().runExclusive(P, () ->
                                 P.get(PathMovementComponent.class).path = s.navigation().findPath(
@@ -87,7 +89,7 @@ public class GameScene implements Scene {
         for (final var team : gameConfig.teams()) {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
-                    .add(new PlayerComponent(), config -> config.team = team)
+                    .add(new TeamMemberComponent(), config -> config.team = team)
                     .bounds(Bounds.$$(0, 0, 10, 10))
                     .add(new ColliderComponent())
                     .add(new AvoidanceComponent())
