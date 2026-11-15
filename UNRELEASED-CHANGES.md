@@ -12,6 +12,7 @@
 ### 🧽 Cleanup & refactoring
 
 - `ListUtil.pickRandom(List)` never returns null and instead validates list not to be empty
+- Slightly improved performance for updating pathfinding grid
 
 ### 📦 Dependency updates
 

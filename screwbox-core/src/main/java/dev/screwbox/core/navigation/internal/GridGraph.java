@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GridGraph implements Graph<Offset> {
 
-    private final Grid<Boolean> grid;
+    protected final Grid<Boolean> grid;
     private final boolean isDiagonalMovementAllowed;
 
     public GridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed) {
