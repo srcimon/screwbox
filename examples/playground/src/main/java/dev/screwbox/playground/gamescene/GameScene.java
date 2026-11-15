@@ -16,7 +16,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.keyboard.Key;
-import dev.screwbox.core.navigation.AStarAlgorithm;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.gamescene.flag.FlagPointComponent;
@@ -24,7 +23,6 @@ import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
 import dev.screwbox.playground.gamescene.mapimport.Wall;
-import dev.screwbox.playground.gamescene.mapimport.Waypoint;
 import dev.screwbox.playground.gamescene.player.PlayerComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
@@ -58,9 +56,7 @@ public class GameScene implements Scene {
                         if (!P.hasComponent(MovementControlComponent.class)) {
                             P.get(PathMovementComponent.class).path = s.navigation().findPath(
                                 P.position(),
-                                s.environment().fetchAllHaving(FlagPointComponent.class).getFirst().position(),
-                                new WaypointGraph(s.environment().fetchAllHaving(WaypointComponent.class).stream().map(x -> x.position()).toList(), s.environment().fetchAllHaving(ObstacleComponent.class).stream().map(xs -> xs.bounds()).toList()),
-                                new AStarAlgorithm<>()
+                                s.environment().fetchAllHaving(FlagPointComponent.class).getFirst().position()
                             ).orElse(null);
                         }
                     }
@@ -77,7 +73,6 @@ public class GameScene implements Scene {
 
             .importSource(indexedSources(map.objects(), GameObject::name)
                 .assign("respawn-area", new SpawnArea())
-                .assign("waypoint", new Waypoint())
                 .assign("flag-point", new FlagPoint())
             );
 
