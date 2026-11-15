@@ -30,7 +30,7 @@ public class DefaultNavigation implements Navigation {
     private boolean isDiagonalMovementAllowed = true;
     private int cellSize = 16;
     private GridGraph graph;
-    private Grid<Double> grid;
+    private Grid<Boolean> grid;
     private Bounds navigationRegion;
     private int detourCellCount = 6;
     private long graphCachingNodeLimit = 40_000;
@@ -48,10 +48,10 @@ public class DefaultNavigation implements Navigation {
     @Override
     public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles, final List<Bounds> avoidances) {
         navigationRegion = region.snapExpand(cellSize);
-        grid = Grid.createByCellSize(Size.square(cellSize), navigationRegion, Double.class);
-        grid.fill(0.0);
+        grid = Grid.createByCellSize(Size.square(cellSize), navigationRegion, Boolean.class);
+        grid.fill(false);
         for (final var avoidance : avoidances) {
-            grid.fill(avoidance, 1.0);
+            grid.fill(avoidance, true);
         }
         for (final var obstacle : obstacles) {
             grid.fill(obstacle, null);

@@ -10,11 +10,11 @@ import java.util.List;
 
 public class GridGraph implements Graph<Offset> {
 
-    protected final Grid<Double> grid; // null = blocked, value = cost
+    protected final Grid<Boolean> grid; // null = blocked, true = avoid, false = free
     private final boolean isDiagonalMovementAllowed;
     private final int detourCellCount;
 
-    public GridGraph(final Grid<Double> grid, final boolean isDiagonalMovementAllowed, final int detourCellCount) {
+    public GridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed, final int detourCellCount) {
         this.grid = grid;
         this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
         this.detourCellCount = detourCellCount;
@@ -53,8 +53,8 @@ public class GridGraph implements Graph<Offset> {
     @Override
     public double traversalCost(final Offset start, final Offset end) {
         final double distance = start.distanceTo(end);
-        final double avoidanceCost = grid.getOrDefault(end, 0.0);
-        return distance + avoidanceCost * detourCellCount;
+        final double avoidanceCost = grid.getOrDefault(end, false) ? detourCellCount : 0 ;
+        return distance + avoidanceCost;
     }
 
     @Override

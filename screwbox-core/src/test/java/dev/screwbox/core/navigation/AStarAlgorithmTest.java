@@ -22,8 +22,8 @@ class AStarAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid<Double> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Double.class);
-        grid.fill(0.0);
+        Grid<Boolean> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
+        grid.fill(false);
         grid.fill($$(2, 0, 1, 5), null);
 
         Offset start = Offset.at(0, 0);
@@ -36,8 +36,8 @@ class AStarAlgorithmTest {
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid<Double> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Double.class);
-        grid.fill(0.0);
+        Grid<Boolean> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
+        grid.fill(false);
         grid.fill($$(2, 2, 2, 2), null);
         grid.fill($$(2, 1, 1, 1), null);
 
