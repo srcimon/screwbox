@@ -7,19 +7,25 @@ import java.util.List;
 
 public class CachedGridGraph extends GridGraph {
 
-    private final List<Offset>[][] adjacentNodes;
+    private final List<Offset>[] adjacentNodes;
+    private final int width;
 
-    public CachedGridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed) {
-        super(grid, isDiagonalMovementAllowed);
-        adjacentNodes = new List[grid.size().width()][grid.size().height()];
-        for (final var node : grid.cells()) {
-            adjacentNodes[node.x()][node.y()] = super.adjacentNodes(node);
+    public CachedGridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed, final int detourCellCount) {
+        super(grid, isDiagonalMovementAllowed, detourCellCount);
+        width = grid.size().width();
+        adjacentNodes = new List[grid.size().width() * grid.size().height()];
+        int height = grid.size().height();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int index = y * width + x;
+                adjacentNodes[index] = super.adjacentNodes(Offset.at(x, y));
+            }
         }
     }
 
     @Override
     public List<Offset> adjacentNodes(final Offset node) {
-        return adjacentNodes[node.x()][node.y()];
+        return adjacentNodes[node.x() + node.y() * width];
     }
 
 }

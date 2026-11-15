@@ -32,6 +32,7 @@ public class DefaultNavigation implements Navigation {
     private GridGraph graph;
     private Grid<Boolean> grid;
     private Bounds navigationRegion;
+    private int detourCellCount = 6;
     private long graphCachingNodeLimit = 40_000;
 
     public DefaultNavigation(final Engine engine) {
@@ -45,11 +46,15 @@ public class DefaultNavigation implements Navigation {
     }
 
     @Override
-    public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles) {
+    public Navigation setNavigationRegion(final Bounds region, final List<Bounds> obstacles, final List<Bounds> avoidedZones) {
         navigationRegion = region.snapExpand(cellSize);
         grid = Grid.createByCellSize(Size.square(cellSize), navigationRegion, Boolean.class);
+        grid.fill(false);
+        for (final var avoidedZone : avoidedZones) {
+            grid.fill(avoidedZone, true);
+        }
         for (final var obstacle : obstacles) {
-            grid.fill(obstacle, true);
+            grid.fill(obstacle, null);
         }
         updateGraph();
         return this;
@@ -90,6 +95,18 @@ public class DefaultNavigation implements Navigation {
     @Override
     public SelectEntityBuilder searchInArea(final Bounds bounds) {
         return new SelectEntityBuilder(engine.environment(), bounds);
+    }
+
+    @Override
+    public Navigation setDetourCellCount(int detourCellCount) {
+        Validate.zeroOrPositive(detourCellCount, "detour cell count must be positive");
+        this.detourCellCount = detourCellCount;
+        return this;
+    }
+
+    @Override
+    public int detourCellCount() {
+        return detourCellCount;
     }
 
     @Override
@@ -150,8 +167,8 @@ public class DefaultNavigation implements Navigation {
     private void updateGraph() {
         if (nonNull(grid)) {
             graph = grid.cellCount() <= graphCachingNodeLimit
-                ? new CachedGridGraph(grid, isDiagonalMovementAllowed)
-                : new GridGraph(grid, isDiagonalMovementAllowed);
+                ? new CachedGridGraph(grid, isDiagonalMovementAllowed, detourCellCount)
+                : new GridGraph(grid, isDiagonalMovementAllowed, detourCellCount);
         }
     }
 }

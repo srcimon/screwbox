@@ -18,6 +18,20 @@ import java.util.Optional;
 public interface Navigation {
 
     /**
+     * Configures the maximum number of cells in a detour route that is created to go around avoided zones.
+     *
+     * @since 3.41.0
+     */
+    Navigation setDetourCellCount(int detourCellCount);
+
+    /**
+     * Returns the maximum number of cells in a detour route that is created to go around avoided zones.
+     *
+     * @since 3.41.0
+     */
+    int detourCellCount();
+
+    /**
      * Enables or disables diagonal movement in pathfinding.
      *
      * @since 3.12.0
@@ -89,12 +103,12 @@ public interface Navigation {
      * @see Environment#enableNavigation()
      * @since 3.12.0
      */
-    Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles);
+    Navigation setNavigationRegion(Bounds region, List<Bounds> obstacles, List<Bounds> avoidedZones);
 
     /**
      * Returns the current navigation region.
      *
-     * @see #setNavigationRegion(Bounds, List)
+     * @see #setNavigationRegion(Bounds, List, List)
      * @since 3.12.0
      */
     Bounds navigationRegion();

@@ -27,8 +27,8 @@ class DefaultNavigationTest {
     @Test
     void setCellSize_negativeSize_throwsException() {
         assertThatThrownBy(() -> navigation.setCellSize(-1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("cell size must be in range from 1 to 256 (actual value: -1)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("cell size must be in range from 1 to 256 (actual value: -1)");
     }
 
     @Test
@@ -46,7 +46,7 @@ class DefaultNavigationTest {
     @Test
     void findPath_toValidPointsWithinNavigationRegion_findsPath() {
         navigation.setCellSize(40);
-        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(50, 50, 50, 50)));
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(50, 50, 50, 50)), emptyList());
         Vector start = $(10, 10);
         Vector end = $(190, 190);
 
@@ -59,9 +59,25 @@ class DefaultNavigationTest {
     }
 
     @Test
+    void findPath_avoidanceAreaPresent_findsPath() {
+        navigation.setCellSize(40);
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(50, 50, 50, 50)), List.of(Bounds.atOrigin(0, 40, 80, 140)));
+        Vector start = $(10, 10);
+        Vector end = $(190, 190);
+
+        final var path = navigation.findPath(start, end);
+
+        assertThat(path).isPresent();
+
+        assertThat(path.get().firstNode()).isEqualTo(start);
+        assertThat(path.get().lastNode()).isEqualTo(end);
+        assertThat(path.get().nodes()).doesNotContain($(20, 100));
+    }
+
+    @Test
     void findPath_noPathFound_isEmpty() {
         navigation.setCellSize(40);
-        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(50, 0, 50, 200)));
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(50, 0, 50, 200)), emptyList());
 
         final var path = navigation.findPath($(10, 10), $(190, 190));
 
@@ -70,7 +86,7 @@ class DefaultNavigationTest {
 
     @Test
     void findPath_startIsBlocked_noPath() {
-        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(0, 0, 50, 50)));
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(0, 0, 50, 50)), emptyList());
 
         final var path = navigation.findPath($(10, 10), $(190, 190));
 
@@ -79,7 +95,7 @@ class DefaultNavigationTest {
 
     @Test
     void findPath_startOutOfNavigationRegion_noPath() {
-        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), emptyList());
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), emptyList(), emptyList());
 
         final var path = navigation.findPath($(-10, -10), $(190, 190));
 
@@ -88,7 +104,7 @@ class DefaultNavigationTest {
 
     @Test
     void findPath_endIsBlocked_noPath() {
-        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(0, 0, 50, 50)));
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), List.of(Bounds.atOrigin(0, 0, 50, 50)), emptyList());
 
         final var path = navigation.findPath($(190, 190), $(10, 10));
 
@@ -97,7 +113,7 @@ class DefaultNavigationTest {
 
     @Test
     void findPath_endOutOfNavigationRegion_noPath() {
-        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), emptyList());
+        navigation.setNavigationRegion(Bounds.atOrigin(0, 0, 200, 200), emptyList(), emptyList());
 
         final var path = navigation.findPath($(10, 10), $(1900, 1900));
 
@@ -132,8 +148,8 @@ class DefaultNavigationTest {
     @Test
     void setGraphCachingNodeLimit_valueOutOfRange_throwsException() {
         assertThatThrownBy(() -> navigation.setGraphCachingNodeLimit(-2))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("node limit must be in range 0 to 10,000,000 (actual value: -2.0)");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("node limit must be in range 0 to 10,000,000 (actual value: -2.0)");
     }
 
     @Test
@@ -145,8 +161,22 @@ class DefaultNavigationTest {
 
     @Test
     void setNavigationRegion_valuesNotGridAligned_setsNavigationRegionAlignedToGrid() {
-        navigation.setNavigationRegion($$(12.4, 40.1, 103.214, 129.98), emptyList());
+        navigation.setNavigationRegion($$(12.4, 40.1, 103.214, 129.98), emptyList(), emptyList());
 
         assertThat(navigation.navigationRegion()).isEqualTo($$(0, 32, 128, 144));
+    }
+
+    @Test
+    void setDetourCellCount_negative_throwsException() {
+        assertThatThrownBy(() -> navigation.setDetourCellCount(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("detour cell count must be positive (actual value: -1)");
+    }
+
+    @Test
+    void setDetourCellCount_positive_setsDetourCellCount() {
+        assertThat(navigation.detourCellCount()).isEqualTo(6);
+        navigation.setDetourCellCount(22);
+        assertThat(navigation.detourCellCount()).isEqualTo(22);
     }
 }

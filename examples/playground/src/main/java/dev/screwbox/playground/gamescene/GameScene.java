@@ -1,6 +1,7 @@
 package dev.screwbox.playground.gamescene;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -8,15 +9,15 @@ import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.navigation.ObstacleComponent;
+import dev.screwbox.core.environment.navigation.AvoidanceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.gamescene.flag.FlagPointComponent;
 import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
@@ -43,6 +44,8 @@ public class GameScene implements Scene {
         engine.graphics().camera().setZoom(3);
     }
 
+    static Scheduler timer = Scheduler.withInterval(Duration.ofMillis(500));
+
     @Override
     public void populate(Environment environment) {
         var map = Map.fromJson("map.json");
@@ -51,13 +54,15 @@ public class GameScene implements Scene {
             .addSystem(new LogFpsSystem())
             .addSystem(new PathMovementDebugSystem())
             .addSystem(s -> {
-                if (s.keyboard().isPressed(Key.Q)) {
+                if (timer.isTick()) {
                     for (var P : s.environment().fetchAllHaving(PlayerComponent.class)) {
                         if (!P.hasComponent(MovementControlComponent.class)) {
-                            P.get(PathMovementComponent.class).path = s.navigation().findPath(
-                                P.position(),
-                                s.environment().fetchAllHaving(FlagPointComponent.class).getFirst().position()
-                            ).orElse(null);
+                            s.async().runExclusive(P, () ->
+                                P.get(PathMovementComponent.class).path = s.navigation().findPath(
+                                    P.position(),
+                                    s.environment().fetchAllHaving(FlagPointComponent.class).getFirst().position()
+                                ).orElse(null)
+                            );
                         }
                     }
                 }
@@ -82,7 +87,7 @@ public class GameScene implements Scene {
                     .add(new PlayerComponent(), config -> config.team = team)
                     .bounds(Bounds.$$(0, 0, 12, 12))
                     .add(new ColliderComponent())
-                    .add(new ObstacleComponent())
+                    .add(new AvoidanceComponent())
                     .add(new PathMovementComponent(50, 2000))
                     .add(new RenderComponent(Sprite.placeholder(team, Size.square(12))))
                     .add(new PhysicsComponent(), config -> config.friction = 10);

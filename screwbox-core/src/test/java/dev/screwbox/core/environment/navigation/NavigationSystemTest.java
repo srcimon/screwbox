@@ -4,9 +4,13 @@ import dev.screwbox.core.async.Async;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.internal.DefaultEnvironment;
 import dev.screwbox.core.loop.Loop;
+import dev.screwbox.core.navigation.Navigation;
 import dev.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+
+import java.util.List;
 
 import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Time.now;
@@ -29,15 +33,18 @@ class NavigationSystemTest {
     }
 
     @Test
-    void update_gridOutdated_updatesPathfindingGrid(DefaultEnvironment environment, Loop loop, Async async) {
+    void update_gridOutdated_updatesPathfindingGrid(DefaultEnvironment environment, Loop loop, Async async, Navigation navigation) {
         when(async.hasNoActiveTask(NavigationSystem.class)).thenReturn(true);
         when(loop.time()).thenReturn(now());
 
         createPathfindingSetup(environment);
 
         environment.update();
+        ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
+        verify(async).run(eq(NavigationSystem.class), captor.capture());
 
-        verify(async).run(eq(NavigationSystem.class), any());
+        captor.getValue().run();
+        verify(navigation).setNavigationRegion($$(-100, -100, 200, 200), List.of($$(0, 0, 100, 100)), List.of($$(-50, -50, 10, 10)));
     }
 
     @Test
@@ -53,20 +60,25 @@ class NavigationSystemTest {
 
     private void createPathfindingSetup(final DefaultEnvironment environment) {
         var wall = new Entity()
-                .bounds($$(0, 0, 100, 100))
-                .add(new ObstacleComponent());
+            .bounds($$(0, 0, 100, 100))
+            .add(new ObstacleComponent());
 
         var air = new Entity()
-                .bounds($$(-100, -100, 100, 100));
+            .bounds($$(-100, -100, 100, 100));
+
+        var puddle = new Entity()
+            .bounds($$(-50, -50, 10, 10))
+            .add(new AvoidanceComponent());
 
         var navigationRegion = new Entity()
-                .bounds($$(-100, -100, 200, 200))
-                .add(new NavigationRegionComponent());
+            .bounds($$(-100, -100, 200, 200))
+            .add(new NavigationRegionComponent());
 
         environment
-                .addSystem(new NavigationSystem())
-                .addEntity(wall)
-                .addEntity(air)
-                .addEntity(navigationRegion);
+            .addSystem(new NavigationSystem())
+            .addEntity(wall)
+            .addEntity(air)
+            .addEntity(puddle)
+            .addEntity(navigationRegion);
     }
 }

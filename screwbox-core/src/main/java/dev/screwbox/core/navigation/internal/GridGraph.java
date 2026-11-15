@@ -8,14 +8,18 @@ import dev.screwbox.core.navigation.Grid;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 public class GridGraph implements Graph<Offset> {
 
-    private final Grid<Boolean> grid;
+    protected final Grid<Boolean> grid; // null = blocked, true = avoid, false = free
     private final boolean isDiagonalMovementAllowed;
+    private final int detourCellCount;
 
-    public GridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed) {
+    public GridGraph(final Grid<Boolean> grid, final boolean isDiagonalMovementAllowed, final int detourCellCount) {
         this.grid = grid;
         this.isDiagonalMovementAllowed = isDiagonalMovementAllowed;
+        this.detourCellCount = detourCellCount;
     }
 
     @Override
@@ -50,7 +54,12 @@ public class GridGraph implements Graph<Offset> {
 
     @Override
     public double traversalCost(final Offset start, final Offset end) {
-        return start.distanceTo(end);
+        final double distance = start.distanceTo(end);
+        final var valueAtEnd = grid.get(end);
+        final double avoidanceCost = nonNull(valueAtEnd) && valueAtEnd
+            ? detourCellCount
+            : 0;
+        return distance + avoidanceCost;
     }
 
     @Override
@@ -69,7 +78,7 @@ public class GridGraph implements Graph<Offset> {
     }
 
     private boolean isFree(final Offset node) {
-        return grid.contains(node) && !grid.hasValue(node);
+        return grid.hasValue(node);
     }
 
     private void addIfFree(final Offset node, final List<Offset> offsets) {
