@@ -53,20 +53,25 @@ class NavigationSystemTest {
 
     private void createPathfindingSetup(final DefaultEnvironment environment) {
         var wall = new Entity()
-                .bounds($$(0, 0, 100, 100))
-                .add(new ObstacleComponent());
+            .bounds($$(0, 0, 100, 100))
+            .add(new ObstacleComponent());
 
         var air = new Entity()
-                .bounds($$(-100, -100, 100, 100));
+            .bounds($$(-100, -100, 100, 100));
+
+        var puddle = new Entity()
+            .bounds($$(-50, -50, 10, 10))
+            .add(new AvoidanceComponent());
 
         var navigationRegion = new Entity()
-                .bounds($$(-100, -100, 200, 200))
-                .add(new NavigationRegionComponent());
+            .bounds($$(-100, -100, 200, 200))
+            .add(new NavigationRegionComponent());
 
         environment
-                .addSystem(new NavigationSystem())
-                .addEntity(wall)
-                .addEntity(air)
-                .addEntity(navigationRegion);
+            .addSystem(new NavigationSystem())
+            .addEntity(wall)
+            .addEntity(air)
+            .addEntity(puddle)
+            .addEntity(navigationRegion);
     }
 }
