@@ -241,7 +241,7 @@ public class Grid<T extends Serializable> implements Serializable {
         final int maxY = Math.min(toCellY(areaTranslated.bottomRight().y()), size.height() - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                set(x, y, value);
+                cellData[toDataIndex(x, y)] = value;
             }
         }
     }
