@@ -53,7 +53,8 @@ public class GridGraph implements Graph<Offset> {
     @Override
     public double traversalCost(final Offset start, final Offset end) {
         final double distance = start.distanceTo(end);
-        final double avoidanceCost = grid.getOrDefault(end, false) ? detourCellCount : 0 ;
+        final boolean isEndAvoided = grid.getOrDefault(end, false);
+        final double avoidanceCost = isEndAvoided ? detourCellCount : 0;
         return distance + avoidanceCost;
     }
 
