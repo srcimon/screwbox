@@ -22,25 +22,27 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid<Boolean> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
-        grid.fill($$(2, 0, 1, 5), true);
+        Grid<Double> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Double.class);
+        grid.fill(0.0);
+        grid.fill($$(2, 0, 1, 5), null);
 
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
 
-        List<Offset> path = algorithm.findPath(new GridGraph(grid, true), start, end);
+        List<Offset> path = algorithm.findPath(new GridGraph(grid, true, 0), start, end);
 
         assertThat(path).isEmpty();
     }
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid<Boolean> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Boolean.class);
-        grid.fill($$(2, 2, 2, 2), true);
+        Grid<Double> grid = Grid.createByCellSize(Size.square(1), $$(0, 0, 5, 5), Double.class);
+        grid.fill(0.0);
+        grid.fill($$(2, 2, 2, 2), null);
 
         Offset start = Offset.at(0, 0);
         Offset end = Offset.at(4, 4);
-        List<Offset> path = algorithm.findPath(new GridGraph(grid, true), start, end);
+        List<Offset> path = algorithm.findPath(new GridGraph(grid, true, 0), start, end);
 
         assertThat(path).containsExactly(
             Offset.at(0, 1),

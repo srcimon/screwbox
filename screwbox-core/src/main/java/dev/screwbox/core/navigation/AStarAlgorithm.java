@@ -34,31 +34,36 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
     @Override
     public List<T> findPath(final Graph<T> graph, final T start, final T end) {
         final var searchData = new AStarData<T>();
-        searchData.costs.put(start, 0.0);
-        searchData.open.add(new PathfindingNode<>(start, null));
+        searchData.costsToStart.put(start, 0.0);
+        searchData.costs.put(start, graph.traversalCost(start, end));
+        searchData.open.add(new PathfindingNode<>(start, null, searchData.costs.get(start)));
+
         while (!searchData.open.isEmpty()) {
             final PathfindingNode<T> currentNode = searchData.open.remove();
             if (currentNode.node().equals(end)) {
                 return currentNode.backtrack();
             }
-            if(searchData.closed.add(currentNode.node())) {
-                processNode(graph, start, end, searchData, currentNode);
+            if (searchData.closed.add(currentNode.node())) {
+                processNode(graph, end, searchData, currentNode);
             }
         }
         return emptyList();
     }
 
-    private static <T> void processNode(final Graph<T> graph, final T start, final T end, final AStarData<T> data, final PathfindingNode<T> currentNode) {
-        final var costToStart = data.costsToStart.get(currentNode.node());
-        for (final var node : graph.adjacentNodes(currentNode.node())) {
-            if (!data.closed.contains(node)) {
-                final double startCost = isNull(costToStart) ? graph.traversalCost(currentNode.node(), start) : costToStart;
-                final double totalCost = startCost + graph.traversalCost(node, currentNode.node()) + graph.traversalCost(node, end);
-                final Double costNeighbour = data.costs.get(node);
+    private static <T> void processNode(final Graph<T> graph, final T end, final AStarData<T> data, final PathfindingNode<T> currentNode) {
+        final double costToStart = data.costsToStart.get(currentNode.node());
+
+        for (final var neighbor : graph.adjacentNodes(currentNode.node())) {
+            if (!data.closed.contains(neighbor)) {
+                final double totalCost = costToStart + graph.traversalCost(currentNode.node(), neighbor);
+                final Double costNeighbour = data.costsToStart.get(neighbor);
+
                 if (isNull(costNeighbour) || totalCost < costNeighbour) {
-                    data.costsToStart.put(node, totalCost);
-                    data.costs.put(node, totalCost);
-                    data.open.add(new PathfindingNode<>(node, currentNode, totalCost));
+                    final double fCost = totalCost + graph.traversalCost(neighbor, end);
+
+                    data.costsToStart.put(neighbor, totalCost);
+                    data.costs.put(neighbor, fCost);
+                    data.open.add(new PathfindingNode<>(neighbor, currentNode, fCost));
                 }
             }
         }
