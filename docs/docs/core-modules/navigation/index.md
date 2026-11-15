@@ -30,6 +30,10 @@ results.
 When using the `NavigationRegionComponent` the region will be constantly updated.
 The interval can be configured using the `updateInterval` property.
 All entities that block the path are marked using the `ObstacleComponent`.
+Also entities can be avoided during pathfinding.
+To do so add an `AvoidancComponent` to the entity.
+Areas to avoid do not actually block pathfinding but still have a major influence on the resulting paths.
+The avoidance strength can be amplified by setting a higher detour cell count.
 
 ![pathfinding](pathfinding.png)
 

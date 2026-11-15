@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Pick random position from bounds
+- Use avoidance during pathfinding
 
 ### 🪛 Bug Fixes
 

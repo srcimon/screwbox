@@ -135,8 +135,9 @@ To utilize these components, first call `environment.enableNavigation()`.
 
 | Component                   | Description                                                   |
 |-----------------------------|---------------------------------------------------------------|
-| `NavigationRegionComponent` | Singleton component that indexes the region for pathfinding.  |
-| `ObstacleComponent`         | Marks entity as obstacle that will be avoided in pathfinding. |
+| `NavigationRegionComponent` | Singleton component that indexes the region for pathfinding   |
+| `ObstacleComponent`         | Marks entity as obstacle that will be avoided in pathfinding  |
+| `AvoidanceComponent`         | Marks entity as area that should be avoided in pathfinding |
 
 ## Fluid Components
 
