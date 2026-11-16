@@ -3,7 +3,8 @@ package dev.screwbox.playground.gamescene;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.navigation.NavigationRegionComponent;
-import dev.screwbox.playground.gamescene.spawn.RespawnConfigComponent;
+import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
+import dev.screwbox.playground.gamescene.team.respawn.RespawnConfigComponent;
 import dev.screwbox.tiled.Map;
 
 public class MapConfig implements Blueprint<Map> {
@@ -13,6 +14,7 @@ public class MapConfig implements Blueprint<Map> {
         return new Entity()
             .bounds(map.bounds())
             .add(new RespawnConfigComponent())
+            .add(new CameraBoundsComponent())
             .add(new NavigationRegionComponent());
     }
 }

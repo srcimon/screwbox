@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.spawn;
+package dev.screwbox.playground.gamescene.team.respawn;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.environment.Component;
