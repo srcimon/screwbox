@@ -26,6 +26,7 @@ import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
 import dev.screwbox.playground.gamescene.mapimport.Wall;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.team.ai.BotComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
 
@@ -54,20 +55,6 @@ public class GameScene implements Scene {
             .enableAllFeatures()
             .addSystem(new PathMovementDebugSystem())
             .addSystem(new LogFpsSystem())
-            .addSystem(s -> {
-                if (timer.isTick()) {
-                    for (var P : s.environment().fetchAllHaving(TeamMemberComponent.class)) {
-                        if (!P.hasComponent(MovementControlComponent.class)) {
-                            s.async().runExclusive(P, () ->
-                                P.get(PathMovementComponent.class).path = s.navigation().findPath(
-                                    P.position(),
-                                    s.environment().fetchAllHaving(FlagPointComponent.class).getFirst().position()
-                                ).orElse(null)
-                            );
-                        }
-                    }
-                }
-            })
             .addSystemsFromPackage("dev.screwbox.playground.gamescene")
             .importSource(source(map)
                 .make(new MapConfig()))
@@ -102,6 +89,8 @@ public class GameScene implements Scene {
                         .add(new CameraLeadComponent())
                         .add(new CameraTargetComponent());
 
+                } else {
+                    player.add(new BotComponent(), bot-> bot.state = BotComponent.State.FETCH_FLAG);
                 }
                 environment.addEntity(player);
             }
