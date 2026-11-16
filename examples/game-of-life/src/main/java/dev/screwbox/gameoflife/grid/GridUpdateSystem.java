@@ -10,7 +10,7 @@ import static dev.screwbox.core.Duration.ofMillis;
 
 public class GridUpdateSystem implements EntitySystem {
 
-    private static final Scheduler SCHEDULER = Scheduler.withInterval(ofMillis(100));
+    private static final Scheduler SCHEDULER = Scheduler.ofInterval(ofMillis(100));
 
     @Override
     public void update(final Engine engine) {

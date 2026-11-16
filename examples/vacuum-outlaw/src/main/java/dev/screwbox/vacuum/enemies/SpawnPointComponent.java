@@ -7,7 +7,7 @@ import static dev.screwbox.core.Duration.ofSeconds;
 
 public class SpawnPointComponent implements Component {
 
-    public final Scheduler scheduler = Scheduler.withInterval(ofSeconds(5));
+    public final Scheduler scheduler = Scheduler.ofInterval(ofSeconds(5));
     public final int drawOrder;
 
     public SpawnPointComponent(final int drawOrder) {

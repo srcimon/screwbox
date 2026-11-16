@@ -20,7 +20,6 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagPointComponent;
 import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
@@ -46,7 +45,7 @@ public class GameScene implements Scene {
         engine.graphics().camera().setZoom(3);
     }
 
-    static Scheduler timer = Scheduler.withInterval(Duration.ofMillis(1000));
+    static Scheduler timer = Scheduler.ofInterval(Duration.ofMillis(1000));
 
     @Override
     public void populate(Environment environment) {

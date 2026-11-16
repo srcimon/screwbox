@@ -13,14 +13,28 @@ class SchedulerTest {
 
     @BeforeEach
     void beforeEach() {
-        scheduler = Scheduler.withInterval(Duration.ofSeconds(5));
+        scheduler = Scheduler.ofInterval(Duration.ofSeconds(5));
     }
 
     @Test
-    void everyMinute_createsSchedulerWithOneMinuteInterval() {
-        Scheduler oneMinuteIntervalScheduler = Scheduler.everyMinute();
+    void ofMinutes_twoMinutes_createsScheduler() {
+        Scheduler oneMinuteIntervalScheduler = Scheduler.ofMinutes(2);
 
-        assertThat(oneMinuteIntervalScheduler.interval()).isEqualTo(Duration.ofSeconds(60));
+        assertThat(oneMinuteIntervalScheduler.interval()).isEqualTo(Duration.ofSeconds(120));
+    }
+
+    @Test
+    void ofSeconds_tenSeconds_createsScheduler() {
+        Scheduler oneMinuteIntervalScheduler = Scheduler.ofSeconds(10);
+
+        assertThat(oneMinuteIntervalScheduler.interval()).isEqualTo(Duration.ofSeconds(10));
+    }
+
+    @Test
+    void ofMillis_hundredMillis_createsScheduler() {
+        Scheduler oneMinuteIntervalScheduler = Scheduler.ofMillis(100);
+
+        assertThat(oneMinuteIntervalScheduler.interval()).isEqualTo(Duration.ofMillis(100));
     }
 
     @Test

@@ -31,7 +31,7 @@ public class StartScene implements Scene {
 
     @Override
     public void populate(Environment environment) {
-        Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(40));
+        Scheduler scheduler = Scheduler.ofInterval(Duration.ofMillis(40));
         environment
             .enableAllFeatures()
             .addSystem(engine -> {

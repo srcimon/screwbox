@@ -11,7 +11,7 @@ import java.io.Serializable;
  * A simple scheduler to trigger timed actions.
  */
 public class Scheduler implements Serializable {
-
+//TODO use new short creation methods
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -26,22 +26,29 @@ public class Scheduler implements Serializable {
     /**
      * Creates a new {@link Scheduler} with the given interval.
      */
-    public static Scheduler withInterval(final Duration interval) {
+    public static Scheduler ofInterval(final Duration interval) {
         return new Scheduler(interval);
     }
 
     /**
-     * Creates a new {@link Scheduler} with one minute interval.
+     * Creates a new {@link Scheduler} with the specified interval in minutes.
      */
-    public static Scheduler everyMinute() {
-        return withInterval(Duration.ofSeconds(60));
+    public static Scheduler ofMinutes(final long minutes) {
+        return ofInterval(Duration.ofSeconds(60 * minutes));
     }
 
     /**
-     * Creates a new {@link Scheduler} with one second interval.
+     * Creates a new {@link Scheduler} with the specified interval in seconds.
      */
-    public static Scheduler everySecond() {
-        return withInterval(Duration.ofSeconds(1));
+    public static Scheduler ofSeconds(final long seconds) {
+        return ofInterval(Duration.ofSeconds(seconds));
+    }
+
+    /**
+     * Creates a new {@link Scheduler} with the specified interval in milliseconds.
+     */
+    public static Scheduler ofMillis(final long milliseconds) {
+        return ofInterval(Duration.ofMillis(milliseconds));
     }
 
     /**

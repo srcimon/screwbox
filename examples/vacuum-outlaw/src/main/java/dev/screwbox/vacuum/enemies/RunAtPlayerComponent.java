@@ -6,5 +6,5 @@ import dev.screwbox.core.utils.Scheduler;
 
 public class RunAtPlayerComponent implements Component {
 
-    public Scheduler refreshPathScheduler = Scheduler.withInterval(Duration.ofMillis(250));
+    public Scheduler refreshPathScheduler = Scheduler.ofInterval(Duration.ofMillis(250));
 }

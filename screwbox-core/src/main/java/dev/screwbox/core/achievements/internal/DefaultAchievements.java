@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAchievements implements Achievements, Updatable {
 
-    private final Scheduler lazyUpdateScheduler = Scheduler.withInterval(Duration.ofMillis(500));
+    private final Scheduler lazyUpdateScheduler = Scheduler.ofInterval(Duration.ofMillis(500));
     private final Engine engine;
     private final Map<Class<? extends AchievementDefinition>, List<DefaultAchievement>> achievementsByClass = new HashMap<>();
     private final List<DefaultAchievement> activeAchievements = new ArrayList<>();
