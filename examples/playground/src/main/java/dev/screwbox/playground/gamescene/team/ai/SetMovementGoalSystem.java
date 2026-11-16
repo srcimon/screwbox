@@ -25,7 +25,7 @@ public class SetMovementGoalSystem implements EntitySystem {
 
             }
 
-            //TODO create component to automatically chase an entity with id using path movement
+            //TODO PathMovementComponent should support entityId to auto chase entity
         }
     }
 }
