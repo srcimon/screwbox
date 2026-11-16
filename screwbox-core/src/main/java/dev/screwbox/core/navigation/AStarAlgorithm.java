@@ -35,14 +35,21 @@ public class AStarAlgorithm<T> implements PathfindingAlgorithm<T> {
     public List<T> findPath(final Graph<T> graph, final T start, final T end) {
         final var searchData = new AStarData<T>();
         searchData.costsToStart.put(start, 0.0);
-        searchData.costs.put(start, graph.traversalCost(start, end));
-        searchData.open.add(new PathfindingNode<>(start, null, searchData.costs.get(start)));
+        final double initialFCost = graph.traversalCost(start, end);
+        searchData.costs.put(start, initialFCost);
+        searchData.open.add(new PathfindingNode<>(start, null, initialFCost));
 
         while (!searchData.open.isEmpty()) {
             final PathfindingNode<T> currentNode = searchData.open.remove();
+
             if (currentNode.node().equals(end)) {
                 return currentNode.backtrack();
             }
+
+            if (currentNode.cost() > searchData.costs.getOrDefault(currentNode.node(), Double.POSITIVE_INFINITY)) {
+                continue;
+            }
+
             if (searchData.closed.add(currentNode.node())) {
                 processNode(graph, end, searchData, currentNode);
             }
