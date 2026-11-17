@@ -26,10 +26,9 @@ public class RespawnSystem implements EntitySystem {
         final List<Entity> revivedPlayer = new ArrayList<>();
         for (final var player : heaven.deadPlayers) {
             var config = player.get(TeamMemberComponent.class);
-            if (config.isDead && respawnConfig.respawnTimeout.addTo(config.deathTime).isBefore(engine.loop().time())) {
+            if (respawnConfig.respawnTimeout.addTo(config.deathTime).isBefore(engine.loop().time())) {
                 var availableAreas = respawnAreas.stream().filter(area -> area.get(RespawnAreaComponent.class).team.equals(config.team)).toList();
                 player.moveTo(ListUtil.pickRandom(availableAreas).bounds().randomPosition());
-                config.isDead = false;
                 engine.environment().addEntity(player);
                 revivedPlayer.add(player);
             }

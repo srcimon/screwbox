@@ -1,7 +1,6 @@
 package dev.screwbox.playground.gamescene;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -17,7 +16,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
-import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
@@ -45,8 +43,6 @@ public class GameScene implements Scene {
     public void onEnter(Engine engine) {
         engine.graphics().camera().setZoom(3);
     }
-
-    static Scheduler timer = Scheduler.ofInterval(Duration.ofMillis(1000));
 
     @Override
     public void populate(Environment environment) {

@@ -20,7 +20,6 @@ public class ShotSystem implements EntitySystem {
             for(final var target : targets) {
                 if(shot.bounds().intersects(target.bounds())) {
                     if(target.get(TeamMemberComponent.class).team != invulnerableTeam) {
-                        target.get(TeamMemberComponent.class).isDead = true;//TODO needed?
                         target.get(TeamMemberComponent.class).deathTime = engine.loop().time();
                         engine.environment().fetchSingletonComponent(HeavenComponent.class).deadPlayers.add(target);
                         engine.environment().remove(shot);
