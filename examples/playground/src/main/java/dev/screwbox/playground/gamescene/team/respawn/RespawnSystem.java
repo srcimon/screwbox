@@ -1,14 +1,14 @@
 package dev.screwbox.playground.gamescene.team.respawn;
 
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.utils.ListUtil;
+import dev.screwbox.playground.gamescene.team.health.HealthComponent;
 import dev.screwbox.playground.gamescene.team.HeavenComponent;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
-import dev.screwbox.playground.gamescene.team.ai.AttackComponent;
-import dev.screwbox.playground.gamescene.team.ai.BotComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,7 @@ public class RespawnSystem implements EntitySystem {
                 var availableAreas = respawnAreas.stream().filter(area -> area.get(RespawnAreaComponent.class).team.equals(config.team)).toList();
                 player.moveTo(ListUtil.pickRandom(availableAreas).bounds().randomPosition());
                 engine.environment().addEntity(player);
+                player.get(HealthComponent.class).health = Percent.max();
                 revivedPlayer.add(player);
             }
         }

@@ -5,6 +5,6 @@ import dev.screwbox.core.utils.Scheduler;
 
 public class AttackComponent implements Component {
 
-    public double range = 50;
-    public Scheduler scheduler = Scheduler.ofSeconds(2);
+    public double range = 140;
+    public Scheduler scheduler = Scheduler.ofMillis(500);
 }

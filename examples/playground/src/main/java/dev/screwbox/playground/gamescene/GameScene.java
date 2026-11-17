@@ -21,6 +21,7 @@ import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
 import dev.screwbox.playground.gamescene.mapimport.Wall;
+import dev.screwbox.playground.gamescene.team.health.HealthComponent;
 import dev.screwbox.playground.gamescene.team.HeavenComponent;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
 import dev.screwbox.playground.gamescene.team.ai.AttackComponent;
@@ -76,6 +77,7 @@ public class GameScene implements Scene {
                     .bounds(Bounds.$$(0, 0, 10, 10))
                     .add(new ColliderComponent())
                     .add(new AvoidanceComponent())
+                    .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
                     .add(new RenderComponent(Sprite.placeholder(team, Size.square(10))))
                     .add(new PhysicsComponent(), config -> config.friction = 10);

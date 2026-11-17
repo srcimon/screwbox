@@ -40,9 +40,9 @@ public class AttackSystem implements EntitySystem {
                             engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(attacker.position()));
                             engine.environment().addEntity(new Entity(engine.environment().allocateId())
                                 .add(new ShotComponent(), shot -> shot.team = memberConfig.team)
-                                .add(new RenderComponent(SpriteBundle.DOT_YELLOW, SpriteDrawOptions.scaled(0.5)))
+                                .add(new RenderComponent(SpriteBundle.DOT_YELLOW, SpriteDrawOptions.scaled(0.25)))
                                 .add(new PhysicsComponent(target.position().subtract(attacker.position()).length(120)), p -> p.ignoreCollisions = true)
-                                .add(new TransformComponent(Bounds.atPosition(attacker.position(), 8, 8)))
+                                .add(new TransformComponent(Bounds.atPosition(attacker.position(), 4,4)))
                             );
                         }
                     }
