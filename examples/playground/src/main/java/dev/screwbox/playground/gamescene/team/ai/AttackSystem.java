@@ -7,17 +7,13 @@ import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.core.graphics.options.LineDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
-
-import static dev.screwbox.core.graphics.Color.RED;
 
 public class AttackSystem implements EntitySystem {
 
@@ -29,24 +25,24 @@ public class AttackSystem implements EntitySystem {
         final var attackers = engine.environment().fetchAll(ATTACKERS);
         final var targets = engine.environment().fetchAll(TARGETS);
 
-        for(final var attacker : attackers) {
+        for (final var attacker : attackers) {
             var config = attacker.get(AttackComponent.class);
             var memberConfig = attacker.get(TeamMemberComponent.class);
-            for(final var target : targets.stream().filter(target -> target.get(TeamMemberComponent.class).team != memberConfig.team).toList()) {
-                if(attacker.position().distanceTo(target.position()) < config.range) {//TODO configure
+            for (final var target : targets.stream().filter(target -> target.get(TeamMemberComponent.class).team != memberConfig.team).toList()) {
+                if (attacker.position().distanceTo(target.position()) < config.range) {//TODO configure
                     boolean isFree = engine.navigation().raycastFrom(attacker.position())
                         .checkingFor(Archetype.ofSpacial(ColliderComponent.class))
                         .ignoringEntities(target, attacker)
                         .castingTo(target.position())
                         .noHit();
-                    if(isFree) {
-                        if(config.scheduler.isTick(engine.loop().time())) {
+                    if (isFree) {
+                        if (config.scheduler.isTick(engine.loop().time())) {
                             engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(attacker.position()));
                             engine.environment().addEntity(new Entity(engine.environment().allocateId())
-                                .add(new ShotComponent())
+                                .add(new ShotComponent(), shot -> shot.team = memberConfig.team)
                                 .add(new RenderComponent(SpriteBundle.DOT_YELLOW, SpriteDrawOptions.scaled(0.5)))
                                 .add(new PhysicsComponent(target.position().subtract(attacker.position()).length(120)), p -> p.ignoreCollisions = true)
-                                .add(new TransformComponent(Bounds.atPosition(attacker.position(), 16,16)))
+                                .add(new TransformComponent(Bounds.atPosition(attacker.position(), 16, 16)))
                             );
                         }
                     }
