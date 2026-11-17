@@ -23,7 +23,9 @@ import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
 import dev.screwbox.playground.gamescene.mapimport.Wall;
+import dev.screwbox.playground.gamescene.team.HeavenComponent;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.team.ai.AttackComponent;
 import dev.screwbox.playground.gamescene.team.ai.BotComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
@@ -70,6 +72,7 @@ public class GameScene implements Scene {
     }
 
     private void addPlayers(Environment environment) {
+        HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
@@ -88,11 +91,13 @@ public class GameScene implements Scene {
 
                 } else {
                     player.add(new BotComponent(), bot -> bot.state = BotComponent.State.FETCH_FLAG);
+                    player.add(new AttackComponent());
 
                 }
-                environment.addEntity(player);
+                store.deadPlayers.add(player);
             }
         }
+        environment.addEntity(new Entity().add(store));
     }
 
 }

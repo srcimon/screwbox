@@ -8,6 +8,7 @@ public class TeamMemberComponent implements Component {
 
     public String name;
     public Color team;
+    @Deprecated
     public boolean isDead = true;
     public Time deathTime = Time.unset();
 }
