@@ -5,6 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.team.ai.AttackComponent;
 
 public class RespawnSystem implements EntitySystem {
 
@@ -23,6 +24,7 @@ public class RespawnSystem implements EntitySystem {
                 teamMember.moveTo(ListUtil.pickRandom(availableAreas).bounds().randomPosition());
                 config.isDead = false;
                 config.lastRespawn = engine.loop().time();
+                teamMember.add(new AttackComponent());
             }
         }
     }

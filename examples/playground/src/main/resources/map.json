@@ -59,7 +59,7 @@
          "name":"objects",
          "objects":[
                 {
-                 "height":99,
+                 "height":30,
                  "id":7,
                  "name":"respawn-area",
                  "opacity":1,
@@ -72,12 +72,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":98,
-                 "x":148,
-                 "y":222
+                 "width":51,
+                 "x":455,
+                 "y":92
                 }, 
                 {
-                 "height":109.428618803717,
+                 "height":25.8737274644713,
                  "id":8,
                  "name":"respawn-area",
                  "opacity":1,
@@ -90,9 +90,9 @@
                  "rotation":0.37907014954147,
                  "type":"",
                  "visible":true,
-                 "width":86.7258749550033,
-                 "x":752,
-                 "y":245
+                 "width":67.5542754626745,
+                 "x":845.171179906631,
+                 "y":91.1268388026259
                 }, 
                 {
                  "height":0,

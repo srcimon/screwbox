@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
+import dev.screwbox.core.environment.physics.AttachmentComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraLeadComponent;
@@ -25,6 +26,7 @@ import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
 import dev.screwbox.playground.gamescene.mapimport.Wall;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.team.ai.AttackComponent;
 import dev.screwbox.playground.gamescene.team.ai.BotComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
@@ -90,6 +92,7 @@ public class GameScene implements Scene {
 
                 } else {
                     player.add(new BotComponent(), bot-> bot.state = BotComponent.State.FETCH_FLAG);
+
                 }
                 environment.addEntity(player);
             }
