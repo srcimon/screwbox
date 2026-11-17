@@ -42,7 +42,7 @@ public class AttackSystem implements EntitySystem {
                                 .add(new ShotComponent(), shot -> shot.team = memberConfig.team)
                                 .add(new RenderComponent(SpriteBundle.DOT_YELLOW, SpriteDrawOptions.scaled(0.5)))
                                 .add(new PhysicsComponent(target.position().subtract(attacker.position()).length(120)), p -> p.ignoreCollisions = true)
-                                .add(new TransformComponent(Bounds.atPosition(attacker.position(), 16, 16)))
+                                .add(new TransformComponent(Bounds.atPosition(attacker.position(), 8, 8)))
                             );
                         }
                     }

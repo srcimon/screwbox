@@ -3,7 +3,10 @@ package dev.screwbox.playground.gamescene.team.ai;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.rendering.CameraBoundsComponent;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+
+import static dev.screwbox.core.Vector.$;
 
 public class ShotSystem implements EntitySystem {
     private static final Archetype SHOTS = Archetype.ofSpacial(ShotComponent.class);
