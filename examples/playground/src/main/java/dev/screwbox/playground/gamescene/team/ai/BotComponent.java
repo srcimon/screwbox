@@ -1,6 +1,5 @@
 package dev.screwbox.playground.gamescene.team.ai;
 
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.utils.Scheduler;
 
