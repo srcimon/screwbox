@@ -7,8 +7,11 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagPointComponent;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+
+import java.util.List;
 
 public class SetMovementGoalSystem implements EntitySystem {
 
@@ -19,23 +22,22 @@ public class SetMovementGoalSystem implements EntitySystem {
         for (final var bot : engine.environment().fetchAll(BOTS)) {
             var botConfig = bot.get(BotComponent.class);
             if (botConfig.scheduler.isTick(engine.loop().time())) {
-                Integer targetId = switch (botConfig.state) {
-                    case FETCH_FLAG -> fetchEnemyFlagId(engine.environment(), bot);
+                List<Integer> targetIds = switch (botConfig.state) {
+                    case FETCH_FLAG -> findEnemyFlagPoints(engine.environment(), bot);
                 };
-                if(targetId != null) {
-                    bot.get(PathMovementComponent.class).targetId = targetId;
+                if (!targetIds.isEmpty()) {
+                    bot.get(PathMovementComponent.class).targetId = ListUtil.pickRandom(targetIds);
                 }
-
             }
         }
     }
 
-    private static Integer fetchEnemyFlagId(Environment environment, Entity bot) {
+    private static List<Integer> findEnemyFlagPoints(Environment environment, Entity bot) {
         final Color team = bot.get(TeamMemberComponent.class).team;
 
         return environment.fetchAllHaving(FlagPointComponent.class).stream()
             .filter(flag -> !flag.get(FlagPointComponent.class).team.equals(team))
             .map(Entity::forceId)
-            .findFirst().orElse(null);
+            .toList();
     }
 }
