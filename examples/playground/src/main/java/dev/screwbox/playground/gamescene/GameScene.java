@@ -21,11 +21,12 @@ import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
 import dev.screwbox.playground.gamescene.mapimport.Wall;
-import dev.screwbox.playground.gamescene.team.health.HealthComponent;
 import dev.screwbox.playground.gamescene.team.HeavenComponent;
+import dev.screwbox.playground.gamescene.team.HumanComponent;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
 import dev.screwbox.playground.gamescene.team.ai.AttackComponent;
 import dev.screwbox.playground.gamescene.team.ai.BotComponent;
+import dev.screwbox.playground.gamescene.team.health.HealthComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
 
@@ -69,6 +70,7 @@ public class GameScene implements Scene {
     }
 
     private void addPlayers(Environment environment) {
+        int viewportId = 0;
         HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
@@ -83,10 +85,11 @@ public class GameScene implements Scene {
                     .add(new PhysicsComponent(), config -> config.friction = 10);
                 if (i == 0 && gameConfig.humanTeam().equals(team)) {
                     player
+                        .add(new HumanComponent(viewportId))
                         .add(new MovementControlComponent(), m -> m.maxSpeed = 70)
                         .add(new CameraLeadComponent())
-                        .add(new CameraTargetComponent());
-
+                        .add(new CameraTargetComponent(viewportId, 2));
+                    viewportId++;
                 } else {
                     player.add(new BotComponent(), bot -> bot.state = BotComponent.State.FETCH_FLAG);
                     player.add(new AttackComponent());
