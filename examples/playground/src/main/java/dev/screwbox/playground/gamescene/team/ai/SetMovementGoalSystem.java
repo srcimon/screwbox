@@ -23,12 +23,10 @@ public class SetMovementGoalSystem implements EntitySystem {
                     case FETCH_FLAG -> fetchEnemyFlagId(engine.environment(), bot);
                 };
                 if(targetId != null) {
-                    engine.async().runExclusive(bot, () -> bot.get(PathMovementComponent.class).path = engine.navigation().findPath(bot.position(), engine.environment().fetchById(targetId).position()).orElse(null));
+                    bot.get(PathMovementComponent.class).targetId = targetId;
                 }
 
             }
-
-            //TODO PathMovementComponent should support entityId to auto chase entity
         }
     }
 
