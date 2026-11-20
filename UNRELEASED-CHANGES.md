@@ -22,4 +22,4 @@
 
 ### 📦 Dependency updates
 
-- Bump No de dependencies
+- Bump Node dependencies
