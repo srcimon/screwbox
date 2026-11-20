@@ -18,7 +18,7 @@ import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
 public class AttackSystem implements EntitySystem {
 
     private static final Archetype ATTACKERS = Archetype.ofSpacial(AttackComponent.class, TeamMemberComponent.class);
-    private static final Archetype TARGETS = Archetype.ofSpacial(TeamMemberComponent.class);
+    private static final Archetype TARGETS = Archetype.ofSpacial(TeamMemberComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -30,10 +30,11 @@ public class AttackSystem implements EntitySystem {
             var memberConfig = attacker.get(TeamMemberComponent.class);
             for (final var target : targets.stream().filter(target -> target.get(TeamMemberComponent.class).team != memberConfig.team).toList()) {
                 if (attacker.position().distanceTo(target.position()) < config.range) {//TODO configure
+                    final var leadPoistion = target.position().add(target.get(PhysicsComponent.class).velocity.multiply(0.5));
                     boolean isFree = engine.navigation().raycastFrom(attacker.position())
                         .checkingFor(Archetype.ofSpacial(ColliderComponent.class))
                         .ignoringEntities(target, attacker)
-                        .castingTo(target.position())
+                        .castingTo(leadPoistion)
                         .noHit();
                     if (isFree) {
                         if (config.scheduler.isTick(engine.loop().time())) {
@@ -41,8 +42,8 @@ public class AttackSystem implements EntitySystem {
                             engine.environment().addEntity(new Entity(engine.environment().allocateId())
                                 .add(new ShotComponent(), shot -> shot.team = memberConfig.team)
                                 .add(new RenderComponent(SpriteBundle.DOT_YELLOW, SpriteDrawOptions.scaled(0.25)))
-                                .add(new PhysicsComponent(target.position().subtract(attacker.position()).length(120)), p -> p.ignoreCollisions = true)
-                                .add(new TransformComponent(Bounds.atPosition(attacker.position(), 4,4)))
+                                .add(new PhysicsComponent(leadPoistion.subtract(attacker.position()).length(120)), p -> p.ignoreCollisions = true)
+                                .add(new TransformComponent(Bounds.atPosition(attacker.position(), 4, 4)))
                             );
                         }
                     }
