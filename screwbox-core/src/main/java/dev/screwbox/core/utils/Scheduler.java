@@ -6,28 +6,64 @@ import dev.screwbox.core.loop.Loop;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * A simple scheduler to trigger timed actions.
  */
 public class Scheduler implements Serializable {
-//TODO use new short creation methods
+
+    private static final Random RANDOM = new Random();
+
     @Serial
     private static final long serialVersionUID = 1L;
 
     private final Duration interval;
+    private final Duration jitter;
     private Time nextTick;
 
-    private Scheduler(final Duration interval) {
+    private Scheduler(final Duration interval, final Duration jitter) {
         this.interval = interval;
+        this.jitter = jitter;
         this.nextTick = Time.unset();
+    }
+
+    /**
+     * Creates a {@link Scheduler} with random {@link #jitter()} for every tick.
+     *
+     * @since 3.41.0
+     */
+    public static Scheduler ofRandomMillis(final long minMillis, final long maxMillis) {
+        return ofRandomInterval(Duration.ofMillis(minMillis), Duration.ofMillis(maxMillis));
+    }
+
+    /**
+     * Creates a {@link Scheduler} with random {@link #jitter()} for every tick.
+     *
+     * @since 3.41.0
+     */
+    public static Scheduler ofRandomSeconds(final long minSeconds, final long maxSeconds) {
+        return ofRandomInterval(Duration.ofSeconds(minSeconds), Duration.ofSeconds(maxSeconds));
+    }
+
+    /**
+     * Creates a {@link Scheduler} with random {@link #jitter()} for every tick.
+     *
+     * @since 3.41.0
+     */
+    public static Scheduler ofRandomInterval(final Duration minInterval, final Duration maxInterval) {
+        Validate.isTrue(maxInterval.isAtLeast(minInterval), "max interval must be at least or equal to min interval");
+
+        return new Scheduler(
+            Duration.ofNanos((long) ((minInterval.nanos() + maxInterval.nanos()) * 0.5)),
+            Duration.ofNanos((long) ((maxInterval.nanos() - minInterval.nanos()) * 0.5)));
     }
 
     /**
      * Creates a new {@link Scheduler} with the given interval.
      */
     public static Scheduler ofInterval(final Duration interval) {
-        return new Scheduler(interval);
+        return new Scheduler(interval, Duration.none());
     }
 
     /**
@@ -62,7 +98,13 @@ public class Scheduler implements Serializable {
     public boolean isTick(final Time time) {
         final boolean isNow = nextTick.isUnset() || time.isAfter(nextTick);
         if (isNow) {
-            nextTick = interval.addTo(time);
+            if (jitter.isNone()) {
+                nextTick = interval.addTo(time);
+            } else {
+                final long nextJitterNanos = RANDOM.nextLong(-jitter.nanos(), jitter.nanos());
+                nextTick = interval.add(Duration.ofNanos(nextJitterNanos)).addTo(time);
+            }
+
         }
         return isNow;
     }
@@ -82,5 +124,14 @@ public class Scheduler implements Serializable {
      */
     public Duration interval() {
         return interval;
+    }
+
+    /**
+     * Returns the jitter in the {@link #interval()} the {@link Scheduler} is using.
+     *
+     * @since 3.41.0
+     */
+    public Duration jitter() {
+        return jitter;
     }
 }

@@ -9,7 +9,7 @@ public class BotComponent implements Component {
         FETCH_FLAG
     }
 
-    public Scheduler scheduler = Scheduler.ofSeconds(1);//TODO randomizeOffset
+    public Scheduler scheduler = Scheduler.ofRandomMillis(600, 1400);
 
     public State state;
 }

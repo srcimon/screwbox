@@ -3,6 +3,7 @@
 - Pick random position from bounds
 - Avoid certain areas during pathfinding
 - Auto update path of `PathMovementComponent` by specifying a target id
+- Use jitter to unsynchronize schedulers
 
 ### 🪛 Bug Fixes
 
