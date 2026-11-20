@@ -8,7 +8,7 @@ import dev.screwbox.tiled.GameObject;
 public class SpawnArea implements Blueprint<GameObject> {
     @Override
     public Entity assembleFrom(GameObject object) {
-        return new Entity()
+        return new Entity(object.id())
             .bounds(object.bounds())
             .add(new RespawnAreaComponent(), config -> {
                 config.team = object.properties().getColor("team");

@@ -23,7 +23,7 @@ public class NavigationRegionComponent implements Component {
      * Creates a new instance using the default {@link #updateInterval}.
      */
     public NavigationRegionComponent() {
-        this(Scheduler.withInterval(Duration.ofMillis(200)));
+        this(Scheduler.ofInterval(Duration.ofMillis(200)));
     }
 
     /**

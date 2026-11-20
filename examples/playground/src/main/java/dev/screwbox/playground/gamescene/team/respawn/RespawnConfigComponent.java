@@ -5,5 +5,5 @@ import dev.screwbox.core.environment.Component;
 
 public class RespawnConfigComponent implements Component {
 
-    public Duration respawnTimeout = Duration.ofSeconds(2);
+    public Duration respawnTimeout = Duration.ofSeconds(5);
 }

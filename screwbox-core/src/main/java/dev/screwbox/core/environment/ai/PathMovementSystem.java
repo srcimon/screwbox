@@ -22,6 +22,11 @@ public class PathMovementSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final Entity mover : engine.environment().fetchAll(MOVERS)) {
             final var movement = mover.get(PathMovementComponent.class);
+            if (nonNull(movement.targetId) && movement.scheduler.isTick(engine.loop().time())) {
+                final Vector targetPosition = engine.environment().fetchById(movement.targetId).position();
+                engine.async().runExclusive(movement, () -> movement.path = engine.navigation().findPath(mover.position(), targetPosition).orElse(null));
+            }
+
             if (nonNull(movement.path)) {
                 updateMover(mover, movement);
             }

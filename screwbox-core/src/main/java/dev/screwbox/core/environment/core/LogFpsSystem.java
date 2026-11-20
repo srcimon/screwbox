@@ -7,7 +7,7 @@ import dev.screwbox.core.utils.Scheduler;
 
 public class LogFpsSystem implements EntitySystem {
 
-    private final Scheduler scheduler = Scheduler.withInterval(Duration.ofSeconds(2));
+    private final Scheduler scheduler = Scheduler.ofInterval(Duration.ofSeconds(2));
 
     private double sum;
     private long count;

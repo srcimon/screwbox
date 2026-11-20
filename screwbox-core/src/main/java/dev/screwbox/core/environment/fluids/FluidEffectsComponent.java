@@ -32,7 +32,7 @@ public class FluidEffectsComponent implements Component {
     /**
      * Scheduler for effect creation.
      */
-    public Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(10));
+    public Scheduler scheduler = Scheduler.ofInterval(Duration.ofMillis(10));
 
     /**
      * Randomness of the sound played.

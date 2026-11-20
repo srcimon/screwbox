@@ -1,12 +1,10 @@
 package dev.screwbox.playground.gamescene;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
-import dev.screwbox.core.environment.ai.PathMovementDebugSystem;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
@@ -18,14 +16,17 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
-import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagPointComponent;
 import dev.screwbox.playground.gamescene.mapimport.FlagPoint;
 import dev.screwbox.playground.gamescene.mapimport.Floor;
 import dev.screwbox.playground.gamescene.mapimport.SpawnArea;
 import dev.screwbox.playground.gamescene.mapimport.Wall;
+import dev.screwbox.playground.gamescene.team.HeavenComponent;
+import dev.screwbox.playground.gamescene.team.HumanComponent;
 import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.team.ai.AttackComponent;
+import dev.screwbox.playground.gamescene.team.ai.BotComponent;
+import dev.screwbox.playground.gamescene.team.health.HealthComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
 
@@ -45,29 +46,12 @@ public class GameScene implements Scene {
         engine.graphics().camera().setZoom(3);
     }
 
-    static Scheduler timer = Scheduler.withInterval(Duration.ofMillis(1000));
-
     @Override
     public void populate(Environment environment) {
         var map = Map.fromJson("map.json");
         environment
             .enableAllFeatures()
-            .addSystem(new PathMovementDebugSystem())
             .addSystem(new LogFpsSystem())
-            .addSystem(s -> {
-                if (timer.isTick()) {
-                    for (var P : s.environment().fetchAllHaving(TeamMemberComponent.class)) {
-                        if (!P.hasComponent(MovementControlComponent.class)) {
-                            s.async().runExclusive(P, () ->
-                                P.get(PathMovementComponent.class).path = s.navigation().findPath(
-                                    P.position(),
-                                    s.environment().fetchAllHaving(FlagPointComponent.class).getFirst().position()
-                                ).orElse(null)
-                            );
-                        }
-                    }
-                }
-            })
             .addSystemsFromPackage("dev.screwbox.playground.gamescene")
             .importSource(source(map)
                 .make(new MapConfig()))
@@ -86,6 +70,8 @@ public class GameScene implements Scene {
     }
 
     private void addPlayers(Environment environment) {
+        int viewportId = 0;
+        HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
@@ -93,19 +79,26 @@ public class GameScene implements Scene {
                     .bounds(Bounds.$$(0, 0, 10, 10))
                     .add(new ColliderComponent())
                     .add(new AvoidanceComponent())
+                    .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
                     .add(new RenderComponent(Sprite.placeholder(team, Size.square(10))))
                     .add(new PhysicsComponent(), config -> config.friction = 10);
                 if (i == 0 && gameConfig.humanTeam().equals(team)) {
                     player
+                        .add(new HumanComponent(viewportId))
                         .add(new MovementControlComponent(), m -> m.maxSpeed = 70)
                         .add(new CameraLeadComponent())
-                        .add(new CameraTargetComponent());
+                        .add(new CameraTargetComponent(viewportId, 2));
+                    viewportId++;
+                } else {
+                    player.add(new BotComponent(), bot -> bot.state = BotComponent.State.FETCH_FLAG);
+                    player.add(new AttackComponent());
 
                 }
-                environment.addEntity(player);
+                store.deadPlayers.add(player);
             }
         }
+        environment.addEntity(new Entity().add(store));
     }
 
 }

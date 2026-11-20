@@ -8,6 +8,5 @@ public class TeamMemberComponent implements Component {
 
     public String name;
     public Color team;
-    public boolean isDead = true;
-    public Time lastRespawn = Time.unset();
+    public Time deathTime = Time.unset();
 }

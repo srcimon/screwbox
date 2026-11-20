@@ -21,7 +21,7 @@ public class PatrolMovementSystem implements EntitySystem {
     private static final Archetype PATROLS = Archetype.of(PhysicsComponent.class, PatrolMovementComponent.class);
     private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
 
-    private final Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(50));
+    private final Scheduler scheduler = Scheduler.ofInterval(Duration.ofMillis(50));
 
     @Override
     public void update(final Engine engine) {

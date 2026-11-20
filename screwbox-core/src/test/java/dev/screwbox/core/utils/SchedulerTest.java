@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SchedulerTest {
 
@@ -13,14 +14,52 @@ class SchedulerTest {
 
     @BeforeEach
     void beforeEach() {
-        scheduler = Scheduler.withInterval(Duration.ofSeconds(5));
+        scheduler = Scheduler.ofInterval(Duration.ofSeconds(5));
     }
 
     @Test
-    void everyMinute_createsSchedulerWithOneMinuteInterval() {
-        Scheduler oneMinuteIntervalScheduler = Scheduler.everyMinute();
+    void ofRandomMillis_validInterval_returnsScheduler() {
+        Scheduler randomScheduler = Scheduler.ofRandomMillis(600, 1400);
 
-        assertThat(oneMinuteIntervalScheduler.interval()).isEqualTo(Duration.ofSeconds(60));
+        assertThat(randomScheduler.interval()).isEqualTo(Duration.ofMillis(1000));
+        assertThat(randomScheduler.jitter()).isEqualTo(Duration.ofMillis(400));
+    }
+
+    @Test
+    void ofRandomMillis_minIntervalLongerThanMaxInterval_throwsException() {
+        assertThatThrownBy(() -> Scheduler.ofRandomMillis(1400, 600))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("max interval must be at least or equal to min interval");
+    }
+
+    @Test
+    void ofRandomSeconds_validInterval_returnsScheduler() {
+        Scheduler randomScheduler = Scheduler.ofRandomSeconds(4, 8);
+
+        assertThat(randomScheduler.interval()).isEqualTo(Duration.ofSeconds(6));
+        assertThat(randomScheduler.jitter()).isEqualTo(Duration.ofSeconds(2));
+    }
+
+    @Test
+    void ofMinutes_twoMinutes_createsScheduler() {
+        Scheduler oneMinuteIntervalScheduler = Scheduler.ofMinutes(2);
+
+        assertThat(oneMinuteIntervalScheduler.interval()).isEqualTo(Duration.ofSeconds(120));
+    }
+
+    @Test
+    void ofSeconds_tenSeconds_createsScheduler() {
+        Scheduler oneMinuteIntervalScheduler = Scheduler.ofSeconds(10);
+
+        assertThat(oneMinuteIntervalScheduler.interval()).isEqualTo(Duration.ofSeconds(10));
+        assertThat(oneMinuteIntervalScheduler.jitter().isNone()).isTrue();
+    }
+
+    @Test
+    void ofMillis_hundredMillis_createsScheduler() {
+        Scheduler oneMinuteIntervalScheduler = Scheduler.ofMillis(100);
+
+        assertThat(oneMinuteIntervalScheduler.interval()).isEqualTo(Duration.ofMillis(100));
     }
 
     @Test
@@ -35,6 +74,16 @@ class SchedulerTest {
         assertThat(isTick).isTrue();
     }
 
+    @Test
+    void isTick_randomTimerAfterRandomInterval_isTrue() {
+        var randomScheduler = Scheduler.ofRandomMillis(1000, 8000);
+
+        assertThat(randomScheduler.isTick(Time.now())).isTrue(); // uncheck initial tick
+
+        assertThat(randomScheduler.isTick(Time.now())).isFalse();
+        assertThat(randomScheduler.isTick(Time.now().addSeconds(20))).isTrue();
+
+    }
     @Test
     void isTick_later_isTrueAndResetsTimer() {
         Time later = Time.now().addSeconds(20);

@@ -19,7 +19,7 @@ public class EnemyMovementSystem implements EntitySystem {
     private static final Archetype ENEMIES = Archetype.of(
             PhysicsComponent.class, RenderComponent.class, PathMovementComponent.class);
 
-    private final Scheduler scheduler = Scheduler.withInterval(Duration.ofMillis(250));
+    private final Scheduler scheduler = Scheduler.ofInterval(Duration.ofMillis(250));
 
     @Override
     public void update(final Engine engine) {

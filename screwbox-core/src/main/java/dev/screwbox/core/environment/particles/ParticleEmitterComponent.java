@@ -32,7 +32,7 @@ public class ParticleEmitterComponent implements Component {
     }
 
     public ParticleEmitterComponent(final Duration interval, final SpawnMode spawnMode, final ParticleOptions particleOptions) {
-        this.scheduler = Scheduler.withInterval(interval);
+        this.scheduler = Scheduler.ofInterval(interval);
         this.spawnMode = spawnMode;
         this.particleOptions = particleOptions;
     }
