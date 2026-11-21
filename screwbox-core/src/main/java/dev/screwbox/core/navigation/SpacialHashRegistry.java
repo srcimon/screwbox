@@ -1,5 +1,6 @@
 package dev.screwbox.core.navigation;
 
+import dev.screwbox.core.HasBounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.utils.MathUtil;
@@ -22,13 +23,13 @@ import static java.util.Objects.nonNull;
  * @see SpacialIndex
  * @since 3.27.0
  */
-public class SpacialHashRegistry {
+public class SpacialHashRegistry<T extends HasBounds> {
 
     private final double cellSize;
     private final int tableSizeMinusOne;
-    private final List<Entity>[] entityTable;
+    private final List<T>[] entityTable;
 
-    public SpacialHashRegistry(final double cellSize, final List<Entity> entities) {
+    public SpacialHashRegistry(final double cellSize, final List<T> entities) {
         Validate.positive(cellSize, "cell size must be positive");
         this.cellSize = cellSize;
         // tableSize must be 2^x to avoid cpu heavy modulo on index calculation
@@ -48,9 +49,9 @@ public class SpacialHashRegistry {
      * May also contain {@link Entity entities} far away from the position, so manual filtering may be required
      * depending on the use case. Does not consider {@link Entity#bounds() bounds}.
      */
-    public List<Entity> queryBucket(final Vector position) {
+    public List<T> queryBucket(final Vector position) {
         final int index = createIndex(position);
-        final List<Entity> entities = entityTable[index];
+        final List<T> entities = entityTable[index];
         return isNull(entities)
             ? emptyList()
             : entities;
@@ -61,8 +62,8 @@ public class SpacialHashRegistry {
      * May also contain {@link Entity entities} far away from the position, so manual filtering may be required
      * depending on the use case. Does not consider {@link Entity#bounds() bounds}.
      */
-    public List<Entity> queryLocalBuckets(final Vector position) {
-        final List<Entity> found = new ArrayList<>();
+    public List<T> queryLocalBuckets(final Vector position) {
+        final List<T> found = new ArrayList<>();
         final long gridX = toGrid(position.x());
         final long gridY = toGrid(position.y());
         final Set<Integer> alreadyProcessedIndexes = new HashSet<>();
@@ -72,7 +73,7 @@ public class SpacialHashRegistry {
                 int index = createIndex(x, y);
                 if (!alreadyProcessedIndexes.contains(index)) {
                     alreadyProcessedIndexes.add(index);
-                    final List<Entity> entities = entityTable[index];
+                    final List<T> entities = entityTable[index];
                     if (nonNull(entities)) {
                         found.addAll(entities);
                     }
@@ -105,8 +106,8 @@ public class SpacialHashRegistry {
         return (long) Math.floor(value / cellSize);
     }
 
-    private void registerToKey(final Entity entity, final int key) {
-        List<Entity> entities = entityTable[key];
+    private void registerToKey(final T entity, final int key) {
+        List<T> entities = entityTable[key];
         if (isNull(entities)) {
             entities = new ArrayList<>();
         }

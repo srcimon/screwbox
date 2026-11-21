@@ -13,11 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SpacialIndexTest {
 
-    SpacialIndex spacialIndex;
+    SpacialIndex<Entity> spacialIndex;
 
     @BeforeEach
     void setUp() {
-        spacialIndex = new SpacialIndex();
+        spacialIndex = new SpacialIndex<>();
     }
 
     @Test

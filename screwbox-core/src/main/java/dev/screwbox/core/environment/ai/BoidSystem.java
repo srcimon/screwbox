@@ -24,7 +24,7 @@ public class BoidSystem implements EntitySystem {
     private static final Archetype BOIDS = Archetype.ofSpacial(PhysicsComponent.class, BoidComponent.class);
     private static final Archetype OBSTACLES = Archetype.ofSpacial(BoidObstacleComponent.class);
 
-    private final SpacialIndex spacialIndex = new SpacialIndex();
+    private final SpacialIndex<Entity> spacialIndex = new SpacialIndex<>();
 
     @Override
     public void update(final Engine engine) {
