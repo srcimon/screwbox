@@ -18,13 +18,14 @@ public class PathMovementSystem implements EntitySystem {
 
     private static final Archetype MOVERS = Archetype.ofSpacial(PathMovementComponent.class, PhysicsComponent.class);
 
+    //TODO update tests
     @Override
     public void update(final Engine engine) {
         for (final Entity mover : engine.environment().fetchAll(MOVERS)) {
             final var movement = mover.get(PathMovementComponent.class);
             if (nonNull(movement.targetId) && movement.scheduler.isTick(engine.loop().time())) {
-                final Vector targetPosition = engine.environment().fetchById(movement.targetId).position();
-                engine.async().runExclusive(movement, () -> movement.path = engine.navigation().findPath(mover.position(), targetPosition).orElse(null));
+                engine.environment().tryFetchById(movement.targetId).ifPresent(
+                    targetEntity -> engine.async().runExclusive(movement, () -> movement.path = engine.navigation().findPath(mover.position(), targetEntity.position()).orElse(null)));
             }
 
             if (nonNull(movement.path)) {

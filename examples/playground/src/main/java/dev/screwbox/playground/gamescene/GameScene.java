@@ -92,7 +92,7 @@ public class GameScene implements Scene {
                         .add(new CameraTargetComponent(viewportId, 2));
                     viewportId++;
                 } else {
-                    player.add(new BotComponent(), bot -> bot.state = BotComponent.State.FETCH_FLAG);
+                    player.add(new BotComponent());
                     player.add(new AttackComponent());
 
                 }

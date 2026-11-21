@@ -18,7 +18,7 @@ public class AiDebugSystem implements EntitySystem {
     public void update(Engine engine) {
         TextDrawOptions options = TextDrawOptions.font(FontBundle.SKINNY_SANS).alignCenter().scale(0.5);
         for(final var bot : engine.environment().fetchAll(BOTS)) {
-            engine.graphics().world().drawText(bot.position().addY(10), bot.get(BotComponent.class).state.name(), options);
+//            engine.graphics().world().drawText(bot.position().addY(10), bot.get(BotComponent.class).state.name(), options);
         }
     }
 }
