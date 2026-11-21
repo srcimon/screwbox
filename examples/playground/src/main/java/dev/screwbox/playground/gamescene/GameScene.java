@@ -17,16 +17,16 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.blueprints.FlagPoint;
 import dev.screwbox.playground.gamescene.blueprints.Floor;
 import dev.screwbox.playground.gamescene.blueprints.SpawnArea;
 import dev.screwbox.playground.gamescene.blueprints.Wall;
+import dev.screwbox.playground.gamescene.map.MapConfig;
+import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
 import dev.screwbox.playground.gamescene.teams.HumanComponent;
 import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
 import dev.screwbox.playground.gamescene.teams.ai.AttackComponent;
-import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
@@ -83,7 +83,8 @@ public class GameScene implements Scene {
                     .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
                     .add(new RenderComponent(Sprite.placeholder(team, Size.square(10))))
-                    .add(new PhysicsComponent(), config -> config.friction = 10);
+                    .add(new PhysicsComponent(), config -> config.friction = 10)
+                    .add(new AttackComponent());
                 if (i == 0 && gameConfig.humanTeam().equals(team)) {
                     player
                         .add(new HumanComponent(viewportId))
@@ -93,7 +94,7 @@ public class GameScene implements Scene {
                     viewportId++;
                 } else {
                     player.add(new BotComponent());
-                    player.add(new AttackComponent());
+
 
                 }
                 store.deadPlayers.add(player);
