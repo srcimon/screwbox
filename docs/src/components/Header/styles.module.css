@@ -10,7 +10,6 @@
 .heroBanner::before {
     content: "";
     position: absolute;
-    /* Extra bleed (-6%) prevents empty edges from showing when the image pans */
     inset: -6%;
     background-image:
             radial-gradient(circle at center, rgba(16, 16, 24, 0.55) 0%, rgba(10, 10, 16, 0.88) 100%),
@@ -20,8 +19,8 @@
     z-index: -1;
     will-change: transform, filter;
 
-
-    animation: sciFiDrift 14s ease-in-out infinite alternate;
+    /* Seamless closed loop: 0% and 100% match so it never bounces or snaps */
+    animation: sciFiDrift 24s ease-in-out infinite;
 }
 
 /* Title Neon Glow */
@@ -29,19 +28,23 @@
     text-shadow: 0 0 18px rgba(236, 72, 153, 0.65), 0 0 36px rgba(168, 85, 247, 0.45);
 }
 
-/* Dynamic Camera Pan + Deep Zoom + Energy Pulse */
+/* Continuous Orbital Pan + Smooth Zoom Loop */
 @keyframes sciFiDrift {
-    0% {
-        transform: scale(1.02) translate(-2%, -1.5%);
-        filter: brightness(0.9) contrast(1.05);
+    0%, 100% {
+        transform: scale(1.04) translate(-2%, -1.5%);
+        filter: brightness(0.95) contrast(1.08) saturate(1.05);
+    }
+    25% {
+        transform: scale(1.12) translate(1.8%, -1%);
+        filter: brightness(1.15) contrast(1.2) saturate(1.25);
     }
     50% {
-        transform: scale(1.12) translate(2%, 1%);
-        filter: brightness(1.18) contrast(1.2) saturate(1.25);
-    }
-    100% {
-        transform: scale(1.18) translate(-1.5%, 2%);
+        transform: scale(1.18) translate(2%, 1.8%);
         filter: brightness(1.05) contrast(1.15) saturate(1.15);
+    }
+    75% {
+        transform: scale(1.1) translate(-1.8%, 1.5%);
+        filter: brightness(1.18) contrast(1.22) saturate(1.25);
     }
 }
 
@@ -53,9 +56,9 @@
 }
 
 @media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+    .heroBanner {
+        padding: 2rem;
+    }
 }
 
 .buttons {
