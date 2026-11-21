@@ -1,44 +1,57 @@
 package dev.screwbox.core;
 
-import dev.screwbox.core.environment.Entity;
-import dev.screwbox.core.environment.core.TransformComponent;
-
+/**
+ * Mixins bounds related functions to anything that has {@link Bounds}.
+ *
+ * @since 3.41.0
+ */
 @FunctionalInterface
 public interface HasBounds {
 
+    /**
+     * Bounds of the mared object.
+     */
     Bounds bounds();
 
     /**
-     * Returns {@link Bounds#origin()} if {@link Entity} has {@link TransformComponent}.
-     *
-     * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
+     * Returns {@link Bounds#origin()}.
      */
-    default  Vector origin() {
+    default Vector origin() {
         return bounds().origin();
     }
 
     /**
-     * Returns {@link Bounds#position()} if {@link Entity} has {@link TransformComponent}.
-     *
-     * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
+     * Returns {@link Bounds#position()}.
      */
     default Vector position() {
         return bounds().position();
     }
 
-    default boolean intersects(HasBounds other) {
-        return bounds().intersects(other.bounds());
+    /**
+     * Checks if object intersects other.
+     */
+    default boolean intersects(final HasBounds other) {
+        return intersects(other.bounds());
     }
 
-    default boolean intersects(Bounds bounds) {
+    /**
+     * Checks if object intersects {@link Bounds}.
+     */
+    default boolean intersects(final Bounds bounds) {
         return bounds().intersects(bounds);
     }
 
-    default boolean touches(HasBounds other) {
-        return bounds().touches(other.bounds());
+    /**
+     * Checks if object touches {@link Bounds}.
+     */
+    default boolean touches(final HasBounds other) {
+        return touches(other.bounds());
     }
 
-    default boolean touches(Bounds bounds) {
+    /**
+     * Checks if object touches {@link Bounds}.
+     */
+    default boolean touches(final Bounds bounds) {
         return bounds().touches(bounds);
     }
 
