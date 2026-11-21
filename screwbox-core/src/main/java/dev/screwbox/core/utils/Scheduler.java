@@ -134,4 +134,15 @@ public class Scheduler implements Serializable {
     public Duration jitter() {
         return jitter;
     }
+
+    /**
+     * Skips the {@link Scheduler#isTick() tick} until the specified time.
+     *
+     * @since 3.41.0
+     */
+    public void skipUntil(final Time time) {
+        if (nextTick.isBefore(time)) {
+            nextTick = time;
+        }
+    }
 }

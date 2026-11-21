@@ -15,18 +15,19 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.blueprints.FlagPoint;
 import dev.screwbox.playground.gamescene.blueprints.Floor;
 import dev.screwbox.playground.gamescene.blueprints.SpawnArea;
 import dev.screwbox.playground.gamescene.blueprints.Wall;
+import dev.screwbox.playground.gamescene.map.MapConfig;
+import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
 import dev.screwbox.playground.gamescene.teams.HumanComponent;
 import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
 import dev.screwbox.playground.gamescene.teams.ai.AttackComponent;
-import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
@@ -50,6 +51,7 @@ public class GameScene implements Scene {
     @Override
     public void populate(Environment environment) {
         var map = Map.fromJson("map.json");
+
         environment
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
@@ -67,10 +69,11 @@ public class GameScene implements Scene {
                 .assign("flag-point", new FlagPoint())
             );
 
-        addPlayers(environment);
+        final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
+        addPlayers(playerDrawOrder, environment);
     }
 
-    private void addPlayers(Environment environment) {
+    private void addPlayers(int drawOrder, Environment environment) {
         int viewportId = 0;
         HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
@@ -82,8 +85,9 @@ public class GameScene implements Scene {
                     .add(new AvoidanceComponent())
                     .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
-                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(10))))
-                    .add(new PhysicsComponent(), config -> config.friction = 10);
+                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(drawOrder)))
+                    .add(new PhysicsComponent(), config -> config.friction = 10)
+                    .add(new AttackComponent());
                 if (i == 0 && gameConfig.humanTeam().equals(team)) {
                     player
                         .add(new HumanComponent(viewportId))
@@ -92,8 +96,8 @@ public class GameScene implements Scene {
                         .add(new CameraTargetComponent(viewportId, 2));
                     viewportId++;
                 } else {
-                    player.add(new BotComponent(), bot -> bot.state = BotComponent.State.FETCH_FLAG);
-                    player.add(new AttackComponent());
+                    player.add(new BotComponent());
+
 
                 }
                 store.deadPlayers.add(player);

@@ -1,6 +1,7 @@
 package dev.screwbox.core.utils;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.HasBounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
@@ -32,7 +33,7 @@ import static java.util.stream.Collectors.toSet;
  * @see Environment#importSource(ImportOptions)
  * @since 2.10.0
  */
-public final class TileMap<T> {
+public final class TileMap<T> implements HasBounds {
 
     private static final Size DEFAULT_TILE_SIZE = Size.square(16);
 

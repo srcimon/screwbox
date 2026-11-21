@@ -880,6 +880,17 @@ class DefaultEnvironmentTest {
             .hasMessage("identifier must be not be same than bake component");
     }
 
+    @Test
+    void hasId_noEntityWithId_isFalse() {
+        assertThat(environment.hasId(41811)).isFalse();
+    }
+
+    @Test
+    void hasId_hasEntityWithId_isTrue() {
+        environment.addEntity(new Entity(41811));
+        assertThat(environment.hasId(41811)).isTrue();
+    }
+
     @AfterEach
     void afterEach() throws IOException {
         if (Files.exists(SAVEGAME)) {

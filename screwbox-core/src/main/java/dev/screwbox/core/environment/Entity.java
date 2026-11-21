@@ -1,6 +1,7 @@
 package dev.screwbox.core.environment;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.HasBounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.core.TransformComponent;
 
@@ -23,7 +24,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-public class Entity implements Serializable {
+public class Entity implements HasBounds, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -252,28 +253,11 @@ public class Entity implements Serializable {
     }
 
     /**
-     * Returns {@link Bounds#origin()} if {@link Entity} has {@link TransformComponent}.
-     *
-     * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
-     */
-    public Vector origin() {
-        return bounds().origin();
-    }
-
-    /**
-     * Returns {@link Bounds#position()} if {@link Entity} has {@link TransformComponent}.
-     *
-     * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
-     */
-    public Vector position() {
-        return bounds().position();
-    }
-
-    /**
      * Returns {@link Bounds} if {@link Entity} has {@link TransformComponent}.
      *
      * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
      */
+    @Override
     public Bounds bounds() {
         if (isNull(transform)) {
             throw new IllegalStateException("entity has no TransformComponent");

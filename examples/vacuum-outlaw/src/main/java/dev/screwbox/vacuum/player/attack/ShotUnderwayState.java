@@ -15,14 +15,14 @@ public class ShotUnderwayState implements EntityState {
     @Override
     public EntityState update(Entity entity, Engine engine) {
         for (final var enemy : engine.environment().fetchAll(ENEMIES)) {
-            if (entity.bounds().touches(enemy.bounds())) {
+            if (entity.touches(enemy)) {
                 enemy.addIfNotPresent(new HurtComponent());
                 return new ShotDissolvingState();
             }
         }
 
         return entity.get(CollisionSensorComponent.class).collidedEntities.isEmpty()
-                ? this
-                : new ShotDissolvingState();
+            ? this
+            : new ShotDissolvingState();
     }
 }

@@ -4,6 +4,7 @@
 - Avoid certain areas during pathfinding
 - Auto update path of `PathMovementComponent` by specifying a target id
 - Use jitter to unsynchronize schedulers
+- Check if environment contains entity with specified id
 
 ### 🪛 Bug Fixes
 
@@ -19,6 +20,7 @@
 - Slightly improved performance for updating pathfinding grid
 - Made `ObstacleComponent` bakeable
 - Renamed scheduler method names consistently
+- Introduced mixin interface `HasBounds` to mix in bounds related functions
 
 ### 📦 Dependency updates
 

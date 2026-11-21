@@ -42,7 +42,7 @@ public class PhysicsSystem implements EntitySystem {
     private static List<CollisionCheck> fetchOrderedCollisionChecks(final Entity entity, final List<Entity> colliders) {
         final List<CollisionCheck> collisionChecks = new ArrayList<>();
         for (final var collider : colliders) {
-            if (entity != collider && entity.bounds().intersects(collider.bounds())) {
+            if (entity != collider && entity.intersects(collider)) {
                 final CollisionCheck check = new CollisionCheck(entity, collider);
                 if (check.isNoOneWayFalsePositive()) {
                     collisionChecks.add(check);

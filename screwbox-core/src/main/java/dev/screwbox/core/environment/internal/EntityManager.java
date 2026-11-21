@@ -137,6 +137,10 @@ public class EntityManager implements EntityListener {
         }
     }
 
+    public boolean hasId(final int id) {
+        return entitiesById.containsKey(id);
+    }
+
     public Entity findById(final int id) {
         return entitiesById.get(id);
     }
