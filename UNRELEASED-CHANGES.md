@@ -23,3 +23,4 @@
 ### 📦 Dependency updates
 
 - Bump Node dependencies
+- Bump actions/upload-artifact to v7
