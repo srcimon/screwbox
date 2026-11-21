@@ -45,12 +45,12 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.graphics().camera().setZoom(3);
+        engine.graphics().camera().setZoom(4);
     }
 
     @Override
     public void populate(Environment environment) {
-        var map = Map.fromJson("map.json");
+        var map = Map.fromJson(gameConfig.map());
 
         environment
             .enableAllFeatures()
