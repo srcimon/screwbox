@@ -10,7 +10,7 @@
 .heroBanner::before {
     content: "";
     position: absolute;
-    inset: 0%;
+    inset: -1%;
     background-image:
             radial-gradient(circle at center, rgba(16, 16, 24, 0.55) 40%, rgba(10, 10, 16, 0.88) 100%),
             url("@site/static/img/banner.png");
@@ -18,20 +18,14 @@
     background-position: center;
     z-index: -1;
     will-change: transform, filter;
-
     animation: sciFiDrift 24s ease-in-out infinite;
 }
 
-/* Title Neon Glow */
-.heroBanner h1 {
-    text-shadow: 0 0 18px rgba(236, 72, 153, 0.65), 0 0 36px rgba(168, 85, 247, 0.45);
-}
 
-/* Continuous Orbital Pan + Smooth Zoom Loop */
 @keyframes sciFiDrift {
     0%, 100% {
         transform: scale(1.04) translate(-2%, -1.5%);
-        filter: brightness(0.95) contrast(1.08) saturate(1.05);
+        filter: brightness(0.95) contrast(1.08) saturate(0.8);
     }
     25% {
         transform: scale(1.12) translate(1.8%, -1%);
@@ -47,7 +41,6 @@
     }
 }
 
-/* Accessibility: disables motion for users sensitive to animation */
 @media (prefers-reduced-motion: reduce) {
     .heroBanner::before {
         animation: none;
@@ -68,4 +61,8 @@
 
 a {
     margin: 0.25em;
+}
+
+.heroBanner h1 {
+    text-shadow: 0 0 18px rgba(236, 72, 153, 0.65), 0 0 36px rgba(168, 85, 247, 0.45);
 }
