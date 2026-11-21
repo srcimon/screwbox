@@ -15,7 +15,7 @@ public class EntityNotInRangeFilter implements Predicate<Entity> {
 
     @Override
     public boolean test(final Entity entity) {
-        return !range.intersects(entity.bounds());
+        return !entity.intersects(range);
     }
 
 }

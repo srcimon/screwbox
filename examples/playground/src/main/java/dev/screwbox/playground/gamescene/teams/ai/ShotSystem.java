@@ -4,8 +4,8 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.playground.gamescene.map.ShotObstacleComponent;
-import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 
 public class ShotSystem implements EntitySystem {
     private static final Archetype SHOTS = Archetype.ofSpacial(ShotComponent.class);
@@ -15,12 +15,12 @@ public class ShotSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         final var shots = engine.environment().fetchAll(SHOTS);
-        for(final var shot : shots) {
+        for (final var shot : shots) {
             ShotComponent shotComponent = shot.get(ShotComponent.class);
             var invulnerableTeam = shotComponent.team;
-            for(final var target : engine.environment().fetchAll(TARGETS)) {
-                if(shot.bounds().intersects(target.bounds())) {
-                    if(target.get(TeamMemberComponent.class).team != invulnerableTeam) {
+            for (final var target : engine.environment().fetchAll(TARGETS)) {
+                if (shot.intersects(target)) {
+                    if (target.get(TeamMemberComponent.class).team != invulnerableTeam) {
                         var healthComponent = target.get(HealthComponent.class);
                         healthComponent.health = healthComponent.health.subtract(shotComponent.damage.value());
 
@@ -28,8 +28,8 @@ public class ShotSystem implements EntitySystem {
                     }
                 }
             }
-            for(final var collider : engine.environment().fetchAll(OBSTACLES)) {
-                if(collider.bounds().intersects(shot.bounds())) {
+            for (final var collider : engine.environment().fetchAll(OBSTACLES)) {
+                if (collider.intersects(shot)) {
                     engine.environment().remove(shot);
                 }
             }

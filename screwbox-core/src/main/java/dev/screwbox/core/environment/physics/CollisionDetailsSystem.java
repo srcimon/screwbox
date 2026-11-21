@@ -69,7 +69,7 @@ public class CollisionDetailsSystem implements EntitySystem {
 
     private static Entity getSensorCollision(final Bounds sensor, final List<Entity> collisions) {
         for (final var collision : collisions) {
-            if (sensor.intersects(collision.bounds())) {
+            if (collision.intersects(sensor)) {
                 return collision;
             }
         }
