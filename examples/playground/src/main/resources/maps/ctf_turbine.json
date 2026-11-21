@@ -151,7 +151,7 @@
         }, 
         {
          "firstgid":33,
-         "source":"cyber.json"
+         "source":"../tilesets/turbine_floors.json"
         }],
  "tilewidth":16,
  "type":"map",
