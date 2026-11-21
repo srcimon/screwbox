@@ -15,6 +15,7 @@ import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.gamescene.blueprints.FlagPoint;
@@ -68,10 +69,10 @@ public class GameScene implements Scene {
                 .assign("flag-point", new FlagPoint())
             );
 
-        addPlayers(environment);
+        addPlayers(map.layerWithName("objects").get().order(), environment);
     }
 
-    private void addPlayers(Environment environment) {
+    private void addPlayers(int drawOrder, Environment environment) {
         int viewportId = 0;
         HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
@@ -83,7 +84,7 @@ public class GameScene implements Scene {
                     .add(new AvoidanceComponent())
                     .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
-                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(10))))
+                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(drawOrder)))
                     .add(new PhysicsComponent(), config -> config.friction = 10)
                     .add(new AttackComponent());
                 if (i == 0 && gameConfig.humanTeam().equals(team)) {
