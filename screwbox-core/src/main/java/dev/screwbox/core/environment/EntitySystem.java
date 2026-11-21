@@ -7,13 +7,16 @@ import dev.screwbox.core.graphics.Sprite;
 
 /**
  * EntitySystems implement the game logic. Every system has a single purpose.
- * E.g. applying gravity ({@link GravitySystem}) or rendering all {@link Sprite}s ({@link RenderSystem}).
+ * E.g. applying gravity ({@link GravitySystem}) or rendering all {@link Sprite sprites} ({@link RenderSystem}).
  * <p>
- * An {@link EntitySystem} can be annotated with {@link Order} to determine the order of execution.
+ * An {@link EntitySystem} can be annotated with {@link ExecutionOrder} to determine the order of execution.
  */
 @FunctionalInterface
 public interface EntitySystem {
 
+    /**
+     * Run the logic within the {@link EntitySystem}.
+     */
     void update(Engine engine);
 
 }
