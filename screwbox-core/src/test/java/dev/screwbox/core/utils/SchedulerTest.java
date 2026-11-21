@@ -84,6 +84,7 @@ class SchedulerTest {
         assertThat(randomScheduler.isTick(Time.now().addSeconds(20))).isTrue();
 
     }
+
     @Test
     void isTick_later_isTrueAndResetsTimer() {
         Time later = Time.now().addSeconds(20);
@@ -115,6 +116,24 @@ class SchedulerTest {
     @Test
     void equals_different_isFalse() {
         assertThat(Time.atNanos(4000)).isNotEqualTo(Time.atNanos(4001));
+    }
+
+    @Test
+    void skipUntil_timeInFuture_noTickBefore() {
+        Time targetTime = Duration.ofSeconds(10).addTo(Time.now());
+
+        scheduler.skipUntil(targetTime);
+
+        assertThat(scheduler.isTick()).isFalse();
+    }
+
+    @Test
+    void skipUntil_timeInPast_leavesSchedulerUnchanged() {
+        Time targetTime = Duration.ofSeconds(-10).addTo(Time.now());
+
+        scheduler.skipUntil(targetTime);
+
+        assertThat(scheduler.isTick()).isTrue();
     }
 
 }

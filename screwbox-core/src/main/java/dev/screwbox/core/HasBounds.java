@@ -54,6 +54,4 @@ public interface HasBounds {
     default boolean touches(final Bounds bounds) {
         return bounds().touches(bounds);
     }
-
-
 }
