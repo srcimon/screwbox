@@ -69,7 +69,8 @@ public class GameScene implements Scene {
                 .assign("flag-point", new FlagPoint())
             );
 
-        addPlayers(map.layerWithName("objects").get().order(), environment);
+        final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
+        addPlayers(playerDrawOrder, environment);
     }
 
     private void addPlayers(int drawOrder, Environment environment) {
