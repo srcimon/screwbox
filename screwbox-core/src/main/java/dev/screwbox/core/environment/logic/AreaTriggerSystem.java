@@ -22,7 +22,7 @@ public class AreaTriggerSystem implements EntitySystem {
     private static boolean isTriggered(final Entity entity, final Archetype triggeredBy, final Engine engine) {
         final var areaBounds = entity.bounds();
         for (var trigger : engine.environment().fetchAll(triggeredBy)) {
-            if (trigger.bounds().touches(areaBounds)) {
+            if (trigger.touches(areaBounds)) {
                 return true;
             }
         }

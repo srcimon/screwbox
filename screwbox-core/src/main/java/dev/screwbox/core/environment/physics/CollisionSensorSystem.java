@@ -5,8 +5,8 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.core.utils.internal.CollisionCheck;
 import dev.screwbox.core.utils.Validate;
+import dev.screwbox.core.utils.internal.CollisionCheck;
 
 /**
  * Collects all collided {@link Entity entities} for any {@link Entity} having {@link CollisionSensorComponent}.
@@ -29,7 +29,7 @@ public class CollisionSensorSystem implements EntitySystem {
             Validate.positive(sensor.range, "sensor range must be positive");
             final Bounds sensorBounds = sensorEntity.bounds().expand(sensor.range);
             for (final var collider : colliders) {
-                if (sensorEntity != collider && sensorBounds.intersects(collider.bounds())
+                if (sensorEntity != collider && collider.intersects(sensorBounds)
                     && new CollisionCheck(sensorEntity, collider).isNoOneWayFalsePositive()) {
                     collidedEntities.add(collider);
                 }

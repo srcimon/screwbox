@@ -28,21 +28,14 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
         return physicsBounds().intersects(colliderBounds);
     }
 
-    public boolean bodiesTouch() {
-        return physicsBounds().touches(colliderBounds);
-    }
-
     public boolean isNoOneWayFalsePositive() {
         return !colliderComponent.isOneWay || (
-                colliderBounds.position().y() - (colliderBounds.height() / 8) >= physicsBounds().maxY()
-                        && physicsComponent != null
-                        && physicsComponent.velocity.y() >= 0
-                        && !physicsComponent.ignoreOneWayCollisions);
+            colliderBounds.position().y() - (colliderBounds.height() / 8) >= physicsBounds().maxY()
+            && physicsComponent != null
+            && physicsComponent.velocity.y() >= 0
+            && !physicsComponent.ignoreOneWayCollisions);
     }
 
-    public Entity collider() {
-        return collider;
-    }
 
     public Entity physics() {
         return physics;

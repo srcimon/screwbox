@@ -50,6 +50,7 @@ public class GameScene implements Scene {
     @Override
     public void populate(Environment environment) {
         var map = Map.fromJson("map.json");
+
         environment
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())

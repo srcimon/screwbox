@@ -35,13 +35,13 @@ public class PlayerWalkingState implements EntityState {
             return new FallToDeathState();
         }
         for (final var enemy : engine.environment().fetchAll(ENEMIES)) {
-            if (entity.bounds().touches(enemy.bounds())) {
+            if (entity.touches(enemy)) {
                 return new TouchedEnemyDeathState();
             }
         }
         return entity.hasComponent(DashComponent.class)
-                ? new PlayerDashingState()
-                : this;
+            ? new PlayerDashingState()
+            : this;
     }
 
     @Override

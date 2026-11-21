@@ -1,6 +1,7 @@
 package dev.screwbox.tiled;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.HasBounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.importing.ImportOptions;
@@ -16,7 +17,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @see Environment#importSource(ImportOptions)
  */
-public class Map {
+public class Map implements HasBounds {
 
     private final MapEntity mapEntity;
     private final TileCollection tiles;
