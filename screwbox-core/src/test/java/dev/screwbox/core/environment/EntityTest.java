@@ -433,4 +433,19 @@ class EntityTest {
             .containsExactly("worm", "animal")
             .isUnmodifiable();
     }
+
+    @Test
+    void touches_boundsTouches_isTrue() {
+        entity.bounds(Bounds.$$(0, 0, 50, 50));
+
+        assertThat(entity.touches(Bounds.$$(2, 0, 50, 50))).isTrue();
+    }
+
+    @Test
+    void touches_otherTouches_isTrue() {
+        var other = new Entity().bounds(Bounds.$$(2, 0, 50, 50));
+        entity.bounds(Bounds.$$(0, 0, 50, 50));
+
+        assertThat(entity.touches(other)).isTrue();
+    }
 }
