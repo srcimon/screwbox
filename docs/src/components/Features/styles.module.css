@@ -1,11 +1,41 @@
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 4rem 0;
+    width: 100%;
 }
 
 .featureSvg {
-  height: 200px;
-  width: 200px;
+    height: 180px;
+    width: 180px;
+    margin-bottom: 1.25rem;
+    filter: drop-shadow(0 10px 20px rgba(1, 42, 74, 0.35));
+    transition:
+            transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+            filter 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, filter;
+}
+
+.featureSvg:hover {
+    transform: translateY(-6px) scale(1.04);
+    filter:
+            drop-shadow(0 16px 28px rgba(1, 42, 74, 0.5))
+            drop-shadow(0 0 18px rgba(97, 165, 194, 0.45));
+}
+
+.features .col:hover .featureSvg {
+    transform: translateY(-6px) scale(1.04);
+    filter:
+            drop-shadow(0 16px 28px rgba(1, 42, 74, 0.5))
+            drop-shadow(0 0 18px rgba(97, 165, 194, 0.45));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .featureSvg {
+        transition: none;
+    }
+    .featureSvg:hover,
+    .features .col:hover .featureSvg {
+        transform: none;
+    }
 }

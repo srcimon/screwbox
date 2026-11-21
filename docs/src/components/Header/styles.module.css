@@ -1,14 +1,60 @@
 .heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+    padding: 5rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    color: #ffffff;
+}
+
+.heroBanner::before {
+    content: "";
+    position: absolute;
+    inset: -1%;
+    background-image:
+            radial-gradient(circle at center, rgba(16, 16, 24, 0.55) 40%, rgba(10, 10, 16, 0.88) 100%),
+            url("@site/static/img/banner.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.8;
+    z-index: -1;
+    will-change: transform, filter;
+    animation: sciFiDrift 24s ease-in-out infinite;
+}
+
+[data-theme='dark'] .heroBanner::before,
+.dark .heroBanner::before {
+    opacity: 0.4;
+}
+@keyframes sciFiDrift {
+    0%, 100% {
+        transform: scale(1.04) translate(-2%, -1.5%);
+        filter: brightness(0.95) contrast(1.08) saturate(0.8);
+    }
+    25% {
+        transform: scale(1.12) translate(1.8%, -1%);
+        filter: brightness(1.15) contrast(1.1) saturate(1.25);
+    }
+    50% {
+        transform: scale(1.18) translate(2%, 1.8%);
+        filter: brightness(1.05) contrast(1.15) saturate(1.15);
+    }
+    75% {
+        transform: scale(1.1) translate(-1.8%, 1.5%);
+        filter: brightness(1.18) contrast(1.22) saturate(1.25);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .heroBanner::before {
+        animation: none;
+    }
 }
 
 @media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+    .heroBanner {
+        padding: 2rem;
+    }
 }
 
 .buttons {
