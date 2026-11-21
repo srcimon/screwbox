@@ -10,10 +10,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
-import dev.screwbox.core.environment.ai.TargetMovementComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.utils.ListUtil;
-import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagPointComponent;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
@@ -24,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class BotStateSystem implements EntitySystem {
+public class BotMovementSystem implements EntitySystem {
 
     private static final Archetype BOTS = Archetype.of(PathMovementComponent.class, BotComponent.class);
     private static final Random RANDOM = new Random();
@@ -43,7 +40,7 @@ public class BotStateSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var bot : engine.environment().fetchAll(BOTS)) {
             var botConfig = bot.get(BotComponent.class);
-            if (botConfig.scheduler.isTick(engine.loop().time()) || engine.environment().hasId(bot.get(PathMovementComponent.class).targetId)) {
+            if (botConfig.scheduler.isTick(engine.loop().time()) || !engine.environment().hasId(bot.get(PathMovementComponent.class).targetId)) {
                 final Color team = bot.get(TeamMemberComponent.class).team;
 
                 List<AiTarget> possibleTargets = new ArrayList<>();
