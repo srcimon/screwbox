@@ -10,6 +10,7 @@ import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
+import dev.screwbox.core.environment.ai.TargetMovementComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.core.utils.Scheduler;
@@ -42,7 +43,7 @@ public class BotStateSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var bot : engine.environment().fetchAll(BOTS)) {
             var botConfig = bot.get(BotComponent.class);
-            if (botConfig.scheduler.isTick(engine.loop().time())) {
+            if (botConfig.scheduler.isTick(engine.loop().time()) || engine.environment().tryFetchById(bot.get(PathMovementComponent.class).targetId).isEmpty()) {
                 final Color team = bot.get(TeamMemberComponent.class).team;
 
                 List<AiTarget> possibleTargets = new ArrayList<>();
