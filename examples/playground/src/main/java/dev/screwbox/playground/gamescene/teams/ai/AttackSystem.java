@@ -8,11 +8,12 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.playground.gamescene.GameFunctions;
+import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
 
 public class AttackSystem implements EntitySystem {
 
-    private static final Archetype ATTACKERS = Archetype.ofSpacial(AttackComponent.class, TeamMemberComponent.class);
+    private static final Archetype ATTACKERS = Archetype.ofSpacial(AttackComponent.class, TeamMemberComponent.class, BotComponent.class);
     private static final Archetype TARGETS = Archetype.ofSpacial(TeamMemberComponent.class, PhysicsComponent.class);
 
     @Override
