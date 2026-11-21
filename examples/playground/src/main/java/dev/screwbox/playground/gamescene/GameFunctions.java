@@ -7,6 +7,8 @@ import dev.screwbox.core.audio.SoundBundle;
 import dev.screwbox.core.audio.SoundOptions;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.TransformComponent;
+import dev.screwbox.core.environment.light.GlowComponent;
+import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
@@ -20,6 +22,8 @@ public class GameFunctions {
         engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(position));
         engine.environment().addEntity(new Entity(engine.environment().allocateId())
             .add(new ShotComponent(), shot -> shot.team = team)
+            .add(new PointLightComponent(40, Color.RED.opacity(0.5)))
+            .add(new GlowComponent(42, Color.RED.opacity(0.1)))
             .add(new RenderComponent(SpriteBundle.DOT_YELLOW, SpriteDrawOptions.scaled(0.25)))
             .add(new PhysicsComponent(velocity), p -> p.ignoreCollisions = true)
             .add(new TransformComponent(Bounds.atPosition(position, 4, 4)))

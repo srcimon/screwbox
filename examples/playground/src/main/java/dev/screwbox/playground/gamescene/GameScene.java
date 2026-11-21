@@ -2,17 +2,21 @@ package dev.screwbox.playground.gamescene;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.light.GlowComponent;
+import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraLeadComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -20,6 +24,7 @@ import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.gamescene.blueprints.FlagPoint;
 import dev.screwbox.playground.gamescene.blueprints.Floor;
+import dev.screwbox.playground.gamescene.blueprints.OrhographicWall;
 import dev.screwbox.playground.gamescene.blueprints.SpawnArea;
 import dev.screwbox.playground.gamescene.blueprints.Wall;
 import dev.screwbox.playground.gamescene.map.MapConfig;
@@ -46,6 +51,8 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.graphics().camera().setZoom(4);
+        engine.graphics().light().setAmbientLight(Percent.of(0.1));
+        engine.graphics().configuration().setIndirectLightRaySpacing(1);
     }
 
     @Override
@@ -61,6 +68,7 @@ public class GameScene implements Scene {
 
             .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type"))
                 .assign("floor", new Floor())
+                .assign("orthographic-wall", new OrhographicWall())
                 .assign("wall", new Wall())
             )
 
@@ -84,6 +92,8 @@ public class GameScene implements Scene {
                     .add(new ColliderComponent())
                     .add(new AvoidanceComponent())
                     .add(new HealthComponent())
+                    .add(new PointLightComponent(80))
+                    .add(new GlowComponent(40, Color.YELLOW.opacity(0.1)))
                     .add(new PathMovementComponent(70, 2000))
                     .add(new RenderComponent(Sprite.placeholder(team, Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(drawOrder)))
                     .add(new PhysicsComponent(), config -> config.friction = 10)
