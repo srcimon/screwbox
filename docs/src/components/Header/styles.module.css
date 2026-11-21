@@ -13,7 +13,7 @@
     inset: -1%;
     background-image:
             radial-gradient(circle at center, rgba(16, 16, 24, 0.55) 40%, rgba(10, 10, 16, 0.88) 100%),
-            url("@site/static/img/banner.png");
+            url('/img/banner.png');
     background-size: cover;
     background-position: center;
     opacity: 0.8;
