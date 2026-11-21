@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.team.ai;
+package dev.screwbox.playground.gamescene.teams.ai;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
@@ -9,7 +9,8 @@ import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagPointComponent;
-import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.BotComponent;
+import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
 
 import java.util.List;
 

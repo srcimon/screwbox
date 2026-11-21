@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.team.ai;
+package dev.screwbox.playground.gamescene.teams.ai;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
@@ -15,7 +15,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
-import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
 
 public class AttackSystem implements EntitySystem {
 

@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.team.ai;
+package dev.screwbox.playground.gamescene.teams.ai;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.assets.FontBundle;
@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
+import dev.screwbox.playground.gamescene.teams.BotComponent;
 
 @ExecutionOrder(Order.DEBUG_OVERLAY)
 public class AiDebugSystem implements EntitySystem {
