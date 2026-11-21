@@ -1,10 +1,10 @@
-package dev.screwbox.playground.gamescene.team.health;
+package dev.screwbox.playground.gamescene.teams.health;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.playground.gamescene.team.HeavenComponent;
-import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.HeavenComponent;
+import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
 
 public class HealthSystem implements EntitySystem {
 

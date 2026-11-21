@@ -1,10 +1,10 @@
-package dev.screwbox.playground.gamescene.team.ai;
+package dev.screwbox.playground.gamescene.teams.ai;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
-import dev.screwbox.playground.gamescene.team.health.HealthComponent;
-import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
+import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
 
 public class ShotSystem implements EntitySystem {
     private static final Archetype SHOTS = Archetype.ofSpacial(ShotComponent.class);

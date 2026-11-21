@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.mapimport;
+package dev.screwbox.playground.gamescene.blueprints;
 
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.core.StaticBoundsComponent;

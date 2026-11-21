@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.team;
+package dev.screwbox.playground.gamescene.teams;
 
 import dev.screwbox.core.environment.Component;
 

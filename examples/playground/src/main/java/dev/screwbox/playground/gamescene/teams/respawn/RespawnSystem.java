@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.team.respawn;
+package dev.screwbox.playground.gamescene.teams.respawn;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
@@ -13,10 +13,10 @@ import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
-import dev.screwbox.playground.gamescene.team.HeavenComponent;
-import dev.screwbox.playground.gamescene.team.HumanComponent;
-import dev.screwbox.playground.gamescene.team.TeamMemberComponent;
-import dev.screwbox.playground.gamescene.team.health.HealthComponent;
+import dev.screwbox.playground.gamescene.teams.HeavenComponent;
+import dev.screwbox.playground.gamescene.teams.HumanComponent;
+import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 
 import java.util.ArrayList;
 import java.util.List;

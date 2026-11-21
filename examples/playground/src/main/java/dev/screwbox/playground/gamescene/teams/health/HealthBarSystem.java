@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.team.health;
+package dev.screwbox.playground.gamescene.teams.health;
 
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;

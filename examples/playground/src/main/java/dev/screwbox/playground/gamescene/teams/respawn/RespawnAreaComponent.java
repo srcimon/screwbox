@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.team.respawn;
+package dev.screwbox.playground.gamescene.teams.respawn;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.graphics.Color;

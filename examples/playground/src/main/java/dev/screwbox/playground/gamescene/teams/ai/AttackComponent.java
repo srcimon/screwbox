@@ -1,4 +1,4 @@
-package dev.screwbox.playground.gamescene.team.ai;
+package dev.screwbox.playground.gamescene.teams.ai;
 
 import dev.screwbox.core.environment.Component;
 import dev.screwbox.core.utils.Scheduler;
