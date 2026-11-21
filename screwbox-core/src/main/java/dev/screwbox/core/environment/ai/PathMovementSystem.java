@@ -18,7 +18,6 @@ public class PathMovementSystem implements EntitySystem {
 
     private static final Archetype MOVERS = Archetype.ofSpacial(PathMovementComponent.class, PhysicsComponent.class);
 
-    //TODO update tests
     @Override
     public void update(final Engine engine) {
         for (final Entity mover : engine.environment().fetchAll(MOVERS)) {

@@ -43,7 +43,7 @@ public class BotStateSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var bot : engine.environment().fetchAll(BOTS)) {
             var botConfig = bot.get(BotComponent.class);
-            if (botConfig.scheduler.isTick(engine.loop().time()) || engine.environment().tryFetchById(bot.get(PathMovementComponent.class).targetId).isEmpty()) {
+            if (botConfig.scheduler.isTick(engine.loop().time()) || engine.environment().hasId(bot.get(PathMovementComponent.class).targetId)) {
                 final Color team = bot.get(TeamMemberComponent.class).team;
 
                 List<AiTarget> possibleTargets = new ArrayList<>();

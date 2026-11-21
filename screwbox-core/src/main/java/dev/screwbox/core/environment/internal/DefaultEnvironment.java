@@ -224,6 +224,11 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public boolean hasId(final int id) {
+        return entityManager.hasId(id);
+    }
+
+    @Override
     public Optional<Entity> tryFetchById(final int id) {
         final Entity entity = entityManager.findById(id);
         return Optional.ofNullable(entity);

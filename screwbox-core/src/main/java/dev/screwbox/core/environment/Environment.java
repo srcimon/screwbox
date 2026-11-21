@@ -229,6 +229,13 @@ public interface Environment extends IdPool {
     Entity fetchById(int id);
 
     /**
+     * Returns {@code true} if {@link Entity} with the specified id is present.
+     *
+     * @since 3.41.0
+     */
+    boolean hasId(int id);
+
+    /**
      * Fetches an {@link Entity} by {@link Entity#id()}.
      *
      * @see #fetchById(int)
