@@ -16,12 +16,16 @@
             url("@site/static/img/banner.png");
     background-size: cover;
     background-position: center;
+    opacity: 0.8;
     z-index: -1;
     will-change: transform, filter;
     animation: sciFiDrift 24s ease-in-out infinite;
 }
 
-
+[data-theme='dark'] .heroBanner::before,
+.dark .heroBanner::before {
+    opacity: 0.4;
+}
 @keyframes sciFiDrift {
     0%, 100% {
         transform: scale(1.04) translate(-2%, -1.5%);
@@ -29,7 +33,7 @@
     }
     25% {
         transform: scale(1.12) translate(1.8%, -1%);
-        filter: brightness(1.15) contrast(1.2) saturate(1.25);
+        filter: brightness(1.15) contrast(1.1) saturate(1.25);
     }
     50% {
         transform: scale(1.18) translate(2%, 1.8%);
@@ -61,8 +65,4 @@
 
 a {
     margin: 0.25em;
-}
-
-.heroBanner h1 {
-    text-shadow: 0 0 18px rgba(236, 72, 153, 0.65), 0 0 36px rgba(168, 85, 247, 0.45);
 }
