@@ -134,4 +134,11 @@ public class Scheduler implements Serializable {
     public Duration jitter() {
         return jitter;
     }
+
+    //TODO document
+    public void skipUntil(final Time time) {
+        if (nextTick.isBefore(time)) {
+            nextTick = time;
+        }
+    }
 }

@@ -1,7 +1,9 @@
 package dev.screwbox.playground.gamescene.teams.ai;
 
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
+import dev.screwbox.core.Time;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
@@ -10,6 +12,7 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.ListUtil;
+import dev.screwbox.core.utils.Scheduler;
 import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagPointComponent;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
@@ -26,7 +29,8 @@ public class BotStateSystem implements EntitySystem {
     private static final Random RANDOM = new Random();
 
     //TODO introduce som kind of name
-    record AiTarget(int targetId, int priority, Percent chance) implements Comparable<AiTarget> {
+    record AiTarget(int targetId, int priority, Percent chance,
+                    Duration reconsiderTime) implements Comparable<AiTarget> {
 
         @Override
         public int compareTo(AiTarget o) {
@@ -55,14 +59,14 @@ public class BotStateSystem implements EntitySystem {
             .filter(member -> member.get(TeamMemberComponent.class).team != team)
             .filter(member -> member.position().distanceTo(position) < 80)
             .filter(member -> member.get(HealthComponent.class).health.value() < 0.5)
-            .map(entity -> new AiTarget(entity.forceId(), 80, Percent.half()))
+            .map(entity -> new AiTarget(entity.forceId(), 80, Percent.half(), Duration.ofSeconds(5)))
             .toList();
     }
 
     private static List<AiTarget> findEnemyFlagPoints(Environment environment, Color team) {
         return environment.fetchAllHaving(FlagPointComponent.class).stream()
             .filter(flag -> !flag.get(FlagPointComponent.class).team.equals(team))
-            .map(entity -> new AiTarget(entity.forceId(), 50, Percent.max()))
+            .map(entity -> new AiTarget(entity.forceId(), 50, Percent.max(), Duration.oneSecond()))
             .toList();
     }
 
@@ -70,8 +74,9 @@ public class BotStateSystem implements EntitySystem {
         if (!possibleTargets.isEmpty()) {
             possibleTargets.sort(null);
             for (var target : possibleTargets.reversed()) {
-                if(RANDOM.nextDouble() <= target.chance.value()) {
+                if (RANDOM.nextDouble() <= target.chance.value()) {
                     bot.get(PathMovementComponent.class).targetId = target.targetId;
+                    bot.get(BotComponent.class).scheduler.skipUntil(target.reconsiderTime.addTo(Time.now()));
                     return;
                 }
             }
