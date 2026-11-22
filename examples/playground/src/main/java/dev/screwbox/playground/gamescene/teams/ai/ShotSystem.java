@@ -4,12 +4,12 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.playground.gamescene.map.ShotObstacleComponent;
-import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 
 public class ShotSystem implements EntitySystem {
     private static final Archetype SHOTS = Archetype.ofSpacial(ShotComponent.class);
-    private static final Archetype TARGETS = Archetype.ofSpacial(TeamMemberComponent.class);
+    private static final Archetype TARGETS = Archetype.ofSpacial(PlayerComponent.class);
     private static final Archetype OBSTACLES = Archetype.ofSpacial(ShotObstacleComponent.class);
 
     @Override
@@ -20,7 +20,7 @@ public class ShotSystem implements EntitySystem {
             var invulnerableTeam = shotComponent.team;
             for (final var target : engine.environment().fetchAll(TARGETS)) {
                 if (shot.intersects(target)) {
-                    if (target.get(TeamMemberComponent.class).team != invulnerableTeam) {
+                    if (target.get(PlayerComponent.class).team != invulnerableTeam) {
                         var healthComponent = target.get(HealthComponent.class);
                         healthComponent.health = healthComponent.health.subtract(shotComponent.damage.value());
 

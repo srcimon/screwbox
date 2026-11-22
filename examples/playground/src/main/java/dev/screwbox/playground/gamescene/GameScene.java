@@ -21,7 +21,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.gamescene.blueprints.Decor;
-import dev.screwbox.playground.gamescene.blueprints.FlagPoint;
+import dev.screwbox.playground.gamescene.blueprints.Flag;
 import dev.screwbox.playground.gamescene.blueprints.Floor;
 import dev.screwbox.playground.gamescene.blueprints.Light;
 import dev.screwbox.playground.gamescene.blueprints.OrhographicWall;
@@ -31,7 +31,7 @@ import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
 import dev.screwbox.playground.gamescene.teams.HumanComponent;
-import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 import dev.screwbox.playground.gamescene.teams.ai.AttackComponent;
 import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 import dev.screwbox.tiled.GameObject;
@@ -80,7 +80,7 @@ public class GameScene implements Scene {
             .importSource(indexedSources(map.objects(), GameObject::name)
                 .assign("respawn-area", new SpawnArea())
                 .assign("light", new Light())
-                .assignComplex("flag-point", new FlagPoint())
+                .assign("flag", new Flag())
             );
 
         final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
@@ -93,7 +93,7 @@ public class GameScene implements Scene {
         for (final var team : gameConfig.teams()) {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
-                    .add(new TeamMemberComponent(), config -> config.team = team)
+                    .add(new PlayerComponent(), config -> config.team = team)
                     .bounds(Bounds.$$(0, 0, 10, 10))
                     .add(new ColliderComponent())
                     .add(new AvoidanceComponent())

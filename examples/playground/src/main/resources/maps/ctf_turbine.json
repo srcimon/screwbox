@@ -164,7 +164,7 @@
                 {
                  "height":0,
                  "id":9,
-                 "name":"flag-point",
+                 "name":"flag",
                  "opacity":1,
                  "point":true,
                  "properties":[
@@ -183,7 +183,7 @@
                 {
                  "height":0,
                  "id":11,
-                 "name":"flag-point",
+                 "name":"flag",
                  "opacity":1,
                  "point":true,
                  "properties":[

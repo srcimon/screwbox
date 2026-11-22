@@ -4,7 +4,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
-import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 
 public class HealthSystem implements EntitySystem {
 
@@ -14,7 +14,7 @@ public class HealthSystem implements EntitySystem {
     public void update(Engine engine) {
         for(final var living : engine.environment().fetchAll(LIVING)) {
             if(living.get(HealthComponent.class).health.isZero()) {
-                living.get(TeamMemberComponent.class).deathTime = engine.loop().time();
+                living.get(PlayerComponent.class).deathTime = engine.loop().time();
                 engine.environment().fetchSingletonComponent(HeavenComponent.class).deadPlayers.add(living);
                 engine.environment().remove(living);
 

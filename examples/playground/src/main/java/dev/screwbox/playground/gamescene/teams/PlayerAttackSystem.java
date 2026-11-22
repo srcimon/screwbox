@@ -17,7 +17,7 @@ public class PlayerAttackSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var attacker : engine.environment().fetchAll(ATTACKERS)) {
             var config = attacker.get(AttackComponent.class);
-            var memberConfig = attacker.get(TeamMemberComponent.class);
+            var memberConfig = attacker.get(PlayerComponent.class);
             if (engine.mouse().isDownLeft()) {
                 if (config.scheduler.isTick(engine.loop().time())) {
                     Vector velocity = engine.mouse().position().subtract(attacker.position()).length(120);
