@@ -894,20 +894,18 @@ class DefaultEnvironmentTest {
         assertThat(environment.hasId(41811)).isTrue();
     }
 
-    //TODO rework test
     @Test
     void addComponent_beforeBeingRemoved_entityIsStillRemoved() {
         Entity enitity = new Entity(41811).add(new TransformComponent()).add(new ColliderComponent());
-
         environment.addEntity(enitity);
         enitity.add(new SpotLightComponent(10));
-        System.out.println(environment.fetchAllHaving(TransformComponent.class).size());
         environment.remove(enitity);
-        System.out.println(environment.fetchAllHaving(TransformComponent.class).size());
+        assertThat(environment.fetchAllHaving(TransformComponent.class)).isEmpty();
+
         environment.update();
-        System.out.println(environment.fetchAllHaving(TransformComponent.class).size());
+        assertThat(environment.fetchAllHaving(TransformComponent.class)).isEmpty();
+
         environment.update();
-        System.out.println(environment.fetchAllHaving(TransformComponent.class).size());
         assertThat(environment.fetchAllHaving(TransformComponent.class)).isEmpty();
     }
 

@@ -8,6 +8,7 @@
 
 ### 🪛 Bug Fixes
 
+- Fixed a bug where an entity is not removed from the environment when a componend was added to the entity in the same frame
 - Fixed missing draw order when drawing textured ropes
 - Tile maps created from image now contain transparent tiles
 - Fixed inaccurate acceleration when using target movement

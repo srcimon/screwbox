@@ -10,10 +10,12 @@ import dev.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.util.Objects.nonNull;
 
@@ -26,7 +28,7 @@ public class EntityManager implements EntityListener {
     private final Map<Archetype, EntityContainer> archetypeCache = new HashMap<>();
     private final List<Entity> pendingNewEntities = new ArrayList<>();
     private final List<Entity> pendingEntityDeletions = new ArrayList<>();
-    private final List<Entity> pendingEntityCachesToRefresh = new ArrayList<>();
+    private final Set<Entity> pendingEntityCachesToRefresh = new HashSet<>();
     private boolean delayChanges = false;
 
     public void addEntity(final Entity entity) {
@@ -124,6 +126,7 @@ public class EntityManager implements EntityListener {
                 cacheEntry.remove(entity);
             }
             this.entities.remove(entity);
+            pendingEntityCachesToRefresh.remove(entity);
             entity.id().ifPresent(entitiesById::remove);
         }
     }
