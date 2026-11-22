@@ -26,9 +26,10 @@ import dev.screwbox.playground.gamescene.blueprints.Decor;
 import dev.screwbox.playground.gamescene.blueprints.Flag;
 import dev.screwbox.playground.gamescene.blueprints.Floor;
 import dev.screwbox.playground.gamescene.blueprints.Light;
-import dev.screwbox.playground.gamescene.blueprints.OrhographicWall;
+import dev.screwbox.playground.gamescene.blueprints.LowerWall;
 import dev.screwbox.playground.gamescene.blueprints.RespawnArea;
-import dev.screwbox.playground.gamescene.blueprints.Wall;
+import dev.screwbox.playground.gamescene.blueprints.Blockade;
+import dev.screwbox.playground.gamescene.blueprints.UpperWall;
 import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
@@ -76,8 +77,9 @@ public class GameScene implements Scene {
 
             .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type"))
                 .assign("floor", new Floor())
-                .assign("orthographic-wall", new OrhographicWall())
-                .assign("wall", new Wall())
+                .assign("lower-wall", new LowerWall())
+                .assign("upper-wall", new UpperWall())
+                .assign("blockade", new Blockade())
                 .assign("decor", new Decor())
             )
 

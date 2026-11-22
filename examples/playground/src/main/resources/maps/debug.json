@@ -24,7 +24,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }],
  "tilewidth":16,

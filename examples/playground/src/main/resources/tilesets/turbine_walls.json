@@ -15,7 +15,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -42,7 +42,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -51,7 +51,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -60,7 +60,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -69,7 +69,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -87,7 +87,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -96,7 +96,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -105,7 +105,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -114,7 +114,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -123,7 +123,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -132,7 +132,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -141,7 +141,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -159,7 +159,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -168,7 +168,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -177,7 +177,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -186,7 +186,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -195,7 +195,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -204,7 +204,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -213,7 +213,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -222,7 +222,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -231,7 +231,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -240,7 +240,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"upper-wall"
                 }]
         }, 
         {
@@ -249,7 +249,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -258,7 +258,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -267,7 +267,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"blockade"
                 }]
         }, 
         {
@@ -276,7 +276,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -285,7 +285,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -294,7 +294,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -303,7 +303,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -312,7 +312,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -321,7 +321,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }, 
         {
@@ -330,7 +330,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"lower-wall"
                 }]
         }],
  "tilewidth":16,
