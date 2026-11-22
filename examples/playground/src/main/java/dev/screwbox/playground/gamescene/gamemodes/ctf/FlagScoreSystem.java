@@ -18,11 +18,19 @@ public class FlagScoreSystem implements EntitySystem {
         final List<Entity> players = engine.environment().fetchAll(PLAYERS);
         for (final var flagEntity : engine.environment().fetchAll(FLAGS)) {
             final var flag = flagEntity.get(FlagComponent.class);
-            if (flag.carriedById == null) {
+            if (!flag.isStolen) {
                 for (final var player : players) {
                     if (player.touches(flagEntity) && !player.get(PlayerComponent.class).team.equals(flag.team)) {
                         flag.carriedById = player.forceId();
+                        flag.isStolen = true;
                         player.add(new FlagCarrierComponent());
+                    }
+                }
+            } else {
+                for (final var player : players) {
+                    if (player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team)) {
+                        flag.isStolen = false;
+                        flagEntity.moveTo(engine.environment().fetchById(flag.homeZoneId).position());
                     }
                 }
             }
