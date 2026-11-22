@@ -16,17 +16,20 @@ public class FlagScoreSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         final List<Entity> players = engine.environment().fetchAll(PLAYERS);
-        for(final var flagEntity : engine.environment().fetchAll(FLAGS)) {
+        for (final var flagEntity : engine.environment().fetchAll(FLAGS)) {
             final var flag = flagEntity.get(FlagComponent.class);
-            if(flag.carriedById == null) {
-                for(final var player : players) {
-                    if(player.touches(flagEntity) && !player.get(PlayerComponent.class).team.equals(flag.team)) {
+            if (flag.carriedById == null) {
+                for (final var player : players) {
+                    if (player.touches(flagEntity) && !player.get(PlayerComponent.class).team.equals(flag.team)) {
                         flag.carriedById = player.forceId();
                     }
                 }
             }
-            if(flag.carriedById != null) {
-                flagEntity.moveTo(engine.environment().fetchById(flag.carriedById).position());
+            if (flag.carriedById != null) {
+                engine.environment().tryFetchById(flag.carriedById).ifPresentOrElse(
+                    carrier -> flagEntity.moveTo(carrier.position()),
+                    () -> flagEntity.get(FlagComponent.class).carriedById = null);
+
             }
         }
     }
