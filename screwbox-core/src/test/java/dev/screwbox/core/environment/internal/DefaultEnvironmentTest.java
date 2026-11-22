@@ -896,10 +896,11 @@ class DefaultEnvironmentTest {
 
     @Test
     void addComponent_beforeBeingRemoved_entityIsStillRemoved() {
-        Entity enitity = new Entity(41811).add(new TransformComponent()).add(new ColliderComponent());
-        environment.addEntity(enitity);
-        enitity.add(new SpotLightComponent(10));
-        environment.remove(enitity);
+        Entity entity = new Entity(41811).add(new TransformComponent()).add(new ColliderComponent());
+        environment.addEntity(entity);
+        entity.add(new SpotLightComponent(10));
+        environment.remove(entity);
+
         assertThat(environment.fetchAllHaving(TransformComponent.class)).isEmpty();
 
         environment.update();
