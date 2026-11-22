@@ -21,6 +21,6 @@ public class OrhographicWall implements Blueprint<Tile> {
             .add(new ObstacleComponent())
             .add(new StaticBoundsComponent())
             .add(new OrthographicWallComponent())
-            .add(new RenderComponent(tile.sprite()));
+            .add(new RenderComponent(tile.sprite(), tile.layer().order()));
     }
 }

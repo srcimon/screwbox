@@ -15,7 +15,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {

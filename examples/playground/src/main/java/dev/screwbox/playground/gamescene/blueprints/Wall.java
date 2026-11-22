@@ -21,6 +21,6 @@ public class Wall implements Blueprint<Tile> {
             .add(new ObstacleComponent())
             .add(new StaticBoundsComponent())
             .add(new OccluderComponent())
-            .add(new RenderComponent(tile.sprite()));
+            .add(new RenderComponent(tile.sprite(), tile.layer().order()));
     }
 }
