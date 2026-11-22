@@ -19,6 +19,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.gamescene.blueprints.CaptureZone;
 import dev.screwbox.playground.gamescene.blueprints.Decor;
@@ -37,6 +38,8 @@ import dev.screwbox.playground.gamescene.teams.ai.AttackComponent;
 import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
+
+import java.util.List;
 
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 import static dev.screwbox.core.environment.importing.ImportOptions.source;
@@ -89,13 +92,19 @@ public class GameScene implements Scene {
         addPlayers(playerDrawOrder, environment);
     }
 
+    //TODO find a place for names
+    private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");
+
     private void addPlayers(int drawOrder, Environment environment) {
         int viewportId = 0;
         HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
-                    .add(new PlayerComponent(), config -> config.team = team)
+                    .add(new PlayerComponent(), config -> {
+                        config.team = team;
+                        config.name = ListUtil.pickRandom(NAMES);
+                    })
                     .bounds(Bounds.$$(0, 0, 10, 10))
                     .add(new ColliderComponent())
                     .add(new AvoidanceComponent())
