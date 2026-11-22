@@ -8,28 +8,24 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
+import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
+import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraLeadComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.blueprints.Blockade;
-import dev.screwbox.playground.gamescene.blueprints.CaptureZone;
-import dev.screwbox.playground.gamescene.blueprints.Decor;
-import dev.screwbox.playground.gamescene.blueprints.Flag;
-import dev.screwbox.playground.gamescene.blueprints.Floor;
-import dev.screwbox.playground.gamescene.blueprints.Light;
-import dev.screwbox.playground.gamescene.blueprints.LowerWall;
-import dev.screwbox.playground.gamescene.blueprints.RespawnArea;
-import dev.screwbox.playground.gamescene.blueprints.UpperWall;
+import dev.screwbox.playground.gamescene.blueprints.*;
 import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
@@ -70,6 +66,7 @@ public class GameScene implements Scene {
 
         environment
             .enableAllFeatures()
+            .addEntity(new Entity().add(new CursorAttachmentComponent()).add(new TransformComponent()).add(new PointLightComponent(120, Color.RED)))
             .addSystem(new LogFpsSystem())
             .addSystemsFromPackage("dev.screwbox.playground.gamescene")
             .importSource(source(map)
@@ -80,6 +77,8 @@ public class GameScene implements Scene {
                 .assign("lower-wall", new LowerWall())
                 .assign("upper-wall", new UpperWall())
                 .assign("blockade", new Blockade())
+                .assign("blocking-ceiling", new BlockingCeiling())
+                .assign("ceiling", new Ceiling())
                 .assign("decor", new Decor())
             )
 
