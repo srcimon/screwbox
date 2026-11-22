@@ -5,6 +5,7 @@ import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.ExecutionOrder;
 import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.ai.BoidSystem;
 import dev.screwbox.core.environment.ai.PathMovementSystem;
@@ -24,6 +25,7 @@ import dev.screwbox.core.environment.fluids.FluidSystem;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.core.environment.light.LightRenderSystem;
 import dev.screwbox.core.environment.light.OccluderComponent;
+import dev.screwbox.core.environment.light.SpotLightComponent;
 import dev.screwbox.core.environment.logic.AreaTriggerSystem;
 import dev.screwbox.core.environment.logic.StateSystem;
 import dev.screwbox.core.environment.navigation.NavigationSystem;
@@ -40,6 +42,7 @@ import dev.screwbox.core.environment.tweening.TweenPositionSystem;
 import dev.screwbox.core.environment.tweening.TweenScaleSystem;
 import dev.screwbox.core.environment.tweening.TweenShaderSystem;
 import dev.screwbox.core.environment.tweening.TweenSystem;
+import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.keyboard.Keyboard;
 import dev.screwbox.core.test.TestSupport;
 import dev.screwbox.core.utils.Cache;
@@ -889,6 +892,23 @@ class DefaultEnvironmentTest {
     void hasId_hasEntityWithId_isTrue() {
         environment.addEntity(new Entity(41811));
         assertThat(environment.hasId(41811)).isTrue();
+    }
+
+    //TODO rework test
+    @Test
+    void addComponent_beforeBeingRemoved_entityIsStillRemoved() {
+        Entity enitity = new Entity(41811).add(new TransformComponent()).add(new ColliderComponent());
+
+        environment.addEntity(enitity);
+        enitity.add(new SpotLightComponent(10));
+        System.out.println(environment.fetchAllHaving(TransformComponent.class).size());
+        environment.remove(enitity);
+        System.out.println(environment.fetchAllHaving(TransformComponent.class).size());
+        environment.update();
+        System.out.println(environment.fetchAllHaving(TransformComponent.class).size());
+        environment.update();
+        System.out.println(environment.fetchAllHaving(TransformComponent.class).size());
+        assertThat(environment.fetchAllHaving(TransformComponent.class)).isEmpty();
     }
 
     @AfterEach

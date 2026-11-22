@@ -19,7 +19,7 @@ public class HealthSystem implements EntitySystem {
                 living.remove(FlagCarrierComponent.class);
                 engine.environment().fetchSingletonComponent(HeavenComponent.class).deadPlayers.add(living);
                 engine.environment().remove(living);
-                System.out.println("dead " + living.forceId() + " " + engine.loop().frameNumber());
+                System.out.println(engine.loop().frameNumber() +  " dead " + living.forceId() + " " + living.position() + " " +living.getComponentClasses());
             }
         }
     }
