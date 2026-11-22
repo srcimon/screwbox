@@ -20,6 +20,7 @@ import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.GameConfig;
+import dev.screwbox.playground.gamescene.blueprints.CaptureZone;
 import dev.screwbox.playground.gamescene.blueprints.Decor;
 import dev.screwbox.playground.gamescene.blueprints.Flag;
 import dev.screwbox.playground.gamescene.blueprints.Floor;
@@ -81,6 +82,7 @@ public class GameScene implements Scene {
                 .assign("respawn-area", new SpawnArea())
                 .assign("light", new Light())
                 .assign("flag", new Flag())
+                .assign("flag", new CaptureZone())
             );
 
         final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
