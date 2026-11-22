@@ -77,7 +77,6 @@ public class GameScene implements Scene {
                 .assign("lower-wall", new LowerWall())
                 .assign("upper-wall", new UpperWall())
                 .assign("blockade", new Blockade())
-                .assign("blocking-ceiling", new BlockingCeiling())
                 .assign("ceiling", new Ceiling())
                 .assign("decor", new Decor())
             )
