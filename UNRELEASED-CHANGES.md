@@ -8,6 +8,7 @@
 
 ### 🪛 Bug Fixes
 
+- Fixed a bug where an entity is not removed from the environment when a componend was added to the entity in the same frame
 - Fixed missing draw order when drawing textured ropes
 - Tile maps created from image now contain transparent tiles
 - Fixed inaccurate acceleration when using target movement
@@ -21,6 +22,7 @@
 - Made `ObstacleComponent` bakeable
 - Renamed scheduler method names consistently
 - Introduced mixin interface `HasBounds` to mix in bounds related functions
+- Made `SpacialIndex` and `SpacialHashRegistry` generic to query anything that `HasBounds`
 
 ### 📦 Dependency updates
 

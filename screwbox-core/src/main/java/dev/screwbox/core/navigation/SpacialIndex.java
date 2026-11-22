@@ -1,5 +1,6 @@
 package dev.screwbox.core.navigation;
 
+import dev.screwbox.core.HasBounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.utils.MathUtil;
@@ -13,23 +14,23 @@ import java.util.function.Predicate;
 import static java.util.Objects.isNull;
 
 /**
- * An dynamic spacial index providing conveniant methods for ultra fast entity searches by position.
+ * An dynamic spacial index providing conveniant methods for ultra fast {@link Entity} searches by position.
  * Does not consider {@link Entity#bounds() bounds}.
  *
  * @since 3.27.0
  *
  */
-public class SpacialIndex {
+public class SpacialIndex<T extends HasBounds> {
 
     private static final int NO_INDEX_NEEDED_COUNT = 50;
-    private final List<Entity> entities = new ArrayList<>();
-    private SpacialHashRegistry registry;
+    private final List<T> entities = new ArrayList<>();
+    private SpacialHashRegistry<T> registry;
     private int minCellSize = 2;
 
     /**
      * Refreshes the {@link Entity entities} that can be searched.
      */
-    public void refresh(final List<Entity> entities) {
+    public void refresh(final List<T> entities) {
         this.entities.clear();
         this.entities.addAll(entities);
         this.registry = null;
@@ -41,9 +42,9 @@ public class SpacialIndex {
      *
      * @see #findEntities(Vector, double)
      */
-    public List<Entity> findEntities(final Vector position, final double radius, final Predicate<Entity> entityFilter) {
-        final Collection<Entity> prefetchedEntities = prefetchEntities(position, radius);
-        final List<Entity> nearbyEntities = new ArrayList<>();
+    public List<T> findEntities(final Vector position, final double radius, final Predicate<T> entityFilter) {
+        final Collection<T> prefetchedEntities = prefetchEntities(position, radius);
+        final List<T> nearbyEntities = new ArrayList<>();
         for (final var entity : prefetchedEntities) {
             if (entity.position().distanceTo(position) <= radius && entityFilter.test(entity)) {
                 nearbyEntities.add(entity);
@@ -58,9 +59,9 @@ public class SpacialIndex {
      *
      * @see #findEntities(Vector, double, Predicate)
      */
-    public List<Entity> findEntities(final Vector position, final double radius) {
-        final List<Entity> prefetchedEntities = prefetchEntities(position, radius);
-        final List<Entity> nearbyEntities = new ArrayList<>();
+    public List<T> findEntities(final Vector position, final double radius) {
+        final List<T> prefetchedEntities = prefetchEntities(position, radius);
+        final List<T> nearbyEntities = new ArrayList<>();
         for (final var entity : prefetchedEntities) {
             if (entity.position().distanceTo(position) <= radius) {
                 nearbyEntities.add(entity);
@@ -72,17 +73,17 @@ public class SpacialIndex {
     /**
      * Returns the current {@link SpacialHashRegistry registry} that can is utilized for fast entity searches.
      */
-    public Optional<SpacialHashRegistry> registry() {
+    public Optional<SpacialHashRegistry<T>> registry() {
         return Optional.ofNullable(registry);
     }
 
-    private List<Entity> prefetchEntities(final Vector position, final double radius) {
+    private List<T> prefetchEntities(final Vector position, final double radius) {
         if (entities.size() <= NO_INDEX_NEEDED_COUNT) {
             return entities;
         }
 
         if (isNull(registry) || registry.cellSize() < radius) {
-            registry = new SpacialHashRegistry(calculateNextCellSize(radius), entities);
+            registry = new SpacialHashRegistry<>(calculateNextCellSize(radius), entities);
         }
 
         return registry.queryLocalBuckets(position);

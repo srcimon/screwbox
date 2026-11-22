@@ -11,13 +11,16 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagPointComponent;
+import dev.screwbox.playground.gamescene.gamemodes.ctf.CaptureZoneComponent;
+import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagCarrierComponent;
+import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagComponent;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
-import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -40,30 +43,46 @@ public class BotMovementSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var bot : engine.environment().fetchAll(BOTS)) {
             var botConfig = bot.get(BotComponent.class);
-            if (botConfig.scheduler.isTick(engine.loop().time()) || !engine.environment().hasId(bot.get(PathMovementComponent.class).targetId)) {
-                final Color team = bot.get(TeamMemberComponent.class).team;
+            Integer targetId = bot.get(PathMovementComponent.class).targetId;
+            if (botConfig.scheduler.isTick(engine.loop().time()) || targetId != null && !engine.environment().hasId(targetId)) {
+                final Color team = bot.get(PlayerComponent.class).team;
 
                 List<AiTarget> possibleTargets = new ArrayList<>();
-                possibleTargets.addAll(findEnemyFlagPoints(engine.environment(), team));
+                possibleTargets.addAll(retrieveEnemyFlags(bot, engine.environment(), team));
+                possibleTargets.addAll(runTowardsEnemyFlags(engine.environment(), team));
                 possibleTargets.addAll(findNearbyNearlyDeadEnemies(engine.environment(), bot.position(), team));
                 updateTarget(bot, possibleTargets);
             }
         }
     }
 
+    private Collection<AiTarget> retrieveEnemyFlags(Entity bot, Environment environment, Color team) {
+        if(!bot.hasComponent(FlagCarrierComponent.class)) {
+            return Collections.emptyList();
+        }
+        var capturePoint = environment.fetchAllHaving(CaptureZoneComponent.class).stream()
+            .filter(zone -> zone.get(CaptureZoneComponent.class).team.equals(team))
+            //TODO sort by distance to player
+            .findFirst().orElseThrow();
+        return List.of(new AiTarget(capturePoint.forceId(), 99, Percent.max(), Duration.ofSeconds(4)));
+    }
+
     //TODO add general interface and use Reflections.createInstances(AiBehaviour.class, "package")
     private Collection<AiTarget> findNearbyNearlyDeadEnemies(Environment environment, Vector position, Color team) {
-        return environment.fetchAllHaving(TeamMemberComponent.class).stream()
-            .filter(member -> member.get(TeamMemberComponent.class).team != team)
+        return environment.fetchAllHaving(PlayerComponent.class).stream()
+            .filter(member -> member.get(PlayerComponent.class).team != team)
             .filter(member -> member.position().distanceTo(position) < 80)
             .filter(member -> member.get(HealthComponent.class).health.value() < 0.5)
             .map(entity -> new AiTarget(entity.forceId(), 80, Percent.half(), Duration.ofSeconds(5)))
             .toList();
     }
 
-    private static List<AiTarget> findEnemyFlagPoints(Environment environment, Color team) {
-        return environment.fetchAllHaving(FlagPointComponent.class).stream()
-            .filter(flag -> !flag.get(FlagPointComponent.class).team.equals(team))
+    private static List<AiTarget> runTowardsEnemyFlags(Environment environment, Color team) {
+        return environment.fetchAllHaving(FlagComponent.class).stream()
+            .filter(flagEntity -> {
+                final var flag = flagEntity.get(FlagComponent.class);
+                return flag.carriedById == null && !flag.team.equals(team);
+            })
             .map(entity -> new AiTarget(entity.forceId(), 50, Percent.max(), Duration.oneSecond()))
             .toList();
     }

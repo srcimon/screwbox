@@ -201,14 +201,14 @@ public interface Environment extends IdPool {
     /**
      * Returns a list of all {@link Entity entities} that contain the specified {@link Component}.
      */
-    default List<Entity> fetchAllHaving(Class<? extends Component> component) {
+    default List<Entity> fetchAllHaving(final Class<? extends Component> component) {
         return fetchAll(Archetype.of(component));
     }
 
     /**
      * Returns a list of all {@link Entity entities} that contain both of the specified {@link Component components}.
      */
-    default List<Entity> fetchAllHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
+    default List<Entity> fetchAllHaving(final Class<? extends Component> componentA, final Class<? extends Component> componentB) {
         return fetchAll(Archetype.of(componentA, componentB));
     }
 

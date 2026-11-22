@@ -2,11 +2,13 @@ package dev.screwbox.playground.gamescene;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -17,20 +19,27 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.blueprints.FlagPoint;
+import dev.screwbox.playground.gamescene.blueprints.CaptureZone;
+import dev.screwbox.playground.gamescene.blueprints.Decor;
+import dev.screwbox.playground.gamescene.blueprints.Flag;
 import dev.screwbox.playground.gamescene.blueprints.Floor;
-import dev.screwbox.playground.gamescene.blueprints.SpawnArea;
+import dev.screwbox.playground.gamescene.blueprints.Light;
+import dev.screwbox.playground.gamescene.blueprints.OrhographicWall;
+import dev.screwbox.playground.gamescene.blueprints.RespawnArea;
 import dev.screwbox.playground.gamescene.blueprints.Wall;
 import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
 import dev.screwbox.playground.gamescene.teams.HumanComponent;
-import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 import dev.screwbox.playground.gamescene.teams.ai.AttackComponent;
 import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
+
+import java.util.List;
 
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 import static dev.screwbox.core.environment.importing.ImportOptions.source;
@@ -46,6 +55,12 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.graphics().camera().setZoom(4);
+        engine.graphics().light().setAmbientLight(Percent.of(0.1));
+        engine.graphics().configuration()
+            .setIndirectLightRaySpacing(2)
+            .setLightmapBlur(3)
+            .setLightQuality(Percent.quarter())
+            .setIndirectLightDiameter(16);
     }
 
     @Override
@@ -61,17 +76,24 @@ public class GameScene implements Scene {
 
             .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type"))
                 .assign("floor", new Floor())
+                .assign("orthographic-wall", new OrhographicWall())
                 .assign("wall", new Wall())
+                .assign("decor", new Decor())
             )
 
             .importSource(indexedSources(map.objects(), GameObject::name)
-                .assign("respawn-area", new SpawnArea())
-                .assign("flag-point", new FlagPoint())
+                .assign("respawn-area", new RespawnArea())
+                .assign("light", new Light())
+                .assign("flag", new Flag())
+                .assign("flag", new CaptureZone())
             );
 
         final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
         addPlayers(playerDrawOrder, environment);
     }
+
+    //TODO find a place for names
+    private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");
 
     private void addPlayers(int drawOrder, Environment environment) {
         int viewportId = 0;
@@ -79,10 +101,14 @@ public class GameScene implements Scene {
         for (final var team : gameConfig.teams()) {
             for (int i = 0; i < gameConfig.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
-                    .add(new TeamMemberComponent(), config -> config.team = team)
+                    .add(new PlayerComponent(), config -> {
+                        config.team = team;
+                        config.name = ListUtil.pickRandom(NAMES);
+                    })
                     .bounds(Bounds.$$(0, 0, 10, 10))
                     .add(new ColliderComponent())
                     .add(new AvoidanceComponent())
+                    .add(new OccluderComponent(false))
                     .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
                     .add(new RenderComponent(Sprite.placeholder(team, Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(drawOrder)))

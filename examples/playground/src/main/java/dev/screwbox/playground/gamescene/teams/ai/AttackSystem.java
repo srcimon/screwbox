@@ -8,12 +8,13 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.playground.gamescene.GameFunctions;
-import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.BotComponent;
+import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 
 public class AttackSystem implements EntitySystem {
 
-    private static final Archetype ATTACKERS = Archetype.ofSpacial(AttackComponent.class, TeamMemberComponent.class);
-    private static final Archetype TARGETS = Archetype.ofSpacial(TeamMemberComponent.class, PhysicsComponent.class);
+    private static final Archetype ATTACKERS = Archetype.ofSpacial(AttackComponent.class, PlayerComponent.class, BotComponent.class);
+    private static final Archetype TARGETS = Archetype.ofSpacial(PlayerComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -22,8 +23,8 @@ public class AttackSystem implements EntitySystem {
 
         for (final var attacker : attackers) {
             var config = attacker.get(AttackComponent.class);
-            var memberConfig = attacker.get(TeamMemberComponent.class);
-            for (final var target : targets.stream().filter(target -> target.get(TeamMemberComponent.class).team != memberConfig.team).toList()) {
+            var memberConfig = attacker.get(PlayerComponent.class);
+            for (final var target : targets.stream().filter(target -> target.get(PlayerComponent.class).team != memberConfig.team).toList()) {
                 if (attacker.position().distanceTo(target.position()) < config.range) {
                     final var leadPoistion = target.position().add(target.get(PhysicsComponent.class).velocity.multiply(0.5));
                     boolean isFree = engine.navigation().raycastFrom(attacker.position())

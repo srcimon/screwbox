@@ -25,7 +25,7 @@ class SpacialHashRegistryTest {
     void newInstance_negativeCellSize_throwsException() {
         List<Entity> entities = Collections.emptyList();
 
-        assertThatThrownBy(() -> new SpacialHashRegistry(-4, entities))
+        assertThatThrownBy(() -> new SpacialHashRegistry<>(-4, entities))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("cell size must be positive (actual value: -4.0)");
     }
@@ -34,16 +34,16 @@ class SpacialHashRegistryTest {
     void newInstance_entityWithoutTransformComponent_throwsException() {
         List<Entity> entities = List.of(new Entity());
 
-        assertThatThrownBy(() -> new SpacialHashRegistry(16, entities))
+        assertThatThrownBy(() -> new SpacialHashRegistry<>(16, entities))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("entity has no TransformComponent");
     }
 
     @Test
     void queryBucket_bucketNotEmpty_containsEntities() {
-        var registry = new SpacialHashRegistry(16, ENTITIES);
+        var registry = new SpacialHashRegistry<>(16, ENTITIES);
 
-        var entities = registry.queryBucket($(0,0));
+        var entities = registry.queryBucket($(0, 0));
 
         assertThat(entities).hasSize(2)
             .anyMatch(entity -> entity.forceId() == 3)
@@ -52,18 +52,18 @@ class SpacialHashRegistryTest {
 
     @Test
     void queryBucket_noEntitiesNearby_canBeEmptyButMustNotBecauseIndexCanContainDuplicates() {
-        var registry = new SpacialHashRegistry(16, ENTITIES);
+        var registry = new SpacialHashRegistry<>(16, ENTITIES);
 
-        var entities = registry.queryBucket($(-410,0));
+        var entities = registry.queryBucket($(-410, 0));
 
         assertThat(entities).isEmpty();
     }
 
     @Test
     void queryLocalBuckets_entityWithinLocalBucket_containsEntitiesFromAllBuckets() {
-        var registry = new SpacialHashRegistry(16, ENTITIES);
+        var registry = new SpacialHashRegistry<>(16, ENTITIES);
 
-        var entities = registry.queryLocalBuckets($(0,0));
+        var entities = registry.queryLocalBuckets($(0, 0));
 
         assertThat(entities).hasSize(3)
             .anyMatch(entity -> entity.forceId() == 3)
@@ -73,16 +73,16 @@ class SpacialHashRegistryTest {
 
     @Test
     void queryLocalBuckets_allEntitiesWithinRange_doesNotContainDuplicates() {
-        var registry = new SpacialHashRegistry(150, ENTITIES);
+        var registry = new SpacialHashRegistry<>(150, ENTITIES);
 
-        var entities = registry.queryLocalBuckets($(0,0));
+        var entities = registry.queryLocalBuckets($(0, 0));
 
         assertThat(entities).containsExactlyInAnyOrderElementsOf(ENTITIES);
     }
 
     @Test
     void cellSize_cellSize16_is16() {
-        var registry = new SpacialHashRegistry(16, ENTITIES);
+        var registry = new SpacialHashRegistry<>(16, ENTITIES);
 
         assertThat(registry.cellSize()).isEqualTo(16);
     }

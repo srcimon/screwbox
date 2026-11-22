@@ -28,35 +28,36 @@ public class PathMovementSystem implements EntitySystem {
             }
 
             if (nonNull(movement.path)) {
-                updateMover(mover, movement);
+                movement.path = updateMover(mover, movement.path, movement.acceleration, movement.speed);
             }
         }
     }
 
-    private static void updateMover(final Entity mover, final PathMovementComponent movement) {
+    private static Polygon updateMover(final Entity mover, final Polygon path, final double acceleration, final double speed) {
         // has reached last target
-        if (mover.position().distanceTo(movement.path.lastNode()) < 1) {
+        if (mover.position().distanceTo(path.lastNode()) < 1) {
             mover.get(PhysicsComponent.class).velocity = Vector.zero();
             mover.remove(TargetMovementComponent.class);
-            return;
+            return path;
         }
 
         // check if near target
-        if (movement.path.nodeCount() > 1 && mover.position().distanceTo(movement.path.firstNode()) < mover.bounds().extents().length()) {
-            movement.path = movement.path.removeNode(0);
-        }
+        final var updatedPath = path.nodeCount() > 1 && mover.position().distanceTo(path.firstNode()) < mover.bounds().extents().length()
+            ? path.removeNode(0)
+            : path;
 
         // update next target
         final var targetMovement = mover.get(TargetMovementComponent.class);
         if (isNull(targetMovement)) {
-            mover.add(new TargetMovementComponent(movement.path.firstNode()), target -> {
-                target.acceleration = movement.acceleration;
-                target.maxSpeed = movement.speed;
+            mover.add(new TargetMovementComponent(updatedPath.firstNode()), target -> {
+                target.acceleration = acceleration;
+                target.maxSpeed = speed;
             });
         } else {
-            targetMovement.position = movement.path.firstNode();
-            targetMovement.acceleration = movement.acceleration;
-            targetMovement.maxSpeed = movement.speed;
+            targetMovement.position = updatedPath.firstNode();
+            targetMovement.acceleration = acceleration;
+            targetMovement.maxSpeed = speed;
         }
+        return updatedPath;
     }
 }

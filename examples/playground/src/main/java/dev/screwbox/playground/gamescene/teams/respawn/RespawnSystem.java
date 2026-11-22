@@ -15,7 +15,7 @@ import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
 import dev.screwbox.playground.gamescene.teams.HumanComponent;
-import dev.screwbox.playground.gamescene.teams.TeamMemberComponent;
+import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class RespawnSystem implements EntitySystem {
         HeavenComponent heaven = engine.environment().fetchSingletonComponent(HeavenComponent.class);
         final List<Entity> revivedPlayer = new ArrayList<>();
         for (final var player : heaven.deadPlayers) {
-            var config = player.get(TeamMemberComponent.class);
+            var config = player.get(PlayerComponent.class);
             Time respawnTime = respawnConfig.respawnTimeout.addTo(config.deathTime);
             if (respawnTime.isBefore(engine.loop().time())) {
                 var availableAreas = respawnAreas.stream().filter(area -> area.get(RespawnAreaComponent.class).team.equals(config.team)).toList();
