@@ -11,6 +11,8 @@ import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.playground.gamescene.gamemodes.ctf.CaptureZoneComponent;
+import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagCarrierComponent;
 import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagComponent;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.PlayerComponent;
@@ -18,6 +20,7 @@ import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -45,11 +48,23 @@ public class BotMovementSystem implements EntitySystem {
                 final Color team = bot.get(PlayerComponent.class).team;
 
                 List<AiTarget> possibleTargets = new ArrayList<>();
-                possibleTargets.addAll(findEnemyFlagPoints(engine.environment(), team));
+                possibleTargets.addAll(retrieveEnemyFlags(bot, engine.environment(), team));
+                possibleTargets.addAll(runTowardsEnemyFlags(engine.environment(), team));
                 possibleTargets.addAll(findNearbyNearlyDeadEnemies(engine.environment(), bot.position(), team));
                 updateTarget(bot, possibleTargets);
             }
         }
+    }
+
+    private Collection<AiTarget> retrieveEnemyFlags(Entity bot, Environment environment, Color team) {
+        if(!bot.hasComponent(FlagCarrierComponent.class)) {
+            return Collections.emptyList();
+        }
+        var capturePoint = environment.fetchAllHaving(CaptureZoneComponent.class).stream()
+            .filter(zone -> zone.get(CaptureZoneComponent.class).team.equals(team))
+            //TODO sort by distance to player
+            .findFirst().orElseThrow();
+        return List.of(new AiTarget(capturePoint.forceId(), 99, Percent.max(), Duration.ofSeconds(4)));
     }
 
     //TODO add general interface and use Reflections.createInstances(AiBehaviour.class, "package")
@@ -62,7 +77,7 @@ public class BotMovementSystem implements EntitySystem {
             .toList();
     }
 
-    private static List<AiTarget> findEnemyFlagPoints(Environment environment, Color team) {
+    private static List<AiTarget> runTowardsEnemyFlags(Environment environment, Color team) {
         return environment.fetchAllHaving(FlagComponent.class).stream()
             .filter(flagEntity -> {
                 final var flag = flagEntity.get(FlagComponent.class);

@@ -22,6 +22,7 @@ public class FlagScoreSystem implements EntitySystem {
                 for (final var player : players) {
                     if (player.touches(flagEntity) && !player.get(PlayerComponent.class).team.equals(flag.team)) {
                         flag.carriedById = player.forceId();
+                        player.add(new FlagCarrierComponent());
                     }
                 }
             }
