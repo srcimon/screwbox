@@ -24,6 +24,10 @@ public class PlaygroundApp {
             .bindAlias(DefaultControlSet.DOWN, Key.S)
             .bindAlias(DefaultControlSet.LEFT, Key.A)
             .bindAlias(DefaultControlSet.RIGHT, Key.D);
+        screwBox.assets()
+            .enableLogging()
+            .prepareEngineAssetsAsync()
+            .prepareClassPackageAsync(PlaygroundApp.class);
 
         screwBox.scenes()
             .add(new GameScene(gameConfig))
