@@ -24,7 +24,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -33,7 +33,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -87,7 +87,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -96,7 +96,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -105,7 +105,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -159,7 +159,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -168,7 +168,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -177,7 +177,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -231,7 +231,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -240,7 +240,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {
@@ -249,7 +249,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"orthographic-wall"
+                 "value":"wall"
                 }]
         }, 
         {

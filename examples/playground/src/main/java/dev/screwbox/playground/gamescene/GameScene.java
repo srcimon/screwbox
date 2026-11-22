@@ -8,6 +8,7 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
@@ -92,6 +93,7 @@ public class GameScene implements Scene {
                     .bounds(Bounds.$$(0, 0, 10, 10))
                     .add(new ColliderComponent())
                     .add(new AvoidanceComponent())
+                    .add(new OccluderComponent(false))
                     .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
                     .add(new RenderComponent(Sprite.placeholder(team, Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(drawOrder)))

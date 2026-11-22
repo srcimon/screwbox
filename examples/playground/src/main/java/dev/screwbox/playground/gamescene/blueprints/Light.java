@@ -16,6 +16,6 @@ public class Light implements Blueprint<GameObject> {
         return new Entity()
             .bounds(object.bounds())
             .add(new PointLightComponent(radius, color))
-            .add(new GlowComponent(radius / 2.0, color.equals(Color.BLACK) ? Color.WHITE.opacity(0.3) : color.opacity(0.3)));
+            .add(new GlowComponent(radius / 3.0, color.equals(Color.BLACK) ? Color.WHITE.opacity(0.4) : color.opacity(0.4)));
     }
 }
