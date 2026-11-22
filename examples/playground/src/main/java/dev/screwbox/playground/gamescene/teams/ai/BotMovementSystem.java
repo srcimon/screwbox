@@ -40,7 +40,8 @@ public class BotMovementSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var bot : engine.environment().fetchAll(BOTS)) {
             var botConfig = bot.get(BotComponent.class);
-            if (botConfig.scheduler.isTick(engine.loop().time()) || !engine.environment().hasId(bot.get(PathMovementComponent.class).targetId)) {
+            Integer targetId = bot.get(PathMovementComponent.class).targetId;
+            if (botConfig.scheduler.isTick(engine.loop().time()) || targetId != null && !engine.environment().hasId(targetId)) {
                 final Color team = bot.get(PlayerComponent.class).team;
 
                 List<AiTarget> possibleTargets = new ArrayList<>();
@@ -65,7 +66,7 @@ public class BotMovementSystem implements EntitySystem {
         return environment.fetchAllHaving(FlagComponent.class).stream()
             .filter(flagEntity -> {
                 final var flag = flagEntity.get(FlagComponent.class);
-                return flag.isAttached && !flag.team.equals(team);
+                return flag.carriedById == null && !flag.team.equals(team);
             })
             .map(entity -> new AiTarget(entity.forceId(), 50, Percent.max(), Duration.oneSecond()))
             .toList();

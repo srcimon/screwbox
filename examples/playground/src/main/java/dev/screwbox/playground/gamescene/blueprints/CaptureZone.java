@@ -14,7 +14,7 @@ public class CaptureZone implements AdvancedBlueprint<GameObject> {
     public Entity assembleFrom(GameObject source, IdPool idPool) {
         final Color team = source.properties().getColor("team");
 
-        return new Entity(idPool.allocateId())
+        return new Entity(source.id())
             .bounds(Bounds.atPosition(source.position(), 32, 32))
             .add(new CaptureZoneComponent(), zone -> zone.team = team);
     }
