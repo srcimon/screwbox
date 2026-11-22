@@ -52,7 +52,7 @@ public class GameScene implements Scene {
     public void onEnter(Engine engine) {
         engine.graphics().camera().setZoom(4);
         engine.graphics().light().setAmbientLight(Percent.of(0.1));
-        engine.graphics().configuration().setIndirectLightRaySpacing(1);
+        engine.graphics().configuration().setIndirectLightRaySpacing(1).setLightmapBlur(4);
     }
 
     @Override

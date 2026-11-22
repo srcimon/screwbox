@@ -1,11 +1,11 @@
-{ "columns":8,
+{ "columns":16,
  "image":"turbine_walls.png",
  "imageheight":64,
- "imagewidth":128,
+ "imagewidth":256,
  "margin":0,
  "name":"turbine_walls",
  "spacing":0,
- "tilecount":32,
+ "tilecount":64,
  "tiledversion":"1.12.1",
  "tileheight":16,
  "tiles":[
@@ -74,78 +74,6 @@
         }, 
         {
          "id":7,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"orthographic-wall"
-                }]
-        }, 
-        {
-         "id":8,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall"
-                }]
-        }, 
-        {
-         "id":9,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall"
-                }]
-        }, 
-        {
-         "id":10,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall"
-                }]
-        }, 
-        {
-         "id":11,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"orthographic-wall"
-                }]
-        }, 
-        {
-         "id":12,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"orthographic-wall"
-                }]
-        }, 
-        {
-         "id":13,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"orthographic-wall"
-                }]
-        }, 
-        {
-         "id":14,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"orthographic-wall"
-                }]
-        }, 
-        {
-         "id":15,
          "properties":[
                 {
                  "name":"type",
@@ -226,7 +154,7 @@
                 }]
         }, 
         {
-         "id":24,
+         "id":32,
          "properties":[
                 {
                  "name":"type",
@@ -235,7 +163,7 @@
                 }]
         }, 
         {
-         "id":25,
+         "id":33,
          "properties":[
                 {
                  "name":"type",
@@ -244,7 +172,7 @@
                 }]
         }, 
         {
-         "id":26,
+         "id":34,
          "properties":[
                 {
                  "name":"type",
@@ -253,7 +181,7 @@
                 }]
         }, 
         {
-         "id":27,
+         "id":35,
          "properties":[
                 {
                  "name":"type",
@@ -262,7 +190,7 @@
                 }]
         }, 
         {
-         "id":28,
+         "id":36,
          "properties":[
                 {
                  "name":"type",
@@ -271,7 +199,7 @@
                 }]
         }, 
         {
-         "id":29,
+         "id":37,
          "properties":[
                 {
                  "name":"type",
@@ -280,7 +208,7 @@
                 }]
         }, 
         {
-         "id":30,
+         "id":38,
          "properties":[
                 {
                  "name":"type",
@@ -289,7 +217,115 @@
                 }]
         }, 
         {
-         "id":31,
+         "id":39,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"orthographic-wall"
+                }]
+        }, 
+        {
+         "id":40,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"orthographic-wall"
+                }]
+        }, 
+        {
+         "id":41,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"orthographic-wall"
+                }]
+        }, 
+        {
+         "id":48,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"wall"
+                }]
+        }, 
+        {
+         "id":49,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"wall"
+                }]
+        }, 
+        {
+         "id":50,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"wall"
+                }]
+        }, 
+        {
+         "id":51,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"orthographic-wall"
+                }]
+        }, 
+        {
+         "id":52,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"orthographic-wall"
+                }]
+        }, 
+        {
+         "id":53,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"orthographic-wall"
+                }]
+        }, 
+        {
+         "id":54,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"orthographic-wall"
+                }]
+        }, 
+        {
+         "id":55,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"orthographic-wall"
+                }]
+        }, 
+        {
+         "id":56,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"orthographic-wall"
+                }]
+        }, 
+        {
+         "id":57,
          "properties":[
                 {
                  "name":"type",

@@ -351,11 +351,11 @@ public class GraphicsConfiguration {
     }
 
     /**
-     * Configures the blur of the lightmap. 0 means no blur. Allows values up to 6.
+     * Configures the blur of the lightmap. 0 means no blur. Allows values up to 20.
      * Higher values cause lower {@link Loop#fps} but may improve visual quality
      * when using {@link Light}.
      *
-     * @param lightBlur blur value from 0 (no blur) to 6.
+     * @param lightBlur blur value from 0 (no blur) to 20.
      */
     public GraphicsConfiguration setLightmapBlur(final int lightBlur) {
         Validate.range(lightBlur, 0, 20, "lightmap blur must be in range 0 (no blur) to 20 (heavy blur)");
