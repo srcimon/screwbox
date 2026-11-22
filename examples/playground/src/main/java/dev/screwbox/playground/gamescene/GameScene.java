@@ -26,7 +26,7 @@ import dev.screwbox.playground.gamescene.blueprints.Flag;
 import dev.screwbox.playground.gamescene.blueprints.Floor;
 import dev.screwbox.playground.gamescene.blueprints.Light;
 import dev.screwbox.playground.gamescene.blueprints.OrhographicWall;
-import dev.screwbox.playground.gamescene.blueprints.SpawnArea;
+import dev.screwbox.playground.gamescene.blueprints.RespawnArea;
 import dev.screwbox.playground.gamescene.blueprints.Wall;
 import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
@@ -79,7 +79,7 @@ public class GameScene implements Scene {
             )
 
             .importSource(indexedSources(map.objects(), GameObject::name)
-                .assign("respawn-area", new SpawnArea())
+                .assign("respawn-area", new RespawnArea())
                 .assign("light", new Light())
                 .assign("flag", new Flag())
                 .assign("flag", new CaptureZone())
