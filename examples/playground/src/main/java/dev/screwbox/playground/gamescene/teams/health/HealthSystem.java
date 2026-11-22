@@ -37,7 +37,7 @@ public class HealthSystem implements EntitySystem {
                 engine.environment().fetchSingletonComponent(HeavenComponent.class).deadPlayers.add(living);
                 engine.environment().remove(living);
 
-                engine.ui().showNotification(NotificationDetails.text("%s%s%s has been shot".formatted(
+                engine.ui().showNotification(NotificationDetails.text("%s%s%s has been killed".formatted(
                     PREFIX.get(player.team), player.name, POSTFIX.get(player.team))));
             }
         }
