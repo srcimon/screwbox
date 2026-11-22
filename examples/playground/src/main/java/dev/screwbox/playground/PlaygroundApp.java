@@ -7,6 +7,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.keyboard.DefaultControlSet;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.playground.design.InGameNotificationDesign;
+import dev.screwbox.playground.design.SceneTransitions;
 import dev.screwbox.playground.gamescene.GameScene;
 
 import java.util.Set;
@@ -31,7 +32,7 @@ public class PlaygroundApp {
 
         screwBox.scenes()
             .add(new GameScene(gameConfig))
-            .switchTo(GameScene.class);
+            .switchTo(GameScene.class, SceneTransitions.BLEND_IN);
 
         screwBox.start();
     }
