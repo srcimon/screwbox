@@ -49,12 +49,12 @@ public class PathMovementSystem implements EntitySystem {
         // update next target
         final var targetMovement = mover.get(TargetMovementComponent.class);
         if (isNull(targetMovement)) {
-            mover.add(new TargetMovementComponent(path.firstNode()), target -> {
+            mover.add(new TargetMovementComponent(updatedPath.firstNode()), target -> {
                 target.acceleration = acceleration;
                 target.maxSpeed = speed;
             });
         } else {
-            targetMovement.position = path.firstNode();
+            targetMovement.position = updatedPath.firstNode();
             targetMovement.acceleration = acceleration;
             targetMovement.maxSpeed = speed;
         }
