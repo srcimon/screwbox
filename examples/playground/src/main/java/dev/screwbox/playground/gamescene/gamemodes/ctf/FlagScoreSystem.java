@@ -27,12 +27,13 @@ public class FlagScoreSystem implements EntitySystem {
                     }
                 }
             } else {
-                for (final var player : players) {
-                    if (player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team)) {
-                        flag.isStolen = false;
-                        flagEntity.moveTo(engine.environment().fetchById(flag.homeZoneId).position());
-                    }
-                }
+//                for (final var player : players) {
+//                    if (player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team)) {
+//                        flag.isStolen = false;
+//                        Entity homeZone = engine.environment().fetchById(flag.homeZoneId);
+//                        flagEntity.moveTo(homeZone.position());
+//                    }
+//                }
             }
             if (flag.carriedById != null) {
                 engine.environment().tryFetchById(flag.carriedById).ifPresentOrElse(
