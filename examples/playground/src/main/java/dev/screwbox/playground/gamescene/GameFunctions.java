@@ -13,7 +13,6 @@ import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.SpriteBundle;
-import dev.screwbox.core.graphics.light.LensFlareBundle;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.playground.gamescene.teams.ai.ShotComponent;
 

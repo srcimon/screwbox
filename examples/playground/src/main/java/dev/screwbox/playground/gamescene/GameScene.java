@@ -25,7 +25,15 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.blueprints.*;
+import dev.screwbox.playground.gamescene.blueprints.Blockade;
+import dev.screwbox.playground.gamescene.blueprints.CaptureZone;
+import dev.screwbox.playground.gamescene.blueprints.Decor;
+import dev.screwbox.playground.gamescene.blueprints.Flag;
+import dev.screwbox.playground.gamescene.blueprints.Floor;
+import dev.screwbox.playground.gamescene.blueprints.Light;
+import dev.screwbox.playground.gamescene.blueprints.LowerWall;
+import dev.screwbox.playground.gamescene.blueprints.RespawnArea;
+import dev.screwbox.playground.gamescene.blueprints.UpperWall;
 import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
@@ -77,7 +85,6 @@ public class GameScene implements Scene {
                 .assign("lower-wall", new LowerWall())
                 .assign("upper-wall", new UpperWall())
                 .assign("blockade", new Blockade())
-                .assign("ceiling", new Ceiling())
                 .assign("decor", new Decor())
             )
 
