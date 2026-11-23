@@ -57,6 +57,8 @@ public class GameScene implements Scene {
     public void onEnter(Engine engine) {
         engine.graphics().camera().setZoom(4);
         engine.graphics().light().setAmbientLight(Percent.of(0.1));
+        engine.audio().configuration().setSoundRange(128);
+        engine.ui().setNotificationSound(null);
         engine.graphics().configuration()
             .setIndirectLightRaySpacing(2)
             .setLightmapBlur(3)
