@@ -25,15 +25,15 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.blueprints.Blockade;
+import dev.screwbox.playground.gamescene.blueprints.WallTop;
 import dev.screwbox.playground.gamescene.blueprints.CaptureZone;
 import dev.screwbox.playground.gamescene.blueprints.Decor;
 import dev.screwbox.playground.gamescene.blueprints.Flag;
 import dev.screwbox.playground.gamescene.blueprints.Floor;
 import dev.screwbox.playground.gamescene.blueprints.Light;
-import dev.screwbox.playground.gamescene.blueprints.LowerWall;
+import dev.screwbox.playground.gamescene.blueprints.WallBase;
 import dev.screwbox.playground.gamescene.blueprints.RespawnArea;
-import dev.screwbox.playground.gamescene.blueprints.UpperWall;
+import dev.screwbox.playground.gamescene.blueprints.WallMid;
 import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
@@ -82,9 +82,9 @@ public class GameScene implements Scene {
 
             .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type"))
                 .assign("floor", new Floor())
-                .assign("lower-wall", new LowerWall())
-                .assign("upper-wall", new UpperWall())
-                .assign("blockade", new Blockade())
+                .assign("wall-base", new WallBase())
+                .assign("wall-mid", new WallMid())
+                .assign("wall-top", new WallTop())
                 .assign("decor", new Decor())
             )
 

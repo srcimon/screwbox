@@ -26,6 +26,24 @@
                  "type":"string",
                  "value":"floor"
                 }]
+        }, 
+        {
+         "id":8,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"floor"
+                }]
+        }, 
+        {
+         "id":9,
+         "properties":[
+                {
+                 "name":"type",
+                 "type":"string",
+                 "value":"floor"
+                }]
         }],
  "tilewidth":16,
  "type":"tileset",
