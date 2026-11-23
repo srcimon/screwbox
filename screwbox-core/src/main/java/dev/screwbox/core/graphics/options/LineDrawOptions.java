@@ -13,7 +13,7 @@ import dev.screwbox.core.utils.Validate;
  * @param drawOrder   order of this drawing task in comparison to others
  * @see Canvas#drawLine(Offset, Offset, LineDrawOptions)
  */
-public record LineDrawOptions(Color color, int strokeWidth, int drawOrder) {
+public record LineDrawOptions(Color color, double strokeWidth, int drawOrder) {
 
     public LineDrawOptions {
         Validate.positive(strokeWidth, "stroke width must be positive");
@@ -29,7 +29,7 @@ public record LineDrawOptions(Color color, int strokeWidth, int drawOrder) {
     /**
      * Returns new instance with new {@link #strokeWidth()}.
      */
-    public LineDrawOptions strokeWidth(final int strokeWidth) {
+    public LineDrawOptions strokeWidth(final double strokeWidth) {
         return new LineDrawOptions(color, strokeWidth, drawOrder);
     }
 

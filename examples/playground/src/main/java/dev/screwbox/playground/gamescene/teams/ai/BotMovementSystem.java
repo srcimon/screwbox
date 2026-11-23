@@ -41,19 +41,19 @@ public class BotMovementSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-//        for (final var bot : engine.environment().fetchAll(BOTS)) {
-//            var botConfig = bot.get(BotComponent.class);
-//            Integer targetId = bot.get(PathMovementComponent.class).targetId;
-//            if (botConfig.scheduler.isTick(engine.loop().time()) || targetId != null && !engine.environment().hasId(targetId)) {
-//                final Color team = bot.get(PlayerComponent.class).team;
-//
-//                List<AiTarget> possibleTargets = new ArrayList<>();
-//                possibleTargets.addAll(retrieveEnemyFlags(bot, engine.environment(), team));
-//                possibleTargets.addAll(runTowardsEnemyFlags(engine.environment(), team));
-//                possibleTargets.addAll(findNearbyNearlyDeadEnemies(engine.environment(), bot.position(), team));
-//                updateTarget(bot, possibleTargets);
-//            }
-//        }
+        for (final var bot : engine.environment().fetchAll(BOTS)) {
+            var botConfig = bot.get(BotComponent.class);
+            Integer targetId = bot.get(PathMovementComponent.class).targetId;
+            if (botConfig.scheduler.isTick(engine.loop().time()) || targetId != null && !engine.environment().hasId(targetId)) {
+                final Color team = bot.get(PlayerComponent.class).team;
+
+                List<AiTarget> possibleTargets = new ArrayList<>();
+                possibleTargets.addAll(retrieveEnemyFlags(bot, engine.environment(), team));
+                possibleTargets.addAll(runTowardsEnemyFlags(engine.environment(), team));
+                possibleTargets.addAll(findNearbyNearlyDeadEnemies(engine.environment(), bot.position(), team));
+                updateTarget(bot, possibleTargets);
+            }
+        }
     }
 
     private Collection<AiTarget> retrieveEnemyFlags(Entity bot, Environment environment, Color team) {

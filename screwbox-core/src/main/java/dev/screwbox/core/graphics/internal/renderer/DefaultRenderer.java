@@ -202,7 +202,7 @@ public class DefaultRenderer implements Renderer {
             graphics.drawLine(start.x(), start.y(), end.x(), end.y());
         } else {
             var oldStroke = graphics.getStroke();
-            graphics.setStroke(new BasicStroke(options.strokeWidth()));
+            graphics.setStroke(new BasicStroke((int)options.strokeWidth()));
             graphics.drawLine(start.x(), start.y(), end.x(), end.y());
             graphics.setStroke(oldStroke);
         }

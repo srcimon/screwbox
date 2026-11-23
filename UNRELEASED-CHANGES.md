@@ -23,6 +23,7 @@
 - Renamed scheduler method names consistently
 - Introduced mixin interface `HasBounds` to mix in bounds related functions
 - Made `SpacialIndex` and `SpacialHashRegistry` generic to query anything that `HasBounds`
+- Allow double values for `LineDrawOptions.strokeWidth()`
 
 ### 📦 Dependency updates
 

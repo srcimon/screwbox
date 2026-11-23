@@ -22,8 +22,8 @@ public class HealthBarSystem implements EntitySystem {
             var pos = living.bounds().position();
             var distance = health.rangeValue(0, 8);
             Vector start = pos.add(-4, 8);
-            engine.graphics().world().drawLine(start, start.addX(8), LineDrawOptions.color(Color.GREY).strokeWidth(2));
-            engine.graphics().world().drawLine(start, start.addX(distance), LineDrawOptions.color(Color.RED).strokeWidth(2));
+            engine.graphics().world().drawLine(start, start.addX(8), LineDrawOptions.color(Color.GREY).strokeWidth(2.0));
+            engine.graphics().world().drawLine(start, start.addX(distance), LineDrawOptions.color(Color.RED).strokeWidth(2.0));
         }
     }
 }
