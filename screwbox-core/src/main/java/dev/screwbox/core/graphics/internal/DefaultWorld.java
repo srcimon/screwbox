@@ -37,7 +37,7 @@ public class DefaultWorld implements World {
     @Override
     public World drawLine(final Vector start, final Vector end, final LineDrawOptions options) {
         for (final var viewport : viewportManager.viewports()) {
-            viewport.canvas().drawLine(viewport.toCanvas(start), viewport.toCanvas(end), options.strokeWidth((int) (options.strokeWidth() * viewport.camera().zoom())));
+            viewport.canvas().drawLine(viewport.toCanvas(start), viewport.toCanvas(end), options.strokeWidth(options.strokeWidth() * viewport.camera().zoom()));
         }
         return this;
     }

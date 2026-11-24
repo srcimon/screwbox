@@ -24,7 +24,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall"
+                 "value":"wall-top"
                 }]
         }],
  "tilewidth":16,

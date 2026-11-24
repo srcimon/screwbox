@@ -14,7 +14,7 @@ class LineDrawOptionsTest {
 
         assertThatThrownBy(() -> options.strokeWidth(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("stroke width must be positive (actual value: 0)");
+                .hasMessage("stroke width must be positive (actual value: 0.0)");
     }
 
     @Test

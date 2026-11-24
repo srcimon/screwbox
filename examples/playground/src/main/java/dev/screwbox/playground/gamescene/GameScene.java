@@ -21,14 +21,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.gamescene.blueprints.CaptureZone;
-import dev.screwbox.playground.gamescene.blueprints.Decor;
-import dev.screwbox.playground.gamescene.blueprints.Flag;
-import dev.screwbox.playground.gamescene.blueprints.Floor;
-import dev.screwbox.playground.gamescene.blueprints.Light;
-import dev.screwbox.playground.gamescene.blueprints.OrhographicWall;
-import dev.screwbox.playground.gamescene.blueprints.RespawnArea;
-import dev.screwbox.playground.gamescene.blueprints.Wall;
+import dev.screwbox.playground.gamescene.blueprints.*;
 import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
@@ -55,12 +48,17 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.graphics().camera().setZoom(4);
-        engine.graphics().light().setAmbientLight(Percent.of(0.1));
+        engine.graphics().light().setAmbientLight(Percent.of(0.2));
+        engine.audio().configuration().setSoundRange(128);
+        engine.ui().setNotificationSound(null);
         engine.graphics().configuration()
-            .setIndirectLightRaySpacing(2)
-            .setLightmapBlur(3)
-            .setLightQuality(Percent.quarter())
-            .setIndirectLightDiameter(16);
+            .setIndirectLightIntensity(Percent.quarter())
+            .setMaxLightBounces(1)
+            .setIndirectLightRaySpacing(4)
+            .setLightmapBlur(4)
+            .setLightQuality(Percent.of(0.4))
+            .setLightBounceLengthLoss(Percent.of(0.8))
+            .setIndirectLightDiameter(6);
     }
 
     @Override
@@ -76,8 +74,11 @@ public class GameScene implements Scene {
 
             .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type"))
                 .assign("floor", new Floor())
-                .assign("orthographic-wall", new OrhographicWall())
-                .assign("wall", new Wall())
+                .assign("wall-base", new WallBase())
+                .assign("wall-mid", new WallMid())
+                .assign("wall-top", new WallTop())
+                .assign("wall-topspecial", new WallTopSpecial())
+                .assign("wall-topspecial", new WallTopSpecial2())
                 .assign("decor", new Decor())
             )
 
