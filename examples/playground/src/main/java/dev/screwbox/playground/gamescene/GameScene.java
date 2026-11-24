@@ -56,10 +56,10 @@ public class GameScene implements Scene {
         engine.audio().configuration().setSoundRange(128);
         engine.ui().setNotificationSound(null);
         engine.graphics().configuration()
-            .setIndirectLightIntensity(Percent.of(0.2))
+            .setIndirectLightIntensity(Percent.of(0.0))
             .setIndirectLightRaySpacing(2.0)
-            .setLightmapBlur(2)
-            .setLightQuality(Percent.quarter())
+            .setLightmapBlur(3)
+            .setLightQuality(Percent.half())
             .setIndirectLightDiameter(12);
     }
 
