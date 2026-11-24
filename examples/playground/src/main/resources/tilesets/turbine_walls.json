@@ -87,7 +87,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall-top"
+                 "value":"wall-topspecial"
                 }]
         }, 
         {
@@ -96,7 +96,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall-top"
+                 "value":"wall-topspecial"
                 }]
         }, 
         {
@@ -105,7 +105,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall-top"
+                 "value":"wall-topspecial"
                 }]
         }, 
         {
@@ -168,7 +168,7 @@
                 {
                  "name":"type",
                  "type":"string",
-                 "value":"wall-top"
+                 "value":"wall-topspecial"
                 }]
         }, 
         {
