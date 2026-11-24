@@ -14,6 +14,7 @@
 - Fixed inaccurate acceleration when using target movement
 - Fixed wrong diagonal movement speeds when using movement controls
 - Fixed cost calculation in A-Star-algorithm
+- Reintroduced Thread.sleep() when switching to fullscreen on MacOs
 
 ### 🧽 Cleanup & refactoring
 

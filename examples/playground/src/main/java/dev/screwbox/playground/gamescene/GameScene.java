@@ -58,6 +58,7 @@ public class GameScene implements Scene {
         engine.audio().configuration().setSoundRange(128);
         engine.ui().setNotificationSound(null);
         engine.graphics().configuration()
+            .toggleFullscreen()
             .setIndirectLightIntensity(Percent.quarter())
             .setIndirectLightRaySpacing(2.5)
             .setLightmapBlur(3)
