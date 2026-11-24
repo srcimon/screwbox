@@ -130,12 +130,12 @@ public final class ImageOperations {
      *
      * @since 3.22.0
      */
-    public static void blurImage(final BufferedImage enlarged, final int radius) {
+    public static void blurImage(final BufferedImage image, final int radius) {
         Validate.range(radius, 1, 20, "radius must be in range 1 to 20");
-        final int[] pixels = getPixelValues(enlarged);
+        final int[] pixels = getPixelValues(image);
         final int[] temp = new int[pixels.length];
-        blurPassHorizontal(pixels, temp, enlarged.getWidth(), enlarged.getHeight(), radius);
-        blurPassVertical(temp, pixels, enlarged.getHeight(), enlarged.getWidth(), radius);
+        blurPassHorizontal(pixels, temp, image.getWidth(), image.getHeight(), radius);
+        blurPassVertical(temp, pixels, image.getHeight(), image.getWidth(), radius);
     }
 
     public static VolatileImage createVolatileImage(final Size size) {

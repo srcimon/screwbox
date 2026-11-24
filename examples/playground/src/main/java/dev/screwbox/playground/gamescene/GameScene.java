@@ -5,7 +5,6 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
-import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
@@ -22,7 +21,6 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
@@ -53,15 +51,14 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.graphics().camera().setZoom(4);
+        engine.graphics().camera().setZoom(5);
         engine.graphics().light().setAmbientLight(Percent.of(0.1));
         engine.audio().configuration().setSoundRange(128);
         engine.ui().setNotificationSound(null);
         engine.graphics().configuration()
-            .toggleFullscreen()
-            .setIndirectLightIntensity(Percent.quarter())
-            .setIndirectLightRaySpacing(2.5)
-            .setLightmapBlur(3)
+            .setIndirectLightIntensity(Percent.of(0.2))
+            .setIndirectLightRaySpacing(2.0)
+            .setLightmapBlur(2)
             .setLightQuality(Percent.quarter())
             .setIndirectLightDiameter(12);
     }
