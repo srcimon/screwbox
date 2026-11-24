@@ -16,7 +16,7 @@ public class WallTopSpecial2 implements Blueprint<Tile> {
     @Override
     public Entity assembleFrom(Tile tile) {
         return new Entity()
-            .bounds(Bounds.atOrigin(tile.bounds().origin().addY(3), 16, 13))
+            .bounds(Bounds.atOrigin(tile.bounds().origin().addY(4), 16, 12))
             .add(new ColliderComponent())
             .add(new ShotObstacleComponent())
             .add(new ObstacleComponent())
