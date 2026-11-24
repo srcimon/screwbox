@@ -8,17 +8,13 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
-import dev.screwbox.core.environment.core.TransformComponent;
 import dev.screwbox.core.environment.light.OccluderComponent;
-import dev.screwbox.core.environment.light.PointLightComponent;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
 import dev.screwbox.core.environment.physics.ColliderComponent;
-import dev.screwbox.core.environment.physics.CursorAttachmentComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraLeadComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
-import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
@@ -51,31 +47,25 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.loop().unlockFps();
         engine.graphics().camera().setZoom(4);
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
         engine.audio().configuration().setSoundRange(128);
         engine.ui().setNotificationSound(null);
         engine.graphics().configuration()
-            .setIndirectLightIntensity(Percent.of(0.3))
-            .setIndirectLightRaySpacing(3)
-            .setLightmapBlur(3)
+            .setIndirectLightIntensity(Percent.quarter())
+            .setMaxLightBounces(1)
+            .setIndirectLightRaySpacing(4)
+            .setLightmapBlur(4)
             .setLightQuality(Percent.of(0.4))
             .setLightBounceLengthLoss(Percent.of(0.8))
-            .setIndirectLightDiameter(8);
+            .setIndirectLightDiameter(6);
     }
 
     @Override
     public void populate(Environment environment) {
         var map = Map.fromJson(gameConfig.map());
-//environment.addSystem(e -> {
-//    e.environment().fetchAllHaving(OccluderComponent.class).forEach(s -> {
-//        e.graphics().world().drawRectangle(s.bounds(), RectangleDrawOptions.outline(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()+1));
-//        e.graphics().world().drawRectangle(s.bounds(), RectangleDrawOptions.filled(Color.RED.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
-//    });
-//});
+
         environment
-            .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(100, Color.RED)))
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystemsFromPackage("dev.screwbox.playground.gamescene")

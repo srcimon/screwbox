@@ -22,7 +22,7 @@ public class BotTargetDebugSystem implements EntitySystem {
             var targetId = bot.get(PathMovementComponent.class).targetId;
             if(nonNull(targetId)) {
                engine.environment().tryFetchById(targetId).ifPresent(target -> {
-                   engine.graphics().world().drawLine(bot.position(), target.position(), LineDrawOptions.color(Color.WHITE.opacity(0.2)).strokeWidth(0.5).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
+//                   engine.graphics().world().drawLine(bot.position(), target.position(), LineDrawOptions.color(Color.WHITE.opacity(0.2)).strokeWidth(0.5).drawOrder(Order.DEBUG_OVERLAY.drawOrder()));
                });
             }
         }
