@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.Order;
 import dev.screwbox.core.environment.ai.PathMovementComponent;
 import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
@@ -21,6 +22,7 @@ import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
@@ -66,7 +68,12 @@ public class GameScene implements Scene {
     @Override
     public void populate(Environment environment) {
         var map = Map.fromJson(gameConfig.map());
-
+//environment.addSystem(e -> {
+//    e.environment().fetchAllHaving(OccluderComponent.class).forEach(s -> {
+//        e.graphics().world().drawRectangle(s.bounds(), RectangleDrawOptions.outline(Color.WHITE).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()+1));
+//        e.graphics().world().drawRectangle(s.bounds(), RectangleDrawOptions.filled(Color.RED.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+//    });
+//});
         environment
             .addEntity(new Entity().add(new TransformComponent()).add(new CursorAttachmentComponent()).add(new PointLightComponent(100, Color.RED)))
             .enableAllFeatures()
@@ -81,6 +88,7 @@ public class GameScene implements Scene {
                 .assign("wall-mid", new WallMid())
                 .assign("wall-top", new WallTop())
                 .assign("wall-topspecial", new WallTopSpecial())
+                .assign("wall-topspecial", new WallTopSpecial2())
                 .assign("decor", new Decor())
             )
 
