@@ -59,10 +59,10 @@ public class GameScene implements Scene {
         engine.ui().setNotificationSound(null);
         engine.graphics().configuration()
             .setIndirectLightIntensity(Percent.quarter())
-            .setIndirectLightRaySpacing(2)
-            .setLightmapBlur(5)
+            .setIndirectLightRaySpacing(2.5)
+            .setLightmapBlur(3)
             .setLightQuality(Percent.quarter())
-            .setIndirectLightDiameter(8);
+            .setIndirectLightDiameter(12);
     }
 
     @Override
