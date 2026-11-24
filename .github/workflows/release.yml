@@ -52,14 +52,10 @@ jobs:
             -s ./.github/settings.xml \
             -DreleaseVersion=${{ github.event.inputs.releaseVersion }} \
             -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }} \
-            -Darguments="-Dgpg.signer=bc" \
-            -Dgpg.signer=bc \
             deploy
         env:
           CENTRAL_USERNAME_TOKEN: ${{ secrets.CENTRAL_USERNAME_TOKEN }}
           CENTRAL_PASSWORD_TOKEN: ${{ secrets.CENTRAL_PASSWORD_TOKEN }}
-          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       - name: Artifact Name
         shell: bash
         run: |
