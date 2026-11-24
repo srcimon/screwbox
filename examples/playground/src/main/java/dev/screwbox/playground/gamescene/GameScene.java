@@ -51,15 +51,17 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.graphics().camera().setZoom(5);
-        engine.graphics().light().setAmbientLight(Percent.of(0.1));
+        engine.loop().unlockFps();
+        engine.graphics().camera().setZoom(4);
+        engine.graphics().light().setAmbientLight(Percent.of(0.2));
         engine.audio().configuration().setSoundRange(128);
         engine.ui().setNotificationSound(null);
         engine.graphics().configuration()
-            .setIndirectLightIntensity(Percent.of(0.0))
-            .setIndirectLightRaySpacing(2.0)
+            .setIndirectLightIntensity(Percent.quarter())
+            .setIndirectLightRaySpacing(2.4)
             .setLightmapBlur(3)
-            .setLightQuality(Percent.half())
+            .setLightQuality(Percent.quarter())
+            .setLightBounceLengthLoss(Percent.of(0.9))
             .setIndirectLightDiameter(12);
     }
 
