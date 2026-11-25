@@ -42,9 +42,8 @@ public class FlagScoreSystem implements EntitySystem {
 
     private static void checkAndHandleFlagScore(Engine engine, Entity flagEntity, FlagComponent flag) {
         for(final var captureZone : engine.environment().fetchAll(CAPTURE_ZONES)) {
-            if(captureZone.intersects(flagEntity) && captureZone.get(CaptureZoneComponent.class).team != flag.team) {
-                System.out.println(flag.team);
-                engine.graphics().postProcessing().triggerShockwave(flagEntity.position(), ShockwaveOptions.radius(20));
+            if(captureZone.intersects(flagEntity) && !captureZone.get(CaptureZoneComponent.class).team.equals(flag.team)) {
+                engine.graphics().postProcessing().triggerShockwave(flagEntity.position(), ShockwaveOptions.radius(20));//TODO REMOVE
                 engine.environment().tryFetchById(flag.carriedById).ifPresent(carrier -> carrier.remove(FlagComponent.class));
                 retrieveFlag(engine, flagEntity, flag);
             }
