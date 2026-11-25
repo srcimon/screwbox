@@ -6,7 +6,6 @@ import dev.screwbox.core.graphics.Color;
 public class FlagComponent implements Component {
 
     public int homeZoneId;
-    public boolean isStolen = false;
     public Integer carriedById;
     public Color team;
 
