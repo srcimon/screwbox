@@ -7,6 +7,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.ui.NotificationDetails;
 import dev.screwbox.playground.gamescene.gamemodes.ctf.FlagCarrierComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
+import dev.screwbox.playground.gamescene.teams.HumanComponent;
 import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 
 import java.util.Map;
@@ -30,7 +31,7 @@ public class HealthSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (final var living : engine.environment().fetchAll(LIVING)) {
-            if (living.get(HealthComponent.class).health.isZero()) {
+            if (living.get(HealthComponent.class).health.isZero() && !living.hasComponent(HumanComponent.class)) {
                 final var player = living.get(PlayerComponent.class);
                 player.deathTime = engine.loop().time();
                 living.remove(FlagCarrierComponent.class);

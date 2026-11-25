@@ -4,10 +4,10 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.ui.NotificationDetails;
 import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.nonNull;
 
@@ -20,16 +20,17 @@ public class FlagScoreSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
+        //TODO handle scoring
         final List<Entity> players = engine.environment().fetchAll(PLAYERS);
         for (final var flagEntity : engine.environment().fetchAll(FLAGS)) {
             final var flag = flagEntity.get(FlagComponent.class);
             if (nonNull(flag.carriedById)) {
                 handleCarriedFlag(engine, flagEntity, flag);
             }
-            if (Objects.nonNull(flag.carriedById)) {
-                checkAndHandleFlagRetrieval(engine, flagEntity, players, flag);
+            if(nonNull(flag.carriedById)) {
                 checkAndHandleFlagScore(engine, flagEntity, flag);
             } else {
+                checkAndHandleFlagRetrieval(engine, flagEntity, players, flag);
                 checkAndHandleFlagSteal(flagEntity, players, flag);
             }
         }
@@ -40,6 +41,7 @@ public class FlagScoreSystem implements EntitySystem {
             if (captureZone.intersects(flagEntity) && !captureZone.get(CaptureZoneComponent.class).team.equals(flag.team)) {
                 engine.environment().tryFetchById(flag.carriedById).ifPresent(carrier -> carrier.remove(FlagCarrierComponent.class));
                 retrieveFlag(engine, flagEntity, flag);
+                engine.ui().showNotification(NotificationDetails.text("team scored"));//TODO which team? give it a name
             }
         }
     }
@@ -47,7 +49,7 @@ public class FlagScoreSystem implements EntitySystem {
     private static void checkAndHandleFlagSteal(Entity flagEntity, List<Entity> players, FlagComponent flag) {
         for (final var player : players) {
             if (player.touches(flagEntity)) {
-                if (!player.hasComponent(FlagCarrierComponent.class) && !player.get(PlayerComponent.class).team.equals(flag.team)) {
+                if (!player.hasComponent(FlagCarrierComponent.class) && !player.get(PlayerComponent.class).team.equals(flag.team) ) {
                     flag.carriedById = player.forceId();
                     player.add(new FlagCarrierComponent());
                 }
@@ -57,7 +59,8 @@ public class FlagScoreSystem implements EntitySystem {
 
     private static void checkAndHandleFlagRetrieval(Engine engine, Entity flagEntity, List<Entity> players, FlagComponent flag) {
         for (final var player : players) {
-            if (player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team)) {
+            if (player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team) ) {
+                System.out.println("RETRIEVE");
                 retrieveFlag(engine, flagEntity, flag);
             }
         }
@@ -72,6 +75,6 @@ public class FlagScoreSystem implements EntitySystem {
     private static void handleCarriedFlag(Engine engine, Entity flagEntity, FlagComponent flag) {
         engine.environment().tryFetchById(flag.carriedById).ifPresentOrElse(
             carrier -> flagEntity.moveTo(carrier.position()),
-            () -> flagEntity.get(FlagComponent.class).carriedById = null);
+            () -> flag.carriedById = null);
     }
 }
