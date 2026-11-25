@@ -67,4 +67,23 @@ class ImageOperationsTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("images must have same size");
     }
+
+    @Test
+    void stackImages_distinctSizes_throwsException() {
+        BufferedImage onePixelImage = Sprite.pixel(Color.BLUE).singleImage();
+
+        assertThatThrownBy(() -> ImageOperations.stackImages(SOME_IMAGE, onePixelImage))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("images must have same size");
+    }
+
+    @Test
+    void stackImages_sameImageSize_stacksImages() {
+        BufferedImage blue = Sprite.pixel(Color.BLUE).singleImage();
+        BufferedImage red = Sprite.pixel(Color.RED.opacity(0.5)).singleImage();
+
+        var stacked = ImageOperations.stackImages(blue, red);
+
+        assertThat(Frame.fromImage(stacked).colorAt(0, 0)).isEqualTo(Color.rgb(127, 0, 128));
+    }
 }

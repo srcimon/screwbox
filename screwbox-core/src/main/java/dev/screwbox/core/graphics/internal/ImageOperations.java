@@ -35,12 +35,6 @@ public final class ImageOperations {
         graphics.setRenderingHint(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_SPEED);
     }
 
-    public static BufferedImage applyFilter(final Image image, final ImageFilter filter, Size size) {
-        final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
-        final Image filteredImage = TOOLKIT.createImage(imageProducer);
-        return cloneImage(filteredImage, size);
-    }
-
     public static BufferedImage applyFilter(final Image image, final ImageFilter filter) {
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
         final Image filteredImage = TOOLKIT.createImage(imageProducer);

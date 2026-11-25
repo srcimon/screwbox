@@ -31,11 +31,6 @@ public class ImageStore implements Serializable {
     private transient BufferedImage image;
     private final Size size;
 
-    public ImageStore(final BufferedImage image) {
-        this.image = image;
-        this.size = Size.of(this.image.getWidth(), this.image.getHeight());
-    }
-
     public ImageStore(final Image image) {
         this.image = ImageOperations.toBufferedImage(image);
         this.size = Size.of(this.image.getWidth(), this.image.getHeight());
