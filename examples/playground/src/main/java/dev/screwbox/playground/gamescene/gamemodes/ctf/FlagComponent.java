@@ -8,5 +8,5 @@ public class FlagComponent implements Component {
     public int homeZoneId;
     public Integer carriedById;
     public Color team;
-
+    public boolean isStolen;
 }

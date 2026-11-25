@@ -49,6 +49,7 @@ public class FlagScoreSystem implements EntitySystem {
             if (player.touches(flagEntity)) {
                 if (!player.hasComponent(FlagCarrierComponent.class) && !player.get(PlayerComponent.class).team.equals(flag.team) ) {
                     flag.carriedById = player.forceId();
+                    flag.isStolen = true;
                     player.add(new FlagCarrierComponent());
                 }
             }
@@ -57,7 +58,7 @@ public class FlagScoreSystem implements EntitySystem {
 
     private static void checkAndHandleFlagRescue(Engine engine, Entity flagEntity, List<Entity> players, FlagComponent flag) {
         for (final var player : players) {
-            if (player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team) ) {
+            if (flag.isStolen && player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team) ) {
                 engine.ui().showNotification(NotificationDetails.text("flat rescued"));
                 retrieveFlag(engine, flagEntity, flag);
             }
@@ -66,6 +67,7 @@ public class FlagScoreSystem implements EntitySystem {
 
     private static void retrieveFlag(Engine engine, Entity flagEntity, FlagComponent flag) {
         flag.carriedById = null;
+        flag.isStolen = false;
         Entity homeZone = engine.environment().fetchById(flag.homeZoneId);
         flagEntity.moveTo(homeZone.position());
     }
