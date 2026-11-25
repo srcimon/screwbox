@@ -1,5 +1,6 @@
 package dev.screwbox.core.graphics.internal;
 
+import dev.screwbox.core.assets.FontBundle;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ScreenBounds;
@@ -8,6 +9,8 @@ import dev.screwbox.core.graphics.SpriteBundle;
 import dev.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
 import dev.screwbox.core.graphics.options.OvalDrawOptions;
 import dev.screwbox.core.graphics.options.RectangleDrawOptions;
+import dev.screwbox.core.graphics.options.SystemTextDrawOptions;
+import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.graphics.options.TextureFillOptions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -85,6 +88,36 @@ class StandbyProxyRendererTest {
         standbyProxyRenderer.drawOval(Offset.at(10, 2), 10, 40, OvalDrawOptions.outline(Color.RED), CLIP);
 
         verify(renderer).drawOval(Offset.at(10, 2), 10, 40, OvalDrawOptions.outline(Color.RED), CLIP);
+    }
+
+    @Test
+    void drawText_renderingEnabled_rendersText() {
+        standbyProxyRenderer.toggleOnOff();
+        standbyProxyRenderer.drawText(Offset.at(10, 20), "test", TextDrawOptions.font(FontBundle.SKINNY_SANS), CLIP);
+
+        verify(renderer).drawText(Offset.at(10, 20), "test", TextDrawOptions.font(FontBundle.SKINNY_SANS), CLIP);
+    }
+
+    @Test
+    void drawText_renderingEnabled_rendersSystemText() {
+        standbyProxyRenderer.toggleOnOff();
+        standbyProxyRenderer.drawText(Offset.at(10, 20), "test", SystemTextDrawOptions.systemFont("Arial"), CLIP);
+
+        verify(renderer).drawText(Offset.at(10, 20), "test", SystemTextDrawOptions.systemFont("Arial"), CLIP);
+    }
+
+    @Test
+    void drawText_renderingDisabled_doesntRenderText() {
+        standbyProxyRenderer.drawText(Offset.at(10, 20), "test", TextDrawOptions.font(FontBundle.SKINNY_SANS), CLIP);
+
+        verifyNoInteractions(renderer);
+    }
+
+    @Test
+    void drawText_renderingDisabled_doesntRenderSystemText() {
+        standbyProxyRenderer.drawText(Offset.at(10, 20), "test", SystemTextDrawOptions.systemFont("Arial"), CLIP);
+
+        verifyNoInteractions(renderer);
     }
 
     @Test
