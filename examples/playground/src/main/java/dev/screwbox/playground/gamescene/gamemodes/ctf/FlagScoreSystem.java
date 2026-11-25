@@ -26,8 +26,6 @@ public class FlagScoreSystem implements EntitySystem {
             final var flag = flagEntity.get(FlagComponent.class);
             if (nonNull(flag.carriedById)) {
                 handleCarriedFlag(engine, flagEntity, flag);
-            }
-            if(nonNull(flag.carriedById)) {
                 checkAndHandleFlagScore(engine, flagEntity, flag);
             } else {
                 checkAndHandleFlagRetrieval(engine, flagEntity, players, flag);
