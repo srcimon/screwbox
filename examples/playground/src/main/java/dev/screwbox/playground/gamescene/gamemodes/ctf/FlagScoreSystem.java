@@ -28,7 +28,7 @@ public class FlagScoreSystem implements EntitySystem {
                 handleCarriedFlag(engine, flagEntity, flag);
                 checkAndHandleFlagScore(engine, flagEntity, flag);
             } else {
-                checkAndHandleFlagRetrieval(engine, flagEntity, players, flag);
+                checkAndHandleFlagRescue(engine, flagEntity, players, flag);
                 checkAndHandleFlagSteal(flagEntity, players, flag);
             }
         }
@@ -55,10 +55,10 @@ public class FlagScoreSystem implements EntitySystem {
         }
     }
 
-    private static void checkAndHandleFlagRetrieval(Engine engine, Entity flagEntity, List<Entity> players, FlagComponent flag) {
+    private static void checkAndHandleFlagRescue(Engine engine, Entity flagEntity, List<Entity> players, FlagComponent flag) {
         for (final var player : players) {
             if (player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team) ) {
-                System.out.println("RETRIEVE");
+                engine.ui().showNotification(NotificationDetails.text("flat rescued"));
                 retrieveFlag(engine, flagEntity, flag);
             }
         }
