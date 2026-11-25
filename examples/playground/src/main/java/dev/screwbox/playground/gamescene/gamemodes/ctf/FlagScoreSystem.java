@@ -8,9 +8,12 @@ import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 public class FlagScoreSystem implements EntitySystem {
 
     private static final Archetype FLAGS = Archetype.ofSpacial(FlagComponent.class);
+    private static final Archetype CAPTURE_ZONES = Archetype.ofSpacial(CaptureZoneComponent.class);
     private static final Archetype PLAYERS = Archetype.ofSpacial(PlayerComponent.class);
 
     @Override
@@ -18,29 +21,53 @@ public class FlagScoreSystem implements EntitySystem {
         final List<Entity> players = engine.environment().fetchAll(PLAYERS);
         for (final var flagEntity : engine.environment().fetchAll(FLAGS)) {
             final var flag = flagEntity.get(FlagComponent.class);
-            if (!flag.isStolen) {
-                for (final var player : players) {
-                    if (player.touches(flagEntity) && !player.get(PlayerComponent.class).team.equals(flag.team)) {
-                        flag.carriedById = player.forceId();
-                        flag.isStolen = true;
-                        player.add(new FlagCarrierComponent());
-                    }
-                }
-            } else {
-                for (final var player : players) {
-                    if (player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team)) {
-                        flag.isStolen = false;
-                        Entity homeZone = engine.environment().fetchById(flag.homeZoneId);
-                        flagEntity.moveTo(homeZone.position());
-                    }
-                }
+            if (nonNull(flag.carriedById)) {
+               handleCarriedFlag(engine, flagEntity, flag);
             }
-            if (flag.carriedById != null) {
-                engine.environment().tryFetchById(flag.carriedById).ifPresentOrElse(
-                    carrier -> flagEntity.moveTo(carrier.position()),
-                    () -> flagEntity.get(FlagComponent.class).carriedById = null);
-
+            if (flag.isStolen) {
+                checkAndHandleFlagRetrieval(engine, flagEntity, players, flag);
+                checkAndHandleFlagScore(engine, flagEntity, flag);
+            } else {
+                checkAndHandleFlagSteal(flagEntity, players, flag);
             }
         }
+    }
+
+    private static void checkAndHandleFlagScore(Engine engine, Entity flagEntity, FlagComponent flag) {
+        for(final var captureZone : engine.environment().fetchAll(CAPTURE_ZONES)) {
+            if(captureZone.intersects(flagEntity)) {
+                retrieveFlag(engine, flagEntity, flag);
+            }
+        }
+    }
+
+    private static void checkAndHandleFlagSteal(Entity flagEntity, List<Entity> players, FlagComponent flag) {
+        for (final var player : players) {
+            if (player.touches(flagEntity) && !player.hasComponent(FlagCarrierComponent.class) && !player.get(PlayerComponent.class).team.equals(flag.team)) {
+                flag.carriedById = player.forceId();
+                flag.isStolen = true;
+                player.add(new FlagCarrierComponent());
+            }
+        }
+    }
+
+    private static void checkAndHandleFlagRetrieval(Engine engine, Entity flagEntity, List<Entity> players, FlagComponent flag) {
+        for (final var player : players) {
+            if (player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team)) {
+                retrieveFlag(engine, flagEntity, flag);
+            }
+        }
+    }
+
+    private static void retrieveFlag(Engine engine, Entity flagEntity, FlagComponent flag) {
+        flag.isStolen = false;
+        Entity homeZone = engine.environment().fetchById(flag.homeZoneId);
+        flagEntity.moveTo(homeZone.position());
+    }
+
+    private static void handleCarriedFlag(Engine engine, Entity flagEntity, FlagComponent flag) {
+        engine.environment().tryFetchById(flag.carriedById).ifPresentOrElse(
+            carrier -> flagEntity.moveTo(carrier.position()),
+            () -> flagEntity.get(FlagComponent.class).carriedById = null);
     }
 }

@@ -21,7 +21,7 @@ public class PlaygroundApp {
             .setNotificationDesign(new InGameNotificationDesign())
             .setNotificationTimeout(Duration.ofSeconds(3));
 
-        GameConfig gameConfig = new GameConfig(Set.of(Color.RED, Color.BLUE), 4, Duration.ofSeconds(2), Color.BLUE, "maps/ctf_turbine.json");
+        GameConfig gameConfig = new GameConfig(Set.of(Color.RED, Color.BLUE), 1, Duration.ofSeconds(2), Color.BLUE, "maps/ctf_turbine.json");
         screwBox.keyboard()
             .bindAlias(DefaultControlSet.UP, Key.W)
             .bindAlias(DefaultControlSet.DOWN, Key.S)
