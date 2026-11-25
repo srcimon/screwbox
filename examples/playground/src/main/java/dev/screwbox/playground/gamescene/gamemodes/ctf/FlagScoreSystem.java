@@ -35,7 +35,8 @@ public class FlagScoreSystem implements EntitySystem {
 
     private static void checkAndHandleFlagScore(Engine engine, Entity flagEntity, FlagComponent flag) {
         for(final var captureZone : engine.environment().fetchAll(CAPTURE_ZONES)) {
-            if(captureZone.intersects(flagEntity)) {
+            if(captureZone.intersects(flagEntity) && captureZone.get(CaptureZoneComponent.class).team != flag.team) {
+                //TODO remove from flag carrier
                 retrieveFlag(engine, flagEntity, flag);
             }
         }
