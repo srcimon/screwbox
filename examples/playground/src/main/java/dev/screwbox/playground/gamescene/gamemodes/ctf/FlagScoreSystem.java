@@ -64,7 +64,7 @@ public class FlagScoreSystem implements EntitySystem {
     }
 
     private static void retrieveFlag(Engine engine, Entity flagEntity, FlagComponent flag) {
-        flag.carriedById = null;//TODO carriedById redudant to stolen?
+        flag.carriedById = null;
         Entity homeZone = engine.environment().fetchById(flag.homeZoneId);
         flagEntity.moveTo(homeZone.position());
     }
