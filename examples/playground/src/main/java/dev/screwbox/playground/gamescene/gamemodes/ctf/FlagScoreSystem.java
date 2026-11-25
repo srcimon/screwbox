@@ -4,6 +4,10 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Order;
+import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.light.ShockwaveOptions;
+import dev.screwbox.core.graphics.options.RectangleDrawOptions;
 import dev.screwbox.playground.gamescene.teams.PlayerComponent;
 
 import java.util.List;
@@ -18,6 +22,9 @@ public class FlagScoreSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
+        for(final var c : engine.environment().fetchAll(CAPTURE_ZONES)) {
+            engine.graphics().world().drawRectangle(c.bounds(), RectangleDrawOptions.filled(c.get(CaptureZoneComponent.class).team.opacity(0.5)).drawOrder(Order.DEBUG_OVERLAY_LATE.drawOrder()));
+        }
         final List<Entity> players = engine.environment().fetchAll(PLAYERS);
         for (final var flagEntity : engine.environment().fetchAll(FLAGS)) {
             final var flag = flagEntity.get(FlagComponent.class);
@@ -36,7 +43,9 @@ public class FlagScoreSystem implements EntitySystem {
     private static void checkAndHandleFlagScore(Engine engine, Entity flagEntity, FlagComponent flag) {
         for(final var captureZone : engine.environment().fetchAll(CAPTURE_ZONES)) {
             if(captureZone.intersects(flagEntity) && captureZone.get(CaptureZoneComponent.class).team != flag.team) {
-                //TODO remove from flag carrier
+                System.out.println(flag.team);
+                engine.graphics().postProcessing().triggerShockwave(flagEntity.position(), ShockwaveOptions.radius(20));
+                engine.environment().tryFetchById(flag.carriedById).ifPresent(carrier -> carrier.remove(FlagComponent.class));
                 retrieveFlag(engine, flagEntity, flag);
             }
         }
