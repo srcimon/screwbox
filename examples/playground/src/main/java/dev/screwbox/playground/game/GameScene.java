@@ -78,6 +78,9 @@ public class GameScene implements Scene {
         TeamEntities teamEntities = createTeams(environment);
         populateTeams(playerDrawOrder, environment, teamEntities);
 
+        //TODO add ids of entiteis to map for resolve?
+
+
         environment
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
