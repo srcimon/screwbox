@@ -6,6 +6,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.internal.DefaultCamera;
@@ -24,7 +25,6 @@ import org.mockito.Mockito;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Supplier;
 
 import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
@@ -45,7 +45,9 @@ class DefaultSmokeTest {
         executor = Executors.newSingleThreadExecutor();
         DefaultRenderer renderer = new DefaultRenderer();
         renderTarget = ImageOperations.createImage(128, 128);
+
         renderer.updateContext(renderTarget::createGraphics);
+        renderer.fillWith(Color.WHITE, new ScreenBounds(0, 0, 128, 128));
         final var canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 128, 128));
         var viewportManager = new ViewportManager(new DefaultViewport(canvas, new DefaultCamera(canvas)), new RenderPipeline(executor, configuration, Mockito.mock(Engine.class)));
         smoke = new DefaultSmoke(viewportManager, configuration, executor);
