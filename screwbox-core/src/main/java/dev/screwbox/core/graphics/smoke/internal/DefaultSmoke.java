@@ -142,12 +142,7 @@ public class DefaultSmoke implements Smoke {
     @Override
     public Smoke render(final double delta) {
         if (configuration.isSmokeEnabled()) {
-            while (smokeProjectors.size() < viewportManager.viewports().size()) {
-                smokeProjectors.add(new SmokeProjector(executor, configuration));
-            }
-            while (smokeProjectors.size() > viewportManager.viewports().size()) {
-                smokeProjectors.removeLast();
-            }
+            adjustSmokeProjectorsToViewports();
             int viewportId = 0;
             for (final var viewport : viewportManager.viewports()) {
                 final var projector = smokeProjectors.get(viewportId);
@@ -170,6 +165,16 @@ public class DefaultSmoke implements Smoke {
         areaVelocityChanges.clear();
         areaDensityChanges.clear();
         return this;
+    }
+
+    private void adjustSmokeProjectorsToViewports() {
+        final int viewportCount = viewportManager.viewports().size();
+        while (smokeProjectors.size() < viewportCount) {
+            smokeProjectors.add(new SmokeProjector(executor, configuration));
+        }
+        while (smokeProjectors.size() > viewportCount) {
+            smokeProjectors.removeLast();
+        }
     }
 
     private void autoTurnOnSmoke() {

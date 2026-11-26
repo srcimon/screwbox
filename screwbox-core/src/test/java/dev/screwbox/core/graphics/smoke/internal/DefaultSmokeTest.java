@@ -1,37 +1,58 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
+import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Engine;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
+import dev.screwbox.core.graphics.ScreenBounds;
+import dev.screwbox.core.graphics.internal.DefaultCamera;
+import dev.screwbox.core.graphics.internal.DefaultCanvas;
+import dev.screwbox.core.graphics.internal.DefaultViewport;
+import dev.screwbox.core.graphics.internal.ImageOperations;
 import dev.screwbox.core.graphics.internal.ViewportManager;
+import dev.screwbox.core.graphics.internal.renderer.DefaultRenderer;
+import dev.screwbox.core.graphics.internal.renderer.RenderPipeline;
+import dev.screwbox.core.test.TestSupport;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoSettings;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+import org.mockito.Mockito;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static dev.screwbox.core.Bounds.$$;
+import static dev.screwbox.core.Duration.oneSecond;
 import static dev.screwbox.core.Vector.$;
+import static dev.screwbox.core.test.TestSupport.awaitNoException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@MockitoSettings
 class DefaultSmokeTest {
 
-    @InjectMocks
     DefaultSmoke smoke;
-
-    @Mock
-    ViewportManager viewportManager;
-
-    @Mock
     ExecutorService executor;
+    GraphicsConfiguration configuration;
+    BufferedImage renderTarget;
 
-    @Spy
-    GraphicsConfiguration configuration = new GraphicsConfiguration(RenderingApi.OPEN_GL);
+    @BeforeEach
+    void setUp() {
+        configuration = new GraphicsConfiguration(RenderingApi.OPEN_GL);
+        configuration.setSmokeCellSize(2);
+        executor = Executors.newSingleThreadExecutor();
+        DefaultRenderer renderer = new DefaultRenderer();
+        renderTarget = ImageOperations.createImage(128, 128);
+
+        renderer.updateContext(renderTarget::createGraphics);
+        final var canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 128, 128));
+        var viewportManager = new ViewportManager(new DefaultViewport(canvas, new DefaultCamera(canvas)), new RenderPipeline(executor, configuration, Mockito.mock(Engine.class)));
+        smoke = new DefaultSmoke(viewportManager, configuration, executor);
+    }
 
     @Test
     void emit_postionNegativeAmount_throwsException() {
@@ -85,5 +106,51 @@ class DefaultSmokeTest {
     void densityAt_currentlyNoSmoke_isTransparent() {
         var density = smoke.densityAt($(40, 10));
         assertThat(density).isEqualTo(Color.TRANSPARENT);
+    }
+
+    @Test
+    void push_areaPush_enablesSmoke() {
+        smoke.push($$(20, 10, 64, 32), Vector.x(200));
+
+        assertThat(configuration.isSmokeEnabled()).isTrue();
+    }
+
+    @Test
+    void render_velocityAndDensityChangesPresent_updatesVelocityAndDensity() {
+        smoke.push($$(20, 10, 64, 32), Vector.$(200, 0));
+        smoke.emit($$(20, 10, 64, 32), 0.5, Color.RED);
+
+        smoke.render(0.01);
+
+        Vector resultVelocity = smoke.velocityAt($(20, 10));
+        assertThat(resultVelocity.length()).isGreaterThan(40);
+
+        Color resultDensity = smoke.densityAt($(20, 10));
+        assertThat(resultDensity.r()).isGreaterThan(40);
+        assertThat(resultDensity.g()).isZero();
+        assertThat(resultDensity.b()).isZero();
+    }
+
+    @Test
+    @DisabledOnOs({OS.MAC, OS.WINDOWS})
+// headless image is different from os compatible one
+    void render_multipleTimes_stepsSmokeSimulation() {
+        smoke.push(Bounds.atOrigin(0, 0, 32, 32), Vector.$(200, 0));
+        smoke.push(Bounds.atOrigin(64, 32, 32, 32), Vector.$(200, -400));
+        smoke.push(Bounds.atOrigin(16, 16, 16, 16), Vector.$(-200, 100));
+        smoke.emit(Bounds.atOrigin(0, 16, 16, 32), 1.0, Color.RED.opacity(0.5));
+        smoke.emit(Bounds.atOrigin(32, 0, 32, 16), 0.5, Color.WHITE.opacity(0.5));
+
+        for (int i = 0; i < 16; i++) {
+            smoke.render(0.01);
+        }
+
+        awaitNoException(() -> TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png"), oneSecond());
+
+    }
+
+    @AfterEach
+    void tearDown() {
+        TestSupport.shutdown(executor);
     }
 }

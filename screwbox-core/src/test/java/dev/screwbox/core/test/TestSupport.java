@@ -37,7 +37,7 @@ public final class TestSupport {
         try {
             executor.shutdown();
             executor.awaitTermination(1, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
@@ -45,9 +45,21 @@ public final class TestSupport {
     public static void sleep(final Duration duration) {
         try {
             Thread.sleep(duration.milliseconds());
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    public static void awaitNoException(Runnable runnable, Duration duration) {
+        await(() -> {
+            try {
+                runnable.run();
+                return true;
+            } catch (final Throwable e) {
+                sleep(Duration.ofMillis(1));
+                return false;
+            }
+        }, duration);
     }
 
     public static void await(final Supplier<Boolean> condition, final Duration timeout) {
