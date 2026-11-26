@@ -11,6 +11,7 @@ import dev.screwbox.playground.game.teams.PlayerComponent;
 
 import java.util.Map;
 
+//TODO fix team usage here
 public class HealthSystem implements EntitySystem {
 
     private static final Archetype LIVING = Archetype.of(HealthComponent.class);

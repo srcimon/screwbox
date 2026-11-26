@@ -133,7 +133,6 @@ public class GameScene implements Scene {
                         config.name = ListUtil.pickRandom(NAMES);
                     })
                     .bounds(Bounds.$$(0, 0, 10, 10))
-                    .add(new ColliderComponent())
                     .add(new AvoidanceComponent())
                     .add(new OccluderComponent(false))
                     .add(new HealthComponent())
