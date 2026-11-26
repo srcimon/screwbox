@@ -1,6 +1,7 @@
 package dev.screwbox.playground.game;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Entity;
@@ -10,7 +11,6 @@ import dev.screwbox.core.environment.controls.MovementControlComponent;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.light.OccluderComponent;
 import dev.screwbox.core.environment.navigation.AvoidanceComponent;
-import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
 import dev.screwbox.core.environment.rendering.CameraLeadComponent;
 import dev.screwbox.core.environment.rendering.CameraTargetComponent;
@@ -22,6 +22,7 @@ import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.TeamInfos;
+import dev.screwbox.playground.design.InGameNotificationDesign;
 import dev.screwbox.playground.game.blueprints.*;
 import dev.screwbox.playground.game.map.MapConfig;
 import dev.screwbox.playground.game.teams.BotComponent;
@@ -52,7 +53,12 @@ public class GameScene implements Scene {
         engine.graphics().camera().setZoom(4);
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
         engine.audio().configuration().setSoundRange(128);
-        engine.ui().setNotificationSound(null);
+
+        engine.ui()
+            .setNotificationSound(null)
+            .setNotificationTimeout(Duration.ofSeconds(3))
+            .setNotificationDesign(new InGameNotificationDesign(gameConfig.teams()));
+
         engine.graphics().configuration()
             .setIndirectLightIntensity(Percent.quarter())
             .setMaxLightBounces(1)
@@ -106,15 +112,17 @@ public class GameScene implements Scene {
     private TeamInfos createTeams(Environment environment) {
         var teamInfos = new TeamInfos();
 
+        int teamIndex = 0;
         for (final var team : gameConfig.teams()) {
-            int teamId = environment.allocateId();
-            Entity teamInfoEntity = new Entity(teamId)
-                .add(new TeamInfoComponent(), teamInfo -> {
-                    teamInfo.color = team.color();
-                    teamInfo.name = team.name();
-                });
+            final var teamInfo = new TeamInfoComponent();
+            teamInfo.color = team.color();
+            teamInfo.name = team.name();
+            teamInfo.index = teamIndex;
+
+            final Entity teamInfoEntity = new Entity(environment.allocateId()).add(teamInfo);
             teamInfos.add(teamInfoEntity);
             environment.addEntity(teamInfoEntity);
+            teamIndex++;
         }
         return teamInfos;
     }

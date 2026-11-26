@@ -6,7 +6,6 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.keyboard.DefaultControlSet;
 import dev.screwbox.core.keyboard.Key;
-import dev.screwbox.playground.design.InGameNotificationDesign;
 import dev.screwbox.playground.design.SceneTransitions;
 import dev.screwbox.playground.game.GameScene;
 
@@ -16,9 +15,6 @@ public class PlaygroundApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-        screwBox.ui()
-            .setNotificationDesign(new InGameNotificationDesign())
-            .setNotificationTimeout(Duration.ofSeconds(3));
 
         GameConfig gameConfig = new GameConfig(List.of(
             new GameConfig.TeamConfig("Blues", Color.BLUE, 4),
@@ -30,10 +26,10 @@ public class PlaygroundApp {
             .bindAlias(DefaultControlSet.DOWN, Key.S)
             .bindAlias(DefaultControlSet.LEFT, Key.A)
             .bindAlias(DefaultControlSet.RIGHT, Key.D);
+
         screwBox.assets()
             .enableLogging()
-            .prepareEngineAssetsAsync()
-            .prepareClassPackageAsync(PlaygroundApp.class);
+            .prepareEngineAssetsAsync();
 
         screwBox.scenes()
             .add(new GameScene(gameConfig))
