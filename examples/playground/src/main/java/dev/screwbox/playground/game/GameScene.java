@@ -85,7 +85,7 @@ public class GameScene implements Scene {
             .importSource(source(map)
                 .make(new MapConfig()))
 
-            .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type"))
+            .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type")) //TODO tile.clazz() -> classProperty from layer or tile
                 .assign("floor", new Floor())
                 .assign("wall-base", new WallBase())
                 .assign("wall-mid", new WallMid())
