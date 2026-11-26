@@ -36,7 +36,7 @@ public class FlagScoreSystem implements EntitySystem {
 
     private static void checkAndHandleFlagScore(Engine engine, Entity flagEntity, FlagComponent flag) {
         for (final var captureZone : engine.environment().fetchAll(CAPTURE_ZONES)) {
-            if (captureZone.intersects(flagEntity) && !captureZone.get(CaptureZoneComponent.class).team.equals(flag.team)) {
+            if (captureZone.intersects(flagEntity) && captureZone.get(CaptureZoneComponent.class).teamId != flag.teamId) {
                 engine.environment().tryFetchById(flag.carriedById).ifPresent(carrier -> carrier.remove(FlagCarrierComponent.class));
                 retrieveFlag(engine, flagEntity, flag);
                 engine.ui().showNotification(NotificationDetails.text("team scored"));//TODO which team? give it a name
@@ -47,7 +47,7 @@ public class FlagScoreSystem implements EntitySystem {
     private static void checkAndHandleFlagSteal(Entity flagEntity, List<Entity> players, FlagComponent flag) {
         for (final var player : players) {
             if (player.touches(flagEntity)) {
-                if (!player.hasComponent(FlagCarrierComponent.class) && !player.get(PlayerComponent.class).team.equals(flag.team) ) {
+                if (!player.hasComponent(FlagCarrierComponent.class) && player.get(PlayerComponent.class).teamId != flag.teamId) {
                     flag.carriedById = player.forceId();
                     flag.isStolen = true;
                     player.add(new FlagCarrierComponent());
@@ -58,7 +58,7 @@ public class FlagScoreSystem implements EntitySystem {
 
     private static void checkAndHandleFlagRescue(Engine engine, Entity flagEntity, List<Entity> players, FlagComponent flag) {
         for (final var player : players) {
-            if (flag.isStolen && player.touches(flagEntity) && player.get(PlayerComponent.class).team.equals(flag.team) ) {
+            if (flag.isStolen && player.touches(flagEntity) && player.get(PlayerComponent.class).teamId == flag.teamId) {
                 engine.ui().showNotification(NotificationDetails.text("flat rescued"));
                 retrieveFlag(engine, flagEntity, flag);
             }

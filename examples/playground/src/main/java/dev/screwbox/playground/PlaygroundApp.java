@@ -14,7 +14,6 @@ import java.util.List;
 
 public class PlaygroundApp {
 
-
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
         screwBox.ui()
@@ -22,8 +21,8 @@ public class PlaygroundApp {
             .setNotificationTimeout(Duration.ofSeconds(3));
 
         GameConfig gameConfig = new GameConfig(List.of(
-            new GameConfig.TeamConfig("Reds", Color.RED, 4),
-            new GameConfig.TeamConfig("Blues", Color.BLUE, 4)),
+            new GameConfig.TeamConfig("Blues", Color.BLUE, 4),
+            new GameConfig.TeamConfig("Reds", Color.RED, 4)),
             Duration.ofSeconds(2), "Blues", "maps/ctf_turbine.json");
 
         screwBox.keyboard()

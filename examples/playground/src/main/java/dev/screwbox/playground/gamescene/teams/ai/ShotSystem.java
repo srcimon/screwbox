@@ -17,10 +17,10 @@ public class ShotSystem implements EntitySystem {
         final var shots = engine.environment().fetchAll(SHOTS);
         for (final var shot : shots) {
             ShotComponent shotComponent = shot.get(ShotComponent.class);
-            var invulnerableTeam = shotComponent.team;
+            var invulnerableTeam = shotComponent.teamId;
             for (final var target : engine.environment().fetchAll(TARGETS)) {
                 if (shot.intersects(target)) {
-                    if (target.get(PlayerComponent.class).team != invulnerableTeam) {
+                    if (target.get(PlayerComponent.class).teamId != invulnerableTeam) {
                         var healthComponent = target.get(HealthComponent.class);
                         healthComponent.health = healthComponent.health.subtract(shotComponent.damage.value());
 

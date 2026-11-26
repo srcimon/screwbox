@@ -126,24 +126,6 @@
          "name":"objects",
          "objects":[
                 {
-                 "height":100,
-                 "id":7,
-                 "name":"respawn-area",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"team",
-                         "type":"color",
-                         "value":"#ffff0000"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":154,
-                 "x":134,
-                 "y":231
-                }, 
-                {
                  "height":41.5624265165785,
                  "id":8,
                  "name":"respawn-area",
@@ -151,8 +133,8 @@
                  "properties":[
                         {
                          "name":"team",
-                         "type":"color",
-                         "value":"#ff0000ff"
+                         "type":"int",
+                         "value":0
                         }],
                  "rotation":0.37907014954147,
                  "type":"",
@@ -170,8 +152,8 @@
                  "properties":[
                         {
                          "name":"team",
-                         "type":"color",
-                         "value":"#ffff0000"
+                         "type":"int",
+                         "value":1
                         }],
                  "rotation":0,
                  "type":"",
@@ -179,25 +161,6 @@
                  "width":0,
                  "x":103,
                  "y":284
-                }, 
-                {
-                 "height":0,
-                 "id":11,
-                 "name":"flag",
-                 "opacity":1,
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"team",
-                         "type":"color",
-                         "value":"#ff0000ff"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":769,
-                 "y":310
                 }, 
                 {
                  "height":0,
@@ -222,24 +185,6 @@
                  "width":0,
                  "x":722,
                  "y":281
-                }, 
-                {
-                 "height":41.5624,
-                 "id":41,
-                 "name":"respawn-area",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"team",
-                         "type":"color",
-                         "value":"#ff0000ff"
-                        }],
-                 "rotation":0.37907,
-                 "type":"",
-                 "visible":true,
-                 "width":29.1449166817009,
-                 "x":857,
-                 "y":260
                 }, 
                 {
                  "height":0,
@@ -504,6 +449,61 @@
                  "width":0,
                  "x":616,
                  "y":503
+                }, 
+                {
+                 "height":111.044848921381,
+                 "id":57,
+                 "name":"respawn-area",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"team",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0.37907,
+                 "type":"",
+                 "visible":true,
+                 "width":144.737837236942,
+                 "x":147,
+                 "y":222
+                }, 
+                {
+                 "height":0,
+                 "id":58,
+                 "name":"flag",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"team",
+                         "type":"int",
+                         "value":0
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":767,
+                 "y":305
+                }, 
+                {
+                 "height":67.7735687418926,
+                 "id":59,
+                 "name":"respawn-area",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"team",
+                         "type":"int",
+                         "value":0
+                        }],
+                 "rotation":0.37907,
+                 "type":"",
+                 "visible":true,
+                 "width":34.4491419339867,
+                 "x":854,
+                 "y":239
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -512,7 +512,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":57,
+ "nextobjectid":60,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

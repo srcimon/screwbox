@@ -6,6 +6,6 @@ import dev.screwbox.core.graphics.Color;
 
 public class ShotComponent implements Component {
 
-    public Color team;
+    public int teamId;
     public Percent damage = Percent.of(0.25);
 }

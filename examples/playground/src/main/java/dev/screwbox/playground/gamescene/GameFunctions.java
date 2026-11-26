@@ -18,10 +18,10 @@ import dev.screwbox.playground.gamescene.teams.ai.ShotComponent;
 
 public class GameFunctions {
 
-    public static void triggerShot(Engine engine, Color team, Vector velocity, Vector position) {
+    public static void triggerShot(Engine engine, int teamId, Vector velocity, Vector position) {
         engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(position));
         engine.environment().addEntity(new Entity(engine.environment().allocateId())
-            .add(new ShotComponent(), shot -> shot.team = team)
+            .add(new ShotComponent(), shot -> shot.teamId = teamId)
             .add(new PointLightComponent(40, Color.RED.opacity(0.5)))
             .add(new GlowComponent(42, Color.RED.opacity(0.1)), glow -> glow.lensFlare = null)
             .add(new RenderComponent(SpriteBundle.DOT_YELLOW, SpriteDrawOptions.scaled(0.25)))

@@ -22,8 +22,7 @@ public class PlayerAttackSystem implements EntitySystem {
                 if (config.scheduler.isTick(engine.loop().time())) {
                     Vector velocity = engine.mouse().position().subtract(attacker.position()).length(120);
                     Vector position = attacker.position();
-                    Color team = memberConfig.team;
-                    GameFunctions.triggerShot(engine, team, velocity, position);
+                    GameFunctions.triggerShot(engine, memberConfig.teamId, velocity, position);
                 }
             }
         }

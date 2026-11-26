@@ -38,7 +38,7 @@ public class HealthSystem implements EntitySystem {
                 engine.environment().remove(living);
 
                 engine.ui().showNotification(NotificationDetails.text("%s%s%s has been killed".formatted(
-                    PREFIX.get(player.team), player.name, POSTFIX.get(player.team))));
+                    PREFIX.get(player.teamId), player.name, POSTFIX.get(player.teamId))));
             }
         }
     }

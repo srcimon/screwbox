@@ -21,6 +21,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
+import dev.screwbox.playground.TeamInfos;
 import dev.screwbox.playground.gamescene.blueprints.*;
 import dev.screwbox.playground.gamescene.map.MapConfig;
 import dev.screwbox.playground.gamescene.teams.BotComponent;
@@ -66,6 +67,10 @@ public class GameScene implements Scene {
     public void populate(Environment environment) {
         var map = Map.fromJson(gameConfig.map());
 
+
+        final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
+        TeamInfos teamInfos = createTeams(playerDrawOrder, environment);
+
         environment
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
@@ -78,39 +83,43 @@ public class GameScene implements Scene {
                 .assign("wall-base", new WallBase())
                 .assign("wall-mid", new WallMid())
                 .assign("wall-top", new WallTop())
-                .assign("wall-topspecial", new WallTopSpecial())
-                .assign("wall-topspecial", new WallTopSpecial2())
+                .assign("wall-topspecial", new WallTopSpecial())//TODO rename
+                .assign("wall-topspecial", new WallTopSpecial2())//TODO rename
                 .assign("decor", new Decor())
             )
 
             .importSource(indexedSources(map.objects(), GameObject::name)
-                .assign("respawn-area", new RespawnArea())
+                .assign("respawn-area", new RespawnArea(teamInfos))
                 .assign("light", new Light())
-                .assign("flag", new Flag())
-                .assign("flag", new CaptureZone())
+                .assign("flag", new Flag(teamInfos))
+                .assign("flag", new CaptureZone(teamInfos))
             );
 
-        final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
-        addTeams(playerDrawOrder, environment);
     }
 
     //TODO move into gameconfig
     private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");
 
-    private void addTeams(int drawOrder, Environment environment) {
+    //TODO split into create and populate
+    private TeamInfos createTeams(int drawOrder, Environment environment) {
+        var teamInfos = new TeamInfos();
+
         int viewportId = 0;
         HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
             int teamId = environment.allocateId();
-            environment.addEntity(new Entity(teamId).add(new TeamInfoComponent(), teamInfo -> {
-                teamInfo.color = team.color();
-                teamInfo.name = team.name();
-            });
+            Entity teamInfoEntity = new Entity(teamId)
+                .add(new TeamInfoComponent(), teamInfo -> {
+                    teamInfo.color = team.color();
+                    teamInfo.name = team.name();
+                });
+            teamInfos.add(teamInfoEntity);
+            environment.addEntity(teamInfoEntity);
 
             for (int i = 0; i < team.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> {
-                        config.team = team.color();
+                        config.teamId = teamId;
                         config.name = ListUtil.pickRandom(NAMES);
                     })
                     .bounds(Bounds.$$(0, 0, 10, 10))
@@ -138,6 +147,7 @@ public class GameScene implements Scene {
             }
         }
         environment.addEntity(new Entity().add(store));
+        return teamInfos;
     }
 
 }

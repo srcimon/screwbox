@@ -38,7 +38,7 @@ public class RespawnSystem implements EntitySystem {
             var config = player.get(PlayerComponent.class);
             Time respawnTime = respawnConfig.respawnTimeout.addTo(config.deathTime);
             if (respawnTime.isBefore(engine.loop().time())) {
-                var availableAreas = respawnAreas.stream().filter(area -> area.get(RespawnAreaComponent.class).team.equals(config.team)).toList();
+                var availableAreas = respawnAreas.stream().filter(area -> area.get(RespawnAreaComponent.class).team ==config.teamId).toList();
                 player.moveTo(ListUtil.pickRandom(availableAreas).bounds().randomPosition());
                 engine.environment().addEntity(player);
                 player.get(HealthComponent.class).health = Percent.max();
