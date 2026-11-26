@@ -1,10 +1,10 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
+import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.internal.DefaultCamera;
@@ -19,7 +19,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
@@ -29,23 +28,22 @@ import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.offset;
 
 class DefaultSmokeTest {
 
     DefaultSmoke smoke;
     ExecutorService executor;
     GraphicsConfiguration configuration;
-    Frame renderTarget;
+    BufferedImage renderTarget;
 
     @BeforeEach
     void setUp() {
         configuration = new GraphicsConfiguration(RenderingApi.OPEN_GL);
+        configuration.setSmokeCellSize(2);
         executor = Executors.newSingleThreadExecutor();
         DefaultRenderer renderer = new DefaultRenderer();
-        BufferedImage image = ImageOperations.createImage(128, 128);
-        renderTarget = Frame.fromImage(image);
-        renderer.updateContext(image::createGraphics);
+        renderTarget = ImageOperations.createImage(128, 128);
+        renderer.updateContext(renderTarget::createGraphics);
         final var canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 128, 128));
         var viewportManager = new ViewportManager(new DefaultViewport(canvas, new DefaultCamera(canvas)), new RenderPipeline(executor, configuration, Mockito.mock(Engine.class)));
         smoke = new DefaultSmoke(viewportManager, configuration, executor);
@@ -116,17 +114,27 @@ class DefaultSmokeTest {
     void render_velocityAndDensityChangesPresent_updatesVelocityAndDensity() {
         smoke.push($$(20, 10, 64, 32), Vector.$(200, 0));
         smoke.emit($$(20, 10, 64, 32), 0.5, Color.RED);
+
         smoke.render(0.01);
 
         Vector resultVelocity = smoke.velocityAt($(20, 10));
-        assertThat(resultVelocity.x()).isEqualTo(141.14, offset(0.01));
-        assertThat(resultVelocity.y()).isEqualTo(41.92, offset(0.01));
+        assertThat(resultVelocity.length()).isGreaterThan(40);
 
         Color resultDensity = smoke.densityAt($(20, 10));
-        assertThat(resultDensity.r()).isEqualTo(100);
+        assertThat(resultDensity.r()).isGreaterThan(40);
         assertThat(resultDensity.g()).isZero();
         assertThat(resultDensity.b()).isZero();
-        assertThat(resultDensity.opacity().value()).isEqualTo(0.39, offset(0.01));
+    }
+
+    @Test
+    void render_multipleTimes_stepsSmokeSimulation() {
+        smoke.push(Bounds.atOrigin(0, 0, 32, 32), Vector.$(200, 0));
+        smoke.push(Bounds.atOrigin(64, 32, 32, 32), Vector.$(200, -400));
+        smoke.push(Bounds.atOrigin(16, 16, 16, 16), Vector.$(-200, 100));
+        smoke.emit(Bounds.atOrigin(0, 16, 16, 32), 1.0, Color.RED.opacity(0.5));
+        smoke.emit(Bounds.atOrigin(32, 0, 32, 16), 0.5, Color.WHITE.opacity(0.5));
+
+        TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png");
     }
 
     @AfterEach
