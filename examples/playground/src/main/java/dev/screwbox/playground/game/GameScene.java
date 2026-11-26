@@ -126,7 +126,7 @@ public class GameScene implements Scene {
         return teamInfos;
     }
 
-    private TeamEntities populateTeams(int drawOrder, Environment environment, TeamEntities teamEntities) {
+    private void populateTeams(int drawOrder, Environment environment, TeamEntities teamEntities) {
 
         int viewportId = 0;
         HeavenComponent store = new HeavenComponent();
@@ -164,7 +164,6 @@ public class GameScene implements Scene {
             teamIndex++;
         }
         environment.addEntity(new Entity().add(store));
-        return teamEntities;
     }
 
 }
