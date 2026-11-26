@@ -20,6 +20,8 @@ import dev.screwbox.core.test.TestSupport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.mockito.Mockito;
 
 import java.awt.image.BufferedImage;
@@ -47,7 +49,6 @@ class DefaultSmokeTest {
         renderTarget = ImageOperations.createImage(128, 128);
 
         renderer.updateContext(renderTarget::createGraphics);
-        renderer.fillWith(Color.WHITE, new ScreenBounds(0, 0, 128, 128));
         final var canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 128, 128));
         var viewportManager = new ViewportManager(new DefaultViewport(canvas, new DefaultCamera(canvas)), new RenderPipeline(executor, configuration, Mockito.mock(Engine.class)));
         smoke = new DefaultSmoke(viewportManager, configuration, executor);
@@ -131,6 +132,7 @@ class DefaultSmokeTest {
     }
 
     @Test
+   // @DisabledOnOs({OS.MAC, OS.WINDOWS})// headless image is different from os compatible one
     void render_multipleTimes_stepsSmokeSimulation() {
         smoke.push(Bounds.atOrigin(0, 0, 32, 32), Vector.$(200, 0));
         smoke.push(Bounds.atOrigin(64, 32, 32, 32), Vector.$(200, -400));
@@ -144,12 +146,11 @@ class DefaultSmokeTest {
 
         TestSupport.await(() -> {
             try {
+
                 TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png");
 
             } catch (Throwable e) {
-                var distinct = Frame.fromImage(renderTarget).listPixelDifferences(Frame.fromFile("smoke/render_multipleTimes_stepsSmokeSimulation.png"));
-                System.out.println("!!!" +distinct.size());
-                System.out.println("!!!" + distinct);
+//                Frame.fromImage(renderTarget).exportPng("render_multipleTimes_stepsSmokeSimulation.png");
                 return false;
             }
             return true;

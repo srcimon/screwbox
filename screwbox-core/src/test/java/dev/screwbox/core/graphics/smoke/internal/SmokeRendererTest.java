@@ -24,10 +24,6 @@ class SmokeRendererTest {
 
     DensityInfo densityInfo;
 
-    static {
-        System.setProperty("java.awt.headless", "true");
-    }
-
     @BeforeEach
     void setup() {
         final var simulation = new FluidSimulation(16);
