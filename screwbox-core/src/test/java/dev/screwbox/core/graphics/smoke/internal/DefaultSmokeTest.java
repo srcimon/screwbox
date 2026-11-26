@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.internal.DefaultCamera;
@@ -134,6 +135,9 @@ class DefaultSmokeTest {
         smoke.emit(Bounds.atOrigin(0, 16, 16, 32), 1.0, Color.RED.opacity(0.5));
         smoke.emit(Bounds.atOrigin(32, 0, 32, 16), 0.5, Color.WHITE.opacity(0.5));
 
+        for (int i = 0; i < 16; i++) {
+            smoke.render(0.01);
+        }
         TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png");
     }
 
