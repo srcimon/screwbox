@@ -21,7 +21,7 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.TeamInfos;
+import dev.screwbox.playground.TeamEntities;
 import dev.screwbox.playground.design.InGameNotificationDesign;
 import dev.screwbox.playground.game.blueprints.*;
 import dev.screwbox.playground.game.map.MapConfig;
@@ -75,9 +75,8 @@ public class GameScene implements Scene {
 
 
         final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
-        TeamInfos teamInfos = createTeams(environment);
-        populateTeams(playerDrawOrder, environment, teamInfos);
-
+        TeamEntities teamEntities = createTeams(environment);
+        populateTeams(playerDrawOrder, environment, teamEntities);
 
         environment
             .enableAllFeatures()
@@ -97,10 +96,10 @@ public class GameScene implements Scene {
             )
 
             .importSource(indexedSources(map.objects(), GameObject::name)
-                .assign("respawn-area", new RespawnArea(teamInfos))
+                .assign("respawn-area", new RespawnArea(teamEntities))
                 .assign("light", new Light())
-                .assign("flag", new Flag(teamInfos))
-                .assign("flag", new CaptureZone(teamInfos))
+                .assign("flag", new Flag(teamEntities))
+                .assign("flag", new CaptureZone(teamEntities))
             );
 
     }
@@ -109,8 +108,8 @@ public class GameScene implements Scene {
     private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");
 
     //TODO split into create and populate
-    private TeamInfos createTeams(Environment environment) {
-        var teamInfos = new TeamInfos();
+    private TeamEntities createTeams(Environment environment) {
+        var teamInfos = new TeamEntities();
 
         int teamIndex = 0;
         for (final var team : gameConfig.teams()) {
@@ -127,13 +126,13 @@ public class GameScene implements Scene {
         return teamInfos;
     }
 
-    private TeamInfos populateTeams(int drawOrder, Environment environment, TeamInfos teamInfos) {
+    private TeamEntities populateTeams(int drawOrder, Environment environment, TeamEntities teamEntities) {
 
         int viewportId = 0;
         HeavenComponent store = new HeavenComponent();
         int teamIndex = 0;
         for (final var team : gameConfig.teams()) {
-            final var teamId = teamInfos.teamId(teamIndex);
+            final var teamId = teamEntities.teamId(teamIndex);
             for (int i = 0; i < team.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> {
@@ -165,7 +164,7 @@ public class GameScene implements Scene {
             teamIndex++;
         }
         environment.addEntity(new Entity().add(store));
-        return teamInfos;
+        return teamEntities;
     }
 
 }

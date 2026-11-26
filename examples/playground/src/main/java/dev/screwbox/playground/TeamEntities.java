@@ -8,7 +8,7 @@ import dev.screwbox.playground.game.teams.TeamInfoComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamInfos {
+public class TeamEntities {
 
     private final List<Entity> teamInfos = new ArrayList<>();
 
