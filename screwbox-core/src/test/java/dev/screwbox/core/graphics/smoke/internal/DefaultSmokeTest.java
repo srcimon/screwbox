@@ -147,6 +147,9 @@ class DefaultSmokeTest {
                 TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png");
 
             } catch (Throwable e) {
+                var distinct = Frame.fromImage(renderTarget).listPixelDifferences(Frame.fromFile("smoke/render_multipleTimes_stepsSmokeSimulation.png"));
+                System.out.println("!!!" +distinct.size());
+                System.out.println("!!!" + distinct);
                 return false;
             }
             return true;
