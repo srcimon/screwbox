@@ -1,12 +1,10 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.Bounds;
-import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.core.graphics.Frame;
 import dev.screwbox.core.graphics.GraphicsConfiguration;
 import dev.screwbox.core.graphics.ScreenBounds;
 import dev.screwbox.core.graphics.internal.DefaultCamera;
@@ -29,7 +27,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static dev.screwbox.core.Bounds.$$;
+import static dev.screwbox.core.Duration.oneSecond;
 import static dev.screwbox.core.Vector.$;
+import static dev.screwbox.core.test.TestSupport.awaitNoException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -132,7 +132,8 @@ class DefaultSmokeTest {
     }
 
     @Test
-   // @DisabledOnOs({OS.MAC, OS.WINDOWS})// headless image is different from os compatible one
+    @DisabledOnOs({OS.MAC, OS.WINDOWS})
+// headless image is different from os compatible one
     void render_multipleTimes_stepsSmokeSimulation() {
         smoke.push(Bounds.atOrigin(0, 0, 32, 32), Vector.$(200, 0));
         smoke.push(Bounds.atOrigin(64, 32, 32, 32), Vector.$(200, -400));
@@ -144,18 +145,7 @@ class DefaultSmokeTest {
             smoke.render(0.01);
         }
 
-        TestSupport.await(() -> {
-            try {
-
-                TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png");
-
-            } catch (Throwable e) {
-//                Frame.fromImage(renderTarget).exportPng("render_multipleTimes_stepsSmokeSimulation.png");
-                return false;
-            }
-            return true;
-
-        }, Duration.ofSeconds(1));
+        awaitNoException(() -> TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png"), oneSecond());
 
     }
 

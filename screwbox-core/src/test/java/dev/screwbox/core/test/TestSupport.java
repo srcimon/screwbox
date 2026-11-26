@@ -50,6 +50,18 @@ public final class TestSupport {
         }
     }
 
+    public static void awaitNoException(Runnable runnable, Duration duration) {
+        await(() -> {
+            try {
+                runnable.run();
+                return true;
+            } catch (final Throwable e) {
+                sleep(Duration.ofMillis(1));
+                return false;
+            }
+        }, duration);
+    }
+
     public static void await(final Supplier<Boolean> condition, final Duration timeout) {
         final Time start = Time.now();
         while (!condition.get()) {
