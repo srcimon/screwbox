@@ -90,20 +90,20 @@ public class GameScene implements Scene {
             );
 
         final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
-        addPlayers(playerDrawOrder, environment);
+        addTeams(playerDrawOrder, environment);
     }
 
-    //TODO find a place for names
+    //TODO move into gameconfig
     private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");
 
-    private void addPlayers(int drawOrder, Environment environment) {
+    private void addTeams(int drawOrder, Environment environment) {
         int viewportId = 0;
         HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
-            for (int i = 0; i < gameConfig.teamSize(); i++) {
+            for (int i = 0; i < team.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> {
-                        config.team = team;
+                        config.team = team.color();
                         config.name = ListUtil.pickRandom(NAMES);
                     })
                     .bounds(Bounds.$$(0, 0, 10, 10))
@@ -112,10 +112,10 @@ public class GameScene implements Scene {
                     .add(new OccluderComponent(false))
                     .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
-                    .add(new RenderComponent(Sprite.placeholder(team, Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(drawOrder)))
+                    .add(new RenderComponent(Sprite.placeholder(team.color(), Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(drawOrder)))
                     .add(new PhysicsComponent(), config -> config.friction = 10)
                     .add(new AttackComponent());
-                if (i == 0 && gameConfig.humanTeam().equals(team)) {
+                if (i == 0 && gameConfig.humanTeamName().equals(team.name())) {
                     player
                         .add(new HumanComponent(viewportId))
                         .add(new MovementControlComponent(), m -> m.maxSpeed = 70)
