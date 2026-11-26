@@ -1,6 +1,7 @@
 package dev.screwbox.core.graphics.smoke.internal;
 
 import dev.screwbox.core.Bounds;
+import dev.screwbox.core.Duration;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.RenderingApi;
 import dev.screwbox.core.Vector;
@@ -23,6 +24,7 @@ import org.mockito.Mockito;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 import static dev.screwbox.core.Bounds.$$;
 import static dev.screwbox.core.Vector.$;
@@ -137,9 +139,18 @@ class DefaultSmokeTest {
         for (int i = 0; i < 16; i++) {
             smoke.render(0.01);
         }
-        TestSupport.shutdown(executor);
 
-        TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png");
+        TestSupport.await(() -> {
+            try {
+                TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png");
+
+            } catch (Throwable e) {
+                return false;
+            }
+            return true;
+
+        }, Duration.ofSeconds(1));
+
     }
 
     @AfterEach
