@@ -69,7 +69,8 @@ public class GameScene implements Scene {
 
 
         final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
-        TeamInfos teamInfos = createTeams(playerDrawOrder, environment);
+        TeamInfos teamInfos = createTeams(environment);
+        populateTeams(playerDrawOrder, environment, teamInfos);
 
 
         environment
@@ -102,11 +103,9 @@ public class GameScene implements Scene {
     private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");
 
     //TODO split into create and populate
-    private TeamInfos createTeams(int drawOrder, Environment environment) {
+    private TeamInfos createTeams(Environment environment) {
         var teamInfos = new TeamInfos();
 
-        int viewportId = 0;
-        HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
             int teamId = environment.allocateId();
             Entity teamInfoEntity = new Entity(teamId)
@@ -116,7 +115,17 @@ public class GameScene implements Scene {
                 });
             teamInfos.add(teamInfoEntity);
             environment.addEntity(teamInfoEntity);
+        }
+        return teamInfos;
+    }
 
+    private TeamInfos populateTeams(int drawOrder, Environment environment, TeamInfos teamInfos) {
+
+        int viewportId = 0;
+        HeavenComponent store = new HeavenComponent();
+        int teamIndex = 0;
+        for (final var team : gameConfig.teams()) {
+            final var teamId = teamInfos.teamId(teamIndex);
             for (int i = 0; i < team.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> {
@@ -146,6 +155,7 @@ public class GameScene implements Scene {
                 }
                 store.deadPlayers.add(player);
             }
+            teamIndex++;
         }
         environment.addEntity(new Entity().add(store));
         return teamInfos;
