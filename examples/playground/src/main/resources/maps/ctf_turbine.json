@@ -520,7 +520,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"debug.json"
+         "source":"../tilesets/debug.json"
         }, 
         {
          "firstgid":33,
