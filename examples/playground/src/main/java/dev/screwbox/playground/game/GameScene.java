@@ -71,10 +71,11 @@ public class GameScene implements Scene {
         final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
         TeamInfos teamInfos = createTeams(playerDrawOrder, environment);
 
+
         environment
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
-            .addSystemsFromPackage("dev.screwbox.playground.gamescene")
+            .addSystemsFromPackage("dev.screwbox.playground.game")
             .importSource(source(map)
                 .make(new MapConfig()))
 
