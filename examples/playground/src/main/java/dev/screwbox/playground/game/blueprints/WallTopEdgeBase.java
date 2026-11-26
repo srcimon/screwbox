@@ -10,7 +10,7 @@ import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.playground.game.map.ShotObstacleComponent;
 import dev.screwbox.tiled.Tile;
 
-public class WallTopSpecial2 implements Blueprint<Tile> {
+public class WallTopEdgeBase implements Blueprint<Tile> {
 
     @Override
     public Entity assembleFrom(Tile tile) {

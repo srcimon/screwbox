@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.importing.Blueprint;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.tiled.Tile;
 
-public class WallTopSpecial implements Blueprint<Tile> {
+public class WallTopEdge implements Blueprint<Tile> {
 
     @Override
     public Entity assembleFrom(Tile tile) {

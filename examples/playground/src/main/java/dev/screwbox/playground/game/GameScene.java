@@ -90,8 +90,8 @@ public class GameScene implements Scene {
                 .assign("wall-base", new WallBase())
                 .assign("wall-mid", new WallMid())
                 .assign("wall-top", new WallTop())
-                .assign("wall-topspecial", new WallTopSpecial())//TODO rename
-                .assign("wall-topspecial", new WallTopSpecial2())//TODO rename
+                .assign("wall-top-edge", new WallTopEdge())
+                .assign("wall-top-edge", new WallTopEdgeBase())
                 .assign("decor", new Decor())
             )
 
