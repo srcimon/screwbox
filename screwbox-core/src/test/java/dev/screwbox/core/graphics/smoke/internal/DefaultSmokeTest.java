@@ -137,6 +137,8 @@ class DefaultSmokeTest {
         for (int i = 0; i < 16; i++) {
             smoke.render(0.01);
         }
+        TestSupport.shutdown(executor);
+
         TestSupport.verifyIsSameImage(renderTarget, "smoke/render_multipleTimes_stepsSmokeSimulation.png");
     }
 
