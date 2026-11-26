@@ -8,7 +8,7 @@ import dev.screwbox.core.keyboard.DefaultControlSet;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.playground.design.InGameNotificationDesign;
 import dev.screwbox.playground.design.SceneTransitions;
-import dev.screwbox.playground.gamescene.GameScene;
+import dev.screwbox.playground.game.GameScene;
 
 import java.util.List;
 

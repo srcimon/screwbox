@@ -3,7 +3,7 @@ package dev.screwbox.playground;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.utils.Validate;
-import dev.screwbox.playground.gamescene.teams.TeamInfoComponent;
+import dev.screwbox.playground.game.teams.TeamInfoComponent;
 
 import java.util.ArrayList;
 import java.util.List;
