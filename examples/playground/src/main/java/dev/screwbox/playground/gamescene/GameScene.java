@@ -27,6 +27,7 @@ import dev.screwbox.playground.gamescene.teams.BotComponent;
 import dev.screwbox.playground.gamescene.teams.HeavenComponent;
 import dev.screwbox.playground.gamescene.teams.HumanComponent;
 import dev.screwbox.playground.gamescene.teams.PlayerComponent;
+import dev.screwbox.playground.gamescene.teams.TeamInfoComponent;
 import dev.screwbox.playground.gamescene.teams.ai.AttackComponent;
 import dev.screwbox.playground.gamescene.teams.health.HealthComponent;
 import dev.screwbox.tiled.GameObject;
@@ -100,6 +101,12 @@ public class GameScene implements Scene {
         int viewportId = 0;
         HeavenComponent store = new HeavenComponent();
         for (final var team : gameConfig.teams()) {
+            int teamId = environment.allocateId();
+            environment.addEntity(new Entity(teamId).add(new TeamInfoComponent(), teamInfo -> {
+                teamInfo.color = team.color();
+                teamInfo.name = team.name();
+            });
+
             for (int i = 0; i < team.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> {
