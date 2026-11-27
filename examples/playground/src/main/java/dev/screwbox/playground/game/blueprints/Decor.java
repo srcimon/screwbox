@@ -11,9 +11,10 @@ public class Decor implements Blueprint<Tile> {
 
     @Override
     public Entity assembleFrom(Tile tile) {
-        Sprite sprite = tile.properties().tryGetColor("team-color")
+        Sprite sprite = tile.layer().properties().tryGetColor("team-color")
             .map(color -> tile.sprite().replaceColor(Color.MAGENTA, color))
             .orElse(tile.sprite());
+
 
         return new Entity()
             .bounds(tile.bounds())

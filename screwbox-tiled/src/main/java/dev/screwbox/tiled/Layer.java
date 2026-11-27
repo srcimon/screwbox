@@ -10,6 +10,7 @@ import static java.util.Optional.ofNullable;
 public class Layer {
 
     private final LayerEntity layerEntity;
+    private final Properties properties;
 
     @Override
     public String toString() {
@@ -18,9 +19,11 @@ public class Layer {
 
     private final int order;
 
+    //TODO FIX not reused
     Layer(final LayerEntity layerEntity, final int order) {
         this.layerEntity = layerEntity;
         this.order = order;
+        this.properties = new Properties(layerEntity.properties());
     }
 
     public String name() {
@@ -36,7 +39,7 @@ public class Layer {
     }
 
     public Properties properties() {
-        return new Properties(layerEntity.properties());
+        return properties;
     }
 
     public Percent opacity() {

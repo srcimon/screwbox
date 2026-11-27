@@ -97,13 +97,13 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
                     object.properties().add("team-color", teamInfo.color.hex());
                 });
         }
-        for (final var tile : map.tiles()) {//TODO map.allProperties()
-            final var properties = tile.properties();
+        for (final var layer : map.layers()) {//TODO map.allProperties()
+            final var properties = layer.properties();
             properties.tryGetString("team")
                 .filter(value -> value.equals(String.valueOf(teamInfo.index)))
                 .ifPresent(sourceValue -> {
-                    tile.properties().add("team-id", String.valueOf(entityId));
-                    tile.properties().add("team-color", teamInfo.color.hex());
+                    layer.properties().add("team-id", String.valueOf(entityId));
+                    layer.properties().add("team-color", teamInfo.color.hex());
                 });
         }
     }

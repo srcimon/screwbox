@@ -23,6 +23,7 @@ class TileCollection {
 
         int order = 0;
         for (final LayerEntity layerEntity : map.layers()) {
+            final Layer layer = new Layer(layerEntity, order);
             for (int y = 0; y < layerEntity.height(); y++) {
                 for (int x = 0; x < layerEntity.width(); x++) {
                     final Integer tileId = layerEntity.data().get(y * layerEntity.width() + x);
@@ -33,7 +34,7 @@ class TileCollection {
                         final double offsetY = y * height + layerEntity.offsety();
                         final Bounds bounds = Bounds.atOrigin(offsetX, offsetY, width, height);
                         final Sprite sprite = tileset.findById(tileId);
-                        final Layer layer = new Layer(layerEntity, order);
+
                         final Properties properties = propertiesHolder.get(tileId);
                         final var tile = new Tile(sprite, bounds, layer,
                             properties == null ? new Properties(emptyList()) : properties, tileset.findType(tileId));
@@ -59,4 +60,5 @@ class TileCollection {
         }
         return propertiesHolder;
     }
+
 }
