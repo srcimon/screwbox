@@ -11,12 +11,7 @@
  "tiles":[
         {
          "id":0,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-top"
-                }]
+         "type":"wall-top"
         }, 
         {
          "id":1,
@@ -38,39 +33,19 @@
         }, 
         {
          "id":3,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":4,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":5,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":6,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":7,
@@ -83,66 +58,31 @@
         }, 
         {
          "id":16,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-topspecial"
-                }]
+         "type":"wall-top-edge"
         }, 
         {
          "id":17,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-topspecial"
-                }]
+         "type":"wall-top-edge"
         }, 
         {
          "id":18,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-topspecial"
-                }]
+         "type":"wall-top-edge"
         }, 
         {
          "id":19,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":20,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":21,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":22,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":23,
@@ -155,183 +95,83 @@
         }, 
         {
          "id":32,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-top"
-                }]
+         "type":"wall-top"
         }, 
         {
          "id":33,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-topspecial"
-                }]
+         "type":"wall-top-edge"
         }, 
         {
          "id":34,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-top"
-                }]
+         "type":"wall-top"
         }, 
         {
          "id":35,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":36,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":37,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":38,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":39,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":40,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":41,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-mid"
-                }]
+         "type":"wall-mid"
         }, 
         {
          "id":48,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-top"
-                }]
+         "type":"wall-top"
         }, 
         {
          "id":49,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-top"
-                }]
+         "type":"wall-top"
         }, 
         {
          "id":50,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-top"
-                }]
+         "type":"wall-top"
         }, 
         {
          "id":51,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":52,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":53,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":54,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":55,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":56,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }, 
         {
          "id":57,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-base"
-                }]
+         "type":"wall-base"
         }],
  "tilewidth":16,
  "type":"tileset",

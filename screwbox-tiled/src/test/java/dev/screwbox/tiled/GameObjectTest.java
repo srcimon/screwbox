@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class GameObjectTest {
 
@@ -55,6 +56,16 @@ class GameObjectTest {
     }
 
     @Test
+    void hasProperty_propertyPresent_isTrue() {
+        assertThat(pointer.hasProperty("material")).isTrue();
+    }
+
+    @Test
+    void hasProperty_propertyUnknown_isFalse() {
+        assertThat(pointer.hasProperty("unknown-property")).isFalse();
+    }
+
+    @Test
     void layer_returnsObjectLayer() {
         assertThat(image.layer().order()).isEqualTo(2);
     }
@@ -62,5 +73,21 @@ class GameObjectTest {
     @Test
     void toString_containsName() {
         assertThat(image).hasToString("GameObject [name=testimage]");
+    }
+
+    @Test
+    void addProperty_newProperty_addsProperty() {
+        pointer.addProperty("smoothness", "ultra");
+
+        assertThat(pointer.properties().getString("smoothness")).isEqualTo("ultra");
+    }
+
+    @Test
+    void addProperty_propertyAlreadyExists_throwsException() {
+        pointer.addProperty("smoothness", "ultra");
+
+        assertThatThrownBy(() -> pointer.addProperty("smoothness", "ultra"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("property 'smoothness' already exists");
     }
 }

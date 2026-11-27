@@ -23,6 +23,7 @@ import static java.util.Objects.nonNull;
 public class Tileset {
 
     private final Map<Integer, Sprite> spritesById = new HashMap<>();
+    private final Map<Integer, String> typesById = new HashMap<>();
     private final Map<String, Sprite> spritesByName = new HashMap<>();
     private final List<Sprite> allSprites = new ArrayList<>();
 
@@ -47,7 +48,7 @@ public class Tileset {
         }
     }
 
-    public void addTilesToTileset(final TilesetEntity tilesetEntity) {
+    private void addTilesToTileset(final TilesetEntity tilesetEntity) {
         final String imageFileName = tilesetEntity.image();
         final Frame frame = Frame.fromFile(imageFileName);
         int localId = 0;
@@ -72,13 +73,14 @@ public class Tileset {
                     .image();
                 frames.add(new Frame(currentImage, Duration.ofMillis(frameEntity.duration())));
             }
+            final int actualId = tilesetEntity.firstgid() + tileEntity.id();
             if (!frames.isEmpty()) {
                 final Sprite animatedSprite = new Sprite(frames);
-
-                addSprite(tilesetEntity.firstgid() + tileEntity.id(), animatedSprite);
+                addSprite(actualId, animatedSprite);
             }
             if (nonNull(tileEntity.type())) {
-                addNameToSprite(tilesetEntity.firstgid() + tileEntity.id(), tileEntity.type());
+                typesById.put(actualId, tileEntity.type());
+                addNameToSprite(actualId, tileEntity.type());
             }
         }
     }
@@ -198,5 +200,14 @@ public class Tileset {
         spritesById.clear();
         spritesByName.clear();
         allSprites.clear();
+    }
+
+    /**
+     * Returns the type proeprty of the tile with the specified id.
+     *
+     * @since 3.42.0
+     */
+    public String findType(final int id) {
+        return typesById.get(id);
     }
 }

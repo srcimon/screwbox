@@ -1,0 +1,81 @@
+package dev.screwbox.playground.game;
+
+import dev.screwbox.core.Duration;
+import dev.screwbox.core.Engine;
+import dev.screwbox.core.Percent;
+import dev.screwbox.core.environment.Environment;
+import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.importing.ImportCondition;
+import dev.screwbox.core.scenes.Scene;
+import dev.screwbox.playground.GameConfig;
+import dev.screwbox.playground.design.InGameNotificationDesign;
+import dev.screwbox.playground.game.blueprints.*;
+import dev.screwbox.playground.game.map.MapConfig;
+import dev.screwbox.tiled.GameObject;
+import dev.screwbox.tiled.Map;
+import dev.screwbox.tiled.Tile;
+
+import static dev.screwbox.core.environment.importing.ImportCondition.allOf;
+import static dev.screwbox.core.environment.importing.ImportCondition.index;
+import static dev.screwbox.core.environment.importing.ImportCondition.sourceMatches;
+import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
+import static dev.screwbox.core.environment.importing.ImportOptions.source;
+
+public record GameScene(GameConfig gameConfig) implements Scene {
+
+    @Override
+    public void onEnter(Engine engine) {
+        engine.graphics().camera().setZoom(4);
+        engine.graphics().light().setAmbientLight(Percent.of(0.2));
+        engine.audio().configuration().setSoundRange(128);
+
+        engine.ui()
+            .setNotificationSound(null)
+            .setNotificationTimeout(Duration.ofSeconds(3))
+            .setNotificationDesign(new InGameNotificationDesign(gameConfig.teams()));
+
+        engine.graphics().configuration()
+            .setIndirectLightIntensity(Percent.quarter())
+            .setMaxLightBounces(1)
+            .setIndirectLightRaySpacing(4)
+            .setLightmapBlur(4)
+            .setLightQuality(Percent.of(0.4))
+            .setLightBounceLengthLoss(Percent.of(0.8))
+            .setIndirectLightDiameter(6);
+    }
+
+    @Override
+    public void populate(Environment environment) {
+        final var map = Map.fromJson(gameConfig.map());
+
+        environment
+            .enableAllFeatures()
+            .addSystem(new LogFpsSystem())
+            .addSystemsFromPackage("dev.screwbox.playground.game")
+
+            .importSource(source(map)
+                .make(new MapConfig())
+                .makeComplex(new TeamsAndPlayers(gameConfig))
+            )
+
+            .importSource(indexedSources(map.tiles(), Tile::type)
+                .assign("floor", new Floor())
+                .assign("wall-base", new WallBase())
+                .assign("wall-mid", new WallMid())
+                .assign("wall-top", new WallTop())
+                .assign("wall-top-edge", new WallTopEdge())
+                .assign("wall-top-edge", new WallTopEdgeBase())
+                .assign("decor", new Decor())
+            )
+            .importSource(indexedSources(map.objects(), GameObject::name)
+                .assign(allOf(index("respawn-area"), hasTeamId()), new RespawnArea())
+                .assign(allOf(index("flag"), hasTeamId()), new Flag())
+                .assign(allOf(index("flag"), hasTeamId()), new CaptureZone())
+                .assign("light", new Light())
+            );
+    }
+
+    private static ImportCondition<GameObject, String> hasTeamId() {
+        return sourceMatches(object -> object.hasProperty("team-id"));
+    }
+}

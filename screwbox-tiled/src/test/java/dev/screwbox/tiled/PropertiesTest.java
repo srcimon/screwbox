@@ -132,6 +132,13 @@ class PropertiesTest {
         assertThat(color.opacity().value()).isEqualTo(0.69, offset(0.01));
     }
 
+    @Test
+    void hasProperty_propertyIsNull_throwsException() {
+        assertThatThrownBy(() -> properties.hasProperty(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("name must not be null");
+    }
+
     private PropertyEntity createPropertyEntity(final String name, final String value) {
         return new PropertyEntity(name, "type", value);
     }

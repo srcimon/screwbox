@@ -1,22 +1,23 @@
 package dev.screwbox.tiled;
 
 import dev.screwbox.core.graphics.Color;
-import dev.screwbox.tiled.internal.PropertyEntity;
 
 public class Property {
 
-    private final PropertyEntity propertyEntity;
+    private final String name;
+    private final String value;
 
-    Property(final PropertyEntity propertyEntity) {
-        this.propertyEntity = propertyEntity;
+    Property(final String name, final String value) {
+        this.name = name;
+        this.value = value;
     }
 
     public String name() {
-        return propertyEntity.name();
+        return name;
     }
 
     public String get() {
-        return propertyEntity.value();
+        return value;
     }
 
     public int getInt() {

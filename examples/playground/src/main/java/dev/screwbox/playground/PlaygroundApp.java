@@ -6,31 +6,30 @@ import dev.screwbox.core.ScrewBox;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.keyboard.DefaultControlSet;
 import dev.screwbox.core.keyboard.Key;
-import dev.screwbox.playground.design.InGameNotificationDesign;
 import dev.screwbox.playground.design.SceneTransitions;
-import dev.screwbox.playground.gamescene.GameScene;
+import dev.screwbox.playground.game.GameScene;
 
-import java.util.Set;
+import java.util.List;
 
 public class PlaygroundApp {
 
-
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Playground");
-        screwBox.ui()
-            .setNotificationDesign(new InGameNotificationDesign())
-            .setNotificationTimeout(Duration.ofSeconds(3));
 
-        GameConfig gameConfig = new GameConfig(Set.of(Color.RED, Color.BLUE), 4, Duration.ofSeconds(2), Color.BLUE, "maps/ctf_turbine.json");
+        GameConfig gameConfig = new GameConfig(List.of(
+            new GameConfig.TeamConfig("Blues", Color.BLUE, 4),
+            new GameConfig.TeamConfig("Reds", Color.RED, 4)),
+            Duration.ofSeconds(2), "Blues", "maps/ctf_turbine.json");
+
         screwBox.keyboard()
             .bindAlias(DefaultControlSet.UP, Key.W)
             .bindAlias(DefaultControlSet.DOWN, Key.S)
             .bindAlias(DefaultControlSet.LEFT, Key.A)
             .bindAlias(DefaultControlSet.RIGHT, Key.D);
+
         screwBox.assets()
             .enableLogging()
-            .prepareEngineAssetsAsync()
-            .prepareClassPackageAsync(PlaygroundApp.class);
+            .prepareEngineAssetsAsync();
 
         screwBox.scenes()
             .add(new GameScene(gameConfig))

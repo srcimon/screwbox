@@ -1,0 +1,23 @@
+{ "columns":8,
+ "image":"debug.png",
+ "imageheight":64,
+ "imagewidth":128,
+ "margin":0,
+ "name":"debug",
+ "spacing":0,
+ "tilecount":32,
+ "tiledversion":"1.12.1",
+ "tileheight":16,
+ "tiles":[
+        {
+         "id":0,
+         "type":"floor"
+        }, 
+        {
+         "id":1,
+         "type":"wall-top"
+        }],
+ "tilewidth":16,
+ "type":"tileset",
+ "version":"1.10"
+}

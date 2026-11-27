@@ -126,4 +126,16 @@ class TilesetTest {
 
         assertThat(sprite.get()).isNotNull();
     }
+
+    @Test
+    void findType_unknownId_isNull() {
+        var underworld = Tileset.fromJson("underworld.json");
+        assertThat(underworld.findType(2)).isNull();
+    }
+
+    @Test
+    void findType_idHasType_returnsType() {
+        var underworld = Tileset.fromJson("underworld.json");
+        assertThat(underworld.findType(5)).isEqualTo("myNamedSprite");
+    }
 }

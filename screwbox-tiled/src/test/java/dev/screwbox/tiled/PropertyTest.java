@@ -1,6 +1,5 @@
 package dev.screwbox.tiled;
 
-import dev.screwbox.tiled.internal.PropertyEntity;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,7 +33,7 @@ class PropertyTest {
 
     @Test
     void hasValue_valueIsEmpty_returnsFalse() {
-        var property = new Property(new PropertyEntity("isOn", "type", ""));
+        var property = new Property("isOn", "");
         assertThat(property.hasValue()).isFalse();
     }
 
@@ -54,25 +53,23 @@ class PropertyTest {
     void getDouble_isNotConvertible_throwsException() {
         var property = createBooleanProperty();
         assertThatThrownBy(property::getDouble)
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("property isOn is not a number: true");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("property isOn is not a number: true");
     }
 
     @Test
     void getInt_isNotConvertible_throwsException() {
         var property = createBooleanProperty();
         assertThatThrownBy(property::getInt)
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("property isOn is not a number: true");
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("property isOn is not a number: true");
     }
 
     private Property createNumberProperty() {
-        var property = new PropertyEntity("hue", "int", "20");
-        return new Property(property);
+        return new Property("hue", "20");
     }
 
     private Property createBooleanProperty() {
-        var property = new PropertyEntity("isOn", "type", "true");
-        return new Property(property);
+        return new Property("isOn", "true");
     }
 }
