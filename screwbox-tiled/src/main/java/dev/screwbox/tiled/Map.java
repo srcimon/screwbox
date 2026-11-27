@@ -79,16 +79,4 @@ public class Map implements HasBounds {
         return layers.findByName(name);
     }
 
-    //TODO new feature
-    //TODO validate
-    //TODO new feature
-    //TODO validate
-    public void addObjectPropertyOnMatchingObjects(final String sourceProperty, final Object matchValue, final String targetProperty, final Object newValue) {
-        for (final var object : objects()) {
-            final var properties = object.properties();
-            properties.tryGetString(sourceProperty)
-                .filter(value -> value.equals(matchValue.toString()))
-                .ifPresent(sourceValue -> object.addProperty(targetProperty, newValue.toString()));
-        }
-    }
 }

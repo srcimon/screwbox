@@ -24,6 +24,7 @@ import dev.screwbox.playground.game.teams.PlayerComponent;
 import dev.screwbox.playground.game.teams.TeamInfoComponent;
 import dev.screwbox.playground.game.teams.ai.AttackComponent;
 import dev.screwbox.playground.game.teams.health.HealthComponent;
+import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
 
 import java.util.ArrayList;
@@ -49,9 +50,7 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
             teamInfo.index = teamIndex;
 
             int entityId = idPool.allocateId();
-            map.addObjectPropertyOnMatchingObjects("team", teamInfo.index, "team-id", entityId);
-            map.addObjectPropertyOnMatchingObjects("team", teamInfo.index, "team-color", teamInfo.color.hex());
-
+            enrichObjectProperties(map.objects(), entityId, teamInfo);
             entities.add(new Entity(entityId).add(teamInfo));
 
             for (int i = 0; i < team.teamSize(); i++) {
@@ -87,5 +86,17 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
         }
         entities.add(new Entity().add(heaven));
         return entities;
+    }
+
+    private static void enrichObjectProperties(List<GameObject> objects, int entityId, TeamInfoComponent teamInfo) {
+        for (final var object : objects) {
+            final var properties = object.properties();
+            properties.tryGetString("team")
+                .filter(value -> value.equals(String.valueOf(teamInfo.index)))
+                .ifPresent(sourceValue -> {
+                    object.addProperty("team-id", String.valueOf(entityId));
+                    object.addProperty("team-color", teamInfo.color.hex());
+                });
+        }
     }
 }
