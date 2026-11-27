@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
@@ -204,6 +203,7 @@ public class Tileset {
     }
 
     /**
+     * Returns the type proeprty of the tile with the specified id.
      *
      * @since 3.42.0
      */
