@@ -47,7 +47,7 @@ public class Tileset {
         }
     }
 
-    public void addTilesToTileset(final TilesetEntity tilesetEntity) {
+    private void addTilesToTileset(final TilesetEntity tilesetEntity) {
         final String imageFileName = tilesetEntity.image();
         final Frame frame = Frame.fromFile(imageFileName);
         int localId = 0;
