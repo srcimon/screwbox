@@ -16,7 +16,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
-import dev.screwbox.playground.GameConfig;
+import dev.screwbox.playground.game.GameConfig;
 import dev.screwbox.playground.game.teams.BotComponent;
 import dev.screwbox.playground.game.teams.HeavenComponent;
 import dev.screwbox.playground.game.teams.HumanComponent;

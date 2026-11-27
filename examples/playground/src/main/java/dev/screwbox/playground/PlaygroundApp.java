@@ -7,6 +7,7 @@ import dev.screwbox.core.graphics.Color;
 import dev.screwbox.core.keyboard.DefaultControlSet;
 import dev.screwbox.core.keyboard.Key;
 import dev.screwbox.playground.design.SceneTransitions;
+import dev.screwbox.playground.game.GameConfig;
 import dev.screwbox.playground.game.GameScene;
 
 import java.util.List;

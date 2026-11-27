@@ -1,4 +1,4 @@
-package dev.screwbox.playground;
+package dev.screwbox.playground.game;
 
 import dev.screwbox.core.Duration;
 import dev.screwbox.core.graphics.Color;
