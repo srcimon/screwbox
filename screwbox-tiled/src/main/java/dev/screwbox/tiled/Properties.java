@@ -148,4 +148,10 @@ public class Properties {
         Objects.requireNonNull(name, "name must not be null");
         return propertyList.stream().anyMatch(property -> name.equals(property.name()));
     }
+
+    public void add(String name, String value) {
+        //TODO validations
+        //TODO backdocu removed stuff in GameObject
+        propertyList.add(new Property(name, value));
+    }
 }
