@@ -3,6 +3,7 @@ package dev.screwbox.playground.game.teams.health;
 import dev.screwbox.core.Engine;
 import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
+import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.ui.NotificationDetails;
 import dev.screwbox.playground.design.InGameNotificationDesign;
 import dev.screwbox.playground.game.gamemodes.ctf.FlagCarrierComponent;
@@ -10,24 +11,25 @@ import dev.screwbox.playground.game.teams.HeavenComponent;
 import dev.screwbox.playground.game.teams.PlayerComponent;
 import dev.screwbox.playground.game.teams.TeamInfoComponent;
 
-//TODO fix team usage here
 public class HealthSystem implements EntitySystem {
 
-    private static final Archetype LIVING = Archetype.of(HealthComponent.class);
+    private static final Archetype LIVING = Archetype.of(HealthComponent.class, PlayerComponent.class);
 
     @Override
     public void update(Engine engine) {
-        for (final var living : engine.environment().fetchAll(LIVING)) {
-            if (living.get(HealthComponent.class).health.isZero()) {
-                final var player = living.get(PlayerComponent.class);
-                int teamIndex = engine.environment().fetchById(player.teamId).get(TeamInfoComponent.class).index;
+        final Environment environment = engine.environment();
+
+        for (final var beeing : environment.fetchAll(LIVING)) {
+            if (beeing.get(HealthComponent.class).health.isZero()) {
+                final var player = beeing.get(PlayerComponent.class);
+                int teamIndex = environment.fetchById(player.teamId).get(TeamInfoComponent.class).index;
                 player.deathTime = engine.loop().time();
-                living.remove(FlagCarrierComponent.class);
-                engine.environment().fetchSingletonComponent(HeavenComponent.class).deadPlayers.add(living);
-                engine.environment().remove(living);
+                beeing.remove(FlagCarrierComponent.class);
+                environment.fetchSingletonComponent(HeavenComponent.class).deadPlayers.add(beeing);
+                environment.remove(beeing);
 
                 engine.ui().showNotification(NotificationDetails.text("%s has been killed".formatted(
-                    InGameNotificationDesign.colorByTeam(player.name, teamIndex))));
+                    InGameNotificationDesign.colorCode(player.name, teamIndex))));
             }
         }
     }

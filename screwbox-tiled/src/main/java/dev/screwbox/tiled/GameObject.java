@@ -50,8 +50,12 @@ public class GameObject {
         return layer;
     }
 
-    //TODO new feature
-    public boolean hasProperty(String name) {
+    /**
+     * Returns {@code true} if the object contains a property with the specified name.
+     *
+     * @since 3.42.0
+     */
+    public boolean hasProperty(final String name) {
         return properties().hasProperty(name);
     }
 }

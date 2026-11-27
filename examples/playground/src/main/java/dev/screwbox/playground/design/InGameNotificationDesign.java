@@ -34,7 +34,8 @@ public class InGameNotificationDesign implements NotificationDesign {
         canvas.drawText(Offset.at(32, canvas.height() / 2), notification.text(), textOptions);
     }
 
-    public static String colorByTeam(final String text, int teamIndex) {
-        return "{".repeat(teamIndex + 1) + text + "}".repeat(teamIndex + 1);//TODO stringbuilder
+    public static String colorCode(final String text, int teamIndex) {
+        final int count = teamIndex + 1;
+        return "{".repeat(count) + text + "}".repeat(count);
     }
 }

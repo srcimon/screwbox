@@ -6,6 +6,7 @@ import dev.screwbox.tiled.internal.PropertyEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
@@ -140,6 +141,7 @@ public class Properties {
 
     //TODO new feature
     public boolean hasProperty(final String name) {
+        Objects.requireNonNull(name, "name must not be null");
         return propertyList.stream().anyMatch(property -> name.equals(property.name()));
     }
 }

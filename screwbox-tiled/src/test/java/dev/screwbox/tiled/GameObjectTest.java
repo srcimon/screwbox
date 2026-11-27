@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class GameObjectTest {
 
@@ -52,6 +53,16 @@ class GameObjectTest {
         assertThat(properties.getString("material")).isEqualTo("ice");
         assertThat(properties.getDouble("length")).isEqualTo(66.6);
         assertThat(properties.getInt("numbervalue")).isEqualTo(2);
+    }
+
+    @Test
+    void hasProperty_propertyPresent_isTrue() {
+        assertThat(pointer.hasProperty("material")).isTrue();
+    }
+
+    @Test
+    void hasProperty_propertyUnknown_isFalse() {
+        assertThat(pointer.hasProperty("unknown-property")).isFalse();
     }
 
     @Test
