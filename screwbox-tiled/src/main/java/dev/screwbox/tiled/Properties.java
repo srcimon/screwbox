@@ -3,6 +3,7 @@ package dev.screwbox.tiled;
 import dev.screwbox.core.graphics.Color;
 import dev.screwbox.tiled.internal.PropertyEntity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +16,11 @@ public class Properties {
     private final List<Property> propertyList;
 
     Properties(final List<PropertyEntity> propertyEntities) {
-        this.propertyList = isNull(propertyEntities)
+        this.propertyList = new ArrayList<>(isNull(propertyEntities)
             ? emptyList()
             : propertyEntities.stream()
-            .map(Property::new)
-            .toList();
+            .map(propertyEntity -> new Property(propertyEntity.name(), propertyEntity.value()))
+            .toList());
     }
 
     /**
@@ -136,4 +137,5 @@ public class Properties {
     private IllegalStateException missingProperty(final String name) {
         return new IllegalStateException("missing property: " + name);
     }
+
 }

@@ -6,13 +6,14 @@ import dev.screwbox.playground.TeamEntities;
 import dev.screwbox.playground.game.teams.respawn.RespawnAreaComponent;
 import dev.screwbox.tiled.GameObject;
 
-public record RespawnArea(TeamEntities teamEntities) implements Blueprint<GameObject> {
+public class RespawnArea implements Blueprint<GameObject> {
+
     @Override
     public Entity assembleFrom(GameObject object) {
         return new Entity(object.id())
             .bounds(object.bounds())
             .add(new RespawnAreaComponent(), config -> {
-                config.team = teamEntities.teamId(object.properties().getInt("team"));
+                config.team = object.properties().getInt("team-id");
             });
     }
 }

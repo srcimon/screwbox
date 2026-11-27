@@ -11,21 +11,20 @@ import dev.screwbox.playground.TeamEntities;
 import dev.screwbox.playground.game.gamemodes.ctf.FlagComponent;
 import dev.screwbox.tiled.GameObject;
 
-public record Flag(TeamEntities teamEntities) implements AdvancedBlueprint<GameObject> {
+public class Flag implements AdvancedBlueprint<GameObject> {
 
 
     @Override
     public Entity assembleFrom(GameObject source, IdPool idPool) {
-        final var teamIndex = source.properties().getInt("team");
-        final var teamColor = teamEntities.teamColor(teamIndex);
-
+        final var teamId = source.properties().getInt("team-id");
+        final var teamColor = source.properties().getColor("team-color");
         return new Entity(idPool.allocateId())
             .bounds(source.bounds())
             .add(new SpotLightComponent(40, teamColor.opacity(0.5)))
             .add(new RenderComponent(Sprite.placeholder(teamColor, Size.square(8)), source.layer().order()))
             .add(new FlagComponent(), flag -> {
                 flag.homeZoneId = source.id();
-                flag.teamId = teamEntities.teamId(teamIndex);
+                flag.teamId = teamId;
             });
     }
 }

@@ -73,9 +73,8 @@ public class GameScene implements Scene {
     public void populate(Environment environment) {
         var map = Map.fromJson(gameConfig.map());
 
-
         final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
-        TeamEntities teamEntities = createTeams(environment);
+        TeamEntities teamEntities = createTeams(map, environment);
         populateTeams(playerDrawOrder, environment, teamEntities);
 
         //TODO add ids of entiteis to map for resolve?
@@ -99,10 +98,10 @@ public class GameScene implements Scene {
             )
 
             .importSource(indexedSources(map.objects(), GameObject::name)
-                .assign("respawn-area", new RespawnArea(teamEntities))
+                .assign("respawn-area", new RespawnArea())
                 .assign("light", new Light())
-                .assign("flag", new Flag(teamEntities))
-                .assign("flag", new CaptureZone(teamEntities))
+                .assign("flag", new Flag())
+                .assign("flag", new CaptureZone())
             );
 
     }
@@ -111,7 +110,7 @@ public class GameScene implements Scene {
     private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");
 
     //TODO split into create and populate
-    private TeamEntities createTeams(Environment environment) {
+    private TeamEntities createTeams(Map map, Environment environment) {
         var teamInfos = new TeamEntities();
 
         int teamIndex = 0;
@@ -121,9 +120,14 @@ public class GameScene implements Scene {
             teamInfo.name = team.name();
             teamInfo.index = teamIndex;
 
-            final Entity teamInfoEntity = new Entity(environment.allocateId()).add(teamInfo);
+            int entityId = environment.allocateId();
+            final Entity teamInfoEntity = new Entity(entityId).add(teamInfo);
             teamInfos.add(teamInfoEntity);
             environment.addEntity(teamInfoEntity);
+
+            map.translateGameObjectProperty("team", "team-id", teamIndex, entityId);
+            map.translateGameObjectProperty("team", "team-color", teamIndex, team.color().hex());
+
             teamIndex++;
         }
         return teamInfos;

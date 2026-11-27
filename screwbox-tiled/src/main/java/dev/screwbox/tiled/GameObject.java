@@ -3,6 +3,7 @@ package dev.screwbox.tiled;
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
 import dev.screwbox.tiled.internal.ObjectEntity;
+import dev.screwbox.tiled.internal.PropertyEntity;
 
 public class GameObject {
 
@@ -35,6 +36,10 @@ public class GameObject {
 
     public String name() {
         return object.name();
+    }
+
+    public void addProperty(final String name, final String value) {
+        object.properties().add(new PropertyEntity(name, "string", value));
     }
 
     public Properties properties() {
