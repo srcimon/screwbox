@@ -19,7 +19,12 @@ public class Layer {
 
     private final int order;
 
-    //TODO FIX not reused
+    //TODO add tests for updating properties from different angles
+    //TODO new Feature
+    public int id() {
+        return layerEntity.id();
+    }
+
     Layer(final LayerEntity layerEntity, final int order) {
         this.layerEntity = layerEntity;
         this.order = order;

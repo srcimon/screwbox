@@ -17,13 +17,12 @@ class TileCollection {
 
     private final List<Tile> tiles = new ArrayList<>();
 
-    TileCollection(final MapEntity map) {
+    TileCollection(final LayerCollection layerCollection, final MapEntity map) {
         final Tileset tileset = new Tileset(map.tilesets());
         var propertiesHolder = loadTileProperties(map);
 
-        int order = 0;
         for (final LayerEntity layerEntity : map.layers()) {
-            final Layer layer = new Layer(layerEntity, order);
+            final Layer layer = layerCollection.findById(layerEntity.id());
             for (int y = 0; y < layerEntity.height(); y++) {
                 for (int x = 0; x < layerEntity.width(); x++) {
                     final Integer tileId = layerEntity.data().get(y * layerEntity.width() + x);
@@ -42,7 +41,6 @@ class TileCollection {
                     }
                 }
             }
-            order++;
         }
     }
 

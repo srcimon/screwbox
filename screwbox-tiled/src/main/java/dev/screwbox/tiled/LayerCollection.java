@@ -4,7 +4,9 @@ import dev.screwbox.tiled.internal.LayerEntity;
 import dev.screwbox.tiled.internal.MapEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 class LayerCollection {
@@ -27,5 +29,10 @@ class LayerCollection {
         return layers.stream()
                 .filter(l -> name.equals(l.name()))
                 .findFirst();
+    }
+
+
+    public Layer findById(int id) {
+        return layers.stream().filter(layer -> layer.id() == id).findFirst().orElseThrow();
     }
 }
