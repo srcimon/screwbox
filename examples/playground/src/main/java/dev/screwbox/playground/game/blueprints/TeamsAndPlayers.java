@@ -29,7 +29,7 @@ import dev.screwbox.tiled.Map;
 import java.util.ArrayList;
 import java.util.List;
 
-public record Teams(GameConfig gameConfig) implements ComplexBlueprint<Map> {
+public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint<Map> {
 
     //TODO move into gameconfig
     private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");

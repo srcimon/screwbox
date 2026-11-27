@@ -49,7 +49,7 @@ public class GameScene implements Scene {
     public void populate(Environment environment) {
         var map = Map.fromJson(gameConfig.map());
 
-//TODO handle flag added for team 3 but not team 3
+
 
         environment
             .enableAllFeatures()
@@ -58,7 +58,7 @@ public class GameScene implements Scene {
 
             .importSource(source(map)
                 .make(new MapConfig())
-                .makeComplex(new Teams(gameConfig))
+                .makeComplex(new TeamsAndPlayers(gameConfig))
             )
 
             .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type")) //TODO tile.clazz() -> classProperty from layer or tile
@@ -75,6 +75,7 @@ public class GameScene implements Scene {
                 .assign("light", new Light())
                 .assign("flag", new Flag())
                 .assign("flag", new CaptureZone())
+                //TODO handle flag added for team 3 but not team 3
             );
 
     }
