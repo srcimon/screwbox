@@ -74,17 +74,14 @@ public class GameScene implements Scene {
                 .assign("decor", new Decor())
             )
             .importSource(indexedSources(map.objects(), GameObject::name)
-                .assign(allOf(index("respawn-area"), hasTeamIdProperty()), new RespawnArea())
-                .assign(allOf(index("flag"), hasTeamIdProperty()), new Flag())
-                .assign(allOf(index("flag"), hasTeamIdProperty()), new CaptureZone())
+                .assign(allOf(index("respawn-area"), hasTeamId()), new RespawnArea())
+                .assign(allOf(index("flag"), hasTeamId()), new Flag())
+                .assign(allOf(index("flag"), hasTeamId()), new CaptureZone())
                 .assign("light", new Light())
             );
-
     }
 
-    private static ImportCondition<GameObject, String> hasTeamIdProperty() {
+    private static ImportCondition<GameObject, String> hasTeamId() {
         return sourceMatches(object -> object.hasProperty("team-id"));
     }
-
-
 }
