@@ -79,7 +79,7 @@ public class GameScene implements Scene {
         populateTeams(playerDrawOrder, environment, teamEntities);
 
         //TODO add ids of entiteis to map for resolve?
-
+//TODO handle flag added for team 3 but not team 3
 
         environment
             .enableAllFeatures()
