@@ -65,7 +65,10 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
                     .add(new OccluderComponent(false))
                     .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
-                    .add(new RenderComponent(Sprite.placeholder(team.color(), Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(playerDrawOrder)), config -> config.isSortOrthographic = true)
+                    .add(new RenderComponent(Sprite.placeholder(team.color(), Size.square(10))), config -> {
+                        config.options = SpriteDrawOptions.originalSize().drawOrder(playerDrawOrder);
+                        config.isSortOrthographic = true;
+                    })
                     .add(new PhysicsComponent(), config -> config.friction = 10)
                     .add(new AttackComponent());
                 if (i == 0 && gameConfig.humanTeamName().equals(team.name())) {
