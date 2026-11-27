@@ -47,9 +47,7 @@ public class GameScene implements Scene {
 
     @Override
     public void populate(Environment environment) {
-        var map = Map.fromJson(gameConfig.map());
-
-
+        final var map = Map.fromJson(gameConfig.map());
 
         environment
             .enableAllFeatures()
