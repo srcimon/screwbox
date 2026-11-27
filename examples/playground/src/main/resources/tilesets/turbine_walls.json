@@ -139,12 +139,7 @@
         }, 
         {
          "id":49,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-top"
-                }]
+         "type":"wall-top"
         }, 
         {
          "id":50,

@@ -36,9 +36,9 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
 
 
     @Override
-    public List<Entity> assembleFrom(final Map source, final IdPool idPool) {
+    public List<Entity> assembleFrom(final Map map, final IdPool idPool) {
         List<Entity> entities = new ArrayList<>();
-        final int playerDrawOrder = source.layerWithName("objects").orElseThrow().order();
+        final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
         int viewportId = 0;
         HeavenComponent heaven = new HeavenComponent();
         int teamIndex = 0;
@@ -49,8 +49,8 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
             teamInfo.index = teamIndex;
 
             int entityId = idPool.allocateId();
-            source.addTranslatedObjectProperty("team", "team-id", teamInfo.index, entityId);
-            source.addTranslatedObjectProperty("team", "team-color", teamInfo.index, teamInfo.color.hex());
+            map.addObjectPropertyOnMatchingObjects("team", teamInfo.index, "team-id", entityId);
+            map.addObjectPropertyOnMatchingObjects("team", teamInfo.index, "team-color", teamInfo.color.hex());
 
             entities.add(new Entity(entityId).add(teamInfo));
 
@@ -65,7 +65,7 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
                     .add(new OccluderComponent(false))
                     .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
-                    .add(new RenderComponent(Sprite.placeholder(team.color(), Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(playerDrawOrder)))
+                    .add(new RenderComponent(Sprite.placeholder(team.color(), Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(playerDrawOrder)), config -> config.isSortOrthographic = true)
                     .add(new PhysicsComponent(), config -> config.friction = 10)
                     .add(new AttackComponent());
                 if (i == 0 && gameConfig.humanTeamName().equals(team.name())) {

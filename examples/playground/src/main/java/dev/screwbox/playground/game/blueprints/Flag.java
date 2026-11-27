@@ -20,7 +20,7 @@ public class Flag implements AdvancedBlueprint<GameObject> {
         return new Entity(idPool.allocateId())
             .bounds(source.bounds())
             .add(new SpotLightComponent(40, teamColor.opacity(0.5)))
-            .add(new RenderComponent(Sprite.placeholder(teamColor, Size.square(8)), source.layer().order()))
+            .add(new RenderComponent(Sprite.placeholder(teamColor, Size.square(8)), source.layer().order()), config -> config.isSortOrthographic = true)
             .add(new FlagComponent(), flag -> {
                 flag.homeZoneId = source.id();
                 flag.teamId = teamId;
