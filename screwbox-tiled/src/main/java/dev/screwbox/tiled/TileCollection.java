@@ -36,7 +36,7 @@ class TileCollection {
                         final Layer layer = new Layer(layerEntity, order);
                         final Properties properties = propertiesHolder.get(tileId);
                         final var tile = new Tile(sprite, bounds, layer,
-                            properties == null ? new Properties(emptyList()) : properties, tileset.tryFindType(tileId).orElse(null));
+                            properties == null ? new Properties(emptyList()) : properties, tileset.findType(tileId));
                         tiles.add(tile);
                     }
                 }

@@ -203,8 +203,11 @@ public class Tileset {
         allSprites.clear();
     }
 
-    //TODO new featuee
-    public Optional<String> tryFindType(final int id) {
-        return Optional.ofNullable(typesById.get(id));
+    /**
+     *
+     * @since 3.42.0
+     */
+    public String findType(final int id) {
+        return typesById.get(id);
     }
 }
