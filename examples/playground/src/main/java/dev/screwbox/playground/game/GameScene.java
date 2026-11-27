@@ -21,13 +21,7 @@ import static dev.screwbox.core.environment.importing.ImportCondition.sourceMatc
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 import static dev.screwbox.core.environment.importing.ImportOptions.source;
 
-public class GameScene implements Scene {
-
-    private final GameConfig gameConfig;
-
-    public GameScene(GameConfig gameConfig) {
-        this.gameConfig = gameConfig;
-    }
+public record GameScene(GameConfig gameConfig) implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
