@@ -11,156 +11,71 @@
  "tiles":[
         {
          "id":0,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":1,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":2,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":3,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":4,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":8,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":9,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":10,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":11,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":12,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":16,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":17,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":18,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":19,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":20,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":24,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":25,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }],
  "tilewidth":16,
  "type":"tileset",

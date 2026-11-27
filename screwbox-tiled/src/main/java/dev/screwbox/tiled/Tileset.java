@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
@@ -23,6 +24,7 @@ import static java.util.Objects.nonNull;
 public class Tileset {
 
     private final Map<Integer, Sprite> spritesById = new HashMap<>();
+    private final Map<Integer, String> typesById = new HashMap<>();
     private final Map<String, Sprite> spritesByName = new HashMap<>();
     private final List<Sprite> allSprites = new ArrayList<>();
 
@@ -72,13 +74,14 @@ public class Tileset {
                     .image();
                 frames.add(new Frame(currentImage, Duration.ofMillis(frameEntity.duration())));
             }
+            final int actualId = tilesetEntity.firstgid() + tileEntity.id();
             if (!frames.isEmpty()) {
                 final Sprite animatedSprite = new Sprite(frames);
-
-                addSprite(tilesetEntity.firstgid() + tileEntity.id(), animatedSprite);
+                addSprite(actualId, animatedSprite);
             }
             if (nonNull(tileEntity.type())) {
-                addNameToSprite(tilesetEntity.firstgid() + tileEntity.id(), tileEntity.type());
+                typesById.put(actualId, tileEntity.type());
+                addNameToSprite(actualId, tileEntity.type());
             }
         }
     }
@@ -198,5 +201,10 @@ public class Tileset {
         spritesById.clear();
         spritesByName.clear();
         allSprites.clear();
+    }
+
+    //TODO new featuee
+    public Optional<String> tryFindType(final int id) {
+        return Optional.ofNullable(typesById.get(id));
     }
 }

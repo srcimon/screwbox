@@ -11,21 +11,11 @@
  "tiles":[
         {
          "id":0,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"floor"
-                }]
+         "type":"floor"
         }, 
         {
          "id":1,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"wall-top"
-                }]
+         "type":"wall-top"
         }],
  "tilewidth":16,
  "type":"tileset",

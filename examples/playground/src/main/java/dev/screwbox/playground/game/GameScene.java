@@ -12,6 +12,7 @@ import dev.screwbox.playground.game.blueprints.*;
 import dev.screwbox.playground.game.map.MapConfig;
 import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
+import dev.screwbox.tiled.Tile;
 
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 import static dev.screwbox.core.environment.importing.ImportOptions.source;
@@ -59,7 +60,7 @@ public class GameScene implements Scene {
                 .makeComplex(new TeamsAndPlayers(gameConfig))
             )
 
-            .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type")) //TODO tile.clazz() -> classProperty from layer or tile
+            .importSource(indexedSources(map.tiles(), Tile::type)
                 .assign("floor", new Floor())
                 .assign("wall-base", new WallBase())
                 .assign("wall-mid", new WallMid())
@@ -69,10 +70,10 @@ public class GameScene implements Scene {
                 .assign("decor", new Decor())
             )
             .importSource(indexedSources(map.objects(), GameObject::name)
-                .assign("respawn-area", new RespawnArea())
-                .assign("light", new Light())
-                .assign("flag", new Flag())
-                .assign("flag", new CaptureZone())
+                    .assign("respawn-area", new RespawnArea())
+                    .assign("light", new Light())
+                    .assign("flag", new Flag())
+                    .assign("flag", new CaptureZone())
                 //TODO handle flag added for team 3 but not team 3
             );
 
