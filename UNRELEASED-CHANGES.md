@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Check if `GameObject` has a property with a specific name
+- Added property existence check in `GameObject` and `Properties`
 
 ### 🪛 Bug Fixes
 

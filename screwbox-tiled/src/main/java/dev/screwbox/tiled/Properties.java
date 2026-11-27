@@ -139,7 +139,11 @@ public class Properties {
         return new IllegalStateException("missing property: " + name);
     }
 
-    //TODO new feature
+    /**
+     * Returns {@code true} if the properties contains a property with the specified name.
+     *
+     * @since 3.42.0
+     */
     public boolean hasProperty(final String name) {
         Objects.requireNonNull(name, "name must not be null");
         return propertyList.stream().anyMatch(property -> name.equals(property.name()));

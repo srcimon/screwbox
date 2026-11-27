@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
 
@@ -130,6 +131,13 @@ class PropertiesTest {
         assertThat(color.g()).isEqualTo(159);
         assertThat(color.b()).isEqualTo(158);
         assertThat(color.opacity().value()).isEqualTo(0.69, offset(0.01));
+    }
+
+    @Test
+    void hasProperty_propertyIsNull_throwsException() {
+        assertThatThrownBy(() -> properties.hasProperty(null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("name must not be null");
     }
 
     private PropertyEntity createPropertyEntity(final String name, final String value) {
