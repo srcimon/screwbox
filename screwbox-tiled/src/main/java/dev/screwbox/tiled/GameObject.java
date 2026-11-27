@@ -49,4 +49,9 @@ public class GameObject {
     public Layer layer() {
         return layer;
     }
+
+    //TODO new feature
+    public boolean hasProperty(String name) {
+        return properties().hasProperty(name);
+    }
 }

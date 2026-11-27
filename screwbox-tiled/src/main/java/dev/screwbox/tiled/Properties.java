@@ -138,4 +138,8 @@ public class Properties {
         return new IllegalStateException("missing property: " + name);
     }
 
+    //TODO new feature
+    public boolean hasProperty(final String name) {
+        return propertyList.stream().anyMatch(property -> name.equals(property.name()));
+    }
 }

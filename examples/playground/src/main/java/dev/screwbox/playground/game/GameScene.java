@@ -5,6 +5,7 @@ import dev.screwbox.core.Engine;
 import dev.screwbox.core.Percent;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
+import dev.screwbox.core.environment.importing.ImportCondition;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.design.InGameNotificationDesign;
@@ -14,6 +15,9 @@ import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
 import dev.screwbox.tiled.Tile;
 
+import static dev.screwbox.core.environment.importing.ImportCondition.allOf;
+import static dev.screwbox.core.environment.importing.ImportCondition.index;
+import static dev.screwbox.core.environment.importing.ImportCondition.sourceMatches;
 import static dev.screwbox.core.environment.importing.ImportOptions.indexedSources;
 import static dev.screwbox.core.environment.importing.ImportOptions.source;
 
@@ -70,13 +74,16 @@ public class GameScene implements Scene {
                 .assign("decor", new Decor())
             )
             .importSource(indexedSources(map.objects(), GameObject::name)
-                    .assign("respawn-area", new RespawnArea())
-                    .assign("light", new Light())
-                    .assign("flag", new Flag())
-                    .assign("flag", new CaptureZone())
-                //TODO handle flag added for team 3 but not team 3
+                .assign(allOf(index("respawn-area"), hasTeamIdProperty()), new RespawnArea())
+                .assign(allOf(index("flag"), hasTeamIdProperty()), new Flag())
+                .assign(allOf(index("flag"), hasTeamIdProperty()), new CaptureZone())
+                .assign("light", new Light())
             );
 
+    }
+
+    private static ImportCondition<GameObject, String> hasTeamIdProperty() {
+        return sourceMatches(object -> object.hasProperty("team-id"));
     }
 
 
