@@ -2,6 +2,7 @@ package dev.screwbox.tiled;
 
 import dev.screwbox.core.Bounds;
 import dev.screwbox.core.Vector;
+import dev.screwbox.core.utils.Validate;
 import dev.screwbox.tiled.internal.ObjectEntity;
 import dev.screwbox.tiled.internal.PropertyEntity;
 
@@ -38,7 +39,14 @@ public class GameObject {
         return object.name();
     }
 
+    /**
+     * Adds a new property.
+     *
+     * @throws IllegalArgumentException when property already exists
+     * @since 4.42.0
+     */
     public void addProperty(final String name, final String value) {
+        Validate.isFalse(hasProperty(name), "property '%s' already exists".formatted(name));
         object.properties().add(new PropertyEntity(name, "string", value));
     }
 

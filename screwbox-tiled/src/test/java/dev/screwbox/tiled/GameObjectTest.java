@@ -74,4 +74,20 @@ class GameObjectTest {
     void toString_containsName() {
         assertThat(image).hasToString("GameObject [name=testimage]");
     }
+
+    @Test
+    void addProperty_newProperty_addsProperty() {
+        pointer.addProperty("smoothness", "ultra");
+
+        assertThat(pointer.properties().getString("smoothness")).isEqualTo("ultra");
+    }
+
+    @Test
+    void addProperty_propertyAlreadyExists_throwsException() {
+        pointer.addProperty("smoothness", "ultra");
+
+        assertThatThrownBy(() -> pointer.addProperty("smoothness", "ultra"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("property 'smoothness' already exists");
+    }
 }

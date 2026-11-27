@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added property existence check in `GameObject` and `Properties`
+- Add properties to `GameObject` after beeing loaded from map
 
 ### 🪛 Bug Fixes
 
