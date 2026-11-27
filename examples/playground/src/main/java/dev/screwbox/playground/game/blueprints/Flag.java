@@ -7,7 +7,6 @@ import dev.screwbox.core.environment.light.SpotLightComponent;
 import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
-import dev.screwbox.playground.TeamEntities;
 import dev.screwbox.playground.game.gamemodes.ctf.FlagComponent;
 import dev.screwbox.tiled.GameObject;
 

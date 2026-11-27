@@ -136,7 +136,7 @@
                          "type":"int",
                          "value":0
                         }],
-                 "rotation":0.37907014954147,
+                 "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":66.2764264429969,
@@ -498,7 +498,7 @@
                          "type":"int",
                          "value":0
                         }],
-                 "rotation":0.37907,
+                 "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":34.4491419339867,
@@ -520,7 +520,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"../tilesets/debug.json"
+         "source":"..\/tilesets\/debug.json"
         }, 
         {
          "firstgid":33,

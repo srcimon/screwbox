@@ -26,10 +26,9 @@ public class InGameNotificationDesign implements NotificationDesign {
             final var teamColorFont = FontBundle.SKINNY_SANS.get().replaceColor(Color.WHITE, teamConfig.color());
             baseOptions = baseOptions.style(index + 1, teamColorFont, (ShaderSetup) null);
         }
-        System.out.println(baseOptions);
         options = baseOptions;
     }
-
+//TODO register by teamId not by teamIndex
     @Override
     public void render(Notification notification, Canvas canvas) {
         final var textOptions = options.opacity(Ease.IN_PLATEAU.applyOn(notification.progress()));

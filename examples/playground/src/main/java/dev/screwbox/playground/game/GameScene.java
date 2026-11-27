@@ -21,7 +21,6 @@ import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.scenes.Scene;
 import dev.screwbox.core.utils.ListUtil;
 import dev.screwbox.playground.GameConfig;
-import dev.screwbox.playground.TeamEntities;
 import dev.screwbox.playground.design.InGameNotificationDesign;
 import dev.screwbox.playground.game.blueprints.*;
 import dev.screwbox.playground.game.map.MapConfig;
@@ -73,12 +72,8 @@ public class GameScene implements Scene {
     public void populate(Environment environment) {
         var map = Map.fromJson(gameConfig.map());
 
-        final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
-        TeamEntities teamEntities = createTeams(map, environment);
-        populateTeams(playerDrawOrder, environment, teamEntities);
-
-        //TODO add ids of entiteis to map for resolve?
 //TODO handle flag added for team 3 but not team 3
+        populateTeamsAndTranslateTeamValues(map, environment);
 
         environment
             .enableAllFeatures()
@@ -110,9 +105,10 @@ public class GameScene implements Scene {
     private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");
 
     //TODO split into create and populate
-    private TeamEntities createTeams(Map map, Environment environment) {
-        var teamInfos = new TeamEntities();
-
+    private void populateTeamsAndTranslateTeamValues(Map map, Environment environment) {
+        final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
+        int viewportId = 0;
+        HeavenComponent heaven = new HeavenComponent();
         int teamIndex = 0;
         for (final var team : gameConfig.teams()) {
             final var teamInfo = new TeamInfoComponent();
@@ -122,28 +118,14 @@ public class GameScene implements Scene {
 
             int entityId = environment.allocateId();
             final Entity teamInfoEntity = new Entity(entityId).add(teamInfo);
-            teamInfos.add(teamInfoEntity);
             environment.addEntity(teamInfoEntity);
 
             map.translateGameObjectProperty("team", "team-id", teamIndex, entityId);
             map.translateGameObjectProperty("team", "team-color", teamIndex, team.color().hex());
-
-            teamIndex++;
-        }
-        return teamInfos;
-    }
-
-    private void populateTeams(int drawOrder, Environment environment, TeamEntities teamEntities) {
-
-        int viewportId = 0;
-        HeavenComponent store = new HeavenComponent();
-        int teamIndex = 0;
-        for (final var team : gameConfig.teams()) {
-            final var teamId = teamEntities.teamId(teamIndex);
             for (int i = 0; i < team.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> {
-                        config.teamId = teamId;
+                        config.teamId = entityId;
                         config.name = ListUtil.pickRandom(NAMES);
                     })
                     .bounds(Bounds.$$(0, 0, 10, 10))
@@ -151,7 +133,7 @@ public class GameScene implements Scene {
                     .add(new OccluderComponent(false))
                     .add(new HealthComponent())
                     .add(new PathMovementComponent(70, 2000))
-                    .add(new RenderComponent(Sprite.placeholder(team.color(), Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(drawOrder)))
+                    .add(new RenderComponent(Sprite.placeholder(team.color(), Size.square(10)), SpriteDrawOptions.originalSize().drawOrder(playerDrawOrder)))
                     .add(new PhysicsComponent(), config -> config.friction = 10)
                     .add(new AttackComponent());
                 if (i == 0 && gameConfig.humanTeamName().equals(team.name())) {
@@ -163,14 +145,12 @@ public class GameScene implements Scene {
                     viewportId++;
                 } else {
                     player.add(new BotComponent());
-
-
                 }
-                store.deadPlayers.add(player);
+                heaven.deadPlayers.add(player);
             }
             teamIndex++;
         }
-        environment.addEntity(new Entity().add(store));
+        environment.addEntity(new Entity().add(heaven));
     }
 
 }
