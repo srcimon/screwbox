@@ -73,8 +73,14 @@ public class GameScene implements Scene {
         var map = Map.fromJson(gameConfig.map());
 
 //TODO handle flag added for team 3 but not team 3
-        populateTeamsAndTranslateTeamValues(map, environment);
+        populateTeams(map, environment);
 
+        for(var team : environment.fetchAllHaving(TeamInfoComponent.class)) {
+            var teamInfo = team.get(TeamInfoComponent.class);
+            map.translateGameObjectProperty("team", "team-id", teamInfo.index, team.forceId());
+            map.translateGameObjectProperty("team", "team-color", teamInfo.index, teamInfo.color.hex());
+        }
+        
         environment
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
@@ -105,7 +111,7 @@ public class GameScene implements Scene {
     private static final List<String> NAMES = List.of("Russel", "Davi", "Sonora", "Scott", "Gwendel");
 
     //TODO split into create and populate
-    private void populateTeamsAndTranslateTeamValues(Map map, Environment environment) {
+    private void populateTeams(Map map, Environment environment) {
         final int playerDrawOrder = map.layerWithName("objects").orElseThrow().order();
         int viewportId = 0;
         HeavenComponent heaven = new HeavenComponent();
@@ -120,8 +126,7 @@ public class GameScene implements Scene {
             final Entity teamInfoEntity = new Entity(entityId).add(teamInfo);
             environment.addEntity(teamInfoEntity);
 
-            map.translateGameObjectProperty("team", "team-id", teamIndex, entityId);
-            map.translateGameObjectProperty("team", "team-color", teamIndex, team.color().hex());
+
             for (int i = 0; i < team.teamSize(); i++) {
                 var player = new Entity(environment.allocateId())
                     .add(new PlayerComponent(), config -> {
