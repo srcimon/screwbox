@@ -61,7 +61,6 @@ public class GameScene implements Scene {
                 .makeComplex(new Teams(gameConfig))
             )
 
-
             .importSource(indexedSources(map.tiles(), tile -> tile.properties().getString("type")) //TODO tile.clazz() -> classProperty from layer or tile
                 .assign("floor", new Floor())
                 .assign("wall-base", new WallBase())

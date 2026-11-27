@@ -18,6 +18,7 @@ import dev.screwbox.playground.game.teams.ai.ShotComponent;
 
 public class GameFunctions {
 
+    //TODO get rid of this
     public static void triggerShot(Engine engine, int teamId, Vector velocity, Vector position) {
         engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(position));
         engine.environment().addEntity(new Entity(engine.environment().allocateId())
