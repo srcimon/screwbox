@@ -79,6 +79,7 @@ public class GameScene implements Scene {
             .enableAllFeatures()
             .addSystem(new LogFpsSystem())
             .addSystemsFromPackage("dev.screwbox.playground.game")
+
             .importSource(source(map)
                 .make(new MapConfig()))
 
@@ -91,7 +92,6 @@ public class GameScene implements Scene {
                 .assign("wall-top-edge", new WallTopEdgeBase())
                 .assign("decor", new Decor())
             )
-
             .importSource(indexedSources(map.objects(), GameObject::name)
                 .assign("respawn-area", new RespawnArea())
                 .assign("light", new Light())
