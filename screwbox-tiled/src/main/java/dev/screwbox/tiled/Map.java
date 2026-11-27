@@ -83,7 +83,7 @@ public class Map implements HasBounds {
     //TODO validate
     //TODO new feature
     //TODO validate
-    public void translateGameObjectProperty(final String sourceProperty, final String targetProperty, final Object matchValue, final Object newValue) {
+    public void addTranslatedObjectProperty(final String sourceProperty, final String targetProperty, final Object matchValue, final Object newValue) {
         for (final var object : objects()) {
             final var properties = object.properties();
             properties.tryGetString(sourceProperty).ifPresent(sourceValue -> {
