@@ -8,4 +8,5 @@ public class TeamInfoComponent implements Component {
     public Color color;
     public String name;
     public int index;
+    public int score;
 }

@@ -5,7 +5,9 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.ui.NotificationDetails;
+import dev.screwbox.playground.design.InGameNotificationDesign;
 import dev.screwbox.playground.game.teams.PlayerComponent;
+import dev.screwbox.playground.game.teams.TeamInfoComponent;
 
 import java.util.List;
 
@@ -37,9 +39,13 @@ public class FlagScoreSystem implements EntitySystem {
     private static void checkAndHandleFlagScore(Engine engine, Entity flagEntity, FlagComponent flag) {
         for (final var captureZone : engine.environment().fetchAll(CAPTURE_ZONES)) {
             if (captureZone.intersects(flagEntity) && captureZone.get(CaptureZoneComponent.class).teamId != flag.teamId) {
-                engine.environment().tryFetchById(flag.carriedById).ifPresent(carrier -> carrier.remove(FlagCarrierComponent.class));
+                final var carrier = engine.environment().fetchById(flag.carriedById);
+                carrier.remove(FlagCarrierComponent.class);
+                var carrierTeam = engine.environment().fetchById(carrier.get(PlayerComponent.class).teamId).get(TeamInfoComponent.class);
+                carrierTeam.score++;
                 retrieveFlag(engine, flagEntity, flag);
-                engine.ui().showNotification(NotificationDetails.text("team scored"));//TODO which team? give it a name
+
+                engine.ui().showNotification(NotificationDetails.text("team %s scored".formatted(InGameNotificationDesign.colorCode(carrierTeam.name, carrierTeam.index))));
             }
         }
     }
