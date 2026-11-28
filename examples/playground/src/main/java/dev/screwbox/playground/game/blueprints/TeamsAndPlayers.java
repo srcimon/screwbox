@@ -16,7 +16,7 @@ import dev.screwbox.core.graphics.Size;
 import dev.screwbox.core.graphics.Sprite;
 import dev.screwbox.core.graphics.options.SpriteDrawOptions;
 import dev.screwbox.core.utils.ListUtil;
-import dev.screwbox.playground.GameConfig;
+import dev.screwbox.playground.game.GameConfig;
 import dev.screwbox.playground.game.teams.BotComponent;
 import dev.screwbox.playground.game.teams.HeavenComponent;
 import dev.screwbox.playground.game.teams.HumanComponent;
@@ -24,7 +24,6 @@ import dev.screwbox.playground.game.teams.PlayerComponent;
 import dev.screwbox.playground.game.teams.TeamInfoComponent;
 import dev.screwbox.playground.game.teams.ai.AttackComponent;
 import dev.screwbox.playground.game.teams.health.HealthComponent;
-import dev.screwbox.tiled.GameObject;
 import dev.screwbox.tiled.Map;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
             teamInfo.index = teamIndex;
 
             int entityId = idPool.allocateId();
-            enrichObjectProperties(map.objects(), entityId, teamInfo);
+            enrichMapProperties(map, entityId, teamInfo);
             entities.add(new Entity(entityId).add(teamInfo));
 
             for (int i = 0; i < team.teamSize(); i++) {
@@ -88,14 +87,23 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
         return entities;
     }
 
-    private static void enrichObjectProperties(List<GameObject> objects, int entityId, TeamInfoComponent teamInfo) {
-        for (final var object : objects) {
+    private static void enrichMapProperties(final Map map, final int entityId, final TeamInfoComponent teamInfo) {
+        for (final var object : map.objects()) {
             final var properties = object.properties();
             properties.tryGetString("team")
                 .filter(value -> value.equals(String.valueOf(teamInfo.index)))
                 .ifPresent(sourceValue -> {
-                    object.addProperty("team-id", String.valueOf(entityId));
-                    object.addProperty("team-color", teamInfo.color.hex());
+                    object.properties().add("team-id", String.valueOf(entityId));
+                    object.properties().add("team-color", teamInfo.color.hex());
+                });
+        }
+        for (final var layer : map.layers()) {//TODO map.allProperties()
+            final var properties = layer.properties();
+            properties.tryGetString("team")
+                .filter(value -> value.equals(String.valueOf(teamInfo.index)))
+                .ifPresent(sourceValue -> {
+                    layer.properties().add("team-id", String.valueOf(entityId));
+                    layer.properties().add("team-color", teamInfo.color.hex());
                 });
         }
     }

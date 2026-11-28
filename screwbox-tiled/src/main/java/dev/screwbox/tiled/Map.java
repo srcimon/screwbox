@@ -38,10 +38,10 @@ public class Map implements HasBounds {
 
     private Map(final MapEntity mapEntity) {
         this.mapEntity = mapEntity;
-        tiles = new TileCollection(mapEntity);
+        layers = new LayerCollection(mapEntity);
+        tiles = new TileCollection(layers, mapEntity);
         objects = new GameObjectCollection(mapEntity);
         properties = new Properties(mapEntity.properties());
-        layers = new LayerCollection(mapEntity);
     }
 
     public List<Tile> tiles() {

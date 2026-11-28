@@ -28,4 +28,9 @@ class LayerCollection {
                 .filter(l -> name.equals(l.name()))
                 .findFirst();
     }
+
+
+    public Layer findById(int id) {
+        return layers.stream().filter(layer -> layer.id() == id).findFirst().orElseThrow();
+    }
 }

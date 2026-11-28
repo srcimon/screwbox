@@ -9,7 +9,7 @@ import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.ui.Notification;
 import dev.screwbox.core.ui.NotificationDesign;
-import dev.screwbox.playground.GameConfig;
+import dev.screwbox.playground.game.GameConfig;
 
 import java.util.List;
 

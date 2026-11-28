@@ -7,7 +7,6 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.importing.ImportCondition;
 import dev.screwbox.core.scenes.Scene;
-import dev.screwbox.playground.GameConfig;
 import dev.screwbox.playground.design.InGameNotificationDesign;
 import dev.screwbox.playground.game.blueprints.*;
 import dev.screwbox.playground.game.map.MapConfig;

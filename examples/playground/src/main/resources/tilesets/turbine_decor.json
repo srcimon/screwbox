@@ -1,11 +1,11 @@
 { "columns":8,
  "image":"turbine_decor.png",
- "imageheight":32,
+ "imageheight":96,
  "imagewidth":128,
  "margin":0,
  "name":"turbine_decor",
  "spacing":0,
- "tilecount":16,
+ "tilecount":48,
  "tiledversion":"1.12.1",
  "tileheight":16,
  "tiles":[
@@ -31,6 +31,22 @@
         }, 
         {
          "id":8,
+         "type":"decor"
+        }, 
+        {
+         "id":16,
+         "type":"decor"
+        }, 
+        {
+         "id":17,
+         "type":"decor"
+        }, 
+        {
+         "id":18,
+         "type":"decor"
+        }, 
+        {
+         "id":19,
          "type":"decor"
         }],
  "tilewidth":16,
