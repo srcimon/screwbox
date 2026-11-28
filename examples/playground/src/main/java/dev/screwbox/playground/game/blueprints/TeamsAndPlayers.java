@@ -88,22 +88,12 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
     }
 
     private static void enrichMapProperties(final Map map, final int entityId, final TeamInfoComponent teamInfo) {
-        for (final var object : map.objects()) {
-            final var properties = object.properties();
+        for (final var properties : map.allProperties()) {
             properties.tryGetString("team")
                 .filter(value -> value.equals(String.valueOf(teamInfo.index)))
                 .ifPresent(sourceValue -> {
-                    object.properties().add("team-id", String.valueOf(entityId));
-                    object.properties().add("team-color", teamInfo.color.hex());
-                });
-        }
-        for (final var layer : map.layers()) {//TODO map.allProperties()
-            final var properties = layer.properties();
-            properties.tryGetString("team")
-                .filter(value -> value.equals(String.valueOf(teamInfo.index)))
-                .ifPresent(sourceValue -> {
-                    layer.properties().add("team-id", String.valueOf(entityId));
-                    layer.properties().add("team-color", teamInfo.color.hex());
+                    properties.add("team-id", String.valueOf(entityId));
+                    properties.add("team-color", teamInfo.color.hex());
                 });
         }
     }

@@ -90,7 +90,11 @@ class MapTest {
     }
 
     @Test
-    void xx() {
-        assertThat(map.allProperties()).doesNotHaveDuplicates();
+    void allProperties_containsPropertiesFromAllCategories() {
+        assertThat(map.allProperties())
+            .contains(map.properties())
+            .contains(map.objects().getFirst().properties())
+            .contains(map.tiles().getFirst().properties())
+            .contains(map.layers().getFirst().properties());
     }
 }

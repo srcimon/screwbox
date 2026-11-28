@@ -7,9 +7,10 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.tiled.internal.MapEntity;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
 
@@ -80,9 +81,12 @@ public class Map implements HasBounds {
         return layers.findByName(name);
     }
 
-    //TODO feature
-    public List<Properties> allProperties() {
-        final var allProperties = new ArrayList<Properties>();
+    /**
+     * Returns a set of all {@link Properties} within the map including the ones from {@link Layer layers},
+     * {@link GameObject game objects}, {@link Tile tiles} and the properties of the {@link Map} itself.
+     */
+    public Set<Properties> allProperties() {
+        final var allProperties = new HashSet<Properties>();
         allProperties.add(properties());
         tiles().forEach(tile -> allProperties.add(tile.properties()));
         layers().forEach(layer -> allProperties.add(layer.properties()));
