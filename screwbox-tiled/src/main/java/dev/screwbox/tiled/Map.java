@@ -7,6 +7,7 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.importing.ImportOptions;
 import dev.screwbox.tiled.internal.MapEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,4 +80,13 @@ public class Map implements HasBounds {
         return layers.findByName(name);
     }
 
+    //TODO feature
+    public List<Properties> allProperties() {
+        final var allProperties = new ArrayList<Properties>();
+        allProperties.add(properties());
+        tiles().forEach(tile -> allProperties.add(tile.properties()));
+        layers().forEach(layer -> allProperties.add(layer.properties()));
+        objects().forEach(object -> allProperties.add(object.properties()));
+        return allProperties;
+    }
 }

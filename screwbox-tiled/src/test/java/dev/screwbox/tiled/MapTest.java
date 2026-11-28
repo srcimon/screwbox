@@ -88,4 +88,9 @@ class MapTest {
         assertThat(map.layerWithName("world")).isPresent()
                 .matches(layer -> layer.get().name().equals("world"));
     }
+
+    @Test
+    void xx() {
+        assertThat(map.allProperties()).doesNotHaveDuplicates();
+    }
 }
