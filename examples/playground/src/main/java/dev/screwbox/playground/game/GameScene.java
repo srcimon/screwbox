@@ -41,6 +41,7 @@ public record GameScene(GameConfig gameConfig) implements Scene {
             .setLightQuality(Percent.of(0.4))
             .setLightBounceLengthLoss(Percent.of(0.8))
             .setIndirectLightDiameter(6);
+
     }
 
     @Override
