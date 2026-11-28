@@ -25,9 +25,11 @@ import dev.screwbox.playground.game.teams.TeamInfoComponent;
 import dev.screwbox.playground.game.teams.ai.AttackComponent;
 import dev.screwbox.playground.game.teams.health.HealthComponent;
 import dev.screwbox.tiled.Map;
+import dev.screwbox.tiled.Properties;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint<Map> {
 
@@ -49,7 +51,7 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
             teamInfo.index = teamIndex;
 
             int entityId = idPool.allocateId();
-            enrichMapProperties(map, entityId, teamInfo);
+            addTeamSpecificProperties(map.allProperties(), entityId, teamInfo);
             entities.add(new Entity(entityId).add(teamInfo));
 
             for (int i = 0; i < team.teamSize(); i++) {
@@ -87,13 +89,17 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
         return entities;
     }
 
-    private static void enrichMapProperties(final Map map, final int entityId, final TeamInfoComponent teamInfo) {
-        for (final var properties : map.allProperties()) {
+    private static void addTeamSpecificProperties(final Set<Properties> mapProperties, final int entityId, final TeamInfoComponent teamInfo) {
+        final var targetTeam = String.valueOf(teamInfo.index);
+        final var teamId = String.valueOf(entityId);
+        final var teamColor = teamInfo.color.hex();
+
+        for (final var properties : mapProperties) {
             properties.tryGetString("team")
-                .filter(value -> value.equals(String.valueOf(teamInfo.index)))
+                .filter(value -> value.equals(targetTeam))
                 .ifPresent(sourceValue -> {
-                    properties.add("team-id", String.valueOf(entityId));
-                    properties.add("team-color", teamInfo.color.hex());
+                    properties.add("team-id", teamId);
+                    properties.add("team-color", teamColor);
                 });
         }
     }
