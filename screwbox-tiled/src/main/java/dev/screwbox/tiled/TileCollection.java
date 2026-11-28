@@ -19,7 +19,7 @@ class TileCollection {
 
     TileCollection(final LayerCollection layerCollection, final MapEntity map) {
         final Tileset tileset = new Tileset(map.tilesets());
-        var propertiesHolder = loadTileProperties(map);
+        final var propertiesHolder = loadTileProperties(map);
 
         for (final LayerEntity layerEntity : map.layers()) {
             final Layer layer = layerCollection.findById(layerEntity.id());
