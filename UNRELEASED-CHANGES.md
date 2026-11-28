@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added property existence check in `GameObject` and `Properties`
-- Add properties to `GameObject` after beeing loaded from map
+- Add new values to `Properties` after beeing loaded from map
 - Use tile type / class for matching tiles
 
 ### 🪛 Bug Fixes

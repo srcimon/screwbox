@@ -139,6 +139,22 @@ class PropertiesTest {
             .hasMessage("name must not be null");
     }
 
+    @Test
+    void add_newProperty_addsProperty() {
+        properties.add("smoothness", "ultra");
+
+        assertThat(properties.getString("smoothness")).isEqualTo("ultra");
+    }
+
+    @Test
+    void add_propertyAlreadyExists_throwsException() {
+        properties.add("smoothness", "ultra");
+
+        assertThatThrownBy(() -> properties.add("smoothness", "ultra"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("property 'smoothness' already exists");
+    }
+
     private PropertyEntity createPropertyEntity(final String name, final String value) {
         return new PropertyEntity(name, "type", value);
     }

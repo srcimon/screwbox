@@ -1,6 +1,7 @@
 package dev.screwbox.tiled;
 
 import dev.screwbox.core.graphics.Color;
+import dev.screwbox.core.utils.Validate;
 import dev.screwbox.tiled.internal.PropertyEntity;
 
 import java.util.ArrayList;
@@ -149,9 +150,14 @@ public class Properties {
         return propertyList.stream().anyMatch(property -> name.equals(property.name()));
     }
 
-    public void add(String name, String value) {
-        //TODO validations
-        //TODO backdocu removed stuff in GameObject
+    /**
+     * Adds a new key value pair to the properties.
+     *
+     * @throws IllegalArgumentException if the properties is already present
+     * @since 3.42.0
+     */
+    public void add(final String name, final String value) {
+        Validate.isFalse(hasProperty(name), "property '%s' already exists".formatted(name));
         propertyList.add(new Property(name, value));
     }
 }
