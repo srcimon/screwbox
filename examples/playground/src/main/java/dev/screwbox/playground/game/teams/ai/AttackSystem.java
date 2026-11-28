@@ -6,6 +6,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.physics.ColliderComponent;
 import dev.screwbox.core.environment.physics.PhysicsComponent;
+import dev.screwbox.core.environment.rendering.RenderComponent;
 import dev.screwbox.playground.game.GameFunctions;
 import dev.screwbox.playground.game.teams.BotComponent;
 import dev.screwbox.playground.game.teams.PlayerComponent;
@@ -35,7 +36,7 @@ public class AttackSystem implements EntitySystem {
                         if (config.scheduler.isTick(engine.loop().time())) {
                             Vector velocity = leadPoistion.subtract(attacker.position()).length(120);
                             Vector position = attacker.position();
-                            GameFunctions.triggerShot(engine, memberConfig.teamId, velocity, position);
+                            GameFunctions.triggerShot(engine, memberConfig.teamId, velocity, position, attacker.get(RenderComponent.class).options.drawOrder());
                         }
                     }
                 }

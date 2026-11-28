@@ -48,6 +48,54 @@
         {
          "id":19,
          "type":"decor"
+        }, 
+        {
+         "id":24,
+         "type":"decor"
+        }, 
+        {
+         "id":25,
+         "type":"decor"
+        }, 
+        {
+         "id":26,
+         "type":"decor"
+        }, 
+        {
+         "id":27,
+         "type":"decor"
+        }, 
+        {
+         "id":32,
+         "type":"decor"
+        }, 
+        {
+         "id":33,
+         "type":"decor"
+        }, 
+        {
+         "id":34,
+         "type":"decor"
+        }, 
+        {
+         "id":35,
+         "type":"decor"
+        }, 
+        {
+         "id":40,
+         "type":"decor"
+        }, 
+        {
+         "id":41,
+         "type":"decor"
+        }, 
+        {
+         "id":42,
+         "type":"decor"
+        }, 
+        {
+         "id":43,
+         "type":"decor"
         }],
  "tilewidth":16,
  "type":"tileset",

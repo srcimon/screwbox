@@ -55,7 +55,8 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
             entities.add(new Entity(entityId).add(teamInfo));
 
             for (int i = 0; i < team.teamSize(); i++) {
-                var player = new Entity(idPool.allocateId())
+                var player = new Entity(idPool.allocateId());
+                player
                     .add(new PlayerComponent(), config -> {
                         config.teamId = entityId;
                         config.name = ListUtil.pickRandom(NAMES);
@@ -77,9 +78,12 @@ public record TeamsAndPlayers(GameConfig gameConfig) implements ComplexBlueprint
                         .add(new MovementControlComponent(), m -> m.maxSpeed = 70)
                         .add(new CameraLeadComponent())
                         .add(new CameraTargetComponent(viewportId, 2));
-                    viewportId++;
+
                 } else {
                     player.add(new BotComponent());
+                }
+                if(player.hasComponent(HumanComponent.class)) {
+                    viewportId++;
                 }
                 heaven.deadPlayers.add(player);
             }

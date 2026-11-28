@@ -134,6 +134,10 @@
          "type":"wall-mid"
         }, 
         {
+         "id":43,
+         "type":"wall-top"
+        }, 
+        {
          "id":48,
          "type":"wall-top"
         }, 
@@ -171,6 +175,10 @@
         }, 
         {
          "id":57,
+         "type":"wall-base"
+        }, 
+        {
+         "id":59,
          "type":"wall-base"
         }],
  "tilewidth":16,

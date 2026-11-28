@@ -19,13 +19,13 @@ import dev.screwbox.playground.game.teams.ai.ShotComponent;
 public class GameFunctions {
 
     //TODO get rid of this
-    public static void triggerShot(Engine engine, int teamId, Vector velocity, Vector position) {
+    public static void triggerShot(Engine engine, int teamId, Vector velocity, Vector position, int drawOrder) {
         engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(position));
         engine.environment().addEntity(new Entity(engine.environment().allocateId())
             .add(new ShotComponent(), shot -> shot.teamId = teamId)
             .add(new PointLightComponent(40, Color.RED.opacity(0.5)))
             .add(new GlowComponent(42, Color.RED.opacity(0.1)), glow -> glow.lensFlare = null)
-            .add(new RenderComponent(SpriteBundle.DOT_YELLOW, SpriteDrawOptions.scaled(0.25)))
+            .add(new RenderComponent(SpriteBundle.DOT_YELLOW, SpriteDrawOptions.scaled(0.25).drawOrder(drawOrder)))
             .add(new PhysicsComponent(velocity), p -> p.ignoreCollisions = true)
             .add(new TransformComponent(Bounds.atPosition(position, 4, 4)))
         );

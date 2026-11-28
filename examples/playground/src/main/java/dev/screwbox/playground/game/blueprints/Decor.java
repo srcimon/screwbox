@@ -12,7 +12,7 @@ public class Decor implements Blueprint<Tile> {
     @Override
     public Entity assembleFrom(Tile tile) {
         Sprite sprite = tile.layer().properties().tryGetColor("team-color")
-            .map(color -> tile.sprite().replaceColor(Color.MAGENTA, color))
+            .map(color -> tile.sprite().replaceColor(Color.MAGENTA, color.opacity(0.5)))
             .orElse(tile.sprite());
 
 
