@@ -7,7 +7,7 @@ import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.environment.core.LogFpsSystem;
 import dev.screwbox.core.environment.importing.ImportCondition;
 import dev.screwbox.core.scenes.Scene;
-import dev.screwbox.playground.design.InGameNotificationDesign;
+import dev.screwbox.playground.design.NotificationDesign;
 import dev.screwbox.playground.game.blueprints.*;
 import dev.screwbox.playground.game.map.MapConfig;
 import dev.screwbox.tiled.GameObject;
@@ -31,7 +31,7 @@ public record GameScene(GameConfig gameConfig) implements Scene {
         engine.ui()
             .setNotificationSound(null)
             .setNotificationTimeout(Duration.ofSeconds(3))
-            .setNotificationDesign(new InGameNotificationDesign(gameConfig.teams()));
+            .setNotificationDesign(new NotificationDesign(gameConfig.teams()));
 
         engine.graphics().configuration()
             .setIndirectLightIntensity(Percent.quarter())

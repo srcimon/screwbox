@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.Entity;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.ui.NotificationDetails;
-import dev.screwbox.playground.design.InGameNotificationDesign;
+import dev.screwbox.playground.design.NotificationDesign;
 import dev.screwbox.playground.game.teams.PlayerComponent;
 import dev.screwbox.playground.game.teams.TeamInfoComponent;
 
@@ -45,7 +45,7 @@ public class FlagScoreSystem implements EntitySystem {
                 carrierTeam.score++;
                 retrieveFlag(engine, flagEntity, flag);
 
-                engine.ui().showNotification(NotificationDetails.text("team %s scored".formatted(InGameNotificationDesign.colorCode(carrierTeam.name, carrierTeam.index))));
+                engine.ui().showNotification(NotificationDetails.text("team %s scored".formatted(NotificationDesign.colorCode(carrierTeam.name, carrierTeam.index))));
             }
         }
     }

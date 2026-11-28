@@ -8,18 +8,17 @@ import dev.screwbox.core.graphics.Offset;
 import dev.screwbox.core.graphics.ShaderSetup;
 import dev.screwbox.core.graphics.options.TextDrawOptions;
 import dev.screwbox.core.ui.Notification;
-import dev.screwbox.core.ui.NotificationDesign;
 import dev.screwbox.playground.game.GameConfig;
 
 import java.util.List;
 
-public class InGameNotificationDesign implements NotificationDesign {
+public class NotificationDesign implements dev.screwbox.core.ui.NotificationDesign {
 
     private final TextDrawOptions options;
 
-    public InGameNotificationDesign(final List<GameConfig.TeamConfig> teamConfigs) {
+    public NotificationDesign(final List<GameConfig.TeamConfig> teamConfigs) {
         options = TextDrawOptions.font(FontBundle.SKINNY_SANS)
-            .scale(2);
+            .scale(1.5);
 
         for (int index = 0; index < teamConfigs.size(); ++index) {
             final var teamConfig = teamConfigs.get(index);

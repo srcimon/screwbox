@@ -5,7 +5,7 @@ import dev.screwbox.core.environment.Archetype;
 import dev.screwbox.core.environment.EntitySystem;
 import dev.screwbox.core.environment.Environment;
 import dev.screwbox.core.ui.NotificationDetails;
-import dev.screwbox.playground.design.InGameNotificationDesign;
+import dev.screwbox.playground.design.NotificationDesign;
 import dev.screwbox.playground.game.gamemodes.ctf.FlagCarrierComponent;
 import dev.screwbox.playground.game.teams.HeavenComponent;
 import dev.screwbox.playground.game.teams.PlayerComponent;
@@ -29,7 +29,7 @@ public class HealthSystem implements EntitySystem {
                 environment.remove(beeing);
 
                 engine.ui().showNotification(NotificationDetails.text("%s has been killed".formatted(
-                    InGameNotificationDesign.colorCode(player.name, teamIndex))));
+                    NotificationDesign.colorCode(player.name, teamIndex))));
             }
         }
     }
